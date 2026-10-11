@@ -81,7 +81,13 @@ OCR_CASES = [
     ["he wanted to explore.l1 The problems.s Then", "he wanted to explore.¹¹ The problems.⁵ Then"],
     ["(Minuit, 1 998); see pp. 1 2 2-1 24 and 1 42ft'.", "(Minuit, 1998); see pp. 122-124 and 142ff."],
     ["free affect from f.'''l.�VJ'''''' percept", "free affect from [illegible] percept"],
+    ["that of Hobbes, public professor;16 and even", "that of Hobbes, public professor;¹⁶ and even"],
+    ["would remain miredY", "would remain mired."],
+    ["the encyclopedia that still haunted HegeL More generally, thought itselP Flaubert", "the encyclopedia that still haunted Hegel More generally, thought itself Flaubert"],
+    ["a view that might be contr�sted with that of Hobbes", "a view that might be contrasted with that of Hobbes"],
+    ['affinities lie more pyj"lll�lrl with the stones brought r"c,"rlh"r temporally', "affinities lie more [illegible] with the stones brought [illegible] temporally"],
     ["Jean-Franc;ois Lyotard and Fran<;ois Chatelet", "Jean-Franc;ois Lyotard and Fran<;ois Chatelet"],
+    ["as Spinoza�r said", "as Spinoza�r said"],
     ["state-of-the-art, face-to-face, a well-known man", "state-of-the-art, face-to-face, a well-known man"],
     ["chapters 15 31 49 and the year 1998 (e.g., here)", "chapters 15 31 49 and the year 1998 (e.g., here)"],
     ["The concept of immanence is a plane, not a transcendence.", "The concept of immanence is a plane, not a transcendence."],
@@ -130,7 +136,8 @@ async def main(paths):
                     check(not marks, f"{name}: no OCR repairs on a typeset book" + (f" (found {marks[:3]})" if marks else ""))
                 # The OCR repairs, on lines from a real scan, with the book's vocabulary they rely on.
                 vocab = ("connections deleuze immanence singularity from their relations fictions what thus the question precisely "
-                         "explore problems machine machines minuit year state art face known man would plane concept transcendence ") * 3
+                         "explore problems machine machines minuit year state art face known man would plane concept transcendence "
+                         "contrast hobbes itself spinoza ") * 3
                 for got, want in await page.evaluate("""([cases, vocab]) => {
                     const counts = new Map(); for (const w of vocab.toLowerCase().match(/\\p{L}+/gu)) counts.set(w, (counts.get(w) || 0) + 1);
                     return cases.map(([inp, want]) => [ocrRepair([{ k: "p", x: inp }], counts)[0].x, want]); }""", [OCR_CASES, vocab]):
