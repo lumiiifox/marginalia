@@ -1134,11 +1134,18 @@ function linkHeadings(blocks, parsedSecs, finalSecs) {
 }
 
 /* ---------- parsing: PDF ---------- */
+// Marks a place in a line where text is missing: OCR leaves a wide blank where it couldn't read a word.
+// parsePDF turns it into "[…]" or drops it (see there).
+const GAP = "\uE000";
 function linesOf(items) {
   const its = [];
   for (const it of items) {
-    if (!it.str || !it.str.trim()) continue;
     const t = it.transform;
+    if (!it.str || !it.str.trim()) {
+      const z = Math.hypot(t[2], t[3]) || it.height || 10;
+      if (it.str && it.width > z * 2.8) its.push({ s: GAP, x: t[4], y: t[5], z: 0, w: it.width, gap: true });
+      continue;
+    }
     // Ligatures resolved here; soft hyphens are kept until the line is assembled, since one ending a line marks a word broken across lines.
     its.push({ s: it.str.replace(/[ﬀ-ﬆ]/g, (c) => LIG[c]), x: t[4], y: t[5], z: Math.hypot(t[2], t[3]) || it.height || 10, w: it.width || 0 });
   }
@@ -1146,20 +1153,23 @@ function linesOf(items) {
   const lines = [];
   for (const it of its) {
     const L = lines[lines.length - 1];
-    if (L && Math.abs(L.y - it.y) <= Math.max(1.5, 0.5 * Math.max(L.z, it.z))) { L.items.push(it); if (it.z > L.z) { L.z = it.z; L.y = it.y; } }
+    if (L && Math.abs(L.y - it.y) <= Math.max(1.5, 0.5 * Math.max(L.z, it.z || L.z))) { L.items.push(it); if (it.z > L.z) { L.z = it.z; L.y = it.y; } }
     else lines.push({ y: it.y, z: it.z, items: [it] });
   }
   return lines.map((L) => {
     L.items.sort((a, b) => a.x - b.x);
     let txt = "", prev = null;
     for (const it of L.items) {
+      if (it.gap) { if (prev) { txt += ` ${GAP} `; prev = it; } continue; }
       let s = it.s;
       const sup = it.z < 0.8 * L.z && it.y > L.y + 0.12 * L.z && /^[\s\d*†‡,]+$/.test(s);
       if (sup) s = toSup(s.replace(/\s/g, ""));
-      if (prev && !sup) { const gap = it.x - (prev.x + prev.w); if (gap > 0.15 * L.z && !/\s$/.test(txt) && !/^\s/.test(s)) txt += " "; }
+      if (prev && !sup) { const gap = it.x - (prev.x + prev.w); if (gap > 2.8 * L.z && !prev.gap) txt += ` ${GAP} `; else if (gap > 0.15 * L.z && !/\s$/.test(txt) && !/^\s/.test(s)) txt += " "; }
       txt += s; prev = it;
     }
-    const a = L.items[0], b = L.items[L.items.length - 1];
+    const real = L.items.filter((it) => !it.gap);
+    if (!real.length) return { t: "" };
+    const a = real[0], b = real[real.length - 1];
     return { t: unmerge(txt.replace(/\s+/g, " ").trim().replace(/[\u00AD\u2010\u2011]$/u, "-").replace(/\u00AD/g, "")), x: a.x, xe: b.x + b.w, y: L.y, z: L.z };
   }).filter((l) => l.t);
 }
@@ -1175,6 +1185,117 @@ function unmerge(s) {
     // a lowercase word run into a capitalised name ("courseDeleuze's"); four letters or more, so names like
     // "deVries" or "McDonald" are left alone
     .replace(/(^|[^\p{L}])(\p{Ll}{4,})(\p{Lu}\p{Ll}{2,})/gu, "$1$2 $3");
+}
+
+/* Repairs for books read by OCR. The book's own words are the dictionary: counts holds every word the
+   PDF uses (lowercase) and how often. Run only when the book shows OCR damage (see ocrSigns). */
+const OCR_JUNK = /[\uFFFD€£¥©®°§¶^~`|\\{}<>]/u;
+const ILLEGIBLE = "[illegible]";
+// Signs of OCR in a line: unreadable characters, a digit or a comma inside a word, a first letter split off.
+function ocrSigns(t) {
+  return (t.match(/\uFFFD|[€£¥©®°¶^~`|\\{}<>]|\p{L}\d+\p{L}|\p{Ll}[,;]\p{Ll}|(?:^|\s)[B-HJ-NP-Z] \p{Ll}{2,}/gu) || []).length;
+}
+// Edit distance in which a misread mark (digit, punctuation, unreadable character) costs half a letter.
+function ocrDist(a, b, max) {
+  if (Math.abs(a.length - b.length) > max + 1) return Infinity;
+  const odd = (c) => !/\p{L}/u.test(c);
+  let row = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const ca = a[i - 1], w = odd(ca) ? 0.5 : 1, nx = [row[0] + w];
+    for (let j = 1; j <= b.length; j++) nx[j] = Math.min(row[j] + w, nx[j - 1] + 1, row[j - 1] + (ca === b[j - 1] ? 0 : w));
+    if (Math.min(...nx) > max) return Infinity;
+    row = nx;
+  }
+  return row[b.length];
+}
+// A dash typed as "--", or read as a hyphen before a word no compound ends in ("required-a shock").
+const DASH_NEXT = new Set(["a", "an", "the", "this", "that", "these", "those", "which", "whose", "but", "is", "not", "its", "their"]);
+const NOT_DASH = new Set(["one", "all", "day", "man", "get", "has", "had"]);
+const REF_ABBR = /(?:^|[^\p{L}])(?:pp?|vols?|nos?|chs?|figs?|eds?|sec|art|cf|ibid)$/iu;
+function ocrRepair(blocks, counts) {
+  const has = (w) => counts.get(w.toLowerCase()) || 0;
+  const vocab = new Map();
+  for (const [w, c] of counts) if (c >= 2 && w.length >= 3 && /^\p{L}+$/u.test(w)) { const L = w.length; if (!vocab.has(L)) vocab.set(L, []); vocab.get(L).push(w); }
+  // The book's one word closest to a misread one, if there is exactly one close enough.
+  // A capitalised word (often a name) is corrected only where a mark was misread, never by changing
+  // its letters: "Fran<;ois" must not become "Francis".
+  const correct = (core) => {
+    const low = core.toLowerCase(), L = low.length, marks = (low.match(/[^\p{L}]/gu) || []).length * 0.5;
+    const max = Math.min(L >= 8 ? 2 : 1.5, /^\p{Lu}/u.test(core) ? marks : marks + 1);
+    let best = Infinity, bestW = null, tie = false;
+    for (let n = L - 2; n <= L + 2; n++) for (const w of vocab.get(n) || []) {
+      const d = ocrDist(low, w, max);
+      if (d < best) { best = d; bestW = w; tie = false; } else if (d === best) tie = true;
+    }
+    if (best > max || tie || !bestW) return null;
+    const lettersOnly = core.replace(/[^\p{L}]/gu, "");
+    if (lettersOnly.length > 1 && lettersOnly === lettersOnly.toUpperCase()) return bestW.toUpperCase();
+    return /^\p{Lu}/u.test(core) ? bestW[0].toUpperCase() + bestW.slice(1) : bestW;
+  };
+  const OPEN = /^[("“‘'\[]+/u, CLOSE = /[.,;:!?)"”’'\]]+$/u;
+  const fixToken = (t) => {
+    const pre = (t.match(OPEN) || [""])[0], rest = t.slice(pre.length), post = (rest.match(CLOSE) || [""])[0], core = rest.slice(0, rest.length - post.length);
+    if (core.length < 3) return t.includes("\uFFFD") ? ILLEGIBLE : t;
+    const abbrev = /^(?:\p{L}\.){1,4}\p{L}?$/u.test(core);
+    const odd = OCR_JUNK.test(core) || /\p{L}\d+\p{L}/u.test(core) || (!abbrev && /\p{L}[,;:!"]\p{L}|\p{Ll}\.\p{Ll}/u.test(core));
+    if (!odd) return t;
+    const letters = (core.match(/\p{L}/gu) || []).length;
+    if (core.includes("-") && !/^-|-$/.test(core)) { const parts = core.split("-").map((x) => (x.length >= 4 && /[^\p{L}]/u.test(x) && correct(x)) || x); if (parts.join("-") !== core) return pre + parts.join("-") + post; }
+    // Often the mark is simply extra ("fic,tions", "rela,tions"): without it, a word the book uses.
+    const bare = core.replace(/[^\p{L}]/gu, "");
+    if (bare.length >= 4 && /^\p{L}+[^\p{L}]\p{L}+$/u.test(core) && (has(bare) || (/s$/.test(bare) && has(bare.slice(0, -1))))) return pre + bare + post;
+    if (core.length >= 4 && letters >= core.length * 0.6) { const c = correct(core); if (c) return pre + c + post; }
+    // A missing space after a comma or full stop ("empiricism,Deleuze", "science.The"); not "e,g." for "e.g.",
+    // nor a semicolon, which inside a word is a misread letter ("Franc;ois").
+    const spaced = core.replace(/(\p{L}{2}),(?=\p{L}{2})/gu, "$1, ").replace(/(\p{Ll}{2})\.(?=\p{Lu}\p{Ll})/gu, "$1. ");
+    if (spaced !== core && !OCR_JUNK.test(core)) return pre + spaced + post;
+    // Stray marks after a word or number ("being.>!", "1950\uFFFD,", "342ff}") are dropped. Not before one:
+    // a mark there is usually a misread letter ("}jfe" for "life").
+    const trimmed = core.replace(/[^\p{L}\d.,;:!?]+$/u, "").replace(/([.,;:!?])[^\p{L}\d\s]+$/u, "$1");
+    if (trimmed !== core && /^(?:\d+(?:ff)?|\p{L}+[.,;:!?]?)$/u.test(trimmed) && (/^\d/.test(trimmed) || has(trimmed.replace(/[.,;:!?]$/, "")) >= 3)) return pre + trimmed + post;
+    // Only a word that is mostly marks is beyond reading; one with a single bad letter stays as it is.
+    if (OCR_JUNK.test(core) && letters < core.length * 0.75) return ILLEGIBLE;
+    return t;
+  };
+  const repair = (x) => {
+    x = x.replace(/\s*-{2,}\s*/g, "—")
+      .replace(/(\p{L}{3,})-(\p{L}+)(?![\p{L}-])/gu, (m, a, b) => (DASH_NEXT.has(b.toLowerCase()) && !NOT_DASH.has(a.toLowerCase()) ? `${a}—${b}` : m))
+      // page references whose "ff" was misread ("142ft'.", "96f£")
+      .replace(/(\d)f(?:t'|t|£)/g, "$1ff").replace(/\b(\d) (\d{1,3})ff/g, "$1$2ff")
+      // a note number read as letters ("explore.l1" for 11, "problems.s" for 5), run into the next word
+      // ("structuralism.6Deleuze") or into a dash ("Melville43-it")
+      .replace(/(\p{L}{3,})([.,;:!?]["”’)]*)([lIoOsS1-9][lIoOsS0-9]?)(?=(\s+\S)?)/gu, (m, w, p, d, nx, off, str) => {
+        if (/^\d+$/.test(d) || !/^(?:[lI][lI0-9oOsS]?|[1-9][lIoOsS]|[sS]|[oO]\d)$/.test(d) || REF_ABBR.test(w)) return m;
+        const after = str.slice(off + m.length);
+        if (/^\p{L}/u.test(after)) return m;
+        if (/^(is|so|os|io)$/i.test(d) && !/^\s+["“(]?\p{Lu}|^\s*$/u.test(after)) return m;
+        return w + p + toSup(d.replace(/[lI]/g, "1").replace(/[oO]/g, "0").replace(/[sS]/g, "5"));
+      })
+      .replace(/(\p{L}{3,}[.,;:!?]["”’)]*)(\d{1,3})(?=\p{Lu}\p{Ll})/gu, (m, w, d) => w + toSup(d) + " ")
+      .replace(/(\p{L}{3,}[.,;:!?"”’)]*)(\d{1,3})-(?=\p{Ll})/gu, (m, w, d) => w + toSup(d) + "—")
+      // a note number printed at full size after the end of a phrase ("image.8 To", "door,"3 The")
+      .replace(/(\p{L}+)([.,;:!?]["”’)]*|["”’)]+)(\d{1,3})(?=\s+["“(]?\p{Lu}|\s*$)/gu, (m, w, p, d) => (REF_ABBR.test(w) ? m : w + p + toSup(d)))
+      // numbers split by spaces: years, page references, a note's own number
+      // (a year: "1 998", "1 9 5 3", or "197 1)" closing a reference; not two numbers side by side, "15 31")
+      .replace(/\b([12])( ?)(\d) ?(\d) ?(\d)\b(?=([),.;]?))/g, (m, a, sp, b, c, d, close) => { const y = +(a + b + c + d); return / /.test(m) && y >= 1500 && y <= 2099 && (sp || close) ? a + b + c + d : m; })
+      .replace(/\b(pp?\.\s*)([\d][\d ,\-–ff]*\d)/g, (m, p, n) => p + n.replace(/(\d) (?=\d)/g, "$1"))
+      .replace(/^(\d) (\d) ?\./, "$1$2.");
+    const toks = x.split(" "), out = [];
+    for (let i = 0; i < toks.length; i++) {
+      let t = toks[i]; const nx = toks[i + 1];
+      if (nx != null) {
+        // a first letter split off ("T hus", "W hitehead", "B ergson")
+        const cap = t.match(/^([("“‘]?)([B-HJ-NP-Z])$/u), low = nx.match(/^(\p{Ll}+)(.*)$/u);
+        if (cap && low && (has(cap[2] + low[1]) || !has(low[1]))) { out.push(cap[1] + cap[2] + low[1] + low[2]); i++; continue; }
+        // a space inside a word ("si ngularity", "im manence"): the halves rarely occur alone, the whole does
+        const a = t.match(/^([("“‘]?)(\p{L}+)$/u), b = nx.match(/^(\p{Ll}+)([^\p{L}]*)$/u);
+        if (a && b && has(a[2] + b[1]) && (has(a[2]) <= 2 || has(b[1]) <= 2) && !(has(a[2]) >= 3 && has(b[1]) >= 3)) { out.push(a[1] + a[2] + b[1] + b[2]); i++; continue; }
+      }
+      out.push(fixToken(t));
+    }
+    return out.join(" ").replace(/(?:\[illegible\]\s*){2,}/g, ILLEGIBLE + " ");
+  };
+  return blocks.map((b) => (b.k === "pg" || !b.x ? b : { ...b, x: repair(b.x) }));
 }
 
 async function parsePDF(buf, say) {
@@ -1240,6 +1361,19 @@ async function parsePDF(buf, say) {
   say("Rebuilding paragraphs…");
   const all = pages.flatMap((pg) => pg.lines);
   if (all.reduce((a, l) => a + l.t.length, 0) / n < 40) throw new UErr("This PDF has no text layer, so it's a scanned image. Run OCR on it first (OCRmyPDF or Acrobat), then load it again.");
+  // A scan read by OCR shows itself in its text: unreadable characters, digits and commas inside words,
+  // first letters split off. Repairs that rely on that (ocrRepair, marking missing words) run only then.
+  const nWords = all.reduce((a, l) => a + l.t.split(" ").length, 0);
+  const signs = all.reduce((a, l) => a + ocrSigns(l.t), 0);
+  const scanned = signs >= 5 && signs * 3000 >= nWords;
+  // Where OCR left a wide blank, words are missing: shown as "[…]" so the gap can be checked against the
+  // printed page. Not on a page where many lines have such gaps (a table, a contents page, two columns),
+  // nor before a page number at the end of a line.
+  pages.forEach((pg) => {
+    const withGap = pg.lines.filter((l) => l.t.includes(GAP)).length, table = withGap > Math.max(2, pg.lines.length * 0.3);
+    // (a blank beside a number is a column gap in a list: "1: Connections  3")
+    for (const l of pg.lines) if (l.t.includes(GAP)) l.t = l.t.replace(/(^|\s)([\divxlc]+[:.)]?)\s*\uE000|\uE000\s*(?=[\divxlc]+[:.)]?(\s|$))/gi, "$1$2 ").replace(/\s*\uE000\s*/g, scanned && !table ? " […] " : " ").replace(/\s+/g, " ").trim();
+  });
   const body = wmedian(all.map((l) => [l.z, l.t.length]));
   // Body size is measured page by page: scans are often enlarged or reduced a little from page to page,
   // and against one size for the whole book every line of an enlarged page looks like a heading.
@@ -1368,7 +1502,9 @@ async function parsePDF(buf, say) {
     const right = bl.length ? pct(bl.map((l) => l.xe), 0.9) : Infinity;
     // Justified text: most lines end at the right margin, so a line that stops one hyphen's width short
     // and runs on in lowercase lost its hyphen (common in scans).
-    const justified = bl.length >= 8 && bl.filter((l) => Math.abs(l.xe - right) < B * 0.3).length >= bl.length * 0.55;
+    // (In unjustified text only about one line in ten happens to end at the margin; in justified text most do,
+    // fewer when many hyphens are lost, so two in five is the line between them.)
+    const justified = bl.length >= 8 && bl.filter((l) => Math.abs(l.xe - right) < B * 0.3).length >= bl.length * 0.4;
     let lastBody = -1; L.forEach((l, i) => { if (l.z >= B * 0.93) lastBody = i; });
     let fnStart = L.length;
     const nx = L[lastBody + 1];
@@ -1423,7 +1559,7 @@ async function parsePDF(buf, say) {
     if (fn) blocks.push({ k: "fn", x: fn });
   });
   flush();
-  return { title, author, kind: "PDF", blocks, pageSource, cover };
+  return { title, author, kind: "PDF", blocks: scanned ? ocrRepair(blocks, counts) : blocks, pageSource, cover };
 }
 
 /* ---------- parsing: EPUB / Word / HTML ---------- */
