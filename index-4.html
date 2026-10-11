@@ -1,0 +1,2254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marginalia</title>
+<meta name="description" content="A personal reading log and reader.">
+<meta name="theme-color" content="#e4d8c4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#2a2019" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Marginalia">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+SC:wght@500&family=Alegreya+Sans:wght@400;500;700&display=swap">
+<style>
+/* A reading desk: oak surface with real grain, paper sheets for anything you read, walnut shelves for your books,
+   green leather for actions, brass for small details. One type family: Alegreya for reading, Alegreya Sans for controls. */
+:root {
+  --wood: #e4d8c4;          /* white-oak desk */
+  --paper: #fbf7ef;         /* sheets, forms, the reader */
+  --field: #f3ede2;         /* inputs on paper */
+  --ink: #2b2119;
+  --muted: #6c5b49;
+  --rule: #cdbba0;
+  --leather: #2f5446;       /* primary actions */
+  --leather-ink: #f3ede2;
+  --link: #2c5244;
+  --brass: #9c7533;
+  --mark: rgba(224, 172, 52, 0.38);
+  --mk-gloss: rgba(86, 150, 104, 0.26); --mk-question: rgba(70, 120, 196, 0.24); --mk-objection: rgba(196, 82, 58, 0.24); --mk-argument: rgba(132, 92, 176, 0.24);
+  --warn: #9a3b2a;
+  --veil: rgba(43, 33, 25, 0.5);
+  --plank: #6e4527; --plank-hi: #8a5a35; --plank-edge: #573519; --plank-edge-lo: #3f2512;
+  --shelf-shade: rgba(43, 25, 12, 0.35);
+  --paper-shadow: 0 1px 0 rgba(80, 55, 30, 0.08), 0 10px 22px -16px rgba(80, 55, 30, 0.6);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.005 0.16' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.42 0 0 0 0 0.27 0 0 0 0 0.13 0.48 0 0 0 -0.19'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  --grain-plank: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='60'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.008 0.42' numOctaves='3' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.08 0 0 0 0 0.03 1 0 0 0 -0.32'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  --f-text: "Alegreya", "Iowan Old Style", Georgia, serif;
+  --f-ui: "Alegreya Sans", "Gill Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mark: "Alegreya SC", "Alegreya", Georgia, serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --wood: #2a2019; --paper: #1f1914; --field: #2a221b; --ink: #ede3d3; --muted: #ad9a82; --rule: #46382b;
+    --leather: #3a6552; --leather-ink: #f1ebe0; --link: #9cc4ae; --brass: #c9a25f; --mark: rgba(201, 162, 95, 0.3); --warn: #e29c84; --mk-gloss: rgba(110, 180, 130, 0.26); --mk-question: rgba(110, 155, 225, 0.26); --mk-objection: rgba(225, 110, 85, 0.26); --mk-argument: rgba(170, 130, 215, 0.26); --veil: rgba(0, 0, 0, 0.6);
+    --plank: #4a2d18; --plank-hi: #5e3a20; --plank-edge: #3a2210; --plank-edge-lo: #24150a; --shelf-shade: rgba(0, 0, 0, 0.55);
+    --paper-shadow: 0 1px 0 rgba(0, 0, 0, 0.3), 0 12px 24px -16px rgba(0, 0, 0, 0.8);
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.005 0.16' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.6 0 0 0 0 0.44 0 0 0 0 0.3 0.26 0 0 0 -0.11'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --wood: #2a2019; --paper: #1f1914; --field: #2a221b; --ink: #ede3d3; --muted: #ad9a82; --rule: #46382b;
+  --leather: #3a6552; --leather-ink: #f1ebe0; --link: #9cc4ae; --brass: #c9a25f; --mark: rgba(201, 162, 95, 0.3); --warn: #e29c84; --mk-gloss: rgba(110, 180, 130, 0.26); --mk-question: rgba(110, 155, 225, 0.26); --mk-objection: rgba(225, 110, 85, 0.26); --mk-argument: rgba(170, 130, 215, 0.26); --veil: rgba(0, 0, 0, 0.6);
+  --plank: #4a2d18; --plank-hi: #5e3a20; --plank-edge: #3a2210; --plank-edge-lo: #24150a; --shelf-shade: rgba(0, 0, 0, 0.55);
+  --paper-shadow: 0 1px 0 rgba(0, 0, 0, 0.3), 0 12px 24px -16px rgba(0, 0, 0, 0.8);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.005 0.16' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.6 0 0 0 0 0.44 0 0 0 0 0.3 0.26 0 0 0 -0.11'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  color-scheme: dark;
+}
+
+/* base */
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); background: var(--grain), var(--wood); background-size: 520px 520px, auto; }
+body { margin: 0; min-height: 100vh; background: transparent; color: var(--ink); font: 400 16px/1.5 var(--f-ui); font-variant-numeric: tabular-nums; }
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+.wrap { max-width: 680px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 96px; display: grid; gap: 28px; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:disabled { opacity: 0.55; cursor: default; }
+:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+
+/* controls */
+.top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.mark-word { font: 500 34px/1 var(--f-mark); letter-spacing: 0.02em; }
+.sub { color: var(--muted); font-size: 14px; }
+.btn { border: 1px solid var(--rule); background: var(--paper); border-radius: 8px; padding: 8px 15px; font: 500 15px/1.2 var(--f-ui); color: var(--ink); }
+.btn.primary { background: linear-gradient(rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0.08)), var(--leather); color: var(--leather-ink); border-color: transparent; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 1px 2px rgba(0, 0, 0, 0.25); }
+.btn.danger { color: var(--warn); }
+.btn.danger.armed { background: var(--warn); color: var(--paper); border-color: var(--warn); }
+.btn.ghost { background: transparent; border-color: transparent; padding-inline: 8px; color: var(--muted); }
+.search { width: 100%; border: 1px solid var(--rule); background: var(--paper); border-radius: 8px; padding: 11px 14px; font-size: 16px; box-shadow: inset 0 1px 2px rgba(60, 40, 20, 0.08); }
+.search::placeholder { color: var(--muted); }
+
+.banner { background: var(--paper); border-radius: 6px; padding: 10px 14px; color: var(--muted); font-size: 14px; box-shadow: var(--paper-shadow); }
+.label { font: 700 15px/1.2 var(--f-ui); color: var(--ink); }
+.cnt { font-weight: 400; color: var(--muted); margin-left: 4px; }
+.group { display: grid; gap: 10px; }
+.list { display: grid; gap: 8px; }
+.hint { font-size: 14px; color: var(--muted); margin: 0; }
+.hint.bad { color: var(--warn); }
+
+.chip { display: inline-flex; align-items: center; gap: 4px; font: 500 13px/1 var(--f-ui); border: 1px solid var(--rule); border-radius: 6px; padding: 6px 9px; color: var(--muted); background: color-mix(in srgb, var(--paper) 72%, transparent); }
+.chip.on { background: var(--leather); color: var(--leather-ink); border-color: transparent; }
+.chip.k-objection { color: var(--warn); }
+.chip.k-question { color: var(--link); }
+.chip.ex { border-style: dashed; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.bchips { gap: 7px; }
+.bchip { font-size: 15px; padding: 7px 11px; color: var(--ink); }
+.bchip .cnt { font-size: 13px; margin-left: 2px; }
+
+/* paper: anything you read lies on a sheet */
+.paperpanel, .gl-list, .sections, .noteslist, .termhits { background: var(--paper); border-radius: 6px; box-shadow: var(--paper-shadow); }
+.paperpanel, .noteslist { padding: 4px 16px; }
+.gl-list { padding: 0 16px; }
+
+/* bookshelf: walnut planks with your books standing on them */
+.shelf { display: grid; gap: 10px; }
+.shelfwrap { position: relative; --cw: 104px; }
+.plank { position: absolute; left: -16px; right: -16px; top: calc(4px + var(--cw) * 1.5 - 7px); height: 15px; pointer-events: none;
+  background: var(--grain-plank), linear-gradient(var(--plank-hi), var(--plank)); background-size: 600px 60px, auto;
+  box-shadow: 0 22px 16px -12px var(--shelf-shade); }
+.plank::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 12px;
+  background: var(--grain-plank), linear-gradient(var(--plank-edge), var(--plank-edge-lo)); background-size: 600px 60px, auto; background-position: 0 -24px, 0 0; }
+.shelfrow { position: relative; z-index: 1; display: flex; gap: 16px; overflow-x: auto; overscroll-behavior-x: contain; margin-inline: -16px; padding: 4px 16px 6px; scroll-padding-inline: 16px; scroll-snap-type: x proximity; scrollbar-width: none; }
+.shelfrow::-webkit-scrollbar { display: none; }
+.shelfbook { flex: 0 0 var(--cw); width: var(--cw); display: grid; gap: 3px; align-content: start; text-align: left; background: none; border: 0; padding: 0; color: inherit; scroll-snap-align: start; }
+.shelfbook .cover { margin-bottom: 34px; }
+.sb-title { font: 500 15px/1.25 var(--f-text); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.5em; overflow-wrap: anywhere; }
+.sb-meta { font-size: 13px; color: var(--muted); min-height: 1.3em; }
+.sb-prog { display: block; height: 3px; border-radius: 2px; background: color-mix(in srgb, var(--rule) 70%, transparent); overflow: hidden; }
+.sb-prog i { display: block; height: 100%; background: var(--brass); }
+
+/* covers: a photo, or a cloth binding with the title stamped on */
+.cover { position: relative; display: block; width: 100%; aspect-ratio: 2 / 3; container-type: inline-size; border-radius: 2px 4px 4px 2px; overflow: hidden; background: var(--rule); box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 8px 14px -8px rgba(0, 0, 0, 0.55); }
+.cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cover::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(0, 0, 0, 0.3) 0, rgba(255, 255, 255, 0.16) 3%, rgba(0, 0, 0, 0.08) 6%, transparent 12%); }
+.cover.gen { background: var(--cloth); color: #f1ead9; }
+.cover.gen .gen-in { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 6cqw; padding: 15cqw 10cqw 13cqw 16cqw; }
+.cover.gen .gt { font: 500 13.5cqw/1.15 var(--f-text); display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; text-wrap: balance; }
+.cover.gen .gt::after { content: ""; display: block; width: 32%; height: 1px; margin-top: 7cqw; background: #d6b56f; opacity: 0.8; }
+.cover.gen .ga { font: 500 8cqw/1.2 var(--f-mark); letter-spacing: 0.03em; opacity: 0.85; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* home sections */
+.home-sec { display: grid; gap: 14px; }
+.sec-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.sec-head h2, .gl-head h1 { font: 700 28px/1.1 var(--f-text); }
+.gl-head h1 { font-size: 32px; }
+.sec-head .sub, .gl-head .sub { margin-top: 3px; }
+.home-sec .label { font-size: 14px; color: var(--muted); font-weight: 500; }
+.home-sec .label + .chips { margin-top: -6px; }
+
+/* a text's page */
+.head { display: grid; gap: 10px; }
+.headrow { display: grid; grid-template-columns: 80px minmax(0, 1fr); gap: 16px; align-items: end; }
+.headtext { display: grid; gap: 4px; min-width: 0; }
+.head h1 { font: 700 clamp(24px, 6.5vw, 32px)/1.12 var(--f-text); overflow-wrap: anywhere; }
+.byline { color: var(--muted); font: italic 400 16px/1.35 var(--f-text); }
+.srcline { font-size: 13px; color: var(--muted); }
+.head .actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.head select { border: 1px solid var(--rule); background: var(--paper); border-radius: 8px; padding: 7px 10px; font: 500 15px var(--f-ui); }
+.flabel { font-size: 14px; font-weight: 500; }
+.coverpick { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 14px; align-items: start; }
+.coverctl { display: grid; gap: 8px; justify-items: start; }
+.coverctl .hint.bad { color: var(--warn); }
+
+.sections { display: grid; }
+.sec { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 11px 16px; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); }
+.sec:first-child { border-top: 0; }
+.sec input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--leather); }
+.sec button { text-align: left; background: none; border: 0; padding: 0; min-width: 0; font: 400 16px/1.3 var(--f-text); }
+.sec.done button { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--rule); }
+.sec.sel { background: color-mix(in srgb, var(--leather) 10%, transparent); }
+.sec .n { font-size: 13px; color: var(--muted); }
+
+.notesbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.note { display: grid; gap: 8px; padding: 16px 0; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); min-width: 0; }
+.note:first-child { border-top: 0; }
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+.meta .pg { color: var(--ink); font-weight: 700; }
+.passage { font: 400 18px/1.55 var(--f-text); margin: 0; overflow-wrap: anywhere; }
+.passage span { background: var(--mark); box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: 1px 2px; }
+.gloss { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 16px; }
+.gloss.after { padding-left: 12px; border-left: 2px solid var(--brass); }
+.noteacts { display: flex; gap: 2px; flex-wrap: wrap; margin-left: -8px; }
+.empty { color: var(--muted); padding: 16px 0; margin: 0; }
+.empty b { color: var(--ink); font-weight: 700; }
+.noteslist .empty, .gl-list .empty { padding-inline: 0; }
+.src { font: 500 14px var(--f-ui); color: var(--link); background: none; border: 0; padding: 0; text-align: left; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.tag { font: 500 0.9em/1.3 var(--f-ui); color: var(--link); background: color-mix(in srgb, var(--link) 11%, transparent); border: 0; border-radius: 4px; padding: 1px 5px; margin: 0 1px; }
+.argbox { background: var(--mk-argument); border-radius: 6px; padding: 10px 14px 10px 12px; display: grid; }
+.arg { margin: 0; padding-left: 1.7em; display: grid; gap: 3px; font: 400 17px/1.5 var(--f-text); overflow-wrap: anywhere; }
+.arg li::marker { font: 500 14px var(--f-ui); color: var(--muted); }
+.argc { margin: 8px 0 0; padding: 6px 0 0 0.3em; border-top: 1.5px solid color-mix(in srgb, var(--ink) 70%, transparent); font: 400 17px/1.5 var(--f-text); overflow-wrap: anywhere; }
+.argc > span[aria-hidden] { color: var(--muted); margin-right: 6px; }
+.chip.done { color: var(--ink); }
+.chip.done::before { content: "✓"; color: var(--link); }
+.note.resolved .passage span { background: color-mix(in srgb, var(--mark) 45%, transparent); }
+.hassum { color: var(--brass); font-weight: 700; }
+.summary p { margin: 12px 0; white-space: pre-wrap; overflow-wrap: anywhere; font: 400 17px/1.55 var(--f-text); }
+.across { display: grid; gap: 8px; }
+.tagchip { color: var(--link); }
+.qchip { color: var(--ink); }
+.grouptitle { font: 700 15px/1.2 var(--f-ui); }
+.resolvedlist > summary { cursor: pointer; padding: 6px 0; color: var(--muted); }
+.resolvedlist > section { margin-top: 14px; }
+
+/* sheets and menus */
+.veil { position: fixed; inset: 0; background: var(--veil); display: flex; align-items: flex-end; justify-content: center; z-index: 20; }
+.sheet { background: var(--paper); width: 100%; max-width: 680px; max-height: 92%; overflow-y: auto; border-radius: 14px 14px 0 0; padding: 22px 18px calc(18px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 16px; box-shadow: 0 -10px 30px -10px rgba(0, 0, 0, 0.35); }
+.sheet h2 { font: 700 23px/1.2 var(--f-text); }
+.field { display: grid; gap: 6px; }
+.field label { font-size: 15px; font-weight: 500; }
+.field input, .field select, .field textarea { border: 1px solid var(--rule); background: var(--field); border-radius: 8px; padding: 10px 11px; width: 100%; min-width: 0; font-size: 16px; }
+.drop { position: relative; display: grid; gap: 4px; justify-items: center; text-align: center; padding: 22px 14px; border: 1.5px dashed var(--rule); border-radius: 8px; background: var(--field); }
+.drop.over, .drop:focus-within { border-color: var(--leather); background: color-mix(in srgb, var(--leather) 7%, var(--field)); }
+.drop input[type=file] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; padding: 0; border: 0; border-radius: 8px; }
+.drop-main { font-weight: 700; color: var(--link); pointer-events: none; overflow-wrap: anywhere; }
+.drop-sub { font-size: 14px; color: var(--muted); pointer-events: none; }
+.linkbtn { justify-self: start; background: none; border: 0; padding: 2px 0; color: var(--link); font-size: 15px; text-decoration: underline; text-underline-offset: 3px; }
+.pastebox { display: grid; gap: 8px; }
+.pastebox .btn { justify-self: start; }
+.field textarea { resize: vertical; min-height: 84px; }
+.field textarea.verbatim { font: 17px/1.55 var(--f-text); }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.formacts { display: flex; justify-content: flex-end; align-items: center; gap: 8px; }
+.formacts .sheet-del { margin-right: auto; }
+.err { color: var(--warn); font-size: 14px; min-height: 1em; }
+.menu { display: grid; }
+.menuitem { text-align: left; background: none; border: 0; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); padding: 14px 2px; font: 500 17px/1.2 var(--f-ui); color: var(--ink); }
+.menuitem:first-child { border-top: 0; }
+.menuitem.danger { color: var(--warn); }
+@media (prefers-reduced-motion: no-preference) { .sheet { animation: rise .18s ease-out; } @keyframes rise { from { transform: translateY(24px); opacity: .6; } } }
+
+/* reader: plain paper */
+#reader { background: var(--paper); min-height: 100vh; }
+.rbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; display: flex; align-items: center; gap: 2px; padding: 8px 10px; background: var(--paper); border-bottom: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); }
+.rbar .btn { padding: 6px 8px; font-size: 15px; }
+.rtitle { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font: italic 400 16px var(--f-text); padding-inline: 4px; }
+.rpg { font-size: 14px; color: var(--muted); white-space: nowrap; padding-inline: 4px; }
+.book { --fs: 20px; --lh: 1.62; --measure: 34em; max-width: var(--measure); margin: 0 auto; padding-inline: 20px; padding-block: 28px 160px; font: 400 var(--fs)/var(--lh) var(--f-text); overflow-wrap: break-word; }
+.book p { margin: 0; }
+.bp { text-indent: 1.4em; }
+.bp.cont, .bh + .bp, .bq + .bp, .book > .bp:first-child, .bpg:first-child + .bp { text-indent: 0; }
+.bh { font-family: var(--f-text); font-weight: 700; line-height: 1.2; margin: 2.2em 0 0.9em; }
+.bh.l1 { font-size: 1.5em; }
+.bh.l2 { font-size: 1.22em; }
+.bh.l3, .bh.l4 { font-size: 1.04em; }
+.book > .bh:first-child, .bpg:first-child + .bh { margin-top: 0.4em; }
+.bq { margin: 0.7em 0 0.7em 1.3em !important; font-size: 0.92em; }
+.bfn { font-size: 0.78em; line-height: 1.5; color: var(--muted); padding-left: 1em; }
+.bp + .bfn, .bq + .bfn, .bh + .bfn { margin-top: 0.9em !important; padding-top: 0.5em; border-top: 1px solid var(--rule); }
+.bpg { display: flex; align-items: center; gap: 8px; margin: 0.5em 0; min-height: 1em; font: 500 13px/1 var(--f-ui); color: var(--muted); user-select: none; -webkit-user-select: none; }
+.bpg::before { content: ""; flex: 1; border-top: 1px dotted var(--rule); }
+.book mark { background: var(--mark); color: inherit; cursor: pointer; box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: 0 1px; }
+.book mark.k-gloss, .note.k-gloss .passage span { background: var(--mk-gloss); }
+.book mark.k-question, .note.k-question .passage span { background: var(--mk-question); }
+.book mark.k-objection, .note.k-objection .passage span { background: var(--mk-objection); }
+.book mark.k-argument, .note.k-argument .passage span { background: var(--mk-argument); }
+.book .flash { animation: flash 2.2s ease-out both; }
+@media (prefers-reduced-motion: reduce) { .book .flash { animation: none; background: color-mix(in srgb, var(--brass) 22%, transparent); } }
+@keyframes flash { from { background: color-mix(in srgb, var(--brass) 38%, transparent); } to { background: transparent; } }
+.ricon { display: inline-grid; place-items: center; min-width: 38px; height: 38px; padding: 0 6px; color: var(--muted); }
+.ricon svg { display: block; fill: none; }
+.ricon[aria-pressed="true"] { color: var(--brass); }
+.ricon[aria-pressed="true"] path { fill: currentColor; }
+.raa { font: 500 17px/1 var(--f-text); }
+#reader.tone-paper { --paper: #fbf7ef; --ink: #2b2119; --muted: #6c5b49; --rule: #cdbba0; --mark: rgba(224, 172, 52, 0.38); color-scheme: light; }
+#reader.tone-sepia { --paper: #f1e4cb; --ink: #3a2a1a; --muted: #7a6347; --rule: #d6c19c; --mark: rgba(214, 160, 40, 0.36); color-scheme: light; }
+#reader.tone-night { --paper: #14110e; --ink: #d8cdbd; --muted: #8e806e; --rule: #2e2620; --mark: rgba(201, 162, 95, 0.28); color-scheme: dark; }
+#reader { color: var(--ink); }
+.findres { display: grid; }
+.findhit { display: grid; gap: 2px; text-align: left; background: none; border: 0; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); padding: 10px 0; color: var(--ink); }
+.findhit .fp { font-size: 13px; color: var(--muted); }
+.findhit .fs { font: 16px/1.45 var(--f-text); overflow-wrap: anywhere; }
+.findhit b { background: var(--mark); font-weight: 400; padding: 0 1px; }
+.tocitem.bm span:first-child { font-style: italic; }
+.rs { display: grid; gap: 14px; }
+.rs-row { display: grid; gap: 6px; }
+.rs-row > span { font-size: 15px; font-weight: 500; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.segb { border: 1px solid var(--rule); background: var(--field); border-radius: 8px; padding: 8px 12px; font: 500 15px/1 var(--f-ui); color: var(--ink); }
+.segb.on { background: var(--leather); color: var(--leather-ink); border-color: transparent; }
+.rs-fs { min-width: 2.5em; text-align: center; font-size: 15px; }
+.rload { color: var(--muted); font: 15px var(--f-ui); text-indent: 0 !important; }
+.selbar { position: fixed; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; padding: 12px 16px calc(14px + env(safe-area-inset-bottom, 0px)); pointer-events: none; z-index: 10; }
+.selbar .btn { pointer-events: auto; box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3); }
+.toc { display: grid; }
+.tocitem { display: flex; justify-content: space-between; gap: 12px; text-align: left; background: none; border: 0; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); padding: 11px 0; font: 400 16px/1.35 var(--f-text); }
+.tocitem.l1 { font-weight: 700; }
+.tocitem.l3, .tocitem.l4 { padding-left: 16px; color: var(--muted); font-size: 15px; }
+.tocitem .tp { font: 14px var(--f-ui); color: var(--muted); white-space: nowrap; }
+
+/* glossary and branches */
+.gl-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.gl-list { display: grid; }
+.term { border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); }
+.term:first-child { border-top: 0; }
+.term summary { list-style: none; cursor: pointer; padding: 13px 28px 13px 0; display: grid; gap: 2px; position: relative; }
+.term summary::-webkit-details-marker { display: none; }
+.term summary::after { content: "+"; position: absolute; right: 2px; top: 14px; font: 400 22px/1 var(--f-ui); color: var(--muted); }
+.term[open] summary::after { content: "−"; color: var(--link); }
+.term summary .tm { font: 500 19px/1.3 var(--f-text); }
+.term[open] summary .tm { color: var(--link); }
+.term summary .ta { font-size: 14px; color: var(--muted); }
+.tbody { display: grid; gap: 10px; padding-bottom: 18px; }
+.tdef { margin: 0; font: 400 17px/1.55 var(--f-text); }
+.tsrc { margin: 0; font: italic 400 15px/1.4 var(--f-text); color: var(--muted); }
+.thits { display: grid; gap: 10px; padding-top: 6px; }
+.thit { display: grid; gap: 4px; padding-left: 10px; border-left: 2px solid var(--brass); min-width: 0; }
+.thit p { margin: 0; font: 16px/1.5 var(--f-text); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.bq-list { margin: 0; padding-left: 20px; display: grid; gap: 4px; font: 400 16px/1.5 var(--f-text); }
+.bq-list .tsrc { font-size: 14px; }
+.tbody .label { font-size: 14px; color: var(--muted); font-weight: 500; margin-top: 4px; }
+.termhits { display: grid; padding: 0 16px; }
+.termhit { display: grid; gap: 3px; text-align: left; background: none; border: 0; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); padding: 12px 0; color: inherit; }
+.termhit:first-child { border-top: 0; }
+.termhit b { font: 500 18px/1.3 var(--f-text); color: var(--link); }
+.termhit span { font-size: 14px; color: var(--muted); }
+
+/* backups and toast */
+.backup { display: grid; gap: 8px; padding-top: 6px; }
+.backup .label { font-size: 15px; }
+.backup .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 4px; }
+.filebtn { position: relative; overflow: hidden; display: inline-flex; align-items: center; }
+.filebtn input[type=file] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); max-width: calc(100% - 32px); background: var(--plank-edge); color: #f3ede2; padding: 10px 16px; border-radius: 8px; font-size: 15px; z-index: 30; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3); }
+</style>
+</head>
+<body>
+
+<div class="wrap" id="main"></div>
+<div id="reader" hidden>
+  <header class="rbar">
+    <button class="btn ghost ricon" id="rback" aria-label="Back to the text's page">←</button>
+    <div class="rtitle" id="rtitle"></div>
+    <span class="rpg" id="rpg"></span>
+    <button class="btn ghost ricon" id="rmark" aria-label="Bookmark this page" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M7 3.5h10v17l-5-3.8-5 3.8z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></button>
+    <button class="btn ghost ricon" id="rfind" aria-label="Find in this book"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M15 15l5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+    <button class="btn ghost ricon raa" id="raa" aria-label="Reading settings">Aa</button>
+    <button class="btn ghost ricon" id="rtoc" aria-label="Contents and bookmarks"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 6.5h14M5 12h14M5 17.5h9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+  </header>
+  <article class="book" id="book"></article>
+</div>
+<div class="selbar" id="selbar" hidden><button class="btn primary" id="selsave">Save passage</button></div>
+<div id="sheetroot"></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+const KINDS = { passage: "Passage", gloss: "Gloss", question: "Question", objection: "Objection", argument: "Argument" };
+const STATUS = { reading: "Reading", queued: "Queued", finished: "Finished" };
+const I0 = "\u0001", I1 = "\u0002";
+const S = { texts: new Map(), notes: new Map(), content: new Map(), covers: new Map(), terms: new Map(), bOpen: new Set(), screen: "library", textId: null, sec: "all", kind: "all", q: "", tq: "", gq: "", gArea: "all", gOpen: new Set(), mode: "pending" };
+const R = { tid: null, blocks: null, els: [], tops: [], dirty: true, pageAt: [], secAt: [], sig: new Map(), saved: -1, sel: null };
+let idb = null;
+
+const LIBS = {
+  pdf: ["https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"],
+  pdfw: ["https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"],
+  zip: ["https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"],
+  docx: ["https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js", "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js", "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.21/mammoth.browser.min.js"],
+};
+
+/* ---------- helpers ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const gid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const pnum = (p) => { const m = String(p || "").match(/\d+/); return m ? parseInt(m[0], 10) : Infinity; };
+const plain = (x) => String(x || "").replace(/[\u0001\u0002]/g, "");
+const tidy = (s) => String(s || "").replace(/\s+/g, " ").replace(/\u0001\s*\u0002/g, "").trim();
+const norm = (s) => plain(s).toLowerCase().replace(/[^\p{L}\p{N}]/gu, "");
+const fold = (s) => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+const LIG = { "ﬀ": "ff", "ﬁ": "fi", "ﬂ": "fl", "ﬃ": "ffi", "ﬄ": "ffl", "ﬅ": "st", "ﬆ": "st" };
+const fixLig = (s) => s.replace(/[ﬀ-ﬆ]/g, (c) => LIG[c]).replace(/­/g, "");
+const clean = (s) => tidy(fixLig(plain(s)));
+const SUP = { 0: "⁰", 1: "¹", 2: "²", 3: "³", 4: "⁴", 5: "⁵", 6: "⁶", 7: "⁷", 8: "⁸", 9: "⁹" };
+const toSup = (s) => s.replace(/[0-9]/g, (d) => SUP[d]);
+const median = (a) => { if (!a.length) return 0; const b = [...a].sort((x, y) => x - y); return b[b.length >> 1]; };
+const pct = (a, q) => { const b = [...a].sort((x, y) => x - y); return b[Math.floor(q * (b.length - 1))]; };
+const wmedian = (pairs) => { const a = [...pairs].sort((x, y) => x[0] - y[0]); const tot = a.reduce((s, p) => s + p[1], 0); let acc = 0; for (const [v, w] of a) { acc += w; if (acc >= tot / 2) return v; } return a.length ? a[a.length - 1][0] : 10; };
+class UErr extends Error {}
+
+function loadScript(src) { return new Promise((res, rej) => { const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = () => rej(new Error("load")); document.head.appendChild(s); }); }
+async function need(key, ok) {
+  if (ok()) return;
+  for (const u of LIBS[key]) { try { await loadScript(u); if (ok()) return; } catch {} }
+  throw new UErr("Couldn't load the file reader. Check your connection and try again.");
+}
+
+/* ---------- store: IndexedDB on this device ---------- */
+const STORES = ["texts", "notes", "content", "covers", "terms"];
+function idbOpen() {
+  return new Promise((res, rej) => {
+    const r = indexedDB.open("marginalia", 4);
+    r.onupgradeneeded = () => { const d = r.result; STORES.forEach((n) => { if (!d.objectStoreNames.contains(n)) d.createObjectStore(n); }); };
+    r.onsuccess = () => {
+      const d = r.result;
+      // A newer version opened elsewhere needs to upgrade storage: step aside and reload into it.
+      d.onversionchange = () => { d.close(); location.reload(); };
+      if (S.blocked) { S.blocked = false; }
+      res(d);
+    };
+    r.onerror = () => rej(r.error);
+    // An older copy open in another tab holds the old storage open; the upgrade finishes once it closes.
+    r.onblocked = () => { S.blocked = true; render(); };
+  });
+}
+function idbDo(store, fn) {
+  return new Promise((res, rej) => {
+    const t = idb.transaction(store, "readwrite");
+    fn(t.objectStore(store));
+    t.oncomplete = () => res();
+    t.onerror = () => rej(t.error);
+    t.onabort = () => rej(t.error);
+  });
+}
+function idbAll(store) {
+  return new Promise((res, rej) => {
+    const m = new Map(), r = idb.transaction(store).objectStore(store).openCursor();
+    r.onsuccess = () => { const c = r.result; if (c) { m.set(c.key, c.value); c.continue(); } else res(m); };
+    r.onerror = () => rej(r.error);
+  });
+}
+function idbGet(store, key) {
+  return new Promise((res, rej) => { const r = idb.transaction(store).objectStore(store).get(key); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
+}
+const mapFor = (col) => (col === "texts" ? S.texts : col === "notes" ? S.notes : col === "covers" ? S.covers : col === "terms" ? S.terms : S.content);
+async function put(col, id, data) {
+  if (idb) await idbDo(col, (s) => s.put(data, id));
+  mapFor(col).set(id, data);
+  if (col !== "content") render();
+}
+async function del(col, id) {
+  if (idb) await idbDo(col, (s) => s.delete(id));
+  mapFor(col).delete(id);
+  if (col !== "content") render();
+}
+function failMsg(e) {
+  if (e && (e.name === "QuotaExceededError" || /quota/i.test(e.message || ""))) return "This device is out of storage space for the app. Delete a text or free up space, then try again.";
+  return `Couldn't save (${(e && (e.name || e.message)) || "unknown error"}).`;
+}
+async function saveContent(tid, blocks, say) {
+  say("Saving the text…");
+  await put("content", tid, blocks);
+}
+async function loadContent(tid) {
+  if (S.content.has(tid)) return S.content.get(tid);
+  if (!idb) return null;
+  const blocks = await idbGet("content", tid);
+  if (blocks) S.content.set(tid, blocks);
+  return blocks || null;
+}
+
+/* ---------- covers ---------- */
+const COVER_URL = new Map();
+function coverURL(tid) {
+  const b = S.covers.get(tid), c = COVER_URL.get(tid);
+  if (!b) { if (c) { URL.revokeObjectURL(c.url); COVER_URL.delete(tid); } return null; }
+  if (c && c.blob === b) return c.url;
+  if (c) URL.revokeObjectURL(c.url);
+  const url = URL.createObjectURL(b); COVER_URL.set(tid, { blob: b, url }); return url;
+}
+// Cloth-binding colours for books without a cover image; picked from the title so a book keeps its colour.
+const CLOTH = ["#2f4f3e", "#6b2b2b", "#24365c", "#80632a", "#3f4a55", "#4f3358", "#5a3a26", "#2e5a5a"];
+function cloth(s) { let h = 7; for (const ch of String(s || "")) h = (h * 31 + ch.codePointAt(0)) >>> 0; return CLOTH[h % CLOTH.length]; }
+function coverHTML(t, url) {
+  if (url) return `<span class="cover"><img src="${url}" alt=""></span>`;
+  return `<span class="cover gen" style="--cloth:${cloth(t.title)}"><span class="gen-in"><span class="gt">${esc(t.title || "Untitled")}</span>${t.author ? `<span class="ga">${esc(t.author)}</span>` : ""}</span></span>`;
+}
+// Shrink any image to a cover-sized JPEG so storage and backups stay small.
+async function toCover(blob) {
+  let src, tmp = null;
+  try { src = await createImageBitmap(blob); }
+  catch {
+    tmp = URL.createObjectURL(blob);
+    src = await new Promise((res, rej) => { const img = new Image(); img.onload = () => res(img); img.onerror = () => rej(new UErr("That image couldn't be opened. Use a JPEG or PNG.")); img.src = tmp; });
+  }
+  try {
+    const w0 = src.width, h0 = src.height;
+    if (!w0 || !h0) throw new UErr("That image couldn't be opened. Use a JPEG or PNG.");
+    const k = Math.min(1, 600 / h0, 400 / w0);
+    const cv = document.createElement("canvas"); cv.width = Math.max(1, Math.round(w0 * k)); cv.height = Math.max(1, Math.round(h0 * k));
+    const ctx = cv.getContext("2d"); ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, cv.width, cv.height); ctx.drawImage(src, 0, 0, cv.width, cv.height);
+    const out = await new Promise((res) => cv.toBlob(res, "image/jpeg", 0.85));
+    if (!out) throw new UErr("That image couldn't be opened. Use a JPEG or PNG.");
+    return out;
+  } finally { if (tmp) URL.revokeObjectURL(tmp); if (src && src.close) src.close(); }
+}
+function progressOf(t) {
+  if (t.hasContent && t.total > 1) return Math.max(0, Math.min(100, Math.round((100 * (t.pos || 0)) / (t.total - 1))));
+  const secs = t.sections || [];
+  if (secs.length) return Math.round((100 * secs.filter((s) => s.done).length) / secs.length);
+  return null;
+}
+
+/* ---------- toast, downloads, backups ---------- */
+let toastT;
+function toast(msg) { const el = $("#toast"); el.textContent = msg; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { el.hidden = true; }, 3200); }
+const stamp = () => new Date().toISOString().slice(0, 10);
+const slug = (s) => String(s || "notes").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "notes";
+async function saveFile(name, text, type) {
+  const blob = new Blob([text], { type });
+  const touch = window.matchMedia && matchMedia("(pointer: coarse)").matches;
+  if (touch && navigator.canShare) {
+    try {
+      const file = new File([blob], name, { type });
+      if (navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: name }); return true; }
+    } catch (e) { if (e && e.name === "AbortError") return false; }
+  }
+  const url = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+  return true;
+}
+const blobToDataURL = (b) => new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = () => rej(fr.error); fr.readAsDataURL(b); });
+async function exportBackup() {
+  const content = idb ? await idbAll("content") : S.content;
+  const covers = {};
+  for (const [id, b] of S.covers) { try { covers[id] = await blobToDataURL(b); } catch {} }
+  const data = { app: "marginalia", version: 3, exportedAt: new Date().toISOString(), texts: Object.fromEntries(S.texts), notes: Object.fromEntries(S.notes), content: Object.fromEntries(content), covers, terms: Object.fromEntries(S.terms) };
+  const ok = await saveFile(`marginalia-backup-${stamp()}.json`, JSON.stringify(data), "application/json");
+  if (ok) { try { localStorage.setItem("mg-backup", String(Date.now())); } catch {} render(); }
+}
+async function importBackup(file) {
+  let data;
+  try { data = JSON.parse(await file.text()); } catch { toast("That file isn't a Marginalia backup."); return; }
+  if (!data || data.app !== "marginalia" || typeof data.texts !== "object") { toast("That file isn't a Marginalia backup."); return; }
+  try {
+    for (const col of ["texts", "notes", "content", "terms"]) {
+      const rows = Object.entries(data[col] || {});
+      if (idb && rows.length) await idbDo(col, (s) => rows.forEach(([id, v]) => s.put(v, id)));
+      rows.forEach(([id, v]) => mapFor(col).set(id, v));
+    }
+    const covers = [];
+    for (const [id, url] of Object.entries(data.covers || {})) { try { covers.push([id, await (await fetch(url)).blob()]); } catch {} }
+    if (idb && covers.length) await idbDo("covers", (s) => covers.forEach(([id, b]) => s.put(b, id)));
+    covers.forEach(([id, b]) => S.covers.set(id, b));
+    render();
+    const nt = Object.keys(data.texts).length, nn = Object.keys(data.notes || {}).length;
+    toast(`Restored ${nt} text${nt === 1 ? "" : "s"} and ${nn} note${nn === 1 ? "" : "s"}.`);
+  } catch (e) { toast(failMsg(e)); }
+}
+/* ---------- citations, tags and Markdown ---------- */
+// Chicago-style note: Author, Title, edition (Publisher, Year), page.
+function citation(t, page, md) {
+  if (!t) return "";
+  const title = md ? `*${t.title}*` : t.title;
+  const pubyear = [t.publisher, t.year].filter(Boolean).join(", ");
+  return `${t.author ? t.author + ", " : ""}${title}${t.edition ? ", " + t.edition : ""}${pubyear ? ` (${pubyear})` : ""}${page ? ", " + page : ""}.`;
+}
+async function copyText(str) {
+  try { await navigator.clipboard.writeText(str); return true; } catch {}
+  try {
+    const ta = document.createElement("textarea"); ta.value = str; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select(); const ok = document.execCommand("copy"); ta.remove(); return ok;
+  } catch { return false; }
+}
+async function copyCitation(nid) {
+  const n = S.notes.get(nid); if (!n) return;
+  const t = S.texts.get(n.textId);
+  const ok = await copyText(`“${n.passage}”\n— ${citation(t, n.page, false)}`);
+  toast(ok ? "Copied the passage with its citation." : "Couldn't copy. Your browser blocked the clipboard.");
+}
+const TAG_RE = /(^|[^\p{L}\p{N}_&/])#([\p{L}\p{N}][\p{L}\p{N}_-]*)/gu;
+function tagsOf(n) {
+  const out = new Set(), src = [n.gloss, ...(n.premises || []), n.conclusion].filter(Boolean).join(" ");
+  for (const m of src.matchAll(TAG_RE)) out.add(m[2].toLowerCase());
+  return [...out];
+}
+function allTags() {
+  const m = new Map();
+  for (const [, n] of S.notes) for (const tg of tagsOf(n)) m.set(tg, (m.get(tg) || 0) + 1);
+  return [...m].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+}
+const withTags = (html) => html.replace(TAG_RE, (all, pre, tg) => `${pre}<button class="tag" data-tag="${tg.toLowerCase()}">#${tg}</button>`);
+function noteMarkdown(n, t, withSource) {
+  const out = [];
+  const head = [withSource && t ? `*${t.title}*` : "", n.page ? `p. ${n.page}` : "", KINDS[n.kind] || "Note", n.resolved ? "resolved" : ""].filter(Boolean).join(", ");
+  out.push(`**${head}**`, "");
+  if (n.passage) out.push(...n.passage.split(/\n+/).map((l) => `> ${l}`), ">", `> — ${citation(t, n.page, true)}`, "");
+  if (n.premises && n.premises.length) { n.premises.forEach((x, k) => out.push(`${k + 1}. ${x}`)); out.push("", `**Therefore:** ${n.conclusion}`, ""); }
+  if (n.gloss) out.push(n.gloss, "");
+  return out;
+}
+function notesMarkdown(tid) {
+  const t = S.texts.get(tid); if (!t) return "";
+  const list = sortNotes(notesFor(tid), t);
+  const secName = new Map((t.sections || []).map((s) => [s.id, s.label]));
+  const out = [`# ${t.title}`, ""];
+  const by = [t.author, t.edition, [t.publisher, t.year].filter(Boolean).join(", ")].filter(Boolean).join(", ");
+  if (by) out.push(`*${by}*`, "");
+  const sums = t.summaries || {}, groups = new Map();
+  list.forEach(([id, n]) => { const k = secName.has(n.sectionId) ? n.sectionId : ""; if (!groups.has(k)) groups.set(k, []); groups.get(k).push([id, n]); });
+  for (const sec of t.sections || []) {
+    const notes = groups.get(sec.id) || [];
+    if (!notes.length && !sums[sec.id]) continue;
+    out.push(`## ${sec.label}`, "");
+    if (sums[sec.id]) out.push(`*Summary.* ${sums[sec.id]}`, "");
+    notes.forEach(([, n]) => out.push(...noteMarkdown(n, t, false)));
+  }
+  const loose = groups.get("") || [];
+  if (loose.length && (t.sections || []).length) out.push("## Other notes", "");
+  loose.forEach(([, n]) => out.push(...noteMarkdown(n, t, false)));
+  return out.join("\n");
+}
+function quoteBankMarkdown(title, list) {
+  const out = [`# ${title}`, "", `*${list.length} note${list.length === 1 ? "" : "s"}, exported ${new Date().toLocaleDateString()}*`, ""];
+  const byText = new Map();
+  list.forEach(([id, n]) => { if (!byText.has(n.textId)) byText.set(n.textId, []); byText.get(n.textId).push([id, n]); });
+  for (const [tid, notes] of byText) {
+    const t = S.texts.get(tid);
+    out.push(`## ${t ? t.title : "Unknown text"}`, "");
+    sortNotes(notes, t).forEach(([, n]) => out.push(...noteMarkdown(n, t, false)));
+  }
+  return out.join("\n");
+}
+
+/* ---------- parsing: shared ---------- */
+function finalize(blocks) {
+  const out = [];
+  for (const b of blocks) {
+    const nb = { k: b.k, x: b.k === "pg" ? clean(b.x) : tidy(fixLig(b.x || "")) };
+    if (b.l) nb.l = b.l;
+    if (b.s) nb.s = b.s;
+    if (nb.k !== "pg" && !plain(nb.x)) continue;
+    if (nb.k === "pg" && out.length && out[out.length - 1].k === "pg") { out[out.length - 1] = nb; continue; }
+    if (nb.x.length > 40000) {
+      let rest = nb.x, first = true;
+      while (rest.length) {
+        let cut = rest.length > 40000 ? rest.lastIndexOf(" ", 40000) : rest.length;
+        if (cut < 20000) cut = Math.min(40000, rest.length);
+        out.push({ k: first ? nb.k : nb.k === "p" ? "c" : nb.k, x: rest.slice(0, cut).trim() });
+        rest = rest.slice(cut); first = false;
+      }
+      continue;
+    }
+    out.push(nb);
+  }
+  while (out.length && out[out.length - 1].k === "pg") out.pop();
+  return out;
+}
+function dedupe(secs) {
+  const seen = new Map();
+  return secs.map((s) => { const k = s.label.toLowerCase(); const c = (seen.get(k) || 0) + 1; seen.set(k, c); return c > 1 ? { ...s, label: `${s.label} (${c})` } : s; });
+}
+function makeSections(blocks) {
+  if (blocks.some((b) => b.s)) return dedupe(blocks.filter((b) => b.s).map((b) => ({ id: b.s, label: plain(b.x).slice(0, 90) || "Untitled" })));
+  const byL = new Map();
+  blocks.forEach((b) => { if (b.k === "h") byL.set(b.l || 2, (byL.get(b.l || 2) || 0) + 1); });
+  const lv = [...byL.keys()].sort((a, b) => a - b).find((l) => byL.get(l) >= 3 && byL.get(l) <= 80);
+  if (lv == null) return [];
+  const out = [];
+  blocks.forEach((b) => { if (b.k === "h" && (b.l || 2) === lv) { b.s = gid() + out.length; out.push({ id: b.s, label: plain(b.x).slice(0, 90) || "Untitled" }); } });
+  return dedupe(out);
+}
+function linkHeadings(blocks, parsedSecs, finalSecs) {
+  const byLabel = new Map(finalSecs.map((s) => [norm(s.label), s.id]));
+  const idMap = new Map(parsedSecs.map((p) => [p.id, byLabel.get(norm(p.label))]));
+  blocks.forEach((b) => { if (b.s) { const id = idMap.get(b.s); if (id) b.s = id; else delete b.s; } });
+}
+
+/* ---------- parsing: PDF ---------- */
+function linesOf(items) {
+  const its = [];
+  for (const it of items) {
+    if (!it.str || !it.str.trim()) continue;
+    const t = it.transform;
+    its.push({ s: fixLig(it.str), x: t[4], y: t[5], z: Math.hypot(t[2], t[3]) || it.height || 10, w: it.width || 0 });
+  }
+  its.sort((a, b) => b.y - a.y || a.x - b.x);
+  const lines = [];
+  for (const it of its) {
+    const L = lines[lines.length - 1];
+    if (L && Math.abs(L.y - it.y) <= Math.max(1.5, 0.5 * Math.max(L.z, it.z))) { L.items.push(it); if (it.z > L.z) { L.z = it.z; L.y = it.y; } }
+    else lines.push({ y: it.y, z: it.z, items: [it] });
+  }
+  return lines.map((L) => {
+    L.items.sort((a, b) => a.x - b.x);
+    let txt = "", prev = null;
+    for (const it of L.items) {
+      let s = it.s;
+      const sup = it.z < 0.8 * L.z && it.y > L.y + 0.12 * L.z && /^[\s\d*†‡,]+$/.test(s);
+      if (sup) s = toSup(s.replace(/\s/g, ""));
+      if (prev && !sup) { const gap = it.x - (prev.x + prev.w); if (gap > 0.15 * L.z && !/\s$/.test(txt) && !/^\s/.test(s)) txt += " "; }
+      txt += s; prev = it;
+    }
+    const a = L.items[0], b = L.items[L.items.length - 1];
+    return { t: txt.replace(/\s+/g, " ").trim(), x: a.x, xe: b.x + b.w, y: L.y, z: L.z };
+  }).filter((l) => l.t);
+}
+
+async function parsePDF(buf, say) {
+  say("Loading the PDF reader…");
+  await need("pdf", () => !!window.pdfjsLib);
+  const lib = window.pdfjsLib;
+  // Run PDF.js in a background worker so long books don't freeze the page.
+  let wk = null, pw = null;
+  try {
+    wk = new Worker(URL.createObjectURL(new Blob([`importScripts(${JSON.stringify(LIBS.pdfw[0])});`], { type: "text/javascript" })));
+    pw = lib.PDFWorker.fromPort({ port: wk });
+  } catch { wk = null; pw = null; }
+  if (!pw) { try { await need("pdfw", () => !!window.pdfjsWorker); } catch {} try { lib.GlobalWorkerOptions.workerSrc = LIBS.pdfw[0]; } catch {} }
+  const stopWorker = () => { try { if (pw) pw.destroy(); } catch {} try { if (wk) wk.terminate(); } catch {} };
+  const wkFail = new Promise((_, rej) => { if (wk) wk.addEventListener("error", () => rej(new UErr("Couldn't start the PDF reader. Check your connection and try again."))); });
+  let pdf;
+  try { pdf = await Promise.race([lib.getDocument({ data: new Uint8Array(buf), isEvalSupported: false, ...(pw ? { worker: pw } : {}) }).promise, wkFail]); }
+  catch (e) { stopWorker(); if (e && e.name === "PasswordException") throw new UErr("This PDF is password-protected. Remove the password, then load it again."); throw e; }
+  const n = pdf.numPages;
+  let title = "", author = "";
+  try { const m = await pdf.getMetadata(); title = clean(m?.info?.Title || ""); author = clean(m?.info?.Author || ""); } catch {}
+  if (/^(microsoft|untitled)|\.(pdf|docx?|indd|tex)$/i.test(title)) title = "";
+  let labels = null; try { labels = await pdf.getPageLabels(); } catch {}
+  const pages = [];
+  for (let p = 1; p <= n; p++) {
+    if (p === 1 || p % 10 === 0) { say(`Reading page ${p} of ${n}…`); await new Promise((r) => setTimeout(r, 0)); }
+    const page = await pdf.getPage(p);
+    const vb = page.getViewport({ scale: 1 }).viewBox;
+    const tc = await page.getTextContent();
+    pages.push({ lines: linesOf(tc.items), y0: vb[1], y1: vb[3] });
+    page.cleanup();
+  }
+  let outline = [];
+  try {
+    let ol = await pdf.getOutline();
+    if (ol && ol.length === 1 && ol[0].items && ol[0].items.length > 1) ol = ol[0].items;
+    for (const o of ol || []) {
+      let dest = o.dest;
+      if (typeof dest === "string") dest = await pdf.getDestination(dest);
+      if (!Array.isArray(dest) || dest[0] == null) continue;
+      const idx = typeof dest[0] === "number" ? dest[0] : await pdf.getPageIndex(dest[0]);
+      const t = clean(o.title);
+      if (t) outline.push({ title: t, page: idx, id: gid() + outline.length });
+    }
+  } catch { outline = []; }
+  if (outline.length > 120) outline = [];
+  // Picture of the first page, used as the cover unless you choose your own.
+  let cover = null;
+  try {
+    say("Making a cover from page 1…");
+    const p1 = await pdf.getPage(1);
+    const v1 = p1.getViewport({ scale: 1 });
+    const vp = p1.getViewport({ scale: Math.min(2, 600 / v1.height, 400 / v1.width) });
+    const cv = document.createElement("canvas"); cv.width = Math.round(vp.width); cv.height = Math.round(vp.height);
+    const ctx = cv.getContext("2d"); ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, cv.width, cv.height);
+    await p1.render({ canvasContext: ctx, viewport: vp }).promise;
+    cover = await new Promise((res) => cv.toBlob(res, "image/jpeg", 0.85));
+    p1.cleanup();
+  } catch { cover = null; }
+  try { await pdf.destroy(); } catch {}
+  stopWorker();
+
+  say("Rebuilding paragraphs…");
+  const all = pages.flatMap((pg) => pg.lines);
+  if (all.reduce((a, l) => a + l.t.length, 0) / n < 40) throw new UErr("This PDF has no text layer, so it's a scanned image. Run OCR on it first (OCRmyPDF or Acrobat), then load it again.");
+  const body = wmedian(all.map((l) => [l.z, l.t.length]));
+  const near = (z) => Math.abs(z - body) <= body * 0.08;
+  const gaps = [];
+  pages.forEach((pg) => { const L = pg.lines; for (let i = 1; i < L.length; i++) if (near(L[i].z) && near(L[i - 1].z)) { const d = L[i - 1].y - L[i].y; if (d > body * 0.6 && d < body * 3) gaps.push(d); } });
+  const lead = median(gaps) || body * 1.3;
+
+  // running heads and folios
+  const inEdge = (l, pg) => { const h = pg.y1 - pg.y0; return l.y > pg.y1 - h * 0.13 || l.y < pg.y0 + h * 0.11; };
+  const edgeSet = (pg) => { const k = pg.lines.length; return new Set([0, 1, k - 2, k - 1].filter((i) => i >= 0 && i < k)); };
+  const FOLIO = /^[\[(\-–—\s]*([0-9]{1,4}|[ivxlcdm]{1,7})[\])\-–—\s]*$/i;
+  const headKey = (t) => t.toLowerCase().replace(/[0-9]+/g, "#").replace(/\b[ivxlcdm]+\b/g, "#").replace(/[^\p{L}#]+/gu, " ").trim();
+  const hc = new Map();
+  pages.forEach((pg) => edgeSet(pg).forEach((i) => { const l = pg.lines[i]; if (!inEdge(l, pg)) return; const k = headKey(l.t); if (k.replace(/[#\s]/g, "").length >= 3) hc.set(k, (hc.get(k) || 0) + 1); }));
+  const printed = new Array(n).fill(null);
+  pages.forEach((pg, p) => {
+    const E = edgeSet(pg);
+    pg.lines = pg.lines.filter((l, i) => {
+      if (!E.has(i) || !inEdge(l, pg)) return true;
+      if (FOLIO.test(l.t)) { if (printed[p] == null) printed[p] = l.t.replace(/[^0-9A-Za-z]/g, ""); return false; }
+      if ((hc.get(headKey(l.t)) || 0) >= 3) { const m = l.t.match(/^\s*(\d{1,4})\b|\b(\d{1,4})\s*$/); if (m && printed[p] == null) printed[p] = m[1] || m[2]; return false; }
+      return true;
+    });
+  });
+  const meaningful = Array.isArray(labels) && labels.length === n && labels.some((l, i) => l && l !== String(i + 1));
+  const det = printed.filter((v) => v != null).length;
+  let lab, pageSource;
+  if (meaningful) { lab = labels.slice(); pageSource = "labels"; }
+  else if (det >= n * 0.4) {
+    pageSource = "printed"; lab = printed.slice();
+    for (let p = 0; p < n; p++) {
+      for (let d = 1; d <= 6 && lab[p] == null; d++) for (const q of [p - d, p + d]) {
+        if (q >= 0 && q < n && /^\d+$/.test(printed[q] || "")) { const v = +printed[q] + (p - q); if (v > 0) { lab[p] = String(v); break; } }
+      }
+      if (lab[p] == null) lab[p] = "";
+    }
+  } else { lab = pages.map((_, i) => String(i + 1)); pageSource = "index"; }
+
+  // dehyphenation dictionary
+  const counts = new Map(), WORD = /\p{L}+(?:-\p{L}+)*/gu;
+  all.forEach((l) => { const ws = l.t.match(WORD) || []; const cut = /\p{L}-$/u.test(l.t); ws.forEach((w, i) => { if (i === 0 || (cut && i === ws.length - 1)) return; const k = w.toLowerCase(); counts.set(k, (counts.get(k) || 0) + 1); }); });
+  const joinLine = (a, b) => {
+    const m = a.match(/(\p{L}+)-$/u);
+    if (m) {
+      const nx = b.match(/^(\p{L}+)/u);
+      if (!nx) return a + b;
+      const ch = counts.get((m[1] + "-" + nx[1]).toLowerCase()) || 0, cj = counts.get((m[1] + nx[1]).toLowerCase()) || 0;
+      return ch > cj || /^\p{Lu}/u.test(nx[1]) ? a + b : a.slice(0, -1) + b;
+    }
+    return /[—–\/]$/.test(a) ? a + b : a + " " + b;
+  };
+
+  const hasOutline = outline.length > 0;
+  const byPage = new Map();
+  outline.forEach((o) => { if (!byPage.has(o.page)) byPage.set(o.page, []); byPage.get(o.page).push(o); });
+  const blocks = [];
+  let cur = null, curK = "p", carry = false, last = null;
+  const flush = () => { if (cur && cur.trim()) blocks.push({ k: curK, x: cur }); cur = null; };
+  const END = /[.!?:]["”’)\]]?$/;
+  pages.forEach((pg, p) => {
+    const L = pg.lines;
+    blocks.push({ k: "pg", x: lab[p] });
+    const bl = L.filter((l) => near(l.z));
+    const left = bl.length ? pct(bl.map((l) => l.x), 0.15) : 0;
+    const right = bl.length ? pct(bl.map((l) => l.xe), 0.9) : Infinity;
+    let lastBody = -1; L.forEach((l, i) => { if (l.z >= body * 0.93) lastBody = i; });
+    let fnStart = L.length;
+    const nx = L[lastBody + 1];
+    if (nx && nx.y < pg.y0 + (pg.y1 - pg.y0) * 0.5) fnStart = lastBody + 1;
+    const outs = byPage.get(p) || [];
+    if (outs.length) { carry = false; last = null; }
+    outs.forEach((o) => blocks.push({ k: "h", x: o.title, l: 1, s: o.id }));
+    const drops = outs.map((o) => norm(o.title)).filter((s) => s.length >= 3);
+    let prev = null, headOpen = false;
+    for (let i = 0; i < fnStart; i++) {
+      const l = L[i];
+      if (drops.length && i < 5) { const nl = norm(l.t); if (nl.length >= 2 && drops.some((d) => d.includes(nl) || nl.includes(d))) continue; }
+      if (l.z >= body * 1.18 && l.t.split(" ").length <= 16) {
+        flush(); carry = false; last = null;
+        if (headOpen) blocks[blocks.length - 1].x += " " + l.t;
+        else blocks.push({ k: "h", x: l.t, l: hasOutline ? 3 : l.z >= body * 1.6 ? 1 : 2 });
+        headOpen = true; prev = l; continue;
+      }
+      headOpen = false;
+      const kind = l.z < body * 0.92 ? "q" : "p";
+      const indented = l.x > left + body * 0.8 && l.x < left + body * 6;
+      const prevInd = prev && prev.x > left + body * 0.8 && Math.abs(prev.x - l.x) < body * 0.5;
+      const shortPrev = !!last && last.xe < last.right - body * 2.2 && END.test(last.t);
+      let start;
+      if (!cur) start = !carry || indented || kind !== "p" || shortPrev;
+      else start = kind !== (curK === "c" ? "p" : curK) || (prev && prev.y - l.y > lead * 1.5) || (indented && !prevInd) || shortPrev;
+      if (start) { flush(); cur = l.t; curK = kind; }
+      else if (!cur) { cur = l.t; curK = "c"; }
+      else cur = joinLine(cur, l.t);
+      carry = false; prev = l; last = { t: l.t, xe: l.xe, right };
+    }
+    carry = !!cur; flush();
+    let fn = null;
+    for (let i = fnStart; i < L.length; i++) {
+      const l = L[i];
+      const st = /^([0-9¹²³⁴⁵⁶⁷⁸⁹⁰]+|[*†‡§])/.test(l.t) && l.x < left + body * 3;
+      if (!fn || st) { if (fn) blocks.push({ k: "fn", x: fn }); fn = l.t; } else fn = joinLine(fn, l.t);
+    }
+    if (fn) blocks.push({ k: "fn", x: fn });
+  });
+  flush();
+  return { title, author, kind: "PDF", blocks, pageSource, cover };
+}
+
+/* ---------- parsing: EPUB / Word / HTML ---------- */
+const BLOCK = new Set("address article aside blockquote body dd details div dl dt fieldset figcaption figure footer form h1 h2 h3 h4 h5 h6 header hr li main nav ol p pre section table tbody thead tfoot tr td th ul".split(" "));
+const SKIP = new Set(["script", "style", "head", "title", "meta", "link", "svg", "img", "picture", "video", "audio"]);
+const ITAL = new Set(["i", "em", "cite", "var", "dfn"]);
+function domToBlocks(root, blocks) {
+  let buf = "", kind = "p";
+  const attr = (el, a) => (el.getAttribute && el.getAttribute(a)) || "";
+  const isPB = (el) => /pagebreak/.test(attr(el, "epub:type")) || attr(el, "role") === "doc-pagebreak";
+  const pbLabel = (el) => clean(attr(el, "aria-label") || attr(el, "title") || el.textContent || attr(el, "id").replace(/^\D+/, ""));
+  const isFn = (el) => /footnote|endnote|rearnote/.test(`${attr(el, "epub:type")} ${attr(el, "role")} ${attr(el, "class")}`);
+  const name = (el) => (el.localName || "").toLowerCase();
+  const flush = () => { const x = tidy(buf); if (plain(x)) blocks.push({ k: kind, x }); buf = ""; };
+  function inl(nd) {
+    if (nd.nodeType === 3) { buf += nd.nodeValue; return; }
+    if (nd.nodeType !== 1) return;
+    const tag = name(nd);
+    if (SKIP.has(tag)) return;
+    if (isPB(nd)) { const had = !!plain(tidy(buf)), save = kind; flush(); blocks.push({ k: "pg", x: pbLabel(nd) }); kind = had && save === "p" ? "c" : save; return; }
+    if (BLOCK.has(tag)) { const save = kind === "c" ? "p" : kind; flush(); walk(nd, save); kind = save; return; }
+    if (tag === "br") { buf += " "; return; }
+    if (tag === "sup") { const t = nd.textContent.trim(); buf += /^\d+$/.test(t) ? toSup(t) : t; return; }
+    const it = ITAL.has(tag);
+    if (it) buf += I0;
+    for (const c of nd.childNodes) inl(c);
+    if (it) buf += I1;
+  }
+  function walk(el, k) {
+    const tag = name(el);
+    if (SKIP.has(tag)) return;
+    if (isPB(el)) { flush(); blocks.push({ k: "pg", x: pbLabel(el) }); return; }
+    if (/^h[1-6]$/.test(tag)) {
+      flush(); kind = "h";
+      for (const c of el.childNodes) inl(c);
+      const x = tidy(buf); buf = "";
+      if (plain(x)) blocks.push({ k: "h", x, l: +tag[1] });
+      kind = k; return;
+    }
+    const myK = isFn(el) ? "fn" : tag === "blockquote" ? "q" : k;
+    flush(); kind = myK;
+    for (const c of el.childNodes) {
+      if (c.nodeType === 1 && BLOCK.has(name(c)) && !isPB(c)) { flush(); walk(c, myK); kind = myK; }
+      else inl(c);
+    }
+    flush(); kind = k;
+  }
+  walk(root, "p");
+}
+function resolvePath(base, rel) {
+  const out = [];
+  for (const seg of (base + rel).split("/")) { if (seg === "..") out.pop(); else if (seg && seg !== ".") out.push(seg); }
+  return out.join("/");
+}
+async function parseEPUB(buf, say) {
+  say("Opening the EPUB…");
+  await need("zip", () => !!window.JSZip);
+  const zip = await window.JSZip.loadAsync(buf);
+  const xml = (s) => new DOMParser().parseFromString(s, "application/xml");
+  const cf = zip.file("META-INF/container.xml");
+  if (!cf) throw new UErr("This EPUB is damaged: its container file is missing.");
+  const opfPath = xml(await cf.async("text")).getElementsByTagName("rootfile")[0]?.getAttribute("full-path");
+  const opfFile = opfPath && zip.file(opfPath);
+  if (!opfFile) throw new UErr("This EPUB is damaged: its package file is missing.");
+  const opf = xml(await opfFile.async("text"));
+  const base = opfPath.includes("/") ? opfPath.slice(0, opfPath.lastIndexOf("/") + 1) : "";
+  const first = (tag) => clean(opf.getElementsByTagNameNS("*", tag)[0]?.textContent || "");
+  const man = new Map();
+  for (const it of opf.getElementsByTagNameNS("*", "item")) man.set(it.getAttribute("id"), it.getAttribute("href") || "");
+  const spine = [...opf.getElementsByTagNameNS("*", "itemref")].filter((r) => r.getAttribute("linear") !== "no").map((r) => man.get(r.getAttribute("idref"))).filter(Boolean);
+  const blocks = [];
+  for (let i = 0; i < spine.length; i++) {
+    say(`Reading part ${i + 1} of ${spine.length}…`);
+    let href = spine[i].split("#")[0]; try { href = decodeURIComponent(href); } catch {}
+    const f = zip.file(resolvePath(base, href)); if (!f) continue;
+    const src = await f.async("text");
+    let doc = new DOMParser().parseFromString(src, "application/xhtml+xml");
+    if (doc.getElementsByTagName("parsererror").length) doc = new DOMParser().parseFromString(src, "text/html");
+    const b = doc.getElementsByTagName("body")[0];
+    if (b) domToBlocks(b, blocks);
+  }
+  // The cover image the publisher packed into the EPUB, if there is one.
+  let cover = null;
+  try {
+    const items = [...opf.getElementsByTagNameNS("*", "item")];
+    const metaCover = [...opf.getElementsByTagNameNS("*", "meta")].find((m) => m.getAttribute("name") === "cover");
+    let it = items.find((i) => /(^|\s)cover-image(\s|$)/.test(i.getAttribute("properties") || ""));
+    if (!it && metaCover) it = items.find((i) => i.getAttribute("id") === metaCover.getAttribute("content"));
+    if (!it) it = items.find((i) => /^image\//.test(i.getAttribute("media-type") || "") && /cover/i.test(`${i.getAttribute("id") || ""} ${i.getAttribute("href") || ""}`));
+    if (it) {
+      let href = it.getAttribute("href") || ""; try { href = decodeURIComponent(href); } catch {}
+      const f = zip.file(resolvePath(base, href));
+      if (f) cover = await toCover(new Blob([await f.async("arraybuffer")], { type: it.getAttribute("media-type") || "image/jpeg" }));
+    }
+  } catch { cover = null; }
+  return { title: first("title"), author: first("creator"), kind: "EPUB", blocks, cover };
+}
+async function parseDOCX(buf, say) {
+  say("Opening the Word file…");
+  await need("docx", () => !!window.mammoth);
+  const r = await window.mammoth.convertToHtml({ arrayBuffer: buf });
+  const doc = new DOMParser().parseFromString(r.value, "text/html");
+  const blocks = []; domToBlocks(doc.body, blocks);
+  return { title: "", author: "", kind: "Word", blocks };
+}
+function parseHTML(src) {
+  const doc = new DOMParser().parseFromString(src, "text/html");
+  const blocks = []; domToBlocks(doc.body, blocks);
+  return { title: clean(doc.title || ""), author: "", kind: "HTML", blocks };
+}
+
+/* ---------- parsing: plain text / Markdown ---------- */
+function parsePlain(src, md) {
+  src = src.replace(/^﻿/, "").replace(/\r\n?/g, "\n");
+  const blocks = [];
+  const joinP = (a, b) => (/\p{L}-$/u.test(a) && /^\p{Ll}/u.test(b) ? a.slice(0, -1) + b : a + " " + b);
+  const ital = (s) => s.replace(/(^|[\s(“"'])[*_]([^*_\n]+?)[*_](?=[\s).,;:!?”"']|$)/g, `$1${I0}$2${I1}`);
+  const inlineMd = (s) => ital(s.replace(/!\[[^\]]*\]\([^)]*\)/g, "").replace(/\[([^\]]+)\]\([^)]*\)/g, "$1").replace(/\*\*([^*]+)\*\*/g, "$1").replace(/__([^_]+)__/g, "$1").replace(/`([^`]+)`/g, "$1"));
+  const HEAD = /^(chapter|part|book|section|lecture|essay|preface|foreword|introduction|conclusion|appendix|afterword|notes)\b/i;
+  for (const chunk of src.split(/\n[ \t]*\n/)) {
+    const lines = chunk.split("\n").map((l) => l.replace(/\s+$/, "")).filter((l) => l.trim());
+    if (!lines.length) continue;
+    if (md) {
+      let acc = "", ak = "p";
+      const fl = () => { const x = tidy(inlineMd(acc)); if (plain(x)) blocks.push({ k: ak, x }); acc = ""; ak = "p"; };
+      for (const ln of lines) {
+        const h = ln.match(/^\s{0,3}(#{1,6})\s+(.*?)\s*#*\s*$/);
+        if (h) { fl(); blocks.push({ k: "h", x: tidy(inlineMd(h[2])), l: h[1].length }); continue; }
+        const q = ln.match(/^\s*>\s?(.*)$/);
+        if (q) { if (ak !== "q") fl(); ak = "q"; acc = acc ? joinP(acc, q[1].trim()) : q[1].trim(); continue; }
+        if (ak === "q") fl();
+        const li = ln.match(/^\s*(?:[-*+]|\d+[.)])\s+(.*)$/);
+        if (li) { fl(); acc = li[1].trim(); continue; }
+        if (/^\s*([-*_])(\s*\1){2,}\s*$/.test(ln)) { fl(); continue; }
+        acc = acc ? joinP(acc, ln.trim()) : ln.trim();
+      }
+      fl(); continue;
+    }
+    const one = lines.length === 1 ? lines[0].trim() : null;
+    if (one && one.length < 90 && (HEAD.test(one) || /^[IVXLC]+\.?$/.test(one) || (/\p{Lu}{2}/u.test(one) && !/\p{Ll}/u.test(one) && one.split(/\s+/).length <= 10))) {
+      blocks.push({ k: "h", x: one, l: /^(part|book)\b/i.test(one) ? 1 : 2 }); continue;
+    }
+    const indentedAll = lines.length > 1 && lines.every((l) => /^\s{2,}/.test(l));
+    const x = ital(lines.map((l) => l.trim()).reduce((a, b) => (a ? joinP(a, b) : b), ""));
+    blocks.push({ k: indentedAll ? "q" : "p", x });
+  }
+  return { title: "", author: "", blocks };
+}
+
+async function parseFile(file, say) {
+  const fname = file.name || "file";
+  const ext = (fname.includes(".") ? fname.split(".").pop() : "").toLowerCase();
+  let r;
+  if (ext === "pdf") r = await parsePDF(await file.arrayBuffer(), say);
+  else if (ext === "epub") r = await parseEPUB(await file.arrayBuffer(), say);
+  else if (ext === "docx") r = await parseDOCX(await file.arrayBuffer(), say);
+  else if (ext === "html" || ext === "htm" || ext === "xhtml") r = parseHTML(await file.text());
+  else if (ext === "md" || ext === "markdown") r = { ...parsePlain(await file.text(), true), kind: "Markdown" };
+  else if (ext === "txt" || ext === "text" || (file.type || "").startsWith("text/")) r = { ...parsePlain(await file.text(), false), kind: "Text" };
+  else throw new UErr("This file type isn't supported. Use PDF, EPUB, Word (.docx), .txt or .md.");
+  r.blocks = finalize(r.blocks);
+  if (!r.blocks.some((b) => b.k !== "pg")) throw new UErr("No readable text was found in this file.");
+  r.sections = makeSections(r.blocks);
+  r.name = fname;
+  r.pages = r.blocks.filter((b) => b.k === "pg").length;
+  if (!r.title) r.title = fname.replace(/\.[^.]+$/, "").replace(/[_]+/g, " ");
+  return r;
+}
+function summary(r) {
+  const paras = r.blocks.filter((b) => b.k !== "pg" && b.k !== "h").length;
+  const bits = [];
+  if (r.pages) bits.push(`${r.pages} pages`);
+  bits.push(`${r.sections.length} section${r.sections.length === 1 ? "" : "s"}`);
+  bits.push(`${paras.toLocaleString()} paragraphs`);
+  let s = `Found ${bits.join(", ")}.`;
+  if (r.pageSource === "index") s += " No printed page numbers were found, so pages follow the PDF's own count.";
+  if (r.kind === "PDF") s += " Running heads, page numbers and footnotes were separated out automatically.";
+  if (r.cover) s += r.kind === "PDF" ? " Page 1 is set as the cover." : " Found the cover image.";
+  return s + " Check the details, then save.";
+}
+
+/* ---------- derived ---------- */
+const notesFor = (tid) => [...S.notes.entries()].filter(([, n]) => n.textId === tid);
+function sortNotes(list, t) {
+  const order = new Map((t?.sections || []).map((s, i) => [s.id, i]));
+  return list.sort(([, a], [, b]) => {
+    if (!t) return (b.createdAt || 0) - (a.createdAt || 0);
+    const sa = order.has(a.sectionId) ? order.get(a.sectionId) : 1e9, sb = order.has(b.sectionId) ? order.get(b.sectionId) : 1e9;
+    return sa - sb || pnum(a.page) - pnum(b.page) || (a.at ?? 1e9) - (b.at ?? 1e9) || (a.createdAt || 0) - (b.createdAt || 0);
+  });
+}
+const matches = (n, q) => !q || [n.passage, n.gloss, n.page, ...(n.premises || []), n.conclusion].join(" ").toLowerCase().includes(q.toLowerCase());
+
+/* ---------- render: library and text ---------- */
+function render() {
+  if ((S.screen === "text" || S.screen === "reader") && !S.texts.has(S.textId)) { S.screen = "library"; resetReader(); }
+  const reading = S.screen === "reader";
+  $("#main").hidden = reading;
+  $("#reader").hidden = !reading;
+  if (reading) { refreshMarks(); return; }
+  $("#selbar").hidden = true;
+  const views = { text: textView, glossary: glossaryView, branches: branchesView, tag: tagView, questions: questionsView };
+  $("#main").innerHTML = (views[S.screen] || libraryView)();
+}
+
+function banner() {
+  if (S.mode === "pending" && S.blocked) return `<div class="banner">Marginalia is updating its storage. Close it in any other tabs or windows and this will finish on its own.</div>`;
+  if (S.mode === "pending") return `<div class="banner">Opening your reading log…</div>`;
+  if (S.mode === "local") return `<div class="banner">This browser isn't letting the app save (private browsing does this). Anything you add disappears when you close the page.</div>`;
+  return "";
+}
+
+const OPENABLE = new Set(["question", "objection"]);
+function noteHTML(id, n, t, showSrc) {
+  const sec = t?.sections?.find((s) => s.id === n.sectionId);
+  const arg = n.kind === "argument" && n.premises && n.premises.length;
+  return `<article class="note k-${esc(n.kind)}${n.resolved ? " resolved" : ""}">
+    <div class="meta">
+      ${n.page ? `<span class="pg">p. ${esc(n.page)}</span>` : ""}
+      ${sec ? `<span>${esc(sec.label)}</span>` : ""}
+      <span class="chip k-${esc(n.kind)}">${esc(KINDS[n.kind] || "Note")}</span>
+      ${OPENABLE.has(n.kind) && n.resolved ? `<span class="chip done">Resolved</span>` : ""}
+      ${n.example ? `<span class="chip ex">Example</span>` : ""}
+    </div>
+    ${showSrc && t ? `<button class="src" data-open="${esc(n.textId)}">${esc(t.title)}</button>` : ""}
+    ${n.passage ? `<p class="passage"><span>${esc(n.passage)}</span></p>` : ""}
+    ${arg ? `<div class="argbox"><ol class="arg">${n.premises.map((p) => `<li>${withTags(esc(p))}</li>`).join("")}</ol><p class="argc"><span aria-hidden="true">∴</span><span class="sr">Therefore:</span> ${withTags(esc(n.conclusion))}</p></div>` : ""}
+    ${n.gloss ? `<p class="gloss ${n.passage || arg ? "after" : ""}">${withTags(esc(n.gloss))}</p>` : ""}
+    <div class="noteacts">
+      ${t?.hasContent && Number.isInteger(n.at) ? `<button class="btn ghost" data-goto-note="${n.at}" data-tid="${esc(n.textId)}">Show in text</button>` : ""}
+      ${n.passage ? `<button class="btn ghost" data-cite="${esc(id)}">Copy with citation</button>` : ""}
+      ${OPENABLE.has(n.kind) ? `<button class="btn ghost" data-resolve="${esc(id)}">${n.resolved ? "Reopen" : "Mark resolved"}</button>` : ""}
+      <button class="btn ghost" data-editnote="${esc(id)}">Edit</button>
+    </div>
+  </article>`;
+}
+
+function libraryView() {
+  const texts = [...S.texts.entries()];
+  let body = "";
+  if (S.q.trim()) {
+    const hits = sortNotes([...S.notes.entries()].filter(([, n]) => matches(n, S.q)), null);
+    const ql = S.q.trim().toLowerCase();
+    const th = allTerms().filter((g) => g.t.toLowerCase().includes(ql)).slice(0, 6);
+    body = `${th.length ? `<section class="group"><div class="label">In the glossary</div><div class="termhits">${th.map((g) => `<button class="termhit" data-term="${esc(g.id)}"><b>${esc(g.t)}</b><span>${esc(g.d.length > 150 ? g.d.slice(0, 150) + "…" : g.d)}</span></button>`).join("")}</div></section>` : ""}
+      <section class="group"><div class="label">${hits.length ? `${hits.length} note${hits.length === 1 ? "" : "s"} matching “${esc(S.q)}”` : `Notes matching “${esc(S.q)}”`}</div>
+      <div class="noteslist">${hits.map(([id, n]) => noteHTML(id, n, S.texts.get(n.textId), true)).join("") || `<p class="empty">No notes match. Search looks through passages, your notes and page numbers.</p>`}</div></section>`;
+  } else if (!texts.length && S.mode !== "pending") {
+    body = `<p class="empty"><b>No texts yet.</b> Add a book from a PDF, EPUB, Word or text file, then read it here and save passages as you go.</p>`;
+  } else {
+    body = Object.keys(STATUS).map((st) => {
+      const rows = texts.filter(([, t]) => (t.status || "reading") === st).sort(([, a], [, b]) => (b.updatedAt || 0) - (a.updatedAt || 0));
+      if (!rows.length) return "";
+      return `<section class="shelf"><div class="label">${STATUS[st]}<span class="cnt">${rows.length}</span></div><div class="shelfwrap"><div class="plank"></div><div class="shelfrow">${rows.map(([id, t]) => {
+        const nc = notesFor(id).length, p0 = progressOf(t), pc = p0 > 0 ? p0 : null;
+        return `<button class="shelfbook" data-open="${esc(id)}" aria-label="${esc(t.title)}">
+          ${coverHTML(t, coverURL(id))}
+          <span class="sb-title">${esc(t.title)}</span>
+          <span class="sb-meta">${pc != null ? `${pc}%` : ""}${pc != null && nc ? ", " : ""}${nc ? `${nc} note${nc === 1 ? "" : "s"}` : ""}</span>
+          ${pc != null ? `<span class="sb-prog"><i style="width:${pc}%"></i></span>` : ""}
+        </button>`; }).join("")}</div></div></section>`;
+    }).join("");
+  }
+  const searching = !!S.q.trim();
+  return `<header class="top"><h1 class="mark-word">Marginalia</h1></header>
+    ${banner()}
+    <input class="search" id="q" type="search" placeholder="Search your notes and the glossary" value="${esc(S.q)}" aria-label="Search your notes and the glossary">
+    ${searching ? body : `
+    <section class="home-sec">
+      <div class="sec-head"><div><h2>Bookshelf</h2><div class="sub">${S.texts.size} text${S.texts.size === 1 ? "" : "s"}, ${S.notes.size} note${S.notes.size === 1 ? "" : "s"}</div></div><button class="btn primary" id="addtext">Add text</button></div>
+      ${body}
+      ${S.mode === "pending" ? "" : acrossHTML()}
+    </section>
+    ${S.mode === "pending" ? "" : glossaryHome() + branchesHome() + backupView()}`}`;
+}
+function backupView() {
+  let last = 0; try { last = +localStorage.getItem("mg-backup") || 0; } catch {}
+  const when = last ? new Date(last).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) : "never";
+  return `<footer class="backup">
+    <div class="label">Backups</div>
+    <p class="hint">Last saved ${esc(when)}. Everything is stored only on this device; a backup file keeps it safe and moves it to another device.</p>
+    <div class="row">
+      <button class="btn" id="backup">Save backup</button>
+      <span class="btn filebtn">Restore<input id="restore" type="file" aria-label="Restore from a backup file"></span>
+    </div>
+  </footer>`;
+}
+
+function textView() {
+  const id = S.textId, t = S.texts.get(id), secs = t.sections || [];
+  const all = notesFor(id);
+  const counts = new Map(); all.forEach(([, n]) => counts.set(n.sectionId, (counts.get(n.sectionId) || 0) + 1));
+  const list = sortNotes(all.filter(([, n]) => (S.sec === "all" || n.sectionId === S.sec) && (S.kind === "all" || n.kind === S.kind) && matches(n, S.tq)), t);
+  const secName = S.sec === "all" ? null : secs.find((s) => s.id === S.sec)?.label;
+  const sums = t.summaries || {}, sum = secName ? sums[S.sec] || "" : "";
+  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Library</button></div>
+    ${banner()}
+    <header class="head">
+      <div class="headrow">
+        <div class="headcover">${coverHTML(t, coverURL(id))}</div>
+        <div class="headtext">
+          <h1>${esc(t.title)}</h1>
+          ${t.author || t.edition ? `<div class="byline">${esc([t.author, t.edition].filter(Boolean).join(", "))}</div>` : ""}
+          ${t.source ? `<div class="srcline">From ${esc(t.source.name)}${t.source.pages ? `, ${t.source.pages} pages` : ""}${progressOf(t) > 0 ? `, ${progressOf(t)}% read` : ""}</div>` : ""}
+        </div>
+      </div>
+      <div class="actions">
+        ${t.hasContent ? `<button class="btn primary" id="read">${t.pos > 0 ? "Continue reading" : "Read"}</button>` : ""}
+        ${t.hasContent ? "" : `<button class="btn primary" id="loadfile">Load the book</button>`}
+        <select id="status" aria-label="Status">${Object.entries(STATUS).map(([k, v]) => `<option value="${k}" ${(t.status || "reading") === k ? "selected" : ""}>${v}</option>`).join("")}</select>
+        <button class="btn" id="more" aria-haspopup="dialog">More</button>
+        ${t.example ? `<span class="chip ex">Example</span>` : ""}
+      </div>
+    </header>
+    ${secs.length ? `<section class="group"><div><div class="label">Sections</div><p class="hint">Tick a section once you have read it. Tap its name to see its notes.</p></div><div class="sections">
+      ${secs.map((s) => `<div class="sec ${s.done ? "done" : ""} ${S.sec === s.id ? "sel" : ""}">
+        <input type="checkbox" id="chk-${esc(s.id)}" data-tick="${esc(s.id)}" ${s.done ? "checked" : ""} aria-label="Mark ${esc(s.label)} as read">
+        <button data-sec="${esc(s.id)}">${esc(s.label)}</button><span class="n">${sums[s.id] ? `<span class="hassum" title="Has a summary">¶</span> ` : ""}${counts.get(s.id) || 0}</span></div>`).join("")}
+    </div></section>` : ""}
+    ${secName ? `<section class="group"><div class="notesbar"><div class="label">Summary of ${esc(secName)}</div><button class="btn" id="editsummary">${sum ? "Edit" : "Write summary"}</button></div>
+      ${sum ? `<div class="paperpanel summary"><p>${esc(sum)}</p></div>` : `<p class="hint">Put the section's argument in your own words, in a few sentences. Summaries go into the Markdown export.</p>`}</section>` : ""}
+    <section class="group">
+      <div class="notesbar"><div class="label">${secName ? `Notes on ${esc(secName)}` : "Notes"}<span class="cnt">${list.length}</span></div><button class="btn primary" id="addnote">Add note</button></div>
+      <div class="chips">
+        ${secName ? `<button class="chip on" data-sec="all">${esc(secName)} ✕</button>` : ""}
+        ${["all", ...Object.keys(KINDS)].map((k) => `<button class="chip ${S.kind === k ? "on" : ""}" data-kind="${k}">${k === "all" ? "All kinds" : KINDS[k]}</button>`).join("")}
+      </div>
+      <input class="search" id="tq" type="search" placeholder="Search this text's notes" value="${esc(S.tq)}" aria-label="Search this text's notes">
+      <div class="noteslist">${list.map(([nid, n]) => noteHTML(nid, n, t, false)).join("") || `<p class="empty">${all.length ? "No notes match these filters." : t.hasContent ? `<b>No notes yet.</b> Open the text, select a passage and save it.` : `<b>No notes yet.</b> Log a passage word for word with its page, or load the book's file to read and select passages here.`}</p>`}</div>
+    </section>`;
+}
+
+/* ---------- tags and open questions ---------- */
+// Notes grouped by text (texts in title order), each group in reading order.
+function byText(list) {
+  const m = new Map();
+  list.forEach((e) => { const k = e[1].textId; if (!m.has(k)) m.set(k, []); m.get(k).push(e); });
+  return [...m].map(([tid, notes]) => [tid, sortNotes(notes, S.texts.get(tid))])
+    .sort(([a], [b]) => ((S.texts.get(a) || {}).title || "").localeCompare((S.texts.get(b) || {}).title || ""));
+}
+function groupsHTML(list) {
+  return byText(list).map(([tid, notes]) => {
+    const t = S.texts.get(tid);
+    return `<section class="group"><div class="label">${t ? `<button class="src grouptitle" data-open="${esc(tid)}">${esc(t.title)}</button>` : "Unknown text"}<span class="cnt">${notes.length}</span></div>
+      <div class="noteslist">${notes.map(([id, n]) => noteHTML(id, n, t, false)).join("")}</div></section>`;
+  }).join("");
+}
+const taggedWith = (tg) => [...S.notes.entries()].filter(([, n]) => tagsOf(n).includes(tg));
+function tagView() {
+  const head = `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>${banner()}`;
+  if (!S.tag) {
+    const tags = allTags();
+    return `${head}<header class="gl-head"><div><h1>Tags</h1><div class="sub">${tags.length} tag${tags.length === 1 ? "" : "s"} in your notes</div></div></header>
+      ${tags.length ? `<div class="chips">${tags.map(([tg, c]) => `<button class="chip tagchip" data-tag="${esc(tg)}">#${esc(tg)}<span class="cnt">${c}</span></button>`).join("")}</div>` : `<p class="empty">No tags yet. Write #something in a note to start one.</p>`}`;
+  }
+  const list = taggedWith(S.tag), texts = new Set(list.map(([, n]) => n.textId)).size;
+  const near = new Map();
+  list.forEach(([, n]) => tagsOf(n).forEach((x) => { if (x !== S.tag) near.set(x, (near.get(x) || 0) + 1); }));
+  const nearList = [...near].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 8);
+  return `${head}
+    <header class="gl-head"><div><h1>#${esc(S.tag)}</h1><div class="sub">${list.length} note${list.length === 1 ? "" : "s"}${texts > 1 ? ` across ${texts} texts` : ""}</div></div>${list.length ? `<button class="btn" id="exporttag">Export</button>` : ""}</header>
+    ${nearList.length ? `<div class="group"><div class="label">Often tagged with it</div><div class="chips">${nearList.map(([tg, c]) => `<button class="chip tagchip" data-tag="${esc(tg)}">#${esc(tg)}<span class="cnt">${c}</span></button>`).join("")}</div></div>` : ""}
+    ${groupsHTML(list) || `<p class="empty">No notes carry #${esc(S.tag)} any more.</p>`}`;
+}
+const questionNotes = () => [...S.notes.entries()].filter(([, n]) => OPENABLE.has(n.kind));
+function questionsView() {
+  const all = questionNotes(), open = all.filter(([, n]) => !n.resolved), done = all.filter(([, n]) => n.resolved);
+  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>${banner()}
+    <header class="gl-head"><div><h1>Open questions</h1><div class="sub">${open.length} open, ${done.length} resolved</div></div>${open.length ? `<button class="btn" id="exportquestions">Export</button>` : ""}</header>
+    <p class="hint">Every note of the kind Question or Objection stays here until you mark it resolved. Edit the note to record the answer you found.</p>
+    ${groupsHTML(open) || `<p class="empty"><b>Nothing open.</b> ${all.length ? "Every question and objection is resolved." : "Save a note as a Question or an Objection and it will wait here."}</p>`}
+    ${done.length ? `<details class="resolvedlist"><summary class="label">Resolved<span class="cnt">${done.length}</span></summary>${groupsHTML(done)}</details>` : ""}`;
+}
+function acrossHTML() {
+  const qs = questionNotes(), open = qs.filter(([, n]) => !n.resolved).length, tags = allTags();
+  if (!qs.length && !tags.length) return "";
+  return `<div class="across"><div class="label">Across your notes</div><div class="chips">
+    ${qs.length ? `<button class="chip qchip" id="openquestions">Open questions<span class="cnt">${open}</span></button>` : ""}
+    ${tags.slice(0, 8).map(([tg, c]) => `<button class="chip tagchip" data-tag="${esc(tg)}">#${esc(tg)}<span class="cnt">${c}</span></button>`).join("")}
+    ${tags.length > 8 ? `<button class="chip" data-tag="">All ${tags.length} tags</button>` : ""}
+  </div></div>`;
+}
+
+/* ---------- glossary ---------- */
+const AREAS = { meta: "Metaphysics", know: "Knowledge", logic: "Logic", ethics: "Ethics & politics", phen: "Phenomenology & hermeneutics", crit: "Critical theory", mine: "Your terms" };
+// General reference definitions. Spinoza's are quoted from Curley's translation. Deleuze and Guattari's concepts are left for you to add from their texts.
+const GLOSSARY = [
+  // Metaphysics
+  { id: "ontology", t: "Ontology", a: "meta", d: "The study of being: what exists, and the most general kinds and structures of what exists." },
+  { id: "metaphysics", t: "Metaphysics", a: "meta", d: "Inquiry into the fundamental nature of reality, including being, substance, causation, time, possibility and identity." },
+  { id: "substance", t: "Substance", a: "meta", d: "What exists in its own right and bears properties (Aristotle's ousia). Spinoza: “By substance I understand what is in itself and is conceived through itself…”", s: "Spinoza, Ethics I, Def. 3 (Curley trans.)", w: "Aristotle, Descartes, Spinoza" },
+  { id: "attribute", t: "Attribute", a: "meta", d: "An essential property of a substance. Spinoza: “By attribute I understand what the intellect perceives of a substance, as constituting its essence.”", s: "Spinoza, Ethics I, Def. 4 (Curley trans.)" },
+  { id: "mode", t: "Mode", a: "meta", d: "A way or modification in which a substance exists. Spinoza: “By mode I understand the affections of a substance, or that which is in another through which it is also conceived.”", s: "Spinoza, Ethics I, Def. 5 (Curley trans.)" },
+  { id: "conatus", t: "Conatus", a: "meta", d: "The striving of each thing to persist in existence. Spinoza: “Each thing, as far as it can by its own power, strives to persevere in its being.”", s: "Spinoza, Ethics III, Prop. 6 (Curley trans.)", w: "Hobbes, Spinoza" },
+  { id: "immanence", t: "Immanence", a: "meta", d: "Existing or operating within something. An immanent cause produces effects that remain in it. Spinoza: “God is the immanent, not the transitive, cause of all things.”", s: "Spinoza, Ethics I, Prop. 18 (Curley trans.)" },
+  { id: "transcendence", t: "Transcendence", a: "meta", d: "Existing beyond or above something: a God outside the world, or a principle outside what it governs." },
+  { id: "essence", t: "Essence", a: "meta", d: "What a thing is: the properties it must have to be the kind of thing it is." },
+  { id: "accident", t: "Accident", a: "meta", d: "A property a thing has but could lose while remaining the same thing.", w: "Aristotle" },
+  { id: "necessity", t: "Necessity and contingency", a: "meta", d: "A necessary truth or being could not have been otherwise. A contingent one could have been otherwise, or might never have existed.", k: ["necessity", "contingency", "contingent"] },
+  { id: "potentiality", t: "Potentiality and actuality", a: "meta", d: "Aristotle's dunamis and energeia: a capacity to be or do something, and the realization of that capacity.", w: "Aristotle", k: ["potentiality", "actuality"] },
+  { id: "teleology", t: "Teleology", a: "meta", d: "Explanation by ends or purposes (Greek telos). Aristotle's final cause is teleological.", w: "Aristotle", k: ["teleology", "teleological", "telos"] },
+  { id: "four-causes", t: "Four causes", a: "meta", d: "Aristotle's four kinds of explanation: material (what a thing is made of), formal (its form or structure), efficient (what brought it about) and final (what it is for).", s: "Aristotle, Physics II.3", k: ["four causes", "final cause", "efficient cause"] },
+  { id: "materialism", t: "Materialism", a: "meta", d: "The view that everything that exists is material or depends on matter.", w: "Lucretius, Hobbes" },
+  { id: "idealism", t: "Idealism", a: "meta", d: "The view that reality is fundamentally mental or ideal. Berkeley's subjective idealism, Kant's transcendental idealism and Hegel's absolute idealism are very different positions.", w: "Berkeley, Kant, Hegel" },
+  { id: "dualism", t: "Dualism", a: "meta", d: "The view that there are two fundamental kinds of thing; classically, Descartes' thinking substance (mind) and extended substance (body).", w: "Descartes" },
+  { id: "monism", t: "Monism", a: "meta", d: "The view that reality is ultimately one thing or one kind of thing. Spinoza holds that there is a single substance, God or Nature.", w: "Parmenides, Spinoza" },
+  { id: "determinism", t: "Determinism", a: "meta", d: "The view that every event is fixed by prior causes together with the laws of nature." },
+  { id: "compatibilism", t: "Compatibilism", a: "meta", d: "The view that free will is consistent with determinism.", w: "Hobbes, Hume" },
+  { id: "universals", t: "Universals", a: "meta", d: "Features that many particular things can share, such as redness. Realists hold that universals exist; nominalists hold that only particulars exist.", w: "Plato, Aristotle", k: ["universals", "nominalism", "nominalist"] },
+  // Knowledge
+  { id: "epistemology", t: "Epistemology", a: "know", d: "The study of knowledge: what it is, how far it reaches, and what justifies belief." },
+  { id: "a-priori", t: "A priori", a: "know", d: "Knowable independently of experience, as truths of logic and mathematics are usually taken to be.", w: "Kant" },
+  { id: "a-posteriori", t: "A posteriori", a: "know", d: "Knowable only through experience." },
+  { id: "analytic-synthetic", t: "Analytic and synthetic", a: "know", d: "Kant's distinction. In an analytic judgment the predicate is already contained in the concept of the subject (“all bodies are extended”). A synthetic judgment adds something to it (“all bodies are heavy”).", s: "Kant, Critique of Pure Reason, A7/B11", k: ["analytic", "synthetic"] },
+  { id: "synthetic-a-priori", t: "Synthetic a priori", a: "know", d: "Kant's claim that some judgments add content to their concepts and are still known independently of experience, such as the propositions of arithmetic and geometry and the principle that every event has a cause.", w: "Kant" },
+  { id: "transcendental", t: "Transcendental", a: "know", d: "In Kant, concerning the conditions that make experience and knowledge possible. A transcendental argument shows that something must hold for experience to be possible at all.", w: "Kant, Husserl" },
+  { id: "noumenon", t: "Phenomenon and noumenon", a: "know", d: "Kant: phenomena are things as they appear to us under the forms of space and time and the categories. The noumenon, or thing in itself, is the thing considered apart from how it appears, which we cannot know.", w: "Kant", k: ["noumenon", "noumena", "thing in itself", "things in themselves", "phenomena"] },
+  { id: "empiricism", t: "Empiricism", a: "know", d: "The view that knowledge derives from sense experience.", w: "Locke, Berkeley, Hume" },
+  { id: "rationalism", t: "Rationalism", a: "know", d: "The view that reason can yield substantive knowledge independently of experience.", w: "Descartes, Spinoza, Leibniz" },
+  { id: "skepticism", t: "Skepticism", a: "know", d: "Doubt about whether knowledge is possible, in general or in some domain. Ancient Pyrrhonism suspends judgment; Descartes uses doubt as a method.", w: "Pyrrho, Sextus Empiricus, Descartes, Hume" },
+  { id: "jtb", t: "Justified true belief", a: "know", d: "The traditional analysis of knowledge. Gettier's 1963 paper gave cases of justified true beliefs that are true only by luck, and so seem to fall short of knowledge.", w: "Plato (Theaetetus), Gettier" },
+  { id: "foundationalism", t: "Foundationalism", a: "know", d: "The view that justified beliefs rest on basic beliefs, which need no further justification.", w: "Descartes" },
+  { id: "coherentism", t: "Coherentism", a: "know", d: "The view that a belief is justified by how well it fits within a coherent system of beliefs." },
+  { id: "induction-problem", t: "Problem of induction", a: "know", d: "Hume's argument that inferences from observed cases to unobserved ones can be given no justification that avoids circularity.", w: "Hume" },
+  // Logic
+  { id: "validity", t: "Validity", a: "logic", d: "An argument is valid when the truth of its premises guarantees the truth of its conclusion.", k: ["validity", "valid argument", "invalid"] },
+  { id: "soundness", t: "Soundness", a: "logic", d: "A sound argument is valid and has true premises.", k: ["soundness", "sound argument"] },
+  { id: "deduction", t: "Deduction", a: "logic", d: "Reasoning in which the conclusion follows necessarily from the premises.", k: ["deduction", "deductive"] },
+  { id: "induction", t: "Induction", a: "logic", d: "Reasoning from observed cases to general conclusions or to unobserved cases. Its conclusions are probable at best.", k: ["induction", "inductive"] },
+  { id: "abduction", t: "Abduction", a: "logic", d: "Inference to the best explanation.", w: "Peirce" },
+  { id: "conditions", t: "Necessary and sufficient conditions", a: "logic", d: "A is necessary for B when B cannot hold without A. A is sufficient for B when A's holding guarantees B.", k: ["necessary condition", "sufficient condition"] },
+  { id: "modus", t: "Modus ponens and modus tollens", a: "logic", d: "Modus ponens: if P then Q; P; therefore Q. Modus tollens: if P then Q; not Q; therefore not P.", k: ["modus ponens", "modus tollens"] },
+  { id: "reductio", t: "Reductio ad absurdum", a: "logic", d: "Proving a claim by showing that its denial leads to a contradiction or an absurdity.", k: ["reductio"] },
+  { id: "begging", t: "Begging the question", a: "logic", d: "Assuming in the premises what the argument sets out to prove (petitio principii).", k: ["begging the question", "petitio principii"] },
+  { id: "equivocation", t: "Equivocation", a: "logic", d: "Using a word in two different senses within one argument." },
+  { id: "category-mistake", t: "Category mistake", a: "logic", d: "Ryle's term for attributing to something a property that belongs to things of a different logical type.", s: "Ryle, The Concept of Mind (1949)" },
+  { id: "tautology", t: "Tautology and contradiction", a: "logic", d: "A tautology is true in virtue of its logical form alone. A contradiction asserts and denies the same thing.", k: ["tautology", "contradiction"] },
+  // Ethics & politics
+  { id: "normative", t: "Normative ethics and metaethics", a: "ethics", d: "Normative ethics asks what we ought to do and what makes actions right or wrong. Metaethics asks what moral claims mean and whether they can be true.", k: ["normative", "metaethics"] },
+  { id: "deontology", t: "Deontology", a: "ethics", d: "Ethics of duty: some acts are required or forbidden whatever their consequences.", w: "Kant", k: ["deontology", "deontological"] },
+  { id: "consequentialism", t: "Consequentialism", a: "ethics", d: "The view that the rightness of an act depends only on its consequences. Utilitarianism counts consequences in terms of happiness or welfare.", w: "Bentham, Mill", k: ["consequentialism", "utilitarianism", "utilitarian"] },
+  { id: "virtue-ethics", t: "Virtue ethics", a: "ethics", d: "Ethics centered on character, and on the virtues a person needs in order to live well.", w: "Aristotle", k: ["virtue ethics", "virtue"] },
+  { id: "eudaimonia", t: "Eudaimonia", a: "ethics", d: "Aristotle's term for the highest human good, usually translated “happiness” or “flourishing”: activity of the soul in accordance with virtue.", s: "Aristotle, Nicomachean Ethics I.7" },
+  { id: "categorical-imperative", t: "Categorical imperative", a: "ethics", d: "Kant's supreme principle of morality, which binds unconditionally. One formulation: act only on a maxim that you can at the same time will to be a universal law.", s: "Kant, Groundwork of the Metaphysics of Morals (1785)" },
+  { id: "autonomy", t: "Autonomy", a: "ethics", d: "Self-legislation. In Kant, the will giving the moral law to itself; more broadly, self-government.", w: "Kant" },
+  { id: "social-contract", t: "Social contract", a: "ethics", d: "The view that political authority is legitimate because it rests on an agreement among the people subject to it.", w: "Hobbes, Locke, Rousseau" },
+  { id: "sovereignty", t: "Sovereignty", a: "ethics", d: "Supreme authority within a political order.", w: "Bodin, Hobbes, Schmitt" },
+  { id: "recognition", t: "Recognition", a: "ethics", d: "Hegel: self-consciousness depends on being acknowledged by another self-consciousness. The section on lordship and bondage stages the struggle for it.", s: "Hegel, Phenomenology of Spirit (1807)", k: ["recognition", "lordship and bondage", "master and slave", "master-slave"] },
+  // Phenomenology & hermeneutics
+  { id: "phenomenology", t: "Phenomenology", a: "phen", d: "The study of the structures of experience as lived from the first-person point of view.", w: "Husserl, Heidegger, Merleau-Ponty", k: ["phenomenology", "phenomenological"] },
+  { id: "intentionality", t: "Intentionality", a: "phen", d: "The directedness of consciousness toward an object: every perceiving is a perceiving of something, every judging a judging of something.", w: "Brentano, Husserl" },
+  { id: "epoche", t: "Epoché", a: "phen", d: "Husserl's bracketing: suspending the natural attitude's belief in the existence of the world, so that experience can be described just as it is given.", w: "Husserl", k: ["epoché", "epoche", "bracketing"] },
+  { id: "dasein", t: "Dasein", a: "phen", d: "Heidegger's term for the kind of being that humans are: the entity for which its own being is an issue.", s: "Heidegger, Being and Time (1927)" },
+  { id: "hermeneutics", t: "Hermeneutics", a: "phen", d: "The theory and practice of interpretation.", w: "Schleiermacher, Dilthey, Heidegger, Gadamer", k: ["hermeneutics", "hermeneutic"] },
+  { id: "hermeneutic-circle", t: "Hermeneutic circle", a: "phen", d: "Understanding the parts of a text requires a grasp of the whole, and grasping the whole requires understanding the parts.", w: "Schleiermacher, Heidegger, Gadamer" },
+  { id: "existentialism", t: "Existentialism", a: "phen", d: "Philosophy centered on concrete human existence, freedom and responsibility. Sartre's formula: existence precedes essence.", w: "Kierkegaard, Sartre, Beauvoir", k: ["existentialism", "existentialist"] },
+  // Critical theory
+  { id: "dialectic", t: "Dialectic", a: "crit", d: "In Hegel, the movement by which a concept or form of life produces its own contradictions and passes into a richer form that preserves what it overcomes. The formula “thesis, antithesis, synthesis” comes from Fichte; Hegel never used it to describe his own philosophy.", w: "Hegel, Marx", k: ["dialectic", "dialectics", "dialectical"] },
+  { id: "aufhebung", t: "Aufhebung (sublation)", a: "crit", d: "Hegel's term for a kind of overcoming that at once cancels, preserves and lifts up what it overcomes.", w: "Hegel", k: ["aufhebung", "sublation", "sublate"] },
+  { id: "immanent-critique", t: "Immanent critique", a: "crit", d: "Criticism that measures a position or a society by its own standards, and exposes the contradictions within it.", w: "Hegel, Marx, Adorno" },
+  { id: "genealogy", t: "Genealogy", a: "crit", d: "A historical method that traces how values, concepts or institutions came to be, exposing their contingent and often conflictual origins.", s: "Nietzsche, On the Genealogy of Morality (1887); Foucault, “Nietzsche, Genealogy, History” (1971)", k: ["genealogy", "genealogical"] },
+  { id: "alienation", t: "Alienation", a: "crit", d: "Marx: under capitalism workers are estranged from the product of their labor, from their own activity, from their species-being and from one another.", s: "Marx, Economic and Philosophic Manuscripts of 1844", k: ["alienation", "estrangement"] },
+  { id: "commodity-fetishism", t: "Commodity fetishism", a: "crit", d: "Marx: the social relations between producers appear as relations between things, the commodities they exchange.", s: "Marx, Capital, vol. 1, ch. 1, sec. 4", k: ["commodity fetishism", "fetishism of commodities", "fetish-character"] },
+  { id: "reification", t: "Reification", a: "crit", d: "Lukács: relations between people take on the character of a thing and acquire a “phantom objectivity”.", s: "Lukács, History and Class Consciousness (1923)" },
+  { id: "base-superstructure", t: "Base and superstructure", a: "crit", d: "Marx: the economic structure of society, its base, conditions the legal, political and ideological forms that rise on it, its superstructure.", s: "Marx, Preface to A Contribution to the Critique of Political Economy (1859)", k: ["base and superstructure", "superstructure"] },
+  { id: "historical-materialism", t: "Historical materialism", a: "crit", d: "Marx and Engels' account of history as driven by the development of material production and by class struggle.", w: "Marx, Engels" },
+  { id: "ideology", t: "Ideology", a: "crit", d: "Ideas and representations that express and legitimate existing social relations. For Marx and Engels, the ruling ideas of each epoch are the ideas of its ruling class.", s: "Marx and Engels, The German Ideology", k: ["ideology", "ideological"] },
+  { id: "hegemony", t: "Hegemony", a: "crit", d: "Gramsci: a class rules through consent as well as coercion, by making its view of the world into society's common sense.", s: "Gramsci, Prison Notebooks", k: ["hegemony", "hegemonic"] },
+  { id: "interpellation", t: "Interpellation", a: "crit", d: "Althusser: ideology “hails” individuals and in doing so constitutes them as subjects.", s: "Althusser, “Ideology and Ideological State Apparatuses” (1970)", k: ["interpellation", "interpellate", "interpellated", "interpellates"] },
+  { id: "critical-theory", t: "Critical theory", a: "crit", d: "In the narrow sense, the Frankfurt School's program of social theory aimed at emancipation. In a broader sense, a family of critical approaches that includes critical race theory and feminist theory.", s: "Horkheimer, “Traditional and Critical Theory” (1937)", w: "Horkheimer, Adorno, Marcuse, Habermas" },
+  { id: "structuralism", t: "Structuralism", a: "crit", d: "The view that meaning and identity arise from differential relations within a system.", w: "Saussure, Lévi-Strauss", k: ["structuralism", "structuralist"] },
+  { id: "signifier", t: "Signifier and signified", a: "crit", d: "Saussure: a sign unites a sound-image, the signifier, with a concept, the signified. The bond between them is arbitrary.", s: "Saussure, Course in General Linguistics (1916)", k: ["signifier", "signified"] },
+  { id: "post-structuralism", t: "Post-structuralism", a: "crit", d: "A label, mostly from the English-speaking reception, for thinkers who questioned the stability of structures, origins and the unified subject.", w: "Derrida, Foucault, Kristeva", k: ["post-structuralism", "poststructuralism", "post-structuralist"] },
+  { id: "deconstruction", t: "Deconstruction", a: "crit", d: "Derrida's practice of reading, which shows how a text's hierarchical oppositions (speech and writing, presence and absence) depend on the term they subordinate.", s: "Derrida, Of Grammatology (1967)", k: ["deconstruction", "deconstruct", "deconstructive"] },
+  { id: "discourse", t: "Discourse", a: "crit", d: "In Foucault, a regulated system of statements and practices that forms the objects it speaks about and decides who may speak about them with authority.", s: "Foucault, The Archaeology of Knowledge (1969)", k: ["discourse", "discursive"] },
+  { id: "power-knowledge", t: "Power/knowledge", a: "crit", d: "Foucault: power and knowledge directly imply one another. Power relations constitute fields of knowledge, and knowledge in turn sustains relations of power.", s: "Foucault, Discipline and Punish (1975)", k: ["power/knowledge", "power-knowledge"] },
+  { id: "biopower", t: "Biopower", a: "crit", d: "Foucault: power that takes life itself as its object, both by disciplining individual bodies and by regulating whole populations.", s: "Foucault, The History of Sexuality, vol. 1 (1976)", k: ["biopower", "biopolitics", "biopolitical"] },
+  { id: "subjectivation", t: "Subjectivation", a: "crit", d: "The process by which individuals are formed as subjects. The French assujettissement also means subjection.", w: "Althusser, Foucault, Butler", k: ["subjectivation", "subjectification", "assujettissement", "subjection"] },
+  { id: "naturalization", t: "Naturalization", a: "crit", d: "Presenting a historically contingent arrangement as natural, necessary or self-evident. Barthes analyzes myth as the conversion of history into nature.", s: "Barthes, Mythologies (1957)", k: ["naturalization", "naturalize", "naturalizes", "naturalized"] },
+  { id: "essentialism", t: "Essentialism", a: "crit", d: "The view that a kind of thing, or a social group, has a fixed essence that defines its members.", k: ["essentialism", "essentialist", "anti-essentialism"] },
+  { id: "social-construction", t: "Social construction", a: "crit", d: "The thesis that a category or fact is produced and sustained by social practices and agreements.", w: "Berger and Luckmann, Hacking", k: ["social construction", "socially constructed", "constructionism"] },
+  { id: "intersectionality", t: "Intersectionality", a: "crit", d: "Kimberlé Crenshaw's term for the way race, gender and other axes of power combine, producing forms of discrimination that single-axis analysis misses.", s: "Crenshaw, “Demarginalizing the Intersection of Race and Sex” (1989)", k: ["intersectionality", "intersectional"] },
+  { id: "performativity", t: "Performativity", a: "crit", d: "Austin: some utterances perform the act they name (“I promise”). Butler: gender is constituted through the repetition of performative acts.", s: "Austin, How to Do Things with Words (1962); Butler, Gender Trouble (1990)", k: ["performativity", "performative"] },
+  { id: "standpoint", t: "Standpoint theory", a: "crit", d: "Feminist epistemology holding that social position shapes knowledge, and that the standpoints of marginalized groups can yield less distorted knowledge of society.", w: "Hartsock, Harding, Dorothy Smith, Patricia Hill Collins", k: ["standpoint"] },
+  // Added: Foucault
+  { id: "episteme", t: "Episteme", a: "crit", d: "Foucault: the underlying order that, in a given period, determines what can count as knowledge and how things can be known. He also calls it a “historical a priori”.", s: "Foucault, The Order of Things (1966)", k: ["episteme", "epistemes", "historical a priori"] },
+  { id: "governmentality", t: "Governmentality", a: "crit", d: "Foucault: the art of governing understood as the “conduct of conduct”, the ways institutions, experts and individuals themselves shape how people behave.", s: "Foucault, Security, Territory, Population (lectures 1977–78)", k: ["governmentality", "conduct of conduct"] },
+  { id: "panopticism", t: "Panopticism", a: "crit", d: "Foucault's name for disciplinary power modeled on Bentham's Panopticon, a prison in which inmates can always be seen and never know when they are watched, so that they come to watch themselves.", s: "Foucault, Discipline and Punish (1975), part 3, ch. 3", k: ["panopticism", "panopticon", "panoptic"] },
+  // Added: social theory, race and colonialism
+  { id: "habitus", t: "Habitus", a: "crit", d: "Bourdieu: durable, transposable dispositions, acquired through a person's social position and history, that generate their practices, perceptions and tastes.", s: "Bourdieu, Outline of a Theory of Practice (1972)" },
+  { id: "double-consciousness", t: "Double consciousness", a: "crit", d: "Du Bois's term for the divided self-awareness of Black Americans: “this sense of always looking at one's self through the eyes of others”.", s: "Du Bois, The Souls of Black Folk (1903), ch. 1", k: ["double consciousness", "double-consciousness", "two-ness"] },
+  { id: "racial-formation", t: "Racial formation", a: "crit", d: "Omi and Winant: the social and historical process by which racial categories are created, inhabited, transformed and destroyed.", s: "Omi and Winant, Racial Formation in the United States (1986)", k: ["racial formation", "racialization", "racialized"] },
+  { id: "racial-capitalism", t: "Racial capitalism", a: "crit", d: "Cedric Robinson's thesis that capitalism emerged from a European social order already structured by racialism, so that race has organized capitalism from its beginnings.", s: "Robinson, Black Marxism (1983)", k: ["racial capitalism"] },
+  { id: "necropolitics", t: "Necropolitics", a: "crit", d: "Mbembe: sovereignty exercised as the power to decide who may live and who must die, and to subject populations to conditions of social death.", s: "Mbembe, “Necropolitics”, Public Culture (2003)", k: ["necropolitics", "necropower", "necropolitical"] },
+  { id: "subaltern", t: "Subaltern", a: "crit", d: "Groups excluded from the structures of political and cultural power. Gramsci wrote of “subaltern classes”; Spivak asks whether the subaltern can be heard within the discourses that claim to represent them.", s: "Gramsci, Prison Notebooks; Spivak, “Can the Subaltern Speak?” (1988)", k: ["subaltern", "subalterns", "subalternity"] },
+  { id: "social-reproduction", t: "Social reproduction", a: "crit", d: "The work, much of it unpaid and done by women, that produces and maintains people and so the workforce: care, domestic labor, education. Social reproduction theory treats it as part of the analysis of capitalism.", w: "Lise Vogel, Silvia Federici, Tithi Bhattacharya", k: ["social reproduction", "reproductive labor", "reproductive labour"] },
+  // Added: Marx's political economy
+  { id: "use-exchange-value", t: "Use value and exchange value", a: "crit", d: "Marx: a commodity's use value is its usefulness, the need it meets. Its exchange value is the proportion in which it exchanges for other commodities, which expresses the value it contains.", s: "Marx, Capital, vol. 1, ch. 1", k: ["use value", "use-value", "exchange value", "exchange-value"] },
+  { id: "surplus-value", t: "Surplus value", a: "crit", d: "Marx: the difference between the value that labor-power creates in production and the value of labor-power itself, paid as wages. The capitalist appropriates it, and it is the source of profit.", s: "Marx, Capital, vol. 1", k: ["surplus value", "surplus-value", "labor-power", "labour-power"] },
+  { id: "primitive-accumulation", t: "Primitive accumulation", a: "crit", d: "Marx: the historical process, through enclosure, expropriation and colonial plunder, that separated producers from their means of production and made capitalist relations possible.", s: "Marx, Capital, vol. 1, part 8", k: ["primitive accumulation", "original accumulation"] },
+  // Added: other areas
+  { id: "bad-faith", t: "Bad faith", a: "phen", d: "Sartre: self-deception by which a person flees their own freedom, for example by treating themselves as fixed by a role or by circumstance.", s: "Sartre, Being and Nothingness (1943)", k: ["bad faith", "mauvaise foi"] },
+  { id: "ressentiment", t: "Ressentiment", a: "ethics", d: "Nietzsche: the reactive hostility of the weak toward the strong which, when it becomes creative, produces values that condemn strength as evil and call weakness good.", s: "Nietzsche, On the Genealogy of Morality (1887), First Essay" },
+  { id: "epistemic-injustice", t: "Epistemic injustice", a: "know", d: "Fricker: a wrong done to someone in their capacity as a knower. In testimonial injustice, prejudice deflates the credibility given to a speaker. In hermeneutical injustice, a gap in shared concepts leaves someone unable to make sense of their own experience.", s: "Fricker, Epistemic Injustice (2007)", k: ["epistemic injustice", "testimonial injustice", "hermeneutical injustice"] },
+];
+function allTerms() {
+  const out = new Map(GLOSSARY.map((g) => [g.id, { ...g, builtIn: true }]));
+  for (const [id, u] of S.terms) {
+    const base = out.get(id);
+    out.set(id, { ...(base || {}), ...u, id, builtIn: !!base, edited: !!base });
+  }
+  return [...out.values()].sort((x, y) => x.t.localeCompare(y.t, undefined, { sensitivity: "base" }));
+}
+const reEsc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+function termKeys(g) {
+  const keys = g.edited || !g.builtIn ? [g.t.replace(/\s*\(.*?\)\s*/g, " ").trim()] : g.k || [g.t.replace(/\s*\(.*?\)\s*/g, " ").trim()];
+  return keys.filter((k) => k.length > 2);
+}
+function termNotes(g) {
+  const keys = termKeys(g); if (!keys.length) return [];
+  const re = new RegExp(`(^|[^\\p{L}])(${keys.map(reEsc).join("|")})(s|es)?(?![\\p{L}])`, "iu");
+  return [...S.notes.entries()].filter(([, n]) => re.test(n.passage || "") || re.test(n.gloss || "")).sort(([, a], [, b]) => (b.createdAt || 0) - (a.createdAt || 0));
+}
+function termHTML(g) {
+  const hits = termNotes(g);
+  return `<details class="term" data-term-id="${esc(g.id)}"${S.gOpen.has(g.id) ? " open" : ""}>
+    <summary><span class="tm">${esc(g.t)}</span><span class="ta">${esc(AREAS[g.a] || "")}${hits.length ? `, ${hits.length} in your notes` : ""}${g.edited ? ", edited by you" : ""}</span></summary>
+    <div class="tbody">
+      <p class="tdef">${esc(g.d)}</p>
+      ${g.s ? `<p class="tsrc">${esc(g.s)}</p>` : ""}
+      ${g.w ? `<p class="tsrc">Associated with ${esc(g.w)}</p>` : ""}
+      ${hits.length ? `<div class="thits"><div class="label">In your notes</div>${hits.slice(0, 20).map(([, n]) => {
+        const t = S.texts.get(n.textId);
+        return `<div class="thit"><div class="meta">${t ? `<button class="src" data-open="${esc(n.textId)}">${esc(t.title)}</button>` : ""}${n.page ? `<span>p. ${esc(n.page)}</span>` : ""}${t && t.hasContent && Number.isInteger(n.at) ? `<button class="src" data-goto-note="${n.at}" data-tid="${esc(n.textId)}">Show in text</button>` : ""}</div><p>${esc(n.passage || n.gloss)}</p></div>`;
+      }).join("")}${hits.length > 20 ? `<p class="hint">Showing 20 of ${hits.length}. Search your notes for the rest.</p>` : ""}</div>` : ""}
+      <div class="noteacts">
+        <button class="btn ghost" data-editterm="${esc(g.id)}">Edit</button>
+        ${g.edited ? `<button class="btn ghost" data-restoreterm="${esc(g.id)}">Restore original</button>` : ""}
+        ${g.builtIn ? "" : `<button class="btn ghost danger" data-delterm="${esc(g.id)}">Delete</button>`}
+      </div>
+    </div>
+  </details>`;
+}
+function glossaryView() {
+  const terms = allTerms(), q = S.gq.trim().toLowerCase();
+  const areas = ["all", ...Object.keys(AREAS).filter((a) => terms.some((g) => g.a === a))];
+  if (!areas.includes(S.gArea)) S.gArea = "all";
+  const list = terms.filter((g) => (S.gArea === "all" || g.a === S.gArea) && (!q || g.t.toLowerCase().includes(q) || (g.d || "").toLowerCase().includes(q)));
+  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Library</button></div>
+    <header class="gl-head"><div><h1>Glossary</h1><div class="sub">${terms.length} terms</div></div><button class="btn primary" id="addterm">Add a term</button></header>
+    <p class="hint">Reference definitions, with the thinker and work a term comes from. Edit any of them or add your own; each term lists the passages in your notes that use it.</p>
+    <input class="search" id="gq" type="search" placeholder="Search terms and definitions" value="${esc(S.gq)}" aria-label="Search the glossary">
+    <div class="chips">${areas.map((a) => `<button class="chip ${S.gArea === a ? "on" : ""}" data-area="${a}">${a === "all" ? "All" : esc(AREAS[a])}</button>`).join("")}</div>
+    <div class="gl-list">${list.map(termHTML).join("") || `<p class="empty">No terms match.</p>`}</div>`;
+}
+function glossaryHome() {
+  const terms = allTerms(); if (!terms.length) return "";
+  const areas = Object.keys(AREAS).map((a) => [a, terms.filter((g) => g.a === a).length]).filter(([, n]) => n);
+  return `<section class="home-sec">
+    <div class="sec-head"><div><h2>Glossary</h2><div class="sub">${terms.length} terms</div></div><button class="btn" id="openglossary">Browse all</button></div>
+    <div class="chips bchips">${areas.map(([a, n]) => `<button class="chip bchip" data-garea="${a}">${esc(AREAS[a])} <span class="cnt">${n}</span></button>`).join("")}</div>
+  </section>`;
+}
+function openTerm(id) {
+  S.gOpen = new Set([id]); S.gq = ""; S.gArea = "all";
+  go({ screen: "glossary" });
+  const el = document.querySelector(`[data-term-id="${CSS.escape(id)}"]`);
+  if (el) el.scrollIntoView({ block: "start" });
+}
+function termSheet(id) {
+  const base = id ? allTerms().find((x) => x.id === id) : null;
+  const g = base || { t: "", a: "mine", d: "", s: "", w: "" };
+  openSheet(`<h2>${id ? "Edit term" : "Add a term"}</h2>
+    <div class="field"><label for="g-t">Term</label><input id="g-t" name="t" value="${esc(g.t)}" required></div>
+    <div class="field"><label for="g-a">Area</label><select id="g-a" name="a">${Object.entries(AREAS).map(([k, v]) => `<option value="${k}"${g.a === k ? " selected" : ""}>${esc(v)}</option>`).join("")}</select></div>
+    <div class="field"><label for="g-d">Definition</label><textarea id="g-d" name="d" rows="5">${esc(g.d)}</textarea><span class="hint">Quote the author where you can, in quotation marks, and put the page under Source.</span></div>
+    <div class="field"><label for="g-s">Source</label><input id="g-s" name="s" value="${esc(g.s)}" placeholder="Author, work, page"></div>
+    <div class="field"><label for="g-w">Associated with</label><input id="g-w" name="w" value="${esc(g.w)}" placeholder="Thinkers or schools"></div>
+    ${base && base.builtIn ? `<p class="hint">Your version replaces the built-in definition. You can restore the original later.</p>` : ""}`,
+  async (fd) => {
+    const t = fd.get("t").trim(); if (!t) return "Give the term a name.";
+    const d = fd.get("d").trim(); if (!d) return "Write a definition.";
+    const rec = { t, a: fd.get("a"), d, s: fd.get("s").trim(), w: fd.get("w").trim(), updatedAt: Date.now() };
+    const tid = id || "u-" + gid();
+    S.gOpen.add(tid);
+    await put("terms", tid, rec);
+  });
+}
+
+/* ---------- thinkers, branches, and the facts that connect them ---------- */
+const THINKERS = [
+  ["plato", "Plato", "c. 428–348 BCE"], ["socrates", "Socrates", "c. 470–399 BCE"], ["aristotle", "Aristotle", "384–322 BCE"],
+  ["parmenides", "Parmenides", "early 5th c. BCE"], ["pyrrho", "Pyrrho", "c. 360–270 BCE"], ["sextus", "Sextus Empiricus", "2nd–3rd c. CE", ["Sextus"]],
+  ["epictetus", "Epictetus", "c. 50–135 CE"], ["lucretius", "Lucretius", "c. 99–55 BCE"],
+  ["confucius", "Confucius", "trad. 551–479 BCE"], ["laozi", "Laozi", "trad. 6th c. BCE"], ["zhuangzi", "Zhuangzi", "c. 369–286 BCE"], ["mencius", "Mencius", "c. 372–289 BCE"],
+  ["nagarjuna", "Nāgārjuna", "c. 150–250 CE", ["Nagarjuna"]], ["shankara", "Śaṅkara", "8th c. CE", ["Shankara"]],
+  ["farabi", "al-Fārābī", "c. 870–950", ["al-Farabi", "Farabi"]], ["ibnsina", "Ibn Sīnā (Avicenna)", "980–1037", ["Avicenna", "Ibn Sina"]],
+  ["ghazali", "al-Ghazālī", "1058–1111", ["al-Ghazali", "Ghazali"]], ["ibnrushd", "Ibn Rushd (Averroes)", "1126–1198", ["Averroes", "Ibn Rushd"]],
+  ["anselm", "Anselm", "1033–1109"], ["aquinas", "Thomas Aquinas", "1225–1274", ["Aquinas"]], ["bodin", "Jean Bodin", "1530–1596", ["Bodin"]],
+  ["descartes", "René Descartes", "1596–1650", ["Descartes"]], ["hobbes", "Thomas Hobbes", "1588–1679", ["Hobbes"]], ["spinoza", "Baruch Spinoza", "1632–1677", ["Spinoza"]],
+  ["locke", "John Locke", "1632–1704", ["Locke"]], ["leibniz", "G. W. Leibniz", "1646–1716", ["Leibniz"]], ["berkeley", "George Berkeley", "1685–1753", ["Berkeley"]],
+  ["hume", "David Hume", "1711–1776", ["Hume"]], ["rousseau", "Jean-Jacques Rousseau", "1712–1778", ["Rousseau"]], ["kant", "Immanuel Kant", "1724–1804", ["Kant"]],
+  ["bentham", "Jeremy Bentham", "1748–1832", ["Bentham"]], ["wollstonecraft", "Mary Wollstonecraft", "1759–1797", ["Wollstonecraft"]], ["fichte", "J. G. Fichte", "1762–1814", ["Fichte"]],
+  ["schleiermacher", "Friedrich Schleiermacher", "1768–1834", ["Schleiermacher"]], ["hegel", "G. W. F. Hegel", "1770–1831", ["Hegel"]], ["schelling", "F. W. J. Schelling", "1775–1854", ["Schelling"]],
+  ["mill", "John Stuart Mill", "1806–1873", ["Mill"]], ["kierkegaard", "Søren Kierkegaard", "1813–1855", ["Kierkegaard"]], ["marx", "Karl Marx", "1818–1883", ["Marx"]],
+  ["engels", "Friedrich Engels", "1820–1895", ["Engels"]], ["dilthey", "Wilhelm Dilthey", "1833–1911", ["Dilthey"]], ["brentano", "Franz Brentano", "1838–1917", ["Brentano"]],
+  ["peirce", "C. S. Peirce", "1839–1914", ["Peirce"]], ["james", "William James", "1842–1910", ["William James"]], ["nietzsche", "Friedrich Nietzsche", "1844–1900", ["Nietzsche"]],
+  ["frege", "Gottlob Frege", "1848–1925", ["Frege"]], ["saussure", "Ferdinand de Saussure", "1857–1913", ["Saussure"]], ["husserl", "Edmund Husserl", "1859–1938", ["Husserl"]],
+  ["dewey", "John Dewey", "1859–1952", ["Dewey"]], ["dubois", "W. E. B. Du Bois", "1868–1963", ["Du Bois"]], ["russell", "Bertrand Russell", "1872–1970", ["Russell"]],
+  ["moore", "G. E. Moore", "1873–1958"], ["lukacs", "Georg Lukács", "1885–1971", ["Lukács", "Lukacs"]], ["schmitt", "Carl Schmitt", "1888–1985", ["Schmitt"]],
+  ["heidegger", "Martin Heidegger", "1889–1976", ["Heidegger"]], ["wittgenstein", "Ludwig Wittgenstein", "1889–1951", ["Wittgenstein"]], ["gramsci", "Antonio Gramsci", "1891–1937", ["Gramsci"]],
+  ["benjamin", "Walter Benjamin", "1892–1940", ["Benjamin"]], ["horkheimer", "Max Horkheimer", "1895–1973", ["Horkheimer"]], ["marcuse", "Herbert Marcuse", "1898–1979", ["Marcuse"]],
+  ["ryle", "Gilbert Ryle", "1900–1976", ["Ryle"]], ["gadamer", "Hans-Georg Gadamer", "1900–2002", ["Gadamer"]], ["popper", "Karl Popper", "1902–1994", ["Popper"]],
+  ["adorno", "Theodor W. Adorno", "1903–1969", ["Adorno"]], ["sartre", "Jean-Paul Sartre", "1905–1980", ["Sartre"]], ["arendt", "Hannah Arendt", "1906–1975", ["Arendt"]],
+  ["hart", "H. L. A. Hart", "1907–1992", ["H. L. A. Hart"]], ["beauvoir", "Simone de Beauvoir", "1908–1986", ["Beauvoir"]], ["merleauponty", "Maurice Merleau-Ponty", "1908–1961", ["Merleau-Ponty"]],
+  ["levistrauss", "Claude Lévi-Strauss", "1908–2009", ["Lévi-Strauss", "Levi-Strauss"]], ["quine", "W. V. O. Quine", "1908–2000", ["Quine"]], ["austin", "J. L. Austin", "1911–1960", ["Austin"]],
+  ["barthes", "Roland Barthes", "1915–1980", ["Barthes"]], ["althusser", "Louis Althusser", "1918–1990", ["Althusser"]], ["rawls", "John Rawls", "1921–2002", ["Rawls"]],
+  ["kuhn", "Thomas Kuhn", "1922–1996", ["Kuhn"]], ["fanon", "Frantz Fanon", "1925–1961", ["Fanon"]], ["foucault", "Michel Foucault", "1926–1984", ["Foucault"]],
+  ["dorothysmith", "Dorothy E. Smith", "1926–2022", ["Dorothy Smith", "Dorothy E. Smith"]], ["gettier", "Edmund Gettier", "1927–2021", ["Gettier"]], ["luckmann", "Thomas Luckmann", "1927–2016", ["Luckmann"]],
+  ["berger", "Peter L. Berger", "1929–2017", ["Berger"]], ["habermas", "Jürgen Habermas", "b. 1929", ["Habermas"]], ["bourdieu", "Pierre Bourdieu", "1930–2002", ["Bourdieu"]],
+  ["derrida", "Jacques Derrida", "1930–2004", ["Derrida"]], ["wiredu", "Kwasi Wiredu", "1931–2022", ["Wiredu"]], ["said", "Edward Said", "1935–2003", ["Edward Said"]],
+  ["harding", "Sandra Harding", "b. 1935", ["Harding"]], ["hacking", "Ian Hacking", "1936–2023", ["Hacking"]], ["nagel", "Thomas Nagel", "b. 1937", ["Nagel"]],
+  ["vogel", "Lise Vogel", "b. 1938", ["Lise Vogel", "Vogel"]], ["gyekye", "Kwame Gyekye", "1939–2019", ["Gyekye"]], ["robinson", "Cedric J. Robinson", "1940–2016", ["Robinson"]],
+  ["kristeva", "Julia Kristeva", "b. 1941", ["Kristeva"]], ["spivak", "Gayatri Chakravorty Spivak", "b. 1942", ["Spivak"]], ["federici", "Silvia Federici", "b. 1942", ["Federici"]],
+  ["hountondji", "Paulin Hountondji", "1942–2024", ["Hountondji"]], ["hartsock", "Nancy Hartsock", "1943–2015", ["Hartsock"]], ["winant", "Howard Winant", "b. 1946", ["Winant"]],
+  ["collins", "Patricia Hill Collins", "b. 1948", ["Patricia Hill Collins", "Collins"]], ["omi", "Michael Omi", "b. 1951", ["Omi"]], ["mills", "Charles W. Mills", "1951–2021", ["Charles Mills", "Charles W. Mills"]],
+  ["butler", "Judith Butler", "b. 1956", ["Butler"]], ["mbembe", "Achille Mbembe", "b. 1957", ["Mbembe"]], ["crenshaw", "Kimberlé Crenshaw", "b. 1959", ["Crenshaw"]],
+  ["fricker", "Miranda Fricker", "b. 1966", ["Fricker"]], ["bhattacharya", "Tithi Bhattacharya", "", ["Bhattacharya"]],
+].map(([id, n, y, al]) => ({ id, n, y, al: al || [n] }));
+const THINKER = new Map(THINKERS.map((p) => [p.id, p]));
+
+const BRANCHES = [
+  // by subject
+  { id: "metaphysics", n: "Metaphysics", k: "branch", d: "The study of what there is and what it is like at the most general level: being, substance, identity, causation, time and possibility. Ontology, the theory of being, is its core.", q: ["What exists, and in what ways?", "What makes a thing the same thing over time?", "Is everything that happens determined?"], p: ["aristotle", "spinoza", "leibniz", "hegel", "heidegger"], st: ["Aristotle, Metaphysics", "Descartes, Meditations on First Philosophy (1641)", "Spinoza, Ethics (1677)"] },
+  { id: "epistemology", n: "Epistemology", k: "branch", d: "The study of knowledge and justified belief: what knowledge is, where it comes from, and how far it reaches.", q: ["What is knowledge, and how does it differ from true belief?", "Can anything be known with certainty?", "What do experience and reason each contribute?"], p: ["plato", "descartes", "locke", "hume", "kant", "fricker"], st: ["Plato, Theaetetus", "Hume, An Enquiry Concerning Human Understanding (1748)", "Kant, Critique of Pure Reason (1781)"] },
+  { id: "logic", n: "Logic", k: "branch", d: "The study of correct reasoning: which inferences preserve truth, and why. Modern logic studies formal systems as well as arguments in ordinary language.", q: ["What makes an argument valid?", "What is the logical form of a statement?", "How do logic and language relate?"], p: ["aristotle", "frege", "russell"], st: ["Aristotle, Prior Analytics", "Frege, Begriffsschrift (1879)", "Russell, “On Denoting” (1905)"] },
+  { id: "ethics", n: "Ethics", k: "branch", d: "The study of how to live and act: what is good, what is right, and what we owe one another. It divides into metaethics, normative ethics and applied ethics.", q: ["What makes an action right or wrong?", "What is a good life?", "Are there moral facts?"], p: ["aristotle", "kant", "mill", "nietzsche", "beauvoir"], st: ["Aristotle, Nicomachean Ethics", "Kant, Groundwork of the Metaphysics of Morals (1785)", "Mill, Utilitarianism (1861)", "Nietzsche, On the Genealogy of Morality (1887)"] },
+  { id: "aesthetics", n: "Aesthetics", k: "branch", d: "The study of beauty, art and taste: what art is, how aesthetic judgment works, and what art does in social life.", q: ["What makes something a work of art?", "Can judgments of taste be correct?", "How is art shaped by its social and technical conditions?"], p: ["kant", "hegel", "benjamin", "adorno"], st: ["Kant, Critique of the Power of Judgment (1790)", "Benjamin, “The Work of Art in the Age of Its Technological Reproducibility” (1935–36)", "Adorno, Aesthetic Theory (1970)"] },
+  { id: "political", n: "Political and social philosophy", k: "branch", d: "The study of power, authority, justice and freedom, and of the social structures that shape people's lives: what makes rule legitimate, and what a just society would be.", q: ["What makes political authority legitimate?", "What does justice require?", "How do social structures produce and constrain persons?"], p: ["plato", "hobbes", "locke", "rousseau", "marx", "arendt", "rawls"], st: ["Plato, Republic", "Hobbes, Leviathan (1651)", "Rousseau, The Social Contract (1762)", "Rawls, A Theory of Justice (1971)"] },
+  { id: "mind", n: "Philosophy of mind", k: "branch", d: "The study of the mind and consciousness, and of their relation to the body and the physical world.", q: ["How is the mind related to the body?", "What is consciousness?", "How can we know other minds?"], p: ["descartes", "ryle", "nagel"], st: ["Descartes, Meditations on First Philosophy (1641)", "Ryle, The Concept of Mind (1949)", "Nagel, “What Is It Like to Be a Bat?” (1974)"] },
+  { id: "language", n: "Philosophy of language", k: "branch", d: "The study of meaning, reference and truth, and of what people do with words.", q: ["How do words come to mean anything?", "How do names refer to things?", "What do we do when we speak?"], p: ["frege", "wittgenstein", "austin", "saussure"], st: ["Frege, “On Sense and Reference” (1892)", "Wittgenstein, Philosophical Investigations (1953)", "Austin, How to Do Things with Words (1962)"] },
+  { id: "science", n: "Philosophy of science", k: "branch", d: "The study of what science is, how scientific theories are tested and confirmed, and how science changes over time.", q: ["What separates science from non-science?", "How does evidence support a theory?", "Does science progress toward truth?"], p: ["hume", "popper", "kuhn"], st: ["Popper, The Logic of Scientific Discovery (1934)", "Kuhn, The Structure of Scientific Revolutions (1962)"] },
+  { id: "religion", n: "Philosophy of religion", k: "branch", d: "The rational examination of religious belief: arguments about God's existence, the problem of evil, and the relation of faith to reason.", q: ["Can God's existence be proven?", "How can a good God permit evil?", "What is the relation between faith and reason?"], p: ["anselm", "aquinas", "hume", "kierkegaard"], st: ["Anselm, Proslogion", "Hume, Dialogues Concerning Natural Religion (1779)", "Kierkegaard, Fear and Trembling (1843)"] },
+  { id: "history", n: "Philosophy of history", k: "branch", d: "Reflection on whether history has a direction or meaning, and on how historical knowledge is possible.", q: ["Does history have a direction?", "What drives historical change?", "How should the past be written?"], p: ["hegel", "marx", "benjamin", "foucault"], st: ["Hegel, Lectures on the Philosophy of History", "Benjamin, “On the Concept of History” (1940)", "Foucault, “Nietzsche, Genealogy, History” (1971)"] },
+  { id: "law", n: "Philosophy of law", k: "branch", d: "The study of what law is, how it relates to morality, and what justifies punishment.", q: ["What makes a rule a law?", "Must law be just to be law?", "What justifies punishment?"], p: ["hart", "foucault"], st: ["Hart, The Concept of Law (1961)", "Foucault, Discipline and Punish (1975)"] },
+  { id: "mathematics", n: "Philosophy of mathematics", k: "branch", d: "The study of what mathematical objects are, how mathematical knowledge is possible, and how mathematics relates to logic.", q: ["Do numbers exist?", "How do we know mathematical truths?", "Can mathematics be reduced to logic?"], p: ["plato", "frege", "russell"], st: ["Frege, The Foundations of Arithmetic (1884)"] },
+  // traditions and approaches
+  { id: "ancient", n: "Ancient Greek and Roman philosophy", k: "tradition", d: "From the Presocratics through Socrates, Plato and Aristotle to the Hellenistic schools (Stoics, Epicureans, Skeptics). It set many of the questions and terms the later Western tradition works with.", q: ["What is the underlying nature of things?", "What is virtue, and can it be taught?", "How should one live to be free of disturbance?"], p: ["parmenides", "socrates", "plato", "aristotle", "epictetus", "lucretius", "pyrrho"], st: ["Plato, Republic", "Aristotle, Nicomachean Ethics", "Epictetus, Handbook", "Lucretius, On the Nature of Things"] },
+  { id: "german-idealism", n: "German idealism", k: "tradition", d: "The philosophy that developed in response to Kant's critical philosophy, from Fichte and Schelling to Hegel's system, centered on reason, freedom and self-consciousness.", q: ["What are the conditions of possible experience?", "How is self-consciousness structured?", "Can philosophy grasp the whole as a system?"], p: ["kant", "fichte", "schelling", "hegel"], st: ["Kant, Critique of Pure Reason (1781)", "Hegel, Phenomenology of Spirit (1807)"] },
+  { id: "phenomenology", n: "Phenomenology, hermeneutics and existentialism", k: "tradition", d: "Phenomenology describes the structures of lived experience. Hermeneutics studies interpretation and understanding. Existentialism centers on freedom, choice and concrete existence.", q: ["How is the world given in experience?", "What is it to understand a text, or a life?", "What does freedom demand of us?"], p: ["husserl", "heidegger", "merleauponty", "sartre", "beauvoir", "gadamer", "kierkegaard"], st: ["Husserl, Ideas I (1913)", "Heidegger, Being and Time (1927)", "Sartre, Being and Nothingness (1943)", "Merleau-Ponty, Phenomenology of Perception (1945)", "Gadamer, Truth and Method (1960)"] },
+  { id: "marxism", n: "Marxism", k: "tradition", d: "The tradition founded by Marx and Engels: a materialist account of history, a critique of political economy, and a theory of class struggle, developed later by Lukács, Gramsci, Althusser and many others.", q: ["How does capitalism produce and reproduce itself?", "How do ideas relate to material conditions?", "What would emancipation require?"], p: ["marx", "engels", "lukacs", "gramsci", "althusser"], st: ["Marx and Engels, The Communist Manifesto (1848)", "Marx, Capital, vol. 1 (1867)", "Lukács, History and Class Consciousness (1923)"] },
+  { id: "critical-theory", n: "Frankfurt School critical theory", k: "tradition", d: "Social philosophy from the Institute for Social Research in Frankfurt, combining Marx, Hegel and Freud to criticize modern society with emancipatory aims.", q: ["Why did the promise of enlightenment turn into domination?", "How does mass culture shape consciousness?", "What can critique do?"], p: ["horkheimer", "adorno", "marcuse", "benjamin", "habermas"], st: ["Horkheimer, “Traditional and Critical Theory” (1937)", "Horkheimer and Adorno, Dialectic of Enlightenment (1944/1947)", "Marcuse, One-Dimensional Man (1964)"] },
+  { id: "poststructuralism", n: "Structuralism and post-structuralism", k: "tradition", d: "Structuralism explains meaning through systems of differences, from Saussure's linguistics to Lévi-Strauss's anthropology. Post-structuralism, a largely English-language label, covers French thinkers who questioned stable structures, origins and the unified subject.", q: ["How do systems of difference produce meaning?", "How are subjects formed by language, discourse and power?", "What do texts exclude in order to cohere?"], p: ["saussure", "levistrauss", "barthes", "althusser", "foucault", "derrida", "kristeva"], st: ["Saussure, Course in General Linguistics (1916)", "Barthes, Mythologies (1957)", "Foucault, Discipline and Punish (1975)", "Derrida, Of Grammatology (1967)"] },
+  { id: "feminist", n: "Feminist philosophy", k: "tradition", d: "Philosophy that examines gender, sexuality and the oppression of women, and how they shape knowledge, ethics, politics and the self.", q: ["How is gender produced and maintained?", "How does social position shape knowledge?", "What would gender justice require?"], p: ["wollstonecraft", "beauvoir", "butler", "hartsock", "federici", "crenshaw", "fricker"], st: ["Wollstonecraft, A Vindication of the Rights of Woman (1792)", "Beauvoir, The Second Sex (1949)", "Butler, Gender Trouble (1990)"] },
+  { id: "race", n: "Philosophy of race and critical race theory", k: "tradition", d: "Inquiry into what race is, how racial categories are made and enforced, and how racism structures law, knowledge and political economy.", q: ["What kind of thing is race?", "How is racism built into institutions?", "How do race, class and gender interlock?"], p: ["dubois", "fanon", "crenshaw", "omi", "winant", "robinson", "mills"], st: ["Du Bois, The Souls of Black Folk (1903)", "Fanon, Black Skin, White Masks (1952)", "Mills, The Racial Contract (1997)"] },
+  { id: "postcolonial", n: "Postcolonial and decolonial thought", k: "tradition", d: "Thought about colonialism and its aftermath: how empire shaped knowledge, culture and identity, and what liberation from it involves.", q: ["How did colonialism shape what counts as knowledge?", "Who can speak for the colonized?", "What does decolonization require?"], p: ["fanon", "said", "spivak", "mbembe"], st: ["Fanon, The Wretched of the Earth (1961)", "Said, Orientalism (1978)", "Spivak, “Can the Subaltern Speak?” (1988)"] },
+  { id: "pragmatism", n: "Pragmatism", k: "tradition", d: "An American tradition that understands meaning and truth through practical consequences and inquiry.", q: ["What difference does a belief make in practice?", "How are truth and successful practice related?", "How should inquiry proceed?"], p: ["peirce", "james", "dewey"], st: ["Peirce, “How to Make Our Ideas Clear” (1878)", "James, Pragmatism (1907)", "Dewey, Experience and Nature (1925)"] },
+  { id: "analytic", n: "Analytic philosophy", k: "tradition", d: "The tradition, dominant in English-speaking universities, that began with logic and the analysis of language, and prizes argumentative clarity.", q: ["What do our sentences really say?", "Can philosophical problems be solved by clarifying language?", "How does philosophy relate to science?"], p: ["frege", "russell", "moore", "wittgenstein", "quine"], st: ["Russell, “On Denoting” (1905)", "Wittgenstein, Tractatus Logico-Philosophicus (1921)", "Quine, “Two Dogmas of Empiricism” (1951)"] },
+  { id: "african", n: "African philosophy", k: "tradition", d: "Philosophy from African traditions and thinkers, including debates over what African philosophy is, and work on personhood, community and knowledge.", q: ["What makes a philosophy African?", "What is a person, and what does a person owe the community?", "How should philosophy relate to traditional thought?"], p: ["hountondji", "wiredu", "gyekye"], st: ["Hountondji, African Philosophy: Myth and Reality (1976)", "Wiredu, Philosophy and an African Culture (1980)", "Gyekye, An Essay on African Philosophical Thought (1987)"] },
+  { id: "chinese", n: "Chinese philosophy", k: "tradition", d: "Confucian, Daoist, Mohist, Legalist, Buddhist and Neo-Confucian thought, much of it concerned with ethics, government and harmony with the dao, or way.", q: ["How does one become a good person?", "What is the dao?", "How should a ruler govern?"], p: ["confucius", "mencius", "laozi", "zhuangzi"], st: ["Confucius, Analects", "Laozi, Daodejing", "Zhuangzi"] },
+  { id: "indian", n: "Indian philosophy", k: "tradition", d: "The classical Indian schools, Hindu, Buddhist and Jain, which debated the self, consciousness, knowledge and liberation with highly developed epistemology and logic.", q: ["Is there an enduring self?", "What are the valid sources of knowledge?", "What is liberation, and how is it reached?"], p: ["nagarjuna", "shankara"], st: ["The Upanishads", "The Bhagavad Gītā", "Nāgārjuna, Mūlamadhyamakakārikā"] },
+  { id: "islamic", n: "Philosophy in the Islamic world", k: "tradition", d: "Philosophy written mainly in Arabic and Persian that took up and transformed Greek thought, debating God, the intellect and the relation of reason to revelation.", q: ["How do reason and revelation relate?", "Is the world eternal or created?", "What is the intellect?"], p: ["farabi", "ibnsina", "ghazali", "ibnrushd"], st: ["Ibn Sīnā, The Book of Healing", "al-Ghazālī, The Incoherence of the Philosophers", "Ibn Rushd, The Incoherence of the Incoherence"] },
+];
+const BRANCH = new Map(BRANCHES.map((b) => [b.id, b]));
+// Which branch or tradition each glossary term belongs to. Area defaults first, then terms placed more precisely.
+const AREA_BRANCH = { meta: ["metaphysics"], know: ["epistemology"], logic: ["logic"], ethics: ["ethics"], phen: ["phenomenology"], crit: ["critical-theory"], mine: [] };
+const TERM_BRANCH = {
+  "social-contract": ["political"], sovereignty: ["political"], recognition: ["german-idealism", "political"], autonomy: ["ethics", "political"],
+  transcendental: ["epistemology", "german-idealism"], "synthetic-a-priori": ["epistemology", "german-idealism"], noumenon: ["epistemology", "german-idealism"],
+  dialectic: ["german-idealism", "marxism"], aufhebung: ["german-idealism"], "immanent-critique": ["critical-theory"], "critical-theory": ["critical-theory"],
+  genealogy: ["poststructuralism", "history"], alienation: ["marxism"], "commodity-fetishism": ["marxism"], reification: ["marxism", "critical-theory"],
+  "base-superstructure": ["marxism"], "historical-materialism": ["marxism", "history"], ideology: ["marxism", "political"], hegemony: ["marxism", "political"],
+  interpellation: ["marxism", "poststructuralism"], structuralism: ["poststructuralism"], signifier: ["poststructuralism", "language"], "post-structuralism": ["poststructuralism"],
+  deconstruction: ["poststructuralism"], discourse: ["poststructuralism"], "power-knowledge": ["poststructuralism"], biopower: ["poststructuralism", "political"],
+  subjectivation: ["poststructuralism"], naturalization: ["poststructuralism", "political"], essentialism: ["metaphysics", "feminist"], "social-construction": ["political", "feminist"],
+  intersectionality: ["race", "feminist"], performativity: ["language", "feminist"], standpoint: ["epistemology", "feminist"],
+  episteme: ["poststructuralism", "epistemology"], governmentality: ["poststructuralism", "political"], panopticism: ["poststructuralism", "political"],
+  habitus: ["political"], "double-consciousness": ["race"], "racial-formation": ["race"], "racial-capitalism": ["race", "marxism"], necropolitics: ["postcolonial", "political"],
+  subaltern: ["postcolonial", "marxism"], "social-reproduction": ["feminist", "marxism"], "use-exchange-value": ["marxism"], "surplus-value": ["marxism"], "primitive-accumulation": ["marxism", "history"],
+  "bad-faith": ["phenomenology"], ressentiment: ["ethics"], "epistemic-injustice": ["epistemology", "feminist"], "category-mistake": ["logic", "mind"], dualism: ["metaphysics", "mind"],
+  "categorical-imperative": ["ethics"], "induction-problem": ["epistemology", "science"], abduction: ["logic", "science"], intentionality: ["phenomenology", "mind"],
+};
+
+/* ---------- branches ---------- */
+function termBranches(g) { return (TERM_BRANCH[g.id] && !g.edited && g.builtIn ? TERM_BRANCH[g.id] : AREA_BRANCH[g.a] || []).filter((b) => BRANCH.has(b)); }
+function branchesHome() {
+  const chips = (k) => BRANCHES.filter((b) => b.k === k).map((b) => `<button class="chip bchip" data-branch="${esc(b.id)}">${esc(b.n)}</button>`).join("");
+  return `<section class="home-sec">
+    <div class="sec-head"><div><h2>Branches</h2><div class="sub">${BRANCHES.filter((b) => b.k === "branch").length} branches and ${BRANCHES.filter((b) => b.k === "tradition").length} traditions</div></div><button class="btn" id="openbranches">See all</button></div>
+    <div class="label">By subject</div>
+    <div class="chips bchips">${chips("branch")}</div>
+    <div class="label">Traditions</div>
+    <div class="chips bchips">${chips("tradition")}</div>
+  </section>`;
+}
+function branchesView() {
+  const sec = (k, title, intro) => `<section class="group"><div class="label">${title}</div><p class="hint">${intro}</p><div class="gl-list">${BRANCHES.filter((b) => b.k === k).map((b) => {
+    const terms = allTerms().filter((g) => termBranches(g).includes(b.id));
+    return `<details class="term branch" data-branch-id="${esc(b.id)}"${S.bOpen.has(b.id) ? " open" : ""}>
+      <summary><span class="tm">${esc(b.n)}</span><span class="ta">${terms.length} glossary term${terms.length === 1 ? "" : "s"}, ${b.p.length} figure${b.p.length === 1 ? "" : "s"}</span></summary>
+      <div class="tbody">
+        <p class="tdef">${esc(b.d)}</p>
+        <div class="label">Questions it asks</div>
+        <ul class="bq-list">${b.q.map((q) => `<li>${esc(q)}</li>`).join("")}</ul>
+        ${terms.length ? `<div class="label">Key terms</div><div class="chips">${terms.map((g) => `<button class="chip bchip" data-term="${esc(g.id)}">${esc(g.t)}</button>`).join("")}</div>` : ""}
+        <div class="label">Figures</div>
+        <ul class="bq-list">${b.p.map((p) => THINKER.get(p)).filter(Boolean).map((p) => `<li>${esc(p.n)}${p.y ? ` <span class="tsrc">${esc(p.y)}</span>` : ""}</li>`).join("")}</ul>
+        <div class="label">Where to start</div>
+        <ul class="bq-list">${b.st.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>
+      </div></details>`; }).join("")}</div></section>`;
+  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Library</button></div>
+    <header class="gl-head"><div><h1>Branches of philosophy</h1><div class="sub">${BRANCHES.filter((b) => b.k === "branch").length} branches and ${BRANCHES.filter((b) => b.k === "tradition").length} traditions</div></div></header>
+    ${sec("branch", "Branches by subject", "The main fields of philosophy, defined by the questions they ask.")}
+    ${sec("tradition", "Traditions and approaches", "Schools and lineages, defined by shared methods, problems and texts. They cut across the branches above.")}`;
+}
+/* ---------- navigation: every step forward adds a history entry, so the phone's back button steps back through the app ---------- */
+const NAV = { stack: [{ screen: "library" }], overlay: false };
+const depth = () => NAV.stack.length - 1 + (NAV.overlay ? 1 : 0);
+try { history.replaceState({ mg: 0 }, ""); } catch {}
+let popWaiter = null;
+// Consume one history entry for a step the app has already taken itself (an on-screen back button, Cancel, Save).
+function histBack() {
+  return new Promise((res) => {
+    const done = () => { if (popWaiter === done) popWaiter = null; res(); };
+    popWaiter = done; history.back(); setTimeout(done, 700);
+  });
+}
+function showView(view, fresh) {
+  if (view.screen === "reader") { openReader(view.textId, view.at); return; }
+  if (S.screen === "reader") { savePos(); resetReader(); }
+  S.screen = view.screen;
+  if (view.textId) S.textId = view.textId;
+  if (view.screen === "tag") S.tag = view.tag || "";
+  if (view.focus) S.bOpen.add(view.focus);
+  if (fresh && view.screen === "text") { S.sec = "all"; S.kind = "all"; S.tq = ""; }
+  render();
+  window.scrollTo(0, fresh ? 0 : view.y || 0);
+  if (fresh && view.focus) { const el = document.querySelector(`[data-branch-id="${CSS.escape(view.focus)}"]`); if (el) el.scrollIntoView({ block: "start" }); }
+}
+function go(view) {
+  NAV.stack[NAV.stack.length - 1].y = window.scrollY;
+  NAV.stack.push(view);
+  try { history.pushState({ mg: depth() }, ""); } catch {}
+  showView(view, true);
+}
+function stepBack() {
+  if (NAV.overlay) { $("#sheetroot").innerHTML = ""; NAV.overlay = false; return true; }
+  if (NAV.stack.length > 1) { NAV.stack.pop(); showView(NAV.stack[NAV.stack.length - 1], false); return true; }
+  return false;
+}
+async function back() { if (stepBack()) await histBack(); }
+window.addEventListener("popstate", (e) => {
+  if (popWaiter) { popWaiter(); return; }
+  if ($("#sheetroot form[data-busy]")) { try { history.pushState({ mg: depth() }, ""); } catch {} return; } // don't abandon a save in progress
+  const target = e.state && typeof e.state.mg === "number" ? e.state.mg : 0;
+  for (let guard = 0; depth() > target && guard < 20; guard++) if (!stepBack()) break;
+});
+function openOverlay() {
+  if (NAV.overlay) return;
+  NAV.overlay = true;
+  try { history.pushState({ mg: depth() }, ""); } catch {}
+}
+async function closeOverlay() { if (NAV.overlay) await back(); else $("#sheetroot").innerHTML = ""; }
+
+/* ---------- sheets ---------- */
+function openSheet(html, onSubmit, onOpen) {
+  const root = $("#sheetroot");
+  openOverlay();
+  root.innerHTML = `<div class="veil"><form class="sheet" novalidate>${html}<div class="err" id="err"></div>
+    <div class="formacts"><button type="button" class="btn" id="cancel">Cancel</button><button class="btn primary" type="submit">Save</button></div></form></div>`;
+  const form = $("form", root);
+  $("#cancel", root).onclick = () => closeOverlay();
+  $(".veil", root).addEventListener("click", (e) => { if (e.target.classList.contains("veil") && !form.dataset.busy) closeOverlay(); });
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = $("button[type=submit]", form); btn.disabled = true; form.dataset.busy = "1";
+    try {
+      const out = await onSubmit(new FormData(form));
+      if (typeof out === "string") { $("#err", root).textContent = out; btn.disabled = false; delete form.dataset.busy; return; }
+      delete form.dataset.busy;
+      await closeOverlay();
+      if (typeof out === "function") out(); // e.g. open the text you just added
+    }
+    catch (err) { $("#err", root).textContent = err instanceof UErr ? err.message : failMsg(err); btn.disabled = false; delete form.dataset.busy; }
+  });
+  if (onOpen) onOpen(root);
+  const first = $("input:not([type=file]), textarea, select", form); if (first && !onOpen) first.focus();
+}
+function openPanel(html, onPick) {
+  const root = $("#sheetroot");
+  openOverlay();
+  root.innerHTML = `<div class="veil"><div class="sheet" role="dialog" aria-modal="true">${html}<div class="formacts"><button type="button" class="btn" id="pclose">Close</button></div></div></div>`;
+  $(".veil", root).addEventListener("click", async (e) => {
+    if (e.target.classList.contains("veil") || e.target.id === "pclose") { closeOverlay(); return; }
+    const b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.keep) { onPick(b); return; }
+    await closeOverlay(); onPick(b);
+  });
+}
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && $("#sheetroot").innerHTML && !$("#sheetroot form[data-busy]")) closeOverlay(); });
+
+const fileField = () => `<div class="field">
+    <label for="f-file">Load the book</label>
+    <div class="drop" id="f-drop">
+      <input id="f-file" type="file">
+      <span class="drop-main" id="f-name">Tap to choose a file</span>
+      <span class="drop-sub">PDF, EPUB, Word (.docx), .txt or .md. On a computer you can also drag the file here.</span>
+    </div>
+    <p class="hint" id="f-prog">The text is extracted and stored on this device only; the file itself isn't kept. Scanned PDFs need OCR first.</p>
+    <button type="button" class="linkbtn" id="f-pastebtn">Or paste the text instead</button>
+    <div class="pastebox" id="f-pastebox" hidden>
+      <textarea id="f-paste" class="verbatim" rows="6" placeholder="Paste the text here. Leave a blank line between paragraphs."></textarea>
+      <button type="button" class="btn" id="f-pasteuse">Use this text</button>
+    </div>
+  </div>`;
+function wireFile(root, onParsed) {
+  const inp = $("#f-file", root), prog = $("#f-prog", root), btn = $("button[type=submit]", root), name = $("#f-name", root), drop = $("#f-drop", root);
+  const say = (m, bad) => { prog.textContent = m; prog.classList.toggle("bad", !!bad); };
+  let busy = false;
+  const run = async (f) => {
+    if (busy) return; busy = true;
+    name.textContent = f.name || "Chosen file";
+    btn.disabled = true; say("Reading the file…");
+    try { const r = await parseFile(f, (m) => say(m)); onParsed(r); say(summary(r)); }
+    catch (e) { say(e instanceof UErr ? e.message : `Couldn't read this file (${(e && e.message) || "unknown error"}).`, true); onParsed(null); }
+    btn.disabled = false; busy = false;
+  };
+  inp.addEventListener("change", () => { const f = inp.files && inp.files[0]; if (f) run(f); });
+  inp.addEventListener("cancel", () => say("No file was chosen."));
+  ["dragenter", "dragover"].forEach((ev) => drop.addEventListener(ev, () => drop.classList.add("over")));
+  ["dragleave", "drop"].forEach((ev) => drop.addEventListener(ev, () => drop.classList.remove("over")));
+  $("#f-pastebtn", root).addEventListener("click", () => {
+    const box = $("#f-pastebox", root); box.hidden = !box.hidden;
+    if (!box.hidden) $("#f-paste", root).focus();
+  });
+  $("#f-pasteuse", root).addEventListener("click", () => {
+    const txt = $("#f-paste", root).value;
+    if (txt.trim().length < 20) { say("Paste some text into the box first.", true); return; }
+    run(new File([txt], "Pasted text.txt", { type: "text/plain" }));
+  });
+}
+
+const coverField = (t, url) => `<div class="field">
+    <span class="flabel">Cover</span>
+    <div class="coverpick">
+      <div class="coverprev" id="c-prev">${coverHTML(t, url)}</div>
+      <div class="coverctl">
+        <span class="btn filebtn">Choose image<input id="c-file" type="file" accept="image/*" aria-label="Choose a cover image"></span>
+        <button type="button" class="btn ghost" id="c-remove"${url ? "" : " hidden"}>Remove cover</button>
+        <p class="hint" id="c-hint">A photo or image of the cover. PDFs and EPUBs fill this in for you when you load the book.</p>
+      </div>
+    </div>
+  </div>`;
+// cover.blob: undefined = leave as is, null = remove, Blob = new cover. cover.auto = it came from the book file.
+function wireCover(root, cover, getT) {
+  const prev = $("#c-prev", root), rm = $("#c-remove", root), hint = $("#c-hint", root), inp = $("#c-file", root);
+  let url = null;
+  cover.show = (blob) => {
+    if (url) { URL.revokeObjectURL(url); url = null; }
+    if (blob) url = URL.createObjectURL(blob);
+    const base = blob === undefined ? cover.current : url;
+    prev.innerHTML = coverHTML(getT(), base);
+    rm.hidden = !base;
+    cover.hasImg = !!base;
+  };
+  cover.hasImg = !!cover.current;
+  inp.addEventListener("change", async () => {
+    const f = inp.files && inp.files[0]; inp.value = ""; if (!f) return;
+    hint.textContent = "Preparing the image…"; hint.classList.remove("bad");
+    try { cover.blob = await toCover(f); cover.auto = false; cover.show(cover.blob); hint.textContent = "New cover ready. It's saved when you tap Save."; }
+    catch (e) { hint.textContent = e instanceof UErr ? e.message : "That image couldn't be opened. Use a JPEG or PNG."; hint.classList.add("bad"); }
+  });
+  rm.addEventListener("click", () => { cover.blob = null; cover.auto = false; cover.show(null); hint.textContent = "The cover will be removed when you tap Save."; });
+  root.addEventListener("input", (e) => { if ((e.target.id === "f-title" || e.target.id === "f-author") && !cover.hasImg) prev.innerHTML = coverHTML(getT(), null); });
+}
+async function saveCover(tid, cover) {
+  if (cover.blob === undefined) return;
+  if (cover.blob) await put("covers", tid, cover.blob); else await del("covers", tid);
+}
+
+function textSheet(id) {
+  const t = id ? S.texts.get(id) : {};
+  let parsed = null; const auto = {};
+  const cover = { blob: undefined, auto: false, current: id ? coverURL(id) : null };
+  openSheet(`<h2>${id ? "Edit text" : "Add a text"}</h2>
+    ${id ? "" : fileField()}
+    <div class="field"><label for="f-title">Title</label><input id="f-title" name="title" value="${esc(t.title)}" required></div>
+    <div class="row2">
+      <div class="field"><label for="f-author">Author</label><input id="f-author" name="author" value="${esc(t.author)}"></div>
+      <div class="field"><label for="f-status">Status</label><select id="f-status" name="status">${Object.entries(STATUS).map(([k, v]) => `<option value="${k}" ${(t.status || "reading") === k ? "selected" : ""}>${v}</option>`).join("")}</select></div>
+    </div>
+    <div class="field"><label for="f-edition">Edition or translation</label><input id="f-edition" name="edition" value="${esc(t.edition)}" placeholder="e.g. trans. Edwin Curley"><span class="hint">Page numbers in your notes refer to this edition.</span></div>
+    <div class="row2">
+      <div class="field"><label for="f-pub">Publisher</label><input id="f-pub" name="publisher" value="${esc(t.publisher)}"></div>
+      <div class="field"><label for="f-year">Year</label><input id="f-year" name="year" value="${esc(t.year)}" inputmode="numeric"></div>
+    </div>
+    ${coverField(t, cover.current)}
+    <div class="field"><label for="f-secs">Sections</label><textarea id="f-secs" name="sections" rows="5">${esc((t.sections || []).map((s) => s.label).join("\n"))}</textarea><span class="hint">One per line: chapters, essays, plateaus, lectures.</span></div>`,
+  async (fd) => {
+    const title = fd.get("title").trim(); if (!title) return "Give the text a title.";
+    const old = (t.sections && t.sections.length) ? t.sections : parsed ? parsed.sections : [];
+    const sections = fd.get("sections").split("\n").map((l) => l.trim()).filter(Boolean).map((label) => {
+      const prev = old.find((s) => s.label === label); return prev ? { ...prev } : { id: gid(), label, done: false };
+    });
+    const tid = id || gid();
+    const data = { ...(id ? t : { createdAt: Date.now() }), title, author: fd.get("author").trim(), edition: fd.get("edition").trim(), publisher: fd.get("publisher").trim(), year: fd.get("year").trim(), status: fd.get("status"), sections, updatedAt: Date.now() };
+    if (parsed) {
+      linkHeadings(parsed.blocks, parsed.sections, sections);
+      const prog = $("#f-prog"); const say = (m) => { if (prog) prog.textContent = m; };
+      await saveContent(tid, parsed.blocks, say);
+      Object.assign(data, { hasContent: true, source: { name: parsed.name, kind: parsed.kind, pages: parsed.pages }, pos: 0, total: parsed.blocks.length });
+    }
+    await saveCover(tid, cover);
+    await put("texts", tid, data);
+    if (!S.texts.has(tid)) S.texts.set(tid, data);
+    if (!id) return () => go({ screen: "text", textId: tid });
+  },
+  (root) => {
+    const getT = () => ({ title: $("#f-title", root).value.trim() || "Untitled", author: $("#f-author", root).value.trim() });
+    wireCover(root, cover, getT);
+    if (id) return;
+    wireFile(root, (r) => {
+      parsed = r; if (!r) return;
+      const fill = (sel, key, val) => { const el = $(sel, root); if (el && (!el.value.trim() || el.value === auto[key])) { el.value = val; auto[key] = val; } };
+      fill("#f-title", "title", r.title);
+      if (r.author) fill("#f-author", "author", r.author);
+      fill("#f-secs", "secs", r.sections.map((s) => s.label).join("\n"));
+      if (cover.blob === undefined || cover.auto) {
+        if (r.cover) { cover.blob = r.cover; cover.auto = true; cover.show(r.cover); }
+        else if (cover.auto) { cover.blob = undefined; cover.auto = false; cover.show(undefined); }
+        else cover.show(undefined);
+      }
+    });
+  });
+}
+
+function fileSheet(tid) {
+  const t = S.texts.get(tid); let parsed = null;
+  openSheet(`<h2>${t.hasContent ? "Replace the text" : "Load the text"}</h2><p class="sub">${esc(t.title)}</p>${fileField()}
+    ${t.hasContent ? `<p class="hint">Your notes stay. Their "Show in text" links may land in the wrong place in the new version.</p>` : ""}`,
+  async () => {
+    if (!parsed) return "Choose a file first.";
+    const cur = S.texts.get(tid) || t;
+    const sections = cur.sections && cur.sections.length ? cur.sections : parsed.sections.map((s) => ({ ...s, done: false }));
+    linkHeadings(parsed.blocks, parsed.sections, sections);
+    const prog = $("#f-prog"); const say = (m) => { if (prog) prog.textContent = m; };
+    await saveContent(tid, parsed.blocks, say);
+    if (parsed.cover && !S.covers.has(tid)) await put("covers", tid, parsed.cover);
+    await put("texts", tid, { ...cur, sections, hasContent: true, source: { name: parsed.name, kind: parsed.kind, pages: parsed.pages }, pos: 0, total: parsed.blocks.length, updatedAt: Date.now() });
+  },
+  (root) => wireFile(root, (r) => { parsed = r; }));
+}
+
+function noteSheet(nid, preset) {
+  const n0 = nid ? S.notes.get(nid) : null, tid = n0 ? n0.textId : S.textId;
+  const t = S.texts.get(tid);
+  const n = nid ? n0 : { kind: "passage", sectionId: S.sec !== "all" ? S.sec : "", ...(preset || {}) };
+  if (!t || !n) return;
+  openSheet(`<h2>${nid ? "Edit note" : preset ? "Save passage" : "Add a note"}</h2>
+    <div class="row2">
+      <div class="field"><label for="n-page">Page</label><input id="n-page" name="page" value="${esc(n.page)}" placeholder="e.g. 36 or xii"></div>
+      <div class="field"><label for="n-kind">Kind</label><select id="n-kind" name="kind">${Object.entries(KINDS).map(([k, v]) => `<option value="${k}" ${n.kind === k ? "selected" : ""}>${v}</option>`).join("")}</select></div>
+    </div>
+    ${(t.sections || []).length ? `<div class="field"><label for="n-sec">Section</label><select id="n-sec" name="sectionId"><option value="">None</option>${t.sections.map((s) => `<option value="${esc(s.id)}" ${n.sectionId === s.id ? "selected" : ""}>${esc(s.label)}</option>`).join("")}</select></div>` : ""}
+    <div class="field"><label for="n-passage">Passage, word for word</label><textarea id="n-passage" class="verbatim" name="passage">${esc(n.passage)}</textarea><span class="hint">${preset ? "Taken from the text. Fix any stray characters from the file." : "Copy exactly from the page. Keep your interpretation in the next box."}</span></div>
+    <div class="argfields" id="n-arg"${n.kind === "argument" ? "" : " hidden"}>
+      <div class="field"><label for="n-prem">Premises, one per line</label><textarea id="n-prem" name="premises" rows="4" placeholder="Each thing strives to persevere in its being.">${esc((n.premises || []).join("\n"))}</textarea></div>
+      <div class="field"><label for="n-conc">Conclusion</label><input id="n-conc" name="conclusion" value="${esc(n.conclusion)}"></div>
+    </div>
+    <div class="field"><label for="n-gloss">Your note</label><textarea id="n-gloss" name="gloss">${esc(n.gloss)}</textarea><span class="hint">Add #tags anywhere in your note to collect it with related notes, like #naturalization.</span></div>`,
+  async (fd) => {
+    const passage = fd.get("passage").trim(), gloss = fd.get("gloss").trim(), kind = fd.get("kind");
+    const premises = kind === "argument" ? (fd.get("premises") || "").split("\n").map((x) => x.trim()).filter(Boolean) : [];
+    const conclusion = kind === "argument" ? (fd.get("conclusion") || "").trim() : "";
+    if (!passage && !gloss && !premises.length && !conclusion) return "Write a passage, a note, or both.";
+    if (kind === "argument" && (!premises.length || !conclusion)) return "An argument needs at least one premise and a conclusion.";
+    const data = { ...(nid ? n : { createdAt: Date.now() }), textId: tid, page: fd.get("page").trim(), kind, sectionId: fd.get("sectionId") || "", passage, gloss, updatedAt: Date.now() };
+    if (kind === "argument") { data.premises = premises; data.conclusion = conclusion; } else { delete data.premises; delete data.conclusion; }
+    if (Number.isInteger(n.at)) data.at = n.at;
+    delete data.example;
+    await put("notes", nid || gid(), data);
+    const cur = S.texts.get(tid);
+    if (cur) put("texts", tid, { ...cur, updatedAt: Date.now() }).catch(() => {});
+  },
+  (root) => {
+    const kindSel = $("#n-kind", root), argBox = $("#n-arg", root);
+    kindSel.addEventListener("change", () => { argBox.hidden = kindSel.value !== "argument"; });
+    if (preset) { const g = $("#n-gloss", root); if (g) g.focus(); }
+    if (!nid) return;
+    const acts = $(".formacts", root);
+    acts.insertAdjacentHTML("afterbegin", `<button type="button" class="btn ghost danger sheet-del" id="n-del">Delete note</button>`);
+    const delBtn = $("#n-del", root);
+    delBtn.addEventListener("click", () => arm(delBtn, async () => {
+      try { await del("notes", nid); await closeOverlay(); toast("Note deleted."); }
+      catch (e) { $("#err", root).textContent = failMsg(e); }
+    }));
+  });
+}
+
+function summarySheet(tid, secId) {
+  const t = S.texts.get(tid), sec = t && (t.sections || []).find((s) => s.id === secId);
+  if (!sec) return;
+  const cur = (t.summaries || {})[secId] || "";
+  openSheet(`<h2>Summary of ${esc(sec.label)}</h2>
+    <div class="field"><label for="s-text">In your own words</label><textarea id="s-text" name="summary" rows="7">${esc(cur)}</textarea>
+    <span class="hint">What does this section claim, and how does it get there? Leave it empty to remove the summary.</span></div>`,
+  async (fd) => {
+    const now = S.texts.get(tid); if (!now) return;
+    const summaries = { ...(now.summaries || {}) }, v = fd.get("summary").trim();
+    if (v) summaries[secId] = v; else delete summaries[secId];
+    await put("texts", tid, { ...now, summaries, updatedAt: Date.now() });
+  });
+}
+
+/* ---------- a text's More menu ---------- */
+function moreMenu() {
+  const t = S.texts.get(S.textId); if (!t) return;
+  openPanel(`<h2>${esc(t.title)}</h2>
+    <div class="menu">
+      <button class="menuitem" id="m-file">${t.hasContent ? "Replace the book's file" : "Load the book's file"}</button>
+      <button class="menuitem" id="m-edit">Edit details and cover</button>
+      <button class="menuitem" id="m-export">Export notes as Markdown</button>
+      <button class="menuitem danger" id="m-delete">Delete this text</button>
+    </div>`, (b) => {
+    if (b.id === "m-file") fileSheet(S.textId);
+    else if (b.id === "m-edit") textSheet(S.textId);
+    else if (b.id === "m-export") exportNotes();
+    else if (b.id === "m-delete") confirmDelete();
+  });
+}
+function exportNotes() {
+  const t = S.texts.get(S.textId);
+  if (!notesFor(S.textId).length && !Object.keys((t && t.summaries) || {}).length) return toast("This text has no notes to export yet.");
+  saveFile(`${slug(t && t.title)}-notes.md`, notesMarkdown(S.textId), "text/markdown").catch(() => toast("Couldn't export the notes."));
+}
+function confirmDelete() {
+  const id = S.textId, t = S.texts.get(id); if (!t) return;
+  const n = notesFor(id).length;
+  openPanel(`<h2>Delete “${esc(t.title)}”?</h2>
+    <p class="hint">This removes the text${n ? `, its ${n} note${n === 1 ? "" : "s"}` : ""} and its cover from this device. Restoring a backup brings them back.</p>
+    <div class="menu"><button class="menuitem danger" id="m-delete-yes">Delete this text</button></div>`, async (b) => {
+    if (b.id !== "m-delete-yes") return;
+    await back();
+    try {
+      for (const [nid] of notesFor(id)) await del("notes", nid);
+      await del("content", id);
+      await del("covers", id);
+      await del("texts", id);
+      toast("Deleted.");
+    } catch (err) { toast(failMsg(err)); }
+    render();
+  });
+}
+
+/* ---------- reader ---------- */
+// Reading settings live on this device only.
+const RS = { fs: 20, lh: "normal", w: "medium", tone: "app" };
+try { Object.assign(RS, JSON.parse(localStorage.getItem("mg-reader") || "{}")); const old = +localStorage.getItem("mg-fs"); if (old && !localStorage.getItem("mg-reader")) RS.fs = old; } catch {}
+const LH = { compact: 1.45, normal: 1.62, airy: 1.85 }, MEASURE = { narrow: "30em", medium: "34em", wide: "40em" };
+function applyFs() {
+  const book = $("#book"), reader = $("#reader");
+  book.style.setProperty("--fs", RS.fs + "px");
+  book.style.setProperty("--lh", LH[RS.lh] || 1.62);
+  book.style.setProperty("--measure", MEASURE[RS.w] || "34em");
+  reader.classList.remove("tone-paper", "tone-sepia", "tone-night");
+  if (RS.tone !== "app") reader.classList.add("tone-" + RS.tone);
+}
+function saveRS() { try { localStorage.setItem("mg-reader", JSON.stringify(RS)); } catch {} }
+const barH = () => $(".rbar")?.offsetHeight || 0;
+
+function inlineHTML(x, marks) {
+  if (!marks || !marks.length) return esc(x).replace(/\u0001/g, "<em>").replace(/\u0002/g, "</em>");
+  let raw = x;
+  if (marks && marks.length) {
+    const map = []; let ps = "";
+    for (let k = 0; k < raw.length; k++) { const c = raw[k]; if (c === I0 || c === I1) continue; map.push(k); ps += c; }
+    const ins = [];
+    for (const [id, p] of marks) {
+      const want = p.replace(/\s+/g, " ").trim(); if (!want) continue;
+      let s = ps.indexOf(want), len = want.length;
+      for (const cut of [60, 30, 15]) {
+        if (s >= 0 || cut >= want.length) continue;
+        s = ps.indexOf(want.slice(0, cut));
+        if (s >= 0) len = Math.min(want.length, ps.length - s);
+      }
+      if (s < 0 || !len) continue;
+      ins.push([map[s], "\u0003" + id + "\u0005"], [map[s + len - 1] + 1, "\u0004"]);
+    }
+    ins.sort((a, b) => b[0] - a[0]);
+    for (const [pos, str] of ins) raw = raw.slice(0, pos) + str + raw.slice(pos);
+  }
+  let out = "", depth = 0, mid = "";
+  const open = () => `<mark data-note="${esc(mid)}" class="k-${esc((S.notes.get(mid) || {}).kind || "passage")}">`;
+  for (let k = 0; k < raw.length; k++) {
+    const c = raw[k];
+    if (c === "\u0003") { const e = raw.indexOf("\u0005", k); const id = raw.slice(k + 1, e); k = e; if (!depth) { mid = id; out += open(); } depth++; }
+    else if (c === "\u0004") { depth = Math.max(0, depth - 1); if (!depth) out += "</mark>"; }
+    else if (c === I0) out += depth ? `</mark><em>${open()}` : "<em>";
+    else if (c === I1) out += depth ? `</mark></em>${open()}` : "</em>";
+    else out += esc(c);
+  }
+  return out;
+}
+function blockHTML(b, i, marks) {
+  if (b.k === "pg") return `<div class="bpg" data-i="${i}">${b.x ? `p. ${esc(b.x)}` : ""}</div>`;
+  const x = inlineHTML(b.x || "", marks);
+  if (b.k === "h") return `<h2 class="bh l${Math.min(b.l || 2, 4)}" data-i="${i}">${x}</h2>`;
+  if (b.k === "q") return `<p class="bq" data-i="${i}">${x}</p>`;
+  if (b.k === "fn") return `<p class="bfn" data-i="${i}">${x}</p>`;
+  return `<p class="bp${b.k === "c" ? " cont" : ""}" data-i="${i}">${x}</p>`;
+}
+function marksByBlock(tid) {
+  const m = new Map();
+  for (const [id, n] of S.notes) if (n.textId === tid && Number.isInteger(n.at) && n.passage) { if (!m.has(n.at)) m.set(n.at, []); m.get(n.at).push([id, n.passage]); }
+  return m;
+}
+const sigOf = (l) => (l ? l.map(([id, p]) => id + ":" + p + ":" + ((S.notes.get(id) || {}).kind || "")).sort().join("|") : "");
+
+function resetReader() { R.tid = null; R.blocks = null; R.els = []; R.tops = []; R.sig = new Map(); R.saved = -1; R.sel = null; $("#book").innerHTML = ""; $("#selbar").hidden = true; }
+
+async function openReader(tid, at) {
+  resetReader();
+  S.screen = "reader"; S.textId = tid; render();
+  window.scrollTo(0, 0);
+  const t = S.texts.get(tid), book = $("#book");
+  $("#rtitle").textContent = t?.title || ""; $("#rpg").textContent = "";
+  applyFs();
+  book.innerHTML = `<p class="rload">Loading the text…</p>`;
+  let blocks;
+  try { blocks = await loadContent(tid); }
+  catch (e) { book.innerHTML = `<p class="rload">${esc(e instanceof UErr ? e.message : "Couldn't load this text. Check your connection and try again.")}</p>`; return; }
+  if (S.screen !== "reader" || S.textId !== tid) return;
+  if (!blocks) { book.innerHTML = `<p class="rload">This text isn't loaded yet. Go back and use Load file.</p>`; return; }
+  R.tid = tid; R.blocks = blocks;
+  let pg = "", sc = ""; R.pageAt = []; R.secAt = [];
+  blocks.forEach((b, i) => { if (b.k === "pg") pg = b.x; if (b.k === "h" && b.s) sc = b.s; R.pageAt[i] = pg; R.secAt[i] = sc; });
+  const marks = marksByBlock(tid);
+  book.innerHTML = blocks.map((b, i) => blockHTML(b, i, marks.get(i))).join("");
+  R.els = [...book.children];
+  R.sig = new Map([...marks].map(([i, l]) => [i, sigOf(l)]));
+  R.dirty = true;
+  const target = Number.isInteger(at) ? at : Number.isInteger(t?.pos) ? t.pos : 0;
+  R.saved = target;
+  requestAnimationFrame(() => { goTo(target, Number.isInteger(at)); updatePg(); });
+  const t0 = Date.now();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { R.dirty = true; if (R.tid === tid && Date.now() - t0 < 4000) goTo(target, Number.isInteger(at)); });
+}
+
+function measure() { R.tops = R.els.map((e) => e.getBoundingClientRect().top + window.scrollY); R.dirty = false; }
+function currentBlock() {
+  if (!R.els.length) return 0;
+  if (R.dirty) measure();
+  const y = window.scrollY + barH() + 12;
+  let lo = 0, hi = R.tops.length - 1, ans = 0;
+  while (lo <= hi) { const mid = (lo + hi) >> 1; if (R.tops[mid] <= y) { ans = mid; lo = mid + 1; } else hi = mid - 1; }
+  return ans;
+}
+function goTo(i, centre) {
+  const el = R.els[Math.max(0, Math.min(i, R.els.length - 1))]; if (!el) return;
+  const top = el.getBoundingClientRect().top + window.scrollY;
+  const off = centre ? Math.max(barH() + 8, window.innerHeight * 0.3) : barH() + 8;
+  window.scrollTo(0, Math.max(0, top - off));
+}
+function updatePg() { const i = currentBlock(); const p = R.pageAt[i]; $("#rpg").textContent = p ? `p. ${p}` : ""; updateMarkBtn(); }
+function savePos() {
+  if (!R.blocks || !R.tid) return;
+  const atEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60;
+  const i = atEnd ? R.blocks.length - 1 : currentBlock(); if (i === R.saved) return; R.saved = i;
+  const t = S.texts.get(R.tid);
+  if (t) put("texts", R.tid, { ...t, pos: i, total: R.blocks.length, updatedAt: Date.now() }).catch(() => {});
+}
+function setRS(change) { const i = currentBlock(); Object.assign(RS, change); RS.fs = Math.max(14, Math.min(28, RS.fs)); applyFs(); saveRS(); R.dirty = true; goTo(i); }
+function readerSettings() {
+  const seg = (key, opts) => `<div class="seg">${opts.map(([v, label]) => `<button class="segb${RS[key] === v ? " on" : ""}" data-keep="1" data-rs="${key}" data-v="${v}">${label}</button>`).join("")}</div>`;
+  openPanel(`<h2>Reading settings</h2>
+    <div class="rs">
+      <div class="rs-row"><span>Type size</span><div class="seg"><button class="segb" data-keep="1" data-rs="fs" data-v="-1" aria-label="Smaller type">A−</button><span class="rs-fs" id="rs-fs">${RS.fs}</span><button class="segb" data-keep="1" data-rs="fs" data-v="1" aria-label="Larger type">A+</button></div></div>
+      <div class="rs-row"><span>Line spacing</span>${seg("lh", [["compact", "Compact"], ["normal", "Normal"], ["airy", "Airy"]])}</div>
+      <div class="rs-row"><span>Text width</span>${seg("w", [["narrow", "Narrow"], ["medium", "Medium"], ["wide", "Wide"]])}</div>
+      <div class="rs-row"><span>Page</span>${seg("tone", [["app", "Like the app"], ["paper", "Paper"], ["sepia", "Sepia"], ["night", "Night"]])}</div>
+    </div>`, (b) => {
+    if (!b.dataset.rs) return;
+    if (b.dataset.rs === "fs") setRS({ fs: RS.fs + +b.dataset.v });
+    else setRS({ [b.dataset.rs]: b.dataset.v });
+    const root = $("#sheetroot");
+    root.querySelectorAll(`[data-rs="${b.dataset.rs}"]`).forEach((x) => x.classList.toggle("on", b.dataset.rs !== "fs" && x.dataset.v === RS[b.dataset.rs]));
+    const f = $("#rs-fs", root); if (f) f.textContent = RS.fs;
+  });
+}
+
+/* bookmarks: a page you want to find again, without a note */
+const bookmarksOf = (t) => (t && Array.isArray(t.bookmarks) ? t.bookmarks : []);
+function bookmarkHere() {
+  const i = currentBlock(), page = R.pageAt[i] || "";
+  return bookmarksOf(S.texts.get(R.tid)).find((bm) => (page && bm.page === page) || Math.abs(bm.at - i) <= 2);
+}
+async function toggleBookmark() {
+  const t = S.texts.get(R.tid); if (!t || !R.blocks) return;
+  const i = currentBlock(), page = R.pageAt[i] || "", here = bookmarkHere();
+  const list = here ? bookmarksOf(t).filter((bm) => bm !== here) : [...bookmarksOf(t), { at: i, page, createdAt: Date.now() }].sort((a, b) => a.at - b.at);
+  try { await put("texts", R.tid, { ...t, bookmarks: list }); toast(here ? "Bookmark removed." : `Bookmarked${page ? ` p. ${page}` : ""}.`); } catch (e) { toast(failMsg(e)); }
+  updateMarkBtn();
+}
+function updateMarkBtn() { const btn = $("#rmark"); if (btn) btn.setAttribute("aria-pressed", bookmarkHere() ? "true" : "false"); }
+
+/* find in this book */
+let findQ = "";
+function findHits(q) {
+  const f = fold(q.trim()); if (f.length < 2) return [];
+  const hits = [];
+  R.blocks.forEach((b, i) => {
+    if (b.k === "pg" || hits.length >= 400) return;
+    const txt = plain(b.x || ""), ft = fold(txt); let at = ft.indexOf(f);
+    if (at < 0) return;
+    let count = 0; for (let k = at; k >= 0; k = ft.indexOf(f, k + f.length)) count++;
+    const same = ft.length === txt.length, a = Math.max(0, at - 50), z = Math.min(txt.length, at + f.length + 70);
+    const snip = same ? `${a ? "…" : ""}${esc(txt.slice(a, at))}<b>${esc(txt.slice(at, at + f.length))}</b>${esc(txt.slice(at + f.length, z))}${z < txt.length ? "…" : ""}` : esc(txt.slice(0, 120));
+    hits.push({ i, count, snip });
+  });
+  return hits;
+}
+function findPanel() {
+  if (!R.blocks) return;
+  openPanel(`<h2>Find in this book</h2>
+    <input class="search" id="findq" type="search" placeholder="A word or phrase" value="${esc(findQ)}" autocomplete="off" aria-label="Find in this book">
+    <p class="hint" id="findsum"></p>
+    <div class="findres" id="findres"></div>`, (b) => { if (b.dataset.goto) { goTo(+b.dataset.goto, true); flash(+b.dataset.goto); } });
+  const root = $("#sheetroot"), inp = $("#findq", root), res = $("#findres", root), sum = $("#findsum", root);
+  let tm;
+  const run = () => {
+    findQ = inp.value; const hits = findHits(findQ);
+    const total = hits.reduce((a, h) => a + h.count, 0), pages = new Set(hits.map((h) => R.pageAt[h.i])).size;
+    sum.textContent = findQ.trim().length < 2 ? "Type at least two letters." : total ? `${total} match${total === 1 ? "" : "es"}${pages > 1 ? ` on ${pages} pages` : ""}.` : "No matches.";
+    res.innerHTML = hits.slice(0, 200).map((h) => `<button class="findhit" data-goto="${h.i}"><span class="fp">${R.pageAt[h.i] ? `p. ${esc(R.pageAt[h.i])}` : ""}</span><span class="fs">${h.snip}</span></button>`).join("") + (hits.length > 200 ? `<p class="hint">Showing the first 200 passages.</p>` : "");
+  };
+  inp.addEventListener("input", () => { clearTimeout(tm); tm = setTimeout(run, 180); });
+  run(); inp.focus(); inp.select();
+}
+function flash(i) { const el = R.els[i]; if (!el) return; el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 2400); }
+
+function refreshMarks() {
+  if (!R.blocks || R.tid !== S.textId) return;
+  const marks = marksByBlock(R.tid);
+  const keys = new Set([...marks.keys(), ...R.sig.keys()]);
+  for (const i of keys) {
+    const s = sigOf(marks.get(i));
+    if (s === (R.sig.get(i) || "") || !R.blocks[i] || !R.els[i]) continue;
+    const tmp = document.createElement("div"); tmp.innerHTML = blockHTML(R.blocks[i], i, marks.get(i));
+    const el = tmp.firstElementChild; R.els[i].replaceWith(el); R.els[i] = el;
+    if (s) R.sig.set(i, s); else R.sig.delete(i);
+  }
+}
+
+function tocPanel() {
+  if (!R.blocks) return;
+  const items = R.blocks.map((b, i) => (b.k === "h" ? `<button class="tocitem l${Math.min(b.l || 2, 4)}" data-goto="${i}"><span>${esc(plain(b.x))}</span><span class="tp">${R.pageAt[i] ? esc(R.pageAt[i]) : ""}</span></button>` : "")).join("");
+  const bms = bookmarksOf(S.texts.get(R.tid)).filter((bm) => bm.at < R.blocks.length);
+  const snippet = (i) => { for (let k = i; k < Math.min(R.blocks.length, i + 4); k++) if (R.blocks[k].k !== "pg") { const x = plain(R.blocks[k].x || ""); return x.length > 70 ? x.slice(0, 70) + "…" : x; } return ""; };
+  openPanel(`${bms.length ? `<h2>Bookmarks</h2><div class="toc">${bms.map((bm) => `<button class="tocitem bm" data-goto="${bm.at}"><span>${esc(snippet(bm.at))}</span><span class="tp">${bm.page ? `p. ${esc(bm.page)}` : ""}</span></button>`).join("")}</div>` : ""}
+    <h2>Contents</h2><div class="toc">${items || `<p class="empty">No headings were found in this text.</p>`}</div>`, (b) => { if (b.dataset.goto) goTo(+b.dataset.goto); });
+}
+
+let selT;
+document.addEventListener("selectionchange", () => { clearTimeout(selT); selT = setTimeout(checkSel, 140); });
+function checkSel() {
+  const bar = $("#selbar");
+  if (S.screen !== "reader" || !R.blocks) { bar.hidden = true; return; }
+  const sel = window.getSelection();
+  if (!sel || sel.isCollapsed || !sel.rangeCount) { bar.hidden = true; return; }
+  const r = sel.getRangeAt(0), book = $("#book");
+  if (!book.contains(r.commonAncestorContainer)) { bar.hidden = true; return; }
+  const text = sel.toString().replace(/\s+/g, " ").trim();
+  if (text.length < 2) { bar.hidden = true; return; }
+  const idxOf = (node) => { const el = (node.nodeType === 1 ? node : node.parentElement)?.closest("[data-i]"); return el ? +el.dataset.i : null; };
+  const i = idxOf(r.startContainer) ?? currentBlock(), j = idxOf(r.endContainer) ?? i;
+  const a = R.pageAt[i] || "", b = R.pageAt[j] || "";
+  const page = a && b && a !== b ? `${a}–${b}` : a;
+  R.sel = { text, i, page, sec: R.secAt[i] || "" };
+  $("#selsave").textContent = page ? `Save passage, p. ${page}` : "Save passage";
+  bar.hidden = false;
+}
+function saveSel() {
+  const s = R.sel; if (!s) return;
+  $("#selbar").hidden = true;
+  try { window.getSelection().removeAllRanges(); } catch {}
+  noteSheet(null, { passage: s.text, page: s.page, sectionId: s.sec, at: s.i, kind: "passage" });
+}
+["mousedown", "pointerdown"].forEach((ev) => $("#selsave").addEventListener(ev, (e) => e.preventDefault()));
+
+let rafP = 0, posT = 0;
+window.addEventListener("scroll", () => {
+  if (S.screen !== "reader" || !R.blocks) return;
+  if (!rafP) rafP = requestAnimationFrame(() => { rafP = 0; updatePg(); });
+  clearTimeout(posT); posT = setTimeout(savePos, 1500);
+}, { passive: true });
+window.addEventListener("resize", () => { R.dirty = true; });
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && S.screen === "reader") savePos(); });
+
+/* ---------- events ---------- */
+function arm(btn, run) {
+  if (btn.classList.contains("armed")) { run(); return; }
+  btn.classList.add("armed"); const old = btn.textContent; btn.textContent = "Tap again to delete";
+  setTimeout(() => { if (btn.isConnected) { btn.classList.remove("armed"); btn.textContent = old; } }, 3000);
+}
+document.addEventListener("click", (e) => {
+  const mk = e.target.closest && e.target.closest("mark[data-note]");
+  if (mk && S.screen === "reader") { const s = window.getSelection(); if (!s || s.isCollapsed) { noteSheet(mk.dataset.note); return; } }
+  const b = e.target.closest && e.target.closest("button"); if (!b || b.closest("#sheetroot")) return;
+  if (b.id === "addtext") return textSheet(null);
+  if (b.id === "back") return back();
+  if (b.dataset.open) return go({ screen: "text", textId: b.dataset.open });
+  if (b.id === "read") return go({ screen: "reader", textId: S.textId });
+  if (b.id === "loadfile") return fileSheet(S.textId);
+  if (b.dataset.gotoNote) return go({ screen: "reader", textId: b.dataset.tid, at: +b.dataset.gotoNote });
+  if (b.id === "rback") return back();
+  if (b.id === "rmark") return toggleBookmark();
+  if (b.id === "rfind") return findPanel();
+  if (b.id === "raa") return readerSettings();
+  if (b.id === "rtoc") return tocPanel();
+  if (b.id === "selsave") return saveSel();
+  if (b.id === "more") return moreMenu();
+  if (b.dataset.branch) return go({ screen: "branches", focus: b.dataset.branch });
+  if (b.id === "openbranches") return go({ screen: "branches" });
+  if (b.dataset.garea) { S.gArea = b.dataset.garea; S.gq = ""; S.gOpen = new Set(); return go({ screen: "glossary" }); }
+  if (b.id === "openglossary") { S.gq = ""; S.gArea = "all"; return go({ screen: "glossary" }); }
+  if (b.dataset.term) return openTerm(b.dataset.term);
+  if (b.dataset.area) { S.gArea = b.dataset.area; return render(); }
+  if (b.id === "addterm") return termSheet(null);
+  if (b.dataset.editterm) return termSheet(b.dataset.editterm);
+  if (b.dataset.restoreterm) return del("terms", b.dataset.restoreterm).catch((e) => toast(failMsg(e)));
+  if (b.dataset.delterm) return arm(b, () => del("terms", b.dataset.delterm).catch((e) => toast(failMsg(e))));
+  if (b.id === "backup") return exportBackup().catch((e) => toast(failMsg(e)));
+  if (b.id === "addnote") return noteSheet(null);
+  if (b.dataset.editnote) return noteSheet(b.dataset.editnote);
+  if (b.dataset.cite) return copyCitation(b.dataset.cite);
+  if (b.dataset.resolve) {
+    const n = S.notes.get(b.dataset.resolve); if (!n) return;
+    const resolved = !n.resolved, data = { ...n, resolved, updatedAt: Date.now() };
+    if (resolved) data.resolvedAt = Date.now(); else delete data.resolvedAt;
+    return put("notes", b.dataset.resolve, data).then(() => toast(resolved ? "Marked resolved." : "Reopened.")).catch((err) => toast(failMsg(err)));
+  }
+  if (b.hasAttribute("data-tag")) {
+    const tg = b.dataset.tag;
+    if (S.screen === "tag" && S.tag === tg) return;
+    return go({ screen: "tag", tag: tg });
+  }
+  if (b.id === "openquestions") return go({ screen: "questions" });
+  if (b.id === "editsummary") return summarySheet(S.textId, S.sec);
+  if (b.id === "exporttag") return saveFile(`tag-${slug(S.tag)}.md`, quoteBankMarkdown(`#${S.tag}`, taggedWith(S.tag)), "text/markdown").catch(() => toast("Couldn't export."));
+  if (b.id === "exportquestions") return saveFile(`open-questions-${stamp()}.md`, quoteBankMarkdown("Open questions", questionNotes().filter(([, n]) => !n.resolved)), "text/markdown").catch(() => toast("Couldn't export."));
+  if (b.dataset.sec) { S.sec = S.sec === b.dataset.sec ? "all" : b.dataset.sec; return render(); }
+  if (b.dataset.kind) { S.kind = b.dataset.kind; return render(); }
+});
+document.addEventListener("change", (e) => {
+  if (e.target.id === "restore") { const f = e.target.files && e.target.files[0]; e.target.value = ""; if (f) importBackup(f); return; }
+  if (S.screen !== "text") return;
+  const t = S.texts.get(S.textId);
+  if (e.target.id === "status" && t) put("texts", S.textId, { ...t, status: e.target.value, updatedAt: Date.now() }).catch(() => {});
+  if (e.target.dataset && e.target.dataset.tick && t) {
+    const sections = t.sections.map((s) => (s.id === e.target.dataset.tick ? { ...s, done: e.target.checked } : s));
+    put("texts", S.textId, { ...t, sections, updatedAt: Date.now() }).catch(() => {});
+  }
+});
+document.addEventListener("toggle", (e) => {
+  const d = e.target;
+  if (d && d.matches && d.matches("details.branch")) { if (d.open) S.bOpen.add(d.dataset.branchId); else S.bOpen.delete(d.dataset.branchId); return; }
+  if (d && d.matches && d.matches("details.term")) { if (d.open) S.gOpen.add(d.dataset.termId); else S.gOpen.delete(d.dataset.termId); }
+}, true);
+let qTimer;
+document.addEventListener("input", (e) => {
+  if (e.target.id !== "q" && e.target.id !== "tq" && e.target.id !== "gq") return;
+  const key = e.target.id; S[key] = e.target.value;
+  clearTimeout(qTimer); qTimer = setTimeout(() => { render(); const el = $("#" + key); if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); } }, 180);
+});
+
+/* ---------- boot ---------- */
+render();
+(async () => {
+  try {
+    idb = await idbOpen();
+    S.texts = await idbAll("texts");
+    S.notes = await idbAll("notes");
+    S.covers = await idbAll("covers");
+    S.terms = await idbAll("terms");
+    S.mode = "ready";
+  } catch { idb = null; S.mode = "local"; }
+  render();
+  try { if (navigator.storage && navigator.storage.persist) S.persisted = await navigator.storage.persist(); } catch {}
+})();
+if ("serviceWorker" in navigator && location.protocol === "https:") {
+  window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); });
+}
+</script>
+</body>
+</html>
