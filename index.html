@@ -295,7 +295,8 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .rload { color: var(--muted); font: 15px var(--f-ui); text-indent: 0 !important; }
 .selbar { position: fixed; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; padding: 12px 16px calc(14px + env(safe-area-inset-bottom, 0px)); pointer-events: none; z-index: 10; }
 .selbar .btn { pointer-events: auto; box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3); }
-.selbar { gap: 10px; }
+.selbar { gap: 8px; flex-wrap: wrap; }
+.selbar .btn { padding-left: 12px; padding-right: 12px; }
 .selbar #selhl { background: var(--paper); }
 
 /* your notes in the margin of the text */
@@ -503,7 +504,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
   <article class="book" id="book"></article>
   <div class="rtrail" id="rtrail" hidden></div>
 </div>
-<div class="selbar" id="selbar" hidden><button class="btn" id="sellook" hidden>Look up</button><button class="btn" id="selhl">Highlight</button><button class="btn primary" id="selsave">Add a note</button></div>
+<div class="selbar" id="selbar" hidden><button class="btn" id="sellook" hidden>Look up</button><button class="btn" id="seledit">Edit text</button><button class="btn" id="selhl">Highlight</button><button class="btn primary" id="selsave">Add a note</button></div>
 <div id="sheetroot"></div>
 <div class="toast" id="toast" role="status" hidden></div>
 
@@ -4871,13 +4872,56 @@ function checkSel() {
   $("#sellook").hidden = !(text.length <= 48 && text.split(/\s+/).length <= 4);
   bar.hidden = false; drawTrail();
 }
+// Edit the whole paragraph containing the start of the selection, preserving block indices.
+function editSelectedParagraph() {
+  const s = R.sel, tid = R.tid;
+  if (!s || !tid || !R.blocks) return;
+  const i = s.i, original = R.blocks[i];
+  if (!original || original.k === "pg") { toast("Select words in a paragraph to edit it."); return; }
+  $("#selbar").hidden = true;
+  try { window.getSelection().removeAllRanges(); } catch {}
+  const initial = plain(original.x || "");
+  openSheet(`<h2>Edit text</h2>
+    <p class="hint">Edit the whole paragraph. Changes are saved to your local copy; the uploaded file isn't changed. Existing notes keep their original quotations.</p>
+    <div class="field"><label for="edit-paragraph">Paragraph</label>
+    <textarea id="edit-paragraph" name="paragraph" class="verbatim" rows="12">${esc(initial)}</textarea></div>
+    <p class="hint">Imported italics in this paragraph become plain text when you save changes.</p>`,
+    async (fd) => {
+      if (R.tid !== tid || !R.blocks || R.blocks[i] !== original) return "The text changed while the editor was open. Reopen it to edit.";
+      const value = String(fd.get("paragraph") || "").replace(/\r\n?/g, "\n").trim();
+      if (!value) return "The paragraph cannot be empty.";
+      if (value === initial) return;
+      const next = R.blocks.slice();
+      next[i] = { ...original, x: value };
+      const t = S.texts.get(tid);
+      if (!t) return "This text is no longer available.";
+      const metadata = { ...t, updatedAt: Date.now() };
+      const spot = currentSpot();
+      // One transaction keeps text content and its metadata consistent for backups.
+      if (idb) await idbTx(["content", "texts"], (st) => {
+        st("content").put(next, tid);
+        st("texts").put(metadata, tid);
+      });
+      S.content.set(tid, next);
+      S.texts.set(tid, metadata);
+      R.blocks = next;
+      const marks = marksByBlock(tid), el = R.els[i];
+      if (el) {
+        el.outerHTML = blockHTML(next[i], i, marks.get(i));
+        R.els[i] = $("#book").children[i];
+      }
+      R.dirty = true;
+      requestAnimationFrame(() => { if (R.tid !== tid) return; goToSpot(spot); updatePg(); drawTrail(); });
+      return () => toast("Paragraph updated.");
+    });
+}
 function saveSel() {
   const s = R.sel; if (!s) return;
   $("#selbar").hidden = true;
   try { window.getSelection().removeAllRanges(); } catch {}
   noteSheet(null, { passage: s.text, page: s.page, sectionId: s.sec, at: s.i, kind: "passage" });
 }
-["mousedown", "pointerdown"].forEach((ev) => ["#selsave", "#selhl", "#sellook"].forEach((id) => $(id).addEventListener(ev, (e) => e.preventDefault())));
+["mousedown", "pointerdown"].forEach((ev) => ["#selsave", "#selhl", "#sellook", "#seledit"].forEach((id) => $(id).addEventListener(ev, (e) => e.preventDefault())));
 // The selected words, leaving out any of your notes shown in the margin.
 function selectionText(r) {
   const frag = r.cloneContents();
@@ -4939,6 +4983,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "rtoc") return tocPanel();
   if (b.id === "selsave") return saveSel();
   if (b.id === "selhl") return quickHighlight();
+  if (b.id === "seledit") return editSelectedParagraph();
   if (b.id === "more") return moreMenu();
   if (b.dataset.branch) return go({ screen: "branches", focus: b.dataset.branch });
   if (b.id === "openbranches") return go({ screen: "branches" });
