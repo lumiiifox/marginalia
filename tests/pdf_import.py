@@ -1,0 +1,111 @@
+"""PDF import test for Marginalia:  python3 tests/pdf_import.py [your-book.pdf ...]
+
+With no arguments, makes its own small books (Chromium's print-to-PDF) and checks that the app's parser
+finds exactly their headings, numbers their pages in order, and leaves no broken words:
+  justified    typeset, hyphenated, chapter titles followed directly by section titles
+  ragged       the same unjustified, with block quotes
+  twoline      headings long enough to wrap onto two lines
+  scanlike     every page set at a different size, as scans often are, with no headings inside chapters
+
+With PDF paths, parses those instead and prints what the app would make of them (headings, page numbers,
+paragraph count), so a badly imported book can be checked before and after a parser change.
+Never commit real books: the repository is public.
+
+PDF.js isn't committed; the first run downloads the version the app uses from its GitHub release into
+tests/.cache (git-ignored).
+Needs: pip install playwright && playwright install chromium
+"""
+import asyncio, io, json, re, subprocess, sys, tempfile, time, urllib.request, zipfile
+from pathlib import Path
+from playwright.async_api import async_playwright
+
+ROOT = Path(__file__).resolve().parent.parent
+CACHE = ROOT / "tests" / ".cache"
+PORT = 8798
+
+def pdfjs_dir():
+    ver = re.search(r"pdf\.js/([\d.]+)/pdf\.min\.js", (ROOT / "index.html").read_text()).group(1)
+    d = CACHE / f"pdfjs-{ver}"
+    if not (d / "build" / "pdf.worker.js").exists():
+        print(f"Downloading PDF.js {ver}…")
+        url = f"https://github.com/mozilla/pdf.js/releases/download/v{ver}/pdfjs-{ver}-dist.zip"
+        zipfile.ZipFile(io.BytesIO(urllib.request.urlopen(url).read())).extractall(d)
+    return d / "build"
+
+BODY = ("The question of method returns whenever philosophy examines the conditions under which its concepts become "
+        "intelligible. Kant's critical project begins from the recognition that reason, left to itself, generates "
+        "antinomies it cannot resolve. Hegel answers that the contradictions are moments in the self-development of "
+        "the concept. Genealogy uncovers the contingent struggles sedimented in values that present themselves as eternal. ")
+CSS = "@page { size: 5.5in 8.5in; margin: 0.8in 0.7in; } body { font: 11pt/1.45 Georgia, serif; } p { margin: 0; text-indent: 1.5em; } h1 { font-size: 20pt; break-before: page; margin: 1.4in 0 0.5in; } h2 { font-size: 13.5pt; margin: 1.2em 0 0.6em; } blockquote { font-size: 9.5pt; margin: 0.8em 2em; }"
+
+def book(justify):
+    heads, html = [], []
+    for c, ch in enumerate(["Critique", "Genealogy", "Difference"], 1):
+        heads.append(f"Chapter {c}: {ch}"); html.append(f"<h1>{heads[-1]}</h1>")
+        for s, sec in enumerate(["Method and its limits", "The problem of origins", "Against negation"], 1):
+            heads.append(f"{c}.{s} {sec}"); html.append(f"<h2>{heads[-1]}</h2>")
+            html += [f"<p>{BODY * 2}</p>"] * 3 + [f"<blockquote>{BODY}</blockquote>", f"<p>{BODY * 2}</p>"]
+    style = CSS + (" p { text-align: justify; hyphens: auto; }" if justify else "")
+    return f'<html lang="en"><style>{style}</style>{"".join(html)}</html>', heads
+
+def twoline():
+    heads = ["The Long Title of a Chapter That Wraps Across Two Lines", "A Section Heading Long Enough That It Also Needs Two Lines Here"]
+    return f'<html lang="en"><style>{CSS} p {{ text-align: justify; }} h1 {{ break-before: auto; }}</style><h1>{heads[0]}</h1><p>{BODY * 3}</p><h2>{heads[1]}</h2><p>{BODY * 3}</p></html>', heads
+
+def scanlike():
+    # One chapter title, then pages each set 0-30% larger, the way a scan's pages differ in size.
+    pages = "".join(f'<div style="height:6.6in;overflow:hidden;font-size:{11 * k}pt;break-after:page">{"<h1>Scanned Chapter</h1>" if i == 0 else ""}<p>{BODY * 3}</p></div>'
+                    for i, k in enumerate([1, 1.18, 1.0, 1.25, 1.06, 1.3, 1.0, 1.2]))
+    return f'<html lang="en"><style>{CSS} p {{ text-align: justify; hyphens: auto; }} h1 {{ break-before: auto; margin: 0.3in 0 0.4in; }}</style>{pages}</html>', ["Scanned Chapter"]
+
+PARSE = """async ([url, base]) => {
+  LIBS.pdf = [base + "/pdf.js"]; LIBS.pdfw = [base + "/pdf.worker.js"];
+  const r = await parseFile(new File([await (await fetch(url)).arrayBuffer()], url.split("/").pop()), () => {});
+  return { heads: r.blocks.filter((b) => b.k === "h").map((b) => b.x), labels: r.blocks.filter((b) => b.k === "pg").map((b) => b.x),
+           text: r.blocks.filter((b) => b.k !== "pg" && b.k !== "h").map((b) => b.x).join("\\n"), source: r.pageSource, paras: r.blocks.filter((b) => b.k === "p").length };
+}"""
+
+failures = []
+def check(ok, what):
+    print(("ok   " if ok else "FAIL ") + what)
+    if not ok: failures.append(what)
+
+async def main(paths):
+    build = pdfjs_dir()
+    tmp = Path(tempfile.mkdtemp())
+    (tmp / "index.html").symlink_to(ROOT / "index.html"); (tmp / "lib").symlink_to(build)
+    server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(tmp)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    try:
+        time.sleep(1)
+        async with async_playwright() as p:
+            browser = await p.chromium.launch()
+            page = await browser.new_page(); errs = []
+            page.on("pageerror", lambda e: errs.append(str(e)))
+            await page.goto(f"http://localhost:{PORT}/index.html"); await page.wait_for_function("typeof idb !== 'undefined' && idb")
+            base = f"http://localhost:{PORT}/lib"
+            if paths:
+                for i, path in enumerate(paths):
+                    (tmp / f"book{i}.pdf").symlink_to(Path(path).resolve())
+                    r = await page.evaluate(PARSE, [f"/book{i}.pdf", base])
+                    print(f"\n{path}\n  page numbers ({r['source']}): {' '.join(r['labels'][:40])}{' …' if len(r['labels']) > 40 else ''}\n  paragraphs: {r['paras']}\n  headings ({len(r['heads'])}):")
+                    for h in r["heads"]: print("    " + h[:100])
+            else:
+                maker = await browser.new_page()
+                for name, (html, heads) in {"justified": book(True), "ragged": book(False), "twoline": twoline(), "scanlike": scanlike()}.items():
+                    await maker.set_content(html)
+                    await maker.pdf(path=str(tmp / f"{name}.pdf"), display_header_footer=True, header_template="<span></span>",
+                        footer_template='<div style="font-size:9px;width:100%;text-align:center"><span class="pageNumber"></span></div>',
+                        margin={"top": "0.8in", "bottom": "0.8in", "left": "0.7in", "right": "0.7in"})
+                    r = await page.evaluate(PARSE, [f"/{name}.pdf", base])
+                    check(r["heads"] == heads, f"{name}: headings exactly as typeset" + ("" if r["heads"] == heads else f" (got {r['heads']})"))
+                    check(r["labels"] == [str(i + 1) for i in range(len(r["labels"]))], f"{name}: pages numbered 1 to {len(r['labels'])} in order" + ("" if r["labels"] == [str(i + 1) for i in range(len(r["labels"]))] else f" (got {r['labels']})"))
+                    bad = re.findall(r"\b\w+- \w+|\b\w+­\w*", r["text"])
+                    check(not bad, f"{name}: no words left broken across lines" + (f" (e.g. {bad[:3]})" if bad else ""))
+            check(not errs, "no script errors" + (f": {errs}" if errs else ""))
+            await browser.close()
+    finally:
+        server.terminate()
+
+asyncio.run(main(sys.argv[1:]))
+if failures: print(f"\n{len(failures)} failed"); sys.exit(1)
+if len(sys.argv) == 1: print("\nall passed")

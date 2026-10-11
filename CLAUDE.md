@@ -11,6 +11,7 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - **Direct push to `main`** for everything else: interface, styling, reader behaviour, glossary and branches content, exports.
 - One logical change per commit, with a plain message saying what changed for the reader.
 - Test before pushing: run `python3 tests/smoke.py` (every screen at phone and desktop width, the reader, and a full backup → wipe → restore round trip). Add a check to it when a change adds a screen or a stored field.
+- After any change to PDF import, also run `python3 tests/pdf_import.py` (generated books: headings, page order, broken words, a scan-like book). `python3 tests/pdf_import.py some.pdf` shows what the parser makes of a real book, for checking a bad import; real books stay out of the repo.
 - This session can't delete remote branches; the repo is set to delete merged PR branches automatically (if not, tell the owner).
 
 ## Rules
@@ -26,7 +27,7 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - `<style>` near the top; one `<script>` holds the whole app.
 - Storage: `STORES`, `idbOpen`, `put`, `delMany`, `idbTx`. Backup export and restore follow.
 - Citations: `CITE_STYLES`, `citeAt`, `bibEntry`, `bibtex`.
-- Import/parsing: `linesOf` (PDF), `domToBlocks` / `parseHTML` (EPUB, DOCX), `parsePlain`.
+- Import/parsing: `linesOf` and `unmerge` (PDF lines; scans' merged words), `parsePDF` (per-page body size, page numbers, headings, lost hyphens), `domToBlocks` / `parseHTML` (EPUB, DOCX), `parsePlain`.
 - Views: `render` dispatches to `libraryView`, `textView`, `tagView`, `questionsView`, `draftsView`/`draftView`, `comparesView`/`compareView`, `concordView`, glossary and branches.
 - Data: `GLOSSARY` (large), `BRANCHES`, `LINKS`.
 - Reader settings live in `localStorage` under `mg-reader`; other small preferences use `mg-*` keys.
