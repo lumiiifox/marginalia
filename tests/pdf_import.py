@@ -54,9 +54,12 @@ def twoline():
 
 def scanlike():
     # One chapter title, then pages each set 0-30% larger, the way a scan's pages differ in size.
-    pages = "".join(f'<div style="height:6.6in;overflow:hidden;font-size:{11 * k}pt;break-after:page">{"<h1>Scanned Chapter</h1>" if i == 0 else ""}<p>{BODY * 3}</p></div>'
-                    for i, k in enumerate([1, 1.18, 1.0, 1.25, 1.06, 1.3, 1.0, 1.2]))
-    return f'<html lang="en"><style>{CSS} p {{ text-align: justify; hyphens: auto; }} h1 {{ break-before: auto; margin: 0.3in 0 0.4in; }}</style>{pages}</html>', ["Scanned Chapter"]
+    # Each page also carries a running head misread a little differently, as OCR does ("Chapten!", "(hapter 1").
+    heads = ["Chapter 1", "Chapten!", "Chapter 1", "(hapter 1", "Chapter:I", "Chapter 1", "ChaptenI", "Chapter 1"]
+    pages = "".join(f'<div style="height:7.15in;position:relative;font-size:{11 * k}pt;break-after:page"><div style="height:6.2in;overflow:hidden">{"<h1>Scanned Chapter</h1>" if i == 0 else ""}'
+                    f'<p>{BODY * 3}</p></div><div style="position:absolute;bottom:0;left:0;font-size:7pt">{h}</div></div>'
+                    for i, (k, h) in enumerate(zip([1, 1.18, 1.0, 1.25, 1.06, 1.3, 1.0, 1.2], heads)))
+    return f'<html lang="en"><style>{CSS} @page {{ margin-bottom: 0.4in; }} p {{ text-align: justify; hyphens: auto; }} h1 {{ break-before: auto; margin: 0.3in 0 0.4in; }}</style>{pages}</html>', ["Scanned Chapter"]
 
 PARSE = """async ([url, base]) => {
   LIBS.pdf = [base + "/pdf.js"]; LIBS.pdfw = [base + "/pdf.worker.js"];
@@ -93,14 +96,17 @@ async def main(paths):
                 maker = await browser.new_page()
                 for name, (html, heads) in {"justified": book(True), "ragged": book(False), "twoline": twoline(), "scanlike": scanlike()}.items():
                     await maker.set_content(html)
-                    await maker.pdf(path=str(tmp / f"{name}.pdf"), display_header_footer=True, header_template="<span></span>",
+                    await maker.pdf(path=str(tmp / f"{name}.pdf"), prefer_css_page_size=True, display_header_footer=True, header_template="<span></span>",
                         footer_template='<div style="font-size:9px;width:100%;text-align:center"><span class="pageNumber"></span></div>',
-                        margin={"top": "0.8in", "bottom": "0.8in", "left": "0.7in", "right": "0.7in"})
+                        margin={"top": "0.8in", "bottom": "0.4in" if name == "scanlike" else "0.8in", "left": "0.7in", "right": "0.7in"})
                     r = await page.evaluate(PARSE, [f"/{name}.pdf", base])
                     check(r["heads"] == heads, f"{name}: headings exactly as typeset" + ("" if r["heads"] == heads else f" (got {r['heads']})"))
                     check(r["labels"] == [str(i + 1) for i in range(len(r["labels"]))], f"{name}: pages numbered 1 to {len(r['labels'])} in order" + ("" if r["labels"] == [str(i + 1) for i in range(len(r["labels"]))] else f" (got {r['labels']})"))
                     bad = re.findall(r"\b\w+- \w+|\b\w+­\w*", r["text"])
                     check(not bad, f"{name}: no words left broken across lines" + (f" (e.g. {bad[:3]})" if bad else ""))
+                    if name == "scanlike":
+                        left = re.findall(r"\S*hapte\S*", r["text"])
+                        check(not left, "scanlike: misread running heads removed" + (f" (left: {left})" if left else ""))
             check(not errs, "no script errors" + (f": {errs}" if errs else ""))
             await browser.close()
     finally:
