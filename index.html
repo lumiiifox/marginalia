@@ -1232,6 +1232,16 @@ function ocrRepair(blocks, counts) {
     if (lettersOnly.length > 1 && lettersOnly === lettersOnly.toUpperCase()) return bestW.toUpperCase();
     return /^\p{Lu}/u.test(core) ? bestW[0].toUpperCase() + bestW.slice(1) : bestW;
   };
+  const ENDINGS = ["", "s", "es", "ed", "d", "ing", "er", "ers", "ly", "ion", "ions", "al", "ive", "ity"];
+  const byStem = (core) => {
+    const re = new RegExp("^" + core.toLowerCase().replace(/[^\p{L}]/gu, "\\p{L}") + "$", "u"), found = new Set();
+    // every unreadable mark must fall inside the stem, so the ending is read, not guessed ("Spinoza\uFFFDr" is no "Spinozaer")
+    const lastOdd = core.search(/[^\p{L}][\p{L}]*$/u);
+    for (const [w, c] of counts) if (c >= 1 && w.length >= 4 && w.length > lastOdd && /^\p{L}+$/u.test(w)) for (const e of ENDINGS) if (w.length + e.length === core.length && re.test(w + e)) found.add(w + e);
+    if (found.size !== 1) return null;
+    const w = [...found][0];
+    return /^\p{Lu}/u.test(core) ? w[0].toUpperCase() + w.slice(1) : w;
+  };
   const OPEN = /^[("“‘'\[]+/u, CLOSE = /[.,;:!?)"”’'\]]+$/u;
   const fixToken = (t) => {
     const pre = (t.match(OPEN) || [""])[0], rest = t.slice(pre.length), post = (rest.match(CLOSE) || [""])[0], core = rest.slice(0, rest.length - post.length);
@@ -1253,8 +1263,14 @@ function ocrRepair(blocks, counts) {
     // a mark there is usually a misread letter ("}jfe" for "life").
     const trimmed = core.replace(/[^\p{L}\d.,;:!?]+$/u, "").replace(/([.,;:!?])[^\p{L}\d\s]+$/u, "$1");
     if (trimmed !== core && /^(?:\d+(?:ff)?|\p{L}+[.,;:!?]?)$/u.test(trimmed) && (/^\d/.test(trimmed) || has(trimmed.replace(/[.,;:!?]$/, "")) >= 3)) return pre + trimmed + post;
+    // A misread word whose stem the book uses, with a common ending ("contr\uFFFDsted": "contrast" + "ed").
+    if (/^\p{L}*[^\p{L}]{1,2}\p{L}*$/u.test(core) && letters >= 4 && core.includes("\uFFFD")) { const c = byStem(core); if (c) return pre + c + post; }
+    // Beyond reading: mostly marks, or letters no word is made of (no vowel; capitals scattered inside lowercase).
+    const lett = core.replace(/[^\p{L}]/gu, "");
+    const gibberish = !/[aeiouAEIOU]/.test(lett) || (lett.slice(1).match(/\p{Lu}/gu) || []).length >= 2 && /\p{Ll}/u.test(lett);
+    if (OCR_JUNK.test(core) && (letters < core.length * 0.75 || gibberish)) return ILLEGIBLE;
+    if ((core.match(/[^\p{L}]/gu) || []).length >= 3 && !/[aeiouAEIOU]/.test(lett)) return ILLEGIBLE;
     // Only a word that is mostly marks is beyond reading; one with a single bad letter stays as it is.
-    if (OCR_JUNK.test(core) && letters < core.length * 0.75) return ILLEGIBLE;
     return t;
   };
   const repair = (x) => {
@@ -1273,6 +1289,19 @@ function ocrRepair(blocks, counts) {
       })
       .replace(/(\p{L}{3,}[.,;:!?]["”’)]*)(\d{1,3})(?=\p{Lu}\p{Ll})/gu, (m, w, d) => w + toSup(d) + " ")
       .replace(/(\p{L}{3,}[.,;:!?"”’)]*)(\d{1,3})-(?=\p{Ll})/gu, (m, w, d) => w + toSup(d) + "—")
+      // after a comma, semicolon or colon a run-on number is always a note, whatever follows ("professor;16 and")
+      .replace(/(\p{L}{3,})([,;:]["”’)]*)(\d{1,3})(?=\s|$)/gu, (m, w, p, d) => (REF_ABBR.test(w) ? m : w + p + toSup(d)))
+      // a capital letter ending a lowercase word: a misread lowercase letter ("HegeL", "itselP"), or else a full
+      // stop and note number read as one letter ("mired.¹¹" read as "miredY")
+      .replace(/(\p{Ll}{3,})(\p{Lu})(?=\s+["“]?\p{Lu}|\s*$)/gu, (m, w, c) => {
+        // (the word's own lowercase form counts itself once, so it must occur again elsewhere)
+        if (has(w + c.toLowerCase()) >= 2) return w + c.toLowerCase();
+        const alt = { P: "f", I: "l", L: "l" }[c];
+        if (alt && has(w + alt)) return w + alt;
+        // "L" or "I" for "l" where the word then has a common ending ("reprisaL", "HegeL")
+        if ((c === "L" || c === "I") && /(?:a|e|i|u|ul|l)$/.test(w)) return w + "l";
+        return w + ".";
+      })
       // a note number printed at full size after the end of a phrase ("image.8 To", "door,"3 The")
       .replace(/(\p{L}+)([.,;:!?]["”’)]*|["”’)]+)(\d{1,3})(?=\s+["“(]?\p{Lu}|\s*$)/gu, (m, w, p, d) => (REF_ABBR.test(w) ? m : w + p + toSup(d)))
       // numbers split by spaces: years, page references, a note's own number
