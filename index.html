@@ -1139,7 +1139,8 @@ function linesOf(items) {
   for (const it of items) {
     if (!it.str || !it.str.trim()) continue;
     const t = it.transform;
-    its.push({ s: fixLig(it.str), x: t[4], y: t[5], z: Math.hypot(t[2], t[3]) || it.height || 10, w: it.width || 0 });
+    // Ligatures resolved here; soft hyphens are kept until the line is assembled, since one ending a line marks a word broken across lines.
+    its.push({ s: it.str.replace(/[ﬀ-ﬆ]/g, (c) => LIG[c]), x: t[4], y: t[5], z: Math.hypot(t[2], t[3]) || it.height || 10, w: it.width || 0 });
   }
   its.sort((a, b) => b.y - a.y || a.x - b.x);
   const lines = [];
@@ -1159,8 +1160,21 @@ function linesOf(items) {
       txt += s; prev = it;
     }
     const a = L.items[0], b = L.items[L.items.length - 1];
-    return { t: txt.replace(/\s+/g, " ").trim(), x: a.x, xe: b.x + b.w, y: L.y, z: L.z };
+    return { t: unmerge(txt.replace(/\s+/g, " ").trim().replace(/[\u00AD\u2010\u2011]$/u, "-").replace(/\u00AD/g, "")), x: a.x, xe: b.x + b.w, y: L.y, z: L.z };
   }).filter((l) => l.t);
+}
+// Scanned books often lose the space after a short word ("ofselection", "inDeleuze's", "ofthe").
+// Only splits no English word can be: no word begins "of" except off-, oft and often ("ofa" is "of a"),
+// none begins "inthe", "tothe" and so on, and "in" before a capital letter is always two words.
+const MERGED_THE = /\b(of|in|to|on|at|by|for|and|is|that|from|with|into|as)the\b/gi;
+function unmerge(s) {
+  return s.replace(MERGED_THE, "$1 the")
+    .replace(/(^|[^\p{L}])([Oo]f)(\p{L}{2,})/gu, (m, pre, of, rest) => (/^(f|t$|ten)/i.test(rest) ? m : `${pre}${of} ${rest}`))
+    .replace(/(^|[^\p{L}])([Oo]f)(a)(?!\p{L})/gu, "$1$2 $3")
+    .replace(/(^|[^\p{L}])([Ii]n)(\p{Lu}\p{Ll})/gu, "$1$2 $3")
+    // a lowercase word run into a capitalised name ("courseDeleuze's"); four letters or more, so names like
+    // "deVries" or "McDonald" are left alone
+    .replace(/(^|[^\p{L}])(\p{Ll}{4,})(\p{Lu}\p{Ll}{2,})/gu, "$1$2 $3");
 }
 
 async function parsePDF(buf, say) {
@@ -1227,27 +1241,54 @@ async function parsePDF(buf, say) {
   const all = pages.flatMap((pg) => pg.lines);
   if (all.reduce((a, l) => a + l.t.length, 0) / n < 40) throw new UErr("This PDF has no text layer, so it's a scanned image. Run OCR on it first (OCRmyPDF or Acrobat), then load it again.");
   const body = wmedian(all.map((l) => [l.z, l.t.length]));
-  const near = (z) => Math.abs(z - body) <= body * 0.08;
+  // Body size is measured page by page: scans are often enlarged or reduced a little from page to page,
+  // and against one size for the whole book every line of an enlarged page looks like a heading.
+  // A page with too little text to measure takes the size of the nearest page that has enough. Scans enlarge
+  // pages, they don't shrink them much: a page measuring smaller is one made mostly of quotation or notes,
+  // and keeps the book's size.
+  const own = pages.map((pg) => (pg.lines.reduce((a, l) => a + l.t.length, 0) >= 300 ? Math.max(body, wmedian(pg.lines.map((l) => [l.z, l.t.length]))) : 0));
+  pages.forEach((pg, p) => {
+    pg.body = body;
+    for (let d = 0; d < n; d++) { const q = [p - d, p + d].find((i) => i >= 0 && i < n && own[i]); if (q != null) { pg.body = own[q]; break; } }
+  });
+  const near = (z, B) => Math.abs(z - B) <= B * 0.08;
   const gaps = [];
-  pages.forEach((pg) => { const L = pg.lines; for (let i = 1; i < L.length; i++) if (near(L[i].z) && near(L[i - 1].z)) { const d = L[i - 1].y - L[i].y; if (d > body * 0.6 && d < body * 3) gaps.push(d); } });
-  const lead = median(gaps) || body * 1.3;
+  pages.forEach((pg) => { const L = pg.lines, B = pg.body; for (let i = 1; i < L.length; i++) if (near(L[i].z, B) && near(L[i - 1].z, B)) { const d = L[i - 1].y - L[i].y; if (d > B * 0.6 && d < B * 3) gaps.push(d / B); } });
+  const leadR = median(gaps) || 1.3; // line spacing, as a multiple of the body size
 
   // running heads and folios
   const inEdge = (l, pg) => { const h = pg.y1 - pg.y0; return l.y > pg.y1 - h * 0.13 || l.y < pg.y0 + h * 0.11; };
   const edgeSet = (pg) => { const k = pg.lines.length; return new Set([0, 1, k - 2, k - 1].filter((i) => i >= 0 && i < k)); };
-  const FOLIO = /^[\[(\-–—\s]*([0-9]{1,4}|[ivxlcdm]{1,7})[\])\-–—\s]*$/i;
+  // Allows a stray mark inside the number, as scans read "19" as "1.9".
+  const FOLIO = /^[\[(\-–—\s]*([0-9]{1,4}|[0-9][.,'·][0-9]{1,2}|[ivxlcdm]{1,7})[\])\-–—\s]*$/i;
   const headKey = (t) => t.toLowerCase().replace(/[0-9]+/g, "#").replace(/\b[ivxlcdm]+\b/g, "#").replace(/[^\p{L}#]+/gu, " ").trim();
   const hc = new Map();
   pages.forEach((pg) => edgeSet(pg).forEach((i) => { const l = pg.lines[i]; if (!inEdge(l, pg)) return; const k = headKey(l.t); if (k.replace(/[#\s]/g, "").length >= 3) hc.set(k, (hc.get(k) || 0) + 1); }));
   const printed = new Array(n).fill(null);
   pages.forEach((pg, p) => {
     const E = edgeSet(pg);
+    // A line that is only a number is the page number; a number inside a running head ("Chapter 2") is used
+    // only when the page has no such line.
+    let fromHead = null;
     pg.lines = pg.lines.filter((l, i) => {
       if (!E.has(i) || !inEdge(l, pg)) return true;
       if (FOLIO.test(l.t)) { if (printed[p] == null) printed[p] = l.t.replace(/[^0-9A-Za-z]/g, ""); return false; }
-      if ((hc.get(headKey(l.t)) || 0) >= 3) { const m = l.t.match(/^\s*(\d{1,4})\b|\b(\d{1,4})\s*$/); if (m && printed[p] == null) printed[p] = m[1] || m[2]; return false; }
+      if ((hc.get(headKey(l.t)) || 0) >= 3) { const m = l.t.match(/^\s*(\d{1,4})\b|\b(\d{1,4})\s*$/); if (m && fromHead == null) fromHead = m[1] || m[2]; return false; }
       return true;
     });
+    if (printed[p] == null) printed[p] = fromHead;
+  });
+  // A page number that disagrees with the pages around it (a misread number, a chapter number taken for
+  // the page's) is replaced by the one its neighbours agree on.
+  const offs = printed.map((v, p) => (/^\d+$/.test(v || "") ? +v - p : null));
+  offs.forEach((o, p) => {
+    if (o == null) return;
+    const votes = new Map();
+    for (let q = Math.max(0, p - 4); q <= Math.min(n - 1, p + 4); q++) if (q !== p && offs[q] != null) votes.set(offs[q], (votes.get(offs[q]) || 0) + 1);
+    const [best, c] = [...votes].sort((a, b) => b[1] - a[1])[0] || [null, 0];
+    // Where the numbering really jumps (a page of plates, a missing page), the page keeps its number:
+    // the pages on its own side of the jump agree with it.
+    if (best != null && best !== o && c >= 3 && c >= (votes.get(o) || 0) + 2 && p + best > 0) printed[p] = String(p + best);
   });
   const meaningful = Array.isArray(labels) && labels.length === n && labels.some((l, i) => l && l !== String(i + 1));
   const det = printed.filter((v) => v != null).length;
@@ -1266,13 +1307,20 @@ async function parsePDF(buf, say) {
   // dehyphenation dictionary
   const counts = new Map(), WORD = /\p{L}+(?:-\p{L}+)*/gu;
   all.forEach((l) => { const ws = l.t.match(WORD) || []; const cut = /\p{L}-$/u.test(l.t); ws.forEach((w, i) => { if (i === 0 || (cut && i === ws.length - 1)) return; const k = w.toLowerCase(); counts.set(k, (counts.get(k) || 0) + 1); }); });
-  const joinLine = (a, b) => {
+  // lost: the line ended where a hyphen would have been printed but the text has none (see the page loop).
+  const joinLine = (a, b, lost) => {
+    a = a.replace(/[­‐‑]$/u, "-");
     const m = a.match(/(\p{L}+)-$/u);
     if (m) {
       const nx = b.match(/^(\p{L}+)/u);
       if (!nx) return a + b;
       const ch = counts.get((m[1] + "-" + nx[1]).toLowerCase()) || 0, cj = counts.get((m[1] + nx[1]).toLowerCase()) || 0;
       return ch > cj || /^\p{Lu}/u.test(nx[1]) ? a + b : a.slice(0, -1) + b;
+    }
+    if (lost) {
+      const w1 = a.match(/(\p{L}+)$/u), w2 = b.match(/^(\p{Ll}+)/u);
+      // Kept apart only when both halves are words found elsewhere in the book and the joined word is not.
+      if (w1 && w2 && !(!counts.get((w1[1] + w2[1]).toLowerCase()) && (counts.get(w1[1].toLowerCase()) || 0) >= 2 && (counts.get(w2[1]) || 0) >= 2)) return a + b;
     }
     return /[—–\/]$/.test(a) ? a + b : a + " " + b;
   };
@@ -1287,10 +1335,16 @@ async function parsePDF(buf, say) {
   pages.forEach((pg, p) => {
     const L = pg.lines;
     blocks.push({ k: "pg", x: lab[p] });
-    const bl = L.filter((l) => near(l.z));
+    const B = pg.body, lead = leadR * B;
+    // This page's own line spacing, measured directly (on scans it doesn't always follow the type size).
+    const pitch = median(L.slice(1).map((l, i) => L[i].y - l.y).filter((d) => d > B * 0.6 && d < B * 3)) || lead;
+    const bl = L.filter((l) => near(l.z, B));
     const left = bl.length ? pct(bl.map((l) => l.x), 0.15) : 0;
     const right = bl.length ? pct(bl.map((l) => l.xe), 0.9) : Infinity;
-    let lastBody = -1; L.forEach((l, i) => { if (l.z >= body * 0.93) lastBody = i; });
+    // Justified text: most lines end at the right margin, so a line that stops one hyphen's width short
+    // and runs on in lowercase lost its hyphen (common in scans).
+    const justified = bl.length >= 8 && bl.filter((l) => Math.abs(l.xe - right) < B * 0.3).length >= bl.length * 0.55;
+    let lastBody = -1; L.forEach((l, i) => { if (l.z >= B * 0.93) lastBody = i; });
     let fnStart = L.length;
     const nx = L[lastBody + 1];
     if (nx && nx.y < pg.y0 + (pg.y1 - pg.y0) * 0.5) fnStart = lastBody + 1;
@@ -1302,30 +1356,40 @@ async function parsePDF(buf, say) {
     for (let i = 0; i < fnStart; i++) {
       const l = L[i];
       if (drops.length && i < 5) { const nl = norm(l.t); if (nl.length >= 2 && drops.some((d) => d.includes(nl) || nl.includes(d))) continue; }
-      if (l.z >= body * 1.18 && l.t.split(" ").length <= 16) {
+      const words = l.t.split(" ").length;
+      // Large type alone doesn't make a heading: one doesn't start in lowercase, break into an unfinished
+      // sentence, or fill a justified line from margin to margin.
+      const plausible = headOpen || (!/^\p{Ll}/u.test(l.t) && !(last && !/[.!?:;]["”’)\]]*[0-9⁰¹²³⁴⁵⁶⁷⁸⁹*†‡]*$/u.test(last.t)) && !(words >= 6 && l.x <= left + B * 0.5 && l.xe >= right - B * 0.5));
+      // ...and it has extra space above or below it. The top or bottom of a page doesn't count: a heading
+      // there still has space before the text it introduces.
+      const above = i > 0 && L[i - 1].y - l.y > pitch * 1.35, below = i + 1 < L.length && l.y - L[i + 1].y > pitch * 1.35;
+      if (l.z >= B * 1.18 && words <= 16 && plausible && (headOpen || above || below)) {
         flush(); carry = false; last = null;
-        if (headOpen) blocks[blocks.length - 1].x += " " + l.t;
-        else blocks.push({ k: "h", x: l.t, l: hasOutline ? 3 : l.z >= body * 1.6 ? 1 : 2 });
+        // A second line of the same heading has the same size and follows closely; anything else
+        // (a chapter title, then a section title) is a heading of its own.
+        if (headOpen && Math.abs(l.z - prev.z) <= prev.z * 0.1 && prev.y - l.y <= prev.z * 1.8) blocks[blocks.length - 1].x = joinLine(blocks[blocks.length - 1].x, l.t);
+        else blocks.push({ k: "h", x: l.t, l: hasOutline ? 3 : l.z >= B * 1.6 ? 1 : 2 });
         headOpen = true; prev = l; continue;
       }
       headOpen = false;
-      const kind = l.z < body * 0.92 ? "q" : "p";
-      const indented = l.x > left + body * 0.8 && l.x < left + body * 6;
-      const prevInd = prev && prev.x > left + body * 0.8 && Math.abs(prev.x - l.x) < body * 0.5;
-      const shortPrev = !!last && last.xe < last.right - body * 2.2 && END.test(last.t);
+      const kind = l.z < B * 0.92 ? "q" : "p";
+      const indented = l.x > left + B * 0.8 && l.x < left + B * 6;
+      const prevInd = prev && prev.x > left + B * 0.8 && Math.abs(prev.x - l.x) < B * 0.5;
+      const shortPrev = !!last && last.xe < last.right - B * 2.2 && END.test(last.t);
+      const lost = justified && !!last && last.right - last.xe > B * 0.15 && last.right - last.xe < B * 0.9 && /^\p{Ll}/u.test(l.t);
       let start;
       if (!cur) start = !carry || indented || kind !== "p" || shortPrev;
       else start = kind !== (curK === "c" ? "p" : curK) || (prev && prev.y - l.y > lead * 1.5) || (indented && !prevInd) || shortPrev;
       if (start) { flush(); cur = l.t; curK = kind; }
       else if (!cur) { cur = l.t; curK = "c"; }
-      else cur = joinLine(cur, l.t);
+      else cur = joinLine(cur, l.t, lost);
       carry = false; prev = l; last = { t: l.t, xe: l.xe, right };
     }
     carry = !!cur; flush();
     let fn = null;
     for (let i = fnStart; i < L.length; i++) {
       const l = L[i];
-      const st = /^([0-9¹²³⁴⁵⁶⁷⁸⁹⁰]+|[*†‡§])/.test(l.t) && l.x < left + body * 3;
+      const st = /^([0-9¹²³⁴⁵⁶⁷⁸⁹⁰]+|[*†‡§])/.test(l.t) && l.x < left + B * 3;
       if (!fn || st) { if (fn) blocks.push({ k: "fn", x: fn }); fn = l.t; } else fn = joinLine(fn, l.t);
     }
     if (fn) blocks.push({ k: "fn", x: fn });
