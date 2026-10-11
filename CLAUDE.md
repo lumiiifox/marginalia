@@ -27,7 +27,7 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - `<style>` near the top; one `<script>` holds the whole app.
 - Storage: `STORES`, `idbOpen`, `put`, `delMany`, `idbTx`. Backup export and restore follow.
 - Citations: `CITE_STYLES`, `citeAt`, `bibEntry`, `bibtex`.
-- Import/parsing: `linesOf` and `unmerge` (PDF lines; scans' merged words), `parsePDF` (per-page body size, page numbers, headings, lost hyphens), `domToBlocks` / `parseHTML` (EPUB, DOCX), `parsePlain`.
+- Import/parsing: `linesOf` and `unmerge` (PDF lines; scans' merged words), `parsePDF` (per-page body size, page numbers, headings, lost hyphens; `GAP` marks words OCR left blank as "[…]"), `ocrRepair` (scans only, gated by `ocrSigns`: split and misread words corrected against the book's own vocabulary, dashes, note numbers, split numbers, "[illegible]"), `domToBlocks` / `parseHTML` (EPUB, DOCX), `parsePlain`.
 - Views: `render` dispatches to `libraryView`, `textView`, `tagView`, `questionsView`, `draftsView`/`draftView`, `comparesView`/`compareView`, `concordView`, glossary and branches.
 - Data: `GLOSSARY` (large), `BRANCHES`, `LINKS`.
 - Reader settings live in `localStorage` under `mg-reader`; other small preferences use `mg-*` keys.

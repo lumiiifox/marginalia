@@ -68,6 +68,25 @@ PARSE = """async ([url, base]) => {
            text: r.blocks.filter((b) => b.k !== "pg" && b.k !== "h").map((b) => b.x).join("\\n"), source: r.pageSource, paras: r.blocks.filter((b) => b.k === "p").length };
 }"""
 
+# Lines as OCR read them in a scanned book, and what the repairs should make of them. The last cases
+# must come through unchanged: real compounds, names with odd letters, numbers side by side, clean prose.
+OCR_CASES = [
+    ["We must thus make co;mections, ever more connections.", "We must thus make connections, ever more connections."],
+    ["But this pragmatism-this And-is not an instrumentalism", "But this pragmatism—this And—is not an instrumentalism"],
+    ["a kind of trust or confidence--a belief-in-the-world.", "a kind of trust or confidence—a belief-in-the-world."],
+    ['knocking at the door,"3 The "machines" Kafka set up', 'knocking at the door,"³ The "machines" Kafka set up'],
+    ["W hat is supposed by such crossing. T hus he asks", "What is supposed by such crossing. Thus he asks"],
+    ["not a generality but a si ngularity of the highest degree", "not a generality but a singularity of the highest degree"],
+    ["fr�m t�eir rela,tions and fic,tions, as DeleU2e says", "from their relations and fictions, as Deleuze says"],
+    ["he wanted to explore.l1 The problems.s Then", "he wanted to explore.¹¹ The problems.⁵ Then"],
+    ["(Minuit, 1 998); see pp. 1 2 2-1 24 and 1 42ft'.", "(Minuit, 1998); see pp. 122-124 and 142ff."],
+    ["free affect from f.'''l.�VJ'''''' percept", "free affect from [illegible] percept"],
+    ["Jean-Franc;ois Lyotard and Fran<;ois Chatelet", "Jean-Franc;ois Lyotard and Fran<;ois Chatelet"],
+    ["state-of-the-art, face-to-face, a well-known man", "state-of-the-art, face-to-face, a well-known man"],
+    ["chapters 15 31 49 and the year 1998 (e.g., here)", "chapters 15 31 49 and the year 1998 (e.g., here)"],
+    ["The concept of immanence is a plane, not a transcendence.", "The concept of immanence is a plane, not a transcendence."],
+]
+
 failures = []
 def check(ok, what):
     print(("ok   " if ok else "FAIL ") + what)
@@ -107,6 +126,15 @@ async def main(paths):
                     if name == "scanlike":
                         left = re.findall(r"\S*hapte\S*", r["text"])
                         check(not left, "scanlike: misread running heads removed" + (f" (left: {left})" if left else ""))
+                    marks = re.findall(r"\[…\]|\[illegible\]", r["text"])
+                    check(not marks, f"{name}: no OCR repairs on a typeset book" + (f" (found {marks[:3]})" if marks else ""))
+                # The OCR repairs, on lines from a real scan, with the book's vocabulary they rely on.
+                vocab = ("connections deleuze immanence singularity from their relations fictions what thus the question precisely "
+                         "explore problems machine machines minuit year state art face known man would plane concept transcendence ") * 3
+                for got, want in await page.evaluate("""([cases, vocab]) => {
+                    const counts = new Map(); for (const w of vocab.toLowerCase().match(/\\p{L}+/gu)) counts.set(w, (counts.get(w) || 0) + 1);
+                    return cases.map(([inp, want]) => [ocrRepair([{ k: "p", x: inp }], counts)[0].x, want]); }""", [OCR_CASES, vocab]):
+                    check(got == want, f"OCR repair: {want!r}" + ("" if got == want else f" (got {got!r})"))
             check(not errs, "no script errors" + (f": {errs}" if errs else ""))
             await browser.close()
     finally:
