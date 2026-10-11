@@ -486,6 +486,9 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .filebtn { position: relative; overflow: hidden; display: inline-flex; align-items: center; }
 .filebtn input[type=file] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); max-width: calc(100% - 32px); background: var(--plank-edge); color: #f3ede2; padding: 10px 16px; border-radius: 8px; font-size: 15px; z-index: 30; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3); }
+/* Front matter retains PDF line breaks and measured whitespace without fixed-width pages. */
+.bfront { text-indent: 0 !important; line-height: 1.25; margin-bottom: 0.25em; overflow-wrap: anywhere; }
+.bfront.fronthead { font-weight: 700; line-height: 1.16; }
 </style>
 </head>
 <body>
@@ -1524,6 +1527,28 @@ async function parsePDF(buf, say) {
   pages.forEach((pg, p) => {
     const L = pg.lines;
     blocks.push({ k: "pg", x: lab[p] });
+    // Front matter is typeset, not prose. Keep its separate lines and vertical rhythm.
+    // Restrict this to the opening pages with sparse text or contents/copyright cues.
+    const frontText = L.map((l) => l.t).join(" ");
+    const front = p < 10 && (L.length < 18 ||
+      /\\b(?:contents|copyright|isbn|cataloging in publication|acknowledgments)\\b/i.test(frontText.slice(0, 700)) ||
+      (p < 8 && L.some((l) => /\\b(?:preface|introduction|chapter)\\b/i.test(l.t)) && L.length < 35));
+    if (front && L.length) {
+      const height = Math.max(1, pg.y1 - pg.y0);
+      const top = L[0].y;
+      let previous = null;
+      for (const line of L) {
+        // Approximate the original vertical distances without locking text to PDF coordinates.
+        const gap = previous ? Math.max(0, previous.y - line.y - Math.max(previous.z, line.z) * 1.2) : 0;
+        const space = Math.min(5, Math.round(gap / Math.max(1, pg.body) * 10) / 10);
+        const ratio = line.z / Math.max(1, pg.body);
+        const kind = ratio >= 1.3 ? "h" : "p";
+        blocks.push({ k: "front", x: line.t, size: Math.max(0.78, Math.min(1.65, ratio)), space, heading: kind === "h" });
+        previous = line;
+      }
+      carry = false; last = null; cur = null;
+      return;
+    }
     const B = pg.body, lead = leadR * B;
     // This page's own line spacing, measured directly (on scans it doesn't always follow the type size).
     const pitch = median(L.slice(1).map((l, i) => L[i].y - l.y).filter((d) => d > B * 0.6 && d < B * 3)) || lead;
@@ -4635,6 +4660,11 @@ function marginHTML(marks, text) {
 }
 function blockHTML(b, i, marks) {
   if (b.k === "pg") return `<div class="bpg" data-i="${i}">${b.x ? esc(loc(b.x)) : ""}</div>`;
+  if (b.k === "front") {
+    const size = Math.max(0.78, Math.min(1.65, Number(b.size) || 1));
+    const space = Math.max(0, Math.min(5, Number(b.space) || 0));
+    return `<p class="bfront${b.heading ? " fronthead" : ""}" data-i="${i}" style="font-size:${size}em;margin-top:${space}em">${inlineHTML(b.x || "", marks)}${marginHTML(marks, b.x || "")}</p>`;
+  }
   const x = inlineHTML(b.x || "", marks) + marginHTML(marks, b.x || "");
   if (b.k === "h") return `<h2 class="bh l${Math.min(b.l || 2, 4)}" data-i="${i}">${x}</h2>`;
   if (b.k === "q") return `<p class="bq" data-i="${i}">${x}</p>`;
