@@ -10,7 +10,7 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
   A mistake there can stop the app from opening the owner's library.
 - **Direct push to `main`** for everything else: interface, styling, reader behaviour, glossary and branches content, exports.
 - One logical change per commit, with a plain message saying what changed for the reader.
-- Test before pushing: load `index.html` in a headless browser, open the views the change touches, check the console is clean.
+- Test before pushing: run `python3 tests/smoke.py` (every screen at phone and desktop width, the reader, and a full backup → wipe → restore round trip). Add a check to it when a change adds a screen or a stored field.
 - This session can't delete remote branches; the repo is set to delete merged PR branches automatically (if not, tell the owner).
 
 ## Rules
