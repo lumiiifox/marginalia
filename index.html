@@ -1259,10 +1259,35 @@ async function parsePDF(buf, say) {
   // running heads and folios
   const inEdge = (l, pg) => { const h = pg.y1 - pg.y0; return l.y > pg.y1 - h * 0.13 || l.y < pg.y0 + h * 0.11; };
   const edgeSet = (pg) => { const k = pg.lines.length; return new Set([0, 1, k - 2, k - 1].filter((i) => i >= 0 && i < k)); };
-  // Allows a stray mark inside the number, as scans read "19" as "1.9".
-  const FOLIO = /^[\[(\-–—\s]*([0-9]{1,4}|[0-9][.,'·][0-9]{1,2}|[ivxlcdm]{1,7})[\])\-–—\s]*$/i;
+  // Allows stray marks in and around the number, as scans read "19" as "1.9" and "109" as ":1.09";
+  // a misread digit is corrected from the neighbouring pages below.
+  const FOLIO = /^[\[(\-–—:;.,'·\s]*([0-9]{1,4}|[0-9][.,'·][0-9]{1,2}|[ivxlcdm]{1,7})[\])\-–—:;.,'·\s]*$/i;
   const headKey = (t) => t.toLowerCase().replace(/[0-9]+/g, "#").replace(/\b[ivxlcdm]+\b/g, "#").replace(/[^\p{L}#]+/gu, " ").trim();
   const hc = new Map();
+  // Scans misread running heads a little differently on each page ("Chapter 2", "Chapten!", "(hapten3",
+  // "Multiplicltv"), so a short line at the page's edge also counts as a running head when its letters are
+  // within a couple of misreadings of one that recurs.
+  const skel = (t) => t.toLowerCase().replace(/[^\p{L}]+/gu, "");
+  const lev = (a, b, max) => {
+    if (Math.abs(a.length - b.length) > max) return max + 1;
+    let row = Array.from({ length: b.length + 1 }, (_, j) => j);
+    for (let i = 1; i <= a.length; i++) {
+      const nx = [i];
+      for (let j = 1; j <= b.length; j++) nx[j] = Math.min(row[j] + 1, nx[j - 1] + 1, row[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      if (Math.min(...nx) > max) return max + 1;
+      row = nx;
+    }
+    return row[b.length];
+  };
+  let common = null;
+  const isHead = (t) => {
+    if ((hc.get(headKey(t)) || 0) >= 3) return true;
+    const k = skel(t);
+    if (k.length < 5 || t.split(/\s+/).length > 5) return false;
+    if (!common) { const sc = new Map(); for (const [key, c] of hc) { const sk = skel(key); if (sk.length >= 5) sc.set(sk, (sc.get(sk) || 0) + c); } common = [...sc].filter(([, c]) => c >= 3).map(([sk]) => sk); }
+    const max = k.length >= 6 ? 2 : 1;
+    return common.some((f) => lev(k, f, max) <= max);
+  };
   pages.forEach((pg) => edgeSet(pg).forEach((i) => { const l = pg.lines[i]; if (!inEdge(l, pg)) return; const k = headKey(l.t); if (k.replace(/[#\s]/g, "").length >= 3) hc.set(k, (hc.get(k) || 0) + 1); }));
   const printed = new Array(n).fill(null);
   pages.forEach((pg, p) => {
@@ -1273,7 +1298,7 @@ async function parsePDF(buf, say) {
     pg.lines = pg.lines.filter((l, i) => {
       if (!E.has(i) || !inEdge(l, pg)) return true;
       if (FOLIO.test(l.t)) { if (printed[p] == null) printed[p] = l.t.replace(/[^0-9A-Za-z]/g, ""); return false; }
-      if ((hc.get(headKey(l.t)) || 0) >= 3) { const m = l.t.match(/^\s*(\d{1,4})\b|\b(\d{1,4})\s*$/); if (m && fromHead == null) fromHead = m[1] || m[2]; return false; }
+      if (isHead(l.t)) { const m = l.t.match(/^\s*(\d{1,4})\b|\b(\d{1,4})\s*$/); if (m && fromHead == null) fromHead = m[1] || m[2]; return false; }
       return true;
     });
     if (printed[p] == null) printed[p] = fromHead;
@@ -1352,10 +1377,13 @@ async function parsePDF(buf, say) {
     if (outs.length) { carry = false; last = null; }
     outs.forEach((o) => blocks.push({ k: "h", x: o.title, l: 1, s: o.id }));
     const drops = outs.map((o) => norm(o.title)).filter((s) => s.length >= 3);
+    // The same title printed on the page, perhaps numbered differently ("I: Connections" for "1: Connections").
+    const bare = (x) => norm(String(x).replace(/^\s*(?:\d+|[ivxlcdm]+)(?![\p{L}])[\s.:)–—-]*/iu, ""));
+    const bareDrops = outs.map((o) => bare(o.title)).filter((x) => x.length >= 4);
     let prev = null, headOpen = false;
     for (let i = 0; i < fnStart; i++) {
       const l = L[i];
-      if (drops.length && i < 5) { const nl = norm(l.t); if (nl.length >= 2 && drops.some((d) => d.includes(nl) || nl.includes(d))) continue; }
+      if (drops.length && i < 5) { const nl = norm(l.t), bl = bare(l.t); if ((nl.length >= 2 && drops.some((d) => d.includes(nl) || nl.includes(d))) || (bl.length >= 4 && bareDrops.includes(bl))) continue; }
       const words = l.t.split(" ").length;
       // Large type alone doesn't make a heading: one doesn't start in lowercase, break into an unfinished
       // sentence, or fill a justified line from margin to margin.
