@@ -489,6 +489,19 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 /* Front matter retains PDF line breaks and measured whitespace without fixed-width pages. */
 .bfront { text-indent: 0 !important; line-height: 1.25; margin-bottom: 0.25em; overflow-wrap: anywhere; }
 .bfront.fronthead { font-weight: 700; line-height: 1.16; }
+/* Optional page-by-page reading: CSS columns paginate reflowed text without duplicating blocks. */
+#reader.paged-reader { height: 100dvh; overflow: hidden; }
+#reader.paged-reader #book {
+  height: calc(100dvh - var(--reader-bar-height, 64px));
+  max-width: none; width: 100%; box-sizing: border-box;
+  overflow-x: auto; overflow-y: hidden;
+  column-width: calc(100vw - 48px); column-gap: 48px; column-fill: auto;
+  padding: 18px 24px 28px; scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;
+}
+#reader.paged-reader #book > * { break-inside: auto; }
+#reader.paged-reader #book .bpg { break-after: avoid; }
+#reader.paged-reader .rtrail { z-index: 4; }
 </style>
 </head>
 <body>
@@ -4595,7 +4608,7 @@ function confirmDelete() {
 
 /* ---------- reader ---------- */
 // Reading settings live on this device only.
-const RS = { fs: 20, lh: "normal", w: "medium", tone: "app", mn: "show" };
+const RS = { fs: 20, lh: "normal", w: "medium", tone: "app", mn: "show", flow: "scroll" };
 try { Object.assign(RS, JSON.parse(localStorage.getItem("mg-reader") || "{}")); const old = +localStorage.getItem("mg-fs"); if (old && !localStorage.getItem("mg-reader")) RS.fs = old; } catch {}
 const LH = { compact: 1.45, normal: 1.62, airy: 1.85 }, MEASURE = { narrow: "30em", medium: "34em", wide: "40em" };
 function applyFs() {
@@ -4604,6 +4617,7 @@ function applyFs() {
   book.style.setProperty("--lh", LH[RS.lh] || 1.62);
   book.style.setProperty("--measure", MEASURE[RS.w] || "34em");
   book.classList.toggle("hide-mn", RS.mn === "hide");
+  reader.classList.toggle("paged-reader", RS.flow === "pages");
   reader.classList.remove("tone-paper", "tone-sepia", "tone-night");
   if (RS.tone !== "app") reader.classList.add("tone-" + RS.tone);
 }
@@ -4701,6 +4715,7 @@ async function openReader(tid, at, opts) {
   blocks.forEach((b, i) => { if (b.k === "pg") pg = b.x; if (b.k === "h" && b.s) sc = b.s; R.pageAt[i] = pg; R.secAt[i] = sc; });
   const marks = marksByBlock(tid);
   book.innerHTML = blocks.map((b, i) => blockHTML(b, i, marks.get(i))).join("");
+  book.scrollLeft = 0;
   R.els = [...book.children];
   R.sig = new Map([...marks].map(([i, l]) => [i, sigOf(l)]));
   R.dirty = true;
@@ -4721,8 +4736,32 @@ async function openReader(tid, at, opts) {
 }
 
 function measure() { R.tops = R.els.map((e) => e.getBoundingClientRect().top + window.scrollY); R.dirty = false; }
+function isPaged() { return RS.flow === "pages" && S.screen === "reader"; }
+function pageStride() { return Math.max(1, $("#book").clientWidth); }
+function pageForBlock(i) {
+  const book = $("#book"), el = R.els[Math.max(0, Math.min(i, R.els.length - 1))];
+  if (!el) return 0;
+  const rect = el.getClientRects()[0] || el.getBoundingClientRect();
+  return Math.max(0, Math.round((rect.left - book.getBoundingClientRect().left + book.scrollLeft) / pageStride()));
+}
+function turnPage(dir) {
+  if (!isPaged()) return;
+  const book = $("#book"), stride = pageStride();
+  const target = Math.max(0, Math.min(book.scrollWidth - stride, Math.round(book.scrollLeft / stride + dir) * stride));
+  book.scrollTo({ left: target, behavior: "smooth" });
+  clearTimeout(posT); posT = setTimeout(() => { updatePg(); savePos(); }, 450);
+}
 function currentBlock() {
   if (!R.els.length) return 0;
+  if (isPaged()) {
+    const page = Math.round($("#book").scrollLeft / pageStride());
+    let found = 0;
+    for (let i = 0; i < R.els.length; i++) {
+      if (pageForBlock(i) <= page) found = i;
+      else break;
+    }
+    return found;
+  }
   if (R.dirty) measure();
   const y = window.scrollY + barH() + 12;
   let lo = 0, hi = R.tops.length - 1, ans = 0;
@@ -4730,6 +4769,7 @@ function currentBlock() {
   return ans;
 }
 function goTo(i, centre) {
+  if (isPaged()) { $("#book").scrollLeft = pageForBlock(i) * pageStride(); updatePg(); return; }
   const el = R.els[Math.max(0, Math.min(i, R.els.length - 1))]; if (!el) return;
   const top = el.getBoundingClientRect().top + window.scrollY;
   const off = centre ? Math.max(barH() + 8, window.innerHeight * 0.3) : barH() + 8;
@@ -4738,18 +4778,20 @@ function goTo(i, centre) {
 function updatePg() { const i = currentBlock(); const p = R.pageAt[i]; $("#rpg").textContent = p ? loc(p) : ""; updateMarkBtn(); }
 // A spot is a paragraph and how far down it the top of the screen sits (0 to 1), so a long paragraph comes back at the same line.
 function currentSpot() {
+  if (isPaged()) return { i: currentBlock(), f: 0 };
   const i = currentBlock(), el = R.els[i]; if (!el) return { i, f: 0 };
   const y = window.scrollY + barH() + 12, h = el.offsetHeight || 1;
   return { i, f: Math.max(0, Math.min(0.98, Math.round(((y - R.tops[i]) / h) * 100) / 100)) };
 }
 function goToSpot(sp) {
+  if (isPaged()) { goTo(sp.i); return; }
   const el = R.els[Math.max(0, Math.min(sp.i, R.els.length - 1))]; if (!el) return;
   const top = el.getBoundingClientRect().top + window.scrollY;
   window.scrollTo(0, Math.max(0, top + (sp.f || 0) * el.offsetHeight - barH() - 12));
 }
 function savePos() {
   if (!R.blocks || !R.tid || R.visiting) return;
-  const atEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60;
+  const atEnd = isPaged() ? $("#book").scrollLeft + pageStride() >= $("#book").scrollWidth - 5 : window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60;
   const sp = atEnd ? { i: R.blocks.length - 1, f: 0 } : currentSpot();
   if (sp.i === R.saved && Math.abs(sp.f - (R.savedF || 0)) < 0.1) return;
   R.saved = sp.i; R.savedF = sp.f;
@@ -4808,6 +4850,7 @@ function readerSettings() {
   openPanel(`<h2>Reading settings</h2>
     <div class="rs">
       <div class="rs-row"><span>Type size</span><div class="seg"><button class="segb" data-keep="1" data-rs="fs" data-v="-1" aria-label="Smaller type">A−</button><span class="rs-fs" id="rs-fs">${RS.fs}</span><button class="segb" data-keep="1" data-rs="fs" data-v="1" aria-label="Larger type">A+</button></div></div>
+      <div class="rs-row"><span>Navigation</span>${seg("flow", [["scroll", "Scroll"], ["pages", "Swipe pages"]])}</div>
       <div class="rs-row"><span>Line spacing</span>${seg("lh", [["compact", "Compact"], ["normal", "Normal"], ["airy", "Airy"]])}</div>
       <div class="rs-row"><span>Text width</span>${seg("w", [["narrow", "Narrow"], ["medium", "Medium"], ["wide", "Wide"]])}</div>
       <div class="rs-row"><span>Page</span>${seg("tone", [["app", "Like the app"], ["paper", "Paper"], ["sepia", "Sepia"], ["night", "Night"]])}</div>
@@ -4977,7 +5020,24 @@ window.addEventListener("scroll", () => {
   if (!rafP) rafP = requestAnimationFrame(() => { rafP = 0; updatePg(); });
   clearTimeout(posT); posT = setTimeout(settle, 1500);
 }, { passive: true });
-window.addEventListener("resize", () => { R.dirty = true; });
+window.addEventListener("resize", () => { R.dirty = true; if (isPaged()) goTo(currentBlock()); });
+$("#book").addEventListener("scroll", () => {
+  if (!isPaged() || !R.blocks) return;
+  if (!rafP) rafP = requestAnimationFrame(() => { rafP = 0; updatePg(); });
+  clearTimeout(posT); posT = setTimeout(() => savePos(), 900);
+}, { passive: true });
+let swipeStart = null;
+$("#book").addEventListener("touchstart", (e) => {
+  if (!isPaged() || e.touches.length !== 1) return;
+  swipeStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+}, { passive: true });
+$("#book").addEventListener("touchend", (e) => {
+  if (!swipeStart || !isPaged() || !e.changedTouches.length) return;
+  const dx = e.changedTouches[0].clientX - swipeStart.x;
+  const dy = e.changedTouches[0].clientY - swipeStart.y;
+  swipeStart = null;
+  if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4 && (!window.getSelection() || window.getSelection().isCollapsed)) turnPage(dx < 0 ? 1 : -1);
+}, { passive: true });
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && S.screen === "reader") savePos(); });
 
 /* ---------- events ---------- */
