@@ -1,0 +1,1511 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marginalia</title>
+<meta name="description" content="A personal reading log and reader.">
+<meta name="theme-color" content="#eceff3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#11151d" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Marginalia">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Spectral:ital,wght@0,400;0,500;1,400&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one narrow reading column; library -> text view (sections ledger, notes) -> reader (book typography, page markers, select-to-passage); forms in a bottom sheet. */
+:root {
+  --paper: #eceff3;
+  --sheet: #fbfcfd;
+  --ink: #1b2231;
+  --muted: #5b6476;
+  --rule: #d3d9e2;
+  --accent: #2c4ca3;
+  --accent-ink: #ffffff;
+  --mark: rgba(240, 214, 74, 0.55);
+  --warn: #a5402c;
+  --veil: rgba(10, 14, 22, 0.45);
+  --ledge: #cdd3dc;
+  --ledge-lip: #b2bac7;
+  --shelf-shade: rgba(27, 34, 49, 0.14);
+  --f-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", sans-serif;
+  --f-text: "Spectral", Georgia, "Times New Roman", serif;
+  --f-ui: "Work Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #11151d; --sheet: #191f2a; --ink: #e2e6ed; --muted: #97a1b3; --rule: #2a3241;
+    --accent: #93aaee; --accent-ink: #0f1420; --mark: rgba(214, 186, 52, 0.30); --warn: #e38d77; --veil: rgba(0, 0, 0, 0.6); --ledge: #283142; --ledge-lip: #1b222e; --shelf-shade: rgba(0, 0, 0, 0.35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #11151d; --sheet: #191f2a; --ink: #e2e6ed; --muted: #97a1b3; --rule: #2a3241;
+  --accent: #93aaee; --accent-ink: #0f1420; --mark: rgba(214, 186, 52, 0.30); --warn: #e38d77; --veil: rgba(0, 0, 0, 0.6); --ledge: #283142; --ledge-lip: #1b222e; --shelf-shade: rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); background: var(--paper); }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 var(--f-ui); }
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+.wrap { max-width: 680px; margin: 0 auto; padding-inline: 16px; padding-block: 18px 96px; display: grid; gap: 22px; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:disabled { opacity: 0.55; cursor: default; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+
+.top { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.mark-word { font: 700 30px/1 var(--f-display); letter-spacing: -0.01em; }
+.mark-word span { background: linear-gradient(transparent 55%, var(--mark) 55%); padding-inline: 2px; }
+.sub { color: var(--muted); font-size: 13px; }
+.btn { border: 1px solid var(--rule); background: var(--sheet); border-radius: 999px; padding: 7px 14px; font-weight: 500; font-size: 14px; }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.danger { color: var(--warn); }
+.btn.danger.armed { background: var(--warn); color: var(--sheet); border-color: var(--warn); }
+.btn.ghost { background: transparent; border-color: transparent; padding-inline: 8px; color: var(--muted); }
+.search { width: 100%; border: 1px solid var(--rule); background: var(--sheet); border-radius: var(--r); padding: 10px 12px; }
+
+.banner { border: 1px dashed var(--rule); border-radius: var(--r); padding: 10px 12px; color: var(--muted); font-size: 13px; }
+.label { font: 600 11px/1 var(--f-ui); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
+.group { display: grid; gap: 10px; }
+.list { display: grid; gap: 8px; }
+.hint { font-size: 12px; color: var(--muted); margin: 0; }
+.hint.bad { color: var(--warn); }
+
+.textrow { display: grid; gap: 8px; text-align: left; width: 100%; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r); padding: 14px; }
+.textrow h3 { font: 500 19px/1.25 var(--f-text); }
+.byline { color: var(--muted); font-size: 13px; }
+.ledger { display: flex; gap: 3px; }
+.ledger i { flex: 1; height: 6px; border-radius: 2px; background: var(--rule); }
+.ledger i.on { background: var(--accent); }
+.rowfoot { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font: 12px var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.chip { display: inline-flex; align-items: center; gap: 4px; font: 500 11px/1 var(--f-ui); letter-spacing: 0.06em; text-transform: uppercase; border: 1px solid var(--rule); border-radius: 999px; padding: 4px 8px; color: var(--muted); background: transparent; }
+.chip.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.chip.k-objection { color: var(--warn); border-color: currentColor; }
+.chip.k-question { color: var(--accent); border-color: currentColor; }
+.chip.ex { border-style: dashed; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* bookshelf */
+.shelf { display: grid; gap: 12px; }
+.shelfrow {
+  --cw: 104px;
+  display: flex; gap: 16px; overflow-x: auto; overscroll-behavior-x: contain;
+  margin-inline: -16px; padding: 4px 16px 6px; scroll-padding-inline: 16px; scroll-snap-type: x proximity; scrollbar-width: none;
+  background:
+    linear-gradient(var(--ledge), var(--ledge)) 0 calc(4px + var(--cw) * 1.5) / 100% 8px no-repeat,
+    linear-gradient(var(--ledge-lip), var(--ledge-lip)) 0 calc(12px + var(--cw) * 1.5) / 100% 3px no-repeat,
+    linear-gradient(var(--shelf-shade), transparent) 0 calc(15px + var(--cw) * 1.5) / 100% 10px no-repeat;
+}
+.shelfrow::-webkit-scrollbar { display: none; }
+.shelfbook { flex: 0 0 var(--cw); width: var(--cw); display: grid; gap: 4px; align-content: start; text-align: left; background: none; border: 0; padding: 0; color: inherit; scroll-snap-align: start; }
+.shelfbook .cover { margin-bottom: 18px; }
+.sb-title { font: 500 13px/1.3 var(--f-ui); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.6em; overflow-wrap: anywhere; }
+.sb-meta { font: 11px/1.3 var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; min-height: 1.3em; }
+.sb-prog { display: block; height: 3px; border-radius: 2px; background: var(--rule); overflow: hidden; }
+.sb-prog i { display: block; height: 100%; background: var(--accent); }
+
+/* covers: a photo, or a cloth binding with the title stamped on */
+.cover { position: relative; display: block; width: 100%; aspect-ratio: 2 / 3; container-type: inline-size; border-radius: 2px 4px 4px 2px; overflow: hidden; background: var(--rule); box-shadow: 0 1px 1px rgba(0, 0, 0, 0.14), 0 8px 14px -8px rgba(0, 0, 0, 0.5); }
+.cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cover::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(0, 0, 0, 0.3) 0, rgba(255, 255, 255, 0.16) 3%, rgba(0, 0, 0, 0.08) 6%, transparent 12%); }
+.cover.gen { background: var(--cloth); color: #f1ead9; }
+.cover.gen .gen-in { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 6cqw; padding: 15cqw 10cqw 13cqw 16cqw; }
+.cover.gen .gt { font: 500 12.5cqw/1.18 var(--f-text); display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; text-wrap: balance; }
+.cover.gen .gt::after { content: ""; display: block; width: 32%; height: 1px; margin-top: 7cqw; background: currentColor; opacity: 0.55; }
+.cover.gen .ga { font: 600 7cqw/1.25 var(--f-ui); letter-spacing: 0.07em; text-transform: uppercase; opacity: 0.82; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.head { display: grid; gap: 6px; }
+.headrow { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 14px; align-items: end; }
+.headtext { display: grid; gap: 6px; min-width: 0; }
+.head h1 { font: 500 clamp(22px, 6vw, 32px)/1.15 var(--f-text); overflow-wrap: anywhere; }
+.flabel { font-size: 13px; font-weight: 500; }
+.coverpick { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 14px; align-items: start; }
+.coverctl { display: grid; gap: 8px; justify-items: start; }
+.coverctl .hint.bad { color: var(--warn); }
+.head .actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
+.head select { border: 1px solid var(--rule); background: var(--sheet); border-radius: 999px; padding: 6px 10px; font-size: 14px; }
+.srcline { font: 12px var(--f-mono); color: var(--muted); }
+
+.sections { display: grid; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r); }
+.sec { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; padding: 10px 12px; border-top: 1px solid var(--rule); }
+.sec:first-child { border-top: 0; }
+.sec input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--accent); }
+.sec button { text-align: left; background: none; border: 0; padding: 0; min-width: 0; }
+.sec.done button { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--rule); }
+.sec.sel { background: color-mix(in srgb, var(--accent) 9%, transparent); }
+.sec .n { font: 12px var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.notesbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.note { display: grid; gap: 8px; padding: 14px 0; border-top: 1px solid var(--rule); min-width: 0; }
+.note:first-child { border-top: 0; padding-top: 4px; }
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font: 12px var(--f-mono); color: var(--muted); }
+.meta .pg { color: var(--ink); font-weight: 500; }
+.passage { font: 400 17px/1.6 var(--f-text); margin: 0; overflow-wrap: anywhere; }
+.passage span { background: var(--mark); box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: 1px 2px; }
+.gloss { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.gloss.after { padding-left: 12px; border-left: 2px solid var(--rule); }
+.noteacts { display: flex; gap: 4px; flex-wrap: wrap; }
+.empty { color: var(--muted); padding: 18px 0; margin: 0; }
+.empty b { color: var(--ink); font-weight: 500; }
+.src { font: 12px var(--f-mono); color: var(--accent); background: none; border: 0; padding: 0; text-align: left; }
+
+.veil { position: fixed; inset: 0; background: var(--veil); display: flex; align-items: flex-end; justify-content: center; z-index: 20; }
+.sheet { background: var(--sheet); width: 100%; max-width: 680px; max-height: 92%; overflow-y: auto; border-radius: 16px 16px 0 0; padding: 18px 16px calc(18px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 14px; }
+.sheet h2 { font: 700 20px/1.2 var(--f-display); }
+.field { display: grid; gap: 5px; }
+.field label { font-size: 13px; font-weight: 500; }
+.field input, .field select, .field textarea { border: 1px solid var(--rule); background: var(--paper); border-radius: 8px; padding: 9px 10px; width: 100%; min-width: 0; }
+.drop { position: relative; display: grid; gap: 4px; justify-items: center; text-align: center; padding: 22px 14px; border: 1.5px dashed var(--rule); border-radius: var(--r); background: var(--paper); }
+.drop.over, .drop:focus-within { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 7%, var(--paper)); }
+.drop input[type=file] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; padding: 0; border: 0; border-radius: var(--r); }
+.drop-main { font-weight: 600; color: var(--accent); pointer-events: none; overflow-wrap: anywhere; }
+.drop-sub { font-size: 12px; color: var(--muted); pointer-events: none; }
+.linkbtn { justify-self: start; background: none; border: 0; padding: 2px 0; color: var(--accent); font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
+.pastebox { display: grid; gap: 8px; }
+.pastebox .btn { justify-self: start; }
+.field textarea { resize: vertical; min-height: 84px; }
+.field textarea.verbatim { font: 16px/1.55 var(--f-text); }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.formacts { display: flex; justify-content: flex-end; gap: 8px; }
+.err { color: var(--warn); font-size: 13px; min-height: 1em; }
+@media (prefers-reduced-motion: no-preference) { .sheet { animation: rise .18s ease-out; } @keyframes rise { from { transform: translateY(24px); opacity: .6; } } }
+
+/* reader */
+.rbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; display: flex; align-items: center; gap: 2px; padding: 8px 10px; background: var(--paper); border-bottom: 1px solid var(--rule); }
+.rbar .btn { padding: 6px 8px; font-size: 13px; }
+.rtitle { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font: 500 14px var(--f-ui); padding-inline: 4px; }
+.rpg { font: 12px var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; padding-inline: 4px; }
+.book { --fs: 19px; max-width: 36em; margin: 0 auto; padding-inline: 18px; padding-block: 28px 160px; font: 400 var(--fs)/1.68 var(--f-text); overflow-wrap: break-word; }
+.book p { margin: 0; }
+.bp { text-indent: 1.4em; }
+.bp.cont, .bh + .bp, .bq + .bp, .book > .bp:first-child, .bpg:first-child + .bp { text-indent: 0; }
+.bh { font-family: var(--f-display); font-weight: 700; line-height: 1.2; margin: 2.2em 0 0.9em; letter-spacing: -0.005em; }
+.bh.l1 { font-size: 1.5em; }
+.bh.l2 { font-size: 1.22em; }
+.bh.l3, .bh.l4 { font-size: 1.04em; }
+.book > .bh:first-child, .bpg:first-child + .bh { margin-top: 0.4em; }
+.bq { margin: 0.7em 0 0.7em 1.3em !important; font-size: 0.92em; }
+.bfn { font-size: 0.78em; line-height: 1.5; color: var(--muted); padding-left: 1em; }
+.bp + .bfn, .bq + .bfn, .bh + .bfn { margin-top: 0.9em !important; padding-top: 0.5em; border-top: 1px solid var(--rule); }
+.bpg { display: flex; align-items: center; gap: 8px; margin: 0.5em 0; min-height: 1em; font: 11px/1 var(--f-mono); color: var(--muted); user-select: none; -webkit-user-select: none; }
+.bpg::before { content: ""; flex: 1; border-top: 1px dotted var(--rule); }
+.book mark { background: var(--mark); color: inherit; cursor: pointer; box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: 0 1px; }
+.rload { color: var(--muted); font: 14px var(--f-ui); text-indent: 0 !important; }
+.selbar { position: fixed; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; padding: 12px 16px calc(14px + env(safe-area-inset-bottom, 0px)); pointer-events: none; z-index: 10; }
+.selbar .btn { pointer-events: auto; box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22); }
+.toc { display: grid; }
+.tocitem { display: flex; justify-content: space-between; gap: 12px; text-align: left; background: none; border: 0; border-top: 1px solid var(--rule); padding: 10px 0; font: 400 15px/1.35 var(--f-ui); }
+.tocitem.l1 { font-weight: 600; }
+.tocitem.l3, .tocitem.l4 { padding-left: 16px; color: var(--muted); font-size: 14px; }
+.tocitem .tp { font: 12px var(--f-mono); color: var(--muted); white-space: nowrap; }
+
+/* backups */
+.backup { display: grid; gap: 10px; padding-top: 18px; border-top: 1px solid var(--rule); }
+.backup .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.filebtn { position: relative; overflow: hidden; display: inline-flex; align-items: center; }
+.filebtn input[type=file] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); max-width: calc(100% - 32px); background: var(--ink); color: var(--paper); padding: 9px 14px; border-radius: 999px; font-size: 14px; z-index: 30; box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25); }
+</style>
+</head>
+<body>
+
+<div class="wrap" id="main"></div>
+<div id="reader" hidden>
+  <header class="rbar">
+    <button class="btn ghost" id="rback" aria-label="Back to the text's notes">←</button>
+    <div class="rtitle" id="rtitle"></div>
+    <span class="rpg" id="rpg"></span>
+    <button class="btn ghost" id="rsmall" aria-label="Smaller type">A−</button>
+    <button class="btn ghost" id="rbig" aria-label="Larger type">A+</button>
+    <button class="btn ghost" id="rtoc">Contents</button>
+  </header>
+  <article class="book" id="book"></article>
+</div>
+<div class="selbar" id="selbar" hidden><button class="btn primary" id="selsave">Save passage</button></div>
+<div id="sheetroot"></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+const KINDS = { passage: "Passage", gloss: "Gloss", question: "Question", objection: "Objection" };
+const STATUS = { reading: "Reading", queued: "Queued", finished: "Finished" };
+const I0 = "\u0001", I1 = "\u0002";
+const S = { texts: new Map(), notes: new Map(), content: new Map(), covers: new Map(), screen: "library", textId: null, sec: "all", kind: "all", q: "", tq: "", mode: "pending" };
+const R = { tid: null, blocks: null, els: [], tops: [], dirty: true, pageAt: [], secAt: [], sig: new Map(), saved: -1, sel: null };
+let idb = null;
+
+const LIBS = {
+  pdf: ["https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"],
+  pdfw: ["https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"],
+  zip: ["https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"],
+  docx: ["https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js", "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js", "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.21/mammoth.browser.min.js"],
+};
+
+/* ---------- helpers ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const gid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const pnum = (p) => { const m = String(p || "").match(/\d+/); return m ? parseInt(m[0], 10) : Infinity; };
+const plain = (x) => String(x || "").replace(/[\u0001\u0002]/g, "");
+const tidy = (s) => String(s || "").replace(/\s+/g, " ").replace(/\u0001\s*\u0002/g, "").trim();
+const norm = (s) => plain(s).toLowerCase().replace(/[^\p{L}\p{N}]/gu, "");
+const LIG = { "ﬀ": "ff", "ﬁ": "fi", "ﬂ": "fl", "ﬃ": "ffi", "ﬄ": "ffl", "ﬅ": "st", "ﬆ": "st" };
+const fixLig = (s) => s.replace(/[ﬀ-ﬆ]/g, (c) => LIG[c]).replace(/­/g, "");
+const clean = (s) => tidy(fixLig(plain(s)));
+const SUP = { 0: "⁰", 1: "¹", 2: "²", 3: "³", 4: "⁴", 5: "⁵", 6: "⁶", 7: "⁷", 8: "⁸", 9: "⁹" };
+const toSup = (s) => s.replace(/[0-9]/g, (d) => SUP[d]);
+const median = (a) => { if (!a.length) return 0; const b = [...a].sort((x, y) => x - y); return b[b.length >> 1]; };
+const pct = (a, q) => { const b = [...a].sort((x, y) => x - y); return b[Math.floor(q * (b.length - 1))]; };
+const wmedian = (pairs) => { const a = [...pairs].sort((x, y) => x[0] - y[0]); const tot = a.reduce((s, p) => s + p[1], 0); let acc = 0; for (const [v, w] of a) { acc += w; if (acc >= tot / 2) return v; } return a.length ? a[a.length - 1][0] : 10; };
+class UErr extends Error {}
+
+function loadScript(src) { return new Promise((res, rej) => { const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = () => rej(new Error("load")); document.head.appendChild(s); }); }
+async function need(key, ok) {
+  if (ok()) return;
+  for (const u of LIBS[key]) { try { await loadScript(u); if (ok()) return; } catch {} }
+  throw new UErr("Couldn't load the file reader. Check your connection and try again.");
+}
+
+/* ---------- store: IndexedDB on this device ---------- */
+const STORES = ["texts", "notes", "content", "covers"];
+function idbOpen() {
+  return new Promise((res, rej) => {
+    const r = indexedDB.open("marginalia", 2);
+    r.onupgradeneeded = () => { const d = r.result; STORES.forEach((n) => { if (!d.objectStoreNames.contains(n)) d.createObjectStore(n); }); };
+    r.onsuccess = () => {
+      const d = r.result;
+      // A newer version opened elsewhere needs to upgrade storage: step aside and reload into it.
+      d.onversionchange = () => { d.close(); location.reload(); };
+      if (S.blocked) { S.blocked = false; }
+      res(d);
+    };
+    r.onerror = () => rej(r.error);
+    // An older copy open in another tab holds the old storage open; the upgrade finishes once it closes.
+    r.onblocked = () => { S.blocked = true; render(); };
+  });
+}
+function idbDo(store, fn) {
+  return new Promise((res, rej) => {
+    const t = idb.transaction(store, "readwrite");
+    fn(t.objectStore(store));
+    t.oncomplete = () => res();
+    t.onerror = () => rej(t.error);
+    t.onabort = () => rej(t.error);
+  });
+}
+function idbAll(store) {
+  return new Promise((res, rej) => {
+    const m = new Map(), r = idb.transaction(store).objectStore(store).openCursor();
+    r.onsuccess = () => { const c = r.result; if (c) { m.set(c.key, c.value); c.continue(); } else res(m); };
+    r.onerror = () => rej(r.error);
+  });
+}
+function idbGet(store, key) {
+  return new Promise((res, rej) => { const r = idb.transaction(store).objectStore(store).get(key); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
+}
+const mapFor = (col) => (col === "texts" ? S.texts : col === "notes" ? S.notes : col === "covers" ? S.covers : S.content);
+async function put(col, id, data) {
+  if (idb) await idbDo(col, (s) => s.put(data, id));
+  mapFor(col).set(id, data);
+  if (col !== "content") render();
+}
+async function del(col, id) {
+  if (idb) await idbDo(col, (s) => s.delete(id));
+  mapFor(col).delete(id);
+  if (col !== "content") render();
+}
+function failMsg(e) {
+  if (e && (e.name === "QuotaExceededError" || /quota/i.test(e.message || ""))) return "This device is out of storage space for the app. Delete a text or free up space, then try again.";
+  return `Couldn't save (${(e && (e.name || e.message)) || "unknown error"}).`;
+}
+async function saveContent(tid, blocks, say) {
+  say("Saving the text…");
+  await put("content", tid, blocks);
+}
+async function loadContent(tid) {
+  if (S.content.has(tid)) return S.content.get(tid);
+  if (!idb) return null;
+  const blocks = await idbGet("content", tid);
+  if (blocks) S.content.set(tid, blocks);
+  return blocks || null;
+}
+
+/* ---------- covers ---------- */
+const COVER_URL = new Map();
+function coverURL(tid) {
+  const b = S.covers.get(tid), c = COVER_URL.get(tid);
+  if (!b) { if (c) { URL.revokeObjectURL(c.url); COVER_URL.delete(tid); } return null; }
+  if (c && c.blob === b) return c.url;
+  if (c) URL.revokeObjectURL(c.url);
+  const url = URL.createObjectURL(b); COVER_URL.set(tid, { blob: b, url }); return url;
+}
+// Cloth-binding colours for books without a cover image; picked from the title so a book keeps its colour.
+const CLOTH = ["#2f4f3e", "#6b2b2b", "#24365c", "#80632a", "#3f4a55", "#4f3358", "#5a3a26", "#2e5a5a"];
+function cloth(s) { let h = 7; for (const ch of String(s || "")) h = (h * 31 + ch.codePointAt(0)) >>> 0; return CLOTH[h % CLOTH.length]; }
+function coverHTML(t, url) {
+  if (url) return `<span class="cover"><img src="${url}" alt=""></span>`;
+  return `<span class="cover gen" style="--cloth:${cloth(t.title)}"><span class="gen-in"><span class="gt">${esc(t.title || "Untitled")}</span>${t.author ? `<span class="ga">${esc(t.author)}</span>` : ""}</span></span>`;
+}
+// Shrink any image to a cover-sized JPEG so storage and backups stay small.
+async function toCover(blob) {
+  let src, tmp = null;
+  try { src = await createImageBitmap(blob); }
+  catch {
+    tmp = URL.createObjectURL(blob);
+    src = await new Promise((res, rej) => { const img = new Image(); img.onload = () => res(img); img.onerror = () => rej(new UErr("That image couldn't be opened. Use a JPEG or PNG.")); img.src = tmp; });
+  }
+  try {
+    const w0 = src.width, h0 = src.height;
+    if (!w0 || !h0) throw new UErr("That image couldn't be opened. Use a JPEG or PNG.");
+    const k = Math.min(1, 600 / h0, 400 / w0);
+    const cv = document.createElement("canvas"); cv.width = Math.max(1, Math.round(w0 * k)); cv.height = Math.max(1, Math.round(h0 * k));
+    const ctx = cv.getContext("2d"); ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, cv.width, cv.height); ctx.drawImage(src, 0, 0, cv.width, cv.height);
+    const out = await new Promise((res) => cv.toBlob(res, "image/jpeg", 0.85));
+    if (!out) throw new UErr("That image couldn't be opened. Use a JPEG or PNG.");
+    return out;
+  } finally { if (tmp) URL.revokeObjectURL(tmp); if (src && src.close) src.close(); }
+}
+function progressOf(t) {
+  if (t.hasContent && t.total > 1) return Math.max(0, Math.min(100, Math.round((100 * (t.pos || 0)) / (t.total - 1))));
+  const secs = t.sections || [];
+  if (secs.length) return Math.round((100 * secs.filter((s) => s.done).length) / secs.length);
+  return null;
+}
+
+/* ---------- toast, downloads, backups ---------- */
+let toastT;
+function toast(msg) { const el = $("#toast"); el.textContent = msg; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { el.hidden = true; }, 3200); }
+const stamp = () => new Date().toISOString().slice(0, 10);
+const slug = (s) => String(s || "notes").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "notes";
+async function saveFile(name, text, type) {
+  const blob = new Blob([text], { type });
+  const touch = window.matchMedia && matchMedia("(pointer: coarse)").matches;
+  if (touch && navigator.canShare) {
+    try {
+      const file = new File([blob], name, { type });
+      if (navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: name }); return true; }
+    } catch (e) { if (e && e.name === "AbortError") return false; }
+  }
+  const url = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+  return true;
+}
+const blobToDataURL = (b) => new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = () => rej(fr.error); fr.readAsDataURL(b); });
+async function exportBackup() {
+  const content = idb ? await idbAll("content") : S.content;
+  const covers = {};
+  for (const [id, b] of S.covers) { try { covers[id] = await blobToDataURL(b); } catch {} }
+  const data = { app: "marginalia", version: 2, exportedAt: new Date().toISOString(), texts: Object.fromEntries(S.texts), notes: Object.fromEntries(S.notes), content: Object.fromEntries(content), covers };
+  const ok = await saveFile(`marginalia-backup-${stamp()}.json`, JSON.stringify(data), "application/json");
+  if (ok) { try { localStorage.setItem("mg-backup", String(Date.now())); } catch {} render(); }
+}
+async function importBackup(file) {
+  let data;
+  try { data = JSON.parse(await file.text()); } catch { toast("That file isn't a Marginalia backup."); return; }
+  if (!data || data.app !== "marginalia" || typeof data.texts !== "object") { toast("That file isn't a Marginalia backup."); return; }
+  try {
+    for (const col of ["texts", "notes", "content"]) {
+      const rows = Object.entries(data[col] || {});
+      if (idb && rows.length) await idbDo(col, (s) => rows.forEach(([id, v]) => s.put(v, id)));
+      rows.forEach(([id, v]) => mapFor(col).set(id, v));
+    }
+    const covers = [];
+    for (const [id, url] of Object.entries(data.covers || {})) { try { covers.push([id, await (await fetch(url)).blob()]); } catch {} }
+    if (idb && covers.length) await idbDo("covers", (s) => covers.forEach(([id, b]) => s.put(b, id)));
+    covers.forEach(([id, b]) => S.covers.set(id, b));
+    render();
+    const nt = Object.keys(data.texts).length, nn = Object.keys(data.notes || {}).length;
+    toast(`Restored ${nt} text${nt === 1 ? "" : "s"} and ${nn} note${nn === 1 ? "" : "s"}.`);
+  } catch (e) { toast(failMsg(e)); }
+}
+function notesMarkdown(tid) {
+  const t = S.texts.get(tid); if (!t) return "";
+  const list = sortNotes(notesFor(tid), t);
+  const secName = new Map((t.sections || []).map((s) => [s.id, s.label]));
+  const out = [`# ${t.title}`, ""];
+  const by = [t.author, t.edition].filter(Boolean).join(" · ");
+  if (by) out.push(`*${by}*`, "");
+  let cur = null;
+  for (const [, n] of list) {
+    const sec = secName.get(n.sectionId) || "";
+    if (sec !== cur) { cur = sec; if (sec) out.push(`## ${sec}`, ""); }
+    const head = [n.page ? `p. ${n.page}` : "", KINDS[n.kind] || "Note"].filter(Boolean).join(" · ");
+    out.push(`**${head}**`, "");
+    if (n.passage) out.push(...n.passage.split(/\n+/).map((l) => `> ${l}`), "");
+    if (n.gloss) out.push(n.gloss, "");
+  }
+  return out.join("\n");
+}
+
+/* ---------- parsing: shared ---------- */
+function finalize(blocks) {
+  const out = [];
+  for (const b of blocks) {
+    const nb = { k: b.k, x: b.k === "pg" ? clean(b.x) : tidy(fixLig(b.x || "")) };
+    if (b.l) nb.l = b.l;
+    if (b.s) nb.s = b.s;
+    if (nb.k !== "pg" && !plain(nb.x)) continue;
+    if (nb.k === "pg" && out.length && out[out.length - 1].k === "pg") { out[out.length - 1] = nb; continue; }
+    if (nb.x.length > 40000) {
+      let rest = nb.x, first = true;
+      while (rest.length) {
+        let cut = rest.length > 40000 ? rest.lastIndexOf(" ", 40000) : rest.length;
+        if (cut < 20000) cut = Math.min(40000, rest.length);
+        out.push({ k: first ? nb.k : nb.k === "p" ? "c" : nb.k, x: rest.slice(0, cut).trim() });
+        rest = rest.slice(cut); first = false;
+      }
+      continue;
+    }
+    out.push(nb);
+  }
+  while (out.length && out[out.length - 1].k === "pg") out.pop();
+  return out;
+}
+function dedupe(secs) {
+  const seen = new Map();
+  return secs.map((s) => { const k = s.label.toLowerCase(); const c = (seen.get(k) || 0) + 1; seen.set(k, c); return c > 1 ? { ...s, label: `${s.label} (${c})` } : s; });
+}
+function makeSections(blocks) {
+  if (blocks.some((b) => b.s)) return dedupe(blocks.filter((b) => b.s).map((b) => ({ id: b.s, label: plain(b.x).slice(0, 90) || "Untitled" })));
+  const byL = new Map();
+  blocks.forEach((b) => { if (b.k === "h") byL.set(b.l || 2, (byL.get(b.l || 2) || 0) + 1); });
+  const lv = [...byL.keys()].sort((a, b) => a - b).find((l) => byL.get(l) >= 3 && byL.get(l) <= 80);
+  if (lv == null) return [];
+  const out = [];
+  blocks.forEach((b) => { if (b.k === "h" && (b.l || 2) === lv) { b.s = gid() + out.length; out.push({ id: b.s, label: plain(b.x).slice(0, 90) || "Untitled" }); } });
+  return dedupe(out);
+}
+function linkHeadings(blocks, parsedSecs, finalSecs) {
+  const byLabel = new Map(finalSecs.map((s) => [norm(s.label), s.id]));
+  const idMap = new Map(parsedSecs.map((p) => [p.id, byLabel.get(norm(p.label))]));
+  blocks.forEach((b) => { if (b.s) { const id = idMap.get(b.s); if (id) b.s = id; else delete b.s; } });
+}
+
+/* ---------- parsing: PDF ---------- */
+function linesOf(items) {
+  const its = [];
+  for (const it of items) {
+    if (!it.str || !it.str.trim()) continue;
+    const t = it.transform;
+    its.push({ s: fixLig(it.str), x: t[4], y: t[5], z: Math.hypot(t[2], t[3]) || it.height || 10, w: it.width || 0 });
+  }
+  its.sort((a, b) => b.y - a.y || a.x - b.x);
+  const lines = [];
+  for (const it of its) {
+    const L = lines[lines.length - 1];
+    if (L && Math.abs(L.y - it.y) <= Math.max(1.5, 0.5 * Math.max(L.z, it.z))) { L.items.push(it); if (it.z > L.z) { L.z = it.z; L.y = it.y; } }
+    else lines.push({ y: it.y, z: it.z, items: [it] });
+  }
+  return lines.map((L) => {
+    L.items.sort((a, b) => a.x - b.x);
+    let txt = "", prev = null;
+    for (const it of L.items) {
+      let s = it.s;
+      const sup = it.z < 0.8 * L.z && it.y > L.y + 0.12 * L.z && /^[\s\d*†‡,]+$/.test(s);
+      if (sup) s = toSup(s.replace(/\s/g, ""));
+      if (prev && !sup) { const gap = it.x - (prev.x + prev.w); if (gap > 0.15 * L.z && !/\s$/.test(txt) && !/^\s/.test(s)) txt += " "; }
+      txt += s; prev = it;
+    }
+    const a = L.items[0], b = L.items[L.items.length - 1];
+    return { t: txt.replace(/\s+/g, " ").trim(), x: a.x, xe: b.x + b.w, y: L.y, z: L.z };
+  }).filter((l) => l.t);
+}
+
+async function parsePDF(buf, say) {
+  say("Loading the PDF reader…");
+  await need("pdf", () => !!window.pdfjsLib);
+  const lib = window.pdfjsLib;
+  // Run PDF.js in a background worker so long books don't freeze the page.
+  let wk = null, pw = null;
+  try {
+    wk = new Worker(URL.createObjectURL(new Blob([`importScripts(${JSON.stringify(LIBS.pdfw[0])});`], { type: "text/javascript" })));
+    pw = lib.PDFWorker.fromPort({ port: wk });
+  } catch { wk = null; pw = null; }
+  if (!pw) { try { await need("pdfw", () => !!window.pdfjsWorker); } catch {} try { lib.GlobalWorkerOptions.workerSrc = LIBS.pdfw[0]; } catch {} }
+  const stopWorker = () => { try { if (pw) pw.destroy(); } catch {} try { if (wk) wk.terminate(); } catch {} };
+  const wkFail = new Promise((_, rej) => { if (wk) wk.addEventListener("error", () => rej(new UErr("Couldn't start the PDF reader. Check your connection and try again."))); });
+  let pdf;
+  try { pdf = await Promise.race([lib.getDocument({ data: new Uint8Array(buf), isEvalSupported: false, ...(pw ? { worker: pw } : {}) }).promise, wkFail]); }
+  catch (e) { stopWorker(); if (e && e.name === "PasswordException") throw new UErr("This PDF is password-protected. Remove the password, then load it again."); throw e; }
+  const n = pdf.numPages;
+  let title = "", author = "";
+  try { const m = await pdf.getMetadata(); title = clean(m?.info?.Title || ""); author = clean(m?.info?.Author || ""); } catch {}
+  if (/^(microsoft|untitled)|\.(pdf|docx?|indd|tex)$/i.test(title)) title = "";
+  let labels = null; try { labels = await pdf.getPageLabels(); } catch {}
+  const pages = [];
+  for (let p = 1; p <= n; p++) {
+    if (p === 1 || p % 10 === 0) { say(`Reading page ${p} of ${n}…`); await new Promise((r) => setTimeout(r, 0)); }
+    const page = await pdf.getPage(p);
+    const vb = page.getViewport({ scale: 1 }).viewBox;
+    const tc = await page.getTextContent();
+    pages.push({ lines: linesOf(tc.items), y0: vb[1], y1: vb[3] });
+    page.cleanup();
+  }
+  let outline = [];
+  try {
+    let ol = await pdf.getOutline();
+    if (ol && ol.length === 1 && ol[0].items && ol[0].items.length > 1) ol = ol[0].items;
+    for (const o of ol || []) {
+      let dest = o.dest;
+      if (typeof dest === "string") dest = await pdf.getDestination(dest);
+      if (!Array.isArray(dest) || dest[0] == null) continue;
+      const idx = typeof dest[0] === "number" ? dest[0] : await pdf.getPageIndex(dest[0]);
+      const t = clean(o.title);
+      if (t) outline.push({ title: t, page: idx, id: gid() + outline.length });
+    }
+  } catch { outline = []; }
+  if (outline.length > 120) outline = [];
+  // Picture of the first page, used as the cover unless you choose your own.
+  let cover = null;
+  try {
+    say("Making a cover from page 1…");
+    const p1 = await pdf.getPage(1);
+    const v1 = p1.getViewport({ scale: 1 });
+    const vp = p1.getViewport({ scale: Math.min(2, 600 / v1.height, 400 / v1.width) });
+    const cv = document.createElement("canvas"); cv.width = Math.round(vp.width); cv.height = Math.round(vp.height);
+    const ctx = cv.getContext("2d"); ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, cv.width, cv.height);
+    await p1.render({ canvasContext: ctx, viewport: vp }).promise;
+    cover = await new Promise((res) => cv.toBlob(res, "image/jpeg", 0.85));
+    p1.cleanup();
+  } catch { cover = null; }
+  try { await pdf.destroy(); } catch {}
+  stopWorker();
+
+  say("Rebuilding paragraphs…");
+  const all = pages.flatMap((pg) => pg.lines);
+  if (all.reduce((a, l) => a + l.t.length, 0) / n < 40) throw new UErr("This PDF has no text layer, so it's a scanned image. Run OCR on it first (OCRmyPDF or Acrobat), then load it again.");
+  const body = wmedian(all.map((l) => [l.z, l.t.length]));
+  const near = (z) => Math.abs(z - body) <= body * 0.08;
+  const gaps = [];
+  pages.forEach((pg) => { const L = pg.lines; for (let i = 1; i < L.length; i++) if (near(L[i].z) && near(L[i - 1].z)) { const d = L[i - 1].y - L[i].y; if (d > body * 0.6 && d < body * 3) gaps.push(d); } });
+  const lead = median(gaps) || body * 1.3;
+
+  // running heads and folios
+  const inEdge = (l, pg) => { const h = pg.y1 - pg.y0; return l.y > pg.y1 - h * 0.13 || l.y < pg.y0 + h * 0.11; };
+  const edgeSet = (pg) => { const k = pg.lines.length; return new Set([0, 1, k - 2, k - 1].filter((i) => i >= 0 && i < k)); };
+  const FOLIO = /^[\[(\-–—\s]*([0-9]{1,4}|[ivxlcdm]{1,7})[\])\-–—\s]*$/i;
+  const headKey = (t) => t.toLowerCase().replace(/[0-9]+/g, "#").replace(/\b[ivxlcdm]+\b/g, "#").replace(/[^\p{L}#]+/gu, " ").trim();
+  const hc = new Map();
+  pages.forEach((pg) => edgeSet(pg).forEach((i) => { const l = pg.lines[i]; if (!inEdge(l, pg)) return; const k = headKey(l.t); if (k.replace(/[#\s]/g, "").length >= 3) hc.set(k, (hc.get(k) || 0) + 1); }));
+  const printed = new Array(n).fill(null);
+  pages.forEach((pg, p) => {
+    const E = edgeSet(pg);
+    pg.lines = pg.lines.filter((l, i) => {
+      if (!E.has(i) || !inEdge(l, pg)) return true;
+      if (FOLIO.test(l.t)) { if (printed[p] == null) printed[p] = l.t.replace(/[^0-9A-Za-z]/g, ""); return false; }
+      if ((hc.get(headKey(l.t)) || 0) >= 3) { const m = l.t.match(/^\s*(\d{1,4})\b|\b(\d{1,4})\s*$/); if (m && printed[p] == null) printed[p] = m[1] || m[2]; return false; }
+      return true;
+    });
+  });
+  const meaningful = Array.isArray(labels) && labels.length === n && labels.some((l, i) => l && l !== String(i + 1));
+  const det = printed.filter((v) => v != null).length;
+  let lab, pageSource;
+  if (meaningful) { lab = labels.slice(); pageSource = "labels"; }
+  else if (det >= n * 0.4) {
+    pageSource = "printed"; lab = printed.slice();
+    for (let p = 0; p < n; p++) {
+      for (let d = 1; d <= 6 && lab[p] == null; d++) for (const q of [p - d, p + d]) {
+        if (q >= 0 && q < n && /^\d+$/.test(printed[q] || "")) { const v = +printed[q] + (p - q); if (v > 0) { lab[p] = String(v); break; } }
+      }
+      if (lab[p] == null) lab[p] = "";
+    }
+  } else { lab = pages.map((_, i) => String(i + 1)); pageSource = "index"; }
+
+  // dehyphenation dictionary
+  const counts = new Map(), WORD = /\p{L}+(?:-\p{L}+)*/gu;
+  all.forEach((l) => { const ws = l.t.match(WORD) || []; const cut = /\p{L}-$/u.test(l.t); ws.forEach((w, i) => { if (i === 0 || (cut && i === ws.length - 1)) return; const k = w.toLowerCase(); counts.set(k, (counts.get(k) || 0) + 1); }); });
+  const joinLine = (a, b) => {
+    const m = a.match(/(\p{L}+)-$/u);
+    if (m) {
+      const nx = b.match(/^(\p{L}+)/u);
+      if (!nx) return a + b;
+      const ch = counts.get((m[1] + "-" + nx[1]).toLowerCase()) || 0, cj = counts.get((m[1] + nx[1]).toLowerCase()) || 0;
+      return ch > cj || /^\p{Lu}/u.test(nx[1]) ? a + b : a.slice(0, -1) + b;
+    }
+    return /[—–\/]$/.test(a) ? a + b : a + " " + b;
+  };
+
+  const hasOutline = outline.length > 0;
+  const byPage = new Map();
+  outline.forEach((o) => { if (!byPage.has(o.page)) byPage.set(o.page, []); byPage.get(o.page).push(o); });
+  const blocks = [];
+  let cur = null, curK = "p", carry = false, last = null;
+  const flush = () => { if (cur && cur.trim()) blocks.push({ k: curK, x: cur }); cur = null; };
+  const END = /[.!?:]["”’)\]]?$/;
+  pages.forEach((pg, p) => {
+    const L = pg.lines;
+    blocks.push({ k: "pg", x: lab[p] });
+    const bl = L.filter((l) => near(l.z));
+    const left = bl.length ? pct(bl.map((l) => l.x), 0.15) : 0;
+    const right = bl.length ? pct(bl.map((l) => l.xe), 0.9) : Infinity;
+    let lastBody = -1; L.forEach((l, i) => { if (l.z >= body * 0.93) lastBody = i; });
+    let fnStart = L.length;
+    const nx = L[lastBody + 1];
+    if (nx && nx.y < pg.y0 + (pg.y1 - pg.y0) * 0.5) fnStart = lastBody + 1;
+    const outs = byPage.get(p) || [];
+    if (outs.length) { carry = false; last = null; }
+    outs.forEach((o) => blocks.push({ k: "h", x: o.title, l: 1, s: o.id }));
+    const drops = outs.map((o) => norm(o.title)).filter((s) => s.length >= 3);
+    let prev = null, headOpen = false;
+    for (let i = 0; i < fnStart; i++) {
+      const l = L[i];
+      if (drops.length && i < 5) { const nl = norm(l.t); if (nl.length >= 2 && drops.some((d) => d.includes(nl) || nl.includes(d))) continue; }
+      if (l.z >= body * 1.18 && l.t.split(" ").length <= 16) {
+        flush(); carry = false; last = null;
+        if (headOpen) blocks[blocks.length - 1].x += " " + l.t;
+        else blocks.push({ k: "h", x: l.t, l: hasOutline ? 3 : l.z >= body * 1.6 ? 1 : 2 });
+        headOpen = true; prev = l; continue;
+      }
+      headOpen = false;
+      const kind = l.z < body * 0.92 ? "q" : "p";
+      const indented = l.x > left + body * 0.8 && l.x < left + body * 6;
+      const prevInd = prev && prev.x > left + body * 0.8 && Math.abs(prev.x - l.x) < body * 0.5;
+      const shortPrev = !!last && last.xe < last.right - body * 2.2 && END.test(last.t);
+      let start;
+      if (!cur) start = !carry || indented || kind !== "p" || shortPrev;
+      else start = kind !== (curK === "c" ? "p" : curK) || (prev && prev.y - l.y > lead * 1.5) || (indented && !prevInd) || shortPrev;
+      if (start) { flush(); cur = l.t; curK = kind; }
+      else if (!cur) { cur = l.t; curK = "c"; }
+      else cur = joinLine(cur, l.t);
+      carry = false; prev = l; last = { t: l.t, xe: l.xe, right };
+    }
+    carry = !!cur; flush();
+    let fn = null;
+    for (let i = fnStart; i < L.length; i++) {
+      const l = L[i];
+      const st = /^([0-9¹²³⁴⁵⁶⁷⁸⁹⁰]+|[*†‡§])/.test(l.t) && l.x < left + body * 3;
+      if (!fn || st) { if (fn) blocks.push({ k: "fn", x: fn }); fn = l.t; } else fn = joinLine(fn, l.t);
+    }
+    if (fn) blocks.push({ k: "fn", x: fn });
+  });
+  flush();
+  return { title, author, kind: "PDF", blocks, pageSource, cover };
+}
+
+/* ---------- parsing: EPUB / Word / HTML ---------- */
+const BLOCK = new Set("address article aside blockquote body dd details div dl dt fieldset figcaption figure footer form h1 h2 h3 h4 h5 h6 header hr li main nav ol p pre section table tbody thead tfoot tr td th ul".split(" "));
+const SKIP = new Set(["script", "style", "head", "title", "meta", "link", "svg", "img", "picture", "video", "audio"]);
+const ITAL = new Set(["i", "em", "cite", "var", "dfn"]);
+function domToBlocks(root, blocks) {
+  let buf = "", kind = "p";
+  const attr = (el, a) => (el.getAttribute && el.getAttribute(a)) || "";
+  const isPB = (el) => /pagebreak/.test(attr(el, "epub:type")) || attr(el, "role") === "doc-pagebreak";
+  const pbLabel = (el) => clean(attr(el, "aria-label") || attr(el, "title") || el.textContent || attr(el, "id").replace(/^\D+/, ""));
+  const isFn = (el) => /footnote|endnote|rearnote/.test(`${attr(el, "epub:type")} ${attr(el, "role")} ${attr(el, "class")}`);
+  const name = (el) => (el.localName || "").toLowerCase();
+  const flush = () => { const x = tidy(buf); if (plain(x)) blocks.push({ k: kind, x }); buf = ""; };
+  function inl(nd) {
+    if (nd.nodeType === 3) { buf += nd.nodeValue; return; }
+    if (nd.nodeType !== 1) return;
+    const tag = name(nd);
+    if (SKIP.has(tag)) return;
+    if (isPB(nd)) { const had = !!plain(tidy(buf)), save = kind; flush(); blocks.push({ k: "pg", x: pbLabel(nd) }); kind = had && save === "p" ? "c" : save; return; }
+    if (BLOCK.has(tag)) { const save = kind === "c" ? "p" : kind; flush(); walk(nd, save); kind = save; return; }
+    if (tag === "br") { buf += " "; return; }
+    if (tag === "sup") { const t = nd.textContent.trim(); buf += /^\d+$/.test(t) ? toSup(t) : t; return; }
+    const it = ITAL.has(tag);
+    if (it) buf += I0;
+    for (const c of nd.childNodes) inl(c);
+    if (it) buf += I1;
+  }
+  function walk(el, k) {
+    const tag = name(el);
+    if (SKIP.has(tag)) return;
+    if (isPB(el)) { flush(); blocks.push({ k: "pg", x: pbLabel(el) }); return; }
+    if (/^h[1-6]$/.test(tag)) {
+      flush(); kind = "h";
+      for (const c of el.childNodes) inl(c);
+      const x = tidy(buf); buf = "";
+      if (plain(x)) blocks.push({ k: "h", x, l: +tag[1] });
+      kind = k; return;
+    }
+    const myK = isFn(el) ? "fn" : tag === "blockquote" ? "q" : k;
+    flush(); kind = myK;
+    for (const c of el.childNodes) {
+      if (c.nodeType === 1 && BLOCK.has(name(c)) && !isPB(c)) { flush(); walk(c, myK); kind = myK; }
+      else inl(c);
+    }
+    flush(); kind = k;
+  }
+  walk(root, "p");
+}
+function resolvePath(base, rel) {
+  const out = [];
+  for (const seg of (base + rel).split("/")) { if (seg === "..") out.pop(); else if (seg && seg !== ".") out.push(seg); }
+  return out.join("/");
+}
+async function parseEPUB(buf, say) {
+  say("Opening the EPUB…");
+  await need("zip", () => !!window.JSZip);
+  const zip = await window.JSZip.loadAsync(buf);
+  const xml = (s) => new DOMParser().parseFromString(s, "application/xml");
+  const cf = zip.file("META-INF/container.xml");
+  if (!cf) throw new UErr("This EPUB is damaged: its container file is missing.");
+  const opfPath = xml(await cf.async("text")).getElementsByTagName("rootfile")[0]?.getAttribute("full-path");
+  const opfFile = opfPath && zip.file(opfPath);
+  if (!opfFile) throw new UErr("This EPUB is damaged: its package file is missing.");
+  const opf = xml(await opfFile.async("text"));
+  const base = opfPath.includes("/") ? opfPath.slice(0, opfPath.lastIndexOf("/") + 1) : "";
+  const first = (tag) => clean(opf.getElementsByTagNameNS("*", tag)[0]?.textContent || "");
+  const man = new Map();
+  for (const it of opf.getElementsByTagNameNS("*", "item")) man.set(it.getAttribute("id"), it.getAttribute("href") || "");
+  const spine = [...opf.getElementsByTagNameNS("*", "itemref")].filter((r) => r.getAttribute("linear") !== "no").map((r) => man.get(r.getAttribute("idref"))).filter(Boolean);
+  const blocks = [];
+  for (let i = 0; i < spine.length; i++) {
+    say(`Reading part ${i + 1} of ${spine.length}…`);
+    let href = spine[i].split("#")[0]; try { href = decodeURIComponent(href); } catch {}
+    const f = zip.file(resolvePath(base, href)); if (!f) continue;
+    const src = await f.async("text");
+    let doc = new DOMParser().parseFromString(src, "application/xhtml+xml");
+    if (doc.getElementsByTagName("parsererror").length) doc = new DOMParser().parseFromString(src, "text/html");
+    const b = doc.getElementsByTagName("body")[0];
+    if (b) domToBlocks(b, blocks);
+  }
+  // The cover image the publisher packed into the EPUB, if there is one.
+  let cover = null;
+  try {
+    const items = [...opf.getElementsByTagNameNS("*", "item")];
+    const metaCover = [...opf.getElementsByTagNameNS("*", "meta")].find((m) => m.getAttribute("name") === "cover");
+    let it = items.find((i) => /(^|\s)cover-image(\s|$)/.test(i.getAttribute("properties") || ""));
+    if (!it && metaCover) it = items.find((i) => i.getAttribute("id") === metaCover.getAttribute("content"));
+    if (!it) it = items.find((i) => /^image\//.test(i.getAttribute("media-type") || "") && /cover/i.test(`${i.getAttribute("id") || ""} ${i.getAttribute("href") || ""}`));
+    if (it) {
+      let href = it.getAttribute("href") || ""; try { href = decodeURIComponent(href); } catch {}
+      const f = zip.file(resolvePath(base, href));
+      if (f) cover = await toCover(new Blob([await f.async("arraybuffer")], { type: it.getAttribute("media-type") || "image/jpeg" }));
+    }
+  } catch { cover = null; }
+  return { title: first("title"), author: first("creator"), kind: "EPUB", blocks, cover };
+}
+async function parseDOCX(buf, say) {
+  say("Opening the Word file…");
+  await need("docx", () => !!window.mammoth);
+  const r = await window.mammoth.convertToHtml({ arrayBuffer: buf });
+  const doc = new DOMParser().parseFromString(r.value, "text/html");
+  const blocks = []; domToBlocks(doc.body, blocks);
+  return { title: "", author: "", kind: "Word", blocks };
+}
+function parseHTML(src) {
+  const doc = new DOMParser().parseFromString(src, "text/html");
+  const blocks = []; domToBlocks(doc.body, blocks);
+  return { title: clean(doc.title || ""), author: "", kind: "HTML", blocks };
+}
+
+/* ---------- parsing: plain text / Markdown ---------- */
+function parsePlain(src, md) {
+  src = src.replace(/^﻿/, "").replace(/\r\n?/g, "\n");
+  const blocks = [];
+  const joinP = (a, b) => (/\p{L}-$/u.test(a) && /^\p{Ll}/u.test(b) ? a.slice(0, -1) + b : a + " " + b);
+  const ital = (s) => s.replace(/(^|[\s(“"'])[*_]([^*_\n]+?)[*_](?=[\s).,;:!?”"']|$)/g, `$1${I0}$2${I1}`);
+  const inlineMd = (s) => ital(s.replace(/!\[[^\]]*\]\([^)]*\)/g, "").replace(/\[([^\]]+)\]\([^)]*\)/g, "$1").replace(/\*\*([^*]+)\*\*/g, "$1").replace(/__([^_]+)__/g, "$1").replace(/`([^`]+)`/g, "$1"));
+  const HEAD = /^(chapter|part|book|section|lecture|essay|preface|foreword|introduction|conclusion|appendix|afterword|notes)\b/i;
+  for (const chunk of src.split(/\n[ \t]*\n/)) {
+    const lines = chunk.split("\n").map((l) => l.replace(/\s+$/, "")).filter((l) => l.trim());
+    if (!lines.length) continue;
+    if (md) {
+      let acc = "", ak = "p";
+      const fl = () => { const x = tidy(inlineMd(acc)); if (plain(x)) blocks.push({ k: ak, x }); acc = ""; ak = "p"; };
+      for (const ln of lines) {
+        const h = ln.match(/^\s{0,3}(#{1,6})\s+(.*?)\s*#*\s*$/);
+        if (h) { fl(); blocks.push({ k: "h", x: tidy(inlineMd(h[2])), l: h[1].length }); continue; }
+        const q = ln.match(/^\s*>\s?(.*)$/);
+        if (q) { if (ak !== "q") fl(); ak = "q"; acc = acc ? joinP(acc, q[1].trim()) : q[1].trim(); continue; }
+        if (ak === "q") fl();
+        const li = ln.match(/^\s*(?:[-*+]|\d+[.)])\s+(.*)$/);
+        if (li) { fl(); acc = li[1].trim(); continue; }
+        if (/^\s*([-*_])(\s*\1){2,}\s*$/.test(ln)) { fl(); continue; }
+        acc = acc ? joinP(acc, ln.trim()) : ln.trim();
+      }
+      fl(); continue;
+    }
+    const one = lines.length === 1 ? lines[0].trim() : null;
+    if (one && one.length < 90 && (HEAD.test(one) || /^[IVXLC]+\.?$/.test(one) || (/\p{Lu}{2}/u.test(one) && !/\p{Ll}/u.test(one) && one.split(/\s+/).length <= 10))) {
+      blocks.push({ k: "h", x: one, l: /^(part|book)\b/i.test(one) ? 1 : 2 }); continue;
+    }
+    const indentedAll = lines.length > 1 && lines.every((l) => /^\s{2,}/.test(l));
+    const x = ital(lines.map((l) => l.trim()).reduce((a, b) => (a ? joinP(a, b) : b), ""));
+    blocks.push({ k: indentedAll ? "q" : "p", x });
+  }
+  return { title: "", author: "", blocks };
+}
+
+async function parseFile(file, say) {
+  const fname = file.name || "file";
+  const ext = (fname.includes(".") ? fname.split(".").pop() : "").toLowerCase();
+  let r;
+  if (ext === "pdf") r = await parsePDF(await file.arrayBuffer(), say);
+  else if (ext === "epub") r = await parseEPUB(await file.arrayBuffer(), say);
+  else if (ext === "docx") r = await parseDOCX(await file.arrayBuffer(), say);
+  else if (ext === "html" || ext === "htm" || ext === "xhtml") r = parseHTML(await file.text());
+  else if (ext === "md" || ext === "markdown") r = { ...parsePlain(await file.text(), true), kind: "Markdown" };
+  else if (ext === "txt" || ext === "text" || (file.type || "").startsWith("text/")) r = { ...parsePlain(await file.text(), false), kind: "Text" };
+  else throw new UErr("This file type isn't supported. Use PDF, EPUB, Word (.docx), .txt or .md.");
+  r.blocks = finalize(r.blocks);
+  if (!r.blocks.some((b) => b.k !== "pg")) throw new UErr("No readable text was found in this file.");
+  r.sections = makeSections(r.blocks);
+  r.name = fname;
+  r.pages = r.blocks.filter((b) => b.k === "pg").length;
+  if (!r.title) r.title = fname.replace(/\.[^.]+$/, "").replace(/[_]+/g, " ");
+  return r;
+}
+function summary(r) {
+  const paras = r.blocks.filter((b) => b.k !== "pg" && b.k !== "h").length;
+  const bits = [];
+  if (r.pages) bits.push(`${r.pages} pages`);
+  bits.push(`${r.sections.length} section${r.sections.length === 1 ? "" : "s"}`);
+  bits.push(`${paras.toLocaleString()} paragraphs`);
+  let s = `Found ${bits.join(", ")}.`;
+  if (r.pageSource === "index") s += " No printed page numbers were found, so pages follow the PDF's own count.";
+  if (r.kind === "PDF") s += " Running heads, page numbers and footnotes were separated out automatically.";
+  if (r.cover) s += r.kind === "PDF" ? " Page 1 is set as the cover." : " Found the cover image.";
+  return s + " Check the details, then save.";
+}
+
+/* ---------- derived ---------- */
+const notesFor = (tid) => [...S.notes.entries()].filter(([, n]) => n.textId === tid);
+function sortNotes(list, t) {
+  const order = new Map((t?.sections || []).map((s, i) => [s.id, i]));
+  return list.sort(([, a], [, b]) => {
+    if (!t) return (b.createdAt || 0) - (a.createdAt || 0);
+    const sa = order.has(a.sectionId) ? order.get(a.sectionId) : 1e9, sb = order.has(b.sectionId) ? order.get(b.sectionId) : 1e9;
+    return sa - sb || pnum(a.page) - pnum(b.page) || (a.at ?? 1e9) - (b.at ?? 1e9) || (a.createdAt || 0) - (b.createdAt || 0);
+  });
+}
+const matches = (n, q) => !q || [n.passage, n.gloss, n.page].join(" ").toLowerCase().includes(q.toLowerCase());
+
+/* ---------- render: library and text ---------- */
+function render() {
+  if ((S.screen === "text" || S.screen === "reader") && !S.texts.has(S.textId)) { S.screen = "library"; resetReader(); }
+  const reading = S.screen === "reader";
+  $("#main").hidden = reading;
+  $("#reader").hidden = !reading;
+  if (reading) { refreshMarks(); return; }
+  $("#selbar").hidden = true;
+  $("#main").innerHTML = S.screen === "text" ? textView() : libraryView();
+}
+
+function banner() {
+  if (S.mode === "pending" && S.blocked) return `<div class="banner">Marginalia is updating its storage. Close it in any other tabs or windows and this will finish on its own.</div>`;
+  if (S.mode === "pending") return `<div class="banner">Opening your reading log…</div>`;
+  if (S.mode === "local") return `<div class="banner">This browser isn't letting the app save (private browsing does this). Anything you add disappears when you close the page.</div>`;
+  return "";
+}
+
+function noteHTML(id, n, t, showSrc) {
+  const sec = t?.sections?.find((s) => s.id === n.sectionId);
+  return `<article class="note">
+    <div class="meta">
+      ${n.page ? `<span class="pg">p. ${esc(n.page)}</span>` : ""}
+      ${sec ? `<span>${esc(sec.label)}</span>` : ""}
+      <span class="chip k-${esc(n.kind)}">${esc(KINDS[n.kind] || "Note")}</span>
+      ${n.example ? `<span class="chip ex">Example</span>` : ""}
+    </div>
+    ${showSrc && t ? `<button class="src" data-open="${esc(n.textId)}">${esc(t.title)}</button>` : ""}
+    ${n.passage ? `<p class="passage"><span>${esc(n.passage)}</span></p>` : ""}
+    ${n.gloss ? `<p class="gloss ${n.passage ? "after" : ""}">${esc(n.gloss)}</p>` : ""}
+    <div class="noteacts">
+      ${t?.hasContent && Number.isInteger(n.at) ? `<button class="btn ghost" data-goto-note="${n.at}" data-tid="${esc(n.textId)}">Show in text</button>` : ""}
+      <button class="btn ghost" data-editnote="${esc(id)}">Edit</button>
+      <button class="btn ghost danger" data-delnote="${esc(id)}">Delete</button>
+    </div>
+  </article>`;
+}
+
+function libraryView() {
+  const texts = [...S.texts.entries()];
+  let body = "";
+  if (S.q.trim()) {
+    const hits = sortNotes([...S.notes.entries()].filter(([, n]) => matches(n, S.q)), null);
+    body = `<section class="group"><div class="label">${hits.length} note${hits.length === 1 ? "" : "s"} matching “${esc(S.q)}”</div>
+      <div>${hits.map(([id, n]) => noteHTML(id, n, S.texts.get(n.textId), true)).join("") || `<p class="empty">Nothing matches. Search looks through passages, your notes and page numbers.</p>`}</div></section>`;
+  } else if (!texts.length && S.mode !== "pending") {
+    body = `<p class="empty"><b>No texts yet.</b> Add a book from a PDF, EPUB, Word or text file, then read it here and save passages as you go.</p>`;
+  } else {
+    body = Object.keys(STATUS).map((st) => {
+      const rows = texts.filter(([, t]) => (t.status || "reading") === st).sort(([, a], [, b]) => (b.updatedAt || 0) - (a.updatedAt || 0));
+      if (!rows.length) return "";
+      return `<section class="shelf"><div class="label">${STATUS[st]} · ${rows.length}</div><div class="shelfrow">${rows.map(([id, t]) => {
+        const nc = notesFor(id).length, p0 = progressOf(t), pc = p0 > 0 ? p0 : null;
+        return `<button class="shelfbook" data-open="${esc(id)}" aria-label="${esc(t.title)}">
+          ${coverHTML(t, coverURL(id))}
+          <span class="sb-title">${esc(t.title)}</span>
+          <span class="sb-meta">${pc != null ? `${pc}%` : ""}${pc != null && nc ? " · " : ""}${nc ? `${nc} note${nc === 1 ? "" : "s"}` : ""}</span>
+          ${pc != null ? `<span class="sb-prog"><i style="width:${pc}%"></i></span>` : ""}
+        </button>`; }).join("")}</div></section>`;
+    }).join("");
+  }
+  return `<header class="top">
+      <div><div class="mark-word"><span>Marginalia</span></div><div class="sub">${S.texts.size} text${S.texts.size === 1 ? "" : "s"} · ${S.notes.size} note${S.notes.size === 1 ? "" : "s"}</div></div>
+      <button class="btn primary" id="addtext">Add text</button>
+    </header>
+    ${banner()}
+    <input class="search" id="q" type="search" placeholder="Search every note" value="${esc(S.q)}" aria-label="Search every note">
+    ${body}
+    ${S.q.trim() || S.mode === "pending" ? "" : backupView()}`;
+}
+function backupView() {
+  let last = 0; try { last = +localStorage.getItem("mg-backup") || 0; } catch {}
+  const when = last ? new Date(last).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) : "never";
+  return `<section class="backup">
+    <div class="label">Backups · last saved ${esc(when)}</div>
+    <p class="hint">Your books and notes are stored only in this browser on this device. Save a backup now and then; restoring it is also how you move everything to another device.</p>
+    <div class="row">
+      <button class="btn" id="backup">Save backup</button>
+      <span class="btn filebtn">Restore from backup<input id="restore" type="file" aria-label="Restore from a backup file"></span>
+    </div>
+  </section>`;
+}
+
+function textView() {
+  const id = S.textId, t = S.texts.get(id), secs = t.sections || [];
+  const all = notesFor(id);
+  const counts = new Map(); all.forEach(([, n]) => counts.set(n.sectionId, (counts.get(n.sectionId) || 0) + 1));
+  const list = sortNotes(all.filter(([, n]) => (S.sec === "all" || n.sectionId === S.sec) && (S.kind === "all" || n.kind === S.kind) && matches(n, S.tq)), t);
+  const secName = S.sec === "all" ? null : secs.find((s) => s.id === S.sec)?.label;
+  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Library</button></div>
+    ${banner()}
+    <header class="head">
+      <div class="headrow">
+        <div class="headcover">${coverHTML(t, coverURL(id))}</div>
+        <div class="headtext">
+          <h1>${esc(t.title)}</h1>
+          ${t.author || t.edition ? `<div class="byline">${esc([t.author, t.edition].filter(Boolean).join(" · "))}</div>` : ""}
+          ${t.source ? `<div class="srcline">From ${esc(t.source.name)}${t.source.pages ? ` · ${t.source.pages} pages` : ""}${progressOf(t) > 0 ? ` · ${progressOf(t)}% read` : ""}</div>` : ""}
+        </div>
+      </div>
+      <div class="actions">
+        ${t.hasContent ? `<button class="btn primary" id="read">${t.pos > 0 ? "Continue reading" : "Read"}</button>` : ""}
+        <button class="btn" id="loadfile">${t.hasContent ? "Replace file" : "Load file"}</button>
+        <select id="status" aria-label="Status">${Object.entries(STATUS).map(([k, v]) => `<option value="${k}" ${(t.status || "reading") === k ? "selected" : ""}>${v}</option>`).join("")}</select>
+        <button class="btn" id="edittext">Edit</button>
+        <button class="btn" id="exportnotes">Export notes</button>
+        <button class="btn danger" id="deltext">Delete</button>
+        ${t.example ? `<span class="chip ex">Example</span>` : ""}
+      </div>
+    </header>
+    ${secs.length ? `<section class="group"><div class="label">Sections · tick when read, tap to filter</div><div class="sections">
+      ${secs.map((s) => `<div class="sec ${s.done ? "done" : ""} ${S.sec === s.id ? "sel" : ""}">
+        <input type="checkbox" id="chk-${esc(s.id)}" data-tick="${esc(s.id)}" ${s.done ? "checked" : ""} aria-label="Mark ${esc(s.label)} as read">
+        <button data-sec="${esc(s.id)}">${esc(s.label)}</button><span class="n">${counts.get(s.id) || 0}</span></div>`).join("")}
+    </div></section>` : ""}
+    <section class="group">
+      <div class="notesbar"><div class="label">${secName ? `Notes · ${esc(secName)}` : "All notes"} · ${list.length}</div><button class="btn primary" id="addnote">Add note</button></div>
+      <div class="chips">
+        ${secName ? `<button class="chip on" data-sec="all">${esc(secName)} ✕</button>` : ""}
+        ${["all", ...Object.keys(KINDS)].map((k) => `<button class="chip ${S.kind === k ? "on" : ""}" data-kind="${k}">${k === "all" ? "All kinds" : KINDS[k]}</button>`).join("")}
+      </div>
+      <input class="search" id="tq" type="search" placeholder="Search this text's notes" value="${esc(S.tq)}" aria-label="Search this text's notes">
+      <div>${list.map(([nid, n]) => noteHTML(nid, n, t, false)).join("") || `<p class="empty">${all.length ? "No notes match these filters." : t.hasContent ? `<b>No notes yet.</b> Open the text, select a passage and save it.` : `<b>No notes yet.</b> Log a passage word for word with its page, or load the book's file to read and select passages here.`}</p>`}</div>
+    </section>`;
+}
+
+/* ---------- navigation: every step forward adds a history entry, so the phone's back button steps back through the app ---------- */
+const NAV = { stack: [{ screen: "library" }], overlay: false };
+const depth = () => NAV.stack.length - 1 + (NAV.overlay ? 1 : 0);
+try { history.replaceState({ mg: 0 }, ""); } catch {}
+let popWaiter = null;
+// Consume one history entry for a step the app has already taken itself (an on-screen back button, Cancel, Save).
+function histBack() {
+  return new Promise((res) => {
+    const done = () => { if (popWaiter === done) popWaiter = null; res(); };
+    popWaiter = done; history.back(); setTimeout(done, 700);
+  });
+}
+function showView(view, fresh) {
+  if (view.screen === "reader") { openReader(view.textId, view.at); return; }
+  if (S.screen === "reader") { savePos(); resetReader(); }
+  S.screen = view.screen;
+  if (view.textId) S.textId = view.textId;
+  if (fresh && view.screen === "text") { S.sec = "all"; S.kind = "all"; S.tq = ""; }
+  render();
+  window.scrollTo(0, fresh ? 0 : view.y || 0);
+}
+function go(view) {
+  NAV.stack[NAV.stack.length - 1].y = window.scrollY;
+  NAV.stack.push(view);
+  try { history.pushState({ mg: depth() }, ""); } catch {}
+  showView(view, true);
+}
+function stepBack() {
+  if (NAV.overlay) { $("#sheetroot").innerHTML = ""; NAV.overlay = false; return true; }
+  if (NAV.stack.length > 1) { NAV.stack.pop(); showView(NAV.stack[NAV.stack.length - 1], false); return true; }
+  return false;
+}
+async function back() { if (stepBack()) await histBack(); }
+window.addEventListener("popstate", (e) => {
+  if (popWaiter) { popWaiter(); return; }
+  if ($("#sheetroot form[data-busy]")) { try { history.pushState({ mg: depth() }, ""); } catch {} return; } // don't abandon a save in progress
+  const target = e.state && typeof e.state.mg === "number" ? e.state.mg : 0;
+  for (let guard = 0; depth() > target && guard < 20; guard++) if (!stepBack()) break;
+});
+function openOverlay() {
+  if (NAV.overlay) return;
+  NAV.overlay = true;
+  try { history.pushState({ mg: depth() }, ""); } catch {}
+}
+async function closeOverlay() { if (NAV.overlay) await back(); else $("#sheetroot").innerHTML = ""; }
+
+/* ---------- sheets ---------- */
+function openSheet(html, onSubmit, onOpen) {
+  const root = $("#sheetroot");
+  openOverlay();
+  root.innerHTML = `<div class="veil"><form class="sheet" novalidate>${html}<div class="err" id="err"></div>
+    <div class="formacts"><button type="button" class="btn" id="cancel">Cancel</button><button class="btn primary" type="submit">Save</button></div></form></div>`;
+  const form = $("form", root);
+  $("#cancel", root).onclick = () => closeOverlay();
+  $(".veil", root).addEventListener("click", (e) => { if (e.target.classList.contains("veil") && !form.dataset.busy) closeOverlay(); });
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = $("button[type=submit]", form); btn.disabled = true; form.dataset.busy = "1";
+    try {
+      const out = await onSubmit(new FormData(form));
+      if (typeof out === "string") { $("#err", root).textContent = out; btn.disabled = false; delete form.dataset.busy; return; }
+      delete form.dataset.busy;
+      await closeOverlay();
+      if (typeof out === "function") out(); // e.g. open the text you just added
+    }
+    catch (err) { $("#err", root).textContent = err instanceof UErr ? err.message : failMsg(err); btn.disabled = false; delete form.dataset.busy; }
+  });
+  if (onOpen) onOpen(root);
+  const first = $("input:not([type=file]), textarea, select", form); if (first && !onOpen) first.focus();
+}
+function openPanel(html, onPick) {
+  const root = $("#sheetroot");
+  openOverlay();
+  root.innerHTML = `<div class="veil"><div class="sheet" role="dialog" aria-modal="true">${html}<div class="formacts"><button type="button" class="btn" id="pclose">Close</button></div></div></div>`;
+  $(".veil", root).addEventListener("click", async (e) => {
+    if (e.target.classList.contains("veil") || e.target.id === "pclose") { closeOverlay(); return; }
+    const b = e.target.closest("button"); if (b) { await closeOverlay(); onPick(b); }
+  });
+}
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && $("#sheetroot").innerHTML && !$("#sheetroot form[data-busy]")) closeOverlay(); });
+
+const fileField = () => `<div class="field">
+    <label for="f-file">Load the book</label>
+    <div class="drop" id="f-drop">
+      <input id="f-file" type="file">
+      <span class="drop-main" id="f-name">Tap to choose a file</span>
+      <span class="drop-sub">PDF, EPUB, Word (.docx), .txt or .md. On a computer you can also drag the file here.</span>
+    </div>
+    <p class="hint" id="f-prog">The text is extracted and stored on this device only; the file itself isn't kept. Scanned PDFs need OCR first.</p>
+    <button type="button" class="linkbtn" id="f-pastebtn">Or paste the text instead</button>
+    <div class="pastebox" id="f-pastebox" hidden>
+      <textarea id="f-paste" class="verbatim" rows="6" placeholder="Paste the text here. Leave a blank line between paragraphs."></textarea>
+      <button type="button" class="btn" id="f-pasteuse">Use this text</button>
+    </div>
+  </div>`;
+function wireFile(root, onParsed) {
+  const inp = $("#f-file", root), prog = $("#f-prog", root), btn = $("button[type=submit]", root), name = $("#f-name", root), drop = $("#f-drop", root);
+  const say = (m, bad) => { prog.textContent = m; prog.classList.toggle("bad", !!bad); };
+  let busy = false;
+  const run = async (f) => {
+    if (busy) return; busy = true;
+    name.textContent = f.name || "Chosen file";
+    btn.disabled = true; say("Reading the file…");
+    try { const r = await parseFile(f, (m) => say(m)); onParsed(r); say(summary(r)); }
+    catch (e) { say(e instanceof UErr ? e.message : `Couldn't read this file (${(e && e.message) || "unknown error"}).`, true); onParsed(null); }
+    btn.disabled = false; busy = false;
+  };
+  inp.addEventListener("change", () => { const f = inp.files && inp.files[0]; if (f) run(f); });
+  inp.addEventListener("cancel", () => say("No file was chosen."));
+  ["dragenter", "dragover"].forEach((ev) => drop.addEventListener(ev, () => drop.classList.add("over")));
+  ["dragleave", "drop"].forEach((ev) => drop.addEventListener(ev, () => drop.classList.remove("over")));
+  $("#f-pastebtn", root).addEventListener("click", () => {
+    const box = $("#f-pastebox", root); box.hidden = !box.hidden;
+    if (!box.hidden) $("#f-paste", root).focus();
+  });
+  $("#f-pasteuse", root).addEventListener("click", () => {
+    const txt = $("#f-paste", root).value;
+    if (txt.trim().length < 20) { say("Paste some text into the box first.", true); return; }
+    run(new File([txt], "Pasted text.txt", { type: "text/plain" }));
+  });
+}
+
+const coverField = (t, url) => `<div class="field">
+    <span class="flabel">Cover</span>
+    <div class="coverpick">
+      <div class="coverprev" id="c-prev">${coverHTML(t, url)}</div>
+      <div class="coverctl">
+        <span class="btn filebtn">Choose image<input id="c-file" type="file" accept="image/*" aria-label="Choose a cover image"></span>
+        <button type="button" class="btn ghost" id="c-remove"${url ? "" : " hidden"}>Remove cover</button>
+        <p class="hint" id="c-hint">A photo or image of the cover. PDFs and EPUBs fill this in for you when you load the book.</p>
+      </div>
+    </div>
+  </div>`;
+// cover.blob: undefined = leave as is, null = remove, Blob = new cover. cover.auto = it came from the book file.
+function wireCover(root, cover, getT) {
+  const prev = $("#c-prev", root), rm = $("#c-remove", root), hint = $("#c-hint", root), inp = $("#c-file", root);
+  let url = null;
+  cover.show = (blob) => {
+    if (url) { URL.revokeObjectURL(url); url = null; }
+    if (blob) url = URL.createObjectURL(blob);
+    const base = blob === undefined ? cover.current : url;
+    prev.innerHTML = coverHTML(getT(), base);
+    rm.hidden = !base;
+    cover.hasImg = !!base;
+  };
+  cover.hasImg = !!cover.current;
+  inp.addEventListener("change", async () => {
+    const f = inp.files && inp.files[0]; inp.value = ""; if (!f) return;
+    hint.textContent = "Preparing the image…"; hint.classList.remove("bad");
+    try { cover.blob = await toCover(f); cover.auto = false; cover.show(cover.blob); hint.textContent = "New cover ready. It's saved when you tap Save."; }
+    catch (e) { hint.textContent = e instanceof UErr ? e.message : "That image couldn't be opened. Use a JPEG or PNG."; hint.classList.add("bad"); }
+  });
+  rm.addEventListener("click", () => { cover.blob = null; cover.auto = false; cover.show(null); hint.textContent = "The cover will be removed when you tap Save."; });
+  root.addEventListener("input", (e) => { if ((e.target.id === "f-title" || e.target.id === "f-author") && !cover.hasImg) prev.innerHTML = coverHTML(getT(), null); });
+}
+async function saveCover(tid, cover) {
+  if (cover.blob === undefined) return;
+  if (cover.blob) await put("covers", tid, cover.blob); else await del("covers", tid);
+}
+
+function textSheet(id) {
+  const t = id ? S.texts.get(id) : {};
+  let parsed = null; const auto = {};
+  const cover = { blob: undefined, auto: false, current: id ? coverURL(id) : null };
+  openSheet(`<h2>${id ? "Edit text" : "Add a text"}</h2>
+    ${id ? "" : fileField()}
+    <div class="field"><label for="f-title">Title</label><input id="f-title" name="title" value="${esc(t.title)}" required></div>
+    <div class="row2">
+      <div class="field"><label for="f-author">Author</label><input id="f-author" name="author" value="${esc(t.author)}"></div>
+      <div class="field"><label for="f-status">Status</label><select id="f-status" name="status">${Object.entries(STATUS).map(([k, v]) => `<option value="${k}" ${(t.status || "reading") === k ? "selected" : ""}>${v}</option>`).join("")}</select></div>
+    </div>
+    <div class="field"><label for="f-edition">Edition or translation</label><input id="f-edition" name="edition" value="${esc(t.edition)}"><span class="hint">Page numbers in your notes refer to this edition.</span></div>
+    ${coverField(t, cover.current)}
+    <div class="field"><label for="f-secs">Sections</label><textarea id="f-secs" name="sections" rows="5">${esc((t.sections || []).map((s) => s.label).join("\n"))}</textarea><span class="hint">One per line: chapters, essays, plateaus, lectures.</span></div>`,
+  async (fd) => {
+    const title = fd.get("title").trim(); if (!title) return "Give the text a title.";
+    const old = (t.sections && t.sections.length) ? t.sections : parsed ? parsed.sections : [];
+    const sections = fd.get("sections").split("\n").map((l) => l.trim()).filter(Boolean).map((label) => {
+      const prev = old.find((s) => s.label === label); return prev ? { ...prev } : { id: gid(), label, done: false };
+    });
+    const tid = id || gid();
+    const data = { ...(id ? t : { createdAt: Date.now() }), title, author: fd.get("author").trim(), edition: fd.get("edition").trim(), status: fd.get("status"), sections, updatedAt: Date.now() };
+    if (parsed) {
+      linkHeadings(parsed.blocks, parsed.sections, sections);
+      const prog = $("#f-prog"); const say = (m) => { if (prog) prog.textContent = m; };
+      await saveContent(tid, parsed.blocks, say);
+      Object.assign(data, { hasContent: true, source: { name: parsed.name, kind: parsed.kind, pages: parsed.pages }, pos: 0, total: parsed.blocks.length });
+    }
+    await saveCover(tid, cover);
+    await put("texts", tid, data);
+    if (!S.texts.has(tid)) S.texts.set(tid, data);
+    if (!id) return () => go({ screen: "text", textId: tid });
+  },
+  (root) => {
+    const getT = () => ({ title: $("#f-title", root).value.trim() || "Untitled", author: $("#f-author", root).value.trim() });
+    wireCover(root, cover, getT);
+    if (id) return;
+    wireFile(root, (r) => {
+      parsed = r; if (!r) return;
+      const fill = (sel, key, val) => { const el = $(sel, root); if (el && (!el.value.trim() || el.value === auto[key])) { el.value = val; auto[key] = val; } };
+      fill("#f-title", "title", r.title);
+      if (r.author) fill("#f-author", "author", r.author);
+      fill("#f-secs", "secs", r.sections.map((s) => s.label).join("\n"));
+      if (cover.blob === undefined || cover.auto) {
+        if (r.cover) { cover.blob = r.cover; cover.auto = true; cover.show(r.cover); }
+        else if (cover.auto) { cover.blob = undefined; cover.auto = false; cover.show(undefined); }
+        else cover.show(undefined);
+      }
+    });
+  });
+}
+
+function fileSheet(tid) {
+  const t = S.texts.get(tid); let parsed = null;
+  openSheet(`<h2>${t.hasContent ? "Replace the text" : "Load the text"}</h2><p class="sub">${esc(t.title)}</p>${fileField()}
+    ${t.hasContent ? `<p class="hint">Your notes stay. Their "Show in text" links may land in the wrong place in the new version.</p>` : ""}`,
+  async () => {
+    if (!parsed) return "Choose a file first.";
+    const cur = S.texts.get(tid) || t;
+    const sections = cur.sections && cur.sections.length ? cur.sections : parsed.sections.map((s) => ({ ...s, done: false }));
+    linkHeadings(parsed.blocks, parsed.sections, sections);
+    const prog = $("#f-prog"); const say = (m) => { if (prog) prog.textContent = m; };
+    await saveContent(tid, parsed.blocks, say);
+    if (parsed.cover && !S.covers.has(tid)) await put("covers", tid, parsed.cover);
+    await put("texts", tid, { ...cur, sections, hasContent: true, source: { name: parsed.name, kind: parsed.kind, pages: parsed.pages }, pos: 0, total: parsed.blocks.length, updatedAt: Date.now() });
+  },
+  (root) => wireFile(root, (r) => { parsed = r; }));
+}
+
+function noteSheet(nid, preset) {
+  const t = S.texts.get(S.textId);
+  const n = nid ? S.notes.get(nid) : { kind: "passage", sectionId: S.sec !== "all" ? S.sec : "", ...(preset || {}) };
+  if (!t || !n) return;
+  openSheet(`<h2>${nid ? "Edit note" : preset ? "Save passage" : "Add a note"}</h2>
+    <div class="row2">
+      <div class="field"><label for="n-page">Page</label><input id="n-page" name="page" value="${esc(n.page)}" placeholder="e.g. 36 or xii"></div>
+      <div class="field"><label for="n-kind">Kind</label><select id="n-kind" name="kind">${Object.entries(KINDS).map(([k, v]) => `<option value="${k}" ${n.kind === k ? "selected" : ""}>${v}</option>`).join("")}</select></div>
+    </div>
+    ${(t.sections || []).length ? `<div class="field"><label for="n-sec">Section</label><select id="n-sec" name="sectionId"><option value="">None</option>${t.sections.map((s) => `<option value="${esc(s.id)}" ${n.sectionId === s.id ? "selected" : ""}>${esc(s.label)}</option>`).join("")}</select></div>` : ""}
+    <div class="field"><label for="n-passage">Passage, word for word</label><textarea id="n-passage" class="verbatim" name="passage">${esc(n.passage)}</textarea><span class="hint">${preset ? "Taken from the text. Fix any stray characters from the file." : "Copy exactly from the page. Keep your interpretation in the next box."}</span></div>
+    <div class="field"><label for="n-gloss">Your note</label><textarea id="n-gloss" name="gloss">${esc(n.gloss)}</textarea></div>`,
+  async (fd) => {
+    const passage = fd.get("passage").trim(), gloss = fd.get("gloss").trim();
+    if (!passage && !gloss) return "Write a passage, a note, or both.";
+    const data = { ...(nid ? n : { createdAt: Date.now() }), textId: S.textId, page: fd.get("page").trim(), kind: fd.get("kind"), sectionId: fd.get("sectionId") || "", passage, gloss, updatedAt: Date.now() };
+    if (Number.isInteger(n.at)) data.at = n.at;
+    delete data.example;
+    await put("notes", nid || gid(), data);
+    const cur = S.texts.get(S.textId);
+    if (cur) put("texts", S.textId, { ...cur, updatedAt: Date.now() }).catch(() => {});
+  },
+  preset ? (root) => { const g = $("#n-gloss", root); if (g) g.focus(); } : null);
+}
+
+/* ---------- reader ---------- */
+let FS = 19; try { FS = Math.max(15, Math.min(26, +localStorage.getItem("mg-fs") || 19)); } catch {}
+const applyFs = () => $("#book").style.setProperty("--fs", FS + "px");
+const barH = () => $(".rbar")?.offsetHeight || 0;
+
+function inlineHTML(x, marks) {
+  if (!marks || !marks.length) return esc(x).replace(/\u0001/g, "<em>").replace(/\u0002/g, "</em>");
+  let raw = x;
+  if (marks && marks.length) {
+    const map = []; let ps = "";
+    for (let k = 0; k < raw.length; k++) { const c = raw[k]; if (c === I0 || c === I1) continue; map.push(k); ps += c; }
+    const ins = [];
+    for (const [id, p] of marks) {
+      const want = p.replace(/\s+/g, " ").trim(); if (!want) continue;
+      let s = ps.indexOf(want), len = want.length;
+      for (const cut of [60, 30, 15]) {
+        if (s >= 0 || cut >= want.length) continue;
+        s = ps.indexOf(want.slice(0, cut));
+        if (s >= 0) len = Math.min(want.length, ps.length - s);
+      }
+      if (s < 0 || !len) continue;
+      ins.push([map[s], "\u0003" + id + "\u0005"], [map[s + len - 1] + 1, "\u0004"]);
+    }
+    ins.sort((a, b) => b[0] - a[0]);
+    for (const [pos, str] of ins) raw = raw.slice(0, pos) + str + raw.slice(pos);
+  }
+  let out = "", depth = 0, mid = "";
+  const open = () => `<mark data-note="${esc(mid)}">`;
+  for (let k = 0; k < raw.length; k++) {
+    const c = raw[k];
+    if (c === "\u0003") { const e = raw.indexOf("\u0005", k); const id = raw.slice(k + 1, e); k = e; if (!depth) { mid = id; out += open(); } depth++; }
+    else if (c === "\u0004") { depth = Math.max(0, depth - 1); if (!depth) out += "</mark>"; }
+    else if (c === I0) out += depth ? `</mark><em>${open()}` : "<em>";
+    else if (c === I1) out += depth ? `</mark></em>${open()}` : "</em>";
+    else out += esc(c);
+  }
+  return out;
+}
+function blockHTML(b, i, marks) {
+  if (b.k === "pg") return `<div class="bpg" data-i="${i}">${b.x ? `p. ${esc(b.x)}` : ""}</div>`;
+  const x = inlineHTML(b.x || "", marks);
+  if (b.k === "h") return `<h2 class="bh l${Math.min(b.l || 2, 4)}" data-i="${i}">${x}</h2>`;
+  if (b.k === "q") return `<p class="bq" data-i="${i}">${x}</p>`;
+  if (b.k === "fn") return `<p class="bfn" data-i="${i}">${x}</p>`;
+  return `<p class="bp${b.k === "c" ? " cont" : ""}" data-i="${i}">${x}</p>`;
+}
+function marksByBlock(tid) {
+  const m = new Map();
+  for (const [id, n] of S.notes) if (n.textId === tid && Number.isInteger(n.at) && n.passage) { if (!m.has(n.at)) m.set(n.at, []); m.get(n.at).push([id, n.passage]); }
+  return m;
+}
+const sigOf = (l) => (l ? l.map(([id, p]) => id + ":" + p).sort().join("|") : "");
+
+function resetReader() { R.tid = null; R.blocks = null; R.els = []; R.tops = []; R.sig = new Map(); R.saved = -1; R.sel = null; $("#book").innerHTML = ""; $("#selbar").hidden = true; }
+
+async function openReader(tid, at) {
+  resetReader();
+  S.screen = "reader"; S.textId = tid; render();
+  window.scrollTo(0, 0);
+  const t = S.texts.get(tid), book = $("#book");
+  $("#rtitle").textContent = t?.title || ""; $("#rpg").textContent = "";
+  applyFs();
+  book.innerHTML = `<p class="rload">Loading the text…</p>`;
+  let blocks;
+  try { blocks = await loadContent(tid); }
+  catch (e) { book.innerHTML = `<p class="rload">${esc(e instanceof UErr ? e.message : "Couldn't load this text. Check your connection and try again.")}</p>`; return; }
+  if (S.screen !== "reader" || S.textId !== tid) return;
+  if (!blocks) { book.innerHTML = `<p class="rload">This text isn't loaded yet. Go back and use Load file.</p>`; return; }
+  R.tid = tid; R.blocks = blocks;
+  let pg = "", sc = ""; R.pageAt = []; R.secAt = [];
+  blocks.forEach((b, i) => { if (b.k === "pg") pg = b.x; if (b.k === "h" && b.s) sc = b.s; R.pageAt[i] = pg; R.secAt[i] = sc; });
+  const marks = marksByBlock(tid);
+  book.innerHTML = blocks.map((b, i) => blockHTML(b, i, marks.get(i))).join("");
+  R.els = [...book.children];
+  R.sig = new Map([...marks].map(([i, l]) => [i, sigOf(l)]));
+  R.dirty = true;
+  const target = Number.isInteger(at) ? at : Number.isInteger(t?.pos) ? t.pos : 0;
+  R.saved = target;
+  requestAnimationFrame(() => { goTo(target, Number.isInteger(at)); updatePg(); });
+  const t0 = Date.now();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { R.dirty = true; if (R.tid === tid && Date.now() - t0 < 4000) goTo(target, Number.isInteger(at)); });
+}
+
+function measure() { R.tops = R.els.map((e) => e.getBoundingClientRect().top + window.scrollY); R.dirty = false; }
+function currentBlock() {
+  if (!R.els.length) return 0;
+  if (R.dirty) measure();
+  const y = window.scrollY + barH() + 12;
+  let lo = 0, hi = R.tops.length - 1, ans = 0;
+  while (lo <= hi) { const mid = (lo + hi) >> 1; if (R.tops[mid] <= y) { ans = mid; lo = mid + 1; } else hi = mid - 1; }
+  return ans;
+}
+function goTo(i, centre) {
+  const el = R.els[Math.max(0, Math.min(i, R.els.length - 1))]; if (!el) return;
+  const top = el.getBoundingClientRect().top + window.scrollY;
+  const off = centre ? Math.max(barH() + 8, window.innerHeight * 0.3) : barH() + 8;
+  window.scrollTo(0, Math.max(0, top - off));
+}
+function updatePg() { const i = currentBlock(); const p = R.pageAt[i]; $("#rpg").textContent = p ? `p. ${p}` : ""; }
+function savePos() {
+  if (!R.blocks || !R.tid) return;
+  const atEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60;
+  const i = atEnd ? R.blocks.length - 1 : currentBlock(); if (i === R.saved) return; R.saved = i;
+  const t = S.texts.get(R.tid);
+  if (t) put("texts", R.tid, { ...t, pos: i, total: R.blocks.length, updatedAt: Date.now() }).catch(() => {});
+}
+function setFs(d) { const i = currentBlock(); FS = Math.max(15, Math.min(26, FS + d)); applyFs(); try { localStorage.setItem("mg-fs", String(FS)); } catch {} R.dirty = true; goTo(i); }
+
+function refreshMarks() {
+  if (!R.blocks || R.tid !== S.textId) return;
+  const marks = marksByBlock(R.tid);
+  const keys = new Set([...marks.keys(), ...R.sig.keys()]);
+  for (const i of keys) {
+    const s = sigOf(marks.get(i));
+    if (s === (R.sig.get(i) || "") || !R.blocks[i] || !R.els[i]) continue;
+    const tmp = document.createElement("div"); tmp.innerHTML = blockHTML(R.blocks[i], i, marks.get(i));
+    const el = tmp.firstElementChild; R.els[i].replaceWith(el); R.els[i] = el;
+    if (s) R.sig.set(i, s); else R.sig.delete(i);
+  }
+}
+
+function tocPanel() {
+  if (!R.blocks) return;
+  const items = R.blocks.map((b, i) => (b.k === "h" ? `<button class="tocitem l${Math.min(b.l || 2, 4)}" data-goto="${i}"><span>${esc(plain(b.x))}</span><span class="tp">${R.pageAt[i] ? esc(R.pageAt[i]) : ""}</span></button>` : "")).join("");
+  openPanel(`<h2>Contents</h2><div class="toc">${items || `<p class="empty">No headings were found in this text.</p>`}</div>`, (b) => { if (b.dataset.goto) goTo(+b.dataset.goto); });
+}
+
+let selT;
+document.addEventListener("selectionchange", () => { clearTimeout(selT); selT = setTimeout(checkSel, 140); });
+function checkSel() {
+  const bar = $("#selbar");
+  if (S.screen !== "reader" || !R.blocks) { bar.hidden = true; return; }
+  const sel = window.getSelection();
+  if (!sel || sel.isCollapsed || !sel.rangeCount) { bar.hidden = true; return; }
+  const r = sel.getRangeAt(0), book = $("#book");
+  if (!book.contains(r.commonAncestorContainer)) { bar.hidden = true; return; }
+  const text = sel.toString().replace(/\s+/g, " ").trim();
+  if (text.length < 2) { bar.hidden = true; return; }
+  const idxOf = (node) => { const el = (node.nodeType === 1 ? node : node.parentElement)?.closest("[data-i]"); return el ? +el.dataset.i : null; };
+  const i = idxOf(r.startContainer) ?? currentBlock(), j = idxOf(r.endContainer) ?? i;
+  const a = R.pageAt[i] || "", b = R.pageAt[j] || "";
+  const page = a && b && a !== b ? `${a}–${b}` : a;
+  R.sel = { text, i, page, sec: R.secAt[i] || "" };
+  $("#selsave").textContent = page ? `Save passage · p. ${page}` : "Save passage";
+  bar.hidden = false;
+}
+function saveSel() {
+  const s = R.sel; if (!s) return;
+  $("#selbar").hidden = true;
+  try { window.getSelection().removeAllRanges(); } catch {}
+  noteSheet(null, { passage: s.text, page: s.page, sectionId: s.sec, at: s.i, kind: "passage" });
+}
+["mousedown", "pointerdown"].forEach((ev) => $("#selsave").addEventListener(ev, (e) => e.preventDefault()));
+
+let rafP = 0, posT = 0;
+window.addEventListener("scroll", () => {
+  if (S.screen !== "reader" || !R.blocks) return;
+  if (!rafP) rafP = requestAnimationFrame(() => { rafP = 0; updatePg(); });
+  clearTimeout(posT); posT = setTimeout(savePos, 1500);
+}, { passive: true });
+window.addEventListener("resize", () => { R.dirty = true; });
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && S.screen === "reader") savePos(); });
+
+/* ---------- events ---------- */
+function arm(btn, run) {
+  if (btn.classList.contains("armed")) { run(); return; }
+  btn.classList.add("armed"); const old = btn.textContent; btn.textContent = "Tap again to delete";
+  setTimeout(() => { if (btn.isConnected) { btn.classList.remove("armed"); btn.textContent = old; } }, 3000);
+}
+document.addEventListener("click", (e) => {
+  const mk = e.target.closest && e.target.closest("mark[data-note]");
+  if (mk && S.screen === "reader") { const s = window.getSelection(); if (!s || s.isCollapsed) { noteSheet(mk.dataset.note); return; } }
+  const b = e.target.closest && e.target.closest("button"); if (!b || b.closest("#sheetroot")) return;
+  if (b.id === "addtext") return textSheet(null);
+  if (b.id === "back") return back();
+  if (b.dataset.open) return go({ screen: "text", textId: b.dataset.open });
+  if (b.id === "read") return go({ screen: "reader", textId: S.textId });
+  if (b.id === "loadfile") return fileSheet(S.textId);
+  if (b.dataset.gotoNote) return go({ screen: "reader", textId: b.dataset.tid, at: +b.dataset.gotoNote });
+  if (b.id === "rback") return back();
+  if (b.id === "rsmall") return setFs(-1);
+  if (b.id === "rbig") return setFs(1);
+  if (b.id === "rtoc") return tocPanel();
+  if (b.id === "selsave") return saveSel();
+  if (b.id === "edittext") return textSheet(S.textId);
+  if (b.id === "deltext") return arm(b, async () => {
+    const id = S.textId;
+    await back();
+    try {
+      for (const [nid] of notesFor(id)) await del("notes", nid);
+      await del("content", id);
+      await del("covers", id);
+      await del("texts", id);
+    } catch (err) { toast(failMsg(err)); }
+    render();
+  });
+  if (b.id === "backup") return exportBackup().catch((e) => toast(failMsg(e)));
+  if (b.id === "exportnotes") {
+    const t = S.texts.get(S.textId);
+    if (!notesFor(S.textId).length) return toast("This text has no notes to export yet.");
+    return saveFile(`${slug(t && t.title)}-notes.md`, notesMarkdown(S.textId), "text/markdown").catch(() => toast("Couldn't export the notes."));
+  }
+  if (b.id === "addnote") return noteSheet(null);
+  if (b.dataset.editnote) return noteSheet(b.dataset.editnote);
+  if (b.dataset.delnote) return arm(b, () => del("notes", b.dataset.delnote).catch(() => {}));
+  if (b.dataset.sec) { S.sec = S.sec === b.dataset.sec ? "all" : b.dataset.sec; return render(); }
+  if (b.dataset.kind) { S.kind = b.dataset.kind; return render(); }
+});
+document.addEventListener("change", (e) => {
+  if (e.target.id === "restore") { const f = e.target.files && e.target.files[0]; e.target.value = ""; if (f) importBackup(f); return; }
+  if (S.screen !== "text") return;
+  const t = S.texts.get(S.textId);
+  if (e.target.id === "status" && t) put("texts", S.textId, { ...t, status: e.target.value, updatedAt: Date.now() }).catch(() => {});
+  if (e.target.dataset && e.target.dataset.tick && t) {
+    const sections = t.sections.map((s) => (s.id === e.target.dataset.tick ? { ...s, done: e.target.checked } : s));
+    put("texts", S.textId, { ...t, sections, updatedAt: Date.now() }).catch(() => {});
+  }
+});
+let qTimer;
+document.addEventListener("input", (e) => {
+  if (e.target.id !== "q" && e.target.id !== "tq") return;
+  const key = e.target.id; S[key] = e.target.value;
+  clearTimeout(qTimer); qTimer = setTimeout(() => { render(); const el = $("#" + key); if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); } }, 180);
+});
+
+/* ---------- boot ---------- */
+render();
+(async () => {
+  try {
+    idb = await idbOpen();
+    S.texts = await idbAll("texts");
+    S.notes = await idbAll("notes");
+    S.covers = await idbAll("covers");
+    S.mode = "ready";
+  } catch { idb = null; S.mode = "local"; }
+  render();
+  try { if (navigator.storage && navigator.storage.persist) S.persisted = await navigator.storage.persist(); } catch {}
+})();
+if ("serviceWorker" in navigator && location.protocol === "https:") {
+  window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); });
+}
+</script>
+</body>
+</html>
