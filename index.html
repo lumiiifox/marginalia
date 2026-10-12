@@ -5283,9 +5283,17 @@ async function openReader(tid, at, opts) {
   if (opts && opts.find) findQ = opts.find;
   // Back from another screen: the exact spot. Continue reading: your saved spot. A passage: centred, so it can be seen.
   const place = () => (sess && opts.spot ? goToSpot(opts.spot) : Number.isInteger(at) ? goTo(target, true) : goToSpot({ i: target, f: t?.posF || 0 }));
-  requestAnimationFrame(() => { layoutPages(); place(); R.landedY = readY(); updatePg(); drawTrail(); if (opts && opts.flash && Number.isInteger(at) && !sess) flash(at); });
+  let placed = null;
+  requestAnimationFrame(() => { layoutPages(); place(); placed = { spot: R.pagedSpot, y: window.scrollY }; R.landedY = readY(); updatePg(); drawTrail(); if (opts && opts.flash && Number.isInteger(at) && !sess) flash(at); });
+  // The book's fonts arriving change where the words fall. Not moved since opening (and soon after): place it again.
+  // Moved (a page turned, a chapter chosen): stay on that spot, as after a change of screen size.
   const t0 = Date.now();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { R.dirty = true; if (R.tid === tid && Date.now() - t0 < 4000) place(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
+    R.dirty = true; if (R.tid !== tid || !placed) return;
+    const still = isPaged() ? R.pagedSpot === placed.spot : Math.abs(window.scrollY - placed.y) < 2;
+    if (still && Date.now() - t0 < 4000) place();
+    else if (isPaged() && R.pagedSpot) { layoutPages(); goToSpot(R.pagedSpot); }
+  });
 }
 
 function measure() { R.tops = R.els.map((e) => e.getBoundingClientRect().top + window.scrollY); R.dirty = false; }
