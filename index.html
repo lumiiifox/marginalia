@@ -514,6 +514,16 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 #reader.paged-reader :is(#book, #flipbook) .chap { break-before: column; }
 #reader.paged-reader :is(#book, #flipbook) .chap.bh, #reader.paged-reader :is(#book, #flipbook) .chap + .bh { margin-top: 0.4em; }
 #reader.paged-reader :is(#book, #flipbook) :is(.bp, .bq) { orphans: 2; widows: 2; }
+/* Swipe pages with the toolbar put away: the page runs from the top of the screen; the toolbar comes down over it on a tap.
+   The printed page number moves to the foot of the page. */
+#reader.immersive .rbar { position: fixed; left: 0; right: 0; top: 0; padding-top: calc(8px + env(safe-area-inset-top, 0px)); transform: translateY(-105%); transition: transform .18s ease-out; z-index: 6; }
+#reader.immersive.bars-on .rbar { transform: none; box-shadow: 0 6px 18px rgba(30, 20, 10, 0.12); }
+@media (prefers-reduced-motion: reduce) { #reader.immersive .rbar { transition: none; } }
+#reader.immersive :is(#book, #flipbook) { padding-top: calc(22px + env(safe-area-inset-top, 0px)); padding-bottom: 34px; }
+.rfoot { display: none; }
+#reader.immersive .rfoot { display: block; position: fixed; left: 0; right: 0; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); text-align: center; font: 500 12px/1 var(--f-ui); letter-spacing: 0.04em; color: var(--muted); pointer-events: none; z-index: 1; }
+/* Scroll: paragraphs far off screen aren't laid out until they come near, so a long book opens and resizes quickly. */
+#reader:not(.paged-reader) #book > * { content-visibility: auto; contain-intrinsic-size: auto 4.8em; }
 /* structure marked in the reader: hidden running heads, title pages, a title glued to its paragraph */
 .bhid { display: block; height: 0; margin: 0; padding: 0; overflow: hidden; }
 span.bhid { display: inline; }
@@ -563,6 +573,7 @@ span.bhid { display: inline; }
   <article class="book" id="book"></article>
   <div class="flip" id="flip" aria-hidden="true"><div class="book" id="flipbook"></div><div class="flipshade" id="flipshade"></div></div>
   <div class="undershade" id="undershade" aria-hidden="true"></div>
+  <div class="rfoot" id="rfoot" aria-hidden="true"></div>
   <div class="rtrail" id="rtrail" hidden></div>
 </div>
 <div class="selbar" id="selbar" hidden><button class="btn" id="sellook" hidden>Look up</button><button class="btn" id="seledit">Edit</button><button class="btn" id="selhl">Highlight</button><button class="btn primary" id="selsave">Add a note</button></div>
@@ -1894,7 +1905,9 @@ function render() {
   const reading = S.screen === "reader";
   $("#main").hidden = reading;
   $("#reader").hidden = !reading;
+  syncThemeColor();
   if (reading) { refreshMarks(); return; }
+  wakeOff();
   $("#selbar").hidden = true;
   const views = { text: textView, glossary: glossaryView, branches: branchesView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, concord: concordView, compares: comparesView, compare: compareView };
   $("#main").innerHTML = (views[S.screen] || libraryView)();
@@ -4669,7 +4682,7 @@ function confirmDelete() {
 
 /* ---------- reader ---------- */
 // Reading settings live on this device only.
-const RS = { fs: 20, lh: "normal", w: "medium", tone: "app", mn: "show", flow: "scroll", turn: "flip", align: "justify" };
+const RS = { fs: 20, lh: "normal", w: "medium", tone: "app", mn: "show", flow: "scroll", turn: "flip", align: "justify", bars: "hide", awake: "on" };
 try { Object.assign(RS, JSON.parse(localStorage.getItem("mg-reader") || "{}")); const old = +localStorage.getItem("mg-fs"); if (old && !localStorage.getItem("mg-reader")) RS.fs = old; } catch {}
 const LH = { compact: 1.45, normal: 1.62, airy: 1.85 }, MEASURE = { narrow: "30em", medium: "34em", wide: "40em" };
 function applyFs() {
@@ -4680,10 +4693,32 @@ function applyFs() {
   book.classList.toggle("hide-mn", RS.mn === "hide"); R.ver = (R.ver || 0) + 1;
   reader.classList.toggle("paged-reader", RS.flow === "pages");
   reader.classList.toggle("justify", RS.align !== "left");
+  reader.classList.toggle("immersive", RS.flow === "pages" && RS.bars !== "show"); reader.classList.remove("bars-on");
   reader.classList.remove("tone-paper", "tone-sepia", "tone-night");
   if (RS.tone !== "app") reader.classList.add("tone-" + RS.tone);
-  layoutPages();
+  layoutPages(); syncThemeColor();
 }
+// The phone's status bar takes the colour of the page while reading, and the app's colours elsewhere.
+const THEME0 = [...document.querySelectorAll('meta[name="theme-color"]')].map((m) => [m, m.content]);
+function syncThemeColor() {
+  const c = S.screen === "reader" ? getComputedStyle($("#reader")).getPropertyValue("--paper").trim() : "";
+  for (const [m, v] of THEME0) m.content = c || v;
+}
+// Swipe pages, toolbar hidden while reading: a tap in the middle of the page shows it over the top lines, and a page turn
+// or another tap puts it away. The page itself keeps its size, so the text never moves.
+const immersive = () => isPaged() && RS.bars !== "show";
+function showBars(on) { $("#reader").classList.toggle("bars-on", on && immersive()); }
+/* the screen stays on while you read: a slow page shouldn't let the phone lock. Let go after five minutes without a touch. */
+const WAKE = { lock: null, t: 0, asking: false };
+async function wakeOn() {
+  if (RS.awake === "off" || S.screen !== "reader" || document.visibilityState !== "visible" || !navigator.wakeLock) return;
+  clearTimeout(WAKE.t); WAKE.t = setTimeout(wakeOff, 5 * 60000);
+  if (WAKE.lock || WAKE.asking) return;
+  WAKE.asking = true;
+  try { const l = await navigator.wakeLock.request("screen"); WAKE.lock = l; l.addEventListener("release", () => { if (WAKE.lock === l) WAKE.lock = null; }); if (S.screen !== "reader") wakeOff(); }
+  catch {} finally { WAKE.asking = false; }
+}
+function wakeOff() { clearTimeout(WAKE.t); const l = WAKE.lock; WAKE.lock = null; if (l) l.release().catch(() => {}); }
 // Scroll shows the whole book. Swipe pages shows one section of it at a time (about 250 paragraphs, cut at a
 // heading where there is one, so a chapter starts on a fresh page): the browser lays out every page of a
 // multi-column box again on each turn, so a whole 700-page book took about 110 ms a turn on a desktop and far longer on a phone.
@@ -4865,7 +4900,7 @@ function layoutPages() {
   const book = $("#book"), reader = $("#reader");
   if (RS.flow !== "pages") { ["--page-w", "--page-h", "--col-w"].forEach((k) => book.style.removeProperty(k)); R.pageW = 0; return; }
   const w = Math.floor(reader.getBoundingClientRect().width || window.innerWidth);
-  const barBottom = $(".rbar").getBoundingClientRect().bottom;
+  const barBottom = immersive() ? 0 : $(".rbar").getBoundingClientRect().bottom;
   const h = Math.floor(window.innerHeight - Math.max(0, barBottom));
   if (w < 200 || h < 200) return; // the reader isn't on screen yet
   book.style.setProperty("--page-w", w + "px");
@@ -4973,7 +5008,7 @@ async function openReader(tid, at, opts) {
   catch (e) { book.innerHTML = `<p class="rload">${esc(e instanceof UErr ? e.message : "Couldn't load this text. Check your connection and try again.")}</p>`; return; }
   if (S.screen !== "reader" || S.textId !== tid) return;
   if (!blocks) { book.innerHTML = `<p class="rload">This text isn't loaded yet. Go back and use Load file.</p>`; return; }
-  R.tid = tid; R.blocks = blocks;
+  R.tid = tid; R.blocks = blocks; wakeOn();
   Object.assign(R, sectionIndex(blocks));
   const target = Number.isInteger(at) ? at : Number.isInteger(t?.pos) ? t.pos : 0;
   R.chunks = chunkStarts(blocks); R.turns = 0;
@@ -5054,6 +5089,7 @@ function bounce(dir) { // first or last page of the book: a small give, then bac
 }
 function turnPage(dir) {
   if (!isPaged() || !R.blocks) return;
+  showBars(false);
   if (R.flip) doneFlip(R.flip.commit === true); // a turn still moving finishes at once, so quick turns each count
   const book = $("#book");
   if (R.turnAnim) { R.turnAnim.cancel(); R.turnAnim = null; }
@@ -5124,9 +5160,20 @@ function doneFlip(commit) {
   for (const el of [$("#flip"), $("#undershade")]) { el.classList.remove("on"); el.style.transform = ""; }
 }
 function pageSettled() { R.pagedSpot = currentSpot(); updatePg(); clearTimeout(posT); posT = setTimeout(settle, 600); }
+// Scroll: the paragraph under the top of the screen. Paragraphs far off screen are left unlaid-out (content-visibility),
+// so their measured positions are estimates; the one on screen is always real.
+function scrollTopEl() {
+  const book = $("#book"), r = book.getBoundingClientRect(), x = Math.max(1, Math.min(window.innerWidth - 2, r.left + r.width / 2)), y0 = barH() + 12;
+  for (let dy = 0; dy < 300; dy += 10) {
+    const el = document.elementFromPoint(x, y0 + dy), top = el && el.closest && el.closest("#book > [data-i]");
+    if (top) return top;
+  }
+  return null;
+}
 function currentBlock() {
   if (!R.els.length) return 0;
   if (isPaged()) return pagedBlock();
+  const el = !$("#reader").hidden && scrollTopEl(); if (el) return +el.dataset.i;
   if (R.dirty) measure();
   const y = window.scrollY + barH() + 12;
   let lo = 0, hi = R.tops.length - 1, ans = 0;
@@ -5136,11 +5183,10 @@ function currentBlock() {
 function goTo(i, centre) {
   if (isPaged()) { i = Math.max(0, Math.min(i, R.blocks.length - 1)); ensureWindow(i); setPage(pageForBlock(i)); R.pagedSpot = { i, f: 0 }; updatePg(); return; }
   const el = R.els[Math.max(0, Math.min(i, R.els.length - 1))]; if (!el) return;
-  const top = el.getBoundingClientRect().top + window.scrollY;
   const off = centre ? Math.max(barH() + 8, window.innerHeight * 0.3) : barH() + 8;
-  window.scrollTo(0, Math.max(0, top - off));
+  scrollToEl(el, 0, off);
 }
-function updatePg() { const i = currentBlock(); const p = R.pageAt[i]; $("#rpg").textContent = p ? loc(p) : ""; updateMarkBtn(); }
+function updatePg() { const i = currentBlock(); const p = R.pageAt[i]; $("#rpg").textContent = $("#rfoot").textContent = p ? loc(p) : ""; updateMarkBtn(); }
 // A spot is a paragraph and how far down it the top of the screen sits (0 to 1), so a long paragraph comes back at the same line.
 function currentSpot() {
   if (isPaged()) { // the paragraph at the top of the page, and how much of its text lies on earlier pages
@@ -5150,8 +5196,8 @@ function currentSpot() {
     return { i, f: total ? Math.max(0, Math.min(0.999, Math.round((before / total) * 10000) / 10000)) : 0 };
   }
   const i = currentBlock(), el = R.els[i]; if (!el) return { i, f: 0 };
-  const y = window.scrollY + barH() + 12, h = el.offsetHeight || 1;
-  return { i, f: Math.max(0, Math.min(0.999, Math.round(((y - R.tops[i]) / h) * 10000) / 10000)) };
+  const y = barH() + 12, h = el.offsetHeight || 1, top = el.getBoundingClientRect().top;
+  return { i, f: Math.max(0, Math.min(0.999, Math.round(((y - top) / h) * 10000) / 10000)) };
 }
 function goToSpot(sp) {
   if (isPaged()) {
@@ -5159,8 +5205,15 @@ function goToSpot(sp) {
     setPage(spotPage({ i, f: sp.f || 0 })); R.pagedSpot = { i, f: sp.f || 0 }; updatePg(); return;
   }
   const el = R.els[Math.max(0, Math.min(sp.i, R.els.length - 1))]; if (!el) return;
-  const top = el.getBoundingClientRect().top + window.scrollY;
-  window.scrollTo(0, Math.max(0, top + (sp.f || 0) * el.offsetHeight - barH() - 12));
+  scrollToEl(el, sp.f || 0, barH() + 12);
+}
+// Scroll so that the point f of the way down el sits off pixels below the top of the screen. The paragraphs around it are
+// laid out as they come on screen and may turn out taller or shorter than estimated, so the aim is checked again once.
+function scrollToEl(el, f, off) {
+  const top = el.closest("#book > *") || el;
+  top.style.contentVisibility = "visible"; // its own height must be real for f
+  const go = () => window.scrollTo(0, Math.max(0, el.getBoundingClientRect().top + window.scrollY + f * el.offsetHeight - off));
+  go(); requestAnimationFrame(() => { go(); top.style.contentVisibility = ""; });
 }
 function savePos() {
   if (!R.blocks || !R.tid || R.visiting) return;
@@ -5234,14 +5287,17 @@ function readerSettings() {
       <div class="rs-row"><span>Navigation</span>${seg("flow", [["scroll", "Scroll"], ["pages", "Swipe pages"]])}</div>
       <div class="rs-row"><span>Page turn</span>${seg("turn", [["flip", "Flip"], ["slide", "Slide"], ["none", "None"]])}</div>
       <div class="rs-row"><span>Text in pages</span>${seg("align", [["justify", "Justified"], ["left", "Ragged right"]])}</div>
+      <div class="rs-row"><span>Toolbar in pages</span>${seg("bars", [["hide", "Tap to show"], ["show", "Always shown"]])}</div>
       <div class="rs-row"><span>Line spacing</span>${seg("lh", [["compact", "Compact"], ["normal", "Normal"], ["airy", "Airy"]])}</div>
       <div class="rs-row"><span>Text width</span>${seg("w", [["narrow", "Narrow"], ["medium", "Medium"], ["wide", "Wide"]])}</div>
       <div class="rs-row"><span>Page</span>${seg("tone", [["app", "Like the app"], ["paper", "Paper"], ["sepia", "Sepia"], ["night", "Night"]])}</div>
       <div class="rs-row"><span>Your notes</span>${seg("mn", [["show", "Show in the text"], ["hide", "Hide"]])}</div>
+      <div class="rs-row"><span>Screen</span>${seg("awake", [["on", "Stays on while reading"], ["off", "Phone's setting"]])}</div>
     </div>`, (b) => {
     if (!b.dataset.rs) return;
     if (b.dataset.rs === "fs") setRS({ fs: RS.fs + +b.dataset.v });
     else setRS({ [b.dataset.rs]: b.dataset.v });
+    if (b.dataset.rs === "awake") { if (RS.awake === "on") wakeOn(); else wakeOff(); }
     const root = $("#sheetroot");
     root.querySelectorAll(`[data-rs="${b.dataset.rs}"]`).forEach((x) => x.classList.toggle("on", b.dataset.rs !== "fs" && x.dataset.v === RS[b.dataset.rs]));
     const f = $("#rs-fs", root); if (f) f.textContent = RS.fs;
@@ -5676,7 +5732,21 @@ function endSwipe(e, cancelled) {
 }
 $("#book").addEventListener("touchend", (e) => endSwipe(e, false), { passive: true });
 $("#book").addEventListener("touchcancel", (e) => endSwipe(e, true), { passive: true });
-document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && S.screen === "reader") savePos(); });
+document.addEventListener("visibilitychange", () => {
+  if (S.screen !== "reader") return;
+  if (document.visibilityState === "hidden") savePos(); else wakeOn(); // the phone lets go of the screen when the app is hidden
+});
+["pointerdown", "keydown", "wheel"].forEach((ev) => document.addEventListener(ev, () => { if (S.screen === "reader") wakeOn(); }, { passive: true }));
+// Swipe pages: a tap near the right edge turns forward, near the left edge back; in the middle it shows or hides the
+// toolbar. A tap that ends a selection, or lands on a highlight or a note, does only that.
+let downSel = false;
+$("#book").addEventListener("pointerdown", () => { downSel = selecting(); }, true);
+$("#book").addEventListener("click", (e) => {
+  if (!isPaged() || !R.blocks || downSel || selecting()) return;
+  if (e.target.closest && e.target.closest("mark[data-note], .mnote, a, button, [data-fn]")) return;
+  const x = e.clientX / window.innerWidth;
+  if (x < 0.28) turnPage(-1); else if (x > 0.72) turnPage(1); else if (immersive()) showBars(!$("#reader").classList.contains("bars-on"));
+});
 
 /* ---------- events ---------- */
 function arm(btn, run) {

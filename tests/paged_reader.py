@@ -35,7 +35,7 @@ BOOK = """(n) => (async () => {
   await put('content', 'b', blocks);
   await put('texts', 'b', { title: 'Ethics', author: 'Spinoza', hasContent: true, total: blocks.length, pos: 0, sections: [], status: 'reading', createdAt: 1, updatedAt: 1 });
   await put('notes', 'n1', { textId: 'b', kind: 'passage', passage: 'Paragraph 3', page: '1', at: 5, createdAt: 1, updatedAt: 1 });
-  localStorage.setItem('mg-reader', JSON.stringify({ fs: 20, lh: 'normal', w: 'medium', tone: 'app', mn: 'show', flow: 'pages', turn: localStorage.getItem('test-turn') || 'slide' }));
+  localStorage.setItem('mg-reader', JSON.stringify({ fs: 20, lh: 'normal', w: 'medium', tone: 'app', mn: 'show', flow: 'pages', bars: 'show', turn: localStorage.getItem('test-turn') || 'slide' }));
 })()"""
 # Distance between where the text on screen starts and where a page should start (0 = on the edge).
 MISALIGN = """() => { const book = document.querySelector('#book'), r = book.getBoundingClientRect(), x0 = r.left + 24;
