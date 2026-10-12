@@ -717,16 +717,16 @@ function idbAll(store) {
 function idbGet(store, key) {
   return new Promise((res, rej) => { const r = idb.transaction(store).objectStore(store).get(key); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
 }
-const mapFor = (col) => ({ texts: S.texts, notes: S.notes, covers: S.covers, terms: S.terms, drafts: S.drafts, compares: S.compares }[col] || S.content);
+// The copy in memory of a store's records ("files" has none: PDFs are read from storage when wanted).
+function mapFor(col) {
+  const m = { texts: S.texts, notes: S.notes, content: S.content, covers: S.covers, terms: S.terms, drafts: S.drafts, compares: S.compares }[col];
+  if (!m) throw new Error(`No copy in memory for "${col}".`);
+  return m;
+}
 async function put(col, id, data) {
   if (idb) await idbDo(col, (s) => s.put(data, id));
   mapFor(col).set(id, data);
   if (col !== "content") render();
-}
-async function delMany(col, ids) {
-  if (!ids.length) return;
-  if (idb) await idbDo(col, (s) => ids.forEach((id) => s.delete(id)));
-  ids.forEach((id) => mapFor(col).delete(id));
 }
 async function del(col, id) {
   if (idb) await idbDo(col, (s) => s.delete(id));
@@ -5362,7 +5362,6 @@ function spotPage(sp) {
   for (const q of rs) { page = rectPage(q); if (at < q.height) break; at -= q.height; }
   return page;
 }
-function firstPage(i) { const end = R.win ? R.win[1] : R.els.length; for (let k = i; k < Math.min(end, i + 20); k++) { const p = screenPagesOf(k); if (p) return p[0]; } return Infinity; }
 function pageForBlock(i) { const p = screenPagesOf(Math.max(0, Math.min(i, R.els.length - 1))); return p ? p[0] : 0; }
 // Where you are is the paragraph at the top of the page: the first one that is still running on this page.
 // Paragraphs sit on pages in reading order, so it is found by halving: about 10 reads, whatever the length.

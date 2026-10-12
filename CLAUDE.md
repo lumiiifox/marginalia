@@ -26,7 +26,7 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 ## Map of index.html
 
 - `<style>` near the top; one `<script>` holds the whole app.
-- Storage: `STORES`, `idbOpen`, `put`, `delMany`, `idbTx`. Backup export and restore follow. The `files` store (version 7) holds
+- Storage: `STORES`, `idbOpen`, `put`, `del`, `idbTx`. Backup export and restore follow. The `files` store (version 7) holds
   original PDFs kept for the printed page, by text id; it is never loaded at start and never backed up (`keepPdf`, `pdfDoc`).
   A text's `pdfLabels` are its PDF pages' labels, used to find the PDF page for a printed page number.
 - Citations: `CITE_STYLES`, `citeAt`, `bibEntry`, `bibtex`.
