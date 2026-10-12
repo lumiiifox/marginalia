@@ -489,31 +489,24 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 /* Front matter retains PDF line breaks and measured whitespace without fixed-width pages. */
 .bfront { text-indent: 0 !important; line-height: 1.25; margin-bottom: 0.25em; overflow-wrap: anywhere; }
 .bfront.fronthead { font-weight: 700; line-height: 1.16; }
-/* Optional page-by-page reading: CSS columns paginate reflowed text without duplicating blocks. */
+/* Optional page-by-page reading: CSS columns paginate reflowed text without duplicating blocks.
+   layoutPages() sets the width, height and column width in whole pixels, so one page is exactly one step of scrollLeft. */
 #reader.paged-reader { height: 100dvh; overflow: hidden; }
 #reader.paged-reader #book {
-  height: calc(100dvh - var(--reader-bar-height, 64px));
-  max-width: none; width: 100%; box-sizing: border-box;
-  overflow-x: auto; overflow-y: hidden;
-  column-width: calc(100vw - 48px); column-gap: 48px; column-fill: auto;
-  padding: 18px 24px 28px; scroll-snap-type: none; scroll-behavior: auto !important; touch-action: pan-y;
-  overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;
+  height: var(--page-h, calc(100dvh - 64px));
+  max-width: none; width: var(--page-w, 100%); box-sizing: border-box;
+  overflow: hidden; /* pages move only when the app moves them: no fling, no half-scrolled page */
+  column-width: var(--col-w, calc(100vw - 48px)); column-gap: 48px; column-fill: auto;
+  padding: 18px 24px 28px; scroll-snap-type: none; scroll-behavior: auto !important;
+  touch-action: pinch-zoom; /* swipes are handled by the app; zoom stays available */
+  overscroll-behavior: none;
 }
 #reader.paged-reader #book > * { break-inside: auto; }
 #reader.paged-reader #book .bpg { break-after: avoid; }
 #reader.paged-reader .rtrail { z-index: 4; }
 #reader.paged-reader #book { scrollbar-width: none; }
 #reader.paged-reader #book::-webkit-scrollbar { display: none; }
-#reader.paged-reader #book.turn-next::after, #reader.paged-reader #book.turn-prev::after {
-  content: ""; position: fixed; pointer-events: none; z-index: 2;
-  top: 64px; bottom: 0; width: min(16vw, 70px);
-  background: linear-gradient(to right, transparent, rgba(38, 30, 22, .13));
-  animation: page-shadow 300ms ease-out both;
-}
-#reader.paged-reader #book.turn-next::after { right: 0; }
-#reader.paged-reader #book.turn-prev::after { left: 0; transform: scaleX(-1); }
-@keyframes page-shadow { from { opacity: 0; } 45% { opacity: 1; } to { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { #reader.paged-reader #book.turn-next::after, #reader.paged-reader #book.turn-prev::after { animation: none; } }
+/* The turn itself is a short slide of the whole page box (transform and opacity only), started from turnPage(). */
 </style>
 </head>
 <body>
@@ -4331,6 +4324,10 @@ function openPanel(html, onPick) {
   });
 }
 document.addEventListener("keydown", (e) => {
+  if (isPaged() && R.blocks && !$("#sheetroot").innerHTML && !(e.target && e.target.matches && e.target.matches("input, textarea, select"))) {
+    const dir = { ArrowRight: 1, PageDown: 1, " ": 1, ArrowLeft: -1, PageUp: -1 }[e.key];
+    if (dir && !e.altKey && !e.ctrlKey && !e.metaKey) { e.preventDefault(); turnPage(e.shiftKey && e.key === " " ? -1 : dir); return; }
+  }
   if (e.key === "Escape" && $("#sheetroot").innerHTML && !$("#sheetroot form[data-busy]")) closeOverlay();
   if ((e.key === "Enter" || e.key === " ") && e.target.matches && e.target.matches(".mnote[data-note]")) { e.preventDefault(); noteSheet(e.target.dataset.note); }
 });
@@ -4632,6 +4629,55 @@ function applyFs() {
   reader.classList.toggle("paged-reader", RS.flow === "pages");
   reader.classList.remove("tone-paper", "tone-sepia", "tone-night");
   if (RS.tone !== "app") reader.classList.add("tone-" + RS.tone);
+  layoutPages();
+}
+// Scroll shows the whole book. Swipe pages shows one section of it at a time (about 250 paragraphs, cut at a
+// heading where there is one, so a chapter starts on a fresh page): the browser lays out every page of a
+// multi-column box again on each turn, so a whole 700-page book took about 110 ms a turn on a desktop and far longer on a phone.
+const CHUNK = 250;
+function chunkStarts(blocks) {
+  const starts = [0], n = blocks.length;
+  for (let a = 0; a + CHUNK * 1.5 < n;) {
+    const from = a + CHUNK, find = (k, to) => { for (let i = from; i < Math.min(n, to); i++) if (blocks[i].k === k) return i; return -1; };
+    let cut = find("h", a + CHUNK * 2);
+    if (cut < 0) cut = find("pg", a + CHUNK * 1.5);
+    if (cut < 0) { cut = from; while (cut < n - 1 && blocks[cut].k === "c") cut++; }
+    starts.push(cut); a = cut;
+  }
+  return starts;
+}
+function chunkAt(i) {
+  const st = R.chunks || [0]; let lo = 0, hi = st.length - 1, k = 0;
+  while (lo <= hi) { const mid = (lo + hi) >> 1; if (st[mid] <= i) { k = mid; lo = mid + 1; } else hi = mid - 1; }
+  return [st[k], k + 1 < st.length ? st[k + 1] : R.blocks.length];
+}
+function renderBook(center) {
+  const book = $("#book"), marks = marksByBlock(R.tid), n = R.blocks.length;
+  const [a, b] = RS.flow === "pages" ? chunkAt(Math.max(0, Math.min(center || 0, n - 1))) : [0, n];
+  book.innerHTML = R.blocks.slice(a, b).map((x, k) => blockHTML(x, a + k, marks.get(a + k))).join("");
+  R.els = new Array(n);
+  [...book.children].forEach((el, k) => { R.els[a + k] = el; });
+  R.win = [a, b];
+  R.sig = new Map([...marks].filter(([i]) => i >= a && i < b).map(([i, l]) => [i, sigOf(l)]));
+  book.scrollLeft = 0; R.dirty = true;
+}
+// Make sure the section holding paragraph i is the one on screen.
+function ensureWindow(i) { if (R.blocks && (!R.win || i < R.win[0] || i >= R.win[1])) renderBook(i); }
+// Swipe pages: one column per screen. The page width is a whole number of pixels and is also the step used to turn,
+// so every page starts exactly where the last one ended. (On phones whose screens are a fraction of a pixel wide,
+// stepping by the rounded width pushed the text a little further off each page: 25 px after 60 pages at 411.43 px.)
+const PAGE_GAP = 48;
+function layoutPages() {
+  const book = $("#book"), reader = $("#reader");
+  if (RS.flow !== "pages") { ["--page-w", "--page-h", "--col-w"].forEach((k) => book.style.removeProperty(k)); R.pageW = 0; return; }
+  const w = Math.floor(reader.getBoundingClientRect().width || window.innerWidth);
+  const barBottom = $(".rbar").getBoundingClientRect().bottom;
+  const h = Math.floor(window.innerHeight - Math.max(0, barBottom));
+  if (w < 200 || h < 200) return; // the reader isn't on screen yet
+  book.style.setProperty("--page-w", w + "px");
+  book.style.setProperty("--page-h", h + "px");
+  book.style.setProperty("--col-w", w - PAGE_GAP + "px");
+  R.pageW = w; R.dirty = true;
 }
 function saveRS() { try { localStorage.setItem("mg-reader", JSON.stringify(RS)); } catch {} }
 const barH = () => $(".rbar")?.offsetHeight || 0;
@@ -4706,7 +4752,7 @@ const sigOf = (l) => (l ? l.map(([id, p]) => { const n = S.notes.get(id) || {}; 
 
 function resetReader() {
   if (R.tid && R.blocks) SESS.set(R.tid, { visiting: R.visiting, home: R.home, trail: [...R.trail], landed: R.landed, landedAt: R.landedAt });
-  R.visiting = false; R.home = null; R.trail = []; const tr = $("#rtrail"); if (tr) tr.hidden = true;
+  R.visiting = false; R.home = null; R.trail = []; R.pagedSpot = null; R.win = null; const tr = $("#rtrail"); if (tr) tr.hidden = true;
   R.tid = null; R.blocks = null; R.els = []; R.tops = []; R.sig = new Map(); R.saved = -1; R.sel = null; $("#book").innerHTML = ""; $("#selbar").hidden = true; }
 
 async function openReader(tid, at, opts) {
@@ -4725,13 +4771,9 @@ async function openReader(tid, at, opts) {
   R.tid = tid; R.blocks = blocks;
   let pg = "", sc = ""; R.pageAt = []; R.secAt = [];
   blocks.forEach((b, i) => { if (b.k === "pg") pg = b.x; if (b.k === "h" && b.s) sc = b.s; R.pageAt[i] = pg; R.secAt[i] = sc; });
-  const marks = marksByBlock(tid);
-  book.innerHTML = blocks.map((b, i) => blockHTML(b, i, marks.get(i))).join("");
-  book.scrollLeft = 0;
-  R.els = [...book.children];
-  R.sig = new Map([...marks].map(([i, l]) => [i, sigOf(l)]));
-  R.dirty = true;
   const target = Number.isInteger(at) ? at : Number.isInteger(t?.pos) ? t.pos : 0;
+  R.chunks = chunkStarts(blocks); R.turns = 0;
+  renderBook(target);
   R.saved = Number.isInteger(t?.pos) ? t.pos : target; R.savedF = t?.posF || 0;
   const sess = opts && opts.resume ? SESS.get(tid) : null;
   if (sess) Object.assign(R, sess, { trail: [...sess.trail] });
@@ -4742,52 +4784,73 @@ async function openReader(tid, at, opts) {
   if (opts && opts.find) findQ = opts.find;
   // Back from another screen: the exact spot. Continue reading: your saved spot. A passage: centred, so it can be seen.
   const place = () => (sess && opts.spot ? goToSpot(opts.spot) : Number.isInteger(at) ? goTo(target, true) : goToSpot({ i: target, f: t?.posF || 0 }));
-  requestAnimationFrame(() => { place(); R.landedY = window.scrollY; updatePg(); drawTrail(); if (opts && opts.flash && Number.isInteger(at) && !sess) flash(at); });
+  requestAnimationFrame(() => { layoutPages(); place(); R.landedY = readY(); updatePg(); drawTrail(); if (opts && opts.flash && Number.isInteger(at) && !sess) flash(at); });
   const t0 = Date.now();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { R.dirty = true; if (R.tid === tid && Date.now() - t0 < 4000) place(); });
 }
 
 function measure() { R.tops = R.els.map((e) => e.getBoundingClientRect().top + window.scrollY); R.dirty = false; }
 function isPaged() { return RS.flow === "pages" && S.screen === "reader"; }
-function pageStride() { return Math.max(1, $("#book").clientWidth); }
-function pageForBlock(i) {
-  const book = $("#book"), el = R.els[Math.max(0, Math.min(i, R.els.length - 1))];
-  if (!el) return 0;
-  const rect = el.getClientRects()[0] || el.getBoundingClientRect();
-  return Math.max(0, Math.round((rect.left - book.getBoundingClientRect().left + book.scrollLeft) / pageStride()));
+function pageStride() { return R.pageW || Math.max(1, $("#book").clientWidth); }
+const currentPage = () => Math.round($("#book").scrollLeft / pageStride());
+const lastPage = () => { const book = $("#book"); return Math.max(0, Math.round(book.scrollWidth / pageStride()) - 1); };
+function setPage(p) { const book = $("#book"); book.scrollLeft = Math.max(0, Math.min(lastPage(), p)) * pageStride(); }
+// The pages a paragraph occupies, first and last (a long paragraph runs over several). Null for an element with no box.
+function screenPagesOf(i) {
+  const el = R.els[i], rs = el ? el.getClientRects() : null;
+  if (!rs || !rs.length) return null;
+  const book = $("#book"), W = pageStride(), x0 = book.getBoundingClientRect().left - book.scrollLeft + 24;
+  return [Math.max(0, Math.round((rs[0].left - x0) / W)), Math.max(0, Math.round((rs[rs.length - 1].left - x0) / W))];
 }
-let turningPage = false;
+const rectPage = (q) => { const book = $("#book"); return Math.max(0, Math.round((q.left - (book.getBoundingClientRect().left - book.scrollLeft + 24)) / pageStride())); };
+// The page holding a spot: the line that far through the paragraph's text.
+function spotPage(sp) {
+  const el = R.els[sp.i], rs = el ? el.getClientRects() : [];
+  if (!rs.length) return pageForBlock(sp.i);
+  let total = 0; for (const q of rs) total += q.height;
+  let at = (sp.f || 0) * total + 1, page = rectPage(rs[0]); // one pixel in, so a spot on the first line of a page finds that page
+  for (const q of rs) { page = rectPage(q); if (at < q.height) break; at -= q.height; }
+  return page;
+}
+function firstPage(i) { const end = R.win ? R.win[1] : R.els.length; for (let k = i; k < Math.min(end, i + 20); k++) { const p = screenPagesOf(k); if (p) return p[0]; } return Infinity; }
+function pageForBlock(i) { const p = screenPagesOf(Math.max(0, Math.min(i, R.els.length - 1))); return p ? p[0] : 0; }
+// Where you are is the paragraph at the top of the page: the first one that is still running on this page.
+// Paragraphs sit on pages in reading order, so it is found by halving: about 10 reads, whatever the length.
+function pagedBlock() {
+  const page = currentPage(), [a, b] = R.win || [0, R.els.length]; let lo = a, hi = b - 1, ans = b - 1;
+  while (lo <= hi) { const mid = (lo + hi) >> 1, p = screenPagesOf(mid), last = p ? p[1] : firstPage(mid); if (last >= page) { ans = mid; hi = mid - 1; } else lo = mid + 1; }
+  return Math.max(a, ans);
+}
+// Put the page back on its edge after anything moved it sideways (a selection running off the page, a rotation).
+function snapPage() {
+  if (!isPaged() || swipeStart) return;
+  const sel = window.getSelection(); if (sel && !sel.isCollapsed) return;
+  const book = $("#book"), W = pageStride(), p = Math.round(book.scrollLeft / W);
+  if (Math.abs(book.scrollLeft - p * W) >= 1) book.scrollLeft = p * W;
+}
+const reducedMotion = () => window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+// One call, one page. The text jumps straight to the next page (so no half-scrolled columns are ever drawn),
+// and the page box slides in a few pixels from the side the finger came from. Only transform and opacity animate.
 function turnPage(dir) {
-  if (!isPaged() || turningPage) return;
-  const book = $("#book"), stride = pageStride();
-  const current = Math.round(book.scrollLeft / stride);
-  const target = Math.max(0, Math.min(book.scrollWidth - stride, (current + dir) * stride));
-  if (Math.abs(target - book.scrollLeft) < 2) return;
-  turningPage = true;
-  book.classList.add(dir > 0 ? "turn-next" : "turn-prev");
-  // Do not animate scrollLeft: Android Chrome can leave multi-column text
-  // between columns, exposing clipped fragments of adjacent pages.
-  book.scrollTo({ left: target, behavior: "instant" });
-  requestAnimationFrame(() => {
-    book.scrollLeft = target;
-    updatePg(); savePos();
-  });
-  setTimeout(() => {
-    book.classList.remove("turn-next", "turn-prev");
-    turningPage = false;
-  }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 40 : 320);
+  if (!isPaged() || !R.blocks) return;
+  const book = $("#book"), cur = currentPage(), next = cur + dir, [a, b] = R.win;
+  if (R.turnAnim) { R.turnAnim.cancel(); R.turnAnim = null; }
+  book.style.transform = "";
+  if (next >= 0 && next <= lastPage()) setPage(next);
+  else if (dir > 0 && b < R.blocks.length) { renderBook(b); setPage(0); } // on into the next section
+  else if (dir < 0 && a > 0) { renderBook(a - 1); setPage(lastPage()); } // back into the previous one
+  else { // first or last page of the book: a small give, then back
+    if (!reducedMotion() && book.animate) book.animate([{ transform: "translateX(0)" }, { transform: `translateX(${-dir * 14}px)` }, { transform: "translateX(0)" }], { duration: 220, easing: "ease-out" });
+    return;
+  }
+  R.turns = (R.turns || 0) + dir;
+  if (!reducedMotion() && book.animate) R.turnAnim = book.animate([{ transform: `translateX(${dir * 28}px)`, opacity: 0.5 }, { transform: "translateX(0)", opacity: 1 }], { duration: 200, easing: "cubic-bezier(.2,.8,.2,1)" });
+  pageSettled();
 }
+function pageSettled() { R.pagedSpot = currentSpot(); updatePg(); clearTimeout(posT); posT = setTimeout(settle, 600); }
 function currentBlock() {
   if (!R.els.length) return 0;
-  if (isPaged()) {
-    const page = Math.round($("#book").scrollLeft / pageStride());
-    let found = 0;
-    for (let i = 0; i < R.els.length; i++) {
-      if (pageForBlock(i) <= page) found = i;
-      else break;
-    }
-    return found;
-  }
+  if (isPaged()) return pagedBlock();
   if (R.dirty) measure();
   const y = window.scrollY + barH() + 12;
   let lo = 0, hi = R.tops.length - 1, ans = 0;
@@ -4795,7 +4858,7 @@ function currentBlock() {
   return ans;
 }
 function goTo(i, centre) {
-  if (isPaged()) { $("#book").scrollLeft = pageForBlock(i) * pageStride(); updatePg(); return; }
+  if (isPaged()) { i = Math.max(0, Math.min(i, R.blocks.length - 1)); ensureWindow(i); setPage(pageForBlock(i)); R.pagedSpot = { i, f: 0 }; updatePg(); return; }
   const el = R.els[Math.max(0, Math.min(i, R.els.length - 1))]; if (!el) return;
   const top = el.getBoundingClientRect().top + window.scrollY;
   const off = centre ? Math.max(barH() + 8, window.innerHeight * 0.3) : barH() + 8;
@@ -4804,29 +4867,39 @@ function goTo(i, centre) {
 function updatePg() { const i = currentBlock(); const p = R.pageAt[i]; $("#rpg").textContent = p ? loc(p) : ""; updateMarkBtn(); }
 // A spot is a paragraph and how far down it the top of the screen sits (0 to 1), so a long paragraph comes back at the same line.
 function currentSpot() {
-  if (isPaged()) return { i: currentBlock(), f: 0 };
+  if (isPaged()) { // the paragraph at the top of the page, and how much of its text lies on earlier pages
+    const i = currentBlock(), el = R.els[i], rs = el ? el.getClientRects() : [], page = currentPage();
+    let before = 0, total = 0;
+    for (const q of rs) { total += q.height; if (rectPage(q) < page) before += q.height; }
+    return { i, f: total ? Math.max(0, Math.min(0.999, Math.round((before / total) * 10000) / 10000)) : 0 };
+  }
   const i = currentBlock(), el = R.els[i]; if (!el) return { i, f: 0 };
   const y = window.scrollY + barH() + 12, h = el.offsetHeight || 1;
-  return { i, f: Math.max(0, Math.min(0.98, Math.round(((y - R.tops[i]) / h) * 100) / 100)) };
+  return { i, f: Math.max(0, Math.min(0.999, Math.round(((y - R.tops[i]) / h) * 10000) / 10000)) };
 }
 function goToSpot(sp) {
-  if (isPaged()) { goTo(sp.i); return; }
+  if (isPaged()) {
+    const i = Math.max(0, Math.min(sp.i, R.els.length - 1)); ensureWindow(i);
+    setPage(spotPage({ i, f: sp.f || 0 })); R.pagedSpot = { i, f: sp.f || 0 }; updatePg(); return;
+  }
   const el = R.els[Math.max(0, Math.min(sp.i, R.els.length - 1))]; if (!el) return;
   const top = el.getBoundingClientRect().top + window.scrollY;
   window.scrollTo(0, Math.max(0, top + (sp.f || 0) * el.offsetHeight - barH() - 12));
 }
 function savePos() {
   if (!R.blocks || !R.tid || R.visiting) return;
-  const atEnd = isPaged() ? $("#book").scrollLeft + pageStride() >= $("#book").scrollWidth - 5 : window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60;
+  const atEnd = isPaged() ? R.win[1] >= R.blocks.length && currentPage() >= lastPage() : window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60;
   const sp = atEnd ? { i: R.blocks.length - 1, f: 0 } : currentSpot();
-  if (sp.i === R.saved && Math.abs(sp.f - (R.savedF || 0)) < 0.1) return;
+  if (sp.i === R.saved && Math.abs(sp.f - (R.savedF || 0)) < 0.005) return;
   R.saved = sp.i; R.savedF = sp.f;
   const t = S.texts.get(R.tid);
   if (t) put("texts", R.tid, { ...t, pos: sp.i, posF: sp.f, total: R.blocks.length, readAt: Date.now() }).catch(() => {});
 }
 /* jumps and the way back */
 const pgLabel = (i) => (R.pageAt[i] ? loc(R.pageAt[i]).replace(/^(pp?\.) /, "$1\u00a0") : ""); // "p. 45" stays on one line
-function landed(i) { R.landed = i; R.landedAt = Date.now(); requestAnimationFrame(() => { R.landedY = window.scrollY; updatePg(); }); }
+// How far through the book the screen is, in pixels of scroll; in swipe pages each page counts as a screen.
+const readY = () => (isPaged() ? (R.turns || 0) * window.innerHeight : window.scrollY);
+function landed(i) { R.landed = i; R.landedAt = Date.now(); requestAnimationFrame(() => { R.landedY = readY(); updatePg(); }); }
 function jumpTo(i, centre = true) {
   if (!R.blocks) return;
   i = Math.max(0, Math.min(i, R.blocks.length - 1));
@@ -4853,14 +4926,14 @@ function readFromHere(auto) {
 // Puts your place back where it was and resumes the visit, trail and all.
 function undoPlace(b) {
   const t = S.texts.get(R.tid); if (!t || !R.blocks || R.tid !== S.textId) return;
-  Object.assign(R, { visiting: true, home: b.home ?? b.pos, trail: b.trail.length ? b.trail : [{ i: b.pos, f: b.posF || 0 }], saved: b.pos, savedF: b.posF || 0, landedAt: Date.now(), landedY: window.scrollY });
+  Object.assign(R, { visiting: true, home: b.home ?? b.pos, trail: b.trail.length ? b.trail : [{ i: b.pos, f: b.posF || 0 }], saved: b.pos, savedF: b.posF || 0, landedAt: Date.now(), landedY: readY() });
   put("texts", R.tid, { ...t, pos: b.pos, posF: b.posF || 0 }).catch(() => {});
   drawTrail(); toast(`Your place is back at ${pgLabel(b.pos) || "where it was"}.`);
 }
 // While looking around, reading on well past where you landed, for a while, makes it your place.
 function settle() {
   if (!R.visiting) { savePos(); return; }
-  if (Date.now() - R.landedAt >= 120000 && window.scrollY - R.landedY >= 3 * window.innerHeight) readFromHere(true);
+  if (Date.now() - R.landedAt >= 120000 && readY() - R.landedY >= 3 * window.innerHeight) readFromHere(true);
 }
 function drawTrail() {
   const bar = $("#rtrail"); if (!bar) return;
@@ -4870,7 +4943,13 @@ function drawTrail() {
   const home = R.trail.length === 1 && top.i === R.home;
   bar.innerHTML = `${R.trail.length ? `<button class="btn" id="rtback">← ${home ? `Your place${pg ? `, ${pg}` : ""}` : `Back${pg ? ` to ${pg}` : ""}`}</button>` : ""}<button class="btn" id="rthere">Read from here</button>`;
 }
-function setRS(change) { const sp = currentSpot(); Object.assign(RS, change); RS.fs = Math.max(14, Math.min(28, RS.fs)); applyFs(); saveRS(); R.dirty = true; goToSpot(sp); }
+function setRS(change) {
+  // In pages, the spot is kept from the last turn or jump: re-cutting the pages must not move it, however often the settings change.
+  const sp = isPaged() && R.pagedSpot && R.blocks ? R.pagedSpot : currentSpot(), flow = RS.flow;
+  Object.assign(RS, change); RS.fs = Math.max(14, Math.min(28, RS.fs)); applyFs(); saveRS(); R.dirty = true;
+  if (RS.flow !== flow && R.blocks) { renderBook(sp.i); window.scrollTo(0, 0); }
+  goToSpot(sp);
+}
 function readerSettings() {
   const seg = (key, opts) => `<div class="seg">${opts.map(([v, label]) => `<button class="segb${RS[key] === v ? " on" : ""}" data-keep="1" data-rs="${key}" data-v="${v}">${label}</button>`).join("")}</div>`;
   openPanel(`<h2>Reading settings</h2>
@@ -5006,8 +5085,8 @@ function editSelectedParagraph() {
       R.blocks = next;
       const marks = marksByBlock(tid), el = R.els[i];
       if (el) {
-        el.outerHTML = blockHTML(next[i], i, marks.get(i));
-        R.els[i] = $("#book").children[i];
+        const tmp = document.createElement("div"); tmp.innerHTML = blockHTML(next[i], i, marks.get(i));
+        const nu = tmp.firstElementChild; el.replaceWith(nu); R.els[i] = nu;
       }
       R.dirty = true;
       requestAnimationFrame(() => { if (R.tid !== tid) return; goToSpot(spot); updatePg(); drawTrail(); });
@@ -5046,33 +5125,62 @@ window.addEventListener("scroll", () => {
   if (!rafP) rafP = requestAnimationFrame(() => { rafP = 0; updatePg(); });
   clearTimeout(posT); posT = setTimeout(settle, 1500);
 }, { passive: true });
-window.addEventListener("resize", () => { R.dirty = true; if (isPaged()) goTo(currentBlock()); });
+let resizeT;
+window.addEventListener("resize", () => {
+  R.dirty = true;
+  if (!isPaged() || !R.blocks) return;
+  const sp = R.pagedSpot || currentSpot(); // taken before the new size changes the pages
+  clearTimeout(resizeT); resizeT = setTimeout(() => { if (!isPaged()) return; layoutPages(); goToSpot(sp); }, 150);
+});
+let snapT;
 $("#book").addEventListener("scroll", () => {
   if (!isPaged() || !R.blocks) return;
   if (!rafP) rafP = requestAnimationFrame(() => { rafP = 0; updatePg(); });
-  clearTimeout(posT); posT = setTimeout(() => savePos(), 900);
+  clearTimeout(snapT); snapT = setTimeout(snapPage, 160);
+  clearTimeout(posT); posT = setTimeout(settle, 900);
 }, { passive: true });
+document.addEventListener("selectionchange", () => { const s = window.getSelection(); if (isPaged() && s && s.isCollapsed) { clearTimeout(snapT); snapT = setTimeout(snapPage, 160); } });
+// Swipes: the page follows the finger a little (damped, so it never shows a neighbouring page),
+// then turns once the swipe is long enough, or settles back. A touch held still first is a selection, never a swipe.
 let swipeStart = null;
+const selecting = () => { const s = window.getSelection(); return !!(s && !s.isCollapsed); };
 $("#book").addEventListener("touchstart", (e) => {
-  if (!isPaged() || e.touches.length !== 1 || turningPage) return;
-  swipeStart = { x: e.touches[0].clientX, y: e.touches[0].clientY, horizontal: false };
+  if (!isPaged() || e.touches.length !== 1) { swipeStart = null; return; }
+  const now = performance.now();
+  swipeStart = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: now, horizontal: false, off: false, px: e.touches[0].clientX, pt: now, v: 0 };
 }, { passive: true });
 $("#book").addEventListener("touchmove", (e) => {
-  if (!swipeStart || !isPaged() || e.touches.length !== 1) return;
-  const dx = e.touches[0].clientX - swipeStart.x;
-  const dy = e.touches[0].clientY - swipeStart.y;
-  if (Math.abs(dx) > 14 && Math.abs(dx) > Math.abs(dy) * 1.5) swipeStart.horizontal = true;
-  if (swipeStart.horizontal && e.cancelable) e.preventDefault();
+  if (!swipeStart || swipeStart.off || !isPaged()) return;
+  if (e.touches.length !== 1 || selecting()) { swipeStart.off = true; $("#book").style.transform = ""; return; }
+  const dx = e.touches[0].clientX - swipeStart.x, dy = e.touches[0].clientY - swipeStart.y, now = performance.now();
+  if (now > swipeStart.pt) { swipeStart.v = (e.touches[0].clientX - swipeStart.px) / (now - swipeStart.pt); swipeStart.px = e.touches[0].clientX; swipeStart.pt = now; } // finger speed, px per ms
+  if (!swipeStart.horizontal) {
+    if (Math.abs(dx) < 12) return;
+    if (performance.now() - swipeStart.t > 450 || Math.abs(dx) < Math.abs(dy) * 1.5) { swipeStart.off = true; return; } // a long press, or a vertical move
+    swipeStart.horizontal = true;
+  }
+  if (e.cancelable) e.preventDefault();
+  if (reducedMotion()) return;
+  const edge = (dx > 0 && currentPage() === 0) || (dx < 0 && currentPage() === lastPage());
+  const off = Math.max(-44, Math.min(44, dx * (edge ? 0.12 : 0.3)));
+  if (R.turnAnim) { R.turnAnim.cancel(); R.turnAnim = null; }
+  $("#book").style.transform = `translateX(${off}px)`;
 }, { passive: false });
-$("#book").addEventListener("touchcancel", () => { swipeStart = null; }, { passive: true });
-$("#book").addEventListener("touchend", (e) => {
-  if (!swipeStart || !isPaged() || !e.changedTouches.length) return;
-  const dx = e.changedTouches[0].clientX - swipeStart.x;
-  const dy = e.changedTouches[0].clientY - swipeStart.y;
-  swipeStart = null;
-  if (Math.abs(dx) >= Math.max(85, window.innerWidth * 0.19) && Math.abs(dx) > Math.abs(dy) * 1.5 &&
-      (!window.getSelection() || window.getSelection().isCollapsed)) turnPage(dx < 0 ? 1 : -1);
-}, { passive: true });
+function endSwipe(e, cancelled) {
+  const s = swipeStart; swipeStart = null;
+  const book = $("#book"), was = book.style.transform;
+  book.style.transform = "";
+  if (!s || !s.horizontal || s.off || !isPaged()) { snapPage(); return; }
+  const t = !cancelled && e.changedTouches && e.changedTouches[0];
+  const dx = t ? t.clientX - s.x : 0, dy = t ? t.clientY - s.y : 0;
+  // A long swipe, or a short flick still moving fast when the finger lifts, turns one page.
+  const far = Math.abs(dx) >= Math.max(70, window.innerWidth * 0.16), flick = Math.abs(dx) >= 40 && Math.abs(s.v) >= 0.25 && Math.sign(s.v) === Math.sign(dx);
+  R.lastSwipe = { dx: Math.round(dx), dy: Math.round(dy), v: Math.round(s.v * 100) / 100, far, flick };
+  if (t && (far || flick) && Math.abs(dx) > Math.abs(dy) * 1.5 && !selecting()) turnPage(dx < 0 ? 1 : -1);
+  else if (was && !reducedMotion() && book.animate) book.animate([{ transform: was }, { transform: "translateX(0)" }], { duration: 160, easing: "ease-out" });
+}
+$("#book").addEventListener("touchend", (e) => endSwipe(e, false), { passive: true });
+$("#book").addEventListener("touchcancel", (e) => endSwipe(e, true), { passive: true });
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && S.screen === "reader") savePos(); });
 
 /* ---------- events ---------- */
