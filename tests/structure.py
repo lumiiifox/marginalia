@@ -78,7 +78,7 @@ async def main():
         check(await page.locator("#seledit").is_visible() and await page.locator("#seledit").inner_text() == "Edit", "selecting a line shows Edit in the toolbar")
         await page.click("#seledit"); await page.wait_for_selector(".fixopt")
         panel = await page.evaluate("() => ({ opts: [...document.querySelectorAll('.fixopt')].map((b) => b.dataset.role), now: document.querySelector('.fixopt.on')?.dataset.role })")
-        check(panel["opts"] == ["chapter", "heading", "hide", "title", "text", "words"] and panel["now"] == "text", f"Edit offers chapter, heading, running head, title page, plain text and the wording ({panel})")
+        check(panel["opts"] == ["chapter", "heading", "hide", "title", "quote", "text", "words"] and panel["now"] == "text", f"Edit offers chapter, heading, running head, title page, block quote, plain text and the wording ({panel})")
         await page.click(".fixopt[data-role=hide]"); await page.wait_for_selector(".likelist")
         offer = await page.inner_text(".sheet")
         check(f"other {len(rh) - 1} lines" in offer.replace("the ", "") or f"the {len(rh) - 1} other lines" in offer, f"hiding a running head offers the {len(rh) - 1} other lines like it")
