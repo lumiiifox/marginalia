@@ -135,7 +135,7 @@ async def main():
         # selection toolbar
         await page.evaluate("""() => { const el = R.els[pagedBlock()]; const tn = document.createTreeWalker(el, NodeFilter.SHOW_TEXT).nextNode(); const r = document.createRange(); r.setStart(tn, 0); r.setEnd(tn, 9); getSelection().removeAllRanges(); getSelection().addRange(r); }""")
         await page.wait_for_timeout(400)
-        check(await page.locator("#selbar").is_visible() and await page.locator("#seledit").is_visible(), "selecting text in pages shows the toolbar with Edit text")
+        check(await page.locator("#selbar").is_visible() and await page.locator("#seledit").is_visible(), "selecting text in pages shows the toolbar with Edit")
         await page.evaluate("getSelection().removeAllRanges()")
         # alignment over many turns
         await page.evaluate("goTo(0); R.turns = 0")

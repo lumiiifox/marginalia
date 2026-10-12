@@ -514,6 +514,23 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 #reader.paged-reader :is(#book, #flipbook) .chap { break-before: column; }
 #reader.paged-reader :is(#book, #flipbook) .chap.bh, #reader.paged-reader :is(#book, #flipbook) .chap + .bh { margin-top: 0.4em; }
 #reader.paged-reader :is(#book, #flipbook) :is(.bp, .bq) { orphans: 2; widows: 2; }
+/* structure marked in the reader: hidden running heads, title pages, a title glued to its paragraph */
+.bhid { display: block; height: 0; margin: 0; padding: 0; overflow: hidden; }
+span.bhid { display: inline; }
+.btitle { text-align: center; text-indent: 0 !important; font-size: 1.12em; line-height: 1.3; margin: 0.6em 0; text-wrap: balance; }
+#reader.paged-reader :is(#book, #flipbook) .chap.btitle { margin-top: 3em; }
+.bsplit > .bh:first-child { margin-top: 2.2em; }
+.book > .bsplit:first-child > .bh, .bpg:first-child + .bsplit > .bh { margin-top: 0.4em; }
+#reader.paged-reader :is(#book, #flipbook) :is(.chap.bsplit, .chap + .bsplit) > .bh { margin-top: 0.4em; }
+.fixopts { display: grid; margin-top: 6px; }
+.fixopts + .fixopts { margin-top: 14px; }
+.fixopt { display: grid; gap: 3px; text-align: left; background: none; border: 0; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); padding: 11px 0; color: var(--ink); cursor: pointer; }
+.fixopt b { font: 600 16px/1.3 var(--f-text); }
+.fixopt b em { font: 500 12px/1 var(--f-ui); font-style: normal; color: var(--brass); margin-left: 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+.fixopt span { font: 13.5px/1.4 var(--f-ui); color: var(--muted); }
+.fixopt.on b { color: var(--link); }
+.likelist { margin: 8px 0 4px; padding-left: 20px; font: 15px/1.4 var(--f-text); }
+.likelist .tp { font: 13px var(--f-ui); color: var(--muted); }
 .pgm { display: inline-block; text-indent: 0; margin: 0 0 0 0.4em; padding: 0 0 0 0.3em; border-left: 1px solid var(--rule); font: 500 0.58em/1 var(--f-ui);
   letter-spacing: 0.04em; color: var(--muted); vertical-align: 0.15em; user-select: none; -webkit-user-select: none; }
 .bp > .pgm:first-child { margin-left: 0; }
@@ -548,7 +565,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
   <div class="undershade" id="undershade" aria-hidden="true"></div>
   <div class="rtrail" id="rtrail" hidden></div>
 </div>
-<div class="selbar" id="selbar" hidden><button class="btn" id="sellook" hidden>Look up</button><button class="btn" id="seledit">Edit text</button><button class="btn" id="selhl">Highlight</button><button class="btn primary" id="selsave">Add a note</button></div>
+<div class="selbar" id="selbar" hidden><button class="btn" id="sellook" hidden>Look up</button><button class="btn" id="seledit">Edit</button><button class="btn" id="selhl">Highlight</button><button class="btn primary" id="selsave">Add a note</button></div>
 <div id="sheetroot"></div>
 <div class="toast" id="toast" role="status" hidden></div>
 
@@ -4452,12 +4469,17 @@ function textSheet(id) {
       <div class="field"><label for="f-orig">First published</label><input id="f-orig" name="orig" value="${esc(t.orig)}" inputmode="numeric" autocomplete="off" placeholder="e.g. 1677"></div>
     </div>
     ${coverField(t, cover.current)}
-    <div class="field"><label for="f-secs">Sections</label><textarea id="f-secs" name="sections" rows="5">${esc((t.sections || []).map((s) => s.label).join("\n"))}</textarea><span class="hint">One per line: chapters, essays, plateaus, lectures.</span></div>`,
+    <div class="field"><label for="f-secs">Sections</label><textarea id="f-secs" name="sections" rows="5">${esc((t.sections || []).map((s) => s.label).join("\n"))}</textarea><span class="hint">One per line: chapters, essays, plateaus, lectures.${id && t.hasContent ? " To set where a chapter starts in the text, select its title in the reader and choose Edit." : ""}</span></div>`,
   async (fd) => {
     const title = fd.get("title").trim(); if (!title) return "Give the text a title.";
     const old = (t.sections && t.sections.length) ? t.sections : parsed ? parsed.sections : [];
-    const sections = fd.get("sections").split("\n").map((l) => l.trim()).filter(Boolean).map((label) => {
-      const prev = old.find((s) => s.label === label); return prev ? { ...prev } : { id: gid(), label, done: false };
+    // A line kept as it was keeps its section; with as many lines as before, a renamed line keeps the section in its place.
+    const lines = fd.get("sections").split("\n").map((l) => l.trim()).filter(Boolean), used = new Set();
+    const byLabel = lines.map((label) => { const p = old.find((s) => s.label === label && !used.has(s.id)); if (p) used.add(p.id); return p; });
+    const sections = lines.map((label, k) => {
+      let prev = byLabel[k];
+      if (!prev && lines.length === old.length && old[k] && !used.has(old[k].id)) { prev = old[k]; used.add(prev.id); }
+      return prev ? { ...prev, label } : { id: gid(), label, done: false };
     });
     const tid = id || gid();
     const data = { ...(id ? t : { createdAt: Date.now() }), title, author: fd.get("author").trim(), edition: fd.get("edition").trim(), publisher: fd.get("publisher").trim(), year: fd.get("year").trim(), orig: (fd.get("orig") || "").trim(), status: fd.get("status"), sections, updatedAt: Date.now() };
@@ -4468,7 +4490,14 @@ function textSheet(id) {
       Object.assign(data, { hasContent: true, source: { name: parsed.name, kind: parsed.kind, pages: parsed.pages }, pos: 0, total: parsed.blocks.length });
     }
     await saveCover(tid, cover);
-    await put("texts", tid, data);
+    // A section taken off the list stops being a chapter in the text: its title stays, as a heading.
+    const gone = new Set(old.map((s) => s.id).filter((x) => !sections.some((s) => s.id === x)));
+    const blocks = id && t.hasContent && gone.size ? await loadContent(tid) : null;
+    if (blocks && blocks.some((b) => b.s && gone.has(b.s))) {
+      const next = blocks.map((b) => { if (!b.s || !gone.has(b.s)) return b; const c = { ...b }; delete c.s; if (c.st === "chapter") c.st = "heading"; return c; });
+      if (idb) await idbTx(["content", "texts"], (st) => { st("content").put(next, tid); st("texts").put(data, tid); });
+      S.content.set(tid, next); S.texts.set(tid, data); render();
+    } else await put("texts", tid, data);
     if (!S.texts.has(tid)) S.texts.set(tid, data);
     if (!id) return () => go({ screen: "text", textId: tid });
   },
@@ -4662,12 +4691,13 @@ const CHUNK = 250;
 function chunkStarts(blocks) {
   const starts = [0], n = blocks.length;
   for (let a = 0; a + CHUNK * 1.5 < n;) {
-    const from = a + CHUNK, find = (k, to) => { for (let i = from; i < Math.min(n, to); i++) if (blocks[i].k === k) return i; return -1; };
-    // a cut just before page markers or footnotes that lead into a continued paragraph would split it
-    const joins = (i) => { let q = i; while (q < n && (blocks[q].k === "fn" || blocks[q].k === "pg")) q++; return q < n && blocks[q].k === "c"; };
-    let cut = find("h", a + CHUNK * 2);
-    if (cut < 0) { for (let i = from; i < Math.min(n, a + CHUNK * 1.5); i++) if (blocks[i].k === "pg" && !joins(i)) { cut = i; break; } }
-    if (cut < 0) { cut = from; while (cut < n - 1 && (blocks[cut].k === "c" || joins(cut))) cut++; }
+    const from = a + CHUNK, find = (ok, to) => { for (let i = from; i < Math.min(n, to); i++) if (ok(blocks[i])) return i; return -1; };
+    // a cut just before page markers or footnotes that lead into a continued paragraph would split it, and so would
+    // a cut inside a title broken over several lines
+    const joins = (i) => { let q = i; while (q < n && (blocks[q].k === "fn" || betweenPages(blocks[q]))) q++; return q < n && carriesOn(blocks[q]); };
+    let cut = find(isTitleLead, a + CHUNK * 2);
+    if (cut < 0) { for (let i = from; i < Math.min(n, a + CHUNK * 1.5); i++) if (blocks[i].k === "pg" && !joins(i) && !(blocks[i + 1] && blocks[i + 1].stj)) { cut = i; break; } }
+    if (cut < 0) { cut = from; while (cut < n - 1 && (blocks[cut].k === "c" || blocks[cut].stj || joins(cut))) cut++; }
     starts.push(cut); a = cut;
   }
   return starts;
@@ -4680,21 +4710,61 @@ function chunkAt(i) {
 // Swipe pages read like a book. A paragraph the printed page cut in two is joined again; the printed page number becomes a
 // small marker where that page began; the footnotes from the foot of that page follow the paragraph. Only the display
 // changes: the stored book, notes, search and citations keep every block as it was.
-const isPara = (b) => b && (b.k === "p" || b.k === "c");
+// Structure you mark in the reader (select, then Edit → what is this?). It is kept on the block itself, so block numbers,
+// which notes, bookmarks and reading places point at, never move; Plain text takes any of it off again.
+//   st:  "chapter" | "heading" | "hide" (a running head) | "title" (a title page) | "text"
+//   sth: only the first sth characters are the title or running head (one glued to the start of a paragraph)
+//   stj: this line carries on the title just before it (a title the PDF broke over several lines)
+// A block with no mark keeps what the import made of it: a heading linked to a section is a chapter title.
+function roleOf(b) { if (!b) return ""; if (b.st) return b.st; return b.k === "h" ? (b.s ? "chapter" : "heading") : ""; }
+const isTitleRole = (r) => r === "chapter" || r === "heading";
+const isHidden = (b) => !!b && b.st === "hide" && !b.sth;
+const isTitleLead = (b) => !!b && !b.stj && !b.sth && isTitleRole(roleOf(b));
+function titleTail(B, i) { const out = []; if (isTitleLead(B[i])) for (let k = i + 1; k < B.length && B[k].stj; k++) out.push(k); return out; }
+const titleLevel = (b) => (b.st ? (b.st === "chapter" ? 1 : 2) : Math.min(b.l || 2, 4));
+const glueAfter = (x) => (/\p{L}-$/u.test(String(x || "").trimEnd()) ? "" : " "); // a word broken at a line end joins up
+// Text x cut after n characters (italics markers don't count; italics open at the cut are closed and reopened).
+function splitAt(x, n) {
+  x = x || ""; let c = 0, k = 0, open = false;
+  for (; k < x.length && c < n; k++) { const ch = x[k]; if (ch === I0) open = true; else if (ch === I1) open = false; else c++; }
+  return [x.slice(0, k) + (open ? I1 : ""), (open ? I0 : "") + x.slice(k)];
+}
+// The words of the title starting at block i, as one line.
+function titleText(B, i) {
+  const b = B[i]; if (!b) return "";
+  if (b.sth) return plain(splitAt(b.x, b.sth)[0]).replace(/\s+/g, " ").trim();
+  let x = plain(b.x); for (const k of titleTail(B, i)) x += glueAfter(x) + plain(B[k].x);
+  return x.replace(/\s+/g, " ").trim();
+}
+// Where each block is: its printed page, and the section (chapter) it falls in.
+function sectionIndex(blocks) {
+  let pg = "", sc = ""; const pageAt = [], secAt = [];
+  blocks.forEach((b, i) => { if (b.k === "pg") pg = b.x; if (b.s && !b.stj && roleOf(b) === "chapter") sc = b.s; pageAt[i] = pg; secAt[i] = sc; });
+  return { pageAt, secAt };
+}
+const isPara = (b) => !!b && (b.k === "p" || b.k === "c") && (!b.st || b.st === "text" || (b.st === "hide" && !!b.sth));
+// A paragraph that carries on from the page before: a continuation, or one whose glued running head is hidden.
+const carriesOn = (b) => !!b && b.k === "c" && isPara(b);
+// Hidden running heads sit between pages like the page markers do.
+const betweenPages = (b) => b.k === "pg" || isHidden(b);
 function pagedPlan(a, b) {
-  const B = R.blocks, units = [], grp = new Map(), lead = new Map();
+  const B = R.blocks, units = [], grp = new Map(), lead = new Map(), tails = new Map();
   for (let i = a; i < b;) {
-    // printed page markers just before a paragraph: shown inside it, at its start
-    let j = i; while (j < b && B[j].k === "pg") j++;
-    if (j > i && j < b && B[j].k === "p") { const L = j, m = []; for (let k = i; k < j; k++) { m.push(k); lead.set(k, L); } grp.set(L, { pre: m, parts: [] }); i = j; }
-    if (!isPara(B[i])) { units.push(i); i++; continue; }
+    // printed page markers (and hidden running heads) just before a paragraph: shown inside it, at its start
+    let j = i; while (j < b && betweenPages(B[j])) j++;
+    if (j > i && j < b && B[j].k === "p" && isPara(B[j])) { const L = j, m = []; for (let k = i; k < j; k++) { m.push(k); lead.set(k, L); } grp.set(L, { pre: m, parts: [] }); i = j; }
+    if (!isPara(B[i])) {
+      const tail = titleTail(B, i).filter((k) => k < b); // the further lines of a title are drawn in it
+      units.push(i); if (tail.length) { tails.set(i, tail); tail.forEach((k) => lead.set(k, i)); }
+      i += 1 + tail.length; continue;
+    }
     const L = i, g = grp.get(L) || { pre: [], parts: [] }, notes = [];
-    // a paragraph running on past a page break (footnotes and page markers, then its continuation) is joined up
+    // a paragraph running on past a page break (footnotes, page markers and running heads, then its continuation) is joined up
     let k = i + 1;
     for (;;) {
       let q = k, fns = [], pgs = [];
-      while (q < b && (B[q].k === "fn" || B[q].k === "pg")) { (B[q].k === "fn" ? fns : pgs).push(q); q++; }
-      if (!pgs.length || q >= b || B[q].k !== "c") break;
+      while (q < b && (B[q].k === "fn" || betweenPages(B[q]))) { (B[q].k === "fn" ? fns : pgs).push(q); q++; }
+      if (!pgs.length || q >= b || !carriesOn(B[q])) break;
       notes.push(...fns); g.parts.push(...pgs, q); [...pgs, q].forEach((m) => lead.set(m, L)); k = q + 1;
     }
     if (g.pre.length || g.parts.length) grp.set(L, g);
@@ -4702,55 +4772,83 @@ function pagedPlan(a, b) {
   }
   // screen order of every block, for finding the one at the top of a page
   const order = [];
-  for (const u of units) { const g = grp.get(u); if (g) order.push(...g.pre, u, ...g.parts); else order.push(u); }
+  for (const u of units) { const g = grp.get(u); if (g) order.push(...g.pre, u, ...g.parts); else order.push(u, ...(tails.get(u) || [])); }
   return { units, grp, lead, order };
 }
-const pgMark = (i) => `<span class="pgm" data-i="${i}" aria-label="page ${esc(R.blocks[i].x)}">${esc(R.blocks[i].x)}</span>`;
-function groupHTML(L, marks) {
-  const B = R.blocks, g = R.grp.get(L), m = (i) => marks.get(i);
-  let html = g.pre.map(pgMark).join("") + inlineHTML(B[L].x || "", m(L)), notes = marginHTML(m(L), B[L].x || "");
+const pgMark = (i) => (R.blocks[i].k === "pg" ? `<span class="pgm" data-i="${i}" aria-label="page ${esc(R.blocks[i].x)}">${esc(R.blocks[i].x)}</span>` : `<span class="bhid" data-i="${i}"></span>`);
+// The words of a paragraph that are shown as reading text: all of them, or those after a glued title or running head.
+const bodyOf = (b) => (b.sth ? splitAt(b.x, b.sth)[1] : b.x || "");
+// A paragraph's element. A title glued to its start is drawn as a heading above it; a glued running head is left out
+// (data-o says how many characters of the block come before the text shown, for selections).
+function paraHTML(L, html, notes, marks) {
+  const b = R.blocks[L], cls = `bp${b.k === "c" ? " cont" : ""}`;
+  if (!b.sth) return `<p class="${cls}" data-i="${L}">${html}${notes}</p>`;
+  if (b.st === "hide") return `<p class="${cls}" data-i="${L}" data-o="${b.sth}">${html}${notes}</p>`;
+  return `<div class="bsplit" data-i="${L}"><h2 class="bh l${titleLevel(b)}">${inlineHTML(splitAt(b.x, b.sth)[0], marks)}</h2><p class="bp cont">${html}${notes}</p></div>`;
+}
+function groupHTML(L, marks, grp = R.grp) {
+  const B = R.blocks, g = grp.get(L), m = (i) => marks.get(i);
+  let html = g.pre.map(pgMark).join("") + inlineHTML(bodyOf(B[L]), m(L)), notes = marginHTML(m(L), B[L].x || ""), prev = bodyOf(B[L]);
   for (const i of g.parts) {
-    if (B[i].k === "pg") { html += pgMark(i); continue; }
-    const prev = B[L].x || "", glue = /\p{L}-$/u.test(prev.trimEnd()) ? "" : " ";
-    html += `<span class="bjoin" data-i="${i}">${glue}${inlineHTML(B[i].x || "", m(i))}</span>`; notes += marginHTML(m(i), B[i].x || "");
+    if (betweenPages(B[i])) { html += pgMark(i); continue; }
+    html += `${glueAfter(prev)}<span class="bjoin" data-i="${i}"${B[i].sth ? ` data-o="${B[i].sth}"` : ""}>${inlineHTML(bodyOf(B[i]), m(i))}</span>`; notes += marginHTML(m(i), B[i].x || ""); prev = bodyOf(B[i]);
   }
-  return `<p class="bp${B[L].k === "c" ? " cont" : ""}" data-i="${L}">${html}${notes}</p>`;
+  return paraHTML(L, html, notes, m(L));
 }
-// Chapters (the book's sections, from its table of contents or its headings) start on a fresh page in Swipe pages; the
-// rest of the last page of the chapter before stays blank. A printed page marker or a part title just before the
-// chapter title goes with it.
-function markChapters(a, b) {
-  const B = R.blocks; R.chap = new Set();
+// Chapters start on a fresh page in Swipe pages, and so does a title page and whatever follows it; the rest of the
+// page before stays blank. A printed page marker or a part title just before a chapter title goes with it.
+function chapterStarts(a, b) {
+  const B = R.blocks, out = [];
+  const quiet = (x) => betweenPages(x) || !!x.stj;
+  const mark = (j) => out.push(j);
+  let prev = "";
   for (let i = a; i < b; i++) {
-    if (B[i].k !== "h" || !B[i].s) continue;
-    let j = i; while (j - 1 >= a && (B[j - 1].k === "pg" || (B[j - 1].k === "h" && !B[j - 1].s))) j--;
-    R.chap.add(j);
-    const el = R.els[j] && R.els[j].closest("#book > *"); if (el) el.classList.add("chap");
+    const x = B[i]; if (quiet(x)) continue;
+    const r = roleOf(x), chapter = r === "chapter" && !!x.s;
+    if (chapter || (r === "title") !== (prev === "title")) {
+      let j = i; while (j - 1 >= a && (quiet(B[j - 1]) || (chapter && roleOf(B[j - 1]) === "heading"))) j--;
+      mark(j);
+    }
+    prev = r;
   }
+  return out;
 }
-// Draw block i again (new highlights or notes, an edited paragraph), with the paragraph it was joined to, if any.
+function markChapters(a, b) {
+  R.chap = new Set(chapterStarts(a, b));
+  for (const j of R.chap) { const el = R.els[j] && R.els[j].closest("#book > *"); if (el) el.classList.add("chap"); }
+}
+// Draw block i again (new highlights or notes, an edited paragraph), with the paragraph or title it was joined to, if any.
 function rerenderBlock(i, marks) {
-  const L = (R.lead && R.lead.get(i)) ?? i, joined = R.grp && R.grp.has(L);
+  let L = (R.lead && R.lead.get(i)) ?? i;
+  while (L > 0 && R.blocks[L].stj) L--;
+  const joined = R.grp && R.grp.has(L);
   if (!R.els[L]) return;
-  const tmp = document.createElement("div"); tmp.innerHTML = joined ? groupHTML(L, marks) : blockHTML(R.blocks[L], L, marks.get(L));
+  const tmp = document.createElement("div"); tmp.innerHTML = joined ? groupHTML(L, marks) : blockHTML(R.blocks[L], L, marks);
   const el = tmp.firstElementChild; R.els[L].replaceWith(el); R.els[L] = el;
   if (R.chap && R.chap.has(L) && RS.flow === "pages") el.classList.add("chap");
-  if (joined) { const g = R.grp.get(L); for (const m of [...g.pre, ...g.parts]) R.els[m] = el.querySelector(`[data-i="${m}"]`); }
+  el.querySelectorAll("[data-i]").forEach((x) => { R.els[+x.dataset.i] = x; });
   R.dirty = true; R.ver = (R.ver || 0) + 1;
+}
+// One section of the book as Swipe pages draws it.
+function pagedHTML(a, b, marks) {
+  const plan = pagedPlan(a, b);
+  return { plan, html: plan.units.map((i) => (plan.grp.has(i) ? groupHTML(i, marks, plan.grp) : blockHTML(R.blocks[i], i, marks))).join("") };
 }
 function renderBook(center) {
   const book = $("#book"), marks = marksByBlock(R.tid), n = R.blocks.length;
   const [a, b] = RS.flow === "pages" ? chunkAt(Math.max(0, Math.min(center || 0, n - 1))) : [0, n];
   R.els = new Array(n);
   if (RS.flow === "pages") {
-    const plan = pagedPlan(a, b); R.grp = plan.grp; R.lead = plan.lead; R.order = plan.order;
-    book.innerHTML = plan.units.map((i) => (plan.grp.has(i) ? groupHTML(i, marks) : blockHTML(R.blocks[i], i, marks.get(i)))).join("");
+    const { plan, html } = pagedHTML(a, b, marks); R.grp = plan.grp; R.lead = plan.lead; R.order = plan.order;
+    book.innerHTML = html;
     book.querySelectorAll("[data-i]").forEach((el) => { R.els[+el.dataset.i] = el; });
     markChapters(a, b);
   } else {
     R.grp = new Map(); R.lead = new Map(); R.order = null;
-    book.innerHTML = R.blocks.slice(a, b).map((x, k) => blockHTML(x, a + k, marks.get(a + k))).join("");
-    [...book.children].forEach((el, k) => { R.els[a + k] = el; });
+    let html = "";
+    for (let i = a; i < b; i++) { html += blockHTML(R.blocks[i], i, marks); i += titleTail(R.blocks, i).length; }
+    book.innerHTML = html;
+    book.querySelectorAll("[data-i]").forEach((el) => { R.els[+el.dataset.i] = el; });
   }
   R.win = [a, b];
   R.sig = new Map([...marks].filter(([i]) => i >= a && i < b).map(([i, l]) => [i, sigOf(l)]));
@@ -4826,15 +4924,24 @@ function marginHTML(marks, text) {
     return `<span class="mnote k-${esc(n.kind)}" data-note="${esc(id)}" role="button" tabindex="0"><span class="mk">${esc(label)}${n.resolved ? ", resolved" : ""}</span>${n.original ? `<span class="mo">${esc(clip(n.original, 200))}</span>` : ""}${body ? `<span class="mb">${esc(clip(body, 320))}</span>` : ""}</span>`;
   }).join("");
 }
+// Block i as the reader draws it; marks is every block's highlights (marksByBlock).
 function blockHTML(b, i, marks) {
   if (b.k === "pg") return `<div class="bpg" data-i="${i}">${b.x ? esc(loc(b.x)) : ""}</div>`;
-  if (b.k === "front") {
+  const m = marks && marks.get(i), role = roleOf(b);
+  if (isHidden(b)) return `<div class="bhid" data-i="${i}"></div>`;
+  if (b.k === "front" && role !== "text") {
     const size = Math.max(0.78, Math.min(1.65, Number(b.size) || 1));
     const space = Math.max(0, Math.min(5, Number(b.space) || 0));
-    return `<p class="bfront${b.heading ? " fronthead" : ""}" data-i="${i}" style="font-size:${size}em;margin-top:${space}em">${inlineHTML(b.x || "", marks)}${marginHTML(marks, b.x || "")}</p>`;
+    return `<p class="bfront${b.heading ? " fronthead" : ""}${role === "title" ? " btitle" : ""}" data-i="${i}" style="font-size:${size}em;margin-top:${space}em">${inlineHTML(b.x || "", m)}${marginHTML(m, b.x || "")}</p>`;
   }
-  const x = inlineHTML(b.x || "", marks) + marginHTML(marks, b.x || "");
-  if (b.k === "h") return `<h2 class="bh l${Math.min(b.l || 2, 4)}" data-i="${i}">${x}</h2>`;
+  if (b.sth) return paraHTML(i, inlineHTML(bodyOf(b), m), marginHTML(m, b.x || ""), m);
+  if (isTitleLead(b)) { // a title broken over several lines is drawn as one
+    let html = inlineHTML(b.x || "", m), notes = marginHTML(m, b.x || ""), prev = b.x;
+    for (const k of titleTail(R.blocks, i)) { const mk = marks && marks.get(k), x = R.blocks[k].x || ""; html += `${glueAfter(prev)}<span class="bjoin" data-i="${k}">${inlineHTML(x, mk)}</span>`; notes += marginHTML(mk, x); prev = x; }
+    return `<h2 class="bh l${titleLevel(b)}" data-i="${i}">${html}${notes}</h2>`;
+  }
+  const x = inlineHTML(b.x || "", m) + marginHTML(m, b.x || "");
+  if (role === "title") return `<p class="btitle" data-i="${i}">${x}</p>`;
   if (b.k === "q") return `<p class="bq" data-i="${i}">${x}</p>`;
   if (b.k === "fn") return `<p class="bfn" data-i="${i}">${x}</p>`;
   return `<p class="bp${b.k === "c" ? " cont" : ""}" data-i="${i}">${x}</p>`;
@@ -4867,8 +4974,7 @@ async function openReader(tid, at, opts) {
   if (S.screen !== "reader" || S.textId !== tid) return;
   if (!blocks) { book.innerHTML = `<p class="rload">This text isn't loaded yet. Go back and use Load file.</p>`; return; }
   R.tid = tid; R.blocks = blocks;
-  let pg = "", sc = ""; R.pageAt = []; R.secAt = [];
-  blocks.forEach((b, i) => { if (b.k === "pg") pg = b.x; if (b.k === "h" && b.s) sc = b.s; R.pageAt[i] = pg; R.secAt[i] = sc; });
+  Object.assign(R, sectionIndex(blocks));
   const target = Number.isInteger(at) ? at : Number.isInteger(t?.pos) ? t.pos : 0;
   R.chunks = chunkStarts(blocks); R.turns = 0;
   renderBook(target);
@@ -4965,7 +5071,10 @@ function fillTwin(a) {
   tw.className = book.className; tw.style.cssText = book.style.cssText; tw.style.transform = "";
   if (tw.dataset.key !== key) {
     if (R.win && a === R.win[0]) tw.innerHTML = book.innerHTML;
-    else { const [x, y] = chunkAt(a), marks = marksByBlock(R.tid); tw.innerHTML = R.blocks.slice(x, y).map((b, k) => blockHTML(b, x + k, marks.get(x + k))).join(""); }
+    else {
+      const [x, y] = chunkAt(a); tw.innerHTML = pagedHTML(x, y, marksByBlock(R.tid)).html;
+      for (const j of chapterStarts(x, y)) { const el = tw.querySelector(`[data-i="${j}"]`); if (el) el.closest("#flipbook > *").classList.add("chap"); }
+    }
     tw.dataset.key = key;
   }
   return tw;
@@ -5190,11 +5299,19 @@ function refreshMarks() {
 
 function tocPanel() {
   if (!R.blocks) return;
-  const items = R.blocks.map((b, i) => (b.k === "h" ? `<button class="tocitem l${Math.min(b.l || 2, 4)}" data-goto="${i}"><span>${esc(plain(b.x))}</span><span class="tp">${R.pageAt[i] ? esc(R.pageAt[i]) : ""}</span></button>` : "")).join("");
+  const names = new Map((S.texts.get(R.tid)?.sections || []).map((s) => [s.id, s.label])), hidden = R.blocks.filter((b) => b.st === "hide").length;
+  const items = R.blocks.map((b, i) => {
+    if (b.stj || !isTitleRole(roleOf(b))) return "";
+    const label = (roleOf(b) === "chapter" && names.get(b.s)) || titleText(R.blocks, i);
+    return `<button class="tocitem l${titleLevel(b)}" data-goto="${i}"><span>${esc(label)}</span><span class="tp">${R.pageAt[i] ? esc(R.pageAt[i]) : ""}</span></button>`;
+  }).join("");
   const bms = bookmarksOf(S.texts.get(R.tid)).filter((bm) => bm.at < R.blocks.length);
   const snippet = (i) => { for (let k = i; k < Math.min(R.blocks.length, i + 4); k++) if (R.blocks[k].k !== "pg") { const x = plain(R.blocks[k].x || ""); return x.length > 70 ? x.slice(0, 70) + "…" : x; } return ""; };
   openPanel(`${bms.length ? `<h2>Bookmarks</h2><div class="toc">${bms.map((bm) => `<button class="tocitem bm" data-goto="${bm.at}"><span>${esc(snippet(bm.at))}</span><span class="tp">${bm.page ? esc(loc(bm.page)) : ""}</span></button>`).join("")}</div>` : ""}
-    <h2>Contents</h2><div class="toc">${items || `<p class="empty">No headings were found in this text.</p>`}</div>`, (b) => { if (b.dataset.goto) jumpTo(+b.dataset.goto, false); });
+    <h2>Contents</h2><div class="toc">${items || `<p class="empty">No headings were found in this text.</p>`}</div>
+    <p class="hint">To mark where a chapter starts, select its title in the text and choose Edit.</p>
+    ${hidden ? `<p class="hint">${hidden} running head${hidden === 1 ? " is" : "s are"} hidden. <button class="linkbtn" id="toc-unhide">Show ${hidden === 1 ? "it" : "them"} again</button></p>` : ""}`,
+  (b) => { if (b.id === "toc-unhide") return showHidden(); if (b.dataset.goto) jumpTo(+b.dataset.goto, false); });
 }
 
 let selT;
@@ -5212,10 +5329,212 @@ function checkSel() {
   const i = idxOf(r.startContainer) ?? currentBlock(), j = idxOf(r.endContainer) ?? i;
   const a = R.pageAt[i] || "", b = R.pageAt[j] || "";
   const page = a && b && a !== b ? `${a}–${b}` : a;
-  R.sel = { text, i, page, sec: R.secAt[i] || "" };
+  R.sel = { text, i, j, si: offsetIn(i, r.startContainer, r.startOffset), ej: offsetIn(j, r.endContainer, r.endOffset), page, sec: R.secAt[i] || "" };
   $("#selsave").textContent = "Add a note";
   $("#sellook").hidden = !(text.length <= 48 && text.split(/\s+/).length <= 4);
   bar.hidden = false; drawTrail();
+}
+// How far into block k's text (in characters, italics markers left out) a point of the selection is.
+function offsetIn(k, node, off) {
+  const el = R.els[k]; if (!el || !el.contains(node)) return null;
+  const rg = document.createRange();
+  try { rg.setStart(el, 0); rg.setEnd(node, off); } catch { return null; }
+  const f = rg.cloneContents(); f.querySelectorAll(".mnote, .pgm, .bjoin, .bhid").forEach((x) => x.remove());
+  return (+el.dataset.o || 0) + f.textContent.length;
+}
+
+/* ---------- marking the structure of a book: Edit → what is this? ---------- */
+const ROLE_DONE = { chapter: "Marked as a chapter title.", heading: "Marked as a heading.", hide: "Running head hidden.", title: "Marked as a title page.", text: "Back to plain text." };
+// Which blocks a selection covers for a role: whole blocks, or the start of one paragraph (sth). A string says why not.
+function structureRange(s, role) {
+  const B = R.blocks, txt = (k) => plain(B[k].x || "");
+  let { i, j } = s, si = s.si ?? 0, ej = s.ej ?? txt(j).length;
+  // a selection that only touches the next paragraph, or starts at the very end of the one before, leaves it out
+  while (j > i && (B[j].k === "pg" || !txt(j).slice(0, ej).trim())) { j--; ej = txt(j).length; }
+  while (i < j && (B[i].k === "pg" || !txt(i).slice(si).trim())) { i++; si = 0; }
+  if (B[i].k === "pg") return "Select some words of the text.";
+  if (role === "text" || role === "title") return { from: i, to: j };
+  const atStart = !txt(i).slice(0, si).trim(), atEnd = !txt(j).slice(ej).trim();
+  if (!atStart) return role === "hide" ? "Select the running head from its first word." : "Select the title from its first word. Only the start of a paragraph can be made a title.";
+  if (atEnd) return { from: i, to: j };
+  if (i < j) return "The selection runs on into the text after it. Select the title only.";
+  const sth = txt(i).slice(0, ej).trimEnd().length;
+  return sth ? { from: i, to: i, sth } : "Select some words of the text.";
+}
+// The other running heads like the one selected: the same words, whatever the page number in them.
+function lookalikes(range) {
+  const B = R.blocks, head = range.sth ? plain(splitAt(B[range.from].x, range.sth)[0]) : B.slice(range.from, range.to + 1).filter((b) => b.k !== "pg").map((b) => plain(b.x)).join(" ");
+  const num = (t) => /^\p{N}+$/u.test(t), toks = head.match(/\p{L}+|\p{N}+/gu) || [];
+  while (toks.length && num(toks[0])) toks.shift(); // the page number, on either side
+  while (toks.length && num(toks[toks.length - 1])) toks.pop();
+  if (toks.join("").replace(/\p{N}/gu, "").length < 3 || head.length > 140) return [];
+  const sep = "[^\\p{L}\\p{N}]*", pn = `(?:\\p{N}+${sep})?`, body = toks.map((t) => (num(t) ? "\\p{N}+" : t)).join(sep);
+  const re = new RegExp(`^${sep}${pn}${body}${sep}${pn}${range.sth ? "" : "$"}`, "iu");
+  const out = [];
+  B.forEach((b, k) => {
+    if ((k >= range.from && k <= range.to) || b.k === "pg" || b.k === "front" || b.stj || b.st === "hide" || b.st === "title") return;
+    const x = plain(b.x || ""), m = re.exec(x);
+    if (!m) return;
+    if (!range.sth) out.push({ k });
+    else { const n = m[0].trimEnd().length; if (x.slice(n).trim()) out.push({ k, sth: n }); }
+  });
+  return out;
+}
+// A title's further lines stay joined to it only while it is still a title.
+function tidyStructure(B, set) {
+  let ok = false;
+  for (let k = 0; k < B.length; k++) {
+    if (B[k].stj && !ok) set(k, (c) => { delete c.stj; });
+    const c = B[k]; ok = c.stj ? true : isTitleLead(c);
+  }
+}
+// Sections follow the chapter titles in reading order, keeping their names and ticks. Sections you typed that were
+// never tied to a place in the text stay, after them.
+function sectionsFor(t, oldBlocks, blocks, names) {
+  const old = t.sections || [], byId = new Map(old.map((s) => [s.id, s])), tied = new Set(), out = [], seen = new Set();
+  oldBlocks.forEach((b) => { if (b.s) tied.add(b.s); });
+  blocks.forEach((b, k) => {
+    if (b.stj || !b.s || roleOf(b) !== "chapter" || seen.has(b.s)) return;
+    seen.add(b.s); const was = byId.get(b.s), label = names.get(b.s);
+    out.push(was ? { ...was, ...(label ? { label } : {}) } : { id: b.s, label: label || titleText(blocks, k).slice(0, 90) || "Untitled", done: false });
+  });
+  for (const s of old) if (!seen.has(s.id) && !tied.has(s.id)) out.push(s);
+  return out;
+}
+// Save a new arrangement of the book: its blocks, its sections, and the notes filed by where they are in the text.
+async function commitStructure(tid, blocks, sections, notes) {
+  const t = S.texts.get(tid); if (!t) throw new UErr("This text is no longer available.");
+  const data = { ...t, sections, updatedAt: Date.now() };
+  if (idb) await idbTx(["content", "texts", "notes"], (st) => {
+    st("content").put(blocks, tid); st("texts").put(data, tid);
+    for (const [id, n] of notes) st("notes").put(n, id);
+  });
+  S.content.set(tid, blocks); S.texts.set(tid, data); for (const [id, n] of notes) S.notes.set(id, n);
+  if (R.tid === tid && R.blocks) {
+    const spot = currentSpot();
+    R.blocks = blocks; Object.assign(R, sectionIndex(blocks)); R.chunks = chunkStarts(blocks); R.pagedSpot = null;
+    renderBook(spot.i);
+    requestAnimationFrame(() => { if (R.tid !== tid) return; goToSpot(spot); updatePg(); drawTrail(); });
+  }
+}
+// Notes filed under the section their passage was in move with it; notes you filed elsewhere stay, unless their
+// section is gone.
+function refile(tid, oldSec, newSec, sections) {
+  const ids = new Set(sections.map((s) => s.id)), out = new Map(), n0 = R.blocks.length;
+  for (const [id, n] of S.notes) {
+    if (n.textId !== tid) continue;
+    const at = Number.isInteger(n.at) && n.at >= 0 && n.at < n0 ? n.at : null, cur = n.sectionId || "";
+    let to = cur;
+    if (at !== null && cur === (oldSec[at] || "")) to = newSec[at] || "";
+    else if (cur && !ids.has(cur)) to = at !== null ? newSec[at] || "" : "";
+    if (to !== cur) out.set(id, { ...n, sectionId: to });
+  }
+  return out;
+}
+async function applyStructure(role, range, opts = {}) {
+  const tid = R.tid, t = S.texts.get(tid), old = R.blocks;
+  if (!t || !old) throw new UErr("This text is no longer open.");
+  const next = old.slice(), prev = new Map(), names = new Map();
+  const set = (k, fn) => { if (!prev.has(k)) prev.set(k, old[k]); const c = { ...next[k] }; fn(c); next[k] = c; };
+  const reset = (c) => { const s = c.s; delete c.st; delete c.sth; delete c.stj; delete c.s; return s; };
+  for (let k = range ? range.from : 0; range && k <= range.to; k++) {
+    if (old[k].k === "pg") continue;
+    set(k, (c) => {
+      const sid = reset(c);
+      if (role === "text") { if (c.k === "h") c.st = "text"; return; }
+      if (isTitleRole(role) && k > range.from) { c.stj = true; return; }
+      c.st = role;
+      if (range.sth) c.sth = range.sth;
+      if (role === "chapter") { c.s = sid || gid(); if (opts.label) names.set(c.s, opts.label); }
+    });
+  }
+  for (const a of opts.also || []) set(a.k, (c) => { reset(c); c.st = "hide"; if (a.sth) c.sth = a.sth; });
+  for (const k of opts.clear || []) set(k, (c) => { reset(c); });
+  tidyStructure(next, set);
+  const sections = sectionsFor(t, old, next, names), oldSec = R.secAt.slice();
+  const notes = refile(tid, oldSec, sectionIndex(next).secAt, sections);
+  const undo = { tid, prev, sections: t.sections || [], notes: new Map([...notes.keys()].map((id) => [id, S.notes.get(id)])) };
+  await commitStructure(tid, next, sections, notes);
+  return undo;
+}
+async function undoStructure(u) {
+  if (R.tid !== u.tid || !R.blocks) { toast("Open the book again to undo."); return; }
+  const next = R.blocks.slice(); for (const [k, b] of u.prev) next[k] = b;
+  const notes = new Map([...u.notes].filter(([id]) => S.notes.has(id)));
+  try { await commitStructure(u.tid, next, u.sections, notes); toast("Undone."); } catch (e) { toast(failMsg(e)); }
+}
+// Hidden lines can't be selected, so Contents brings them all back.
+async function showHidden() {
+  const ks = []; R.blocks.forEach((b, k) => { if (b.st === "hide") ks.push(k); });
+  try { const u = await applyStructure("text", null, { clear: ks }); toast(`${ks.length} running head${ks.length === 1 ? "" : "s"} shown again.`, { label: "Undo", run: () => undoStructure(u) }); }
+  catch (e) { toast(e instanceof UErr ? e.message : failMsg(e)); }
+}
+function structureDone(role, u, n) {
+  const msg = role === "hide" && n > 1 ? `${n} running heads hidden.` : ROLE_DONE[role];
+  toast(msg, { label: "Undo", run: () => undoStructure(u) });
+}
+async function markStructure(role, range, opts) {
+  try { const u = await applyStructure(role, range, opts); structureDone(role, u, 1 + ((opts && opts.also) || []).length); }
+  catch (e) { toast(e instanceof UErr ? e.message : failMsg(e)); }
+}
+// Edit: say what the selected words are, or correct them.
+function structurePanel() {
+  const s = R.sel, tid = R.tid; if (!s || !tid || !R.blocks) return;
+  $("#selbar").hidden = true;
+  try { window.getSelection().removeAllRanges(); } catch {}
+  let lead = s.i; while (lead > 0 && R.blocks[lead].stj) lead--;
+  const now = roleOf(R.blocks[lead]) || "text";
+  const opt = (role, name, what) => `<button class="fixopt${now === role ? " on" : ""}" data-role="${role}"><b>${name}${now === role ? `<em>now</em>` : ""}</b><span>${what}</span></button>`;
+  const clip = (x) => (x.length > 90 ? x.slice(0, 89) + "…" : x);
+  openPanel(`<h2>Edit</h2><p class="sub">“${esc(clip(s.text))}”</p>
+    <div class="label">These words are</div>
+    <div class="fixopts">
+      ${opt("chapter", "A chapter title", "Starts a section in Sections, which runs until the next chapter title. In Swipe pages it begins on a new page.")}
+      ${opt("heading", "A heading", "A heading inside a chapter.")}
+      ${opt("hide", "A running head", "The title repeated at the top of each printed page. Hidden.")}
+      ${opt("title", "A title page", "Centred, on pages of its own in Swipe pages.")}
+      ${opt("text", "Plain text", "Reading text. Takes off any of the above.")}
+    </div>
+    <div class="fixopts"><button class="fixopt" data-role="words"><b>Correct the words…</b><span>Edit the wording of the whole paragraph.</span></button></div>`,
+  (b) => {
+    const role = b.dataset.role; if (!role || R.tid !== tid) return;
+    if (role === "words") return editSelectedParagraph();
+    const range = structureRange(s, role);
+    if (typeof range === "string") { toast(range); return; }
+    if (role === "chapter") return chapterSheet(range);
+    if (role === "hide") { const more = lookalikes(range); if (more.length) return hideSheet(range, more); }
+    markStructure(role, range);
+  });
+}
+function chapterSheet(range) {
+  const B = R.blocks, b = B[range.from], tid = R.tid, t = S.texts.get(tid);
+  const was = b.s && (t.sections || []).find((x) => x.id === b.s);
+  const words = range.sth ? plain(splitAt(b.x, range.sth)[0]) : B.slice(range.from, range.to + 1).filter((x) => x.k !== "pg").map((x) => plain(x.x)).reduce((a, x) => (a ? a + glueAfter(a) + x : x), "");
+  const name = (was && was.label) || words.replace(/\s+/g, " ").trim().slice(0, 90);
+  let undo = null;
+  openSheet(`<h2>Chapter title</h2>
+    <div class="field"><label for="ch-name">Name in Sections</label><input id="ch-name" name="name" value="${esc(name)}" autocomplete="off"></div>
+    <p class="hint">The chapter starts here and runs until the next chapter title.${range.to > range.from ? " The selected lines are shown as one title." : ""}${range.sth ? " The rest of the paragraph stays reading text." : ""}</p>`,
+  async (fd) => {
+    if (R.tid !== tid || R.blocks !== B) return "The text changed while this was open. Select the title again.";
+    const label = String(fd.get("name") || "").replace(/\s+/g, " ").trim(); if (!label) return "Give the chapter a name.";
+    undo = await applyStructure("chapter", range, { label });
+    return () => structureDone("chapter", undo, 1);
+  });
+}
+function hideSheet(range, more) {
+  const B = R.blocks, tid = R.tid;
+  const show = more.slice(0, 3).map(({ k, sth }) => { const x = plain(sth ? splitAt(B[k].x, sth)[0] : B[k].x).trim(), p = R.pageAt[k]; return `<li>${esc(x.length > 60 ? x.slice(0, 59) + "…" : x)}${p ? `<span class="tp"> ${esc(loc(p))}</span>` : ""}</li>`; }).join("");
+  openSheet(`<h2>Running head</h2>
+    <label class="chkrow"><input type="checkbox" name="all" checked> Also hide the ${more.length} other line${more.length === 1 ? "" : "s"} like it</label>
+    <ul class="likelist">${show}${more.length > 3 ? `<li class="tp">and ${more.length - 3} more</li>` : ""}</ul>
+    <p class="hint">Hidden lines stay in the book and in search. Contents can show them again.</p>`,
+  async (fd) => {
+    if (R.tid !== tid || R.blocks !== B) return "The text changed while this was open. Select the running head again.";
+    const also = fd.get("all") ? more : [];
+    const undo = await applyStructure("hide", range, { also });
+    return () => structureDone("hide", undo, 1 + also.length);
+  });
 }
 // Edit the whole paragraph containing the start of the selection, preserving block indices.
 function editSelectedParagraph() {
@@ -5267,7 +5586,7 @@ function saveSel() {
 // The selected words, leaving out any of your notes shown in the margin.
 function selectionText(r) {
   const frag = r.cloneContents();
-  frag.querySelectorAll(".mnote, .pgm").forEach((x) => x.remove());
+  frag.querySelectorAll(".mnote, .pgm, .bhid").forEach((x) => x.remove());
   const blocks = [...frag.childNodes].some((x) => x.nodeType === 1 && /^(P|H2|DIV)$/.test(x.tagName));
   return (blocks ? [...frag.childNodes].map((x) => x.textContent).join(" ") : frag.textContent).replace(/\s+/g, " ").trim();
 }
@@ -5392,7 +5711,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "rtoc") return tocPanel();
   if (b.id === "selsave") return saveSel();
   if (b.id === "selhl") return quickHighlight();
-  if (b.id === "seledit") return editSelectedParagraph();
+  if (b.id === "seledit") return structurePanel();
   if (b.id === "more") return moreMenu();
   if (b.dataset.branch) return go({ screen: "branches", focus: b.dataset.branch });
   if (b.id === "openbranches") return go({ screen: "branches" });
