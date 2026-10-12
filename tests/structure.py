@@ -41,7 +41,7 @@ BOOK = """(async () => {
   await put('notes', 'n1', { textId: 's', kind: 'passage', passage: 'One/2', at: at('One/2'), sectionId: '', createdAt: 1, updatedAt: 1 });
   await put('notes', 'n2', { textId: 's', kind: 'passage', passage: 'Two/3', at: at('Two/3'), sectionId: 's2b', createdAt: 1, updatedAt: 1 });
   await put('notes', 'n3', { textId: 's', kind: 'passage', passage: 'Two/5', at: at('Two/5'), sectionId: 's2a', createdAt: 1, updatedAt: 1 });
-  localStorage.setItem('mg-reader', JSON.stringify({ fs: 20, lh: 'normal', w: 'medium', tone: 'app', mn: 'show', flow: 'pages', turn: 'slide' }));
+  localStorage.setItem('mg-reader', JSON.stringify({ fs: 20, lh: 'normal', w: 'medium', tone: 'app', mn: 'show', flow: 'pages', bars: 'show', turn: 'slide' }));
 })()"""
 AT = "(x) => R.blocks.findIndex((b) => (b.x || '').startsWith(x))"
 
@@ -164,7 +164,7 @@ async def main():
         check(rl["hidden"] == len(rh) and rl["split"].startswith("bsplit") and rl["title"] and "btitle" in rl["page"], f"everything marked is still there after a reload ({rl})")
         await page.evaluate("setRS({ flow: 'scroll' })"); await page.wait_for_timeout(400)
         sc = await page.evaluate(f"""(rh) => ({{ hidden: rh.every((k) => R.els[k].offsetHeight === 0), split: !!R.els[{g}].querySelector('h2'), title: R.els[{a}].contains(R.els[{b}]),
-            order: R.tops.length === R.blocks.length && R.els.every(Boolean), chap: document.querySelectorAll('#book .chap').length }})""", rh)
+            order: R.els.length === R.blocks.length && R.els.every(Boolean), chap: document.querySelectorAll('#book .chap').length }})""", rh)
         check(sc["hidden"] and sc["split"] and sc["title"] and sc["order"] and sc["chap"] == 0, f"Scroll mode shows the same structure, without page breaks ({sc})")
         sp = await page.evaluate(f"goTo({rh[2]}); currentSpot().i")
         check(abs(sp - rh[2]) <= 2, f"going to a hidden line lands where it was ({sp} for {rh[2]})")
