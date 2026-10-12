@@ -12,6 +12,7 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - One logical change per commit, with a plain message saying what changed for the reader.
 - Test before pushing: run `python3 tests/smoke.py` (every screen at phone and desktop width, the reader, and a full backup → wipe → restore round trip). Add a check to it when a change adds a screen or a stored field.
 - After any change to PDF import, also run `python3 tests/pdf_import.py` (generated books: headings, page order, broken words, a scan-like book). `python3 tests/pdf_import.py some.pdf` shows what the parser makes of a real book, for checking a bad import; real books stay out of the repo.
+- After any change to the reader, also run `python3 tests/paged_reader.py` (Swipe pages: gestures, alignment, flips, joined paragraphs, chapters) and `python3 tests/structure.py` (marking chapters, headings, running heads and title pages with Edit).
 - This session can't delete remote branches; the repo is set to delete merged PR branches automatically (if not, tell the owner).
 
 ## Rules
@@ -31,3 +32,7 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - Views: `render` dispatches to `libraryView`, `textView`, `tagView`, `questionsView`, `draftsView`/`draftView`, `comparesView`/`compareView`, `concordView`, glossary and branches.
 - Data: `GLOSSARY` (large), `BRANCHES`, `LINKS`.
 - Reader settings live in `localStorage` under `mg-reader`; other small preferences use `mg-*` keys.
+- Book structure the owner marks in the reader (Edit → chapter title, heading, running head, title page, plain text) is stored on
+  content blocks: `st` (the role), `sth` (only the first sth characters are the title or running head), `stj` (continues the
+  title above). `roleOf(b)` reads it; a chapter keeps its section id in `b.s`, and `t.sections` follows the chapter blocks in
+  order (`sectionsFor`). Block indices never change, since notes, bookmarks and reading positions point at them.
