@@ -8,7 +8,9 @@ Samsung/Pixel class) and checks that:
   4. turning stays fast deep inside a very long book, and crossing from one section of the book to the next is seamless;
   5. type size, line spacing, width, Scroll <-> Swipe pages and rotation keep the reader on the same passage, mid-paragraph too;
   6. the page fills the screen below the toolbar; the saved place survives a reload; jumps and the way back work in pages;
-  7. selection still offers its toolbar, and reduced motion turns pages without animating.
+  7. selection still offers its toolbar, and reduced motion turns pages without animating;
+  8. Page turn: Flip follows the finger, carries a turn through or lets the page fall back, works both ways and across
+     sections, leaves nothing on screen afterwards, keeps frames short in a very long book, and shows the right page while turning.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -30,7 +32,7 @@ BOOK = """(n) => (async () => {
   await put('content', 'b', blocks);
   await put('texts', 'b', { title: 'Ethics', author: 'Spinoza', hasContent: true, total: blocks.length, pos: 0, sections: [], status: 'reading', createdAt: 1, updatedAt: 1 });
   await put('notes', 'n1', { textId: 'b', kind: 'passage', passage: 'Paragraph 3', page: '1', at: 5, createdAt: 1, updatedAt: 1 });
-  localStorage.setItem('mg-reader', JSON.stringify({ fs: 20, lh: 'normal', w: 'medium', tone: 'app', mn: 'show', flow: 'pages' }));
+  localStorage.setItem('mg-reader', JSON.stringify({ fs: 20, lh: 'normal', w: 'medium', tone: 'app', mn: 'show', flow: 'pages', turn: localStorage.getItem('test-turn') || 'slide' }));
 })()"""
 # Distance between where the text on screen starts and where a page should start (0 = on the edge).
 MISALIGN = """() => { const book = document.querySelector('#book'), r = book.getBoundingClientRect(), x0 = r.left + 24;
@@ -55,12 +57,13 @@ async def swipe(cdp, dx, dy=0, ms=180, hold=0, x0=300, y0=450):
     await cdp.send("Input.dispatchTouchEvent", {"type": "touchEnd", "touchPoints": []})
     await asyncio.sleep(0.05)
 
-async def open_book(browser, n, w=412, h=915, reduced=False):
+async def open_book(browser, n, w=412, h=915, reduced=False, turn="slide"):
     ctx = await browser.new_context(viewport={"width": w, "height": h}, device_scale_factor=2.625, is_mobile=True, has_touch=True, reduced_motion="reduce" if reduced else "no-preference")
     page = await ctx.new_page(); errs = []
     page.on("pageerror", lambda e: errs.append(str(e)))
     page.on("console", lambda m: m.type == "error" and "Failed to load resource" not in m.text and errs.append(m.text))
     await page.goto(URL); await page.wait_for_function(READY)
+    await page.evaluate("(t) => localStorage.setItem('test-turn', t)", turn)
     await page.evaluate(BOOK, n); await page.reload(); await page.wait_for_function(READY)
     await page.evaluate("go({ screen: 'reader', textId: 'b' })"); await page.wait_for_selector(".book .bp"); await page.wait_for_timeout(700)
     return ctx, page, errs
@@ -171,10 +174,62 @@ async def main():
         check(not errs, "no script errors in the long book")
         await ctx.close()
 
+        # 8 page flip
+        ctx, page, errs = await open_book(browser, 3000, turn="flip")
+        cdp = await ctx.new_cdp_session(page)
+        await page.evaluate("goTo(60); pageSettled()"); await page.wait_for_timeout(600)
+        pt = lambda x, y: [{"x": x, "y": y, "id": 1}]
+        top_text = "() => { const el = R.els[pagedBlock()]; return el ? el.textContent.slice(0, 40) : ''; }"
+        before_text = await page.evaluate(top_text); p0 = await page.evaluate("currentPage()"); t0 = await page.evaluate("R.turns")
+        await cdp.send("Input.dispatchTouchEvent", {"type": "touchStart", "touchPoints": pt(330, 450)})
+        for k in range(1, 7):
+            await asyncio.sleep(0.03); await cdp.send("Input.dispatchTouchEvent", {"type": "touchMove", "touchPoints": pt(330 - 25 * k, 450)})
+        mid = await page.evaluate("""() => { const f = document.querySelector('#flip'), tw = document.querySelector('#flipbook');
+          const W = pageStride(), p = Math.round(tw.scrollLeft / W), x0 = tw.getBoundingClientRect().left - tw.scrollLeft + 24;
+          const first = [...tw.children].find((el) => [...el.getClientRects()].some((q) => Math.round((q.left - x0) / W) === p && q.width > 0));
+          return { on: f.classList.contains('on'), transform: f.style.transform, p: R.flip && R.flip.p, twinText: first ? first.textContent.slice(0, 40) : '', bookPage: currentPage() }; }""")
+        await page.screenshot(path="/tmp/flip-mid.png")
+        check(mid["on"] and 0.3 < (mid["p"] or 0) < 0.55 and "rotateY(-" in mid["transform"], f"mid-swipe, the page is partly turned and follows the finger ({mid['p']:.2f}, {mid['transform']})")
+        check(mid["twinText"] == before_text and mid["bookPage"] == p0 + 1, "the turning page shows the page you were on; the next page is already underneath")
+        await cdp.send("Input.dispatchTouchEvent", {"type": "touchEnd", "touchPoints": []}); await page.wait_for_timeout(700)
+        check(await page.evaluate("R.turns") == t0 + 1 and await page.evaluate("currentPage()") == p0 + 1 and not await page.evaluate("document.querySelector('#flip').classList.contains('on')"), "released, the page turns over and the turning copy disappears")
+        check(await page.evaluate(MISALIGN) == 0 and await page.evaluate("document.querySelector('#book').style.transform") == "", "the page underneath sits on its edge, unshifted")
+        # lift a little, let it fall back
+        await cdp.send("Input.dispatchTouchEvent", {"type": "touchStart", "touchPoints": pt(330, 450)})
+        for k in range(1, 9):
+            await asyncio.sleep(0.12); await cdp.send("Input.dispatchTouchEvent", {"type": "touchMove", "touchPoints": pt(330 - 6 * k, 450)})
+        await cdp.send("Input.dispatchTouchEvent", {"type": "touchEnd", "touchPoints": []}); await page.wait_for_timeout(700)
+        check(await page.evaluate("R.turns") == t0 + 1 and await page.evaluate("currentPage()") == p0 + 1 and not await page.evaluate("R.flip"), "lifting a page a little and letting go lets it fall back: same page")
+        # back
+        await swipe(cdp, 170, x0=60); await page.wait_for_timeout(700)
+        check(await page.evaluate("R.turns") == t0 and await page.evaluate("currentPage()") == p0 and await page.evaluate(top_text) == before_text, "a swipe to the right brings the previous page over: back where you started")
+        # quick turns, keyboard, both ways, across a section boundary
+        await page.evaluate("goTo(R.win[1] - 1); setPage(lastPage()); pageSettled()"); b0 = await page.evaluate("R.win[1]"); tt = await page.evaluate("R.turns")
+        for key in ["ArrowRight", "ArrowRight", "ArrowLeft"]: await page.keyboard.press(key); await page.wait_for_timeout(60)
+        await page.wait_for_timeout(700)
+        check(await page.evaluate("R.turns") == tt + 1 and await page.evaluate("R.win[0]") == b0 and await page.evaluate("currentPage()") == 0, "quick key presses each turn a page, across into the next section and back")
+        await page.keyboard.press("ArrowLeft"); await page.wait_for_timeout(700)
+        check(await page.evaluate("R.win[1]") == b0 and await page.evaluate("currentPage() === lastPage()"), "flipping back from a section's first page lands on the previous section's last page")
+        check(not errs, "no script errors while flipping" + (f": {errs[:3]}" if errs else ""))
+        # the setting
+        await page.evaluate("setRS({ turn: 'none' })"); tt = await page.evaluate("R.turns"); await page.evaluate("turnPage(1)")
+        check(await page.evaluate("R.turns") == tt + 1 and not await page.evaluate("R.flip") and await page.evaluate("document.querySelector('#book').getAnimations().length") == 0, "Page turn: None turns instantly")
+        await page.evaluate("setRS({ turn: 'slide' })"); await page.evaluate("turnPage(1)")
+        check(not await page.evaluate("R.flip") and await page.evaluate("document.querySelector('#book').getAnimations().length") == 1, "Page turn: Slide slides")
+        await ctx.close()
+        # frames while flipping deep in a very long book
+        ctx, page, errs = await open_book(browser, 27000, turn="flip")
+        await page.evaluate("goTo(Math.round(R.blocks.length * 0.6))"); await page.wait_for_timeout(800)
+        gaps = await page.evaluate("""() => new Promise((res) => { const g = []; let last = performance.now(); turnPage(1);
+          const tick = (now) => { g.push(now - last); last = now; if (R.flip) requestAnimationFrame(tick); else res(g); }; requestAnimationFrame(tick); })""")
+        check(len(gaps) >= 10 and max(gaps[1:]) < 34, f"27,000-paragraph book: a flip runs {len(gaps)} frames, the longest {round(max(gaps[1:]))} ms after the first ({round(gaps[0])} ms)")
+        check(not errs, "no script errors flipping in the long book")
+        await ctx.close()
+
         # 7 reduced motion
-        ctx, page, errs = await open_book(browser, 500, reduced=True)
+        ctx, page, errs = await open_book(browser, 500, reduced=True, turn="flip")
         await page.evaluate("turnPage(1)")
-        check(await page.evaluate("document.querySelector('#book').getAnimations().length") == 0 and await page.evaluate("currentPage()") == 1, "with reduced motion, pages turn without animating")
+        check(await page.evaluate("document.querySelector('#book').getAnimations().length") == 0 and not await page.evaluate("R.flip") and await page.evaluate("currentPage()") == 1, "with reduced motion, pages turn without animating, Flip included")
         await ctx.close()
         await browser.close()
 
