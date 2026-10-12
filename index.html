@@ -847,9 +847,12 @@ const isObj = (x) => !!x && typeof x === "object" && !Array.isArray(x);
 const optStr = (x) => x === undefined || x === null || typeof x === "string";
 const optArr = (x, f) => x === undefined || (Array.isArray(x) && x.every(f));
 const isS = (x) => typeof x === "string";
+const optNum = (x) => x === undefined || x === null || Number.isFinite(x);
+const optInt = (x) => x === undefined || (Number.isInteger(x) && x >= 0);
 const VALID = {
   texts: (v) => isObj(v) && isS(v.title) && optStr(v.author) && optStr(v.edition) && optStr(v.lang) && optArr(v.pdfLabels, isS) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
-    && optArr(v.bookmarks, (x) => isObj(x) && Number.isInteger(x.at)) && (v.summaries === undefined || isObj(v.summaries)) && (v.pos === undefined || Number.isInteger(v.pos)),
+    && optArr(v.bookmarks, (x) => isObj(x) && Number.isInteger(x.at)) && (v.summaries === undefined || isObj(v.summaries)) && (v.pos === undefined || Number.isInteger(v.pos))
+    && (v.source === undefined || v.source === null || (isObj(v.source) && optStr(v.source.name) && optStr(v.source.kind) && optNum(v.source.pages))),
   notes: (v) => isObj(v) && isS(v.textId) && optStr(v.kind) && ["passage", "gloss", "original", "conclusion", "sectionId"].every((k) => optStr(v[k]))
     && (v.page === undefined || isS(v.page) || typeof v.page === "number") && optArr(v.links, isS) && optArr(v.premises, isS) && (v.at === undefined || Number.isInteger(v.at))
     && (v.anchor === undefined || (isObj(v.anchor) && ["a", "ao", "b", "bo"].every((k) => Number.isInteger(v.anchor[k])) && optStr(v.anchor.pre) && optStr(v.anchor.suf))),
@@ -857,7 +860,8 @@ const VALID = {
   compares: (v) => isObj(v) && optStr(v.title) && optStr(v.q) && optStr(v.verdict) && Array.isArray(v.cols) && v.cols.every((x) => isObj(x) && isS(x.id) && isS(x.label) && optStr(x.src))
     && Array.isArray(v.rows) && v.rows.every((x) => isObj(x) && isS(x.id) && isS(x.q)) && (v.cells === undefined || (isObj(v.cells) && Object.values(v.cells).every((c) => isObj(c) && optStr(c.x) && optArr(c.notes, isS)))),
   terms: (v) => isObj(v) && ((isS(v.t) && isS(v.d)) || (isObj(v.map) && Object.values(v.map).every((a) => Array.isArray(a) && a.every(isS)))),
-  content: (v) => Array.isArray(v) && v.every((b) => isObj(b) && isS(b.k) && optStr(b.x)),
+  content: (v) => Array.isArray(v) && v.every((b) => isObj(b) && isS(b.k) && optStr(b.x) && optStr(b.s) && optStr(b.st) && optInt(b.sth) && optInt(b.l)
+    && (b.stj === undefined || typeof b.stj === "boolean") && optNum(b.size) && optNum(b.space)),
   covers: (v) => typeof v === "string" && v.startsWith("data:image/"),
 };
 const goodId = (id) => typeof id === "string" && id.length > 0 && id.length < 200;
@@ -2152,7 +2156,7 @@ function textView() {
           <h1>${esc(t.title)}</h1>
           ${t.author || t.edition ? `<div class="byline">${esc([t.author, t.edition].filter(Boolean).join(", "))}</div>` : ""}
           ${authorThinkers(t.author).map((p) => `<button class="src authlink" data-thinker="${esc(p.id)}">About ${esc(p.sn)}</button>`).join("")}
-          ${t.source ? `<div class="srcline">From ${esc(t.source.name)}${t.source.pages ? `, ${t.source.pages} pages` : ""}${progressOf(t) > 0 ? `, ${progressOf(t)}% read` : ""}${t.readAt ? `, last read ${esc(fmtDate(t.readAt))}` : ""}</div>` : ""}
+          ${t.source ? `<div class="srcline">From ${esc(t.source.name)}${t.source.pages ? `, ${esc(t.source.pages)} pages` : ""}${progressOf(t) > 0 ? `, ${progressOf(t)}% read` : ""}${t.readAt ? `, last read ${esc(fmtDate(t.readAt))}` : ""}</div>` : ""}
         </div>
       </div>
       <div class="actions">
@@ -5011,7 +5015,7 @@ const bodyOf = (b) => (b.sth ? splitAt(b.x, b.sth)[1] : b.x || "");
 function paraHTML(L, html, notes, marks) {
   const b = R.blocks[L], cls = `bp${b.k === "c" ? " cont" : ""}`;
   if (!b.sth) return `<p class="${cls}" data-i="${L}">${html}${notes}</p>`;
-  if (b.st === "hide") return `<p class="${cls}" data-i="${L}" data-o="${b.sth}">${html}${notes}</p>`;
+  if (b.st === "hide") return `<p class="${cls}" data-i="${L}" data-o="${Number(b.sth) || 0}">${html}${notes}</p>`;
   return `<div class="bsplit" data-i="${L}"><h2 class="bh l${titleLevel(b)}">${inlineHTML(splitAt(b.x, b.sth)[0], marks)}</h2><p class="bp cont">${html}${notes}</p></div>`;
 }
 function groupHTML(L, marks, grp = R.grp) {
@@ -5019,7 +5023,7 @@ function groupHTML(L, marks, grp = R.grp) {
   let html = g.pre.map(pgMark).join("") + inlineHTML(bodyOf(B[L]), m(L)), notes = marginHTML(m(L), B[L].x || ""), prev = bodyOf(B[L]);
   for (const i of g.parts) {
     if (betweenPages(B[i])) { html += pgMark(i); continue; }
-    html += `${glueAfter(prev)}<span class="bjoin" data-i="${i}"${B[i].sth ? ` data-o="${B[i].sth}"` : ""}>${inlineHTML(bodyOf(B[i]), m(i))}</span>`; notes += marginHTML(m(i), B[i].x || ""); prev = bodyOf(B[i]);
+    html += `${glueAfter(prev)}<span class="bjoin" data-i="${i}"${B[i].sth ? ` data-o="${Number(B[i].sth) || 0}"` : ""}>${inlineHTML(bodyOf(B[i]), m(i))}</span>`; notes += marginHTML(m(i), B[i].x || ""); prev = bodyOf(B[i]);
   }
   return paraHTML(L, html, notes, m(L));
 }
