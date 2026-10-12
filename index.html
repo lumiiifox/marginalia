@@ -496,7 +496,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
   max-width: none; width: 100%; box-sizing: border-box;
   overflow-x: auto; overflow-y: hidden;
   column-width: calc(100vw - 48px); column-gap: 48px; column-fill: auto;
-  padding: 18px 24px 28px; scroll-snap-type: none; touch-action: pan-y;
+  padding: 18px 24px 28px; scroll-snap-type: none; scroll-behavior: auto !important; touch-action: pan-y;
   overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;
 }
 #reader.paged-reader #book > * { break-inside: auto; }
@@ -4765,14 +4765,17 @@ function turnPage(dir) {
   if (Math.abs(target - book.scrollLeft) < 2) return;
   turningPage = true;
   book.classList.add(dir > 0 ? "turn-next" : "turn-prev");
-  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  book.scrollTo({ left: target, behavior: reduced ? "instant" : "smooth" });
-  setTimeout(() => {
+  // Do not animate scrollLeft: Android Chrome can leave multi-column text
+  // between columns, exposing clipped fragments of adjacent pages.
+  book.scrollTo({ left: target, behavior: "instant" });
+  requestAnimationFrame(() => {
     book.scrollLeft = target;
+    updatePg(); savePos();
+  });
+  setTimeout(() => {
     book.classList.remove("turn-next", "turn-prev");
     turningPage = false;
-    updatePg(); savePos();
-  }, reduced ? 40 : 360);
+  }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 40 : 320);
 }
 function currentBlock() {
   if (!R.els.length) return 0;
