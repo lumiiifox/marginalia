@@ -1505,14 +1505,16 @@ async function parsePDF(buf, say) {
   if (/^(microsoft|untitled)|\.(pdf|docx?|indd|tex)$/i.test(title)) title = "";
   let labels = null; try { labels = await pdf.getPageLabels(); } catch {}
   const pages = [];
-  for (let p = 1; p <= n; p++) {
-    if (p === 1 || p % 10 === 0) { say(`Reading page ${p} of ${n}…`); await new Promise((r) => setTimeout(r, 0)); }
-    const page = await pdf.getPage(p);
-    const vb = page.getViewport({ scale: 1 }).viewBox;
-    const tc = await page.getTextContent();
-    pages.push({ lines: linesOf(tc.items), y0: vb[1], y1: vb[3] });
-    page.cleanup();
-  }
+  try {
+    for (let p = 1; p <= n; p++) {
+      if (p === 1 || p % 10 === 0) { say(`Reading page ${p} of ${n}…`); await new Promise((r) => setTimeout(r, 0)); }
+      const page = await pdf.getPage(p);
+      const vb = page.getViewport({ scale: 1 }).viewBox;
+      const tc = await page.getTextContent();
+      pages.push({ lines: linesOf(tc.items), y0: vb[1], y1: vb[3] });
+      page.cleanup();
+    }
+  } catch (e) { try { await pdf.destroy(); } catch {} stopWorker(); throw e; } // a page that can't be read doesn't leave the worker running
   let outline = [];
   try {
     let ol = await pdf.getOutline();
@@ -5623,8 +5625,11 @@ async function pdfDoc(tid) {
   let wk = null, pw = null;
   try { wk = new Worker(URL.createObjectURL(new Blob([`importScripts(${JSON.stringify(LIBS.pdfw[0])});`], { type: "text/javascript" }))); pw = lib.PDFWorker.fromPort({ port: wk }); } catch { wk = null; pw = null; }
   if (!pw) { try { await need("pdfw", () => !!window.pdfjsWorker); } catch {} try { lib.GlobalWorkerOptions.workerSrc = LIBS.pdfw[0]; } catch {} }
-  const doc = await lib.getDocument({ data: new Uint8Array(await file.arrayBuffer()), isEvalSupported: false, ...(pw ? { worker: pw } : {}) }).promise;
-  closePdf(); Object.assign(PDFV, { tid, doc, stop: () => { try { if (pw) pw.destroy(); } catch {} try { if (wk) wk.terminate(); } catch {} } });
+  const stop = () => { try { if (pw) pw.destroy(); } catch {} try { if (wk) wk.terminate(); } catch {} };
+  let doc;
+  try { doc = await lib.getDocument({ data: new Uint8Array(await file.arrayBuffer()), isEvalSupported: false, ...(pw ? { worker: pw } : {}) }).promise; }
+  catch (e) { stop(); throw e; }
+  closePdf(); Object.assign(PDFV, { tid, doc, stop });
   return doc;
 }
 // The PDF page (from 0) holding block i: the page with its printed number, the nearest one to where it falls in order.
