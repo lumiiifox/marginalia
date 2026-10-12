@@ -10,7 +10,10 @@ Samsung/Pixel class) and checks that:
   6. the page fills the screen below the toolbar; the saved place survives a reload; jumps and the way back work in pages;
   7. selection still offers its toolbar, and reduced motion turns pages without animating;
   8. Page turn: Flip follows the finger, carries a turn through or lets the page fall back, works both ways and across
-     sections, leaves nothing on screen afterwards, keeps frames short in a very long book, and shows the right page while turning.
+     sections, leaves nothing on screen afterwards, keeps frames short in a very long book, and shows the right page while turning;
+  9. book-like pages: a paragraph the printed page split is joined again with a small page marker inside it, that page's
+     footnotes follow the paragraph, a paragraph starting a printed page carries the marker at its start; selections,
+     highlights, Edit text and sections all respect the join; Scroll mode is unchanged; Justified / Ragged right.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -179,7 +182,7 @@ async def main():
         cdp = await ctx.new_cdp_session(page)
         await page.evaluate("goTo(60); pageSettled()"); await page.wait_for_timeout(600)
         pt = lambda x, y: [{"x": x, "y": y, "id": 1}]
-        top_text = "() => { const el = R.els[pagedBlock()]; return el ? el.textContent.slice(0, 40) : ''; }"
+        top_text = "() => { const el = R.els[pagedBlock()]; const top = el && el.closest('#book > *'); return top ? top.textContent.slice(0, 40) : ''; }"
         before_text = await page.evaluate(top_text); p0 = await page.evaluate("currentPage()"); t0 = await page.evaluate("R.turns")
         await cdp.send("Input.dispatchTouchEvent", {"type": "touchStart", "touchPoints": pt(330, 450)})
         for k in range(1, 7):
@@ -224,6 +227,61 @@ async def main():
           const tick = (now) => { g.push(now - last); last = now; if (R.flip) requestAnimationFrame(tick); else res(g); }; requestAnimationFrame(tick); })""")
         check(len(gaps) >= 10 and max(gaps[1:]) < 34, f"27,000-paragraph book: a flip runs {len(gaps)} frames, the longest {round(max(gaps[1:]))} ms after the first ({round(gaps[0])} ms)")
         check(not errs, "no script errors flipping in the long book")
+        await ctx.close()
+
+        # 9 book-like pages
+        ctx, page, errs = await open_book(browser, 400)
+        await page.evaluate("""(async () => {
+          const B = [{ k: 'h', l: 1, x: 'Introduction' }];
+          for (let n = 0; n < 300; n++) {
+            B.push({ k: 'p', x: 'Paragraph ' + n + ' begins here and runs on, full of a profound love of' });
+            B.push({ k: 'fn', x: '*Reference notes begin on page 383 (' + n + ').' });
+            B.push({ k: 'pg', x: 'x' + n });
+            B.push({ k: 'c', x: 'life, and often enormously amusing (' + n + '). An attack on the ego.' });
+            B.push({ k: 'pg', x: 'y' + n });
+            B.push({ k: 'p', x: 'A new paragraph ' + n + ' at the top of a printed page, constituting the tyrannical bitterness of everyday lives.' });
+          }
+          await put('content', 'j', B);
+          await put('texts', 'j', { title: 'Anti-Oedipus', author: 'Test', hasContent: true, total: B.length, pos: 0, sections: [], status: 'reading', createdAt: 1, updatedAt: 1 });
+        })()""")
+        await page.evaluate("go({ screen: 'library' })"); await page.evaluate("go({ screen: 'reader', textId: 'j' })"); await page.wait_for_selector(".book .bp"); await page.wait_for_timeout(600)
+        j = await page.evaluate("""() => { const p = R.els[1], kids = [...document.querySelector('#book').children];
+          return { text: p.textContent, tag: p.tagName, cIn: p.contains(R.els[4]), pgIn: p.contains(R.els[3]) && R.els[3].className, fnAfter: kids.indexOf(R.els[2]) === kids.indexOf(p) + 1,
+                   preMark: R.els[6].contains(R.els[5]) && R.els[6].firstElementChild === R.els[5], top: R.els[1].parentElement.id }; }""")
+        check(j["tag"] == "P" and j["cIn"] and "love of" in j["text"] and "life, and often" in j["text"], f"a paragraph split by the printed page reads as one: “…love of [x0] life, and often…”")
+        check(j["pgIn"] == "pgm" and j["fnAfter"], "the printed page number sits inside it as a small marker; that page's footnote follows the paragraph")
+        check(j["preMark"], "a paragraph that begins a printed page carries the page marker at its start")
+        sel = await page.evaluate("""() => { const p = R.els[1], r = document.createRange(); r.setStart(p.firstChild, 0); r.setEndAfter(R.els[4]); getSelection().removeAllRanges(); getSelection().addRange(r); return selectionText(r); }""")
+        check("x0" not in sel and "love of" in sel and "life, and" in sel, f"selecting across the join leaves the page number out ({sel[-60:]!r})")
+        await page.evaluate("getSelection().removeAllRanges()")
+        await page.evaluate("put('notes', 'jn', { textId: 'j', kind: 'passage', passage: 'enormously amusing', at: 4, createdAt: 1, updatedAt: 1 })"); await page.wait_for_timeout(300)
+        h = await page.evaluate("() => ({ joined: R.els[1].contains(R.els[4]), mark: !!R.els[4].querySelector('mark'), cnt: document.querySelectorAll(`#book [data-i='4']`).length })")
+        check(h["joined"] and h["mark"] and h["cnt"] == 1, "a highlight on the continuation redraws the joined paragraph, still joined")
+        sp = await page.evaluate("currentSpot()")
+        await page.evaluate("R.sel = { text: 'life', i: 4, page: 'x0', sec: '' }; editSelectedParagraph()"); await page.wait_for_selector("#edit-paragraph")
+        await page.fill("#edit-paragraph", "life, and often enormously amusing (0). An attack on the ego, edited."); await page.click("button[type=submit]"); await page.wait_for_timeout(500)
+        e = await page.evaluate("() => ({ joined: R.els[1].contains(R.els[4]), text: R.els[1].textContent })")
+        check(e["joined"] and "edited." in e["text"], "Edit text on the continuation keeps it joined")
+        cuts = await page.evaluate("R.chunks.slice(1).map((i) => R.blocks[i].k + ':' + (R.blocks[i + 1] || {}).k)")
+        check(all(not c.startswith("c") and c != "fn:pg" for c in cuts), f"sections never start inside a joined paragraph ({cuts[:4]})")
+        await page.evaluate("goTo(R.win[1] - 1); setPage(lastPage())"); await page.evaluate("turnPage(1)")
+        first = await page.evaluate("(() => { const f = document.querySelector('#book').firstElementChild; return { k: R.blocks[+f.dataset.i].k, hasStart: f.contains(R.els[R.win[0]]) }; })()")
+        check(first["k"] == "p" and first["hasStart"], f"crossing into the next section starts with a whole paragraph, its page marker inside ({first})")
+        seq = []
+        await page.evaluate("goTo(0)")
+        for _ in range(25): seq.append(await page.evaluate("currentSpot().i")); await page.evaluate("turnPage(1)")
+        pos = await page.evaluate("(seq) => seq.map((i) => R.order.indexOf(i))", seq)
+        check(len(set(seq)) > 5 and pos == sorted(pos), f"turning through joined paragraphs finds the paragraph at the top of each page, always moving forward in reading order")
+        al = await page.evaluate("getComputedStyle(R.els[R.win[0] + 1] || R.els[1]).textAlign")
+        await page.evaluate("setRS({ align: 'left' })"); al2 = await page.evaluate("getComputedStyle(document.querySelector('#book .bp')).textAlign")
+        check(al == "justify" and al2 in ("start", "left"), f"Text in pages: Justified ({al}) / Ragged right ({al2})")
+        await page.evaluate("setRS({ flow: 'scroll' })"); await page.wait_for_timeout(300)
+        sc = await page.evaluate("() => ({ sep: !R.els[1].contains(R.els[4]) && R.els[3].className === 'bpg', fnPlace: R.els[2].previousElementSibling === R.els[1], mark: !!R.els[4].querySelector('mark'), align: getComputedStyle(R.els[1]).textAlign })")
+        check(sc["sep"] and sc["fnPlace"] and sc["mark"] and sc["align"] in ("start", "left"), f"Scroll mode is unchanged: separate blocks, page lines, footnotes in place ({sc})")
+        check(not errs, "no script errors in book-like pages" + (f": {errs[:3]}" if errs else ""))
+        await page.screenshot(path="/tmp/joined-scroll.png")
+        await page.evaluate("setRS({ flow: 'pages', align: 'justify' }); goTo(1)"); await page.wait_for_timeout(300)
+        await page.screenshot(path="/tmp/joined-pages.png")
         await ctx.close()
 
         # 7 reduced motion
