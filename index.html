@@ -1229,6 +1229,7 @@ function finalize(blocks) {
     const nb = { k: b.k, x: b.k === "pg" ? clean(b.x) : tidy(fixLig(b.x || "")) };
     if (b.l) nb.l = b.l;
     if (b.s) nb.s = b.s;
+    if (b.k === "front") { if (Number.isFinite(b.size)) nb.size = b.size; if (Number.isFinite(b.space)) nb.space = b.space; if (b.heading) nb.heading = true; }
     if (nb.k !== "pg" && !plain(nb.x)) continue;
     if (nb.k === "pg" && out.length && out[out.length - 1].k === "pg") { out[out.length - 1] = nb; continue; }
     if (nb.x.length > 40000) {
@@ -1678,20 +1679,45 @@ async function parsePDF(buf, say) {
   let cur = null, curK = "p", carry = false, last = null;
   const flush = () => { if (cur && cur.trim()) blocks.push({ k: curK, x: cur }); cur = null; };
   const END = /[.!?:]["”’)\]]?$/;
+  // Front matter (title pages, copyright, contents, dedications) is typeset, not prose: its lines and their spacing are kept.
+  // Evidence for it, on the opening pages only, before the reading text has begun:
+  //   - a copyright page's lines (ISBN, ©, cataloguing data), a line that is only "Contents" or "Copyright", or a page
+  //     whose lines mostly end in page numbers (a contents page, its second page included);
+  //   - otherwise a sparse page (under 18 lines) with no running prose: fewer than two lines at the body size that fill
+  //     the book's line width and don't end in a page number (a contents entry does), or fewer than four beside display
+  //     type (a title page's subtitle can run across the page at the body size).
+  // A page where the PDF's outline starts a section of the book (Preface, Chapter 1, but not Contents or Copyright),
+  // or whose first line is a heading such as "Preface" or "Introduction", begins the reading text: from there on only
+  // the copyright and contents cues make front matter. So a short preface or a chapter's last short page reads as prose.
+  const widths = []; pages.forEach((pg) => pg.lines.forEach((l) => { if (near(l.z, pg.body) && l.t.length >= 30) widths.push(l.xe - l.x); }));
+  const measure = widths.length ? pct(widths, 0.6) : Infinity;
+  const FRONT_META = /^(?:(?:e-?)?isbn\b|copyright\s*(?:©|\(c\)|\d{4})|©|all rights reserved|library of congress|british library cataloguing|cataloging[- ]in[- ]publication)/i;
+  const FRONT_HEAD = /^(?:table of )?contents$|^copyright$/i;
+  const FRONT_OUTLINE = /^(?:(?:front )?cover|title(?: page)?|half[- ]?title(?: page)?|copyright(?: page)?|imprint|(?:table of )?contents|dedication|epigraphs?|frontispiece|also by\b.*|other books by\b.*|praise\b.*|about the (?:authors?|publisher|book))$/i;
+  const READ_HEAD = /^(?:preface|foreword|introduction|prologue|acknowledge?ments|(?:author|translator)['’]?s (?:note|preface|introduction))$/i;
+  const bare0 = (x) => String(x).trim().replace(/[\s.:]+$/, "");
+  const bookTitle = norm(title);
+  let textBegun = false;
   pages.forEach((pg, p) => {
     const L = pg.lines;
     blocks.push({ k: "pg", x: lab[p] });
-    // Front matter is typeset, not prose. Keep its separate lines and vertical rhythm.
-    // Restrict this to the opening pages with sparse text or contents/copyright cues.
-    const frontText = L.map((l) => l.t).join(" ");
-    const front = p < 10 && (L.length < 18 ||
-      /\\b(?:contents|copyright|isbn|cataloging in publication|acknowledgments)\\b/i.test(frontText.slice(0, 700)) ||
-      (p < 8 && L.some((l) => /\\b(?:preface|introduction|chapter)\\b/i.test(l.t)) && L.length < 35));
-    if (front && L.length) {
-      const height = Math.max(1, pg.y1 - pg.y0);
-      const top = L[0].y;
+    const outs = byPage.get(p) || [];
+    const reading = (p > 0 && outs.some((o) => { const t = norm(o.title); return !FRONT_OUTLINE.test(bare0(o.title)) && !(bookTitle && (t.startsWith(bookTitle) || bookTitle.startsWith(t))); }))
+      || (L.length > 0 && READ_HEAD.test(bare0(L[0].t)));
+    const entry = (l) => /(?:^|[\s.])(?:\d{1,4}|[ivxlcdm]{1,7})$/i.test(l.t.trim()); // ends in a page number
+    const entries = L.filter(entry).length;
+    const cue = entries >= Math.max(5, L.length * 0.6) || L.some((l) => FRONT_META.test(l.t.trim()) || FRONT_HEAD.test(bare0(l.t)));
+    const prose = L.filter((l) => near(l.z, pg.body) && l.xe - l.x >= measure * 0.8 && !entry(l)).length;
+    const display = L.some((l) => l.z >= pg.body * 1.5);
+    const front = p < 10 && L.length > 0 && !reading && (cue || (!textBegun && L.length < 18 && prose < (display ? 4 : 2)));
+    if (!front && (reading || prose >= 2)) textBegun = true;
+    if (front) {
+      // a section the PDF's outline starts here keeps its heading (and the same title printed on the page isn't repeated)
+      const titled = new Set(outs.map((o) => norm(o.title)));
+      outs.forEach((o) => blocks.push({ k: "h", x: o.title, l: 1, s: o.id }));
       let previous = null;
       for (const line of L) {
+        if (titled.has(norm(line.t))) continue;
         // Approximate the original vertical distances without locking text to PDF coordinates.
         const gap = previous ? Math.max(0, previous.y - line.y - Math.max(previous.z, line.z) * 1.2) : 0;
         const space = Math.min(5, Math.round(gap / Math.max(1, pg.body) * 10) / 10);
@@ -1718,7 +1744,6 @@ async function parsePDF(buf, say) {
     let fnStart = L.length;
     const nx = L[lastBody + 1];
     if (nx && nx.y < pg.y0 + (pg.y1 - pg.y0) * 0.5) fnStart = lastBody + 1;
-    const outs = byPage.get(p) || [];
     if (outs.length) { carry = false; last = null; }
     outs.forEach((o) => blocks.push({ k: "h", x: o.title, l: 1, s: o.id }));
     const drops = outs.map((o) => norm(o.title)).filter((s) => s.length >= 3);

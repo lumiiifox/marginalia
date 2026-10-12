@@ -7,6 +7,12 @@ finds exactly their headings, numbers their pages in order, and leaves no broken
   twoline      headings long enough to wrap onto two lines
   scanlike     every page set at a different size, as scans often are, with no headings inside chapters
   quotes       block quotes set at the body size, told from the text only by their indent
+  front        a title page, a contents page and a one-line preface before the chapters, with the PDF's outline:
+               front matter keeps its type sizes and spacing, and the outline's sections on those pages keep their headings
+  philosophy   no outline: half-title, a title page with a subtitle at the body size, a copyright page in small type, dedication,
+               a two-page contents, a short preface mentioning "contents" and "copyright", a chapter ending on a page of its own:
+               the first six pages are front matter line by line, the preface and the chapter's end are prose
+It also checks that a page that can't be read stops the PDF reader's worker.
 
 With PDF paths, parses those instead and prints what the app would make of them (headings, page numbers,
 paragraph count), so a badly imported book can be checked before and after a parser change.
@@ -71,12 +77,86 @@ def scanlike():
                     for i, (k, h) in enumerate(zip([1, 1.18, 1.0, 1.25, 1.06, 1.3, 1.0, 1.2], heads)))
     return f'<html lang="en"><style>{CSS} @page {{ margin-bottom: 0.4in; }} p {{ text-align: justify; hyphens: auto; }} h1 {{ break-before: auto; margin: 0.3in 0 0.4in; }}</style>{pages}</html>', ["Scanned Chapter"]
 
+OPENS = "Chapter 2 takes up the question of genealogy where the first left off. "
+def front():
+    body = f"<p>{BODY * 2}</p>" * 6
+    html = (f'<html lang="en"><style>{CSS} h1 {{ margin: 0.5in 0 0.3in; }}</style>'
+            '<div style="text-align:center;padding-top:2in;break-after:page"><div style="font-size:30pt;font-weight:bold">THE BOOK OF METHOD</div>'
+            '<div style="font-size:16pt;margin-top:.3in">Critique and Genealogy</div><div style="font-size:12pt;margin-top:1in">A. N. Author</div></div>'
+            '<div style="break-after:page"><h2>Contents</h2><p>Preface</p><p>1 Critique</p><p>2 Genealogy</p></div>'
+            '<h1>Preface</h1><p>A short preface.</p>' + "".join(f"<h1>Chapter {k}</h1>{f'<p>{OPENS}{BODY}</p>' if k == 2 else ''}{body}" for k in (1, 2)) + "</html>")
+    return html, ["Contents", "Preface", "Chapter 1", "Chapter 2"]
+
+# Front matter without an outline, as a philosophy book has it: half-title, a title page with a subtitle set at the body size,
+# a copyright page in small type, dedication and epigraph, a contents page running onto a second full page, a short preface whose prose mentions "contents"
+# and "copyright", and a first chapter whose last few lines fall on a page of their own, all within the first ten pages.
+CHAPTER_END = "And so the first chapter ends here, on a page of its own."
+def philosophy():
+    small = "".join(f"<div>{x}</div>" for x in ["Copyright © 2026 by the Author", "All rights reserved.", "Library of Congress Cataloging-in-Publication Data",
+        "Author, A. N.", "Essays on method / A. N. Author.", "p. cm.", "Includes bibliographical references and index.", "ISBN 978-0-00-000000-0 (pbk.)",
+        "1. Philosophy. 2. Method. I. Title.", "B000 .A00 2026", "100—dc23", "British Library Cataloguing in Publication Data is available.",
+        "Printed in the United States of America", "Designed by A. Designer", "Set in Georgia", "First edition", "10 9 8 7 6 5 4 3 2 1",
+        "The paper in this book meets the guidelines for permanence.", "Published by a press", "www.example.org"])
+    toc = "".join(f'<div style="display:flex;justify-content:space-between"><span>{k} {t}</span><span>{3 + 2 * k}</span></div>'
+                  for k, t in enumerate(["Critique", "Genealogy", "Difference", "Method", "Origins", "Negation", "Immanence", "Expression", "Univocity", "Repetition",
+                                         "Sense", "Event", "Series", "Structure", "Multiplicity", "Assemblage", "Strata", "Plateau", "Refrain", "Smooth space", "Nomadology", "Capture"] * 2
+                                        + ["Notes", "Bibliography", "Index", "Afterword", "Appendix", "Glossary", "Chronology", "Abbreviations"], 1))
+    pre = ("The contents of experience are never simply given; this book asks how they come to seem so. Copyright law, as much as "
+           "logic, decides what counts as an author's own, and the essays that follow return to that question from several sides.")
+    html = (f'<html lang="en"><style>{CSS} h1 {{ margin: 0.5in 0 0.3in; }} h2 {{ font-size: 15pt; }} p {{ text-align: justify; }}</style>'
+            '<div style="text-align:center;padding-top:2.4in;font-size:14pt;break-after:page">Essays on Method</div>'
+            '<div style="text-align:center;break-after:page"><div style="font-size:26pt;margin-top:1.2in">ESSAYS ON METHOD</div>'
+            '<div style="font-size:11pt;margin-top:.3in">being an inquiry into the conditions under which concepts become intelligible, with some remarks on genealogy</div>'
+            '<div style="font-size:12pt;margin-top:1.2in">A. N. AUTHOR</div><div style="font-size:10pt;margin-top:.2in">Example Press · 2026</div></div>'
+            f'<div style="font-size:7.5pt;line-height:1.35;break-after:page;padding-top:1in">{small}</div>'
+            '<div style="text-align:center;font-style:italic;break-after:page;padding-top:2in">For R.<div style="margin-top:1.5in;font-size:9.5pt">“Philosophy is a battle against the bewitchment of our intelligence.”</div></div>'
+            f'<div style="break-after:page"><h2>Contents</h2>{toc}</div>'
+            f'<div style="break-after:page"><h2>Preface</h2><p>{pre}</p><p>{pre}</p></div>'
+            f'<h1>Chapter 1: Critique</h1><p>{BODY * 2}</p><p>{BODY * 2}</p><p>{CHAPTER_END}</p>'
+            f'<h1>Chapter 2: Genealogy</h1>' + f"<p>{BODY * 2}</p>" * 8 + "</html>")
+    return html
+
+PHIL = """async ([url, base]) => {
+  LIBS.pdf = [base + "/pdf.js"]; LIBS.pdfw = [base + "/pdf.worker.js"];
+  const r = await parseFile(new File([await (await fetch(url)).arrayBuffer()], url.split("/").pop()), () => {});
+  let pg = ""; const at = [];
+  r.blocks.forEach((b) => { if (b.k === "pg") pg = b.x; else at.push([b.k, b.x, pg]); });
+  return at;
+}"""
+
+FRONT = """async ([url, base]) => {
+  LIBS.pdf = [base + "/pdf.js"]; LIBS.pdfw = [base + "/pdf.worker.js"];
+  const r = await parseFile(new File([await (await fetch(url)).arrayBuffer()], url.split("/").pop()), () => {});
+  const fr = r.blocks.filter((b) => b.k === "front");
+  return { heads: r.blocks.filter((b) => b.k === "h").map((b) => b.x), sections: r.sections.map((s) => s.label),
+           title: fr.find((b) => b.x.startsWith("THE BOOK")) || null, author: fr.find((b) => b.x === "A. N. Author") || null,
+           repeated: [fr.filter((b) => b.x === "Contents").length, fr.filter((b) => b.x === "Preface").length], lines: fr.map((b) => b.x) };
+}"""
+FRONT_KINDS = """async ([url, base]) => {
+  LIBS.pdf = [base + "/pdf.js"]; LIBS.pdfw = [base + "/pdf.worker.js"];
+  const r = await parseFile(new File([await (await fetch(url)).arrayBuffer()], url.split("/").pop()), () => {});
+  return { preface: r.blocks.filter((b) => (b.x || "").startsWith("A short preface")).map((b) => b.k), opens: r.blocks.filter((b) => (b.x || "").startsWith("Chapter 2 takes up")).map((b) => b.k),
+           printed: r.blocks.filter((b) => b.k !== "h" && /^(chapter \\d|preface)$/i.test((b.x || "").trim())).map((b) => b.x) };
+}"""
+# A page that can't be read: parsing stops with an error and the worker is let go.
+BADPAGE = """async ([url, base]) => {
+  LIBS.pdf = [base + "/pdf.js"]; LIBS.pdfw = [base + "/pdf.worker.js"];
+  const W = window.Worker, count = { made: 0, ended: 0 }, keep = linesOf;
+  window.Worker = class extends W { constructor(...a) { super(...a); count.made++; } terminate() { count.ended++; return super.terminate(); } };
+  linesOf = () => { throw new Error("unreadable page"); };
+  let err = "";
+  try { await parseFile(new File([await (await fetch(url)).arrayBuffer()], url.split("/").pop()), () => {}); }
+  catch (e) { err = String(e && e.message); }
+  finally { linesOf = keep; window.Worker = W; }
+  return { err, ...count };
+}"""
+
 PARSE = """async ([url, base]) => {
   LIBS.pdf = [base + "/pdf.js"]; LIBS.pdfw = [base + "/pdf.worker.js"];
   const r = await parseFile(new File([await (await fetch(url)).arrayBuffer()], url.split("/").pop()), () => {});
   return { heads: r.blocks.filter((b) => b.k === "h").map((b) => b.x), labels: r.blocks.filter((b) => b.k === "pg").map((b) => b.x),
            text: r.blocks.filter((b) => b.k !== "pg" && b.k !== "h").map((b) => b.x).join("\\n"), source: r.pageSource, paras: r.blocks.filter((b) => b.k === "p").length,
-           quotes: r.blocks.filter((b) => b.k === "q").map((b) => b.x), lang: r.lang };
+           quotes: r.blocks.filter((b) => b.k === "q").map((b) => b.x), lang: r.lang, front: r.blocks.filter((b) => b.k === "front").map((b) => b.x) };
 }"""
 
 # Lines as OCR read them in a scanned book, and what the repairs should make of them. The last cases
@@ -149,9 +229,37 @@ async def main(paths):
                     if name == "quotes":
                         check(len(r["quotes"]) == 3 and all(q.startswith("We must think") and q.endswith("nothing else.") for q in r["quotes"]), f"quotes: the 3 block quotes at body size are quotes, whole ({[q[:30] for q in r['quotes']]})")
                         check(not any("short paragraph" in q or q.startswith("The question") for q in r["quotes"]), "quotes: ordinary and one-line paragraphs stay paragraphs")
+                    check(not r["front"], f"{name}: a book that starts with its text has no front matter, short pages at a chapter's end included" + (f" (got {r['front'][:3]})" if r["front"] else ""))
                     check(r["lang"] == "en", f"{name}: the language is worked out as English ({r['lang']})")
                     marks = re.findall(r"\[…\]|\[illegible\]", r["text"])
                     check(not marks, f"{name}: no OCR repairs on a typeset book" + (f" (found {marks[:3]})" if marks else ""))
+                html, heads = front()
+                await maker.set_content(html)
+                await maker.pdf(path=str(tmp / "front.pdf"), prefer_css_page_size=True, outline=True, tagged=True)
+                r = await page.evaluate(FRONT, ["/front.pdf", base])
+                check(r["heads"] == heads and r["sections"] == heads, f"front: the outline's sections on front pages keep their headings ({r['heads']})")
+                check(r["repeated"] == [0, 1], f"front: a title given as a heading isn't repeated as a line (only the contents entry for Preface stays: {r['repeated']})")
+                t, a = r["title"] or {}, r["author"] or {}
+                check(t.get("size", 0) > 1.3 and t.get("heading") is True and a.get("space", 0) > 1 and a.get("size", 0) > 1, f"front: the title page keeps its type sizes and spacing (title {t}, author {a}, lines {r['lines'][:4]})")
+                r = await page.evaluate(FRONT_KINDS, ["/front.pdf", base])
+                check(r["preface"] == ["p"], f"front: the one-line preface under its outline heading is prose, though its words include the title ({r['preface']})")
+                check(r["opens"] == ["p"], f"front: a chapter's first line that uses its title's words is kept ({r['opens']})")
+                check(r["printed"] == ["Preface"], f"front: the printed chapter titles go with their headings (only the contents entry \"Preface\" stays: {r['printed']})")
+                await maker.set_content(philosophy())
+                await maker.pdf(path=str(tmp / "philosophy.pdf"), prefer_css_page_size=True, display_header_footer=True, header_template="<span></span>",
+                    footer_template='<div style="font-size:9px;width:100%;text-align:center"><span class="pageNumber"></span></div>', margin={"top": "0.8in", "bottom": "0.8in", "left": "0.7in", "right": "0.7in"})
+                at = await page.evaluate(PHIL, ["/philosophy.pdf", base])
+                opening = [(k, x) for k, x, pg in at if pg in ("1", "2", "3", "4", "5", "6")]
+                check(opening and all(k == "front" for k, x in opening) and any(x == "Contents" for k, x in opening) and any(x.startswith("ISBN") for k, x in opening) and any(x.startswith("being an inquiry") for k, x in opening),
+                      f"philosophy: half-title, title page, copyright, dedication and contents are front matter, line by line ({[k for k, x in opening if k != 'front'][:5]})")
+                later = [(k, x[:40], pg) for k, x, pg in at if pg not in ("1", "2", "3", "4", "5", "6") and k == "front"]
+                check(not later, f"philosophy: nothing after the contents is front matter ({later[:4]})")
+                pre = [k for k, x, pg in at if x.startswith("The contents of experience")]
+                check(pre == ["p", "p"] and ("h", "Preface") in [(k, x) for k, x, pg in at], f"philosophy: the short preface is a heading and prose, though it mentions contents and copyright ({pre})")
+                end = [k for k, x, pg in at if CHAPTER_END in x]
+                check(end in (["p"], ["c"]), f"philosophy: the chapter's last lines, on a page of their own, are prose ({end})")
+                r = await page.evaluate(BADPAGE, ["/justified.pdf", base])
+                check("unreadable page" in r["err"] and r["made"] >= 1 and r["ended"] == r["made"], f"a page that can't be read stops the import and its worker ({r})")
                 # The OCR repairs, on lines from a real scan, with the book's vocabulary they rely on.
                 vocab = ("connections deleuze immanence singularity from their relations fictions what thus the question precisely "
                          "explore problems machine machines minuit year state art face known man would plane concept transcendence "
