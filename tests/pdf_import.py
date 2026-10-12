@@ -6,6 +6,7 @@ finds exactly their headings, numbers their pages in order, and leaves no broken
   ragged       the same unjustified, with block quotes
   twoline      headings long enough to wrap onto two lines
   scanlike     every page set at a different size, as scans often are, with no headings inside chapters
+  quotes       block quotes set at the body size, told from the text only by their indent
 
 With PDF paths, parses those instead and prints what the app would make of them (headings, page numbers,
 paragraph count), so a badly imported book can be checked before and after a parser change.
@@ -48,6 +49,15 @@ def book(justify):
     style = CSS + (" p { text-align: justify; hyphens: auto; }" if justify else "")
     return f'<html lang="en"><style>{style}</style>{"".join(html)}</html>', heads
 
+QUOTE = ("We must think of the unconscious as a factory and not a theater, a matter of production and not of "
+         "representation; this is the point at which the whole argument turns, and it turns on nothing else. ")
+def quotes():
+    heads, html = ["Quoting"], ["<h1>Quoting</h1>"]
+    for k in range(3):
+        html += [f"<p>{BODY * 2}</p>", f"<blockquote>{QUOTE}</blockquote>", f"<p>{BODY}</p>", f"<p>A short paragraph {k}.</p>", f"<p>{BODY}</p>"]
+    style = CSS + " blockquote { font-size: 11pt; margin: 0.8em 2.2em; } p { text-align: justify; }"
+    return f'<html lang="en"><style>{style}</style>{"".join(html)}</html>', heads
+
 def twoline():
     heads = ["The Long Title of a Chapter That Wraps Across Two Lines", "A Section Heading Long Enough That It Also Needs Two Lines Here"]
     return f'<html lang="en"><style>{CSS} p {{ text-align: justify; }} h1 {{ break-before: auto; }}</style><h1>{heads[0]}</h1><p>{BODY * 3}</p><h2>{heads[1]}</h2><p>{BODY * 3}</p></html>', heads
@@ -65,7 +75,8 @@ PARSE = """async ([url, base]) => {
   LIBS.pdf = [base + "/pdf.js"]; LIBS.pdfw = [base + "/pdf.worker.js"];
   const r = await parseFile(new File([await (await fetch(url)).arrayBuffer()], url.split("/").pop()), () => {});
   return { heads: r.blocks.filter((b) => b.k === "h").map((b) => b.x), labels: r.blocks.filter((b) => b.k === "pg").map((b) => b.x),
-           text: r.blocks.filter((b) => b.k !== "pg" && b.k !== "h").map((b) => b.x).join("\\n"), source: r.pageSource, paras: r.blocks.filter((b) => b.k === "p").length };
+           text: r.blocks.filter((b) => b.k !== "pg" && b.k !== "h").map((b) => b.x).join("\\n"), source: r.pageSource, paras: r.blocks.filter((b) => b.k === "p").length,
+           quotes: r.blocks.filter((b) => b.k === "q").map((b) => b.x), lang: r.lang };
 }"""
 
 # Lines as OCR read them in a scanned book, and what the repairs should make of them. The last cases
@@ -119,7 +130,7 @@ async def main(paths):
                     for h in r["heads"]: print("    " + h[:100])
             else:
                 maker = await browser.new_page()
-                for name, (html, heads) in {"justified": book(True), "ragged": book(False), "twoline": twoline(), "scanlike": scanlike()}.items():
+                for name, (html, heads) in {"justified": book(True), "ragged": book(False), "twoline": twoline(), "scanlike": scanlike(), "quotes": quotes()}.items():
                     await maker.set_content(html)
                     await maker.pdf(path=str(tmp / f"{name}.pdf"), prefer_css_page_size=True, display_header_footer=True, header_template="<span></span>",
                         footer_template='<div style="font-size:9px;width:100%;text-align:center"><span class="pageNumber"></span></div>',
@@ -132,6 +143,13 @@ async def main(paths):
                     if name == "scanlike":
                         left = re.findall(r"\S*hapte\S*", r["text"])
                         check(not left, "scanlike: misread running heads removed" + (f" (left: {left})" if left else ""))
+                    if name in ("justified", "ragged"):
+                        # (a quote broken by a page comes in two pieces; a paragraph is twice as long as a quote, so none is mistaken for one)
+                        check(len(r["quotes"]) >= 9 and all(q[:40] in BODY and len(q) <= len(BODY) + 5 for q in r["quotes"]), f"{name}: block quotes in smaller type are quotes, and no paragraph is ({len(r['quotes'])} pieces)")
+                    if name == "quotes":
+                        check(len(r["quotes"]) == 3 and all(q.startswith("We must think") and q.endswith("nothing else.") for q in r["quotes"]), f"quotes: the 3 block quotes at body size are quotes, whole ({[q[:30] for q in r['quotes']]})")
+                        check(not any("short paragraph" in q or q.startswith("The question") for q in r["quotes"]), "quotes: ordinary and one-line paragraphs stay paragraphs")
+                    check(r["lang"] == "en", f"{name}: the language is worked out as English ({r['lang']})")
                     marks = re.findall(r"\[…\]|\[illegible\]", r["text"])
                     check(not marks, f"{name}: no OCR repairs on a typeset book" + (f" (found {marks[:3]})" if marks else ""))
                 # The OCR repairs, on lines from a real scan, with the book's vocabulary they rely on.

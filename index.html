@@ -843,7 +843,7 @@ const optStr = (x) => x === undefined || x === null || typeof x === "string";
 const optArr = (x, f) => x === undefined || (Array.isArray(x) && x.every(f));
 const isS = (x) => typeof x === "string";
 const VALID = {
-  texts: (v) => isObj(v) && isS(v.title) && optStr(v.author) && optStr(v.edition) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
+  texts: (v) => isObj(v) && isS(v.title) && optStr(v.author) && optStr(v.edition) && optStr(v.lang) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
     && optArr(v.bookmarks, (x) => isObj(x) && Number.isInteger(x.at)) && (v.summaries === undefined || isObj(v.summaries)) && (v.pos === undefined || Number.isInteger(v.pos)),
   notes: (v) => isObj(v) && isS(v.textId) && optStr(v.kind) && ["passage", "gloss", "original", "conclusion", "sectionId"].every((k) => optStr(v[k]))
     && (v.page === undefined || isS(v.page) || typeof v.page === "number") && optArr(v.links, isS) && optArr(v.premises, isS) && (v.at === undefined || Number.isInteger(v.at))
@@ -1240,6 +1240,29 @@ function finalize(blocks) {
 function dedupe(secs) {
   const seen = new Map();
   return secs.map((s) => { const k = s.label.toLowerCase(); const c = (seen.get(k) || 0) + 1; seen.set(k, c); return c > 1 ? { ...s, label: `${s.label} (${c})` } : s; });
+}
+// The language of a book's text, from how often its commonest little words appear (hyphenation depends on it).
+const LANGS = { en: "English", fr: "French", de: "German", it: "Italian", es: "Spanish", la: "Latin", pt: "Portuguese", nl: "Dutch" };
+const STOPS = {
+  en: "the of and to in is that it as for with this which be by not are from or",
+  fr: "le la les de des et est que qui dans une un pour pas ne se il en au du sur",
+  de: "der die das und ist nicht zu den von mit sich des auf ein eine dem als auch",
+  it: "il di che la per non una sono della del le gli si nel anche come più",
+  es: "el la de que y los las en un una por con para del se no es su al",
+  la: "et in est non ad quod cum ut sed qui quae esse enim etiam vel atque autem",
+  pt: "o a de que e os as do da em um uma para com não se por mais",
+  nl: "de het een en van is dat niet te op zijn met voor die er aan ook",
+};
+function guessLang(blocks) {
+  const sets = Object.fromEntries(Object.entries(STOPS).map(([k, v]) => [k, new Set(v.split(" "))])), score = Object.fromEntries(Object.keys(STOPS).map((k) => [k, 0]));
+  let n = 0;
+  for (const b of blocks) {
+    if (b.k !== "p" && b.k !== "c") continue;
+    for (const w of plain(b.x || "").toLowerCase().match(/\p{L}+/gu) || []) { for (const k in sets) if (sets[k].has(w)) score[k]++; if (++n > 6000) break; }
+    if (n > 6000) break;
+  }
+  const best = Object.entries(score).sort((a, b) => b[1] - a[1])[0];
+  return best && best[1] >= 20 ? best[0] : "en";
 }
 function makeSections(blocks) {
   if (blocks.some((b) => b.s)) return dedupe(blocks.filter((b) => b.s).map((b) => ({ id: b.s, label: plain(b.x).slice(0, 90) || "Untitled" })));
@@ -1692,6 +1715,20 @@ async function parsePDF(buf, say) {
     const bare = (x) => norm(String(x).replace(/^\s*(?:\d+|[ivxlcdm]+)(?![\p{L}])[\s.:)–—-]*/iu, ""));
     const bareDrops = outs.map((o) => bare(o.title)).filter((x) => x.length >= 4);
     let prev = null, headOpen = false;
+    // A block quote set at body size: two or more lines indented together (one of them also short of the right margin),
+    // or three or more. A paragraph's indented first line is followed by a line at the margin, so it isn't one.
+    const qline = (m) => m.x > left + B * 1.2 && m.x < left + B * 8 && m.z >= B * 0.92 && m.z < B * 1.18;
+    const inQ = new Array(L.length).fill(false);
+    for (let i = 0; i < fnStart;) {
+      if (!qline(L[i])) { i++; continue; }
+      let j = i; while (j + 1 < fnStart && qline(L[j + 1]) && Math.abs(L[j + 1].x - L[j].x) < B * 0.4 && L[j].y - L[j + 1].y < pitch * 1.6) j++;
+      // the last indented line, run straight on by a line at the margin, is the first line of a paragraph
+      const nx = L[j + 1];
+      if (j > i && nx && j + 1 < fnStart && nx.x < left + B * 0.5 && L[j].y - nx.y < pitch * 1.25) j--;
+      const run = L.slice(i, j + 1);
+      if (run.length >= 3 || (run.length === 2 && run.some((m) => m.xe < right - B * 1.2))) for (let k = i; k <= j; k++) inQ[k] = true;
+      i = Math.max(i + 1, j + 1);
+    }
     for (let i = 0; i < fnStart; i++) {
       const l = L[i];
       if (drops.length && i < 5) { const nl = norm(l.t), bl = bare(l.t); if ((nl.length >= 2 && drops.some((d) => d.includes(nl) || nl.includes(d))) || (bl.length >= 4 && bareDrops.includes(bl))) continue; }
@@ -1711,7 +1748,7 @@ async function parsePDF(buf, say) {
         headOpen = true; prev = l; continue;
       }
       headOpen = false;
-      const kind = l.z < B * 0.92 ? "q" : "p";
+      const kind = l.z < B * 0.92 || inQ[i] ? "q" : "p";
       const indented = l.x > left + B * 0.8 && l.x < left + B * 6;
       const prevInd = prev && prev.x > left + B * 0.8 && Math.abs(prev.x - l.x) < B * 0.5;
       const shortPrev = !!last && last.xe < last.right - B * 2.2 && END.test(last.t);
@@ -1901,6 +1938,7 @@ async function parseFile(file, say) {
   r.name = fname;
   r.pages = r.blocks.filter((b) => b.k === "pg").length;
   r.title = r.title ? tidyTitle(r.title, false) : tidyTitle(fname, true);
+  r.lang = guessLang(r.blocks);
   return r;
 }
 // A readable title from a file name or PDF metadata: drops download-site tags, ISBNs, hashes and
@@ -4577,6 +4615,7 @@ function textSheet(id) {
     </div>
     <div class="field"><label for="f-edition">Edition or translation</label><input id="f-edition" name="edition" value="${esc(t.edition)}" placeholder="e.g. trans. Edwin Curley"><span class="hint">Page numbers in your notes refer to this edition.</span></div>
     <div class="field"><label for="f-pub">Publisher</label><input id="f-pub" name="publisher" value="${esc(t.publisher)}"></div>
+    <div class="field"><label for="f-lang">Language of the text</label><select id="f-lang" name="lang"><option value="">Worked out from the text</option>${Object.entries(LANGS).map(([k, v]) => `<option value="${k}" ${t.lang === k ? "selected" : ""}>${v}</option>`).join("")}</select><span class="hint">Swipe pages break words at line ends by this language's rules.</span></div>
     <div class="row2">
       <div class="field"><label for="f-year">Year of this edition</label><input id="f-year" name="year" value="${esc(t.year)}" inputmode="numeric" autocomplete="off"></div>
       <div class="field"><label for="f-orig">First published</label><input id="f-orig" name="orig" value="${esc(t.orig)}" inputmode="numeric" autocomplete="off" placeholder="e.g. 1677"></div>
@@ -4595,12 +4634,14 @@ function textSheet(id) {
       return prev ? { ...prev, label } : { id: gid(), label, done: false };
     });
     const tid = id || gid();
-    const data = { ...(id ? t : { createdAt: Date.now() }), title, author: fd.get("author").trim(), edition: fd.get("edition").trim(), publisher: fd.get("publisher").trim(), year: fd.get("year").trim(), orig: (fd.get("orig") || "").trim(), status: fd.get("status"), sections, updatedAt: Date.now() };
+    const data = { ...(id ? t : { createdAt: Date.now() }), ...(fd.get("lang") ? { lang: fd.get("lang") } : {}), title, author: fd.get("author").trim(), edition: fd.get("edition").trim(), publisher: fd.get("publisher").trim(), year: fd.get("year").trim(), orig: (fd.get("orig") || "").trim(), status: fd.get("status"), sections, updatedAt: Date.now() };
+    if (!fd.get("lang")) delete data.lang; // worked out from the text
     if (parsed) {
       linkHeadings(parsed.blocks, parsed.sections, sections);
       const prog = $("#f-prog"); const say = (m) => { if (prog) prog.textContent = m; };
       await saveContent(tid, parsed.blocks, say);
       Object.assign(data, { hasContent: true, source: { name: parsed.name, kind: parsed.kind, pages: parsed.pages }, pos: 0, total: parsed.blocks.length });
+      if (!fd.get("lang")) data.lang = parsed.lang;
     }
     await saveCover(tid, cover);
     // A section taken off the list stops being a chapter in the text: its title stays, as a heading.
@@ -4882,7 +4923,7 @@ function chunkAt(i) {
 //   sth: only the first sth characters are the title or running head (one glued to the start of a paragraph)
 //   stj: this line carries on the title just before it (a title the PDF broke over several lines)
 // A block with no mark keeps what the import made of it: a heading linked to a section is a chapter title.
-function roleOf(b) { if (!b) return ""; if (b.st) return b.st; return b.k === "h" ? (b.s ? "chapter" : "heading") : ""; }
+function roleOf(b) { if (!b) return ""; if (b.st) return b.st; return b.k === "h" ? (b.s ? "chapter" : "heading") : b.k === "q" ? "quote" : ""; }
 const isTitleRole = (r) => r === "chapter" || r === "heading";
 const isHidden = (b) => !!b && b.st === "hide" && !b.sth;
 const isTitleLead = (b) => !!b && !b.stj && !b.sth && isTitleRole(roleOf(b));
@@ -5117,7 +5158,8 @@ function blockHTML(b, i, marks) {
   }
   const x = inlineHTML(b.x || "", m) + marginHTML(m, b.x || "");
   if (role === "title") return `<p class="btitle" data-i="${i}">${x}</p>`;
-  if (b.k === "q") return `<p class="bq" data-i="${i}">${x}</p>`;
+  if (role === "text") return `<p class="bp${b.k === "c" ? " cont" : ""}" data-i="${i}">${x}</p>`;
+  if (b.k === "q" || role === "quote") return `<p class="bq" data-i="${i}">${x}</p>`;
   if (b.k === "fn") return `<p class="bfn" data-i="${i}">${x}</p>`;
   return `<p class="bp${b.k === "c" ? " cont" : ""}" data-i="${i}">${x}</p>`;
 }
@@ -5204,6 +5246,7 @@ async function openReader(tid, at, opts) {
   if (S.screen !== "reader" || S.textId !== tid) return;
   if (!blocks) { book.innerHTML = `<p class="rload">This text isn't loaded yet. Go back and use Load file.</p>`; return; }
   R.tid = tid; R.blocks = blocks; wakeOn();
+  const lang = (t && t.lang) || guessLang(blocks); book.lang = lang; $("#flipbook").lang = lang;
   Object.assign(R, sectionIndex(blocks));
   const target = Number.isInteger(at) ? at : Number.isInteger(t?.pos) ? t.pos : 0;
   R.chunks = chunkStarts(blocks); R.turns = 0;
@@ -5817,7 +5860,7 @@ function offsetIn(k, node, off) {
 }
 
 /* ---------- marking the structure of a book: Edit → what is this? ---------- */
-const ROLE_DONE = { chapter: "Marked as a chapter title.", heading: "Marked as a heading.", hide: "Running head hidden.", title: "Marked as a title page.", text: "Back to plain text." };
+const ROLE_DONE = { chapter: "Marked as a chapter title.", heading: "Marked as a heading.", hide: "Running head hidden.", title: "Marked as a title page.", quote: "Marked as a block quote.", text: "Back to plain text." };
 // Which blocks a selection covers for a role: whole blocks, or the start of one paragraph (sth). A string says why not.
 function structureRange(s, role) {
   const B = R.blocks, txt = (k) => plain(B[k].x || "");
@@ -5826,7 +5869,7 @@ function structureRange(s, role) {
   while (j > i && (B[j].k === "pg" || !txt(j).slice(0, ej).trim())) { j--; ej = txt(j).length; }
   while (i < j && (B[i].k === "pg" || !txt(i).slice(si).trim())) { i++; si = 0; }
   if (B[i].k === "pg") return "Select some words of the text.";
-  if (role === "text" || role === "title") return { from: i, to: j };
+  if (role === "text" || role === "title" || role === "quote") return { from: i, to: j };
   const atStart = !txt(i).slice(0, si).trim(), atEnd = !txt(j).slice(ej).trim();
   if (!atStart) return role === "hide" ? "Select the running head from its first word." : "Select the title from its first word. Only the start of a paragraph can be made a title.";
   if (atEnd) return { from: i, to: j };
@@ -5914,7 +5957,7 @@ async function applyStructure(role, range, opts = {}) {
     if (old[k].k === "pg") continue;
     set(k, (c) => {
       const sid = reset(c);
-      if (role === "text") { if (c.k === "h") c.st = "text"; return; }
+      if (role === "text") { if (c.k === "h" || c.k === "q") c.st = "text"; return; }
       if (isTitleRole(role) && k > range.from) { c.stj = true; return; }
       c.st = role;
       if (range.sth) c.sth = range.sth;
@@ -5966,6 +6009,7 @@ function structurePanel() {
       ${opt("heading", "A heading", "A heading inside a chapter.")}
       ${opt("hide", "A running head", "The title repeated at the top of each printed page. Hidden.")}
       ${opt("title", "A title page", "Centred, on pages of its own in Swipe pages.")}
+      ${opt("quote", "A block quote", "A quotation set off from the text, indented.")}
       ${opt("text", "Plain text", "Reading text. Takes off any of the above.")}
     </div>
     <div class="fixopts"><button class="fixopt" data-role="words"><b>Correct the words…</b><span>Edit the wording of the whole paragraph.</span></button></div>`,
