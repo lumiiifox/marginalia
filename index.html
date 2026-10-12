@@ -6306,7 +6306,7 @@ async function quickHighlight() {
     await put("notes", id, note);
     const t = S.texts.get(R.tid); if (t) put("texts", R.tid, { ...t, activeAt: Date.now() }).catch(() => {});
     // the toast offers the kinds you'd mark straight away, and Undo; tap the highlight later for the rest
-    const kind = (k, label) => ({ label, run: async () => { const n = S.notes.get(id); if (!n) return; try { await put("notes", id, { ...n, kind: k, updatedAt: Date.now() }); toast(`Marked as ${label.toLowerCase()}.`, { label: "Undo", run: () => put("notes", id, { ...S.notes.get(id), kind: "passage", updatedAt: Date.now() }).catch(() => {}) }); } catch (e) { toast(failMsg(e)); } } });
+    const kind = (k, label) => ({ label, run: async () => { const n = S.notes.get(id); if (!n) return; try { await put("notes", id, { ...n, kind: k, updatedAt: Date.now() }); toast(`Marked as ${label.toLowerCase()}.`, { label: "Undo", run: () => { const m = S.notes.get(id); if (m) put("notes", id, { ...m, kind: "passage", updatedAt: Date.now() }).catch((e) => toast(failMsg(e))); } }); } catch (e) { toast(failMsg(e)); } } });
     toast("Highlighted.", [kind("question", "Question"), kind("objection", "Objection"), { label: "Undo", run: () => del("notes", id).then(() => toast("Highlight removed.")).catch((e) => toast(failMsg(e))) }]);
   } catch (e) { toast(failMsg(e)); }
 }
