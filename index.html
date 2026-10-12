@@ -1725,6 +1725,10 @@ async function parsePDF(buf, say) {
     // The same title printed on the page, perhaps numbered differently ("I: Connections" for "1: Connections").
     const bare = (x) => norm(String(x).replace(/^\s*(?:\d+|[ivxlcdm]+)(?![\p{L}])[\s.:)–—-]*/iu, ""));
     const bareDrops = outs.map((o) => bare(o.title)).filter((x) => x.length >= 4);
+    // A line is the printed title when it is part of it (a title broken over two lines) or the title with only a label or
+    // number beside it ("Chapter 1: Connections"); a line of the text that only uses the title's word ("In this preface…") stays.
+    const LABEL = /^(?:chapter|part|book|section|lecture|essay|\d+|[ivxlcdm]+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)*$/;
+    const isTitleLine = (nl, d) => d.includes(nl) || (nl.includes(d) && LABEL.test(nl.replace(d, "")));
     let prev = null, headOpen = false;
     // A block quote set at body size: two or more lines indented together (one of them also short of the right margin),
     // or three or more. A paragraph's indented first line is followed by a line at the margin, so it isn't one.
@@ -1742,7 +1746,7 @@ async function parsePDF(buf, say) {
     }
     for (let i = 0; i < fnStart; i++) {
       const l = L[i];
-      if (drops.length && i < 5) { const nl = norm(l.t), bl = bare(l.t); if ((nl.length >= 2 && drops.some((d) => d.includes(nl) || nl.includes(d))) || (bl.length >= 4 && bareDrops.includes(bl))) continue; }
+      if (drops.length && i < 5) { const nl = norm(l.t), bl = bare(l.t); if ((nl.length >= 2 && drops.some((d) => isTitleLine(nl, d))) || (bl.length >= 4 && bareDrops.includes(bl))) continue; }
       const words = l.t.split(" ").length;
       // Large type alone doesn't make a heading: one doesn't start in lowercase, break into an unfinished
       // sentence, or fill a justified line from margin to margin.
