@@ -584,6 +584,11 @@ span.bhid { display: inline; }
 .likelist .tp { font: 13px var(--f-ui); color: var(--muted); }
 .fnref { position: relative; color: var(--link); cursor: pointer; }
 .fnref::after { content: ""; position: absolute; inset: -12px -8px; } /* a finger-sized target around a small number */
+.ppbox { display: grid; gap: 6px; }
+.ppwrap { overflow: auto; max-height: 68vh; border: 1px solid var(--rule); border-radius: 6px; background: #fff; -webkit-overflow-scrolling: touch; }
+.ppwrap canvas { display: block; }
+.ppbar { display: flex; justify-content: space-between; gap: 8px; margin-top: 10px; }
+.ppbar .btn { min-width: 52px; }
 .notetext { font: 17px/1.5 var(--f-text); margin: 4px 0 6px; overflow-wrap: anywhere; }
 .pgm { display: inline-block; text-indent: 0; margin: 0 0 0 0.4em; padding: 0 0 0 0.3em; border-left: 1px solid var(--rule); font: 500 0.58em/1 var(--f-ui);
   letter-spacing: 0.04em; color: var(--muted); vertical-align: 0.15em; user-select: none; -webkit-user-select: none; }
@@ -621,7 +626,7 @@ span.bhid { display: inline; }
   <div class="rnav" id="rnav" hidden>
     <div class="rnav-lab"><span id="rnav-where"></span><span id="rnav-pct"></span></div>
     <div class="rnav-track"><div class="rnav-ticks" id="rnav-ticks"></div><input type="range" id="rnav-r" min="0" max="1000" step="1" aria-label="Move through the book"></div>
-    <div class="rnav-row"><label class="rnav-go">Go to page <input id="rnav-pg" inputmode="numeric" autocomplete="off" enterkeyhint="go" aria-label="Page number"></label><button class="btn ghost" id="rnav-close">Done</button></div>
+    <div class="rnav-row"><label class="rnav-go">Go to page <input id="rnav-pg" inputmode="numeric" autocomplete="off" enterkeyhint="go" aria-label="Page number"></label><button class="btn ghost" id="rnav-pp" hidden>Printed page</button><button class="btn ghost" id="rnav-close">Done</button></div>
   </div>
   <div class="rtrail" id="rtrail" hidden></div>
 </div>
@@ -676,10 +681,10 @@ async function need(key, ok, msg) {
 }
 
 /* ---------- store: IndexedDB on this device ---------- */
-const STORES = ["texts", "notes", "content", "covers", "terms", "drafts", "compares"];
+const STORES = ["texts", "notes", "content", "covers", "terms", "drafts", "compares", "files"]; // files: original PDFs, never loaded at start or backed up
 function idbOpen() {
   return new Promise((res, rej) => {
-    const r = indexedDB.open("marginalia", 6); // 5 added the drafts store, 6 the comparisons store
+    const r = indexedDB.open("marginalia", 7); // 5 added the drafts store, 6 the comparisons store, 7 the original PDFs
     r.onupgradeneeded = () => { const d = r.result; STORES.forEach((n) => { if (!d.objectStoreNames.contains(n)) d.createObjectStore(n); }); };
     r.onsuccess = () => {
       const d = r.result;
@@ -843,7 +848,7 @@ const optStr = (x) => x === undefined || x === null || typeof x === "string";
 const optArr = (x, f) => x === undefined || (Array.isArray(x) && x.every(f));
 const isS = (x) => typeof x === "string";
 const VALID = {
-  texts: (v) => isObj(v) && isS(v.title) && optStr(v.author) && optStr(v.edition) && optStr(v.lang) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
+  texts: (v) => isObj(v) && isS(v.title) && optStr(v.author) && optStr(v.edition) && optStr(v.lang) && optArr(v.pdfLabels, isS) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
     && optArr(v.bookmarks, (x) => isObj(x) && Number.isInteger(x.at)) && (v.summaries === undefined || isObj(v.summaries)) && (v.pos === undefined || Number.isInteger(v.pos)),
   notes: (v) => isObj(v) && isS(v.textId) && optStr(v.kind) && ["passage", "gloss", "original", "conclusion", "sectionId"].every((k) => optStr(v[k]))
     && (v.page === undefined || isS(v.page) || typeof v.page === "number") && optArr(v.links, isS) && optArr(v.premises, isS) && (v.at === undefined || Number.isInteger(v.at))
@@ -1771,7 +1776,7 @@ async function parsePDF(buf, say) {
     if (fn) blocks.push({ k: "fn", x: fn });
   });
   flush();
-  return { title, author, kind: "PDF", blocks: scanned ? ocrRepair(blocks, counts) : blocks, pageSource, cover };
+  return { title, author, kind: "PDF", blocks: scanned ? ocrRepair(blocks, counts) : blocks, pageSource, cover, labels: lab };
 }
 
 /* ---------- parsing: EPUB / Word / HTML ---------- */
@@ -1939,6 +1944,7 @@ async function parseFile(file, say) {
   r.pages = r.blocks.filter((b) => b.k === "pg").length;
   r.title = r.title ? tidyTitle(r.title, false) : tidyTitle(fname, true);
   r.lang = guessLang(r.blocks);
+  if (r.kind === "PDF") r.file = file;
   return r;
 }
 // A readable title from a file name or PDF metadata: drops download-site tags, ISBNs, hashes and
@@ -4530,7 +4536,8 @@ const fileField = () => `<div class="field">
       <span class="drop-main" id="f-name">Tap to choose a file</span>
       <span class="drop-sub">PDF, EPUB, Word (.docx), .txt or .md. On a computer you can also drag the file here.</span>
     </div>
-    <p class="hint" id="f-prog">The text is extracted and stored on this device only; the file itself isn't kept. Scanned PDFs need OCR first.</p>
+    <p class="hint" id="f-prog">The text is extracted and stored on this device only. Scanned PDFs need OCR first.</p>
+    <label class="chkrow" id="f-keepwrap" hidden><input type="checkbox" name="keeppdf" id="f-keep" checked> <span id="f-keeplab">Keep the PDF on this device, to see its printed pages</span></label>
     <button type="button" class="linkbtn" id="f-pastebtn">Or paste the text instead</button>
     <div class="pastebox" id="f-pastebox" hidden>
       <textarea id="f-paste" class="verbatim" rows="6" placeholder="Paste the text here. Leave a blank line between paragraphs."></textarea>
@@ -4545,7 +4552,10 @@ function wireFile(root, onParsed) {
     if (busy) return; busy = true;
     name.textContent = f.name || "Chosen file";
     btn.disabled = true; say("Reading the file…");
-    try { const r = await parseFile(f, (m) => say(m)); onParsed(r); say(summary(r)); }
+    try {
+      const r = await parseFile(f, (m) => say(m)); onParsed(r); say(summary(r));
+      const kw = $("#f-keepwrap", root); if (kw) { kw.hidden = r.kind !== "PDF"; $("#f-keeplab", root).textContent = `Keep the PDF on this device (${mb(f.size)}), to see its printed pages. Backups don't include it.`; }
+    }
     catch (e) { say(e instanceof UErr ? e.message : `Couldn't read this file (${(e && e.message) || "unknown error"}).`, true); onParsed(null); }
     btn.disabled = false; busy = false;
   };
@@ -4641,6 +4651,7 @@ function textSheet(id) {
       const prog = $("#f-prog"); const say = (m) => { if (prog) prog.textContent = m; };
       await saveContent(tid, parsed.blocks, say);
       Object.assign(data, { hasContent: true, source: { name: parsed.name, kind: parsed.kind, pages: parsed.pages }, pos: 0, total: parsed.blocks.length });
+      if (parsed.file && fd.get("keeppdf")) { await keepPdf(tid, parsed.file); data.pdfLabels = parsed.labels; }
       if (!fd.get("lang")) data.lang = parsed.lang;
     }
     await saveCover(tid, cover);
@@ -4678,7 +4689,7 @@ function fileSheet(tid) {
   const t = S.texts.get(tid); let parsed = null;
   openSheet(`<h2>${t.hasContent ? "Replace the text" : "Load the text"}</h2><p class="sub">${esc(t.title)}</p>${fileField()}
     ${t.hasContent ? `<p class="hint">Your notes stay. Their "Show in text" links may land in the wrong place in the new version.</p>` : ""}`,
-  async () => {
+  async (fd) => {
     if (!parsed) return "Choose a file first.";
     const cur = S.texts.get(tid) || t;
     const sections = cur.sections && cur.sections.length ? cur.sections : parsed.sections.map((s) => ({ ...s, done: false }));
@@ -4686,7 +4697,10 @@ function fileSheet(tid) {
     const prog = $("#f-prog"); const say = (m) => { if (prog) prog.textContent = m; };
     await saveContent(tid, parsed.blocks, say);
     if (parsed.cover && !S.covers.has(tid)) await put("covers", tid, parsed.cover);
-    await put("texts", tid, { ...cur, sections, hasContent: true, source: { name: parsed.name, kind: parsed.kind, pages: parsed.pages }, pos: 0, total: parsed.blocks.length, updatedAt: Date.now() });
+    const next = { ...cur, sections, hasContent: true, source: { name: parsed.name, kind: parsed.kind, pages: parsed.pages }, pos: 0, total: parsed.blocks.length, updatedAt: Date.now() };
+    delete next.pdfLabels; await dropPdf(tid);
+    if (parsed.file && fd.get("keeppdf")) { await keepPdf(tid, parsed.file); next.pdfLabels = parsed.labels; }
+    await put("texts", tid, next);
   },
   (root) => wireFile(root, (r) => { parsed = r; }));
 }
@@ -4787,12 +4801,14 @@ function moreMenu() {
     <div class="menu">
       <button class="menuitem" id="m-file">${t.hasContent ? "Replace the book's file" : "Load the book's file"}</button>
       <button class="menuitem" id="m-edit">Edit details and cover</button>
+      ${t.source && t.source.kind === "PDF" ? `<button class="menuitem" id="m-pdf">${t.pdfLabels ? "The kept PDF" : "Keep the original PDF"}</button>` : ""}
       <button class="menuitem" id="m-cite">Cite this text</button>
       <button class="menuitem" id="m-export">Export notes as Markdown</button>
       <button class="menuitem danger" id="m-delete">Delete this text</button>
     </div>`, (b) => {
     if (b.id === "m-file") fileSheet(S.textId);
     else if (b.id === "m-edit") textSheet(S.textId);
+    else if (b.id === "m-pdf") keepPdfSheet(S.textId);
     else if (b.id === "m-export") exportNotes();
     else if (b.id === "m-cite") citeTextPanel(S.textId);
     else if (b.id === "m-delete") confirmDelete();
@@ -4806,7 +4822,8 @@ function exportNotes() {
 // The book, its notes, its text and its cover go together or not at all. Drafts and comparisons only point at notes.
 async function deleteText(id) {
   const nids = notesFor(id).map(([nid]) => nid);
-  if (idb) await idbTx(["notes", "content", "covers", "texts"], (st) => { nids.forEach((n) => st("notes").delete(n)); st("content").delete(id); st("covers").delete(id); st("texts").delete(id); });
+  if (idb) await idbTx(["notes", "content", "covers", "texts", "files"], (st) => { nids.forEach((n) => st("notes").delete(n)); st("content").delete(id); st("covers").delete(id); st("texts").delete(id); st("files").delete(id); });
+  if (PDFV.tid === id) closePdf();
   nids.forEach((n) => S.notes.delete(n)); S.content.delete(id); S.covers.delete(id); S.texts.delete(id); SESS.delete(id);
 }
 function confirmDelete() {
@@ -4858,6 +4875,7 @@ function showNav(on) {
   const total = R.cum[R.blocks.length] || 1, ticks = [];
   R.blocks.forEach((b, i) => { if (b.s && !b.stj && roleOf(b) === "chapter") ticks.push(`<i style="left:${((100 * R.cum[i]) / total).toFixed(2)}%"></i>`); });
   $("#rnav-ticks").innerHTML = ticks.join("");
+  const t = S.texts.get(R.tid); $("#rnav-pp").hidden = !(t && t.source && t.source.kind === "PDF");
   syncNav();
 }
 function navLabel(i) {
@@ -5576,6 +5594,105 @@ async function toggleBookmark() {
 }
 function updateMarkBtn() { const btn = $("#rmark"); if (btn) btn.setAttribute("aria-pressed", bookmarkHere() ? "true" : "false"); }
 
+/* the printed page: the PDF a book was made from, kept on this device (store "files", never backed up), shown a page at a
+   time. A text's pdfLabels are its PDF pages' labels as the import read them, so a printed page number finds its PDF page. */
+const mb = (n) => (n >= 1048576 ? `${(n / 1048576).toFixed(n >= 10485760 ? 0 : 1)} MB` : `${Math.max(1, Math.round(n / 1024))} KB`);
+const PDFV = { tid: null, doc: null, stop: null };
+function closePdf() { try { if (PDFV.doc) PDFV.doc.destroy(); } catch {} try { if (PDFV.stop) PDFV.stop(); } catch {} Object.assign(PDFV, { tid: null, doc: null, stop: null }); }
+async function keepPdf(tid, file) {
+  if (!idb) throw new UErr("This browser isn't letting the app save, so the PDF can't be kept.");
+  await idbDo("files", (st) => st.put(file, tid)); if (PDFV.tid === tid) closePdf();
+}
+async function dropPdf(tid) { if (idb) await idbDo("files", (st) => st.delete(tid)); if (PDFV.tid === tid) closePdf(); }
+async function pdfDoc(tid) {
+  if (PDFV.tid === tid && PDFV.doc) return PDFV.doc;
+  const file = idb ? await idbGet("files", tid) : null; if (!file) return null;
+  await need("pdf", () => !!window.pdfjsLib); const lib = window.pdfjsLib;
+  let wk = null, pw = null;
+  try { wk = new Worker(URL.createObjectURL(new Blob([`importScripts(${JSON.stringify(LIBS.pdfw[0])});`], { type: "text/javascript" }))); pw = lib.PDFWorker.fromPort({ port: wk }); } catch { wk = null; pw = null; }
+  if (!pw) { try { await need("pdfw", () => !!window.pdfjsWorker); } catch {} try { lib.GlobalWorkerOptions.workerSrc = LIBS.pdfw[0]; } catch {} }
+  const doc = await lib.getDocument({ data: new Uint8Array(await file.arrayBuffer()), isEvalSupported: false, ...(pw ? { worker: pw } : {}) }).promise;
+  closePdf(); Object.assign(PDFV, { tid, doc, stop: () => { try { if (pw) pw.destroy(); } catch {} try { if (wk) wk.terminate(); } catch {} } });
+  return doc;
+}
+// The PDF page (from 0) holding block i: the page with its printed number, the nearest one to where it falls in order.
+function pdfPageFor(t, i) {
+  const labels = t.pdfLabels || [], B = R.blocks; let ord = -1;
+  for (let k = 0; k <= i && k < B.length; k++) if (B[k].k === "pg") ord++;
+  const lab = R.pageAt[i] || "", hits = [];
+  if (lab) labels.forEach((l, p) => { if (l === lab) hits.push(p); });
+  if (hits.length) return hits.reduce((a, p) => (Math.abs(p - ord) < Math.abs(a - ord) ? p : a));
+  return Math.max(0, Math.min(Math.max(0, labels.length - 1), ord));
+}
+async function drawPdfPage(canvas, doc, p, width) {
+  const page = await doc.getPage(p + 1), v1 = page.getViewport({ scale: 1 }), dpr = Math.min(3, window.devicePixelRatio || 1);
+  const vp = page.getViewport({ scale: (width / v1.width) * dpr });
+  canvas.width = Math.floor(vp.width); canvas.height = Math.floor(vp.height);
+  canvas.style.width = `${width}px`; canvas.style.height = `${Math.floor(vp.height / dpr)}px`;
+  await page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+}
+// Draws the PDF page for block i into box; returns false when the PDF isn't kept.
+async function printedInto(box, tid, i, opts = {}) {
+  const t = S.texts.get(tid); if (!t) return false;
+  box.innerHTML = `<p class="hint">Opening the PDF…</p>`;
+  let doc; try { doc = await pdfDoc(tid); } catch { box.innerHTML = `<p class="hint bad">Couldn't open the kept PDF.</p>`; return true; }
+  if (!doc) { box.innerHTML = `<p class="hint">The PDF isn't kept on this device. <button type="button" class="linkbtn" data-keep="1" id="pp-keep">Keep the original PDF</button></p>`; return false; }
+  const p = Math.max(0, Math.min(doc.numPages - 1, opts.page ?? pdfPageFor(t, i)));
+  const where = `${t.pdfLabels && t.pdfLabels[p] ? loc(t.pdfLabels[p]) + " · " : ""}page ${p + 1} of ${doc.numPages} in the PDF`;
+  box.innerHTML = `<p class="hint ppwhere">${esc(where)}</p><div class="ppwrap"><canvas></canvas></div>`;
+  const w = Math.max(200, Math.floor(box.clientWidth || 360) * (opts.zoom || 1));
+  await drawPdfPage($("canvas", box), doc, p, w);
+  box.dataset.page = p;
+  return true;
+}
+function printedPagePanel(i = currentBlock()) {
+  const tid = R.tid; if (!tid) return;
+  let page = null, zoom = 1;
+  openPanel(`<h2>Printed page</h2><div id="ppbox" class="ppbox"></div>
+    <div class="ppbar"><button class="btn" data-keep="1" id="pp-prev" aria-label="Previous page">‹</button><button class="btn" data-keep="1" id="pp-zoom">Zoom in</button><button class="btn" data-keep="1" id="pp-next" aria-label="Next page">›</button></div>`,
+  (b) => {
+    const box = $("#ppbox"); if (!box) return;
+    if (b.id === "pp-keep") { closeOverlay().then(() => keepPdfSheet(tid)); return; }
+    const cur = +box.dataset.page || 0;
+    if (b.id === "pp-prev") page = Math.max(0, cur - 1); else if (b.id === "pp-next") page = cur + 1; else if (b.id === "pp-zoom") { zoom = zoom === 1 ? 2 : 1; b.textContent = zoom === 1 ? "Zoom in" : "Fit the screen"; page = cur; } else return;
+    printedInto(box, tid, i, { page, zoom });
+  });
+  printedInto($("#ppbox"), tid, i);
+}
+// Keep the PDF of a book already in the library: it is read once more so its pages can be matched to the book's.
+function keepPdfSheet(tid) {
+  const t = S.texts.get(tid); if (!t) return;
+  let parsed = null;
+  openSheet(`<h2>${t.pdfLabels ? "The kept PDF" : "Keep the original PDF"}</h2><p class="sub">${esc(t.title)}</p>
+    <p class="hint">${t.pdfLabels ? "This book's PDF is kept on this device, for its printed pages. Choose another to replace it, or remove it." : "Choose the PDF this book was made from. It's read once more to match its pages to the book's, then kept on this device. Backups don't include it."}</p>
+    <div class="field"><div class="drop" id="k-drop"><input id="k-file" type="file" accept="application/pdf,.pdf"><span class="drop-main" id="k-name">Tap to choose the PDF</span></div><p class="hint" id="k-prog"></p></div>
+    ${t.pdfLabels ? `<button type="button" class="linkbtn" id="k-drop-pdf">Remove the kept PDF</button>` : ""}`,
+  async () => {
+    if (!parsed) return "Choose the PDF first.";
+    const blocks = await loadContent(tid), have = (blocks || []).filter((b) => b.k === "pg").map((b) => b.x), got = parsed.blocks.filter((b) => b.k === "pg").map((b) => b.x);
+    let same = 0; for (let k = 0; k < Math.min(have.length, got.length); k++) if (have[k] === got[k]) same++;
+    // and its text: of up to 60 paragraphs across the book, most are found in the PDF read again
+    const key = (b) => norm(b.x || "").slice(0, 40), words = new Set(parsed.blocks.filter((b) => b.k !== "pg").map(key));
+    const mine = (blocks || []).filter((b) => b.k !== "pg" && norm(b.x || "").length >= 12), step = Math.max(1, Math.floor(mine.length / 60));
+    let found = 0, tried = 0; for (let k = 0; k < mine.length; k += step) { tried++; if (words.has(key(mine[k]))) found++; }
+    if ((have.length && same < Math.max(have.length, got.length) * 0.6) || (tried && found < tried * 0.5)) return "This PDF doesn't match this book. Choose the file the book was made from.";
+    await keepPdf(tid, parsed.file);
+    await put("texts", tid, { ...S.texts.get(tid), pdfLabels: parsed.labels, updatedAt: Date.now() });
+    return () => toast(`PDF kept (${mb(parsed.file.size)}).`);
+  },
+  (root) => {
+    const inp = $("#k-file", root), prog = $("#k-prog", root);
+    inp.addEventListener("change", async () => {
+      const f = inp.files && inp.files[0]; if (!f) return;
+      $("#k-name", root).textContent = f.name; parsed = null;
+      try { const r = await parseFile(f, (m) => { prog.textContent = m; }); if (r.kind !== "PDF") throw new UErr("Choose a PDF."); parsed = r; prog.textContent = `Ready: ${r.labels.length} pages, ${mb(f.size)}.`; }
+      catch (e) { prog.textContent = e instanceof UErr ? e.message : "Couldn't read this PDF."; }
+    });
+    const rm = $("#k-drop-pdf", root);
+    if (rm) rm.addEventListener("click", async () => { try { await dropPdf(tid); const cur = { ...S.texts.get(tid), updatedAt: Date.now() }; delete cur.pdfLabels; await put("texts", tid, cur); await closeOverlay(); toast("The kept PDF was removed."); } catch (e) { toast(failMsg(e)); } });
+  });
+}
+
 /* notes to the text: a tapped note number shows its note. Footnotes are found near the number; endnotes at the back of the
    book, in the run of numbered notes that belongs to this chapter. */
 const NOTE_START = /^\s*(?:(\d{1,3})(?:[.)]\s*|\s+)|([⁰¹²³⁴⁵⁶⁷⁸⁹]{1,3})\s*)(?=\S)/u;
@@ -6066,7 +6183,8 @@ function editSelectedParagraph() {
     <p class="hint">Edit the whole paragraph. Changes are saved to your local copy; the uploaded file isn't changed. Existing notes keep their original quotations.</p>
     <div class="field"><label for="edit-paragraph">Paragraph</label>
     <textarea id="edit-paragraph" name="paragraph" class="verbatim" rows="12">${esc(initial)}</textarea></div>
-    <p class="hint">Imported italics in this paragraph become plain text when you save changes.</p>`,
+    <p class="hint">Imported italics in this paragraph become plain text when you save changes.</p>
+    ${(S.texts.get(tid) || {}).source && S.texts.get(tid).source.kind === "PDF" ? `<details class="optfield" id="ed-pp"><summary>The printed page</summary><div class="ppbox" id="ed-ppbox"></div></details>` : ""}`,
     async (fd) => {
       if (R.tid !== tid || !R.blocks || R.blocks[i] !== original) return "The text changed while the editor was open. Reopen it to edit.";
       const value = String(fd.get("paragraph") || "").replace(/\r\n?/g, "\n").trim();
@@ -6091,6 +6209,14 @@ function editSelectedParagraph() {
       R.dirty = true;
       requestAnimationFrame(() => { if (R.tid !== tid) return; goToSpot(spot); updatePg(); drawTrail(); });
       return () => toast("Paragraph updated.");
+    },
+    (root) => {
+      const d = $("#ed-pp", root), box = $("#ed-ppbox", root);
+      if (d) {
+        d.addEventListener("toggle", () => { if (d.open && !d.dataset.done) { d.dataset.done = "1"; printedInto(box, tid, i); } });
+        box.addEventListener("click", (e) => { if (e.target.id === "pp-keep") closeOverlay().then(() => keepPdfSheet(tid)); });
+      }
+      const ta = $("#edit-paragraph", root); if (ta) ta.focus();
     });
 }
 function saveSel() {
@@ -6260,6 +6386,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "rtoc") return tocPanel();
   if (b.id === "rpg") return showNav($("#rnav").hidden);
   if (b.id === "rnav-close") { showBars(false); return showNav(false); }
+  if (b.id === "rnav-pp") return printedPagePanel();
   if (b.id === "selsave") return saveSel();
   if (b.id === "selhl") return quickHighlight();
   if (b.id === "selmore") return carrySel();
