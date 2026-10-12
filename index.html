@@ -406,6 +406,10 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .toastbtn { margin-left: 12px; background: none; border: 0; padding: 2px 0; font: 700 15px var(--f-ui); color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .lk-q { overflow-wrap: anywhere; }
 .lk-sec { display: grid; gap: 8px; }
+.lk-dict { display: grid; gap: 10px; }
+.lk-dict ol { margin: 2px 0 0; padding-left: 22px; font: 16px/1.45 var(--f-text); display: grid; gap: 4px; }
+.lk-dict a { color: var(--link); text-underline-offset: 3px; }
+.lk-dict .dpos { margin: 4px 0 0; font: italic 15px var(--f-text); color: var(--muted); }
 .lk-terms { display: grid; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); }
 .lk-term { border-bottom: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); }
 .lk-term > summary { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 10px; padding: 11px 0; cursor: pointer; list-style: none; }
@@ -578,6 +582,9 @@ span.bhid { display: inline; }
 .fixopt.on b { color: var(--link); }
 .likelist { margin: 8px 0 4px; padding-left: 20px; font: 15px/1.4 var(--f-text); }
 .likelist .tp { font: 13px var(--f-ui); color: var(--muted); }
+.fnref { position: relative; color: var(--link); cursor: pointer; }
+.fnref::after { content: ""; position: absolute; inset: -12px -8px; } /* a finger-sized target around a small number */
+.notetext { font: 17px/1.5 var(--f-text); margin: 4px 0 6px; overflow-wrap: anywhere; }
 .pgm { display: inline-block; text-indent: 0; margin: 0 0 0 0.4em; padding: 0 0 0 0.3em; border-left: 1px solid var(--rule); font: 500 0.58em/1 var(--f-ui);
   letter-spacing: 0.04em; color: var(--muted); vertical-align: 0.15em; user-select: none; -webkit-user-select: none; }
 .bp > .pgm:first-child { margin-left: 0; }
@@ -4057,6 +4064,7 @@ function lookupPanel(s) {
       ${terms.length ? `<div class="lk-terms">${terms.map(card).join("")}</div>` : ""}
       ${hasExact ? "" : `<p class="hint">${terms.length ? "No entry has this exact name; the ones above are labelled by how they relate to it." : `Nothing in the glossary matches “${esc(s.text)}”.`}</p>`}
     </section>
+    ${s.text.split(/\s+/).length <= 3 ? `<section class="lk-sec"><div class="label">Dictionary</div><div id="lk-dict" class="lk-dict"><p class="hint">Looking it up in Wiktionary…</p></div></section>` : ""}
     <section class="lk-sec"><div class="label">Your notes</div>
       ${here.length ? `<div class="lk-sub">In this book</div><div class="links">${here.slice(0, 30).map((e) => row(e, true)).join("")}</div>` : ""}
       ${there.length ? `<div class="lk-sub">In your other books</div><div class="links">${there.slice(0, 30).map((e) => row(e, false)).join("")}</div>` : ""}
@@ -4079,6 +4087,53 @@ function lookupPanel(s) {
     else if (b.id === "lk-all") go({ screen: "concord", q: s.text });
     else if (b.id === "lk-add") termSheet(null, { t: s.text });
   });
+  if (s.text.split(/\s+/).length <= 3) dictInto($("#lk-dict"), s.text);
+}
+/* Wiktionary, read through the MediaWiki API (origin=* allows it from this page). Definitions are kept on this device,
+   so a word looked up once can be read again offline. */
+const DICT_KEY = "mg-dict";
+function dictCache() { try { return JSON.parse(localStorage.getItem(DICT_KEY) || "{}"); } catch { return {}; } }
+function dictSave(word, entry) {
+  try { const c = dictCache(); c[word] = { ...entry, t: Date.now() }; const keys = Object.keys(c); if (keys.length > 300) keys.sort((a, b) => c[a].t - c[b].t).slice(0, keys.length - 300).forEach((k) => delete c[k]); localStorage.setItem(DICT_KEY, JSON.stringify(c)); } catch {}
+}
+// The definitions in a Wiktionary page: [{ lang, pos, senses: [...] }], from the parsed page's HTML.
+function dictParse(html) {
+  const doc = new DOMParser().parseFromString(html, "text/html"), root = doc.querySelector(".mw-parser-output") || doc.body, out = [];
+  let lang = "", pos = "";
+  const head = (el) => { const h = el.matches("h2, h3, h4, h5") ? el : el.matches(".mw-heading") ? el.querySelector("h2, h3, h4, h5") : null; return h ? [h.tagName, (h.querySelector(".mw-headline") || h).textContent.replace(/\[edit\]/g, "").trim()] : null; };
+  for (const el of root.children) {
+    const h = head(el);
+    if (h) { if (h[0] === "H2") { lang = h[1]; pos = ""; } else pos = h[1]; continue; }
+    if (el.tagName !== "OL" || el.classList.contains("references") || !lang || !pos || /etymology|pronunciation|references|see also|anagrams|translations|derived|related|descendants/i.test(pos)) continue;
+    const senses = [...el.children].filter((li) => li.tagName === "LI").map((li) => { const c = li.cloneNode(true); c.querySelectorAll("ul, ol, dl, sup, .HQToggle, .nyms, .citation-whole, .h-usage-example, style, .maintenance-line").forEach((x) => x.remove()); return c.textContent.replace(/\s+/g, " ").trim(); }).filter(Boolean);
+    if (senses.length) out.push({ lang, pos, senses });
+  }
+  return out;
+}
+async function dictFetch(word) {
+  const url = (w) => `https://en.wiktionary.org/w/api.php?action=parse&page=${encodeURIComponent(w)}&prop=text&format=json&formatversion=2&redirects=1&origin=*`;
+  for (const w of [...new Set([word, word.toLowerCase()])]) {
+    const r = await fetch(url(w)); if (!r.ok) throw new Error("http " + r.status);
+    const j = await r.json(); if (j.error) continue;
+    const html = j.parse && (typeof j.parse.text === "string" ? j.parse.text : j.parse.text && j.parse.text["*"]);
+    if (html) return { title: j.parse.title || w, defs: dictParse(html) };
+  }
+  return { title: word, defs: [] };
+}
+async function dictInto(el, text) {
+  if (!el) return;
+  const word = text.replace(/^[^\p{L}]+|[^\p{L}]+$/gu, "").trim(); if (!word) { el.innerHTML = ""; return; }
+  const draw = (e) => {
+    if (!el.isConnected) return;
+    const langs = [...new Set(e.defs.map((d) => d.lang))].sort((a, b) => (b === "English") - (a === "English")).slice(0, 3);
+    el.innerHTML = e.defs.length ? langs.map((L) => `<div class="dl"><div class="lk-sub">${esc(L)}</div>${e.defs.filter((d) => d.lang === L).slice(0, 2).map((d) => `<p class="dpos">${esc(d.pos)}</p><ol>${d.senses.slice(0, 3).map((x) => `<li>${esc(x)}</li>`).join("")}</ol>`).join("")}</div>`).join("") + `<p class="hint"><a href="https://en.wiktionary.org/wiki/${encodeURIComponent(e.title)}" target="_blank" rel="noopener">More in Wiktionary</a></p>`
+      : `<p class="hint">Wiktionary has no entry for “${esc(word)}”.</p>`;
+  };
+  const cached = dictCache()[word];
+  if (cached) { draw(cached); return; }
+  if (navigator.onLine === false) { el.innerHTML = `<p class="hint">You're offline. Words you've looked up before are kept here.</p>`; return; }
+  try { const e = await dictFetch(word); dictSave(word, e); draw(e); }
+  catch { if (el.isConnected) el.innerHTML = `<p class="hint">Couldn't reach Wiktionary just now.</p>`; }
 }
 
 /* ---------- thinkers, branches, and the facts that connect them ---------- */
@@ -4427,6 +4482,7 @@ document.addEventListener("keydown", (e) => {
   }
   if (e.key === "Escape" && $("#sheetroot").innerHTML && !$("#sheetroot form[data-busy]")) closeOverlay();
   if ((e.key === "Enter" || e.key === " ") && e.target.matches && e.target.matches(".mnote[data-note]")) { e.preventDefault(); noteSheet(e.target.dataset.note); }
+  if ((e.key === "Enter" || e.key === " ") && e.target.matches && e.target.matches("#book [data-fn]")) { e.preventDefault(); const at = e.target.closest("[data-i]"); notePanel(at ? +at.dataset.i : currentBlock(), +e.target.dataset.fn); }
 });
 
 const fileField = () => `<div class="field">
@@ -4991,7 +5047,11 @@ function layoutPages() {
 function saveRS() { try { localStorage.setItem("mg-reader", JSON.stringify(RS)); } catch {} }
 const barH = () => $(".rbar")?.offsetHeight || 0;
 
-function inlineHTML(x, marks) {
+// A note number printed as a superscript (¹², as the import writes them) can be tapped to read its note.
+const FNREF = /[⁰¹²³⁴⁵⁶⁷⁸⁹]{1,3}/g;
+const fnRefs = (html) => html.replace(FNREF, (m) => `<span class="fnref" data-fn="${[...m].map((c) => "⁰¹²³⁴⁵⁶⁷⁸⁹".indexOf(c)).join("")}" role="button" tabindex="0" aria-label="Note ${[...m].map((c) => "⁰¹²³⁴⁵⁶⁷⁸⁹".indexOf(c)).join("")}">${m}</span>`);
+function inlineHTML(x, marks) { return fnRefs(inlineMarks(x, marks)); }
+function inlineMarks(x, marks) {
   if (!marks || !marks.length) return esc(x).replace(/\u0001/g, "<em>").replace(/\u0002/g, "</em>");
   let raw = x;
   if (marks && marks.length) {
@@ -5472,6 +5532,73 @@ async function toggleBookmark() {
   updateMarkBtn();
 }
 function updateMarkBtn() { const btn = $("#rmark"); if (btn) btn.setAttribute("aria-pressed", bookmarkHere() ? "true" : "false"); }
+
+/* notes to the text: a tapped note number shows its note. Footnotes are found near the number; endnotes at the back of the
+   book, in the run of numbered notes that belongs to this chapter. */
+const NOTE_START = /^\s*(?:(\d{1,3})(?:[.)]\s*|\s+)|([⁰¹²³⁴⁵⁶⁷⁸⁹]{1,3})\s*)(?=\S)/u;
+const supNum = (m) => +[...m].map((c) => "⁰¹²³⁴⁵⁶⁷⁸⁹".indexOf(c)).join("");
+function noteRuns() {
+  if (R.noteRuns && R.noteRunsOf === R.blocks) return R.noteRuns;
+  const B = R.blocks, starts = [], runs = [];
+  B.forEach((b, k) => {
+    if (b.k === "pg" || b.k === "h" || b.k === "front" || isHidden(b) || isTitleRole(roleOf(b)) || b.stj) return;
+    const m = NOTE_START.exec(plain(b.x || "")); if (!m) return;
+    starts.push({ k, n: m[1] ? +m[1] : supNum(m[2]), fn: b.k === "fn" });
+  });
+  // endnotes: numbered paragraphs counting up from 1, a run for each chapter
+  let run = null;
+  for (const st of starts) {
+    if (st.fn) continue;
+    if (st.n === 1) { run = { at: st.k, notes: new Map([[1, st.k]]) }; runs.push(run); }
+    else if (run && st.n > Math.max(...run.notes.keys()) && st.n <= Math.max(...run.notes.keys()) + 3) run.notes.set(st.n, st.k);
+  }
+  R.noteRuns = { starts, runs: runs.filter((r) => r.notes.size >= 2) }; R.noteRunsOf = B;
+  return R.noteRuns;
+}
+// The note numbered n for a reference in block i: [best block, other candidates].
+function findNote(i, n) {
+  const B = R.blocks, { starts, runs } = noteRuns(), sup = /[⁰¹²³⁴⁵⁶⁷⁸⁹]/;
+  const all = starts.filter((st) => st.n === n).map((st) => st.k);
+  // a footnote: on this printed page or the next, just after the reference
+  let pgs = 0;
+  for (let k = i + 1; k < B.length && pgs < 3; k++) { if (B[k].k === "pg") pgs++; if (B[k].k === "fn" && all.includes(k)) return [k, all]; }
+  for (let k = i - 1; k >= Math.max(0, i - 12); k--) if (B[k].k === "fn" && all.includes(k)) return [k, all];
+  // an endnote: the chapters whose text has note numbers, in order, and the runs of notes after the text
+  // (a chapter with footnotes keeps its notes on its own pages, so it isn't one of them)
+  const withFn = new Set(); B.forEach((b, k) => { if (b.k === "fn") withFn.add(R.secAt[k] || ""); });
+  const chapters = []; let lastRef = 0;
+  B.forEach((b, k) => { const c = R.secAt[k] || ""; if (b.k !== "fn" && !withFn.has(c) && sup.test(b.x || "")) { if (chapters[chapters.length - 1] !== c) chapters.push(c); lastRef = k; } });
+  const after = runs.filter((r) => r.at > i && r.notes.has(n));
+  if (!after.length) return [all.find((k) => k > i) ?? all[0] ?? -1, all];
+  // a run under a heading naming this chapter
+  const names = new Map((S.texts.get(R.tid)?.sections || []).map((x) => [x.id, x.label])), label = norm(names.get(R.secAt[i]) || "");
+  if (label.length >= 4) for (const r of after) for (let k = r.at - 1; k >= Math.max(0, r.at - 4); k--) { const t = norm(B[k].x || ""); if (t && (t.includes(label) || (t.length >= 4 && label.includes(t)))) return [r.notes.get(n), all]; }
+  // a run under a heading numbering it ("Chapter 2", "2.", "II") as this chapter's place among chapters with notes
+  const tail = runs.filter((r) => r.at > lastRef), m = chapters.indexOf(R.secAt[i] || "");
+  const ROMAN = { i: 1, ii: 2, iii: 3, iv: 4, v: 5, vi: 6, vii: 7, viii: 8, ix: 9, x: 10, xi: 11, xii: 12, xiii: 13, xiv: 14, xv: 15 };
+  if (m >= 0) for (const r of after) for (let k = r.at - 1; k >= Math.max(0, r.at - 3); k--) {
+    if (B[k].k === "pg") continue;
+    if (!isTitleRole(roleOf(B[k]))) break; // only a heading names a run of notes
+    const h = /^\s*(?:chapter|part|ch\.)?\s*(\d{1,2}|[ivx]{1,4})\b/i.exec(plain(B[k].x || "")); if (!h) break;
+    if ((/\d/.test(h[1]) ? +h[1] : ROMAN[h[1].toLowerCase()]) === m + 1) return [r.notes.get(n), all];
+    break;
+  }
+  // otherwise the same place in order: the chapter's place among chapters with notes, among the runs after the text
+  if (tail.length === chapters.length && m >= 0 && tail[m].notes.has(n)) return [tail[m].notes.get(n), all];
+  return [after[0].notes.get(n), all];
+}
+function notePanel(i, n) {
+  if (!R.blocks) return;
+  const B = R.blocks, [k, all] = findNote(i, n);
+  const textAt = (j) => { let x = plain(B[j].x || ""); for (let q = j + 1; q < B.length && q < j + 4 && (B[q].k === "c" || (B[q].k === "pg" && B[q + 1] && B[q + 1].k === "c")); q++) if (B[q].k === "c") x += glueAfter(x) + plain(B[q].x || ""); return x; };
+  const others = all.filter((j) => j !== k);
+  openPanel(`<h2>Note ${n}</h2>
+    ${k >= 0 ? `<p class="notetext">${fnRefs(esc(textAt(k)))}</p><p class="hint">${R.pageAt[k] ? esc(loc(R.pageAt[k])) : ""}${B[k].k === "fn" ? " · a footnote" : " · from the notes at the back"}</p>
+      <div class="lk-acts"><button class="btn" data-goto="${k}">Go to the note</button></div>`
+      : `<p class="hint">No note numbered ${n} was found in this book's text.</p>`}
+    ${others.length ? `<details class="optfield"><summary>Not this one? ${others.length} other note${others.length === 1 ? "" : "s"} numbered ${n}</summary><div class="toc">${others.slice(0, 30).map((j) => `<button class="tocitem" data-goto="${j}"><span>${esc(textAt(j).slice(0, 110))}${textAt(j).length > 110 ? "…" : ""}</span><span class="tp">${R.pageAt[j] ? esc(loc(R.pageAt[j])) : ""}</span></button>`).join("")}</div></details>` : ""}`,
+  (b) => { if (b.dataset.goto) jumpTo(+b.dataset.goto, true); });
+}
 
 /* find in this book: matches marked in the text and stepped through one at a time */
 let findQ = "";
@@ -6058,6 +6185,8 @@ function arm(btn, run) {
   setTimeout(() => { if (btn.isConnected) { btn.classList.remove("armed"); btn.textContent = old; } }, 3000);
 }
 document.addEventListener("click", (e) => {
+  const fr = e.target.closest && e.target.closest("#book [data-fn]");
+  if (fr && S.screen === "reader") { const s = window.getSelection(); if (!s || s.isCollapsed) { const at = fr.closest("[data-i]"); notePanel(at ? +at.dataset.i : currentBlock(), +fr.dataset.fn); return; } }
   const mk = e.target.closest && e.target.closest("mark[data-note], .mnote[data-note]");
   if (mk && S.screen === "reader") { const s = window.getSelection(); if (!s || s.isCollapsed) { noteSheet(mk.dataset.note); return; } }
   const b = e.target.closest && e.target.closest("button"); if (!b || b.closest("#sheetroot")) return;
