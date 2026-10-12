@@ -245,6 +245,24 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .rbar .btn { padding: 6px 8px; font-size: 15px; }
 .rtitle { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font: italic 400 16px var(--f-text); padding-inline: 4px; }
 .rpg { font-size: 14px; color: var(--muted); white-space: nowrap; padding-inline: 4px; }
+.rbar .rpg { background: none; border: 0; padding: 6px 6px; font: 14px var(--f-ui); color: var(--muted); text-decoration: underline dotted; text-underline-offset: 4px; }
+.rbar .rpg:empty { display: none; }
+.rnav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 7; background: var(--paper); border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); box-shadow: 0 -6px 18px rgba(30, 20, 10, 0.1);
+  padding: 10px 18px calc(10px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 6px; font-family: var(--f-ui); }
+.rnav[hidden] { display: none; }
+.rnav-lab { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; color: var(--ink); }
+.rnav-lab span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rnav-lab span:last-child { color: var(--muted); }
+.rnav-track { position: relative; height: 34px; display: grid; align-items: center; }
+.rnav-track input { width: 100%; margin: 0; accent-color: var(--leather); position: relative; }
+.rnav-ticks { position: absolute; left: 8px; right: 8px; top: 50%; height: 12px; transform: translateY(-50%); pointer-events: none; }
+.rnav-ticks i { position: absolute; top: 0; width: 1.5px; height: 12px; background: var(--muted); opacity: 0.55; }
+.rnav-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.rnav-go { font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.rnav-go input { width: 5.5em; padding: 6px 8px; font: 15px var(--f-ui); border: 1px solid var(--rule); border-radius: 8px; background: var(--field); color: var(--ink); }
+#reader:not([hidden]) .rnav:not([hidden]) ~ .rtrail { bottom: 132px; }
+#reader:has(#rnav:not([hidden])) .rfoot { visibility: hidden; }
+#reader.immersive .rtrail { padding-bottom: calc(26px + env(safe-area-inset-bottom, 0px)); } /* the page number stays readable below the buttons */
 .book { --fs: 20px; --lh: 1.62; --measure: 34em; max-width: var(--measure); margin: 0 auto; padding-inline: 20px; padding-block: 28px 160px; font: 400 var(--fs)/var(--lh) var(--f-text); overflow-wrap: break-word; }
 .book p { margin: 0; }
 .bp { text-indent: 1.4em; }
@@ -284,7 +302,20 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 #cres .group { gap: 8px; }
 .findhit .fs { font: 16px/1.45 var(--f-text); overflow-wrap: anywhere; }
 .findhit b { background: var(--mark); font-weight: 400; padding: 0 1px; }
+::highlight(find) { background-color: rgba(156, 117, 51, 0.24); }
+::highlight(find-now) { background-color: rgba(156, 117, 51, 0.55); }
+.findbar { pointer-events: auto; display: flex; align-items: center; gap: 4px; background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 3px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22); }
+.findbar .btn { border: 0; box-shadow: none; padding: 7px 12px; font: 600 18px/1 var(--f-ui); background: none; color: var(--ink); }
+.findbar #fclose { font-weight: 400; color: var(--muted); }
+.fcount { font: 14px var(--f-ui); color: var(--muted); padding: 0 4px; white-space: nowrap; max-width: 52vw; overflow: hidden; text-overflow: ellipsis; }
 .tocitem.bm span:first-child { font-style: italic; }
+.toctabs { margin-bottom: 10px; }
+.toctabs .segb { flex: 1; text-align: center; }
+.nscope { margin-bottom: 6px; }
+.nitem > span:first-child { display: grid; gap: 2px; }
+.nitem .nk { font: 600 12px/1.2 var(--f-ui); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.nitem.k-question .nk { color: var(--s3); } .nitem.k-objection .nk { color: var(--s2); } .nitem.k-argument .nk { color: var(--s4); } .nitem.k-gloss .nk { color: var(--s1); }
+.tocitem.here > span:first-child { text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 4px; }
 .rs { display: grid; gap: 14px; }
 .rs-row { display: grid; gap: 6px; }
 .rs-row > span { font-size: 15px; font-weight: 500; }
@@ -564,7 +595,7 @@ span.bhid { display: inline; }
   <header class="rbar">
     <button class="btn ghost ricon" id="rback" aria-label="Back to the text's page">←</button>
     <div class="rtitle" id="rtitle"></div>
-    <span class="rpg" id="rpg"></span>
+    <button class="btn ghost rpg" id="rpg" aria-label="Move through the book"></button>
     <button class="btn ghost ricon" id="rmark" aria-label="Bookmark this page" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M7 3.5h10v17l-5-3.8-5 3.8z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></button>
     <button class="btn ghost ricon" id="rfind" aria-label="Find in this book"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M15 15l5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
     <button class="btn ghost ricon raa" id="raa" aria-label="Reading settings">Aa</button>
@@ -574,6 +605,11 @@ span.bhid { display: inline; }
   <div class="flip" id="flip" aria-hidden="true"><div class="book" id="flipbook"></div><div class="flipshade" id="flipshade"></div></div>
   <div class="undershade" id="undershade" aria-hidden="true"></div>
   <div class="rfoot" id="rfoot" aria-hidden="true"></div>
+  <div class="rnav" id="rnav" hidden>
+    <div class="rnav-lab"><span id="rnav-where"></span><span id="rnav-pct"></span></div>
+    <div class="rnav-track"><div class="rnav-ticks" id="rnav-ticks"></div><input type="range" id="rnav-r" min="0" max="1000" step="1" aria-label="Move through the book"></div>
+    <div class="rnav-row"><label class="rnav-go">Go to page <input id="rnav-pg" inputmode="numeric" autocomplete="off" enterkeyhint="go" aria-label="Page number"></label><button class="btn ghost" id="rnav-close">Done</button></div>
+  </div>
   <div class="rtrail" id="rtrail" hidden></div>
 </div>
 <div class="selbar" id="selbar" hidden><button class="btn" id="sellook" hidden>Look up</button><button class="btn" id="seledit">Edit</button><button class="btn" id="selhl">Highlight</button><button class="btn primary" id="selsave">Add a note</button></div>
@@ -4707,7 +4743,37 @@ function syncThemeColor() {
 // Swipe pages, toolbar hidden while reading: a tap in the middle of the page shows it over the top lines, and a page turn
 // or another tap puts it away. The page itself keeps its size, so the text never moves.
 const immersive = () => isPaged() && RS.bars !== "show";
-function showBars(on) { $("#reader").classList.toggle("bars-on", on && immersive()); }
+function showBars(on) { $("#reader").classList.toggle("bars-on", on && immersive()); showNav(on && immersive()); }
+/* moving through the book: a slider over its whole length with the chapters marked, and a page number to go to */
+const navBlock = (v) => { const want = (v / 1000) * R.cum[R.blocks.length]; let lo = 0, hi = R.blocks.length - 1; while (lo < hi) { const m = (lo + hi + 1) >> 1; if (R.cum[m] <= want) lo = m; else hi = m - 1; } return lo; };
+function showNav(on) {
+  const nav = $("#rnav"); if (!R.blocks) on = false;
+  nav.hidden = !on; if (!on) return;
+  const total = R.cum[R.blocks.length] || 1, ticks = [];
+  R.blocks.forEach((b, i) => { if (b.s && !b.stj && roleOf(b) === "chapter") ticks.push(`<i style="left:${((100 * R.cum[i]) / total).toFixed(2)}%"></i>`); });
+  $("#rnav-ticks").innerHTML = ticks.join("");
+  syncNav();
+}
+function navLabel(i) {
+  i = contentAt(i); const names = new Map((S.texts.get(R.tid)?.sections || []).map((s) => [s.id, s.label])), ch = names.get(R.secAt[i]);
+  return [R.pageAt[i] ? loc(R.pageAt[i]) : "", ch || ""].filter(Boolean).join(" · ");
+}
+function syncNav(i = currentBlock()) {
+  const total = R.cum[R.blocks.length] || 1, v = Math.round((1000 * R.cum[i]) / total);
+  if (!R.dragging) $("#rnav-r").value = v;
+  $("#rnav-where").textContent = navLabel(i); $("#rnav-pct").textContent = `${Math.round(v / 10)}%`;
+}
+// The first block of a printed page: an exact label (roman numerals too), or the last numbered page before the number.
+function blockForPage(want) {
+  want = String(want || "").trim().toLowerCase(); if (!want) return -1;
+  const B = R.blocks; let best = -1, bestN = -Infinity;
+  for (let i = 0; i < B.length; i++) {
+    if (B[i].k !== "pg") continue;
+    const x = String(B[i].x).trim().toLowerCase(); if (x === want) return i;
+    const n = parseInt(x, 10); if (/^\d+$/.test(want) && n <= +want && n > bestN) { best = i; bestN = n; }
+  }
+  return best;
+}
 /* the screen stays on while you read: a slow page shouldn't let the phone lock. Let go after five minutes without a touch. */
 const WAKE = { lock: null, t: 0, asking: false };
 async function wakeOn() {
@@ -4772,10 +4838,13 @@ function titleText(B, i) {
   return x.replace(/\s+/g, " ").trim();
 }
 // Where each block is: its printed page, and the section (chapter) it falls in.
+// Also where each block's chapter ends (chEnd), and how much text comes before each block (cum), for moving through the
+// book by distance.
 function sectionIndex(blocks) {
-  let pg = "", sc = ""; const pageAt = [], secAt = [];
-  blocks.forEach((b, i) => { if (b.k === "pg") pg = b.x; if (b.s && !b.stj && roleOf(b) === "chapter") sc = b.s; pageAt[i] = pg; secAt[i] = sc; });
-  return { pageAt, secAt };
+  let pg = "", sc = ""; const n = blocks.length, pageAt = [], secAt = [], chEnd = new Int32Array(n), cum = new Float64Array(n + 1);
+  blocks.forEach((b, i) => { if (b.k === "pg") pg = b.x; if (b.s && !b.stj && roleOf(b) === "chapter") sc = b.s; pageAt[i] = pg; secAt[i] = sc; cum[i + 1] = cum[i] + (b.k === "pg" || isHidden(b) ? 0 : 40 + (b.x || "").length); });
+  for (let i = n - 1, end = n; i >= 0; i--) { chEnd[i] = end; if (i > 0 && secAt[i] !== secAt[i - 1]) end = i; }
+  return { pageAt, secAt, chEnd, cum };
 }
 const isPara = (b) => !!b && (b.k === "p" || b.k === "c") && (!b.st || b.st === "text" || (b.st === "hide" && !!b.sth));
 // A paragraph that carries on from the page before: a continuation, or one whose glued running head is hidden.
@@ -4863,6 +4932,7 @@ function rerenderBlock(i, marks) {
   if (R.chap && R.chap.has(L) && RS.flow === "pages") el.classList.add("chap");
   el.querySelectorAll("[data-i]").forEach((x) => { R.els[+x.dataset.i] = x; });
   R.dirty = true; R.ver = (R.ver || 0) + 1;
+  if (FIND.on) paintFind();
 }
 // One section of the book as Swipe pages draws it.
 function pagedHTML(a, b, marks) {
@@ -4889,6 +4959,7 @@ function renderBook(center) {
   R.sig = new Map([...marks].filter(([i]) => i >= a && i < b).map(([i, l]) => [i, sigOf(l)]));
   book.scrollLeft = 0; R.dirty = true; R.ver = (R.ver || 0) + 1;
   if (RS.flow === "pages") setTimeout(() => { if (flipMode() && R.win && !R.flip) fillTwin(R.win[0]); }, 400); // ready before the first turn
+  if (FIND.on) paintFind();
 }
 // Make sure the section holding paragraph i is the one on screen.
 function ensureWindow(i) { if (R.blocks && (!R.win || i < R.win[0] || i >= R.win[1])) renderBook(i); }
@@ -4992,7 +5063,8 @@ function resetReader() {
   if (R.tid && R.blocks) SESS.set(R.tid, { visiting: R.visiting, home: R.home, trail: [...R.trail], landed: R.landed, landedAt: R.landedAt });
   if (R.flip) { cancelAnimationFrame(R.flip.raf); R.flip = null; for (const el of [$("#flip"), $("#undershade")]) el.classList.remove("on"); }
   const tw = $("#flipbook"); if (tw) { tw.innerHTML = ""; tw.dataset.key = ""; }
-  R.visiting = false; R.home = null; R.trail = []; R.pagedSpot = null; R.win = null; const tr = $("#rtrail"); if (tr) tr.hidden = true;
+  $("#rnav").hidden = true; R.dragging = false;
+  R.visiting = false; R.home = null; R.trail = []; R.pagedSpot = null; R.win = null; FIND.on = false; FIND.hits = []; FIND.k = -1; paintFind(); const tr = $("#rtrail"); if (tr) tr.hidden = true;
   R.tid = null; R.blocks = null; R.els = []; R.tops = []; R.sig = new Map(); R.saved = -1; R.sel = null; $("#book").innerHTML = ""; $("#selbar").hidden = true; }
 
 async function openReader(tid, at, opts) {
@@ -5186,7 +5258,25 @@ function goTo(i, centre) {
   const off = centre ? Math.max(barH() + 8, window.innerHeight * 0.3) : barH() + 8;
   scrollToEl(el, 0, off);
 }
-function updatePg() { const i = currentBlock(); const p = R.pageAt[i]; $("#rpg").textContent = $("#rfoot").textContent = p ? loc(p) : ""; updateMarkBtn(); }
+function updatePg() {
+  const i = currentBlock(), p = R.pageAt[i], left = immersive() ? pagesLeft(i) : "";
+  $("#rpg").textContent = p ? loc(p) : ""; $("#rfoot").textContent = [p ? loc(p) : "", left].filter(Boolean).join("  ·  ");
+  updateMarkBtn(); if (!$("#rnav").hidden) syncNav();
+}
+// Swipe pages: how many screen pages are left in this chapter. Exact while the chapter ends in the section laid out;
+// beyond it, estimated from how much text this section fits on a page.
+// The first block at i that is text: a page marker or hidden running head just before a chapter title belongs to the page
+// the chapter starts on, though it counts as the end of the chapter before.
+const contentAt = (i) => { const B = R.blocks; while (i < B.length - 1 && betweenPages(B[i])) i++; return i; };
+function pagesLeft(i) {
+  i = contentAt(i);
+  if (!R.chEnd || !R.win || !R.secAt[i]) return "";
+  const end = R.chEnd[i], cur = currentPage(), last = lastPage(), [a, b] = R.win;
+  let left;
+  if (end <= b) { let k = end - 1; while (k > i && !screenPagesOf(k)) k--; const pp = screenPagesOf(k); left = (pp ? pp[1] : last) - cur; }
+  else { const perPage = (R.cum[b] - R.cum[a]) / (last + 1 || 1); left = last - cur + Math.round((R.cum[end] - R.cum[b]) / (perPage || 1)); }
+  return left <= 0 ? "last page of the chapter" : `${left} page${left === 1 ? "" : "s"} left in the chapter`;
+}
 // A spot is a paragraph and how far down it the top of the screen sits (0 to 1), so a long paragraph comes back at the same line.
 function currentSpot() {
   if (isPaged()) { // the paragraph at the top of the page, and how much of its text lies on earlier pages
@@ -5229,14 +5319,14 @@ const pgLabel = (i) => (R.pageAt[i] ? loc(R.pageAt[i]).replace(/^(pp?\.) /, "$1\
 // How far through the book the screen is, in pixels of scroll; in swipe pages each page counts as a screen.
 const readY = () => (isPaged() ? (R.turns || 0) * window.innerHeight : window.scrollY);
 function landed(i) { R.landed = i; R.landedAt = Date.now(); requestAnimationFrame(() => { R.landedY = readY(); updatePg(); }); }
-function jumpTo(i, centre = true) {
+function jumpTo(i, centre = true, quiet = false) {
   if (!R.blocks) return;
   i = Math.max(0, Math.min(i, R.blocks.length - 1));
   const here = currentSpot(), last = R.trail[R.trail.length - 1];
   if (!R.visiting) { savePos(); R.visiting = true; R.home = R.saved >= 0 ? R.saved : here.i; }
   const same = last && last.i === here.i && Math.abs(last.f - here.f) < 0.05;
   if (here.i !== i && !same) { R.trail.push(here); if (R.trail.length > 30) R.trail.splice(1, 1); } // the first stop, your place, always stays
-  goTo(i, centre); landed(i); flash(i); drawTrail();
+  goTo(i, centre); landed(i); if (!quiet) flash(i); drawTrail();
 }
 function trailBack() {
   if (!R.trail.length) return;
@@ -5266,11 +5356,12 @@ function settle() {
 }
 function drawTrail() {
   const bar = $("#rtrail"); if (!bar) return;
-  const show = S.screen === "reader" && !!R.blocks && R.visiting && $("#selbar").hidden;
+  const show = S.screen === "reader" && !!R.blocks && (R.visiting || FIND.on) && $("#selbar").hidden;
   bar.hidden = !show; if (!show) return;
   const top = R.trail[R.trail.length - 1], pg = top ? pgLabel(top.i) : "";
   const home = R.trail.length === 1 && top.i === R.home;
-  bar.innerHTML = `${R.trail.length ? `<button class="btn" id="rtback">← ${home ? `Your place${pg ? `, ${pg}` : ""}` : `Back${pg ? ` to ${pg}` : ""}`}</button>` : ""}<button class="btn" id="rthere">Read from here</button>`;
+  const find = FIND.on ? `<div class="findbar" role="group" aria-label="Find"><button class="btn" id="fprev" aria-label="Previous match">‹</button><span class="fcount">“${esc(FIND.q.trim().slice(0, 24))}” ${FIND.k + 1} of ${FIND.hits.length}</span><button class="btn" id="fnext" aria-label="Next match">›</button><button class="btn" id="fclose" aria-label="Stop finding">×</button></div>` : "";
+  bar.innerHTML = find + (R.visiting ? `${R.trail.length ? `<button class="btn" id="rtback">← ${home ? `Your place${pg ? `, ${pg}` : ""}` : `Back${pg ? ` to ${pg}` : ""}`}</button>` : ""}<button class="btn" id="rthere">Read from here</button>` : "");
 }
 function setRS(change) {
   // In pages, the spot is kept from the last turn or jump: re-cutting the pages must not move it, however often the settings change.
@@ -5319,22 +5410,106 @@ async function toggleBookmark() {
 }
 function updateMarkBtn() { const btn = $("#rmark"); if (btn) btn.setAttribute("aria-pressed", bookmarkHere() ? "true" : "false"); }
 
-/* find in this book */
+/* find in this book: matches marked in the text and stepped through one at a time */
 let findQ = "";
-function findHits(q) { return R.blocks ? hitsIn(R.blocks, q, 400) : []; }
+const FIND = { q: "", hits: [], k: -1, on: false };
+// The book as Find reads it: a paragraph and its continuations past printed-page breaks are one run of text, so a phrase
+// the printed page split is still found. Each run keeps where each block's text sits in it, and a folded copy (accents and
+// capitals ignored) with a map back to the original characters.
+function findRuns() {
+  if (R.findRuns && R.findRunsOf === R.blocks) return R.findRuns;
+  const B = R.blocks, n = B.length, used = new Uint8Array(n), runs = [];
+  const textOf = (b) => { const x = plain(b.x || ""); return b.st === "hide" && b.sth ? x.slice(b.sth) : x; };
+  for (let i = 0; i < n; i++) {
+    const b = B[i]; if (used[i] || b.k === "pg" || isHidden(b)) continue;
+    const parts = [i]; used[i] = 1;
+    if (isPara(b)) for (let k = i + 1; ;) {
+      let q = k, brk = false; while (q < n && (B[q].k === "fn" || betweenPages(B[q]))) { if (B[q].k !== "fn") brk = true; q++; }
+      if (!brk || q >= n || !carriesOn(B[q])) break;
+      parts.push(q); used[q] = 1; k = q + 1;
+    }
+    let text = ""; const segs = [];
+    for (const k of parts) { if (text) text += glueAfter(text); const x = textOf(B[k]); segs.push({ i: k, at: text.length, len: x.length, base: B[k].st === "hide" && B[k].sth ? B[k].sth : 0 }); text += x; }
+    let ft = "", fm = [];
+    for (let c = 0; c < text.length; c++) { const ch = text[c], f = ch.charCodeAt(0) < 128 ? ch.toLowerCase() : fold(ch); for (let z = 0; z < f.length; z++) fm.push(c); ft += f; }
+    fm.push(text.length);
+    runs.push({ text, segs, ft, fm });
+  }
+  R.findRuns = runs; R.findRunsOf = B;
+  return runs;
+}
+// Every match of q: the block it starts in, and the stretch of each block it covers (in that block's characters).
+function findHits(q) {
+  const f = fold(q.trim()); if (f.length < 2 || !R.blocks) return [];
+  const hits = [];
+  for (const run of findRuns()) {
+    for (let at = run.ft.indexOf(f); at >= 0 && hits.length < 1000; at = run.ft.indexOf(f, at + f.length)) {
+      const s0 = run.fm[at], e0 = run.fm[at + f.length - 1] + 1, pieces = [];
+      for (let k = 0; k < run.segs.length; k++) {
+        const sg = run.segs[k], end = sg.at + sg.len; // the space joining two blocks belongs to neither
+        const a = Math.max(s0, sg.at), z = Math.min(e0, end); if (a < z) pieces.push({ i: sg.i, from: a - sg.at + sg.base, to: z - sg.at + sg.base });
+      }
+      if (!pieces.length) continue;
+      const a = Math.max(0, s0 - 50), z = Math.min(run.text.length, e0 + 70);
+      hits.push({ i: pieces[0].i, pieces, snip: `${a ? "…" : ""}${esc(run.text.slice(a, s0))}<b>${esc(run.text.slice(s0, e0))}</b>${esc(run.text.slice(e0, z))}${z < run.text.length ? "…" : ""}` });
+    }
+  }
+  return hits;
+}
+// A stretch of block i's text as a range on screen, counting characters the way a selection is measured (offsetIn).
+function rangeFor(i, from, to) {
+  const el = R.els[i]; if (!el || !el.isConnected) return null;
+  const skip = (t) => { const p = t.parentElement; if (p.closest(".mnote, .pgm, .bhid")) return true; const j = p.closest(".bjoin"); return !!j && j !== el && el.contains(j); };
+  const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, { acceptNode: (t) => (skip(t) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) });
+  let pos = +el.dataset.o || 0, started = false, t; const r = document.createRange();
+  while ((t = w.nextNode())) {
+    const L = t.data.length;
+    if (!started && from < pos + L) { r.setStart(t, Math.max(0, from - pos)); started = true; }
+    if (started && to <= pos + L) { r.setEnd(t, Math.max(0, to - pos)); return r; }
+    pos += L;
+  }
+  return null;
+}
+function paintFind() {
+  if (!window.Highlight || !window.CSS || !CSS.highlights) return;
+  if (!FIND.on) { CSS.highlights.delete("find"); CSS.highlights.delete("find-now"); return; }
+  const all = [], now = [];
+  FIND.hits.forEach((h, k) => { for (const p of h.pieces) { const r = rangeFor(p.i, p.from, p.to); if (r) (k === FIND.k ? now : all).push(r); } });
+  CSS.highlights.set("find", new Highlight(...all)); CSS.highlights.set("find-now", new Highlight(...now));
+}
+// Go to match k: its page in Swipe pages, a third of the way down the screen in Scroll.
+function showHit(k, first) {
+  const h = FIND.hits[k]; if (!h) return;
+  FIND.k = k;
+  if (first) jumpTo(h.i, true, true); else { goTo(h.i, true); landed(h.i); }
+  paintFind();
+  const aim = () => {
+    const p = h.pieces[0], r = rangeFor(p.i, p.from, p.to), q = r && r.getClientRects()[0]; if (!q) return;
+    if (isPaged()) { setPage(rectPage(q)); R.pagedSpot = currentSpot(); updatePg(); }
+    else window.scrollBy(0, q.top - Math.max(barH() + 8, window.innerHeight * 0.3));
+  };
+  if (isPaged()) aim(); else requestAnimationFrame(aim); // in Scroll, after the paragraph has been placed (scrollToEl)
+  drawTrail();
+}
+function stepFind(dir) { if (FIND.hits.length) showHit((FIND.k + dir + FIND.hits.length) % FIND.hits.length, false); }
+function endFind() { FIND.on = false; FIND.k = -1; paintFind(); drawTrail(); }
 function findPanel() {
   if (!R.blocks) return;
   openPanel(`<h2>Find in this book</h2>
     <input class="search" id="findq" type="search" placeholder="A word or phrase" value="${esc(findQ)}" autocomplete="off" aria-label="Find in this book">
     <p class="hint" id="findsum"></p>
-    <div class="findres" id="findres"></div>`, (b) => { if (b.dataset.goto) jumpTo(+b.dataset.goto, true); });
+    <div class="findres" id="findres"></div>`, (b) => {
+    if (b.dataset.hit === undefined) return;
+    FIND.on = true; showHit(+b.dataset.hit, true);
+  });
   const root = $("#sheetroot"), inp = $("#findq", root), res = $("#findres", root), sum = $("#findsum", root);
   let tm;
   const run = () => {
     findQ = inp.value; const hits = findHits(findQ);
-    const total = hits.reduce((a, h) => a + h.count, 0), pages = new Set(hits.map((h) => R.pageAt[h.i])).size;
-    sum.textContent = findQ.trim().length < 2 ? "Type at least two letters." : total ? `${total} match${total === 1 ? "" : "es"}${pages > 1 ? ` on ${pages} pages` : ""}.` : "No matches.";
-    res.innerHTML = hits.slice(0, 200).map((h) => `<button class="findhit" data-goto="${h.i}"><span class="fp">${R.pageAt[h.i] ? esc(loc(R.pageAt[h.i])) : ""}</span><span class="fs">${h.snip}</span></button>`).join("") + (hits.length > 200 ? `<p class="hint">Showing the first 200 passages.</p>` : "");
+    FIND.q = findQ; FIND.hits = hits; FIND.k = -1;
+    const pages = new Set(hits.map((h) => R.pageAt[h.i])).size;
+    sum.textContent = findQ.trim().length < 2 ? "Type at least two letters." : hits.length ? `${hits.length}${hits.length >= 1000 ? "+" : ""} match${hits.length === 1 ? "" : "es"}${pages > 1 ? ` on ${pages} pages` : ""}. Tap one to go there; the arrows then step through the rest.` : "No matches.";
+    res.innerHTML = hits.slice(0, 200).map((h, k) => `<button class="findhit" data-hit="${k}"><span class="fp">${R.pageAt[h.i] ? esc(loc(R.pageAt[h.i])) : ""}</span><span class="fs">${h.snip}</span></button>`).join("") + (hits.length > 200 ? `<p class="hint">Showing the first 200. The arrows reach them all.</p>` : "");
   };
   inp.addEventListener("input", () => { clearTimeout(tm); tm = setTimeout(run, 180); });
   run(); inp.focus(); inp.select();
@@ -5353,21 +5528,44 @@ function refreshMarks() {
   }
 }
 
+// Contents, your notes and bookmarks, in one panel with a tab for each. The tab you used last opens next time.
 function tocPanel() {
   if (!R.blocks) return;
-  const names = new Map((S.texts.get(R.tid)?.sections || []).map((s) => [s.id, s.label])), hidden = R.blocks.filter((b) => b.st === "hide").length;
-  const items = R.blocks.map((b, i) => {
+  const tabs = [["contents", "Contents"], ["notes", "Your notes"], ["marks", "Bookmarks"]];
+  const tab = R.tocTab || "contents";
+  openPanel(`<div class="seg toctabs">${tabs.map(([v, l]) => `<button class="segb${v === tab ? " on" : ""}" data-keep="1" data-toctab="${v}">${l}</button>`).join("")}</div><div id="tocbody">${tocBody(tab)}</div>`,
+  (b) => {
+    if (b.dataset.toctab) { R.tocTab = b.dataset.toctab; $("#sheetroot").querySelectorAll("[data-toctab]").forEach((x) => x.classList.toggle("on", x === b)); $("#tocbody").innerHTML = tocBody(R.tocTab); return; }
+    if (b.dataset.nscope) { R.noteScope = b.dataset.nscope; $("#tocbody").innerHTML = tocBody("notes"); return; }
+    if (b.id === "toc-unhide") return showHidden();
+    if (b.dataset.goto) jumpTo(+b.dataset.goto, false, !!b.dataset.quiet);
+  });
+}
+function tocBody(tab) {
+  const B = R.blocks, here = contentAt(currentBlock());
+  if (tab === "marks") {
+    const bms = bookmarksOf(S.texts.get(R.tid)).filter((bm) => bm.at < B.length);
+    const snippet = (i) => { for (let k = i; k < Math.min(B.length, i + 4); k++) if (B[k].k !== "pg") { const x = plain(B[k].x || ""); return x.length > 70 ? x.slice(0, 70) + "…" : x; } return ""; };
+    return bms.length ? `<div class="toc">${bms.map((bm) => `<button class="tocitem bm" data-goto="${bm.at}"><span>${esc(snippet(bm.at))}</span><span class="tp">${bm.page ? esc(loc(bm.page)) : ""}</span></button>`).join("")}</div>`
+      : `<p class="empty">No bookmarks yet. The bookmark button in the toolbar keeps the page you're on.</p>`;
+  }
+  if (tab === "notes") {
+    const sec = R.secAt[here] || "", scope = sec && R.noteScope !== "book" ? "chapter" : "book";
+    const all = notesFor(R.tid).filter(([, n]) => Number.isInteger(n.at) && n.at < B.length).sort(([, a], [, b]) => a.at - b.at || (a.createdAt || 0) - (b.createdAt || 0));
+    const list = scope === "chapter" ? all.filter(([, n]) => (R.secAt[n.at] || "") === sec) : all;
+    const seg = sec ? `<div class="seg nscope">${[["chapter", "This chapter"], ["book", "Whole book"]].map(([v, l]) => `<button class="segb${v === scope ? " on" : ""}" data-keep="1" data-nscope="${v}">${l}</button>`).join("")}</div>` : "";
+    const row = ([id, n]) => `<button class="tocitem nitem k-${esc(n.kind || "passage")}" data-goto="${n.at}" data-quiet=""><span><span class="nk">${esc(KINDS[n.kind] || "Passage")}${n.resolved ? ", resolved" : ""}</span>${esc(noteSnippet(n, 110))}</span><span class="tp">${R.pageAt[n.at] ? esc(loc(R.pageAt[n.at])) : n.page ? esc(loc(n.page)) : ""}</span></button>`;
+    return seg + (list.length ? `<div class="toc">${list.map(row).join("")}</div>` : `<p class="empty">${scope === "chapter" ? "No notes in this chapter yet." : "No notes placed in this book yet."} Select words and choose Highlight or Add a note.</p>`);
+  }
+  const names = new Map((S.texts.get(R.tid)?.sections || []).map((x) => [x.id, x.label])), hidden = B.filter((b) => b.st === "hide").length;
+  const items = B.map((b, i) => {
     if (b.stj || !isTitleRole(roleOf(b))) return "";
-    const label = (roleOf(b) === "chapter" && names.get(b.s)) || titleText(R.blocks, i);
-    return `<button class="tocitem l${titleLevel(b)}" data-goto="${i}"><span>${esc(label)}</span><span class="tp">${R.pageAt[i] ? esc(R.pageAt[i]) : ""}</span></button>`;
+    const label = (roleOf(b) === "chapter" && names.get(b.s)) || titleText(B, i);
+    return `<button class="tocitem l${titleLevel(b)}${i <= here && here < R.chEnd[i] && roleOf(b) === "chapter" ? " here" : ""}" data-goto="${i}"><span>${esc(label)}</span><span class="tp">${R.pageAt[i] ? esc(R.pageAt[i]) : ""}</span></button>`;
   }).join("");
-  const bms = bookmarksOf(S.texts.get(R.tid)).filter((bm) => bm.at < R.blocks.length);
-  const snippet = (i) => { for (let k = i; k < Math.min(R.blocks.length, i + 4); k++) if (R.blocks[k].k !== "pg") { const x = plain(R.blocks[k].x || ""); return x.length > 70 ? x.slice(0, 70) + "…" : x; } return ""; };
-  openPanel(`${bms.length ? `<h2>Bookmarks</h2><div class="toc">${bms.map((bm) => `<button class="tocitem bm" data-goto="${bm.at}"><span>${esc(snippet(bm.at))}</span><span class="tp">${bm.page ? esc(loc(bm.page)) : ""}</span></button>`).join("")}</div>` : ""}
-    <h2>Contents</h2><div class="toc">${items || `<p class="empty">No headings were found in this text.</p>`}</div>
+  return `<div class="toc">${items || `<p class="empty">No headings were found in this text.</p>`}</div>
     <p class="hint">To mark where a chapter starts, select its title in the text and choose Edit.</p>
-    ${hidden ? `<p class="hint">${hidden} running head${hidden === 1 ? " is" : "s are"} hidden. <button class="linkbtn" id="toc-unhide">Show ${hidden === 1 ? "it" : "them"} again</button></p>` : ""}`,
-  (b) => { if (b.id === "toc-unhide") return showHidden(); if (b.dataset.goto) jumpTo(+b.dataset.goto, false); });
+    ${hidden ? `<p class="hint">${hidden} running head${hidden === 1 ? " is" : "s are"} hidden. <button class="linkbtn" id="toc-unhide">Show ${hidden === 1 ? "it" : "them"} again</button></p>` : ""}`;
 }
 
 let selT;
@@ -5737,6 +5935,14 @@ document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden") savePos(); else wakeOn(); // the phone lets go of the screen when the app is hidden
 });
 ["pointerdown", "keydown", "wheel"].forEach((ev) => document.addEventListener(ev, () => { if (S.screen === "reader") wakeOn(); }, { passive: true }));
+$("#rnav-r").addEventListener("input", (e) => { if (!R.blocks) return; R.dragging = true; const i = navBlock(+e.target.value); $("#rnav-where").textContent = navLabel(i); $("#rnav-pct").textContent = `${Math.round(e.target.value / 10)}%`; });
+$("#rnav-r").addEventListener("change", (e) => { if (!R.blocks) return; R.dragging = false; jumpTo(navBlock(+e.target.value), false, true); syncNav(); });
+$("#rnav-pg").addEventListener("keydown", (e) => {
+  if (e.key !== "Enter" || !R.blocks) return;
+  e.preventDefault(); const i = blockForPage(e.target.value);
+  if (i < 0) { toast("That page isn't in this book's page numbers."); return; }
+  e.target.value = ""; e.target.blur(); jumpTo(i, false, true); syncNav();
+});
 // Swipe pages: a tap near the right edge turns forward, near the left edge back; in the middle it shows or hides the
 // toolbar. A tap that ends a selection, or lands on a highlight or a note, does only that.
 let downSel = false;
@@ -5774,11 +5980,16 @@ document.addEventListener("click", (e) => {
   if (b.id === "rback") return back();
   if (b.id === "rtback") return trailBack();
   if (b.id === "rthere") return readFromHere(false);
+  if (b.id === "fprev") return stepFind(-1);
+  if (b.id === "fnext") return stepFind(1);
+  if (b.id === "fclose") return endFind();
   if (b.id === "sellook") return lookupSel();
   if (b.id === "rmark") return toggleBookmark();
   if (b.id === "rfind") return findPanel();
   if (b.id === "raa") return readerSettings();
   if (b.id === "rtoc") return tocPanel();
+  if (b.id === "rpg") return showNav($("#rnav").hidden);
+  if (b.id === "rnav-close") { showBars(false); return showNav(false); }
   if (b.id === "selsave") return saveSel();
   if (b.id === "selhl") return quickHighlight();
   if (b.id === "seledit") return structurePanel();
