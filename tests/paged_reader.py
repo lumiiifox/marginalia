@@ -284,6 +284,35 @@ async def main():
         await page.screenshot(path="/tmp/joined-pages.png")
         await ctx.close()
 
+        # 10 chapters start on a fresh page
+        ctx, page, errs = await open_book(browser, 400)
+        await page.evaluate("""(async () => {
+          const B = [];
+          for (let c = 0; c < 6; c++) {
+            B.push({ k: 'pg', x: String(100 + c) }); B.push({ k: 'h', l: 1, x: 'Chapter ' + (c + 1), s: 'sec' + c });
+            for (let n = 0; n < 7 + c * 3; n++) B.push({ k: 'p', x: 'Chapter ' + (c + 1) + ', paragraph ' + n + '. ' + 'Everywhere it is machines, real ones, with all the necessary couplings and connections. '.repeat(2) });
+          }
+          await put('content', 'ch', B);
+          await put('texts', 'ch', { title: 'Chapters', author: 'Test', hasContent: true, total: B.length, pos: 0, sections: [0,1,2,3,4,5].map((c) => ({ id: 'sec' + c, label: 'Chapter ' + (c + 1) })), status: 'reading', createdAt: 1, updatedAt: 1 });
+        })()""")
+        await page.evaluate("go({ screen: 'library' })"); await page.evaluate("go({ screen: 'reader', textId: 'ch' })"); await page.wait_for_selector(".book .bp"); await page.wait_for_timeout(600)
+        ch = await page.evaluate("""() => { const book = document.querySelector('#book'), W = pageStride(), x0 = book.getBoundingClientRect().left - book.scrollLeft + 24, top0 = book.getBoundingClientRect().top + 18;
+          const out = [];
+          for (let i = 0; i < R.blocks.length; i++) { if (R.blocks[i].k !== 'h') continue;
+            const h = R.els[i].getBoundingClientRect(), mk = R.els[i - 1].getBoundingClientRect(), page = Math.round((mk.left - x0) / W);
+            const prevLast = i > 2 ? screenPagesOf(i - 2)[1] : -1;
+            out.push({ page, prevLast, dTop: Math.round(mk.top - top0), markerAtTop: mk.top - top0 < 16, withHeading: Math.round((h.left - x0) / W) === page }); }
+          return { out, pages: lastPage() + 1 }; }""")
+        o = ch["out"]
+        check(all(x["markerAtTop"] and x["withHeading"] for x in o), f"every chapter starts at the top of a page, its page marker with it (pages {[x['page'] for x in o]}, offset from the top {[x['dTop'] for x in o]} px)")
+        check(all(x["page"] == x["prevLast"] + 1 for x in o[1:]), "the chapter before ends on the page just before: blank space, no blank pages")
+        await page.evaluate("put('notes', 'cn', { textId: 'ch', kind: 'passage', passage: 'Chapter 3', at: [...R.blocks.keys()].find((i) => R.blocks[i].x === 'Chapter 3'), createdAt: 1, updatedAt: 1 })"); await page.wait_for_timeout(300)
+        check(await page.evaluate("document.querySelectorAll('#book .chap').length") == 6, "a highlight on a chapter title keeps its fresh page")
+        await page.evaluate("setRS({ flow: 'scroll' })"); await page.wait_for_timeout(200)
+        check(await page.evaluate("document.querySelectorAll('#book .chap').length") == 0, "Scroll mode is unchanged")
+        check(not errs, "no script errors with chapters")
+        await ctx.close()
+
         # 7 reduced motion
         ctx, page, errs = await open_book(browser, 500, reduced=True, turn="flip")
         await page.evaluate("turnPage(1)")
