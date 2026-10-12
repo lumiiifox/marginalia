@@ -313,6 +313,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .toctabs .segb { flex: 1; text-align: center; }
 .nscope { margin-bottom: 6px; }
 .nitem > span:first-child { display: grid; gap: 2px; }
+.nitem .nlost { font-style: normal; color: var(--warn); text-transform: none; letter-spacing: 0; }
 .nitem .nk { font: 600 12px/1.2 var(--f-ui); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
 .nitem.k-question .nk { color: var(--s3); } .nitem.k-objection .nk { color: var(--s2); } .nitem.k-argument .nk { color: var(--s4); } .nitem.k-gloss .nk { color: var(--s1); }
 .tocitem.here > span:first-child { text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 4px; }
@@ -329,6 +330,11 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .selbar { gap: 8px; flex-wrap: wrap; }
 .selbar .btn { padding-left: 12px; padding-right: 12px; }
 .selbar #selhl { background: var(--paper); }
+.selbar #selmore { background: var(--paper); color: var(--muted); }
+.selcarry { position: fixed; left: 12px; right: 12px; top: calc(10px + env(safe-area-inset-top, 0px)); z-index: 8; display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 14px; border-radius: 10px;
+  background: var(--paper); color: var(--ink); border: 1px solid var(--rule); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22); font: 14px/1.35 var(--f-ui); }
+.selcarry[hidden] { display: none; }
+.selcarry span { flex: 1; }
 
 /* your notes in the margin of the text */
 .mnote { display: block; margin: 0.55em 0 0.35em; padding: 7px 11px 8px; border-left: 3px solid var(--brass); border-radius: 0 6px 6px 0; background: color-mix(in srgb, var(--brass) 9%, var(--paper)); font: 400 15px/1.45 var(--f-ui); color: var(--ink); text-indent: 0; text-align: left; hyphens: manual; cursor: pointer; -webkit-user-select: none; user-select: none; }
@@ -612,7 +618,8 @@ span.bhid { display: inline; }
   </div>
   <div class="rtrail" id="rtrail" hidden></div>
 </div>
-<div class="selbar" id="selbar" hidden><button class="btn" id="sellook" hidden>Look up</button><button class="btn" id="seledit">Edit</button><button class="btn" id="selhl">Highlight</button><button class="btn primary" id="selsave">Add a note</button></div>
+<div class="selcarry" id="selcarry" hidden></div>
+<div class="selbar" id="selbar" hidden><button class="btn" id="sellook" hidden>Look up</button><button class="btn" id="seledit">Edit</button><button class="btn" id="selhl">Highlight</button><button class="btn" id="selmore" hidden>Continue on next page</button><button class="btn primary" id="selsave">Add a note</button></div>
 <div id="sheetroot"></div>
 <div class="toast" id="toast" role="status" hidden></div>
 
@@ -783,7 +790,7 @@ function progressOf(t) {
 let toastT;
 function toast(msg, act) {
   const el = $("#toast"); el.textContent = msg;
-  if (act) { const b = document.createElement("button"); b.className = "toastbtn"; b.textContent = act.label; b.onclick = () => { el.hidden = true; act.run(); }; el.append(b); }
+  for (const a of [].concat(act || [])) { const b = document.createElement("button"); b.className = "toastbtn"; b.textContent = a.label; b.onclick = () => { el.hidden = true; a.run(); }; el.append(b); }
   el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { el.hidden = true; }, act ? 8000 : 3200);
 }
 const stamp = () => new Date().toISOString().slice(0, 10);
@@ -832,7 +839,8 @@ const VALID = {
   texts: (v) => isObj(v) && isS(v.title) && optStr(v.author) && optStr(v.edition) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
     && optArr(v.bookmarks, (x) => isObj(x) && Number.isInteger(x.at)) && (v.summaries === undefined || isObj(v.summaries)) && (v.pos === undefined || Number.isInteger(v.pos)),
   notes: (v) => isObj(v) && isS(v.textId) && optStr(v.kind) && ["passage", "gloss", "original", "conclusion", "sectionId"].every((k) => optStr(v[k]))
-    && (v.page === undefined || isS(v.page) || typeof v.page === "number") && optArr(v.links, isS) && optArr(v.premises, isS) && (v.at === undefined || Number.isInteger(v.at)),
+    && (v.page === undefined || isS(v.page) || typeof v.page === "number") && optArr(v.links, isS) && optArr(v.premises, isS) && (v.at === undefined || Number.isInteger(v.at))
+    && (v.anchor === undefined || (isObj(v.anchor) && ["a", "ao", "b", "bo"].every((k) => Number.isInteger(v.anchor[k])) && optStr(v.anchor.pre) && optStr(v.anchor.suf))),
   drafts: (v) => isObj(v) && optStr(v.title) && Array.isArray(v.items) && v.items.every((x) => isObj(x) && (x.t === "note" ? isS(x.id) : (x.t === "h" || x.t === "p") && isS(x.x))),
   compares: (v) => isObj(v) && optStr(v.title) && optStr(v.q) && optStr(v.verdict) && Array.isArray(v.cols) && v.cols.every((x) => isObj(x) && isS(x.id) && isS(x.label) && optStr(x.src))
     && Array.isArray(v.rows) && v.rows.every((x) => isObj(x) && isS(x.id) && isS(x.q)) && (v.cells === undefined || (isObj(v.cells) && Object.values(v.cells).every((c) => isObj(c) && optStr(c.x) && optArr(c.notes, isS)))),
@@ -4065,7 +4073,7 @@ function lookupPanel(s) {
       catch (e) { toast(failMsg(e)); }
       return;
     }
-    if (b.id === "lk-note") noteSheet(null, { passage: s.text, page: s.page, sectionId: s.sec, at: s.i, kind: "passage" });
+    if (b.id === "lk-note") noteSheet(null, { passage: s.text, page: s.page, sectionId: s.sec, at: s.i, kind: "passage", ...(s.anchor && unspace(s.anchor && quoteOf(R.blocks || [], s.anchor)) === unspace(s.text) ? { anchor: s.anchor } : {}) });
     else if (b.dataset.lkjump) jumpTo(+b.dataset.lkjump, true);
     else if (b.dataset.jump) jumpToNote(b.dataset.jump);
     else if (b.id === "lk-all") go({ screen: "concord", q: s.text });
@@ -4619,6 +4627,7 @@ function noteSheet(nid, preset) {
     const keep = links.filter((x) => S.notes.has(x));
     if (keep.length) data.links = keep; else delete data.links;
     if (Number.isInteger(n.at)) data.at = n.at;
+    if (n.anchor && !nid) data.anchor = n.anchor;
     delete data.example;
     await put("notes", nid || gid(), data);
     const cur = S.texts.get(tid);
@@ -4989,15 +4998,15 @@ function inlineHTML(x, marks) {
     const map = []; let ps = "";
     for (let k = 0; k < raw.length; k++) { const c = raw[k]; if (c === I0 || c === I1) continue; map.push(k); ps += c; }
     const ins = [];
-    for (const [id, p] of marks) {
-      const want = p.replace(/\s+/g, " ").trim(); if (!want) continue;
-      let s = ps.indexOf(want), len = want.length;
-      for (const cut of [60, 30, 15]) {
-        if (s >= 0 || cut >= want.length) continue;
-        s = ps.indexOf(want.slice(0, cut));
-        if (s >= 0) len = Math.min(want.length, ps.length - s);
+    for (const [id, p, from, to] of marks) {
+      let s, len;
+      if (Number.isInteger(from)) { s = Math.max(0, Math.min(from, ps.length)); len = Math.min(to, ps.length) - s; }
+      else { // a passage with no place worked out: found by its words
+        const want = p.replace(/\s+/g, " ").trim(); if (!want) continue;
+        s = ps.indexOf(want); len = want.length;
+        for (const cut of [60, 30, 15]) { if (s >= 0 || cut >= want.length) continue; s = ps.indexOf(want.slice(0, cut)); if (s >= 0) len = Math.min(want.length, ps.length - s); }
       }
-      if (s < 0 || !len) continue;
+      if (s < 0 || len <= 0) continue;
       ins.push([map[s], "\u0003" + id + "\u0005"], [map[s + len - 1] + 1, "\u0004"]);
     }
     ins.sort((a, b) => b[0] - a[0]);
@@ -5019,10 +5028,10 @@ function inlineHTML(x, marks) {
 function marginHTML(marks, text) {
   if (!marks) return "";
   const ps = plain(text).replace(/\s+/g, " ");
-  return marks.map(([id, p]) => {
+  return marks.map(([id, p, from, to, first]) => {
     const n = S.notes.get(id); if (!n) return "";
-    const want = String(p || "").replace(/\s+/g, " ").trim().slice(0, 15);
-    if (want && ps.indexOf(want) < 0) return "";
+    if (Number.isInteger(from)) { if (!first) return ""; }
+    else { const want = String(p || "").replace(/\s+/g, " ").trim().slice(0, 15); if (want && ps.indexOf(want) < 0) return ""; }
     const body = n.gloss || (n.kind === "argument" && n.conclusion ? `∴ ${n.conclusion}` : "");
     if (!body && !n.original) return "";
     const clip = (x, k) => (x.length > k ? x.slice(0, k - 1) + "…" : x);
@@ -5052,18 +5061,72 @@ function blockHTML(b, i, marks) {
   if (b.k === "fn") return `<p class="bfn" data-i="${i}">${x}</p>`;
   return `<p class="bp${b.k === "c" ? " cont" : ""}" data-i="${i}">${x}</p>`;
 }
+/* Where a highlight sits. A note made from a selection keeps an anchor: the block and character it starts at (a, ao), the
+   block and character it ends at (b, bo, exclusive), and a few words either side (pre, suf). Characters are counted in the
+   block's text without its italics markers. If the text there no longer reads as the passage (the paragraph was corrected,
+   the passage edited), the passage is looked for nearby, the words either side settling between several matches. Older
+   notes, kept with only a block and the passage, are placed the same way, so a passage running into the next paragraph is
+   marked there too. A note that can't be placed is left unmarked and flagged in Your notes. */
+const unspace = (x) => String(x || "").replace(/\s+/g, "");
+const markable = (b) => b && b.k !== "pg" && !isHidden(b);
+function quoteOf(B, A) {
+  const out = [];
+  for (let k = A.a; k <= A.b && k < B.length; k++) { if (!markable(B[k])) continue; const x = plain(B[k].x || ""); out.push(x.slice(k === A.a ? A.ao : 0, k === A.b ? A.bo : x.length)); }
+  return out.join(" ");
+}
+function placeNote(n, B) {
+  const want = unspace(n.passage), at = n.at, A = n.anchor;
+  if (!want || !Number.isInteger(at) || at < 0 || at >= B.length) return null;
+  if (A && Number.isInteger(A.a) && A.a === at && A.b >= A.a && A.b < B.length && unspace(quoteOf(B, A)) === want) return { a: A.a, ao: A.ao, b: A.b, bo: A.bo };
+  // the text near the note's block, without spaces, each character remembering its block and place
+  const lo = Math.max(0, at - 2), hi = Math.min(B.length - 1, at + 3 + Math.ceil(want.length / 400));
+  let txt = ""; const blk = [], off = [];
+  for (let k = lo; k <= hi; k++) { if (!markable(B[k])) continue; const x = plain(B[k].x || ""); for (let c = 0; c < x.length; c++) { const ch = x[c]; if (ch === " " || ch === "\n" || ch === "\t" || ch === " ") continue; txt += ch; blk.push(k); off.push(c); } }
+  const pre = A ? unspace(A.pre).slice(-16) : "", suf = A ? unspace(A.suf).slice(0, 16) : "";
+  const spot = (p, len) => ({ a: blk[p], ao: off[p], b: blk[p + len - 1], bo: off[p + len - 1] + 1 });
+  let best = null, bestScore = -Infinity;
+  for (let p = txt.indexOf(want); p >= 0; p = txt.indexOf(want, p + 1)) {
+    let score = -1000 * Math.abs(blk[p] - at) - (A ? Math.abs(off[p] - A.ao) : 0);
+    if (pre && txt.slice(Math.max(0, p - pre.length), p) === pre) score += 4000;
+    if (suf && txt.slice(p + want.length, p + want.length + suf.length) === suf) score += 4000;
+    if (score > bestScore) { bestScore = score; best = spot(p, want.length); }
+  }
+  if (best) return best;
+  // only the start of the passage is still there: mark from it to the end of its paragraph, as before
+  for (const cut of [60, 30, 15]) {
+    if (cut >= want.length) continue;
+    const p = txt.indexOf(want.slice(0, cut)); if (p < 0) continue;
+    let e = p; while (e + 1 < txt.length && blk[e + 1] === blk[p] && e - p + 1 < want.length) e++;
+    return spot(p, e - p + 1);
+  }
+  return null;
+}
+// Highlights by block: [note id, passage, from, to, first] (from and to in the block's characters; first: the passage starts here).
+const PLACED = { B: null, m: new Map() };
+function placed(id, n, B) {
+  if (PLACED.B !== B) { PLACED.B = B; PLACED.m = new Map(); }
+  const key = [n.at, n.passage, n.anchor ? [n.anchor.a, n.anchor.ao, n.anchor.b, n.anchor.bo].join(",") : ""].join("\u0006"), c = PLACED.m.get(id);
+  if (c && c.key === key) return c.A;
+  const A = placeNote(n, B); PLACED.m.set(id, { key, A }); return A;
+}
 function marksByBlock(tid) {
-  const m = new Map();
-  for (const [id, n] of S.notes) if (n.textId === tid && Number.isInteger(n.at) && n.passage) { if (!m.has(n.at)) m.set(n.at, []); m.get(n.at).push([id, n.passage]); }
+  const m = new Map(), B = R.tid === tid ? R.blocks : S.content.get(tid);
+  const add = (k, e) => { if (!m.has(k)) m.set(k, []); m.get(k).push(e); };
+  for (const [id, n] of S.notes) {
+    if (n.textId !== tid || !Number.isInteger(n.at) || !n.passage) continue;
+    const A = B && placed(id, n, B);
+    if (!A) continue;
+    for (let k = A.a; k <= A.b; k++) { if (!markable(B[k])) continue; add(k, [id, n.passage, k === A.a ? A.ao : 0, k === A.b ? A.bo : plain(B[k].x || "").length, k === A.a]); }
+  }
   return m;
 }
-const sigOf = (l) => (l ? l.map(([id, p]) => { const n = S.notes.get(id) || {}; return [id, p, n.kind, n.gloss, n.conclusion, n.original, n.resolved ? 1 : 0].join("\u0006"); }).sort().join("|") : "");
+const sigOf = (l) => (l ? l.map(([id, p, f, t, first]) => { const n = S.notes.get(id) || {}; return [id, p, f, t, first ? 1 : 0, n.kind, n.gloss, n.conclusion, n.original, n.resolved ? 1 : 0].join("\u0006"); }).sort().join("|") : "");
 
 function resetReader() {
   if (R.tid && R.blocks) SESS.set(R.tid, { visiting: R.visiting, home: R.home, trail: [...R.trail], landed: R.landed, landedAt: R.landedAt });
   if (R.flip) { cancelAnimationFrame(R.flip.raf); R.flip = null; for (const el of [$("#flip"), $("#undershade")]) el.classList.remove("on"); }
   const tw = $("#flipbook"); if (tw) { tw.innerHTML = ""; tw.dataset.key = ""; }
-  $("#rnav").hidden = true; R.dragging = false;
+  $("#rnav").hidden = true; R.dragging = false; R.selCarry = null; drawCarry();
   R.visiting = false; R.home = null; R.trail = []; R.pagedSpot = null; R.win = null; FIND.on = false; FIND.hits = []; FIND.k = -1; paintFind(); const tr = $("#rtrail"); if (tr) tr.hidden = true;
   R.tid = null; R.blocks = null; R.els = []; R.tops = []; R.sig = new Map(); R.saved = -1; R.sel = null; $("#book").innerHTML = ""; $("#selbar").hidden = true; }
 
@@ -5554,7 +5617,7 @@ function tocBody(tab) {
     const all = notesFor(R.tid).filter(([, n]) => Number.isInteger(n.at) && n.at < B.length).sort(([, a], [, b]) => a.at - b.at || (a.createdAt || 0) - (b.createdAt || 0));
     const list = scope === "chapter" ? all.filter(([, n]) => (R.secAt[n.at] || "") === sec) : all;
     const seg = sec ? `<div class="seg nscope">${[["chapter", "This chapter"], ["book", "Whole book"]].map(([v, l]) => `<button class="segb${v === scope ? " on" : ""}" data-keep="1" data-nscope="${v}">${l}</button>`).join("")}</div>` : "";
-    const row = ([id, n]) => `<button class="tocitem nitem k-${esc(n.kind || "passage")}" data-goto="${n.at}" data-quiet=""><span><span class="nk">${esc(KINDS[n.kind] || "Passage")}${n.resolved ? ", resolved" : ""}</span>${esc(noteSnippet(n, 110))}</span><span class="tp">${R.pageAt[n.at] ? esc(loc(R.pageAt[n.at])) : n.page ? esc(loc(n.page)) : ""}</span></button>`;
+    const row = ([id, n]) => `<button class="tocitem nitem k-${esc(n.kind || "passage")}" data-goto="${n.at}" data-quiet=""><span><span class="nk">${esc(KINDS[n.kind] || "Passage")}${n.resolved ? ", resolved" : ""}${n.passage && !placed(id, n, B) ? `<em class="nlost"> · not found in the text</em>` : ""}</span>${esc(noteSnippet(n, 110))}</span><span class="tp">${R.pageAt[n.at] ? esc(loc(R.pageAt[n.at])) : n.page ? esc(loc(n.page)) : ""}</span></button>`;
     return seg + (list.length ? `<div class="toc">${list.map(row).join("")}</div>` : `<p class="empty">${scope === "chapter" ? "No notes in this chapter yet." : "No notes placed in this book yet."} Select words and choose Highlight or Add a note.</p>`);
   }
   const names = new Map((S.texts.get(R.tid)?.sections || []).map((x) => [x.id, x.label])), hidden = B.filter((b) => b.st === "hide").length;
@@ -5574,7 +5637,7 @@ function checkSel() {
   const bar = $("#selbar");
   if (S.screen !== "reader" || !R.blocks) { bar.hidden = true; return; }
   const sel = window.getSelection();
-  if (!sel || sel.isCollapsed || !sel.rangeCount) { bar.hidden = true; drawTrail(); return; }
+  if (!sel || sel.isCollapsed || !sel.rangeCount) { bar.hidden = true; drawTrail(); drawCarry(); return; }
   const r = sel.getRangeAt(0), book = $("#book");
   if (!book.contains(r.commonAncestorContainer)) { bar.hidden = true; drawTrail(); return; }
   const text = selectionText(r);
@@ -5584,10 +5647,39 @@ function checkSel() {
   const a = R.pageAt[i] || "", b = R.pageAt[j] || "";
   const page = a && b && a !== b ? `${a}–${b}` : a;
   R.sel = { text, i, j, si: offsetIn(i, r.startContainer, r.startOffset), ej: offsetIn(j, r.endContainer, r.endOffset), page, sec: R.secAt[i] || "" };
+  // a selection begun on an earlier page (Continue on next page) runs from where that one started
+  const C = R.selCarry;
+  if (C && (j > C.i || (j === C.i && R.sel.ej > C.si))) {
+    const A = { a: C.i, ao: C.si, b: j, bo: R.sel.ej ?? plain(R.blocks[j].x || "").length };
+    const pa = R.pageAt[C.i] || "", pb = R.pageAt[j] || "";
+    Object.assign(R.sel, { i: C.i, si: C.si, text: quoteOf(R.blocks, A).replace(/\s+/g, " ").trim(), page: pa && pb && pa !== pb ? `${pa}–${pb}` : pa, sec: C.sec });
+  }
+  R.sel.anchor = selAnchor(R.sel);
+  $("#selmore").hidden = !isPaged();
   $("#selsave").textContent = "Add a note";
-  $("#sellook").hidden = !(text.length <= 48 && text.split(/\s+/).length <= 4);
-  bar.hidden = false; drawTrail();
+  $("#sellook").hidden = !(R.sel.text.length <= 48 && R.sel.text.split(/\s+/).length <= 4);
+  bar.hidden = false; drawTrail(); drawCarry();
 }
+function selAnchor(s) {
+  if (!R.blocks || !Number.isInteger(s.si) || !Number.isInteger(s.ej) || !markable(R.blocks[s.i]) || !markable(R.blocks[s.j])) return null;
+  let b = s.j, bo = s.ej;
+  while (b > s.i && (!markable(R.blocks[b]) || bo === 0)) { b--; bo = plain(R.blocks[b].x || "").length; } // ends at the start of the next one
+  const xa = plain(R.blocks[s.i].x || ""), xb = plain(R.blocks[b].x || "");
+  return { a: s.i, ao: s.si, b, bo, pre: xa.slice(Math.max(0, s.si - 32), s.si), suf: xb.slice(bo, bo + 32) };
+}
+// Continue on next page: the passage starts here and is finished on the next page.
+function carrySel() {
+  const s = R.sel; if (!s || !Number.isInteger(s.si)) return;
+  R.selCarry = { i: s.i, si: s.si, sec: s.sec, page: s.page };
+  try { window.getSelection().removeAllRanges(); } catch {}
+  $("#selbar").hidden = true; turnPage(1); drawCarry();
+}
+function drawCarry() {
+  const el = $("#selcarry"); if (!el) return;
+  const C = R.selCarry; el.hidden = !C || S.screen !== "reader" || !$("#selbar").hidden;
+  if (C) el.innerHTML = `<span>Select where the passage ends. It starts on ${esc(pgLabel(C.i) || "the page before")}.</span><button class="btn" id="selcarryx">Cancel</button>`;
+}
+const endCarry = () => { R.selCarry = null; drawCarry(); };
 // How far into block k's text (in characters, italics markers left out) a point of the selection is.
 function offsetIn(k, node, off) {
   const el = R.els[k]; if (!el || !el.contains(node)) return null;
@@ -5834,9 +5926,10 @@ function saveSel() {
   const s = R.sel; if (!s) return;
   $("#selbar").hidden = true;
   try { window.getSelection().removeAllRanges(); } catch {}
-  noteSheet(null, { passage: s.text, page: s.page, sectionId: s.sec, at: s.i, kind: "passage" });
+  endCarry();
+  noteSheet(null, { passage: s.text, page: s.page, sectionId: s.sec, at: s.i, kind: "passage", ...(s.anchor ? { anchor: s.anchor } : {}) });
 }
-["mousedown", "pointerdown"].forEach((ev) => ["#selsave", "#selhl", "#sellook", "#seledit"].forEach((id) => $(id).addEventListener(ev, (e) => e.preventDefault())));
+["mousedown", "pointerdown"].forEach((ev) => ["#selsave", "#selhl", "#sellook", "#seledit", "#selmore"].forEach((id) => $(id).addEventListener(ev, (e) => e.preventDefault())));
 // The selected words, leaving out any of your notes shown in the margin.
 function selectionText(r) {
   const frag = r.cloneContents();
@@ -5847,12 +5940,16 @@ function selectionText(r) {
 // One tap: save the selection as a passage, no sheet. Tap the highlight later to add a note.
 async function quickHighlight() {
   const s = R.sel; if (!s || !R.tid) return;
-  $("#selbar").hidden = true;
+  $("#selbar").hidden = true; endCarry();
   try { window.getSelection().removeAllRanges(); } catch {}
+  const id = gid(), note = { textId: R.tid, kind: "passage", passage: s.text, page: s.page, sectionId: s.sec, at: s.i, gloss: "", createdAt: Date.now(), updatedAt: Date.now() };
+  if (s.anchor) note.anchor = s.anchor;
   try {
-    await put("notes", gid(), { textId: R.tid, kind: "passage", passage: s.text, page: s.page, sectionId: s.sec, at: s.i, gloss: "", createdAt: Date.now(), updatedAt: Date.now() });
+    await put("notes", id, note);
     const t = S.texts.get(R.tid); if (t) put("texts", R.tid, { ...t, activeAt: Date.now() }).catch(() => {});
-    toast("Highlighted. Tap it to add a note.");
+    // the toast offers the kinds you'd mark straight away, and Undo; tap the highlight later for the rest
+    const kind = (k, label) => ({ label, run: async () => { const n = S.notes.get(id); if (!n) return; try { await put("notes", id, { ...n, kind: k, updatedAt: Date.now() }); toast(`Marked as ${label.toLowerCase()}.`, { label: "Undo", run: () => put("notes", id, { ...S.notes.get(id), kind: "passage", updatedAt: Date.now() }).catch(() => {}) }); } catch (e) { toast(failMsg(e)); } } });
+    toast("Highlighted.", [kind("question", "Question"), kind("objection", "Objection"), { label: "Undo", run: () => del("notes", id).then(() => toast("Highlight removed.")).catch((e) => toast(failMsg(e))) }]);
   } catch (e) { toast(failMsg(e)); }
 }
 
@@ -5992,6 +6089,8 @@ document.addEventListener("click", (e) => {
   if (b.id === "rnav-close") { showBars(false); return showNav(false); }
   if (b.id === "selsave") return saveSel();
   if (b.id === "selhl") return quickHighlight();
+  if (b.id === "selmore") return carrySel();
+  if (b.id === "selcarryx") return endCarry();
   if (b.id === "seledit") return structurePanel();
   if (b.id === "more") return moreMenu();
   if (b.dataset.branch) return go({ screen: "branches", focus: b.dataset.branch });
