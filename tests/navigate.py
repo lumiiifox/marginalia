@@ -7,7 +7,8 @@ Made-up book only, phone-sized touch screen. Checks that:
   3. the slider moves through the book by distance, shows chapters as ticks, and the jump can be undone with Back;
      Go to page takes a printed page number (roman too, or the nearest page before);
   4. the foot of the page counts the pages left in the chapter, down to its last page;
-  5. Contents has tabs: the chapter you're in, your notes (this chapter or the whole book, tap to go there), bookmarks.
+  5. Contents has tabs: the chapter you're in, your notes (this chapter or the whole book, tap to go there), bookmarks;
+  6. Search all books finds the same phrase split by the printed page, and leaves out running heads marked hidden.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -154,6 +155,17 @@ async def main():
         await page.evaluate("showNav(true)"); await page.wait_for_timeout(200)
         check(not await page.evaluate("document.querySelector('#rnav').hidden"), "the page number in the toolbar opens the slider in Scroll mode")
         check(not errs, "no script errors in Scroll mode" + (f": {errs[:3]}" if errs else ""))
+
+        # 6 Search all books
+        await page.evaluate("""() => { const B = S.content.get('v'); B.splice(2, 0, { k: 'p', x: 'PLATEAUS LOVE OF LIFE', st: 'hide' }); return put('content', 'v', B); }""")
+        await page.evaluate("go({ screen: 'concord' })"); await page.fill("#cq", "love of life"); await page.wait_for_timeout(1200)
+        res = await page.evaluate("() => { const r = CONC.results.find((x) => x.tid === 'v'); return r ? { count: r.count, snip: r.hits[0].snip, at: r.hits[0].i } : null; }")
+        check(res and res["count"] == 20 and "<b>love of life</b>" in res["snip"], f"Search all books finds the phrase across the page break, as Find does ({res and res['count']}, {res and res['snip'][-60:]!r})")
+        await page.fill("#cq", "etre is not"); await page.wait_for_timeout(1200)
+        check(await page.evaluate("CONC.results.find((x) => x.tid === 'v').count") == 20, "and still ignores accents and capitals")
+        await page.fill("#cq", "plateaus love"); await page.wait_for_timeout(1200)
+        check(not await page.evaluate("CONC.results.some((x) => x.tid === 'v')"), "a running head marked hidden isn't searched")
+        check(not errs, "no script errors in Search all books" + (f": {errs[:3]}" if errs else ""))
         await ctx.close()
         await browser.close()
 
