@@ -511,6 +511,8 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 #reader.paged-reader.justify :is(#book, #flipbook) :is(.bp, .bq, .bfn) { text-align: justify; text-align-last: start; hyphens: auto; -webkit-hyphens: auto; text-wrap: pretty; }
 #reader.paged-reader:not(.justify) :is(#book, #flipbook) :is(.bp, .bq) { text-wrap: pretty; }
 #reader.paged-reader :is(#book, #flipbook) .bh { break-after: avoid; break-inside: avoid; text-wrap: balance; }
+#reader.paged-reader :is(#book, #flipbook) .chap { break-before: column; }
+#reader.paged-reader :is(#book, #flipbook) .chap.bh, #reader.paged-reader :is(#book, #flipbook) .chap + .bh { margin-top: 0.4em; }
 #reader.paged-reader :is(#book, #flipbook) :is(.bp, .bq) { orphans: 2; widows: 2; }
 .pgm { display: inline-block; text-indent: 0; margin: 0 0 0 0.4em; padding: 0 0 0 0.3em; border-left: 1px solid var(--rule); font: 500 0.58em/1 var(--f-ui);
   letter-spacing: 0.04em; color: var(--muted); vertical-align: 0.15em; user-select: none; -webkit-user-select: none; }
@@ -4714,12 +4716,25 @@ function groupHTML(L, marks) {
   }
   return `<p class="bp${B[L].k === "c" ? " cont" : ""}" data-i="${L}">${html}${notes}</p>`;
 }
+// Chapters (the book's sections, from its table of contents or its headings) start on a fresh page in Swipe pages; the
+// rest of the last page of the chapter before stays blank. A printed page marker or a part title just before the
+// chapter title goes with it.
+function markChapters(a, b) {
+  const B = R.blocks; R.chap = new Set();
+  for (let i = a; i < b; i++) {
+    if (B[i].k !== "h" || !B[i].s) continue;
+    let j = i; while (j - 1 >= a && (B[j - 1].k === "pg" || (B[j - 1].k === "h" && !B[j - 1].s))) j--;
+    R.chap.add(j);
+    const el = R.els[j] && R.els[j].closest("#book > *"); if (el) el.classList.add("chap");
+  }
+}
 // Draw block i again (new highlights or notes, an edited paragraph), with the paragraph it was joined to, if any.
 function rerenderBlock(i, marks) {
   const L = (R.lead && R.lead.get(i)) ?? i, joined = R.grp && R.grp.has(L);
   if (!R.els[L]) return;
   const tmp = document.createElement("div"); tmp.innerHTML = joined ? groupHTML(L, marks) : blockHTML(R.blocks[L], L, marks.get(L));
   const el = tmp.firstElementChild; R.els[L].replaceWith(el); R.els[L] = el;
+  if (R.chap && R.chap.has(L) && RS.flow === "pages") el.classList.add("chap");
   if (joined) { const g = R.grp.get(L); for (const m of [...g.pre, ...g.parts]) R.els[m] = el.querySelector(`[data-i="${m}"]`); }
   R.dirty = true; R.ver = (R.ver || 0) + 1;
 }
@@ -4731,6 +4746,7 @@ function renderBook(center) {
     const plan = pagedPlan(a, b); R.grp = plan.grp; R.lead = plan.lead; R.order = plan.order;
     book.innerHTML = plan.units.map((i) => (plan.grp.has(i) ? groupHTML(i, marks) : blockHTML(R.blocks[i], i, marks.get(i)))).join("");
     book.querySelectorAll("[data-i]").forEach((el) => { R.els[+el.dataset.i] = el; });
+    markChapters(a, b);
   } else {
     R.grp = new Map(); R.lead = new Map(); R.order = null;
     book.innerHTML = R.blocks.slice(a, b).map((x, k) => blockHTML(x, a + k, marks.get(a + k))).join("");
