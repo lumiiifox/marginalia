@@ -12,7 +12,7 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - One logical change per commit, with a plain message saying what changed for the reader.
 - Test before pushing: run `python3 tests/smoke.py` (every screen at phone and desktop width, the reader, and a full backup → wipe → restore round trip). Add a check to it when a change adds a screen or a stored field.
 - After any change to PDF import, also run `python3 tests/pdf_import.py` (generated books: headings, page order, broken words, a scan-like book). `python3 tests/pdf_import.py some.pdf` shows what the parser makes of a real book, for checking a bad import; real books stay out of the repo.
-- After any change to the reader, also run `python3 tests/paged_reader.py` (Swipe pages: gestures, alignment, flips, joined paragraphs, chapters) `python3 tests/structure.py` (marking chapters, headings, running heads and title pages with Edit) `python3 tests/comfort.py` (tap to turn, the hidden toolbar, the screen kept on, status-bar colours, Scroll mode on a long book) and `python3 tests/navigate.py` (Find with marks and arrows, the slider, Go to page, pages left in the chapter, the Contents tabs).
+- After any change to the reader, also run `python3 tests/paged_reader.py` (Swipe pages: gestures, alignment, flips, joined paragraphs, chapters) `python3 tests/structure.py` (marking chapters, headings, running heads and title pages with Edit) `python3 tests/comfort.py` (tap to turn, the hidden toolbar, the screen kept on, status-bar colours, Scroll mode on a long book) `python3 tests/navigate.py` (Find with marks and arrows, the slider, Go to page, pages left in the chapter, the Contents tabs) and `python3 tests/highlights.py` (highlights on the exact words, across paragraphs and pages, after corrections; Continue on next page).
 - This session can't delete remote branches; the repo is set to delete merged PR branches automatically (if not, tell the owner).
 
 ## Rules
@@ -36,3 +36,7 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
   content blocks: `st` (the role), `sth` (only the first sth characters are the title or running head), `stj` (continues the
   title above). `roleOf(b)` reads it; a chapter keeps its section id in `b.s`, and `t.sections` follows the chapter blocks in
   order (`sectionsFor`). Block indices never change, since notes, bookmarks and reading positions point at them.
+- A note made from a selection keeps `anchor: {a, ao, b, bo, pre, suf}`: start block and character, end block and character
+  (exclusive), and the words either side; characters are counted in the block's text without italics markers. `placeNote`
+  checks the anchor still reads as the passage and otherwise finds the passage near `at` (older notes have no anchor and are
+  placed the same way). `marksByBlock` turns placed notes into per-block ranges.
