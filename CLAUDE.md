@@ -35,6 +35,8 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - Data: `GLOSSARY` (large), `BRANCHES`, `LINKS`.
 - Quiz yourself (`quizPanel`, from the glossary and the home screen's glossary section): questions made from `allTerms()` definitions
   (the term blanked out by `maskTerm`) and `THINKERS` key works (`worksOf` leaves out works by other authors); nothing is stored.
+- Thinkers' timeline (glossary → Thinkers → Timeline, `S.tl`): `lifeSpan` reads a thinker's dates line (BCE, centuries, "b. 1929"),
+  `timelineHTML` draws each period in `TL_ERAS` on its own scale; `contemporariesOf` (lives overlapping 20+ years) is on the thinker card.
 - Reader settings live in `localStorage` under `mg-reader`; other small preferences use `mg-*` keys (`mg-dict`: Wiktionary definitions kept for offline).
 - A text's `lang` (optional, e.g. "fr") sets the reader's `lang` for hyphenation; without it the language is guessed from the text (`guessLang`).
 - Book structure the owner marks in the reader (Edit → chapter title, heading, running head, title page, block quote, plain text) is stored on

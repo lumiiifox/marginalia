@@ -530,6 +530,20 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .thinkrow:first-child { border-top: 0; }
 .thinkrow b { font: 500 18px/1.3 var(--f-text); color: var(--link); }
 .thinkrow .ty { font-size: 13px; color: var(--muted); align-self: baseline; white-space: nowrap; }
+/* thinkers on a timeline: each period on its own scale */
+.tl-era { margin: 18px 0 4px; }
+.tl-era h3 { font: 700 19px/1.25 var(--f-text); margin: 0; }
+.tl-era .hint { font-size: 13px; }
+.tl-scale { position: relative; height: 18px; margin: 6px 0 2px; border-bottom: 1px solid var(--rule); font: 500 11px/1 var(--f-ui); color: var(--muted); }
+.tl-scale span { position: absolute; bottom: 4px; transform: translateX(-50%); white-space: nowrap; }
+.tl-scale span:first-child { transform: none; }
+.tl-row { display: block; width: 100%; text-align: left; background: none; border: 0; padding: 6px 0 7px; position: relative;
+  background-image: linear-gradient(to right, color-mix(in srgb, var(--rule) 45%, transparent) 1px, transparent 1px); background-size: var(--tick) 100%; }
+.tl-row .tl-n { display: flex; gap: 8px; align-items: baseline; font: 500 15.5px/1.3 var(--f-text); color: var(--link); }
+.tl-row .tl-n span { font: 400 12px/1 var(--f-ui); color: var(--muted); white-space: nowrap; }
+.tl-bar { display: block; height: 7px; margin-top: 4px; border-radius: 4px; background: var(--leather); opacity: 0.8; min-width: 6px; }
+.tl-bar.approx { opacity: 0.4; }
+.tl-bar.open { background: linear-gradient(to right, var(--leather) 70%, transparent); }
 .thinkrow .td { grid-column: 1 / -1; font-size: 14px; color: var(--muted); }
 .authlink { justify-self: start; margin-top: 2px; }
 .sheet .tconn { padding-top: 2px; }
@@ -3959,6 +3973,53 @@ function termHTML(g, tmap) {
   </details>`;
 }
 const thinkerMatches = (p, q) => fold(p.n).includes(q) || fold(p.sn).includes(q);
+// A life as years (BCE negative) for the timeline: { a, b, approx, open }, or null with no dates. Centuries ("8th c. CE",
+// "early 5th c. BCE") are approximate; "b. 1929" runs to the present, as it isn't known here whether they're living.
+function lifeSpan(y) {
+  if (!y) return null;
+  const bce = /BCE/.test(y);
+  const r = y.match(/(\d+)\s*[–-]\s*(\d+)(?!\w*\s*c\.)/), c = y.match(/(\d+)(?:st|nd|rd|th)(?:[–-](\d+)(?:st|nd|rd|th))?\s*c\./), born = y.match(/^b\.\s*(\d+)/);
+  if (c) {
+    const c1 = +c[1], c2 = c[2] ? +c[2] : c1;
+    let a = bce ? -c1 * 100 : (c1 - 1) * 100, b = bce ? -(c2 - 1) * 100 : c2 * 100;
+    if (/early/.test(y)) b = a + 40; else if (/late/.test(y)) a = b - 40;
+    return { a, b, approx: true, open: false };
+  }
+  if (r) return { a: bce ? -r[1] : +r[1], b: bce ? -r[2] : +r[2], approx: /c\.|trad\./.test(y), open: false };
+  if (born) return { a: +born[1], b: new Date().getFullYear(), approx: false, open: true };
+  return null;
+}
+const yearLabel = (v, ancient) => (v < 0 ? `${-v} BCE` : v === 0 ? "1 CE" : ancient ? `${v} CE` : String(v)); // there is no year 0
+const TL_ERAS = [["Ancient, before the common era", -Infinity, 0], ["The first centuries CE", 0, 500], ["Medieval", 500, 1400], ["Renaissance and early modern", 1400, 1750], ["Modern", 1750, 1880],
+  ["Twentieth century", 1880, 1930], ["Contemporary", 1930, Infinity]];
+// The thinkers on a timeline, a period at a time, each on its own scale so the lives that overlap can be seen.
+function timelineHTML(list) {
+  const lives = list.map((p) => ({ p, s: lifeSpan(p.y) }));
+  const eras = TL_ERAS.map(([name, lo, hi]) => {
+    const rows = lives.filter((x) => x.s && x.s.a >= lo && x.s.a < hi).sort((x, y) => x.s.a - y.s.a || x.s.b - y.s.b);
+    if (!rows.length) return "";
+    const ancient = hi <= 1400;
+    const min = Math.min(...rows.map((x) => x.s.a)), max = Math.max(...rows.map((x) => x.s.b));
+    const span = Math.max(1, max - min), step = span <= 150 ? 25 : span <= 400 ? 50 : span <= 1000 ? 100 : 250;
+    const from = Math.floor(min / step) * step, to = Math.ceil(max / step) * step, W = to - from;
+    const pct = (v) => (100 * (v - from)) / W;
+    const ticks = []; for (let v = from; v < to; v += step) ticks.push(v);
+    const keep = Math.ceil(ticks.length / 5); // about five labels across a phone
+    return `<section class="tl-era"><h3>${name}</h3><p class="hint">${rows.length} thinker${rows.length === 1 ? "" : "s"}, ${yearLabel(min, ancient)} to ${max >= new Date().getFullYear() ? "now" : yearLabel(max, ancient)}</p>
+      <div class="tl-scale">${ticks.filter((_, k) => k % keep === 0).map((v) => `<span style="left:${pct(v)}%">${yearLabel(v, ancient)}</span>`).join("")}</div>
+      ${rows.map(({ p, s }) => `<button class="tl-row" data-thinker="${esc(p.id)}" style="--tick:${(100 * step) / W}%"><span class="tl-n">${esc(p.n)}<span>${esc(p.y)}</span></span>
+        <span class="tl-bar${s.approx ? " approx" : ""}${s.open ? " open" : ""}" style="margin-left:${pct(s.a)}%;width:${Math.max(0.5, pct(s.b) - pct(s.a))}%" aria-hidden="true"></span></button>`).join("")}
+    </section>`;
+  }).join("");
+  const undated = lives.filter((x) => !x.s).map((x) => x.p);
+  return eras + (undated.length ? `<section class="tl-era"><h3>Dates not given</h3><div class="gl-list">${undated.map(thinkerRow).join("")}</div></section>` : "");
+}
+// People whose lives overlapped by twenty years or more: who could have read, met or argued with whom.
+function contemporariesOf(p) {
+  const s = lifeSpan(p.y); if (!s || s.approx) return [];
+  return THINKERS.filter((x) => { if (x.id === p.id) return false; const t = lifeSpan(x.y); return t && !t.approx && Math.min(s.b, t.b) - Math.max(s.a, t.a) >= 20; })
+    .sort((x, y) => lifeSpan(x.y).a - lifeSpan(y.y).a).map((x) => x.id);
+}
 // Approximate birth year from the dates line, for listing thinkers in order ("c. 428–348 BCE", "8th c. CE", "b. 1929").
 function birthYear(y) {
   const bce = /BCE/.test(y), cent = y.match(/(\d+)(?:st|nd|rd|th) c\./), n = y.match(/\d+/);
@@ -3977,8 +4038,11 @@ function glossaryView() {
   let body;
   if (S.gArea === "thinkers") {
     const list = THINKERS.filter((p) => !q || thinkerMatches(p, q) || fold(p.d).includes(q)).map((p, i) => [birthYear(p.y), i, p]).sort((a, b) => a[0] - b[0] || a[1] - b[1]).map((e) => e[2]);
-    body = `<p class="hint">In order of birth; the last few have no published birth year. Tap one for their key works, glossary terms and traditions, and the thinkers they drew on and influenced.</p>
-      <div class="gl-list">${list.map(thinkerRow).join("") || `<p class="empty">No thinkers match.</p>`}</div>`;
+    const views = `<div class="chips"><button class="chip ${S.tl ? "" : "on"}" data-tl="0">In order of birth</button><button class="chip ${S.tl ? "on" : ""}" data-tl="1">Timeline</button></div>`;
+    body = !list.length ? `${views}<p class="empty">No thinkers match.</p>` : S.tl
+      ? `${views}<p class="hint">Each bar is a life, on the scale of its period, so you can see who lived at the same time. Pale bars are approximate dates; a bar that fades runs to the present. Tap a name for their works and connections.</p>${timelineHTML(list)}`
+      : `${views}<p class="hint">In order of birth; the last few have no published birth year. Tap one for their key works, glossary terms and traditions, and the thinkers they drew on and influenced.</p>
+      <div class="gl-list">${list.map(thinkerRow).join("")}</div>`;
   } else {
     const who = q ? THINKERS.filter((p) => thinkerMatches(p, q)) : [], whoIds = new Set(who.map((p) => p.id));
     const list = terms.filter((g) => (S.gArea === "all" || g.a === S.gArea) && (!q || fold(g.t).includes(q) || fold(g.d).includes(q) || fold(g.x).includes(q) || (g.p || []).some((id) => whoIds.has(id))));
@@ -4030,6 +4094,7 @@ function thinkerPanel(id) {
       ${chipRow("Branches and traditions", branchChips(trad))}
       ${chipRow("Drew on", thinkerChips(p.i))}
       ${chipRow("Taken up by", thinkerChips(took))}
+      ${chipRow("Lived at the same time", thinkerChips(contemporariesOf(p)))}
     </div>`, (b) => {
     if (b.dataset.thinker) thinkerPanel(b.dataset.thinker);
     else if (b.dataset.term) openTerm(b.dataset.term);
@@ -6552,6 +6617,7 @@ document.addEventListener("click", (e) => {
   if (b.dataset.term) return openTerm(b.dataset.term);
   if (b.dataset.thinker) return thinkerPanel(b.dataset.thinker);
   if (b.dataset.area) { S.gArea = b.dataset.area; return render(); }
+  if (b.dataset.tl) { S.tl = b.dataset.tl === "1"; return render(); }
   if (b.id === "addterm") return termSheet(null);
   if (b.id === "quiz") return quizPanel(S.screen === "glossary" ? S.gArea : "all");
   if (b.dataset.editterm) return termSheet(b.dataset.editterm);

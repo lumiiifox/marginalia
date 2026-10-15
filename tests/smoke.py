@@ -6,7 +6,9 @@ Uses made-up records only (never real books). Checks that:
   3. Save backup -> delete the database -> Restore gives back exactly the same library, and it survives a reload;
   4. a backup made to run script (markup in fields the app draws) is refused, and such records already stored draw as text;
   5. Quiz yourself: ten questions from the glossary (the term blanked out of its definition), from one area when one is
-     chosen, and "Who wrote it?" from the thinkers' works with no co-author among the wrong answers; a score at the end.
+     chosen, and "Who wrote it?" from the thinkers' works with no co-author among the wrong answers; a score at the end;
+  6. the thinkers' timeline: every dated life read from its dates line, each period on its own scale, and a thinker's card
+     lists who lived at the same time.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, json, subprocess, sys, time
@@ -120,6 +122,24 @@ async def main():
         await page.click("#quiz"); await page.wait_for_selector(".qz-opt")
         check(await page.locator(".qz-opt").count() == 4, "the glossary section of the home screen opens the quiz too")
         check(not errs, "no script errors in the quiz" + (f": {errs}" if errs else ""))
+
+        # 6 the timeline
+        await page.evaluate("document.querySelector('#pclose') && document.querySelector('#pclose').click()"); await page.wait_for_timeout(200)
+        spans = await page.evaluate("""() => { const bad = [], none = []; for (const p of THINKERS) { const s = lifeSpan(p.y);
+            if (!s) { none.push(p.y); continue; } if (!(s.a < s.b) || s.b - s.a > (s.approx ? 200 : 130) || s.a < -700 || s.b > 2100) bad.push(p.y + ' ' + JSON.stringify(s)); } return { bad, none: none.filter(Boolean) }; }""")
+        check(not spans["bad"] and not spans["none"], f"every dates line reads as a life ({spans})")
+        got = await page.evaluate("[lifeSpan('c. 428–348 BCE'), lifeSpan('2nd–3rd c. CE'), lifeSpan('early 5th c. BCE'), lifeSpan('b. 1929').open, lifeSpan('1724–1804')]")
+        check(got[0] == {"a": -428, "b": -348, "approx": True, "open": False} and got[1]["a"] == 100 and got[1]["b"] == 300 and got[2]["a"] == -500 and got[2]["b"] == -460 and got[3] and got[4]["a"] == 1724,
+              f"BCE dates, centuries and living thinkers are read right ({got[:3]})")
+        await page.evaluate("S.gArea = 'thinkers'; go({ screen: 'glossary' })"); await page.wait_for_timeout(200)
+        await page.click("[data-tl='1']"); await page.wait_for_selector(".tl-row")
+        tl = await page.evaluate("""() => ({ rows: document.querySelectorAll('.tl-row').length, eras: [...document.querySelectorAll('.tl-era h3')].map((h) => h.textContent),
+            dated: THINKERS.filter((p) => lifeSpan(p.y)).length, wide: document.documentElement.scrollWidth > innerWidth })""")
+        check(tl["rows"] == tl["dated"] and tl["eras"][0].startswith("Ancient") and "Contemporary" in tl["eras"] and not tl["wide"], f"Timeline shows every dated thinker by period, without sideways scrolling ({tl['rows']} of {tl['dated']}, {tl['eras']})")
+        await page.click(".tl-row[data-thinker='kant']"); await page.wait_for_selector(".sheet")
+        card = (await page.inner_text(".sheet")).lower()
+        check("lived at the same time" in card and "hume" in card.split("lived at the same time")[1], "Kant's card lists Hume among those who lived at the same time")
+        check(not errs, "no script errors on the timeline" + (f": {errs}" if errs else ""))
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
