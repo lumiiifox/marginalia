@@ -8,7 +8,8 @@ Made-up book only, phone-sized touch screen. Checks that:
   3. the screen is kept on while reading, asked for again when the app comes back, and let go on leaving or with Phone's setting;
   4. the phone's status bar takes the page colour while reading (Night too) and the app's colour elsewhere; the manifest has the
      new colours;
-  5. Scroll mode on a long book keeps the place exactly: opening deep inside it, type size, jumps, Scroll <-> Swipe pages.
+  5. Scroll mode on a long book keeps the place exactly: opening deep inside it, type size, jumps, Scroll <-> Swipe pages;
+  6. the book's fonts arriving late (a slow connection) don't take you back to where the book opened once you've moved.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, json, subprocess, sys, time
@@ -40,14 +41,18 @@ BOOK = """(a) => (async () => {
   localStorage.setItem('mg-reader', JSON.stringify(rs));
 })()"""
 
+# document.fonts.ready held back until the test lets it go, as on a slow connection
+FONTS_LATE = """if (typeof document !== 'undefined') { let go; const p = new Promise((r) => { go = r; }); window.__fontsGo = go;
+  Object.defineProperty(document.fonts, 'ready', { configurable: true, get: () => p }); }"""
+
 failures = []
 def check(ok, what):
     print(("ok   " if ok else "FAIL ") + what)
     if not ok: failures.append(what)
 
-async def open_book(browser, n, rs):
+async def open_book(browser, n, rs, init=""):
     ctx = await browser.new_context(viewport={"width": 412, "height": 915}, device_scale_factor=2.625, is_mobile=True, has_touch=True)
-    await ctx.add_init_script(WAKE_MOCK)
+    await ctx.add_init_script(WAKE_MOCK + init)
     page = await ctx.new_page(); errs = []
     page.on("pageerror", lambda e: errs.append(str(e)))
     await page.goto(URL); await page.wait_for_function(READY)
@@ -140,6 +145,26 @@ async def main():
         t = await page.evaluate("(() => { const t0 = performance.now(); setRS({ fs: 22 }); currentBlock(); return Math.round(performance.now() - t0); })()")
         print(f"     (type size change in a 9,000-paragraph book: {t} ms on this machine)")
         check(not errs, "no script errors in Scroll mode" + (f": {errs[:3]}" if errs else ""))
+        await ctx.close()
+
+        # 6 fonts arriving late
+        ctx, page, errs = await open_book(browser, 300, {"fs": 18, "flow": "pages", "turn": "slide"}, FONTS_LATE)
+        await page.evaluate("stepPage(1)"); await page.wait_for_timeout(200); await page.evaluate("stepPage(1)"); await page.wait_for_timeout(400)
+        sp = await page.evaluate("currentSpot()")
+        await page.evaluate("window.__fontsGo()"); await page.wait_for_timeout(500)
+        check(await page.evaluate("currentPage()") > 0 and await page.evaluate(f"spotPage({json.dumps(sp)}) === currentPage()"), "pages turned before the fonts arrive stay turned")
+        await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(200)
+        await page.reload(); await page.wait_for_function(READY)
+        await page.evaluate("go({ screen: 'reader', textId: 'b' })"); await page.wait_for_selector(".book .bp"); await page.wait_for_timeout(600)
+        await page.evaluate("goTo(200)"); await page.wait_for_timeout(400)
+        await page.evaluate("window.__fontsGo()"); await page.wait_for_timeout(500)
+        check(await page.evaluate("spotPage({ i: 200, f: 0 }) === currentPage()"), "a place chosen before the fonts arrive is kept")
+        await page.reload(); await page.wait_for_function(READY)
+        await page.evaluate("go({ screen: 'reader', textId: 'b' })"); await page.wait_for_selector(".book .bp"); await page.wait_for_timeout(600)
+        open_at = await page.evaluate("currentSpot()")
+        await page.evaluate("window.__fontsGo()"); await page.wait_for_timeout(500)
+        check(await page.evaluate(f"spotPage({json.dumps(open_at)}) === currentPage()"), "not moved: the book is placed again where it opened")
+        check(not errs, "no script errors with late fonts" + (f": {errs[:3]}" if errs else ""))
         await ctx.close()
         await browser.close()
 

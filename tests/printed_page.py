@@ -6,7 +6,8 @@ Makes its own small PDFs (Chromium's print-to-PDF) and uses PDF.js from tests/.c
   2. the reader shows the printed page you're on, steps to the next and zooms; Correct the words shows it too;
   3. a backup leaves the PDF out; deleting the book deletes the PDF;
   4. a book added earlier can keep its PDF afterwards; a PDF that doesn't match the book is refused;
-     the kept PDF can be removed; replacing the book's file without keeping drops the old PDF;
+     the kept PDF can be removed; replacing the book's file without keeping drops the old PDF; a kept PDF that has been
+     damaged says it couldn't be opened and doesn't leave the PDF reader's worker running;
   5. a library stored before this (storage version 6) opens with everything in it and gains the store for PDFs.
 Needs: pip install playwright && playwright install chromium
 """
@@ -127,6 +128,15 @@ async def main():
             await page.set_input_files("#f-file", str(tmp / "book.pdf")); await page.wait_for_function("!document.querySelector('#f-keepwrap').hidden", timeout=60000)
             await page.uncheck("#f-keep"); await page.click("button[type=submit]"); await page.wait_for_timeout(800)
             check(await page.evaluate(f"idbGet('files', '{old}').then((f) => f === undefined)") and not await page.evaluate(f"'pdfLabels' in S.texts.get('{old}')"), "replacing the book's file without keeping it drops the old PDF")
+            bad = await page.evaluate(f"""async () => {{
+              await keepPdf('{old}', new Blob(['%PDF-1.4 damaged'], {{ type: 'application/pdf' }}));
+              const W = window.Worker, count = {{ made: 0, ended: 0 }};
+              window.Worker = class extends W {{ constructor(...a) {{ super(...a); count.made++; }} terminate() {{ count.ended++; return super.terminate(); }} }};
+              const box = document.createElement('div'); document.body.append(box);
+              try {{ await printedInto(box, '{old}', 0); }} finally {{ window.Worker = W; }}
+              const said = box.textContent; box.remove(); await dropPdf('{old}'); return {{ said, ...count }};
+            }}""")
+            check("Couldn't open the kept PDF" in bad["said"] and bad["made"] >= 1 and bad["ended"] == bad["made"], f"a damaged kept PDF says so and lets its worker go ({bad})")
             check(not errs, "no script errors" + (f": {errs[:3]}" if errs else ""))
             # 5 a library from before (storage version 6) opens with everything in it, and gains the store for PDFs
             ctx2 = await browser.new_context()

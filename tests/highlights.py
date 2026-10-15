@@ -105,6 +105,8 @@ async def main():
         check(btns == ["Question", "Objection", "Undo"], f"Highlight's toast offers {btns}")
         await page.click("#toast .toastbtn >> text=Question"); await page.wait_for_timeout(300)
         check(await page.evaluate(f"S.notes.get('{nid4}').kind") == "question", "Question marks it as a question")
+        await page.evaluate(f"del('notes', '{nid4}')"); await page.click("#toast .toastbtn >> text=Undo"); await page.wait_for_timeout(300)
+        check(not await page.evaluate(f"S.notes.has('{nid4}') || idbGet('notes', '{nid4}').then((n) => !!n)"), "its Undo after the note was deleted doesn't bring back a broken note")
         nid5 = await highlight(11, 0, 11, 12)
         await page.click("#toast .toastbtn >> text=Undo"); await page.wait_for_timeout(400)
         check(not await page.evaluate(f"S.notes.has('{nid5}')") and await page.evaluate(MARKS, nid5) == [], "Undo takes the highlight away")

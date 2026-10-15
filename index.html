@@ -717,16 +717,16 @@ function idbAll(store) {
 function idbGet(store, key) {
   return new Promise((res, rej) => { const r = idb.transaction(store).objectStore(store).get(key); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
 }
-const mapFor = (col) => ({ texts: S.texts, notes: S.notes, covers: S.covers, terms: S.terms, drafts: S.drafts, compares: S.compares }[col] || S.content);
+// The copy in memory of a store's records ("files" has none: PDFs are read from storage when wanted).
+function mapFor(col) {
+  const m = { texts: S.texts, notes: S.notes, content: S.content, covers: S.covers, terms: S.terms, drafts: S.drafts, compares: S.compares }[col];
+  if (!m) throw new Error(`No copy in memory for "${col}".`);
+  return m;
+}
 async function put(col, id, data) {
   if (idb) await idbDo(col, (s) => s.put(data, id));
   mapFor(col).set(id, data);
   if (col !== "content") render();
-}
-async function delMany(col, ids) {
-  if (!ids.length) return;
-  if (idb) await idbDo(col, (s) => ids.forEach((id) => s.delete(id)));
-  ids.forEach((id) => mapFor(col).delete(id));
 }
 async function del(col, id) {
   if (idb) await idbDo(col, (s) => s.delete(id));
@@ -847,9 +847,12 @@ const isObj = (x) => !!x && typeof x === "object" && !Array.isArray(x);
 const optStr = (x) => x === undefined || x === null || typeof x === "string";
 const optArr = (x, f) => x === undefined || (Array.isArray(x) && x.every(f));
 const isS = (x) => typeof x === "string";
+const optNum = (x) => x === undefined || x === null || Number.isFinite(x);
+const optInt = (x) => x === undefined || (Number.isInteger(x) && x >= 0);
 const VALID = {
   texts: (v) => isObj(v) && isS(v.title) && optStr(v.author) && optStr(v.edition) && optStr(v.lang) && optArr(v.pdfLabels, isS) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
-    && optArr(v.bookmarks, (x) => isObj(x) && Number.isInteger(x.at)) && (v.summaries === undefined || isObj(v.summaries)) && (v.pos === undefined || Number.isInteger(v.pos)),
+    && optArr(v.bookmarks, (x) => isObj(x) && Number.isInteger(x.at)) && (v.summaries === undefined || isObj(v.summaries)) && (v.pos === undefined || Number.isInteger(v.pos))
+    && (v.source === undefined || v.source === null || (isObj(v.source) && optStr(v.source.name) && optStr(v.source.kind) && optNum(v.source.pages))),
   notes: (v) => isObj(v) && isS(v.textId) && optStr(v.kind) && ["passage", "gloss", "original", "conclusion", "sectionId"].every((k) => optStr(v[k]))
     && (v.page === undefined || isS(v.page) || typeof v.page === "number") && optArr(v.links, isS) && optArr(v.premises, isS) && (v.at === undefined || Number.isInteger(v.at))
     && (v.anchor === undefined || (isObj(v.anchor) && ["a", "ao", "b", "bo"].every((k) => Number.isInteger(v.anchor[k])) && optStr(v.anchor.pre) && optStr(v.anchor.suf))),
@@ -857,7 +860,8 @@ const VALID = {
   compares: (v) => isObj(v) && optStr(v.title) && optStr(v.q) && optStr(v.verdict) && Array.isArray(v.cols) && v.cols.every((x) => isObj(x) && isS(x.id) && isS(x.label) && optStr(x.src))
     && Array.isArray(v.rows) && v.rows.every((x) => isObj(x) && isS(x.id) && isS(x.q)) && (v.cells === undefined || (isObj(v.cells) && Object.values(v.cells).every((c) => isObj(c) && optStr(c.x) && optArr(c.notes, isS)))),
   terms: (v) => isObj(v) && ((isS(v.t) && isS(v.d)) || (isObj(v.map) && Object.values(v.map).every((a) => Array.isArray(a) && a.every(isS)))),
-  content: (v) => Array.isArray(v) && v.every((b) => isObj(b) && isS(b.k) && optStr(b.x)),
+  content: (v) => Array.isArray(v) && v.every((b) => isObj(b) && isS(b.k) && optStr(b.x) && optStr(b.s) && optStr(b.st) && optInt(b.sth) && optInt(b.l)
+    && (b.stj === undefined || typeof b.stj === "boolean") && optNum(b.size) && optNum(b.space)),
   covers: (v) => typeof v === "string" && v.startsWith("data:image/"),
 };
 const goodId = (id) => typeof id === "string" && id.length > 0 && id.length < 200;
@@ -1225,6 +1229,7 @@ function finalize(blocks) {
     const nb = { k: b.k, x: b.k === "pg" ? clean(b.x) : tidy(fixLig(b.x || "")) };
     if (b.l) nb.l = b.l;
     if (b.s) nb.s = b.s;
+    if (b.k === "front") { if (Number.isFinite(b.size)) nb.size = b.size; if (Number.isFinite(b.space)) nb.space = b.space; if (b.heading) nb.heading = true; }
     if (nb.k !== "pg" && !plain(nb.x)) continue;
     if (nb.k === "pg" && out.length && out[out.length - 1].k === "pg") { out[out.length - 1] = nb; continue; }
     if (nb.x.length > 40000) {
@@ -1501,14 +1506,16 @@ async function parsePDF(buf, say) {
   if (/^(microsoft|untitled)|\.(pdf|docx?|indd|tex)$/i.test(title)) title = "";
   let labels = null; try { labels = await pdf.getPageLabels(); } catch {}
   const pages = [];
-  for (let p = 1; p <= n; p++) {
-    if (p === 1 || p % 10 === 0) { say(`Reading page ${p} of ${n}…`); await new Promise((r) => setTimeout(r, 0)); }
-    const page = await pdf.getPage(p);
-    const vb = page.getViewport({ scale: 1 }).viewBox;
-    const tc = await page.getTextContent();
-    pages.push({ lines: linesOf(tc.items), y0: vb[1], y1: vb[3] });
-    page.cleanup();
-  }
+  try {
+    for (let p = 1; p <= n; p++) {
+      if (p === 1 || p % 10 === 0) { say(`Reading page ${p} of ${n}…`); await new Promise((r) => setTimeout(r, 0)); }
+      const page = await pdf.getPage(p);
+      const vb = page.getViewport({ scale: 1 }).viewBox;
+      const tc = await page.getTextContent();
+      pages.push({ lines: linesOf(tc.items), y0: vb[1], y1: vb[3] });
+      page.cleanup();
+    }
+  } catch (e) { try { await pdf.destroy(); } catch {} stopWorker(); throw e; } // a page that can't be read doesn't leave the worker running
   let outline = [];
   try {
     let ol = await pdf.getOutline();
@@ -1672,20 +1679,45 @@ async function parsePDF(buf, say) {
   let cur = null, curK = "p", carry = false, last = null;
   const flush = () => { if (cur && cur.trim()) blocks.push({ k: curK, x: cur }); cur = null; };
   const END = /[.!?:]["”’)\]]?$/;
+  // Front matter (title pages, copyright, contents, dedications) is typeset, not prose: its lines and their spacing are kept.
+  // Evidence for it, on the opening pages only, before the reading text has begun:
+  //   - a copyright page's lines (ISBN, ©, cataloguing data), a line that is only "Contents" or "Copyright", or a page
+  //     whose lines mostly end in page numbers (a contents page, its second page included);
+  //   - otherwise a sparse page (under 18 lines) with no running prose: fewer than two lines at the body size that fill
+  //     the book's line width and don't end in a page number (a contents entry does), or fewer than four beside display
+  //     type (a title page's subtitle can run across the page at the body size).
+  // A page where the PDF's outline starts a section of the book (Preface, Chapter 1, but not Contents or Copyright),
+  // or whose first line is a heading such as "Preface" or "Introduction", begins the reading text: from there on only
+  // the copyright and contents cues make front matter. So a short preface or a chapter's last short page reads as prose.
+  const widths = []; pages.forEach((pg) => pg.lines.forEach((l) => { if (near(l.z, pg.body) && l.t.length >= 30) widths.push(l.xe - l.x); }));
+  const measure = widths.length ? pct(widths, 0.6) : Infinity;
+  const FRONT_META = /^(?:(?:e-?)?isbn\b|copyright\s*(?:©|\(c\)|\d{4})|©|all rights reserved|library of congress|british library cataloguing|cataloging[- ]in[- ]publication)/i;
+  const FRONT_HEAD = /^(?:table of )?contents$|^copyright$/i;
+  const FRONT_OUTLINE = /^(?:(?:front )?cover|title(?: page)?|half[- ]?title(?: page)?|copyright(?: page)?|imprint|(?:table of )?contents|dedication|epigraphs?|frontispiece|also by\b.*|other books by\b.*|praise\b.*|about the (?:authors?|publisher|book))$/i;
+  const READ_HEAD = /^(?:preface|foreword|introduction|prologue|acknowledge?ments|(?:author|translator)['’]?s (?:note|preface|introduction))$/i;
+  const bare0 = (x) => String(x).trim().replace(/[\s.:]+$/, "");
+  const bookTitle = norm(title);
+  let textBegun = false;
   pages.forEach((pg, p) => {
     const L = pg.lines;
     blocks.push({ k: "pg", x: lab[p] });
-    // Front matter is typeset, not prose. Keep its separate lines and vertical rhythm.
-    // Restrict this to the opening pages with sparse text or contents/copyright cues.
-    const frontText = L.map((l) => l.t).join(" ");
-    const front = p < 10 && (L.length < 18 ||
-      /\\b(?:contents|copyright|isbn|cataloging in publication|acknowledgments)\\b/i.test(frontText.slice(0, 700)) ||
-      (p < 8 && L.some((l) => /\\b(?:preface|introduction|chapter)\\b/i.test(l.t)) && L.length < 35));
-    if (front && L.length) {
-      const height = Math.max(1, pg.y1 - pg.y0);
-      const top = L[0].y;
+    const outs = byPage.get(p) || [];
+    const reading = (p > 0 && outs.some((o) => { const t = norm(o.title); return !FRONT_OUTLINE.test(bare0(o.title)) && !(bookTitle && (t.startsWith(bookTitle) || bookTitle.startsWith(t))); }))
+      || (L.length > 0 && READ_HEAD.test(bare0(L[0].t)));
+    const entry = (l) => /(?:^|[\s.])(?:\d{1,4}|[ivxlcdm]{1,7})$/i.test(l.t.trim()); // ends in a page number
+    const entries = L.filter(entry).length;
+    const cue = entries >= Math.max(5, L.length * 0.6) || L.some((l) => FRONT_META.test(l.t.trim()) || FRONT_HEAD.test(bare0(l.t)));
+    const prose = L.filter((l) => near(l.z, pg.body) && l.xe - l.x >= measure * 0.8 && !entry(l)).length;
+    const display = L.some((l) => l.z >= pg.body * 1.5);
+    const front = p < 10 && L.length > 0 && !reading && (cue || (!textBegun && L.length < 18 && prose < (display ? 4 : 2)));
+    if (!front && (reading || prose >= 2)) textBegun = true;
+    if (front) {
+      // a section the PDF's outline starts here keeps its heading (and the same title printed on the page isn't repeated)
+      const titled = new Set(outs.map((o) => norm(o.title)));
+      outs.forEach((o) => blocks.push({ k: "h", x: o.title, l: 1, s: o.id }));
       let previous = null;
       for (const line of L) {
+        if (titled.has(norm(line.t))) continue;
         // Approximate the original vertical distances without locking text to PDF coordinates.
         const gap = previous ? Math.max(0, previous.y - line.y - Math.max(previous.z, line.z) * 1.2) : 0;
         const space = Math.min(5, Math.round(gap / Math.max(1, pg.body) * 10) / 10);
@@ -1712,13 +1744,16 @@ async function parsePDF(buf, say) {
     let fnStart = L.length;
     const nx = L[lastBody + 1];
     if (nx && nx.y < pg.y0 + (pg.y1 - pg.y0) * 0.5) fnStart = lastBody + 1;
-    const outs = byPage.get(p) || [];
     if (outs.length) { carry = false; last = null; }
     outs.forEach((o) => blocks.push({ k: "h", x: o.title, l: 1, s: o.id }));
     const drops = outs.map((o) => norm(o.title)).filter((s) => s.length >= 3);
     // The same title printed on the page, perhaps numbered differently ("I: Connections" for "1: Connections").
     const bare = (x) => norm(String(x).replace(/^\s*(?:\d+|[ivxlcdm]+)(?![\p{L}])[\s.:)–—-]*/iu, ""));
     const bareDrops = outs.map((o) => bare(o.title)).filter((x) => x.length >= 4);
+    // A line is the printed title when it is part of it (a title broken over two lines) or the title with only a label or
+    // number beside it ("Chapter 1: Connections"); a line of the text that only uses the title's word ("In this preface…") stays.
+    const LABEL = /^(?:chapter|part|book|section|lecture|essay|\d+|[ivxlcdm]+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)*$/;
+    const isTitleLine = (nl, d) => d.includes(nl) || (nl.includes(d) && LABEL.test(nl.replace(d, "")));
     let prev = null, headOpen = false;
     // A block quote set at body size: two or more lines indented together (one of them also short of the right margin),
     // or three or more. A paragraph's indented first line is followed by a line at the margin, so it isn't one.
@@ -1736,7 +1771,7 @@ async function parsePDF(buf, say) {
     }
     for (let i = 0; i < fnStart; i++) {
       const l = L[i];
-      if (drops.length && i < 5) { const nl = norm(l.t), bl = bare(l.t); if ((nl.length >= 2 && drops.some((d) => d.includes(nl) || nl.includes(d))) || (bl.length >= 4 && bareDrops.includes(bl))) continue; }
+      if (drops.length && i < 5) { const nl = norm(l.t), bl = bare(l.t); if ((nl.length >= 2 && drops.some((d) => isTitleLine(nl, d))) || (bl.length >= 4 && bareDrops.includes(bl))) continue; }
       const words = l.t.split(" ").length;
       // Large type alone doesn't make a heading: one doesn't start in lowercase, break into an unfinished
       // sentence, or fill a justified line from margin to margin.
@@ -2152,7 +2187,7 @@ function textView() {
           <h1>${esc(t.title)}</h1>
           ${t.author || t.edition ? `<div class="byline">${esc([t.author, t.edition].filter(Boolean).join(", "))}</div>` : ""}
           ${authorThinkers(t.author).map((p) => `<button class="src authlink" data-thinker="${esc(p.id)}">About ${esc(p.sn)}</button>`).join("")}
-          ${t.source ? `<div class="srcline">From ${esc(t.source.name)}${t.source.pages ? `, ${t.source.pages} pages` : ""}${progressOf(t) > 0 ? `, ${progressOf(t)}% read` : ""}${t.readAt ? `, last read ${esc(fmtDate(t.readAt))}` : ""}</div>` : ""}
+          ${t.source ? `<div class="srcline">From ${esc(t.source.name)}${t.source.pages ? `, ${esc(t.source.pages)} pages` : ""}${progressOf(t) > 0 ? `, ${progressOf(t)}% read` : ""}${t.readAt ? `, last read ${esc(fmtDate(t.readAt))}` : ""}</div>` : ""}
         </div>
       </div>
       <div class="actions">
@@ -2966,17 +3001,29 @@ function cmpExportPanel(cid) {
 
 /* ---------- search all books: every loaded text, accents and case ignored ---------- */
 const CONC = { q: "", seq: 0, results: [], done: true, books: 0, open: new Set() };
+// The words as the reader shows them (as Find searches them): hidden running heads are left out (isHidden) and a
+// paragraph carried over a page break is searched across the break, so a phrase split by the break is found.
 function hitsIn(blocks, q, max) {
   const f = fold(q.trim()); if (f.length < 2 || !blocks) return [];
   const hits = [];
+  const snipOf = (txt, at) => {
+    const a = Math.max(0, at - 50), z = Math.min(txt.length, at + f.length + 70);
+    return `${a ? "…" : ""}${esc(txt.slice(a, at))}<b>${esc(txt.slice(at, at + f.length))}</b>${esc(txt.slice(at + f.length, z))}${z < txt.length ? "…" : ""}`;
+  };
   for (let i = 0; i < blocks.length && hits.length < max; i++) {
-    const b = blocks[i]; if (b.k === "pg") continue;
-    const txt = plain(b.x || ""), ft = fold(txt); let at = ft.indexOf(f);
-    if (at < 0) continue;
+    const b = blocks[i]; if (b.k === "pg" || isHidden(b)) continue;
+    const txt = shownText(b), ft = fold(txt), at = ft.indexOf(f);
     let count = 0; for (let k = at; k >= 0; k = ft.indexOf(f, k + f.length)) count++;
-    const same = ft.length === txt.length, a = Math.max(0, at - 50), z = Math.min(txt.length, at + f.length + 70);
-    const snip = same ? `${a ? "…" : ""}${esc(txt.slice(a, at))}<b>${esc(txt.slice(at, at + f.length))}</b>${esc(txt.slice(at + f.length, z))}${z < txt.length ? "…" : ""}` : esc(txt.slice(0, 120));
-    hits.push({ i, count, snip });
+    let snip = at < 0 ? "" : ft.length === txt.length ? snipOf(txt, at) : esc(txt.slice(0, 120));
+    const nx = nextPart(blocks, i);
+    if (nx >= 0) { // matches that run from the end of this paragraph into its continuation
+      const tail = txt.slice(-(f.length + 50)), join = tail + glueAfter(txt) + shownText(blocks[nx]).slice(0, f.length + 70), fj = fold(join), tb = fold(tail).length;
+      for (let k = fj.indexOf(f); k >= 0 && k < tb; k = fj.indexOf(f, k + 1)) {
+        if (k + f.length <= tb) continue;
+        count++; if (!snip) snip = fj.length === join.length ? snipOf(join, k) : esc(join.slice(0, 120));
+      }
+    }
+    if (count) hits.push({ i, count, snip });
   }
   return hits;
 }
@@ -5011,7 +5058,7 @@ const bodyOf = (b) => (b.sth ? splitAt(b.x, b.sth)[1] : b.x || "");
 function paraHTML(L, html, notes, marks) {
   const b = R.blocks[L], cls = `bp${b.k === "c" ? " cont" : ""}`;
   if (!b.sth) return `<p class="${cls}" data-i="${L}">${html}${notes}</p>`;
-  if (b.st === "hide") return `<p class="${cls}" data-i="${L}" data-o="${b.sth}">${html}${notes}</p>`;
+  if (b.st === "hide") return `<p class="${cls}" data-i="${L}" data-o="${Number(b.sth) || 0}">${html}${notes}</p>`;
   return `<div class="bsplit" data-i="${L}"><h2 class="bh l${titleLevel(b)}">${inlineHTML(splitAt(b.x, b.sth)[0], marks)}</h2><p class="bp cont">${html}${notes}</p></div>`;
 }
 function groupHTML(L, marks, grp = R.grp) {
@@ -5019,7 +5066,7 @@ function groupHTML(L, marks, grp = R.grp) {
   let html = g.pre.map(pgMark).join("") + inlineHTML(bodyOf(B[L]), m(L)), notes = marginHTML(m(L), B[L].x || ""), prev = bodyOf(B[L]);
   for (const i of g.parts) {
     if (betweenPages(B[i])) { html += pgMark(i); continue; }
-    html += `${glueAfter(prev)}<span class="bjoin" data-i="${i}"${B[i].sth ? ` data-o="${B[i].sth}"` : ""}>${inlineHTML(bodyOf(B[i]), m(i))}</span>`; notes += marginHTML(m(i), B[i].x || ""); prev = bodyOf(B[i]);
+    html += `${glueAfter(prev)}<span class="bjoin" data-i="${i}"${B[i].sth ? ` data-o="${Number(B[i].sth) || 0}"` : ""}>${inlineHTML(bodyOf(B[i]), m(i))}</span>`; notes += marginHTML(m(i), B[i].x || ""); prev = bodyOf(B[i]);
   }
   return paraHTML(L, html, notes, m(L));
 }
@@ -5279,9 +5326,17 @@ async function openReader(tid, at, opts) {
   if (opts && opts.find) findQ = opts.find;
   // Back from another screen: the exact spot. Continue reading: your saved spot. A passage: centred, so it can be seen.
   const place = () => (sess && opts.spot ? goToSpot(opts.spot) : Number.isInteger(at) ? goTo(target, true) : goToSpot({ i: target, f: t?.posF || 0 }));
-  requestAnimationFrame(() => { layoutPages(); place(); R.landedY = readY(); updatePg(); drawTrail(); if (opts && opts.flash && Number.isInteger(at) && !sess) flash(at); });
+  let placed = null;
+  requestAnimationFrame(() => { layoutPages(); place(); placed = { spot: R.pagedSpot, y: window.scrollY }; R.landedY = readY(); updatePg(); drawTrail(); if (opts && opts.flash && Number.isInteger(at) && !sess) flash(at); });
+  // The book's fonts arriving change where the words fall. Not moved since opening (and soon after): place it again.
+  // Moved (a page turned, a chapter chosen): stay on that spot, as after a change of screen size.
   const t0 = Date.now();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { R.dirty = true; if (R.tid === tid && Date.now() - t0 < 4000) place(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
+    R.dirty = true; if (R.tid !== tid || !placed) return;
+    const still = isPaged() ? R.pagedSpot === placed.spot : Math.abs(window.scrollY - placed.y) < 2;
+    if (still && Date.now() - t0 < 4000) place();
+    else if (isPaged() && R.pagedSpot) { layoutPages(); goToSpot(R.pagedSpot); }
+  });
 }
 
 function measure() { R.tops = R.els.map((e) => e.getBoundingClientRect().top + window.scrollY); R.dirty = false; }
@@ -5307,7 +5362,6 @@ function spotPage(sp) {
   for (const q of rs) { page = rectPage(q); if (at < q.height) break; at -= q.height; }
   return page;
 }
-function firstPage(i) { const end = R.win ? R.win[1] : R.els.length; for (let k = i; k < Math.min(end, i + 20); k++) { const p = screenPagesOf(k); if (p) return p[0]; } return Infinity; }
 function pageForBlock(i) { const p = screenPagesOf(Math.max(0, Math.min(i, R.els.length - 1))); return p ? p[0] : 0; }
 // Where you are is the paragraph at the top of the page: the first one that is still running on this page.
 // Paragraphs sit on pages in reading order, so it is found by halving: about 10 reads, whatever the length.
@@ -5611,8 +5665,11 @@ async function pdfDoc(tid) {
   let wk = null, pw = null;
   try { wk = new Worker(URL.createObjectURL(new Blob([`importScripts(${JSON.stringify(LIBS.pdfw[0])});`], { type: "text/javascript" }))); pw = lib.PDFWorker.fromPort({ port: wk }); } catch { wk = null; pw = null; }
   if (!pw) { try { await need("pdfw", () => !!window.pdfjsWorker); } catch {} try { lib.GlobalWorkerOptions.workerSrc = LIBS.pdfw[0]; } catch {} }
-  const doc = await lib.getDocument({ data: new Uint8Array(await file.arrayBuffer()), isEvalSupported: false, ...(pw ? { worker: pw } : {}) }).promise;
-  closePdf(); Object.assign(PDFV, { tid, doc, stop: () => { try { if (pw) pw.destroy(); } catch {} try { if (wk) wk.terminate(); } catch {} } });
+  const stop = () => { try { if (pw) pw.destroy(); } catch {} try { if (wk) wk.terminate(); } catch {} };
+  let doc;
+  try { doc = await lib.getDocument({ data: new Uint8Array(await file.arrayBuffer()), isEvalSupported: false, ...(pw ? { worker: pw } : {}) }).promise; }
+  catch (e) { stop(); throw e; }
+  closePdf(); Object.assign(PDFV, { tid, doc, stop });
   return doc;
 }
 // The PDF page (from 0) holding block i: the page with its printed number, the nearest one to where it falls in order.
@@ -5763,23 +5820,26 @@ function notePanel(i, n) {
 /* find in this book: matches marked in the text and stepped through one at a time */
 let findQ = "";
 const FIND = { q: "", hits: [], k: -1, on: false };
+// A paragraph's text as shown: after a glued running head that's hidden.
+const shownText = (b) => { const x = plain(b.x || ""); return b.st === "hide" && b.sth ? x.slice(b.sth) : x; };
+// The continuation of paragraph i past a page break (footnotes, page markers and hidden running heads between), or -1.
+function nextPart(B, i) {
+  if (!isPara(B[i])) return -1;
+  let q = i + 1, brk = false; while (q < B.length && (B[q].k === "fn" || betweenPages(B[q]))) { if (B[q].k !== "fn") brk = true; q++; }
+  return brk && q < B.length && carriesOn(B[q]) ? q : -1;
+}
 // The book as Find reads it: a paragraph and its continuations past printed-page breaks are one run of text, so a phrase
 // the printed page split is still found. Each run keeps where each block's text sits in it, and a folded copy (accents and
 // capitals ignored) with a map back to the original characters.
 function findRuns() {
   if (R.findRuns && R.findRunsOf === R.blocks) return R.findRuns;
   const B = R.blocks, n = B.length, used = new Uint8Array(n), runs = [];
-  const textOf = (b) => { const x = plain(b.x || ""); return b.st === "hide" && b.sth ? x.slice(b.sth) : x; };
   for (let i = 0; i < n; i++) {
     const b = B[i]; if (used[i] || b.k === "pg" || isHidden(b)) continue;
     const parts = [i]; used[i] = 1;
-    if (isPara(b)) for (let k = i + 1; ;) {
-      let q = k, brk = false; while (q < n && (B[q].k === "fn" || betweenPages(B[q]))) { if (B[q].k !== "fn") brk = true; q++; }
-      if (!brk || q >= n || !carriesOn(B[q])) break;
-      parts.push(q); used[q] = 1; k = q + 1;
-    }
+    for (let q = nextPart(B, i); q >= 0; q = nextPart(B, q)) { parts.push(q); used[q] = 1; }
     let text = ""; const segs = [];
-    for (const k of parts) { if (text) text += glueAfter(text); const x = textOf(B[k]); segs.push({ i: k, at: text.length, len: x.length, base: B[k].st === "hide" && B[k].sth ? B[k].sth : 0 }); text += x; }
+    for (const k of parts) { if (text) text += glueAfter(text); const x = shownText(B[k]); segs.push({ i: k, at: text.length, len: x.length, base: B[k].st === "hide" && B[k].sth ? B[k].sth : 0 }); text += x; }
     let ft = "", fm = [];
     for (let c = 0; c < text.length; c++) { const ch = text[c], f = ch.charCodeAt(0) < 128 ? ch.toLowerCase() : fold(ch); for (let z = 0; z < f.length; z++) fm.push(c); ft += f; }
     fm.push(text.length);
@@ -6245,7 +6305,7 @@ async function quickHighlight() {
     await put("notes", id, note);
     const t = S.texts.get(R.tid); if (t) put("texts", R.tid, { ...t, activeAt: Date.now() }).catch(() => {});
     // the toast offers the kinds you'd mark straight away, and Undo; tap the highlight later for the rest
-    const kind = (k, label) => ({ label, run: async () => { const n = S.notes.get(id); if (!n) return; try { await put("notes", id, { ...n, kind: k, updatedAt: Date.now() }); toast(`Marked as ${label.toLowerCase()}.`, { label: "Undo", run: () => put("notes", id, { ...S.notes.get(id), kind: "passage", updatedAt: Date.now() }).catch(() => {}) }); } catch (e) { toast(failMsg(e)); } } });
+    const kind = (k, label) => ({ label, run: async () => { const n = S.notes.get(id); if (!n) return; try { await put("notes", id, { ...n, kind: k, updatedAt: Date.now() }); toast(`Marked as ${label.toLowerCase()}.`, { label: "Undo", run: () => { const m = S.notes.get(id); if (m) put("notes", id, { ...m, kind: "passage", updatedAt: Date.now() }).catch((e) => toast(failMsg(e))); } }); } catch (e) { toast(failMsg(e)); } } });
     toast("Highlighted.", [kind("question", "Question"), kind("objection", "Objection"), { label: "Undo", run: () => del("notes", id).then(() => toast("Highlight removed.")).catch((e) => toast(failMsg(e))) }]);
   } catch (e) { toast(failMsg(e)); }
 }

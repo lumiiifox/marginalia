@@ -3,7 +3,8 @@
 Uses made-up records only (never real books). Checks that:
   1. every screen renders at phone and desktop width without script errors or sideways scrolling;
   2. a book opens in the reader from its Read button;
-  3. Save backup -> delete the database -> Restore gives back exactly the same library, and it survives a reload.
+  3. Save backup -> delete the database -> Restore gives back exactly the same library, and it survives a reload;
+  4. a backup made to run script (markup in fields the app draws) is refused, and such records already stored draw as text.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, json, subprocess, sys, time
@@ -17,11 +18,12 @@ STORES = ["texts", "notes", "content", "drafts", "compares", "terms"]
 
 SEED = """async () => {
   const now = Date.now();
-  await put("texts", "t1", { title: "Test Book", author: "Author, Test", sections: [{ id: "s1", label: "Ch. 1" }], bookmarks: [{ at: 1 }], summaries: { s1: "summary" }, pos: 0, hasContent: true, createdAt: now, updatedAt: now, readAt: now });
+  await put("texts", "t1", { title: "Test Book", author: "Author, Test", sections: [{ id: "s1", label: "Ch. 1" }], bookmarks: [{ at: 1 }], summaries: { s1: "summary" }, source: { name: "test.pdf", kind: "PDF", pages: 12 }, pos: 0, hasContent: true, createdAt: now, updatedAt: now, readAt: now });
   await put("content", "t1", [{ k: "p", x: "First paragraph of the test text." }, { k: "p", x: "Second paragraph." },
     // structure marked in the reader (Edit): a hidden running head, a chapter title over two lines, a title glued to its paragraph
     { k: "pg", x: "2" }, { k: "p", x: "2 TEST BOOK", st: "hide" }, { k: "h", l: 2, x: "Chapter", st: "chapter", s: "s1" }, { k: "h", l: 2, x: "two", stj: true },
-    { k: "p", x: "Part A Then the paragraph.", st: "heading", sth: 6 }, { k: "front", x: "A title page", st: "title" }]);
+    { k: "p", x: "Part A Then the paragraph.", st: "heading", sth: 6 }, { k: "front", x: "A title page", st: "title" },
+    { k: "front", x: "Front matter line", size: 1.4, space: 2.5, heading: true }]);
   await put("notes", "n1", { textId: "t1", kind: "passage", passage: "paragraph", gloss: "a gloss #tag", page: "12", links: [], at: 0, createdAt: now, updatedAt: now });
   await put("drafts", "d1", { title: "Draft", items: [{ t: "h", x: "Heading" }, { t: "note", id: "n1" }], createdAt: now, updatedAt: now });
   await put("compares", "c1", { title: "Comparison", q: "Question?", verdict: "Conclusion", cols: [{ id: "a", label: "A" }], rows: [{ id: "r1", q: "row" }], cells: { "r1:a": { x: "cell", notes: ["n1"] } }, createdAt: now, updatedAt: now });
@@ -76,6 +78,19 @@ async def main():
         await page.reload(); await page.wait_for_function(READY)
         check(await page.evaluate(DUMP, STORES) == before, "restored library survives a reload")
         check(not errs, "no script errors during backup and restore" + (f": {errs}" if errs else ""))
+
+        # 4 markup in a crafted backup
+        bad = {"app": "marginalia", "version": 5, "texts": {"x1": {"title": "X", "source": {"name": "a.pdf", "pages": "<img src=x onerror=\"window.__xss=1\">"}}},
+               "content": {"x1": [{"k": "p", "x": "Words here.", "st": "hide", "sth": "\"><img src=x onerror=\"window.__xss=1\">"}]}}
+        plan = await page.evaluate("(d) => { const p = planRestore(d); return [p.skipped, p.rows.texts.length, p.content.length]; }", bad)
+        check(plan == [2, 0, 0], f"a backup with markup where a number belongs is refused ({plan})")
+        await page.evaluate("""async () => {
+          await put('content', 'x1', [{ k: 'pg', x: '1' }, { k: 'p', x: 'Head words and the paragraph go on.', st: 'hide', sth: '"><img src=x onerror="window.__xss=1">' }, { k: 'p', x: 'More.' }]);
+          await put('texts', 'x1', { title: 'X', hasContent: true, total: 3, pos: 0, createdAt: 1, updatedAt: 1, source: { name: 'a.pdf', pages: '<img src=x onerror="window.__xss=1">' } });
+        }""")
+        await page.evaluate("go({ screen: 'text', textId: 'x1' })"); await page.wait_for_timeout(300)
+        await page.evaluate("go({ screen: 'reader', textId: 'x1' })"); await page.wait_for_timeout(600)
+        check(not await page.evaluate("!!window.__xss") and not await page.evaluate("!!document.querySelector('#reader img, .srcline img')"), "markup already stored in those fields is drawn as text")
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
