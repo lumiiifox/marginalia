@@ -8,7 +8,10 @@ Made-up book only, phone-sized touch screen. Checks that:
      Go to page takes a printed page number (roman too, or the nearest page before);
   4. the foot of the page counts the pages left in the chapter, down to its last page;
   5. Contents has tabs: the chapter you're in, your notes (this chapter or the whole book, tap to go there), bookmarks;
-  6. Search all books finds the same phrase split by the printed page, and leaves out running heads marked hidden.
+  6. Search all books finds the same phrase split by the printed page, and leaves out running heads marked hidden;
+  7. reading on past a chapter's end asks for a summary of it (Write it opens the summary, saved with the book); a jump
+     from the middle of a chapter, a chapter with a summary, a second time, or Reading settings' Don't ask, doesn't ask;
+     the same in Scroll mode.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -167,6 +170,42 @@ async def main():
         check(not await page.evaluate("CONC.results.some((x) => x.tid === 'v')"), "a running head marked hidden isn't searched")
         check(not errs, "no script errors in Search all books" + (f": {errs[:3]}" if errs else ""))
         await ctx.close()
+
+        # 7 a summary at a chapter's end
+        async def read_past(page, c):
+            # from about a page before chapter c's end, on through the next chapter's opening
+            end = await page.evaluate(f"R.blocks.findIndex((b) => b.s === 'c{c + 1}')")
+            await page.evaluate(f"goTo({end - 3})"); await page.wait_for_timeout(300)
+            await page.evaluate("document.querySelector('#toast').hidden = true")
+            for _ in range(6):
+                if await page.evaluate(f"contentAt(currentBlock()) >= {end}"): break
+                if await page.evaluate("isPaged()"): await page.evaluate("stepPage(1)")
+                else: await page.evaluate("scrollBy(0, innerHeight * 0.8)")
+                await page.wait_for_timeout(350)
+            await page.wait_for_timeout(200)
+            return await page.evaluate("document.querySelector('#toast').hidden ? '' : document.querySelector('#toast').textContent")
+        for flow in ("pages", "scroll"):
+            ctx, page, errs = await open_book(browser, {"fs": 20, "flow": flow, "turn": "none"})
+            t1 = await read_past(page, 0)
+            check("End of “Chapter 1”" in t1 and "Write it" in t1, f"{flow}: reading on past Chapter 1's end asks for a summary of it ({t1!r})")
+            if flow == "pages":
+                await page.click("#toast .toastbtn >> text=Write it"); await page.wait_for_selector("#s-text")
+                await page.fill("#s-text", "Desire produces; it lacks nothing."); await page.click("button[type=submit]"); await page.wait_for_timeout(400)
+                check(await page.evaluate("S.texts.get('v').summaries.c0") == "Desire produces; it lacks nothing.", "Write it opens the chapter's summary and saves it with the book")
+                await page.evaluate("document.querySelector('#toast').hidden = true; goTo(R.blocks.findIndex((b) => b.s === 'c2') + 40)"); await page.wait_for_timeout(300)
+                await page.evaluate("goTo(R.blocks.findIndex((b) => b.s === 'c3') + 2)"); await page.wait_for_timeout(400)
+                check(await page.evaluate("document.querySelector('#toast').hidden"), "a jump from the middle of a chapter into the next doesn't ask")
+                await page.evaluate("(() => { const t = S.texts.get('v'); return put('texts', 'v', { ...t, summaries: { ...t.summaries, c2: 'Already summed up.' } }); })()")
+                check(not await read_past(page, 2), "a chapter that has a summary doesn't ask")
+                t2 = await read_past(page, 1)
+                check("Chapter 2" in t2, "the next chapter asks for its own")
+                check(not await read_past(page, 1), "and only once a visit")
+            else:
+                await page.evaluate("readerSettings()"); await page.wait_for_selector("[data-rs=sum]")
+                await page.click("[data-rs=sum][data-v=off]"); await page.click("#pclose"); await page.wait_for_timeout(200)
+                check(not await read_past(page, 1) and await page.evaluate("JSON.parse(localStorage.getItem('mg-reader')).sum") == "off", "Reading settings' Don't ask turns it off, and it stays off")
+            check(not errs, f"{flow}: no script errors with the summary prompt" + (f": {errs[:3]}" if errs else ""))
+            await ctx.close()
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

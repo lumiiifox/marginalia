@@ -4989,7 +4989,8 @@ function summarySheet(tid, secId) {
   const cur = (t.summaries || {})[secId] || "";
   openSheet(`<h2>Summary of ${esc(sec.label)}</h2>
     <div class="field"><label for="s-text">In your own words</label><textarea id="s-text" name="summary" rows="7">${esc(cur)}</textarea>
-    <span class="hint">What does this section claim, and how does it get there? Leave it empty to remove the summary.</span></div>`,
+    <span class="hint">What does this section claim, and how does it get there? Leave it empty to remove the summary. Summaries are
+    kept with the book and come out with its notes when you export them.</span></div>`,
   async (fd) => {
     const now = S.texts.get(tid); if (!now) return;
     const summaries = { ...(now.summaries || {}) }, v = fd.get("summary").trim();
@@ -5045,7 +5046,7 @@ function confirmDelete() {
 
 /* ---------- reader ---------- */
 // Reading settings live on this device only.
-const RS = { fs: 20, lh: "normal", w: "medium", tone: "app", mn: "show", flow: "scroll", turn: "flip", align: "justify", bars: "hide", awake: "on" };
+const RS = { fs: 20, lh: "normal", w: "medium", tone: "app", mn: "show", flow: "scroll", turn: "flip", align: "justify", bars: "hide", awake: "on", sum: "ask" };
 try { Object.assign(RS, JSON.parse(localStorage.getItem("mg-reader") || "{}")); const old = +localStorage.getItem("mg-fs"); if (old && !localStorage.getItem("mg-reader")) RS.fs = old; } catch {}
 const LH = { compact: 1.45, normal: 1.62, airy: 1.85 }, MEASURE = { narrow: "30em", medium: "34em", wide: "40em" };
 function applyFs() {
@@ -5452,7 +5453,7 @@ function resetReader() {
   const tw = $("#flipbook"); if (tw) { tw.innerHTML = ""; tw.dataset.key = ""; }
   $("#rnav").hidden = true; R.dragging = false; R.selCarry = null; drawCarry();
   R.visiting = false; R.home = null; R.trail = []; R.pagedSpot = null; R.win = null; FIND.on = false; FIND.hits = []; FIND.k = -1; paintFind(); const tr = $("#rtrail"); if (tr) tr.hidden = true;
-  R.tid = null; R.blocks = null; R.els = []; R.tops = []; R.sig = new Map(); R.saved = -1; R.sel = null; $("#book").innerHTML = ""; $("#selbar").hidden = true; }
+  R.sumPrev = null; R.tid = null; R.blocks = null; R.els = []; R.tops = []; R.sig = new Map(); R.saved = -1; R.sel = null; $("#book").innerHTML = ""; $("#selbar").hidden = true; }
 
 async function openReader(tid, at, opts) {
   resetReader();
@@ -5653,8 +5654,26 @@ function goTo(i, centre) {
   const off = centre ? Math.max(barH() + 8, window.innerHeight * 0.3) : barH() + 8;
   scrollToEl(el, 0, off);
 }
+// A chapter read through to its end and the next one begun: ask for a few sentences on it, once a visit, when it has none.
+// Reading through means the last place was within about a page of the chapter's end and this one just past it, so a jump
+// from the middle of a chapter (Contents, the slider, Find) doesn't ask.
+const SUM_ASKED = new Set();
+function chapterEndCheck(i) {
+  i = contentAt(i);
+  const prev = R.sumPrev; R.sumPrev = i;
+  if (RS.sum === "off" || prev == null || !R.chEnd || !R.cum || i <= prev) return;
+  const x = R.secAt[prev]; if (!x || R.secAt[i] === x) return;
+  const end = R.chEnd[prev];
+  if (i < end || R.cum[end] - R.cum[prev] > 3000 || R.cum[i] - R.cum[end] > 3000) return;
+  const tid = R.tid, t = S.texts.get(tid), sec = t && (t.sections || []).find((s) => s.id === x);
+  if (!sec || (t.summaries || {})[x] || SUM_ASKED.has(`${tid} ${x}`)) return;
+  SUM_ASKED.add(`${tid} ${x}`);
+  toast(`End of “${sec.label}”. Sum it up in a few sentences?`, [{ label: "Write it", run: () => summarySheet(tid, x) },
+    { label: "Don't ask", run: () => { RS.sum = "off"; saveRS(); toast("You won't be asked. Reading settings can turn it back on."); } }]);
+}
 function updatePg() {
   const i = currentBlock(), p = R.pageAt[i], left = immersive() ? pagesLeft(i) : "";
+  chapterEndCheck(i);
   $("#rpg").textContent = p ? loc(p) : ""; $("#rfoot").textContent = [p ? loc(p) : "", left].filter(Boolean).join("  ·  ");
   updateMarkBtn(); if (!$("#rnav").hidden) syncNav();
 }
@@ -5779,6 +5798,7 @@ function readerSettings() {
       <div class="rs-row"><span>Page</span>${seg("tone", [["app", "Like the app"], ["paper", "Paper"], ["sepia", "Sepia"], ["night", "Night"]])}</div>
       <div class="rs-row"><span>Your notes</span>${seg("mn", [["show", "Show in the text"], ["hide", "Hide"]])}</div>
       <div class="rs-row"><span>Screen</span>${seg("awake", [["on", "Stays on while reading"], ["off", "Phone's setting"]])}</div>
+      <div class="rs-row"><span>A chapter's end</span>${seg("sum", [["ask", "Ask for a summary"], ["off", "Don't ask"]])}</div>
     </div>`, (b) => {
     if (!b.dataset.rs) return;
     if (b.dataset.rs === "fs") setRS({ fs: RS.fs + +b.dataset.v });
