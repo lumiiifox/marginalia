@@ -66,6 +66,9 @@ async def main():
                 r = await page.evaluate("""([s, x]) => { try { Object.assign(S, x, { screen: s }); render();
                     return { ok: true, hs: document.documentElement.scrollWidth > innerWidth }; } catch (e) { return { ok: false, err: String(e) }; } }""", [name, extra])
                 check(r["ok"] and not r["hs"] and len(errs) == n, f"{w}px {name}" + ("" if r["ok"] else f": {r['err']}") + (" (scrolls sideways)" if r.get("hs") else "") + (f" {errs[n:]}" if len(errs) > n else ""))
+            if w == 390:
+                home = await page.evaluate("(() => { go({ screen: 'library' }); return [!!document.querySelector('.nudge'), !!document.querySelector('#backup')]; })()")
+                check(home == [False, True], f"the home screen has no backup reminder, and Save backup stays in Backups and exports ({home})")
             await page.evaluate("S.screen = 'text'; S.textId = 't1'; render()")
             await page.click("#read"); await page.wait_for_timeout(500)
             check("First paragraph" in await page.inner_text("#reader") and not errs, f"{w}px reader opens the book")

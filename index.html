@@ -378,8 +378,6 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .optfield > textarea { border: 1px solid var(--rule); background: var(--field); border-radius: 8px; padding: 10px 11px; width: 100%; min-width: 0; font-size: 16px; }
 .note.flash { animation: flash 2.2s ease-out both; }
 .searchbooks { justify-self: start; text-align: left; }
-.nudge { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; border-radius: 8px; background: var(--paper); box-shadow: var(--paper-shadow); border-left: 3px solid var(--brass); }
-.nudge p { margin: 0; flex: 1 1 200px; font-size: 15px; }
 
 /* citation styles */
 .cites .citeopt { display: grid; gap: 5px; padding: 12px 10px; border-radius: 8px; }
@@ -2186,24 +2184,13 @@ function libraryView() {
   return `<header class="top"><h1 class="mark-word">Marginalia</h1></header>
     ${banner()}
     <input class="search" id="q" type="search" placeholder="Search your notes and the glossary" value="${esc(S.q)}" aria-label="Search your notes and the glossary">
-    ${searching ? body : `${backupNudge()}
+    ${searching ? body : `
     <section class="home-sec">
       <div class="sec-head"><div><h2>Bookshelf</h2><div class="sub">${S.texts.size} text${S.texts.size === 1 ? "" : "s"}, ${S.notes.size} note${S.notes.size === 1 ? "" : "s"}</div></div><button class="btn primary" id="addtext">Add text</button></div>
       ${body}
       ${S.mode === "pending" ? "" : acrossHTML()}
     </section>
     ${S.mode === "pending" ? "" : referenceHome() + backupView()}`}`;
-}
-// A reminder when there is real work on this device and no recent backup of it.
-function backupNudge() {
-  if (S.mode !== "ready") return "";
-  let last = 0; try { last = +localStorage.getItem("mg-backup") || 0; } catch {}
-  let changed = 0;
-  for (const m of [S.texts, S.notes, S.drafts, S.compares]) for (const x of m.values()) changed = Math.max(changed, x.updatedAt || x.createdAt || 0, x.readAt || 0, x.activeAt || 0);
-  const enough = S.notes.size >= 5 || [...S.texts.values()].some((t) => t.hasContent);
-  const days = last ? Math.floor((Date.now() - last) / 864e5) : Infinity;
-  if (!enough || changed <= last || days < 14) return "";
-  return `<div class="nudge" role="note"><p>${last ? `Your last backup was ${days} days ago.` : "You haven't saved a backup yet."} Your library exists only on this device.</p><button class="btn" id="nudgebackup">Save backup</button></div>`;
 }
 function backupView() {
   let last = 0; try { last = +localStorage.getItem("mg-backup") || 0; } catch {}
@@ -6734,7 +6721,7 @@ document.addEventListener("click", (e) => {
   if (b.dataset.editterm) return termSheet(b.dataset.editterm);
   if (b.dataset.restoreterm) return del("terms", b.dataset.restoreterm).catch((e) => toast(failMsg(e)));
   if (b.dataset.delterm) return arm(b, () => del("terms", b.dataset.delterm).catch((e) => toast(failMsg(e))));
-  if (b.id === "backup" || b.id === "nudgebackup") return exportBackup().catch((e) => toast(failMsg(e)));
+  if (b.id === "backup") return exportBackup().catch((e) => toast(failMsg(e)));
   if (b.id === "addnote") return noteSheet(null);
   if (b.dataset.editnote) return noteSheet(b.dataset.editnote);
   if (b.dataset.cite) return copyCitation(b.dataset.cite);
