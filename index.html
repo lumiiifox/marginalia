@@ -149,6 +149,19 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 
 /* home sections */
 .home-sec { display: grid; gap: 14px; }
+.refcard { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; row-gap: 4px; align-items: center; text-align: left; width: 100%;
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; padding: 18px 18px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12); }
+.refcard .rc-t { font: 700 23px/1.2 var(--f-text); color: var(--ink); }
+.refcard .rc-s { grid-column: 1; font-size: 14px; color: var(--muted); }
+.refcard .rc-go { grid-column: 2; grid-row: 1 / span 2; font: 400 34px/1 var(--f-text); color: var(--muted); }
+.refcards { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.refgroup { display: grid; gap: 12px; margin-top: 22px; }
+.reflist { display: grid; background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 0 14px; }
+.refrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 10px; row-gap: 2px; text-align: left; background: none; border: 0; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); padding: 11px 0; }
+.refrow:first-child { border-top: 0; }
+.refrow .rr-n { font: 500 17px/1.3 var(--f-text); color: var(--link); }
+.refrow .rr-t { font-size: 12.5px; color: var(--muted); align-self: baseline; white-space: nowrap; }
+.refrow .rr-d { grid-column: 1 / -1; font-size: 14px; color: var(--muted); }
 .sec-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
 .sec-head h2, .gl-head h1 { font: 700 28px/1.1 var(--f-text); }
 .gl-head h1 { font-size: 32px; }
@@ -2074,7 +2087,7 @@ function render() {
   if (reading) { refreshMarks(); return; }
   wakeOff();
   $("#selbar").hidden = true;
-  const views = { text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, concord: concordView, compares: comparesView, compare: compareView };
+  const views = { text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, concord: concordView, compares: comparesView, compare: compareView };
   $("#main").innerHTML = (views[S.screen] || libraryView)();
 }
 
@@ -2179,7 +2192,7 @@ function libraryView() {
       ${body}
       ${S.mode === "pending" ? "" : acrossHTML()}
     </section>
-    ${S.mode === "pending" ? "" : glossaryHome() + branchesHome() + thinkersHome() + backupView()}`}`;
+    ${S.mode === "pending" ? "" : referenceHome() + backupView()}`}`;
 }
 // A reminder when there is real work on this device and no recent backup of it.
 function backupNudge() {
@@ -4072,21 +4085,40 @@ function thinkersView() {
     ${views}
     ${body}`;
 }
-function thinkersHome() {
-  const eras = TL_ERAS.map(([name, lo, hi]) => [name, THINKERS.filter((p) => { const s = lifeSpan(p.y); return s && s.a >= lo && s.a < hi; }).length]).filter(([, n]) => n);
-  return `<section class="home-sec">
-    <div class="sec-head"><div><h2>Thinkers</h2><div class="sub">${THINKERS.length} philosophers and theorists</div></div><button class="btn" id="openthinkers">See all</button></div>
-    <div class="label">On the timeline</div>
-    <div class="chips bchips">${eras.map(([name, n]) => `<button class="chip bchip" data-era="${esc(name)}">${esc(name)} <span class="cnt">${n}</span></button>`).join("")}</div>
-  </section>`;
+// The home screen's way into the reference sections: three buttons, each opening its whole contents as a list.
+function referenceHome() {
+  const card = (rk, title, sub) => `<button class="refcard" data-ref="${rk}"><span class="rc-t">${title}</span><span class="rc-s">${sub}</span><span class="rc-go" aria-hidden="true">›</span></button>`;
+  return `<section class="home-sec"><div class="refcards">
+    ${card("glossary", "Glossary", `${allTerms().length} terms`)}
+    ${card("branches", "Branches", `${BRANCHES.filter((b) => b.k === "branch").length} branches, ${BRANCHES.filter((b) => b.k === "tradition").length} traditions`)}
+    ${card("thinkers", "Thinkers", `${THINKERS.length} philosophers and theorists`)}
+  </div></section>`;
 }
-function glossaryHome() {
-  const terms = allTerms(); if (!terms.length) return "";
-  const areas = Object.keys(AREAS).map((a) => [a, terms.filter((g) => g.a === a).length]).filter(([, n]) => n);
-  return `<section class="home-sec">
-    <div class="sec-head"><div><h2>Glossary</h2><div class="sub">${terms.length} terms</div></div><div class="gl-acts"><button class="btn" id="quiz">Quiz</button><button class="btn" id="openglossary">Browse all</button></div></div>
-    <div class="chips bchips">${areas.map(([a, n]) => `<button class="chip bchip" data-garea="${a}">${esc(AREAS[a])} <span class="cnt">${n}</span></button>`).join("")}</div>
-  </section>`;
+// Everything in the three reference sections as one searchable list; each row opens its entry, and each group can open its
+// full screen (the glossary's areas and quiz, a branch's questions and reading, the thinkers' timeline).
+function referenceView() {
+  const q = fold((S.rq || "").trim()), k = S.rk || "all";
+  const cut = (x, n = 120) => { x = String(x || "").replace(/\s+/g, " ").trim(); return x.length > n ? x.slice(0, n - 1) + "…" : x; };
+  const row = (attr, name, tag, line) => `<button class="refrow" ${attr}><span class="rr-n">${esc(name)}</span><span class="rr-t">${esc(tag)}</span><span class="rr-d">${esc(cut(line))}</span></button>`;
+  const terms = allTerms().filter((g) => !q || fold(g.t).includes(q) || fold(g.d).includes(q));
+  const branches = BRANCHES.filter((b) => !q || fold(b.n).includes(q) || fold(b.d).includes(q));
+  const thinkers = THINKERS.filter((p) => !q || thinkerMatches(p, q) || fold(p.d).includes(q) || p.w.some((w) => fold(w).includes(q)))
+    .map((p, i) => [birthYear(p.y), i, p]).sort((a, b) => a[0] - b[0] || a[1] - b[1]).map((e) => e[2]);
+  const eras = TL_ERAS.map(([name, lo, hi]) => [name, THINKERS.filter((p) => { const s = lifeSpan(p.y); return s && s.a >= lo && s.a < hi; }).length]).filter(([, n]) => n);
+  // one group: its rows, with a button to its full screen; with All, each group under its own heading
+  const group = (id, title, n, open, extra, rows) => (k !== "all" && k !== id) || (q && !n) ? "" : `<section class="refgroup">
+    <div class="sec-head"><div>${k === "all" ? `<h2>${title}</h2>` : ""}<div class="sub">${n} ${{ glossary: n === 1 ? "term" : "terms", branches: n === 1 ? "branch or tradition" : "branches and traditions", thinkers: n === 1 ? "thinker" : "thinkers" }[id]}${q ? " matching" : ""}</div></div><button class="btn" id="${open}">${{ glossary: "Areas and your terms", branches: "Questions and reading", thinkers: "Timeline" }[id]}</button></div>
+    ${extra}<div class="reflist">${rows || `<p class="empty">Nothing here yet.</p>`}</div></section>`;
+  const chip = (id, label) => `<button class="chip ${k === id ? "on" : ""}" data-rk="${id}">${label}</button>`;
+  const body = group("glossary", "Glossary", terms.length, "openglossary", "", terms.map((g) => row(`data-term="${esc(g.id)}"`, g.t, AREAS[g.a] || "Your term", g.d)).join(""))
+    + group("branches", "Branches", branches.length, "openbranches", "", branches.map((b) => row(`data-branch="${esc(b.id)}"`, b.n, b.k === "branch" ? "Branch" : "Tradition", b.d)).join(""))
+    + group("thinkers", "Thinkers", thinkers.length, "openthinkers", q ? "" : `<div class="label">On the timeline</div><div class="chips bchips">${eras.map(([name, n]) => `<button class="chip bchip" data-era="${esc(name)}">${esc(name)} <span class="cnt">${n}</span></button>`).join("")}</div>`,
+      thinkers.map((p) => row(`data-thinker="${esc(p.id)}"`, p.n, p.y, p.d)).join(""));
+  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
+    <header class="gl-head"><div><h1>${{ all: "Glossary, branches and thinkers", glossary: "Glossary", branches: "Branches", thinkers: "Thinkers" }[k] || "Glossary"}</h1></div><div class="gl-acts"><button class="btn" id="quiz">${k === "thinkers" ? "Who wrote it?" : "Quiz yourself"}</button></div></header>
+    <input class="search" id="rq" type="search" placeholder="${{ all: "Search terms, branches and thinkers", glossary: "Search terms and definitions", branches: "Search branches and traditions", thinkers: "Search names, descriptions and works" }[k] || "Search"}" value="${esc(S.rq || "")}" aria-label="Search the glossary, branches and thinkers">
+    <div class="chips">${chip("all", "All")}${chip("glossary", "Glossary")}${chip("branches", "Branches")}${chip("thinkers", "Thinkers")}</div>
+    ${body || `<p class="empty">Nothing matches.</p>`}`;
 }
 function openTerm(id) {
   go({ screen: "glossary", gs: { gOpen: [id], gq: "", gArea: "all" }, scrollTo: id });
@@ -4655,16 +4687,6 @@ const AREA_BRANCH = { meta: ["metaphysics"], know: ["epistemology"], logic: ["lo
 
 /* ---------- branches ---------- */
 function termBranches(g) { return (Array.isArray(g.br) ? g.br : AREA_BRANCH[g.a] || []).filter((b) => BRANCH.has(b)); }
-function branchesHome() {
-  const chips = (k) => BRANCHES.filter((b) => b.k === k).map((b) => `<button class="chip bchip" data-branch="${esc(b.id)}">${esc(b.n)}</button>`).join("");
-  return `<section class="home-sec">
-    <div class="sec-head"><div><h2>Branches</h2><div class="sub">${BRANCHES.filter((b) => b.k === "branch").length} branches and ${BRANCHES.filter((b) => b.k === "tradition").length} traditions</div></div><button class="btn" id="openbranches">See all</button></div>
-    <div class="label">By subject</div>
-    <div class="chips bchips">${chips("branch")}</div>
-    <div class="label">Traditions</div>
-    <div class="chips bchips">${chips("tradition")}</div>
-  </section>`;
-}
 function branchesView() {
   const all = allTerms();
   const rel = new Map(BRANCHES.map((b) => [b.id, new Set(b.rel || [])]));
@@ -4714,6 +4736,7 @@ function showView(view, fresh) {
   if (view.screen === "concord" && typeof view.q === "string" && fresh) { rerun = view.q !== CONC.q || !CONC.results.length; CONC.q = view.q; }
   if (view.gs) { S.gOpen = new Set(view.gs.gOpen); S.gq = view.gs.gq; S.gArea = view.gs.gArea; } // which glossary terms were open, so Back returns to them
   if (view.focus) S.bOpen.add(view.focus);
+  if (view.screen === "reference" && view.rk) S.rk = view.rk;
   if (fresh && view.screen === "text") { S.sec = "all"; S.kind = "all"; S.tq = ""; }
   render();
   window.scrollTo(0, fresh ? 0 : view.y || 0);
@@ -6695,7 +6718,9 @@ document.addEventListener("click", (e) => {
   if (b.id === "more") return moreMenu();
   if (b.dataset.branch) return go({ screen: "branches", focus: b.dataset.branch });
   if (b.id === "openbranches") return go({ screen: "branches" });
-  if (b.id === "openthinkers") return go({ screen: "thinkers" });
+  if (b.id === "openthinkers") { if (S.screen === "reference") S.tl = true; return go({ screen: "thinkers" }); }
+  if (b.dataset.ref) { S.rq = ""; return go({ screen: "reference", rk: b.dataset.ref }); }
+  if (b.dataset.rk) { S.rk = b.dataset.rk; return render(); }
   if (b.dataset.era && !b.closest("#book")) { S.tl = true; S.pq = ""; return go({ screen: "thinkers", era: b.dataset.era }); }
   if (b.dataset.garea) { S.gArea = b.dataset.garea; S.gq = ""; S.gOpen = new Set(); return go({ screen: "glossary" }); }
   if (b.id === "openglossary") { S.gq = ""; S.gArea = "all"; return go({ screen: "glossary" }); }
@@ -6704,7 +6729,7 @@ document.addEventListener("click", (e) => {
   if (b.dataset.area) { S.gArea = b.dataset.area; return render(); }
   if (b.dataset.tl) { S.tl = b.dataset.tl === "1"; return render(); }
   if (b.id === "addterm") return termSheet(null);
-  if (b.id === "quiz") return quizPanel(S.screen === "glossary" ? S.gArea : S.screen === "thinkers" ? "thinkers" : "all");
+  if (b.id === "quiz") return quizPanel(S.screen === "glossary" ? S.gArea : S.screen === "thinkers" || (S.screen === "reference" && S.rk === "thinkers") ? "thinkers" : "all");
   if (b.id === "mywords") return wordsPanel();
   if (b.dataset.editterm) return termSheet(b.dataset.editterm);
   if (b.dataset.restoreterm) return del("terms", b.dataset.restoreterm).catch((e) => toast(failMsg(e)));
@@ -6783,7 +6808,7 @@ document.addEventListener("toggle", (e) => {
 }, true);
 let qTimer;
 document.addEventListener("input", (e) => {
-  if (e.target.id !== "q" && e.target.id !== "tq" && e.target.id !== "gq" && e.target.id !== "pq") return;
+  if (e.target.id !== "q" && e.target.id !== "tq" && e.target.id !== "gq" && e.target.id !== "pq" && e.target.id !== "rq") return;
   const key = e.target.id; S[key] = e.target.value;
   clearTimeout(qTimer); qTimer = setTimeout(() => { render(); const el = $("#" + key); if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); } }, 180);
 });

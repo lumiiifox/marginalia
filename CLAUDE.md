@@ -31,7 +31,9 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
   A text's `pdfLabels` are its PDF pages' labels, used to find the PDF page for a printed page number.
 - Citations: `CITE_STYLES`, `citeAt`, `bibEntry`, `bibtex`.
 - Import/parsing: `linesOf` and `unmerge` (PDF lines; scans' merged words), `parsePDF` (per-page body size, page numbers, headings, lost hyphens; `GAP` marks words OCR left blank as "[…]"), `ocrRepair` (scans only, gated by `ocrSigns`: split and misread words corrected against the book's own vocabulary, dashes, note numbers, split numbers, "[illegible]"), `domToBlocks` / `parseHTML` (EPUB, DOCX), `parsePlain`.
-- Views: `render` dispatches to `libraryView`, `textView`, `tagView`, `questionsView`, `draftsView`/`draftView`, `comparesView`/`compareView`, `concordView`, glossary, branches and `thinkersView` (home sections in that order: `glossaryHome`, `branchesHome`, `thinkersHome`).
+- Views: `render` dispatches to `libraryView`, `textView`, `tagView`, `questionsView`, `draftsView`/`draftView`, `comparesView`/`compareView`, `concordView`, glossary, branches and `thinkersView`. The home screen reaches them through three buttons (`referenceHome`) that open
+  `referenceView`: every term, branch or thinker as one list (`S.rk` picks the group, `S.rq` searches), each row opening its entry
+  and each group linking to its full screen.
 - Data: `GLOSSARY` (large), `BRANCHES`, `LINKS`.
 - Quiz yourself (`quizPanel`, from the glossary and the home screen's glossary section): questions made from `allTerms()` definitions
   (the term blanked out by `maskTerm`) and `THINKERS` key works (`worksOf` leaves out works by other authors); nothing is stored.
