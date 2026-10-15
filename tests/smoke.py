@@ -182,6 +182,8 @@ async def main():
         await page.click(".tl-row[data-thinker='kant']"); await page.wait_for_selector(".sheet")
         card = (await page.inner_text(".sheet")).lower()
         check("lived at the same time" in card and "hume" in card.split("lived at the same time")[1], "Kant's card lists Hume among those who lived at the same time")
+        src = await page.evaluate("(() => { const a = document.querySelector('.sheet .tsrc a'); return [!!document.querySelector('.sheet .tmore'), a && a.href, a && a.target]; })()")
+        check(src == [True, "https://plato.stanford.edu/entries/kant/", "_blank"], f"a thinker with a longer account shows it, with its source linked ({src})")
         check(not errs, "no script errors on the timeline" + (f": {errs}" if errs else ""))
         await browser.close()
 
