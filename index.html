@@ -493,6 +493,13 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .qz-say { font: 400 15px/1.45 var(--f-text); margin: 0; }
 .qz-say .bad { color: var(--warn); }
 .qz-missed { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.wlist { display: grid; }
+.witem { padding: 10px 0; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); }
+.witem:first-child { border-top: 0; }
+.witem .wh { display: flex; align-items: baseline; gap: 8px; }
+.witem .wh b { font: 600 17px/1.3 var(--f-text); }
+.witem .wh span { font: 400 12.5px/1 var(--f-ui); color: var(--muted); flex: 1; }
+.witem p { margin: 4px 0 0; font: 400 15px/1.45 var(--f-text); }
 .gl-list { display: grid; }
 .term { border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); }
 .term:first-child { border-top: 0; }
@@ -4050,7 +4057,7 @@ function glossaryView() {
       <div class="gl-list">${list.map((g) => termHTML(g, tmap)).join("") || `<p class="empty">No terms match.</p>`}</div>`;
   }
   return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
-    <header class="gl-head"><div><h1>Glossary</h1><div class="sub">${terms.length} terms, ${THINKERS.length} thinkers</div></div><div class="gl-acts"><button class="btn" id="quiz">Quiz yourself</button><button class="btn primary" id="addterm">Add a term</button></div></header>
+    <header class="gl-head"><div><h1>Glossary</h1><div class="sub">${terms.length} terms, ${THINKERS.length} thinkers</div></div><div class="gl-acts">${lookedUp().length ? `<button class="btn" id="mywords">Your words</button>` : ""}<button class="btn" id="quiz">Quiz yourself</button><button class="btn primary" id="addterm">Add a term</button></div></header>
     <p class="hint">Reference definitions with their sources. Tap a thinker, tradition or related term to follow the connections. Each term also lists the passages in your notes that use it, and you can edit any entry or add your own.</p>
     <input class="search" id="gq" type="search" placeholder="Search terms, definitions and thinkers" value="${esc(S.gq)}" aria-label="Search the glossary">
     <div class="chips">${areas.map((a) => `<button class="chip ${S.gArea === a ? "on" : ""}" data-area="${a}">${a === "all" ? "All" : a === "thinkers" ? "Thinkers" : esc(AREAS[a])}</button>`).join("")}</div>
@@ -4104,7 +4111,8 @@ function thinkerPanel(id) {
 }
 /* quiz: questions made from the glossary's own definitions and the thinkers' key works */
 const QZ = { mode: "def", area: "all", qs: [], k: 0, picked: -1, right: 0, missed: [] };
-const QZ_MODES = { def: "Name the term", term: "Pick the definition", work: "Who wrote it?" };
+const QZ_MODES = { def: "Name the term", term: "Pick the definition", work: "Who wrote it?", words: "Words you looked up" };
+const quizModes = () => Object.entries(QZ_MODES).filter(([m]) => m !== "words" || lookedUp().length >= 4);
 const shuffle = (a) => { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
 // A definition with the term's own words blanked out, so it doesn't give the answer away.
 function maskTerm(g) {
@@ -4119,6 +4127,15 @@ function worksOf(p) {
   return p.w.filter((w) => { const pre = w.split(",")[0].trim(); return !(w.includes(",") && THINKERS.some((x) => x.id !== p.id && (x.sn === pre || x.n === pre))); });
 }
 function quizQuestions(mode, area) {
+  if (mode === "words") {
+    const all = lookedUp(); if (all.length < 4) return [];
+    return shuffle(all).slice(0, 10).map((x) => {
+      const stem = x.word.length > 5 ? x.word.slice(0, x.word.length - 2) : x.word;
+      const prompt = x.sense.replace(new RegExp(`(^|[^\\p{L}])${reEsc(stem)}\\p{L}*`, "giu"), "$1___");
+      const opts = shuffle([x, ...shuffle(all.filter((y) => y.word !== x.word)).slice(0, 3)]);
+      return { prompt: `Which word means: <i>${esc(prompt)}</i>`, opts: opts.map((y) => esc(y.word)), answer: opts.indexOf(x), wd: x };
+    });
+  }
   if (mode === "work") {
     const all = THINKERS.flatMap((p) => worksOf(p).map((w) => ({ p, w })));
     return shuffle(all).slice(0, 10).map(({ p, w }) => {
@@ -4143,18 +4160,21 @@ function quizStart(mode, area) {
   Object.assign(QZ, { mode, area, qs: quizQuestions(mode, area), k: 0, picked: -1, right: 0, missed: [] });
 }
 function quizHTML() {
-  const modes = `<div class="chips">${Object.entries(QZ_MODES).map(([m, label]) => `<button class="chip ${QZ.mode === m ? "on" : ""}" data-keep="1" data-qzmode="${m}">${label}</button>`).join("")}</div>`;
-  const from = QZ.mode === "work" ? "the thinkers' key works" : QZ.area !== "all" && AREAS[QZ.area] ? `terms in ${esc(AREAS[QZ.area])}` : "the whole glossary";
+  const modes = `<div class="chips">${quizModes().map(([m, label]) => `<button class="chip ${QZ.mode === m ? "on" : ""}" data-keep="1" data-qzmode="${m}">${label}</button>`).join("")}</div>`;
+  const from = QZ.mode === "words" ? "words you looked up" : QZ.mode === "work" ? "the thinkers' key works" : QZ.area !== "all" && AREAS[QZ.area] ? `terms in ${esc(AREAS[QZ.area])}` : "the whole glossary";
   if (QZ.qs.length < 4) return `${modes}<p class="hint">There aren't enough entries here for a quiz yet.</p>`;
   if (QZ.k >= QZ.qs.length) {
     const n = QZ.qs.length;
     return `${modes}<p class="qz-q"><b>${QZ.right} of ${n}</b> right.</p>
-      ${QZ.missed.length ? `<div class="crow"><span class="clabel">To look at again</span><ul class="qz-missed">${QZ.missed.map((q) => q.g ? `<li><button class="linkbtn" data-term="${esc(q.g.id)}">${esc(q.g.t)}</button></li>` : `<li><button class="linkbtn" data-thinker="${esc(q.p.id)}">${esc(q.p.n)}</button></li>`).join("")}</ul></div>` : `<p class="hint">Every one right.</p>`}
+      ${QZ.missed.length ? `<div class="crow"><span class="clabel">To look at again</span><ul class="qz-missed">${QZ.missed.map((q) => q.wd ? `<li><b>${esc(q.wd.word)}</b>: ${esc(q.wd.sense)}</li>` : q.g ? `<li><button class="linkbtn" data-term="${esc(q.g.id)}">${esc(q.g.t)}</button></li>` : `<li><button class="linkbtn" data-thinker="${esc(q.p.id)}">${esc(q.p.n)}</button></li>`).join("")}</ul></div>` : `<p class="hint">Every one right.</p>`}
       <div class="noteacts"><button class="btn primary" data-keep="1" data-qzagain="1">Another ten</button></div>`;
   }
   const q = QZ.qs[QZ.k], done = QZ.picked >= 0;
   const cls = (i) => (!done ? "" : i === q.answer ? " right" : i === QZ.picked ? " wrong" : " dim");
-  const say = !done ? "" : q.g
+  const next = `<button class="btn primary" data-keep="1" data-qznext="1">${QZ.k + 1 < QZ.qs.length ? "Next" : "See the score"}</button>`;
+  const say = !done ? "" : q.wd
+    ? `<p class="qz-say">${QZ.picked === q.answer ? "<b>Right.</b>" : `<b class="bad">Not this time.</b>`} <b>${esc(q.wd.word)}</b> (${esc(q.wd.pos)}): ${esc(q.wd.sense)}</p><div class="noteacts">${next}</div>`
+    : q.g
     ? `<p class="qz-say">${QZ.picked === q.answer ? "<b>Right.</b>" : `<b class="bad">Not this time.</b>`} <b>${esc(q.g.t)}</b>: ${esc(q.g.d)}</p>
        <div class="noteacts"><button class="btn primary" data-keep="1" data-qznext="1">${QZ.k + 1 < QZ.qs.length ? "Next" : "See the score"}</button><button class="btn ghost" data-term="${esc(q.g.id)}">Open in the glossary</button></div>`
     : `<p class="qz-say">${QZ.picked === q.answer ? "<b>Right.</b>" : `<b class="bad">Not this time.</b>`} <b>${esc(q.p.n)}</b> (${esc(q.p.y)}): ${esc(q.p.d)}</p>
@@ -4166,7 +4186,7 @@ function quizHTML() {
     ${say}`;
 }
 function quizPanel(area) {
-  quizStart(area === "thinkers" ? "work" : "def", area || "all");
+  quizStart(area === "words" ? "words" : area === "thinkers" ? "work" : "def", area === "words" ? "all" : area || "all");
   openPanel(`<h2>Quiz yourself</h2><div id="quizbox" style="display:grid;gap:14px">${quizHTML()}</div>`, (b) => {
     const box = $("#quizbox");
     if (b.dataset.qzans !== undefined && QZ.picked < 0) {
@@ -4343,6 +4363,31 @@ const DICT_KEY = "mg-dict";
 function dictCache() { try { return JSON.parse(localStorage.getItem(DICT_KEY) || "{}"); } catch { return {}; } }
 function dictSave(word, entry) {
   try { const c = dictCache(); c[word] = { ...entry, t: Date.now() }; const keys = Object.keys(c); if (keys.length > 300) keys.sort((a, b) => c[a].t - c[b].t).slice(0, keys.length - 300).forEach((k) => delete c[k]); localStorage.setItem(DICT_KEY, JSON.stringify(c)); } catch {}
+}
+// Words looked up in Look up (kept on this device by dictSave), newest first, each with one usable definition: English first,
+// skipping senses that only point at another word ("plural of", "alternative form of").
+const POINTER = /^(?:(?:alternative|obsolete|archaic|dated|rare|nonstandard|misspelling|abbreviation|initialism|synonym|plural|inflection|comparative|superlative)\b.{0,30}\bof\b|(?:simple past|past participle|present participle|third-person|plural form))/i;
+function lookedUp() {
+  const seen = new Set(), out = [];
+  for (const [key, e] of Object.entries(dictCache()).sort((a, b) => (b[1].t || 0) - (a[1].t || 0))) {
+    if (!e || !Array.isArray(e.defs)) continue;
+    const word = e.title || key; if (seen.has(word.toLowerCase())) continue;
+    const defs = [...e.defs].sort((a, b) => (b.lang === "English") - (a.lang === "English"));
+    let use = null; for (const d of defs) { const sense = (d.senses || []).find((x) => x && !POINTER.test(x)); if (sense) { use = { lang: d.lang, pos: d.pos, sense }; break; } }
+    if (!use) continue;
+    seen.add(word.toLowerCase()); out.push({ word, key, ...use });
+  }
+  return out;
+}
+function dictForget(key) { try { const c = dictCache(); delete c[key]; localStorage.setItem(DICT_KEY, JSON.stringify(c)); } catch {} }
+function wordsPanel() {
+  const draw = () => { const list = lookedUp(); return `<p class="hint">${list.length ? `${list.length} word${list.length === 1 ? "" : "s"} you've looked up while reading, newest first. They're kept on this device for Look up to show offline; Remove drops one, offline definition included.` : "Words you look up while reading appear here."}</p>
+    ${list.length >= 4 ? `<div class="noteacts"><button class="btn primary" data-wquiz="1">Quiz on these words</button></div>` : ""}
+    <div class="wlist">${list.map((x) => `<div class="witem"><div class="wh"><b>${esc(x.word)}</b><span>${esc(x.pos)}${x.lang !== "English" ? `, ${esc(x.lang)}` : ""}</span><button class="linkbtn" data-keep="1" data-wforget="${esc(x.key)}">Remove</button></div><p>${esc(x.sense)}</p></div>`).join("")}</div>`; };
+  openPanel(`<h2>Words you've looked up</h2><div id="wbox" style="display:grid;gap:12px">${draw()}</div>`, (b) => {
+    if (b.dataset.wforget) { dictForget(b.dataset.wforget); $("#wbox").innerHTML = draw(); }
+    else if (b.dataset.wquiz) quizPanel("words");
+  });
 }
 // The definitions in a Wiktionary page: [{ lang, pos, senses: [...] }], from the parsed page's HTML.
 function dictParse(html) {
@@ -6640,6 +6685,7 @@ document.addEventListener("click", (e) => {
   if (b.dataset.tl) { S.tl = b.dataset.tl === "1"; return render(); }
   if (b.id === "addterm") return termSheet(null);
   if (b.id === "quiz") return quizPanel(S.screen === "glossary" ? S.gArea : "all");
+  if (b.id === "mywords") return wordsPanel();
   if (b.dataset.editterm) return termSheet(b.dataset.editterm);
   if (b.dataset.restoreterm) return del("terms", b.dataset.restoreterm).catch((e) => toast(failMsg(e)));
   if (b.dataset.delterm) return arm(b, () => del("terms", b.dataset.delterm).catch((e) => toast(failMsg(e))));

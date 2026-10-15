@@ -7,7 +7,9 @@ Made-up book only; Wiktionary is stood in for by a local reply shaped like its A
      - a footnote near the number;
      with Go to the note (and the way back) and the other notes with that number;
   2. Look up shows Wiktionary's definitions by language and part of speech, keeps them for offline use, and says so when
-     there's no entry or Wiktionary can't be reached.
+     there's no entry or Wiktionary can't be reached;
+  3. the words looked up are listed in the glossary (Your words), one usable definition each, and quizzed on (the word
+     blanked out of its definition); Remove takes one off.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, json, subprocess, sys, time
@@ -113,6 +115,28 @@ async def main():
         d4 = await lookup("Nonword"); check("no entry" in d4, f"a word Wiktionary doesn't have says so ({d4!r})")
         await page.click("#pclose"); await page.wait_for_timeout(300)
         d5 = await lookup("Broken"); check("Couldn't reach" in d5, f"a failed request says so ({d5!r})")
+
+        # 3 your words
+        await page.evaluate("""() => { const c = JSON.parse(localStorage.getItem('mg-dict') || '{}'), d = (pos, s) => ({ defs: [{ lang: 'English', pos, senses: s }], t: Date.now() });
+          c.immanence = { title: 'immanence', ...d('Noun', ['The quality of being immanent; inherence.']) };
+          c.rhizome = { title: 'rhizome', ...d('Noun', ['A horizontal stem of a plant that sends out roots and shoots from its nodes.']) };
+          c.aporia = { title: 'aporia', ...d('Noun', ['An expression of doubt; a puzzle or impasse in an argument.']) };
+          c.plateaus = { title: 'plateaus', ...d('Noun', ['plural of plateau']) };
+          localStorage.setItem('mg-dict', JSON.stringify(c)); }""")
+        await page.click("#pclose"); await page.wait_for_timeout(300)
+        await page.evaluate("go({ screen: 'glossary' })"); await page.wait_for_timeout(300)
+        await page.click("#mywords"); await page.wait_for_selector("#wbox")
+        w = await page.inner_text("#wbox")
+        check("socius" in w and "companion, comrade" in w and "rhizome" in w and "plateaus" not in w, f"Your words lists the words looked up with a definition each, leaving out ones that only point at another word ({w[:80]!r})")
+        await page.click("[data-wquiz]"); await page.wait_for_selector(".qz-opt")
+        q = await page.evaluate("[QZ.mode, QZ.qs.length, QZ.qs.every((x) => !x.prompt.toLowerCase().includes(x.wd.word.toLowerCase()))]")
+        check(q == ["words", 4, True], f"Quiz on these words asks about each, the word blanked out ({q})")
+        check(await page.locator("[data-qzmode=words].on").count() == 1, "the quiz shows Words you looked up as a kind of question")
+        await page.click("#pclose"); await page.wait_for_timeout(200)
+        await page.click("#mywords"); await page.wait_for_selector("#wbox")
+        await page.click("[data-wforget=aporia]"); await page.wait_for_timeout(200)
+        check("aporia" not in await page.inner_text("#wbox") and "aporia" not in await page.evaluate("Object.keys(dictCache())"), "Remove takes a word off the list")
+        check(await page.locator("[data-wquiz]").count() == 0, "with fewer than four words there's no quiz on them")
         check(not errs, "no script errors" + (f": {errs[:3]}" if errs else ""))
         await ctx.close(); await browser.close()
 
