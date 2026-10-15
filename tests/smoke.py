@@ -4,7 +4,9 @@ Uses made-up records only (never real books). Checks that:
   1. every screen renders at phone and desktop width without script errors or sideways scrolling;
   2. a book opens in the reader from its Read button;
   3. Save backup -> delete the database -> Restore gives back exactly the same library, and it survives a reload;
-  4. a backup made to run script (markup in fields the app draws) is refused, and such records already stored draw as text.
+  4. a backup made to run script (markup in fields the app draws) is refused, and such records already stored draw as text;
+  5. Quiz yourself: ten questions from the glossary (the term blanked out of its definition), from one area when one is
+     chosen, and "Who wrote it?" from the thinkers' works with no co-author among the wrong answers; a score at the end.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, json, subprocess, sys, time
@@ -91,6 +93,33 @@ async def main():
         await page.evaluate("go({ screen: 'text', textId: 'x1' })"); await page.wait_for_timeout(300)
         await page.evaluate("go({ screen: 'reader', textId: 'x1' })"); await page.wait_for_timeout(600)
         check(not await page.evaluate("!!window.__xss") and not await page.evaluate("!!document.querySelector('#reader img, .srcline img')"), "markup already stored in those fields is drawn as text")
+
+        # 5 the quiz
+        page, errs = await fresh_page(browser, 390, 844)
+        await page.evaluate("go({ screen: 'glossary' })"); await page.wait_for_timeout(200)
+        await page.click("#quiz"); await page.wait_for_selector(".qz-opt")
+        for k in range(10):
+            await page.click(".qz-opt >> nth=0"); await page.wait_for_selector("[data-qznext]")
+            if k == 0: check(await page.locator(".qz-opt.right").count() == 1, "an answer shows which option was right")
+            await page.click("[data-qznext]"); await page.wait_for_timeout(50)
+        txt = await page.inner_text("#quizbox")
+        check(" of 10" in txt and "right" in txt and "Another ten" in txt, f"ten questions end in a score ({txt.splitlines()[3:4]})")
+        leaks = await page.evaluate("""() => { quizStart('def', 'all'); let bad = []; for (let r = 0; r < 20; r++) { quizStart('def', 'all');
+            for (const q of QZ.qs) { const t = q.g.t.replace(/\\s*\\(.*?\\)\\s*/g, ' ').trim(); if (t.length > 4 && q.prompt.toLowerCase().includes(t.toLowerCase())) bad.push(t); } } return bad; }""")
+        check(not leaks, f"a definition never names its own term ({leaks[:3]})")
+        area = await page.evaluate("() => { quizStart('def', 'ethics'); return [...new Set(QZ.qs.map((q) => q.g.a))]; }")
+        check(area == ["ethics"], f"a quiz from one area asks only about its terms ({area})")
+        work = await page.evaluate("""() => { const bad = []; for (let r = 0; r < 40; r++) { quizStart('work', 'all'); for (const q of QZ.qs) {
+            if (q.opts.length !== 4 || !q.opts[q.answer]) bad.push('shape'); if (/^Plato,|^Aristotle,/.test(q.prompt.replace(/<[^>]+>/g, '').replace('Who wrote ', ''))) bad.push(q.prompt);
+            const wrong = q.opts.filter((_, i) => i !== q.answer);
+            for (const o of wrong) { const x = THINKERS.find((p) => esc(p.n) === o); const t = q.prompt.replace(/<[^>]+>/g, '').replace(/^Who wrote /, '').replace(/ \\(\\d+\\)\\?$|\\?$/, '').toLowerCase();
+              if (x && x.w.some((w) => w.replace(/\\s*\\(.*$/, '').trim().toLowerCase() === t)) bad.push(o + ' also wrote ' + t); } } } return bad; }""")
+        check(not work, f"Who wrote it? has one right answer and no co-author among the others ({work[:3]})")
+        await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(200)
+        await page.click("#pclose") if await page.locator("#pclose").count() else None
+        await page.click("#quiz"); await page.wait_for_selector(".qz-opt")
+        check(await page.locator(".qz-opt").count() == 4, "the glossary section of the home screen opens the quiz too")
+        check(not errs, "no script errors in the quiz" + (f": {errs}" if errs else ""))
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

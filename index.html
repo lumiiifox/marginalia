@@ -479,6 +479,20 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 
 /* glossary and branches */
 .gl-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.gl-acts { display: flex; gap: 8px; flex-wrap: wrap; }
+/* quiz */
+.qz-bar { display: flex; justify-content: space-between; gap: 8px; font: 500 13px/1.3 var(--f-ui); color: var(--muted); }
+.qz-q { font: 400 18px/1.45 var(--f-text); margin: 0; }
+.qz-q b { font-weight: 700; }
+.qz-opts { display: grid; gap: 8px; }
+.qz-opt { text-align: left; font: 400 15.5px/1.4 var(--f-text); color: var(--ink); background: var(--field); border: 1px solid var(--rule); border-radius: 8px; padding: 11px 13px; }
+.qz-opt:disabled { opacity: 1; }
+.qz-opt.right { background: var(--mk-gloss); border-color: color-mix(in srgb, var(--leather) 60%, var(--rule)); }
+.qz-opt.wrong { background: var(--mk-objection); border-color: color-mix(in srgb, var(--warn) 60%, var(--rule)); }
+.qz-opt.dim { opacity: 0.55; }
+.qz-say { font: 400 15px/1.45 var(--f-text); margin: 0; }
+.qz-say .bad { color: var(--warn); }
+.qz-missed { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .gl-list { display: grid; }
 .term { border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); }
 .term:first-child { border-top: 0; }
@@ -3972,7 +3986,7 @@ function glossaryView() {
       <div class="gl-list">${list.map((g) => termHTML(g, tmap)).join("") || `<p class="empty">No terms match.</p>`}</div>`;
   }
   return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
-    <header class="gl-head"><div><h1>Glossary</h1><div class="sub">${terms.length} terms, ${THINKERS.length} thinkers</div></div><button class="btn primary" id="addterm">Add a term</button></header>
+    <header class="gl-head"><div><h1>Glossary</h1><div class="sub">${terms.length} terms, ${THINKERS.length} thinkers</div></div><div class="gl-acts"><button class="btn" id="quiz">Quiz yourself</button><button class="btn primary" id="addterm">Add a term</button></div></header>
     <p class="hint">Reference definitions with their sources. Tap a thinker, tradition or related term to follow the connections. Each term also lists the passages in your notes that use it, and you can edit any entry or add your own.</p>
     <input class="search" id="gq" type="search" placeholder="Search terms, definitions and thinkers" value="${esc(S.gq)}" aria-label="Search the glossary">
     <div class="chips">${areas.map((a) => `<button class="chip ${S.gArea === a ? "on" : ""}" data-area="${a}">${a === "all" ? "All" : a === "thinkers" ? "Thinkers" : esc(AREAS[a])}</button>`).join("")}</div>
@@ -3982,7 +3996,7 @@ function glossaryHome() {
   const terms = allTerms(); if (!terms.length) return "";
   const areas = Object.keys(AREAS).map((a) => [a, terms.filter((g) => g.a === a).length]).filter(([, n]) => n);
   return `<section class="home-sec">
-    <div class="sec-head"><div><h2>Glossary</h2><div class="sub">${terms.length} terms, ${THINKERS.length} thinkers</div></div><button class="btn" id="openglossary">Browse all</button></div>
+    <div class="sec-head"><div><h2>Glossary</h2><div class="sub">${terms.length} terms, ${THINKERS.length} thinkers</div></div><div class="gl-acts"><button class="btn" id="quiz">Quiz</button><button class="btn" id="openglossary">Browse all</button></div></div>
     <div class="chips bchips">${areas.map(([a, n]) => `<button class="chip bchip" data-garea="${a}">${esc(AREAS[a])} <span class="cnt">${n}</span></button>`).join("")}<button class="chip bchip" data-garea="thinkers">Thinkers <span class="cnt">${THINKERS.length}</span></button></div>
   </section>`;
 }
@@ -4021,6 +4035,84 @@ function thinkerPanel(id) {
     else if (b.dataset.term) openTerm(b.dataset.term);
     else if (b.dataset.branch) go({ screen: "branches", focus: b.dataset.branch });
     else if (b.dataset.open) go({ screen: "text", textId: b.dataset.open });
+  });
+}
+/* quiz: questions made from the glossary's own definitions and the thinkers' key works */
+const QZ = { mode: "def", area: "all", qs: [], k: 0, picked: -1, right: 0, missed: [] };
+const QZ_MODES = { def: "Name the term", term: "Pick the definition", work: "Who wrote it?" };
+const shuffle = (a) => { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+// A definition with the term's own words blanked out, so it doesn't give the answer away.
+function maskTerm(g) {
+  const words = [...termKeys(g), ...g.t.replace(/\(.*?\)/g, " ").split(/[\s\-–—/]+/).filter((w) => w.length >= 5)];
+  if (!words.length) return g.d;
+  const re = new RegExp(`(^|[^\\p{L}])(${words.map(reEsc).join("|")})(s|es)?(?![\\p{L}])`, "giu");
+  return g.d.replace(re, "$1___");
+}
+const workTitle = (w) => { const y = w.match(/\((?:c\. )?(\d{3,4})/); return w.replace(/\s*\(.*$/, "").trim() + (y ? ` (${y[1]})` : ""); };
+// Works a thinker wrote, leaving out entries that name another author ("Plato, Apology" under Socrates).
+function worksOf(p) {
+  return p.w.filter((w) => { const pre = w.split(",")[0].trim(); return !(w.includes(",") && THINKERS.some((x) => x.id !== p.id && (x.sn === pre || x.n === pre))); });
+}
+function quizQuestions(mode, area) {
+  if (mode === "work") {
+    const all = THINKERS.flatMap((p) => worksOf(p).map((w) => ({ p, w })));
+    return shuffle(all).slice(0, 10).map(({ p, w }) => {
+      const title = w.replace(/\s*\(.*$/, "").trim().toLowerCase();
+      // anyone else listed with the same work (co-authors) or named in it can't be a wrong answer
+      const also = new Set(THINKERS.filter((x) => x.w.some((v) => v.replace(/\s*\(.*$/, "").trim().toLowerCase() === title) || w.includes(x.sn)).map((x) => x.id));
+      const by = birthYear(p.y), near = THINKERS.filter((x) => !also.has(x.id)).sort((a, b) => Math.abs(birthYear(a.y) - by) - Math.abs(birthYear(b.y) - by)).slice(0, 8);
+      const opts = shuffle([p, ...shuffle(near).slice(0, 3)]);
+      return { prompt: `Who wrote <b>${esc(workTitle(w))}</b>?`, opts: opts.map((x) => esc(x.n)), answer: opts.indexOf(p), p };
+    });
+  }
+  const terms = allTerms().filter((g) => g.d && g.d.length > 20), pool = area !== "all" && area !== "thinkers" ? terms.filter((g) => g.a === area) : terms;
+  return shuffle(pool).slice(0, 10).map((g) => {
+    const same = terms.filter((x) => x.id !== g.id && x.a === g.a), others = same.length >= 3 ? same : terms.filter((x) => x.id !== g.id);
+    const opts = shuffle([g, ...shuffle(others).slice(0, 3)]);
+    return mode === "def"
+      ? { prompt: esc(maskTerm(g)), opts: opts.map((x) => esc(x.t)), answer: opts.indexOf(g), g }
+      : { prompt: `What is <b>${esc(g.t)}</b>?`, opts: opts.map((x) => esc(x.d.length > 220 ? x.d.slice(0, 219) + "…" : x.d)), answer: opts.indexOf(g), g };
+  });
+}
+function quizStart(mode, area) {
+  Object.assign(QZ, { mode, area, qs: quizQuestions(mode, area), k: 0, picked: -1, right: 0, missed: [] });
+}
+function quizHTML() {
+  const modes = `<div class="chips">${Object.entries(QZ_MODES).map(([m, label]) => `<button class="chip ${QZ.mode === m ? "on" : ""}" data-keep="1" data-qzmode="${m}">${label}</button>`).join("")}</div>`;
+  const from = QZ.mode === "work" ? "the thinkers' key works" : QZ.area !== "all" && AREAS[QZ.area] ? `terms in ${esc(AREAS[QZ.area])}` : "the whole glossary";
+  if (QZ.qs.length < 4) return `${modes}<p class="hint">There aren't enough entries here for a quiz yet.</p>`;
+  if (QZ.k >= QZ.qs.length) {
+    const n = QZ.qs.length;
+    return `${modes}<p class="qz-q"><b>${QZ.right} of ${n}</b> right.</p>
+      ${QZ.missed.length ? `<div class="crow"><span class="clabel">To look at again</span><ul class="qz-missed">${QZ.missed.map((q) => q.g ? `<li><button class="linkbtn" data-term="${esc(q.g.id)}">${esc(q.g.t)}</button></li>` : `<li><button class="linkbtn" data-thinker="${esc(q.p.id)}">${esc(q.p.n)}</button></li>`).join("")}</ul></div>` : `<p class="hint">Every one right.</p>`}
+      <div class="noteacts"><button class="btn primary" data-keep="1" data-qzagain="1">Another ten</button></div>`;
+  }
+  const q = QZ.qs[QZ.k], done = QZ.picked >= 0;
+  const cls = (i) => (!done ? "" : i === q.answer ? " right" : i === QZ.picked ? " wrong" : " dim");
+  const say = !done ? "" : q.g
+    ? `<p class="qz-say">${QZ.picked === q.answer ? "<b>Right.</b>" : `<b class="bad">Not this time.</b>`} <b>${esc(q.g.t)}</b>: ${esc(q.g.d)}</p>
+       <div class="noteacts"><button class="btn primary" data-keep="1" data-qznext="1">${QZ.k + 1 < QZ.qs.length ? "Next" : "See the score"}</button><button class="btn ghost" data-term="${esc(q.g.id)}">Open in the glossary</button></div>`
+    : `<p class="qz-say">${QZ.picked === q.answer ? "<b>Right.</b>" : `<b class="bad">Not this time.</b>`} <b>${esc(q.p.n)}</b> (${esc(q.p.y)}): ${esc(q.p.d)}</p>
+       <div class="noteacts"><button class="btn primary" data-keep="1" data-qznext="1">${QZ.k + 1 < QZ.qs.length ? "Next" : "See the score"}</button><button class="btn ghost" data-thinker="${esc(q.p.id)}">About ${esc(q.p.sn || q.p.n)}</button></div>`;
+  return `${modes}
+    <div class="qz-bar"><span>Question ${QZ.k + 1} of ${QZ.qs.length}, from ${from}</span><span>${QZ.right} right</span></div>
+    <p class="qz-q">${q.prompt}</p>
+    <div class="qz-opts">${q.opts.map((o, i) => `<button class="qz-opt${cls(i)}" data-keep="1" data-qzans="${i}"${done ? " disabled" : ""}>${o}</button>`).join("")}</div>
+    ${say}`;
+}
+function quizPanel(area) {
+  quizStart(area === "thinkers" ? "work" : "def", area || "all");
+  openPanel(`<h2>Quiz yourself</h2><div id="quizbox" style="display:grid;gap:14px">${quizHTML()}</div>`, (b) => {
+    const box = $("#quizbox");
+    if (b.dataset.qzans !== undefined && QZ.picked < 0) {
+      QZ.picked = +b.dataset.qzans; const q = QZ.qs[QZ.k];
+      if (QZ.picked === q.answer) QZ.right++; else QZ.missed.push(q);
+    } else if (b.dataset.qznext) { QZ.k++; QZ.picked = -1; }
+    else if (b.dataset.qzmode) quizStart(b.dataset.qzmode, QZ.area);
+    else if (b.dataset.qzagain) quizStart(QZ.mode, QZ.area);
+    else if (b.dataset.term) return openTerm(b.dataset.term);
+    else if (b.dataset.thinker) return thinkerPanel(b.dataset.thinker);
+    if (box) { box.innerHTML = quizHTML(); const sh = box.closest(".sheet"); if (sh && (b.dataset.qznext || b.dataset.qzmode || b.dataset.qzagain)) sh.scrollTop = 0; }
   });
 }
 function termSheet(id, preset) {
@@ -6461,6 +6553,7 @@ document.addEventListener("click", (e) => {
   if (b.dataset.thinker) return thinkerPanel(b.dataset.thinker);
   if (b.dataset.area) { S.gArea = b.dataset.area; return render(); }
   if (b.id === "addterm") return termSheet(null);
+  if (b.id === "quiz") return quizPanel(S.screen === "glossary" ? S.gArea : "all");
   if (b.dataset.editterm) return termSheet(b.dataset.editterm);
   if (b.dataset.restoreterm) return del("terms", b.dataset.restoreterm).catch((e) => toast(failMsg(e)));
   if (b.dataset.delterm) return arm(b, () => del("terms", b.dataset.delterm).catch((e) => toast(failMsg(e))));
