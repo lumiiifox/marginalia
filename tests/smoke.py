@@ -7,7 +7,9 @@ Uses made-up records only (never real books). Checks that:
   4. a backup made to run script (markup in fields the app draws) is refused, and such records already stored draw as text;
   5. Quiz yourself: ten questions from the glossary (the term blanked out of its definition), from one area when one is
      chosen, and "Who wrote it?" from the thinkers' works with no co-author among the wrong answers; a score at the end;
-  6. the thinkers' timeline: every dated life read from its dates line, each period on its own scale, and a thinker's card
+  6. Thinkers is its own screen after Glossary and Branches (home sections in that order; the glossary no longer lists
+     thinkers as an area): in order of birth or on a timeline, every dated life read from its dates line, each period on its
+     own scale; a period on the home screen opens the timeline there; search; its quiz asks who wrote what; a thinker's card
      lists who lived at the same time.
 Needs: pip install playwright && playwright install chromium
 """
@@ -35,7 +37,7 @@ SEED = """async () => {
 }"""
 DUMP = "async (st) => { const o = {}; for (const s of st) o[s] = Object.fromEntries(await idbAll(s)); return o; }"
 READY = "typeof idb !== 'undefined' && idb"
-SCREENS = [("library", {}), ("text", {"textId": "t1"}), ("glossary", {}), ("branches", {}), ("tag", {"tag": "tag"}),
+SCREENS = [("library", {}), ("text", {"textId": "t1"}), ("glossary", {}), ("branches", {}), ("thinkers", {}), ("tag", {"tag": "tag"}),
            ("questions", {}), ("drafts", {}), ("draft", {"draftId": "d1"}), ("concord", {}), ("compares", {}), ("compare", {"cmpId": "c1"})]
 
 failures = []
@@ -131,7 +133,22 @@ async def main():
         got = await page.evaluate("[lifeSpan('c. 428–348 BCE'), lifeSpan('2nd–3rd c. CE'), lifeSpan('early 5th c. BCE'), lifeSpan('b. 1929').open, lifeSpan('1724–1804')]")
         check(got[0] == {"a": -428, "b": -348, "approx": True, "open": False} and got[1]["a"] == 100 and got[1]["b"] == 300 and got[2]["a"] == -500 and got[2]["b"] == -460 and got[3] and got[4]["a"] == 1724,
               f"BCE dates, centuries and living thinkers are read right ({got[:3]})")
-        await page.evaluate("S.gArea = 'thinkers'; go({ screen: 'glossary' })"); await page.wait_for_timeout(200)
+        await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(200)
+        order = await page.evaluate("[...document.querySelectorAll('.home-sec h2')].map((h) => h.textContent)")
+        check(order[-3:] == ["Glossary", "Branches", "Thinkers"], f"the home screen has Glossary, Branches, Thinkers in that order ({order})")
+        await page.evaluate("go({ screen: 'glossary' })"); await page.wait_for_timeout(200)
+        check(await page.locator("[data-area=thinkers]").count() == 0, "the glossary no longer has Thinkers among its areas")
+        await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(200)
+        await page.click("[data-era='Medieval']"); await page.wait_for_selector(".tl-row"); await page.wait_for_timeout(200)
+        top = await page.evaluate("Math.round(document.querySelector('section.tl-era[data-era=\"Medieval\"]').getBoundingClientRect().top)")
+        check(await page.evaluate("S.screen") == "thinkers" and abs(top) < 5, f"a period on the home screen opens the timeline at that period ({top})")
+        await page.click("[data-tl='0']"); await page.wait_for_selector(".thinkrow")
+        await page.fill("#pq", "critique of pure"); await page.wait_for_timeout(400)
+        check(await page.evaluate("[...document.querySelectorAll('.thinkrow')].map((r) => r.dataset.thinker)") == ["kant"], "searching Thinkers finds a thinker by a work's title")
+        await page.fill("#pq", ""); await page.wait_for_timeout(400)
+        await page.click("#quiz"); await page.wait_for_selector(".qz-opt")
+        check(await page.evaluate("QZ.mode") == "work", "Who wrote it? on Thinkers starts that quiz")
+        await page.click("#pclose"); await page.wait_for_timeout(200)
         await page.click("[data-tl='1']"); await page.wait_for_selector(".tl-row")
         tl = await page.evaluate("""() => ({ rows: document.querySelectorAll('.tl-row').length, eras: [...document.querySelectorAll('.tl-era h3')].map((h) => h.textContent),
             dated: THINKERS.filter((p) => lifeSpan(p.y)).length, wide: document.documentElement.scrollWidth > innerWidth })""")

@@ -31,11 +31,11 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
   A text's `pdfLabels` are its PDF pages' labels, used to find the PDF page for a printed page number.
 - Citations: `CITE_STYLES`, `citeAt`, `bibEntry`, `bibtex`.
 - Import/parsing: `linesOf` and `unmerge` (PDF lines; scans' merged words), `parsePDF` (per-page body size, page numbers, headings, lost hyphens; `GAP` marks words OCR left blank as "[…]"), `ocrRepair` (scans only, gated by `ocrSigns`: split and misread words corrected against the book's own vocabulary, dashes, note numbers, split numbers, "[illegible]"), `domToBlocks` / `parseHTML` (EPUB, DOCX), `parsePlain`.
-- Views: `render` dispatches to `libraryView`, `textView`, `tagView`, `questionsView`, `draftsView`/`draftView`, `comparesView`/`compareView`, `concordView`, glossary and branches.
+- Views: `render` dispatches to `libraryView`, `textView`, `tagView`, `questionsView`, `draftsView`/`draftView`, `comparesView`/`compareView`, `concordView`, glossary, branches and `thinkersView` (home sections in that order: `glossaryHome`, `branchesHome`, `thinkersHome`).
 - Data: `GLOSSARY` (large), `BRANCHES`, `LINKS`.
 - Quiz yourself (`quizPanel`, from the glossary and the home screen's glossary section): questions made from `allTerms()` definitions
   (the term blanked out by `maskTerm`) and `THINKERS` key works (`worksOf` leaves out works by other authors); nothing is stored.
-- Thinkers' timeline (glossary → Thinkers → Timeline, `S.tl`): `lifeSpan` reads a thinker's dates line (BCE, centuries, "b. 1929"),
+- Thinkers' timeline (Thinkers → Timeline, `S.tl`; a period on the home screen opens it there): `lifeSpan` reads a thinker's dates line (BCE, centuries, "b. 1929"),
   `timelineHTML` draws each period in `TL_ERAS` on its own scale; `contemporariesOf` (lives overlapping 20+ years) is on the thinker card.
 - A chapter's end (`chapterEndCheck`, from `updatePg`): reading on from within about a page of a chapter's end into the next asks
   for a summary (`summarySheet`, saved in `t.summaries`), once a visit and only without one; `RS.sum` "off" stops it.

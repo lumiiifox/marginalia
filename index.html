@@ -2074,7 +2074,7 @@ function render() {
   if (reading) { refreshMarks(); return; }
   wakeOff();
   $("#selbar").hidden = true;
-  const views = { text: textView, glossary: glossaryView, branches: branchesView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, concord: concordView, compares: comparesView, compare: compareView };
+  const views = { text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, concord: concordView, compares: comparesView, compare: compareView };
   $("#main").innerHTML = (views[S.screen] || libraryView)();
 }
 
@@ -2179,7 +2179,7 @@ function libraryView() {
       ${body}
       ${S.mode === "pending" ? "" : acrossHTML()}
     </section>
-    ${S.mode === "pending" ? "" : glossaryHome() + branchesHome() + backupView()}`}`;
+    ${S.mode === "pending" ? "" : glossaryHome() + branchesHome() + thinkersHome() + backupView()}`}`;
 }
 // A reminder when there is real work on this device and no recent backup of it.
 function backupNudge() {
@@ -4012,7 +4012,7 @@ function timelineHTML(list) {
     const pct = (v) => (100 * (v - from)) / W;
     const ticks = []; for (let v = from; v < to; v += step) ticks.push(v);
     const keep = Math.ceil(ticks.length / 5); // about five labels across a phone
-    return `<section class="tl-era"><h3>${name}</h3><p class="hint">${rows.length} thinker${rows.length === 1 ? "" : "s"}, ${yearLabel(min, ancient)} to ${max >= new Date().getFullYear() ? "now" : yearLabel(max, ancient)}</p>
+    return `<section class="tl-era" data-era="${esc(name)}"><h3>${name}</h3><p class="hint">${rows.length} thinker${rows.length === 1 ? "" : "s"}, ${yearLabel(min, ancient)} to ${max >= new Date().getFullYear() ? "now" : yearLabel(max, ancient)}</p>
       <div class="tl-scale">${ticks.filter((_, k) => k % keep === 0).map((v) => `<span style="left:${pct(v)}%">${yearLabel(v, ancient)}</span>`).join("")}</div>
       ${rows.map(({ p, s }) => `<button class="tl-row" data-thinker="${esc(p.id)}" style="--tick:${(100 * step) / W}%"><span class="tl-n">${esc(p.n)}<span>${esc(p.y)}</span></span>
         <span class="tl-bar${s.approx ? " approx" : ""}${s.open ? " open" : ""}" style="margin-left:${pct(s.a)}%;width:${Math.max(0.5, pct(s.b) - pct(s.a))}%" aria-hidden="true"></span></button>`).join("")}
@@ -4040,35 +4040,52 @@ function thinkerRow(p) {
 }
 function glossaryView() {
   const terms = allTerms(), tmap = new Map(terms.map((g) => [g.id, g])), q = fold(S.gq.trim());
-  const areas = ["all", ...Object.keys(AREAS).filter((a) => terms.some((g) => g.a === a)), "thinkers"];
+  const areas = ["all", ...Object.keys(AREAS).filter((a) => terms.some((g) => g.a === a))];
   if (!areas.includes(S.gArea)) S.gArea = "all";
   let body;
-  if (S.gArea === "thinkers") {
-    const list = THINKERS.filter((p) => !q || thinkerMatches(p, q) || fold(p.d).includes(q)).map((p, i) => [birthYear(p.y), i, p]).sort((a, b) => a[0] - b[0] || a[1] - b[1]).map((e) => e[2]);
-    const views = `<div class="chips"><button class="chip ${S.tl ? "" : "on"}" data-tl="0">In order of birth</button><button class="chip ${S.tl ? "on" : ""}" data-tl="1">Timeline</button></div>`;
-    body = !list.length ? `${views}<p class="empty">No thinkers match.</p>` : S.tl
-      ? `${views}<p class="hint">Each bar is a life, on the scale of its period, so you can see who lived at the same time. Pale bars are approximate dates; a bar that fades runs to the present. Tap a name for their works and connections.</p>${timelineHTML(list)}`
-      : `${views}<p class="hint">In order of birth; the last few have no published birth year. Tap one for their key works, glossary terms and traditions, and the thinkers they drew on and influenced.</p>
-      <div class="gl-list">${list.map(thinkerRow).join("")}</div>`;
-  } else {
+  {
     const who = q ? THINKERS.filter((p) => thinkerMatches(p, q)) : [], whoIds = new Set(who.map((p) => p.id));
     const list = terms.filter((g) => (S.gArea === "all" || g.a === S.gArea) && (!q || fold(g.t).includes(q) || fold(g.d).includes(q) || fold(g.x).includes(q) || (g.p || []).some((id) => whoIds.has(id))));
     body = `${who.length ? `<div class="tconn">${chipRow("Thinkers", thinkerChips(who.slice(0, 8).map((p) => p.id)))}</div>` : ""}
       <div class="gl-list">${list.map((g) => termHTML(g, tmap)).join("") || `<p class="empty">No terms match.</p>`}</div>`;
   }
   return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
-    <header class="gl-head"><div><h1>Glossary</h1><div class="sub">${terms.length} terms, ${THINKERS.length} thinkers</div></div><div class="gl-acts">${lookedUp().length ? `<button class="btn" id="mywords">Your words</button>` : ""}<button class="btn" id="quiz">Quiz yourself</button><button class="btn primary" id="addterm">Add a term</button></div></header>
+    <header class="gl-head"><div><h1>Glossary</h1><div class="sub">${terms.length} terms</div></div><div class="gl-acts">${lookedUp().length ? `<button class="btn" id="mywords">Your words</button>` : ""}<button class="btn" id="quiz">Quiz yourself</button><button class="btn primary" id="addterm">Add a term</button></div></header>
     <p class="hint">Reference definitions with their sources. Tap a thinker, tradition or related term to follow the connections. Each term also lists the passages in your notes that use it, and you can edit any entry or add your own.</p>
     <input class="search" id="gq" type="search" placeholder="Search terms, definitions and thinkers" value="${esc(S.gq)}" aria-label="Search the glossary">
-    <div class="chips">${areas.map((a) => `<button class="chip ${S.gArea === a ? "on" : ""}" data-area="${a}">${a === "all" ? "All" : a === "thinkers" ? "Thinkers" : esc(AREAS[a])}</button>`).join("")}</div>
+    <div class="chips">${areas.map((a) => `<button class="chip ${S.gArea === a ? "on" : ""}" data-area="${a}">${a === "all" ? "All" : esc(AREAS[a])}</button>`).join("")}</div>
     ${body}`;
+}
+// Thinkers: everyone in the app's thinker entries, in order of birth or on a timeline; each opens their card.
+function thinkersView() {
+  const q = fold((S.pq || "").trim());
+  const list = THINKERS.filter((p) => !q || thinkerMatches(p, q) || fold(p.d).includes(q) || p.w.some((w) => fold(w).includes(q)))
+    .map((p, i) => [birthYear(p.y), i, p]).sort((a, b) => a[0] - b[0] || a[1] - b[1]).map((e) => e[2]);
+  const views = `<div class="chips"><button class="chip ${S.tl ? "" : "on"}" data-tl="0">In order of birth</button><button class="chip ${S.tl ? "on" : ""}" data-tl="1">Timeline</button></div>`;
+  const body = !list.length ? `<p class="empty">No thinkers match.</p>` : S.tl
+    ? `<p class="hint">Each bar is a life, on the scale of its period, so you can see who lived at the same time. Pale bars are approximate dates; a bar that fades runs to the present.</p>${timelineHTML(list)}`
+    : `<p class="hint">In order of birth; the last few have no published birth year.</p><div class="gl-list">${list.map(thinkerRow).join("")}</div>`;
+  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
+    <header class="gl-head"><div><h1>Thinkers</h1><div class="sub">${THINKERS.length} philosophers and theorists</div></div><div class="gl-acts"><button class="btn" id="quiz">Who wrote it?</button></div></header>
+    <p class="hint">Tap a name for their key works, the glossary terms and traditions they belong to, who they drew on and who took them up, and who lived at the same time.</p>
+    <input class="search" id="pq" type="search" placeholder="Search names, descriptions and works" value="${esc(S.pq || "")}" aria-label="Search the thinkers">
+    ${views}
+    ${body}`;
+}
+function thinkersHome() {
+  const eras = TL_ERAS.map(([name, lo, hi]) => [name, THINKERS.filter((p) => { const s = lifeSpan(p.y); return s && s.a >= lo && s.a < hi; }).length]).filter(([, n]) => n);
+  return `<section class="home-sec">
+    <div class="sec-head"><div><h2>Thinkers</h2><div class="sub">${THINKERS.length} philosophers and theorists</div></div><button class="btn" id="openthinkers">See all</button></div>
+    <div class="label">On the timeline</div>
+    <div class="chips bchips">${eras.map(([name, n]) => `<button class="chip bchip" data-era="${esc(name)}">${esc(name)} <span class="cnt">${n}</span></button>`).join("")}</div>
+  </section>`;
 }
 function glossaryHome() {
   const terms = allTerms(); if (!terms.length) return "";
   const areas = Object.keys(AREAS).map((a) => [a, terms.filter((g) => g.a === a).length]).filter(([, n]) => n);
   return `<section class="home-sec">
-    <div class="sec-head"><div><h2>Glossary</h2><div class="sub">${terms.length} terms, ${THINKERS.length} thinkers</div></div><div class="gl-acts"><button class="btn" id="quiz">Quiz</button><button class="btn" id="openglossary">Browse all</button></div></div>
-    <div class="chips bchips">${areas.map(([a, n]) => `<button class="chip bchip" data-garea="${a}">${esc(AREAS[a])} <span class="cnt">${n}</span></button>`).join("")}<button class="chip bchip" data-garea="thinkers">Thinkers <span class="cnt">${THINKERS.length}</span></button></div>
+    <div class="sec-head"><div><h2>Glossary</h2><div class="sub">${terms.length} terms</div></div><div class="gl-acts"><button class="btn" id="quiz">Quiz</button><button class="btn" id="openglossary">Browse all</button></div></div>
+    <div class="chips bchips">${areas.map(([a, n]) => `<button class="chip bchip" data-garea="${a}">${esc(AREAS[a])} <span class="cnt">${n}</span></button>`).join("")}</div>
   </section>`;
 }
 function openTerm(id) {
@@ -4701,6 +4718,7 @@ function showView(view, fresh) {
   render();
   window.scrollTo(0, fresh ? 0 : view.y || 0);
   if (fresh && view.focus) { const el = document.querySelector(`[data-branch-id="${CSS.escape(view.focus)}"]`); if (el) el.scrollIntoView({ block: "start" }); }
+  if (fresh && view.era) { const el = document.querySelector(`section.tl-era[data-era="${CSS.escape(view.era)}"]`); if (el) el.scrollIntoView({ block: "start" }); }
   if (fresh && view.scrollTo) { const el = document.querySelector(`[data-term-id="${CSS.escape(view.scrollTo)}"]`); if (el) el.scrollIntoView({ block: "start" }); }
   if (rerun) runConcord();
   if (fresh && view.note) { const el = document.querySelector(`[data-nid="${CSS.escape(view.note)}"]`); if (el) { el.scrollIntoView({ block: "center" }); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 2400); } }
@@ -6677,6 +6695,8 @@ document.addEventListener("click", (e) => {
   if (b.id === "more") return moreMenu();
   if (b.dataset.branch) return go({ screen: "branches", focus: b.dataset.branch });
   if (b.id === "openbranches") return go({ screen: "branches" });
+  if (b.id === "openthinkers") return go({ screen: "thinkers" });
+  if (b.dataset.era && !b.closest("#book")) { S.tl = true; S.pq = ""; return go({ screen: "thinkers", era: b.dataset.era }); }
   if (b.dataset.garea) { S.gArea = b.dataset.garea; S.gq = ""; S.gOpen = new Set(); return go({ screen: "glossary" }); }
   if (b.id === "openglossary") { S.gq = ""; S.gArea = "all"; return go({ screen: "glossary" }); }
   if (b.dataset.term) return openTerm(b.dataset.term);
@@ -6684,7 +6704,7 @@ document.addEventListener("click", (e) => {
   if (b.dataset.area) { S.gArea = b.dataset.area; return render(); }
   if (b.dataset.tl) { S.tl = b.dataset.tl === "1"; return render(); }
   if (b.id === "addterm") return termSheet(null);
-  if (b.id === "quiz") return quizPanel(S.screen === "glossary" ? S.gArea : "all");
+  if (b.id === "quiz") return quizPanel(S.screen === "glossary" ? S.gArea : S.screen === "thinkers" ? "thinkers" : "all");
   if (b.id === "mywords") return wordsPanel();
   if (b.dataset.editterm) return termSheet(b.dataset.editterm);
   if (b.dataset.restoreterm) return del("terms", b.dataset.restoreterm).catch((e) => toast(failMsg(e)));
@@ -6763,7 +6783,7 @@ document.addEventListener("toggle", (e) => {
 }, true);
 let qTimer;
 document.addEventListener("input", (e) => {
-  if (e.target.id !== "q" && e.target.id !== "tq" && e.target.id !== "gq") return;
+  if (e.target.id !== "q" && e.target.id !== "tq" && e.target.id !== "gq" && e.target.id !== "pq") return;
   const key = e.target.id; S[key] = e.target.value;
   clearTimeout(qTimer); qTimer = setTimeout(() => { render(); const el = $("#" + key); if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); } }, 180);
 });
