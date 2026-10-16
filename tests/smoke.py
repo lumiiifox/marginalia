@@ -182,6 +182,17 @@ async def main():
         await page.click(".tl-row[data-thinker='kant']"); await page.wait_for_selector(".sheet")
         card = (await page.inner_text(".sheet")).lower()
         check("lived at the same time" in card and "hume" in card.split("lived at the same time")[1], "Kant's card lists Hume among those who lived at the same time")
+        await page.click("#pclose"); await page.wait_for_timeout(200)
+        # every longer account: drawn as its paragraphs, no stray backslash-n, its sources linked
+        bios = await page.evaluate("""() => THINKERS.filter((p) => p.x).map((p) => { thinkerPanel(p.id); const sh = document.querySelector('.sheet'), paras = sh.querySelectorAll('.tmore');
+            const links = [...sh.querySelectorAll('.tsrc a')].map((a) => a.href); const r = { id: p.id, paras: paras.length, want: p.x.split(/\\n\\s*\\n/).filter((x) => x.trim()).length,
+            slash: /\\\\n|\\n/.test([...paras].map((x) => x.textContent).join('')) || p.x.includes('\\\\n'), links: links.length, ok: links.every((h) => /^https:\\/\\//.test(h)) };
+            document.querySelector('#pclose').click(); return r; })""")
+        bad = [b for b in bios if b["paras"] != b["want"] or b["slash"] or not b["links"] or not b["ok"]]
+        check(len(bios) >= 18 and not bad, f"all {len(bios)} longer accounts show as paragraphs with no stray \\n, and link their sources ({bad[:3]})")
+        sina = await page.evaluate("(() => { thinkerPanel('ibnsina'); const h = [...document.querySelectorAll('.sheet .tsrc a')].map((a) => a.href); document.querySelector('#pclose').click(); return h; })()")
+        check(len(sina) == 2 and "self-consciousness" in sina[1], f"Ibn Sīnā's card lists the second source for the flying man ({sina})")
+        await page.wait_for_timeout(300); await page.click(".tl-row[data-thinker='kant']"); await page.wait_for_selector(".sheet")
         src = await page.evaluate("(() => { const a = document.querySelector('.sheet .tsrc a'); return [!!document.querySelector('.sheet .tmore'), a && a.href, a && a.target]; })()")
         check(src == [True, "https://plato.stanford.edu/entries/kant/", "_blank"], f"a thinker with a longer account shows it, with its source linked ({src})")
         check(not errs, "no script errors on the timeline" + (f": {errs}" if errs else ""))
