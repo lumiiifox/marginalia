@@ -1,0 +1,42 @@
+name: Marginalia tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: Browser smoke and regression tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Run smoke tests
+        run: python3 tests/smoke.py
+      - name: Run reader regression tests
+        run: |
+          python3 tests/paged_reader.py
+          python3 tests/structure.py
+          python3 tests/comfort.py
+          python3 tests/navigate.py
+          python3 tests/highlights.py
+          python3 tests/notes_lookup.py
+          python3 tests/quotes_language.py
+          python3 tests/printed_page.py
+      - name: Run PDF importer tests
+        run: python3 tests/pdf_import.py
