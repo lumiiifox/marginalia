@@ -1,7 +1,8 @@
 // Marginalia service worker: lets the app open offline and caches the reading libraries.
 // Pages from this site are fetched fresh when online, so updates show up on the next open.
-const CACHE = "marginalia-v1";
-const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
+const CACHE = "marginalia-v2";
+const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png",
+  "./data/glossary.js", "./data/thinkers.js", "./data/branches.js"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

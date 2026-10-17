@@ -25,7 +25,7 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 
 ## Map of index.html
 
-- `<style>` near the top; one `<script>` holds the whole app.
+- `<style>` near the top; one `<script>` holds the whole app, after the data scripts.
 - Storage: `STORES`, `idbOpen`, `put`, `del`, `idbTx`. Backup export and restore follow. The `files` store (version 7) holds
   original PDFs kept for the printed page, by text id; it is never loaded at start and never backed up (`keepPdf`, `pdfDoc`).
   A text's `pdfLabels` are its PDF pages' labels, used to find the PDF page for a printed page number.
@@ -34,7 +34,9 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - Views: `render` dispatches to `libraryView`, `textView`, `tagView`, `questionsView`, `draftsView`/`draftView`, `comparesView`/`compareView`, `concordView`, glossary, branches and `thinkersView`. The home screen reaches them through three buttons (`referenceHome`) that open
   `referenceView`: every term, branch or thinker as one list (`S.rk` picks the group, `S.rq` searches), each row opening its entry
   and each group linking to its full screen.
-- Data: `GLOSSARY` (large), `BRANCHES`, `LINKS`.
+- Data: reference content lives in `data/`, loaded by plain `<script>` tags before the app script: `data/glossary.js` (`GLOSSARY`),
+  `data/thinkers.js` (`THINKERS`), `data/branches.js` (`BRANCHES`). Edit entries there, not in index.html. `LINKS`, `THINKER` and `BRANCH`
+  are built from them in index.html. A new data file needs its `<script>` tag in index.html and its path in `SHELL` in `sw.js`.
 - Quiz yourself (`quizPanel`, from the glossary and the home screen's glossary section): questions made from `allTerms()` definitions
   (the term blanked out by `maskTerm`) and `THINKERS` key works (`worksOf` leaves out works by other authors); nothing is stored.
 - Thinkers' timeline (Thinkers → Timeline, `S.tl`; a period on the home screen opens it there): `lifeSpan` reads a thinker's dates line (BCE, centuries, "b. 1929"),
