@@ -3200,8 +3200,9 @@ function termHTML(g, tmap) {
     <summary><span class="tm">${esc(g.t)}</span><span class="ta">${esc(AREAS[g.a] || "")}${hits.length ? `, ${hits.length} in your notes` : ""}${g.edited ? ", edited by you" : ""}</span></summary>
     <div class="tbody">
       <p class="tdef">${esc(g.d)}</p>
-      ${g.x ? `<p class="tmore">${esc(g.x)}</p>` : ""}
+      ${parasHTML(g.x)}
       ${g.s ? `<p class="tsrc">${esc(g.s)}</p>` : ""}
+      ${thinkerSources(g)}
       ${g.w ? `<p class="tsrc">Associated with ${esc(g.w)}</p>` : ""}
       ${aliasesOf(g.id).length ? `<p class="tsrc">Look up also finds: ${esc(aliasesOf(g.id).join(", "))}</p>` : ""}
       ${conn ? `<div class="tconn">${conn}</div>` : ""}
@@ -3358,7 +3359,9 @@ function authorThinkers(author) {
     return !/\s|\(/.test(sn) && sn.length > 3 && new RegExp(`(^|[^\\p{L}])${reEsc(sn)}($|[^\\p{L}])`, "u").test(a);
   });
 }
-// A thinker's sources: the main one (src, srcName), then any further ones for particular claims (srcs: [{ src, srcName }]).
+// A longer account as paragraphs (separated by a blank line).
+const parasHTML = (x) => (x ? String(x).split(/\n\s*\n/).map((para) => para.trim()).filter(Boolean).map((para) => `<p class="tmore">${esc(para)}</p>`).join("") : "");
+// An entry's sources (thinker, term or branch): the main one (src, srcName), then any further ones for particular claims (srcs: [{ src, srcName }]).
 function thinkerSources(p) {
   const all = [p.src ? { src: p.src, srcName: p.srcName } : null, ...(Array.isArray(p.srcs) ? p.srcs : [])].filter((x) => x && x.src);
   if (!all.length) return "";
@@ -3375,7 +3378,7 @@ function thinkerPanel(id) {
   openPanel(`<h2>${esc(p.n)}</h2>
     ${p.y ? `<p class="hint">${esc(p.y)}</p>` : ""}
     <p class="tdef">${esc(p.d)}</p>
-    ${p.x ? String(p.x).split(/\n\s*\n/).map((para) => para.trim()).filter(Boolean).map((para) => `<p class="tmore">${esc(para)}</p>`).join("") : ""}
+    ${parasHTML(p.x)}
     ${thinkerSources(p)}
     ${p.w.length ? `<div class="crow"><span class="clabel">Key works</span><ul class="bq-list">${p.w.map((w) => `<li>${esc(w)}</li>`).join("")}</ul></div>` : ""}
     <div class="tconn">
@@ -3602,8 +3605,9 @@ function lookupPanel(s) {
       <summary><span class="tm">${esc(g.t)}</span><span class="lk-why${why === "Match" ? "" : " soft"}">${esc(why)}</span></summary>
       <div class="tbody">
         <p class="tdef">${esc(g.d)}</p>
-        ${g.x ? `<p class="tmore">${esc(g.x)}</p>` : ""}
+        ${parasHTML(g.x)}
         ${g.s ? `<p class="tsrc">${esc(g.s)}</p>` : ""}
+        ${thinkerSources(g)}
         ${why === "Match" ? "" : `<button class="linkbtn" data-keep="1" data-lkalias="${esc(g.id)}">Always look up “${esc(s.text)}” here</button>`}
       </div></details>`;
   const row = ([id, n], same) => {
@@ -3733,6 +3737,7 @@ function branchesView() {
       <summary><span class="tm">${esc(b.n)}</span><span class="ta">${terms.length} glossary term${terms.length === 1 ? "" : "s"}, ${b.p.length} thinker${b.p.length === 1 ? "" : "s"}</span></summary>
       <div class="tbody">
         <p class="tdef">${esc(b.d)}</p>
+        ${parasHTML(b.x)}${thinkerSources(b)}
         <div class="label">Questions it asks</div>
         <ul class="bq-list">${b.q.map((q) => `<li>${esc(q)}</li>`).join("")}</ul>
         <div class="tconn">
