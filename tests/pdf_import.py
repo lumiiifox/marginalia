@@ -192,7 +192,7 @@ def check(ok, what):
 async def main(paths):
     build = pdfjs_dir()
     tmp = Path(tempfile.mkdtemp())
-    (tmp / "index.html").symlink_to(ROOT / "index.html"); (tmp / "lib").symlink_to(build)
+    (tmp / "index.html").symlink_to(ROOT / "index.html"); (tmp / "data").symlink_to(ROOT / "data"); (tmp / "lib").symlink_to(build)
     server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(tmp)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     try:
         time.sleep(1)
