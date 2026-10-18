@@ -5,6 +5,7 @@ Made-up book only, phone-sized touch screen. Checks that:
      current one more strongly, and the arrows step through them, across sections, wrapping round; × stops it;
   2. the same in Scroll mode, the match a third of the way down the screen;
   3. the slider moves through the book by distance, shows chapters as ticks, and the jump can be undone with Back;
+     your notes are marked above it, close ones sharing a numbered mark that lists them; going to one keeps your place;
      Go to page takes a printed page number (roman too, or the nearest page before);
   4. the foot of the page counts the pages left in the chapter, down to its last page;
   5. Contents has tabs: the chapter you're in, your notes (this chapter or the whole book, tap to go there), bookmarks;
@@ -108,6 +109,29 @@ async def main():
         check(await page.evaluate("R.pageAt[currentBlock()]") == "xii", "Go to page xii (roman numerals)")
         await page.evaluate("trailBack()"); await page.wait_for_timeout(300)
         check(await page.evaluate(p37), "Back undoes a jump")
+        # your notes above the slider: close ones share a numbered mark; going to one keeps your place
+        await page.evaluate("(async () => { const at = R.blocks.findIndex((b) => (b.x || '').startsWith('Paragraph 2/11.')); await put('notes', 'q4', { textId: 'v', kind: 'gloss', passage: 'Paragraph 2/11.', gloss: 'Right after the other one', at, createdAt: 4, updatedAt: 4 }); showNav(true); })()")
+        await page.wait_for_timeout(200)
+        marks = await page.evaluate("[...document.querySelectorAll('#rnav-notes button')].map((b) => b.textContent.trim())")
+        check(len(marks) in (2, 3) and marks[-1] == "2" and await page.evaluate("document.querySelector('#rnav').classList.contains('has-notes')"),
+              f"your notes are marked above the slider, two close ones as one mark showing 2 ({marks})")
+        lefts = await page.evaluate("[...document.querySelectorAll('#rnav-notes button')].map((b) => b.getBoundingClientRect()).map((r) => [r.left, r.right, r.height])")
+        check(all(r[2] >= 24 for r in lefts) and all(lefts[k][0] >= lefts[k - 1][1] - 2 for k in range(1, len(lefts))), f"the marks are big enough to tap and don't overlap ({lefts})")
+        home, depth = await page.evaluate("[currentPage(), R.trail.length]")
+        await page.click("#rnav-notes button >> nth=0"); await page.wait_for_timeout(400)
+        q1 = await page.evaluate("S.notes.get('q1').at")
+        got = await page.evaluate(f"[spotPage({{ i: {q1}, f: 0 }}) === currentPage(), R.trail.length, !!document.querySelector('#rtback')]")
+        check(got[0] and got[1] == depth + 1 and got[2], f"tapping a single note's mark goes to it, with the way back offered ({got}, note at {q1})")
+        await page.evaluate("trailBack()"); await page.wait_for_timeout(300)
+        await page.click("#rnav-notes button.many"); await page.wait_for_selector("#sheetroot [data-gonote]")
+        panel = await page.inner_text("#sheetroot")
+        check("2 notes here" in panel and "Paragraph 2/10." in panel and "Right after the other one" in panel, f"a numbered mark lists its notes ({panel[:140]!r})")
+        await page.click("#sheetroot [data-gonote] >> nth=1"); await page.wait_for_timeout(400)
+        q4 = await page.evaluate("S.notes.get('q4').at")
+        check(await page.evaluate(f"spotPage({{ i: {q4}, f: 0 }}) === currentPage()"), "picking one goes to it")
+        await page.evaluate("trailBack()"); await page.wait_for_timeout(300)
+        check(await page.evaluate("[currentPage(), R.trail.length]") == [home, depth], "and Back returns to where you were")
+        await page.evaluate("del('notes', 'q4')"); await page.wait_for_timeout(100)
         await page.click("#rnav-close"); await page.wait_for_timeout(200)
         check(await page.evaluate("document.querySelector('#rnav').hidden"), "Done puts the slider away")
 

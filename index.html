@@ -293,10 +293,18 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .rnav-track input { width: 100%; margin: 0; accent-color: var(--leather); position: relative; }
 .rnav-ticks { position: absolute; left: 8px; right: 8px; top: 50%; height: 12px; transform: translateY(-50%); pointer-events: none; }
 .rnav-ticks i { position: absolute; top: 0; width: 1.5px; height: 12px; background: var(--muted); opacity: 0.55; }
+/* your notes along the book, above the slider: one mark per note, or a numbered mark where several sit close together */
+.rnav-notes { position: relative; height: 26px; margin: 0 8px -4px; }
+.rnav-notes[hidden] { display: none; }
+.rnav-notes button { position: absolute; top: 0; transform: translateX(-50%); min-width: 26px; height: 26px; padding: 0 3px; border: 0; background: none; display: grid; place-items: center; color: var(--ink); }
+.rnav-notes button span { display: grid; place-items: center; min-width: 10px; height: 10px; border-radius: 5px; background: var(--brass); }
+.rnav-notes button.many span { min-width: 18px; height: 18px; border-radius: 9px; padding: 0 4px; font: 600 11px/1 var(--f-ui); color: var(--paper); }
+.rnav-notes button.here span { box-shadow: 0 0 0 2px var(--paper), 0 0 0 3.5px var(--brass); }
 .rnav-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .rnav-go { font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
 .rnav-go input { width: 5.5em; padding: 6px 8px; font: 15px var(--f-ui); border: 1px solid var(--rule); border-radius: 8px; background: var(--field); color: var(--ink); }
 #reader:not([hidden]) .rnav:not([hidden]) ~ .rtrail { bottom: 132px; }
+#reader:not([hidden]) .rnav.has-notes:not([hidden]) ~ .rtrail { bottom: 154px; }
 #reader:has(#rnav:not([hidden])) .rfoot { visibility: hidden; }
 #reader.pinned.immersive .rfoot { bottom: calc(8px + var(--pin-h, 0px)); }
 #reader.pinned:not(.paged-reader) .book { padding-bottom: calc(160px + var(--pin-h, 0px)); }
@@ -729,6 +737,7 @@ span.bhid { display: inline; }
   <div class="rfoot" id="rfoot" aria-hidden="true"></div>
   <div class="rnav" id="rnav" hidden>
     <div class="rnav-lab"><span id="rnav-where"></span><span id="rnav-pct"></span></div>
+    <div class="rnav-notes" id="rnav-notes" hidden></div>
     <div class="rnav-track"><div class="rnav-ticks" id="rnav-ticks"></div><input type="range" id="rnav-r" min="0" max="1000" step="1" aria-label="Move through the book"></div>
     <div class="rnav-row"><label class="rnav-go">Go to page <input id="rnav-pg" inputmode="numeric" autocomplete="off" enterkeyhint="go" aria-label="Page number"></label><button class="btn ghost" id="rnav-pp" hidden>Printed page</button><button class="btn ghost" id="rnav-close">Done</button></div>
   </div>
@@ -4524,6 +4533,35 @@ function showNav(on) {
   const t = S.texts.get(R.tid); $("#rnav-pp").hidden = !(t && t.source && t.source.kind === "PDF");
   syncNav();
 }
+// Your notes on the slider. Notes closer together than a fingertip share one mark showing how many; a mark opens its notes,
+// and going to one keeps your place for the way back (the trail's ← Your place).
+const NAVNOTE_PX = 24;
+function navNoteGroups() {
+  const box = $("#rnav-notes"), total = R.cum[R.blocks.length] || 1, w = Math.max(1, (box.parentElement.clientWidth || innerWidth) - 16);
+  const list = notesFor(R.tid).filter(([, n]) => Number.isInteger(n.at)).map(([id, n]) => ({ id, n, i: Math.min(Math.max(n.at, 0), R.blocks.length - 1) }))
+    .map((x) => ({ ...x, px: (w * R.cum[x.i]) / total })).sort((a, b) => a.px - b.px);
+  const groups = [];
+  for (const x of list) { const g = groups[groups.length - 1]; if (g && x.px - g.first < NAVNOTE_PX) g.notes.push(x); else groups.push({ first: x.px, notes: [x] }); }
+  return groups.map((g) => { const px = g.notes.reduce((a, x) => a + x.px, 0) / g.notes.length; return { notes: g.notes, left: (100 * px) / w }; });
+}
+function drawNavNotes() {
+  const box = $("#rnav-notes"); if (!box) return;
+  const groups = R.blocks ? navNoteGroups() : [], cur = currentBlock();
+  R.navGroups = groups; box.hidden = !groups.length; $("#rnav").classList.toggle("has-notes", !!groups.length);
+  box.innerHTML = groups.map((g, k) => {
+    const a = g.notes[0].i, b = g.notes[g.notes.length - 1].i, here = cur >= a - 1 && cur <= b + 1, many = g.notes.length > 1;
+    const where = [R.pageAt[a] ? loc(R.pageAt[a]) : "", many && R.pageAt[b] && R.pageAt[b] !== R.pageAt[a] ? `to ${loc(R.pageAt[b])}` : ""].filter(Boolean).join(" ");
+    return `<button type="button" class="${many ? "many" : ""}${here ? " here" : ""}" data-navnotes="${k}" style="left:${g.left.toFixed(2)}%" aria-label="${many ? `${g.notes.length} notes` : "A note"}${where ? `, ${esc(where)}` : ""}"><span>${many ? g.notes.length : ""}</span></button>`;
+  }).join("");
+}
+function navNotesOpen(k) {
+  const g = (R.navGroups || [])[k]; if (!g) return;
+  if (g.notes.length === 1) { jumpTo(g.notes[0].i, true); drawNavNotes(); return; }
+  const t = S.texts.get(R.tid), names = new Map((t?.sections || []).map((s) => [s.id, s.label]));
+  openPanel(`<h2>${g.notes.length} notes here</h2><p class="hint">Going to one keeps your place: ← Your place brings you back.</p>
+    <div class="toc">${g.notes.map((x) => `<button class="tocitem" data-gonote="${x.i}"><span><b>${esc(KINDS[x.n.kind] || "Note")}</b> ${esc(noteSnippet(x.n, 110))}${x.n.gloss && x.n.passage ? `<br><small>${esc(noteSnippet({ gloss: x.n.gloss }, 90))}</small>` : ""}</span><span class="tp">${esc([R.pageAt[x.i] ? loc(R.pageAt[x.i]) : "", names.get(R.secAt[x.i]) && !R.pageAt[x.i] ? names.get(R.secAt[x.i]) : ""].filter(Boolean).join(""))}</span></button>`).join("")}</div>`,
+  (b) => { if (b.dataset.gonote) { jumpTo(+b.dataset.gonote, true); drawNavNotes(); } });
+}
 function navLabel(i) {
   i = contentAt(i); const names = new Map((S.texts.get(R.tid)?.sections || []).map((s) => [s.id, s.label])), ch = names.get(R.secAt[i]);
   return [R.pageAt[i] ? loc(R.pageAt[i]) : "", ch || ""].filter(Boolean).join(" · ");
@@ -4532,6 +4570,7 @@ function syncNav(i = currentBlock()) {
   const total = R.cum[R.blocks.length] || 1, v = Math.round((1000 * R.cum[i]) / total);
   if (!R.dragging) $("#rnav-r").value = v;
   $("#rnav-where").textContent = navLabel(i); $("#rnav-pct").textContent = `${Math.round(v / 10)}%`;
+  drawNavNotes();
 }
 // The first block of a printed page: an exact label (roman numerals too), or the last numbered page before the number.
 function blockForPage(want) {
@@ -6144,6 +6183,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "rpg") return showNav($("#rnav").hidden);
   if (b.id === "rnav-close") { showBars(false); return showNav(false); }
   if (b.id === "rnav-pp") return printedPagePanel();
+  if (b.dataset.navnotes) return navNotesOpen(+b.dataset.navnotes);
   if (b.id === "selsave") return saveSel();
   if (b.id === "selhl") return quickHighlight();
   if (b.id === "selpin") return pinSel();
