@@ -908,28 +908,48 @@ async function loadTrash() {
   S.trash = new Map([...all].filter(([k]) => !old.includes(k)));
 }
 const isQuota = (e) => !!e && (e.name === "QuotaExceededError" || /quota/i.test(e.message || ""));
-// Removes the records and files them together in Recently deleted, in one transaction. Returns the entry's id; null without
-// storage; false when the device had no room to keep a copy, so the records were deleted for good (deleting must still work then).
+// Removes the records and files them together in Recently deleted, in one transaction. Returns the entry's id (null without
+// storage). When the device has no room to keep the copy, nothing is removed: the transaction rolls back, the person is asked
+// what to do (noRoom), and the error thrown carries noRoom so the caller says nothing more.
 async function trashAndRemove(kind, title, items) {
   let tid = null;
   if (idb) {
     tid = "tr-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8);
     const e = { at: Date.now(), kind, title, items: items.filter(([, , v]) => v !== undefined && v !== null) }, sum = trashSum(e);
-    const stores = [...new Set(["trash", "trashlist", ...items.map((x) => x[0])])];
     try {
-      await idbTx(stores, (st) => { items.forEach(([store, id]) => st(store).delete(id)); st("trash").put(e, tid); st("trashlist").put(sum, tid); });
-      S.trash.set(tid, sum);
+      await idbTx([...new Set(["trash", "trashlist", ...items.map((x) => x[0])])], (st) => { items.forEach(([store, id]) => st(store).delete(id)); st("trash").put(e, tid); st("trashlist").put(sum, tid); });
     } catch (err) {
       if (!isQuota(err)) throw err;
-      await idbTx(stores.filter((x) => !x.startsWith("trash")), (st) => items.forEach(([store, id]) => st(store).delete(id)));
-      tid = false;
+      await closeOverlay(); noRoom(kind, title, items);
+      throw Object.assign(new Error("No room to keep it in Recently deleted."), { noRoom: true });
     }
+    S.trash.set(tid, sum);
   }
   items.forEach(([store, id]) => { if (store !== "files") mapFor(store).delete(id); });
   return tid;
 }
+// Deleting for good, only once the person has chosen it in noRoom.
+async function removeForGood(items) {
+  await idbTx([...new Set(items.map((x) => x[0]))], (st) => items.forEach(([store, id]) => st(store).delete(id)));
+  items.forEach(([store, id]) => { if (store !== "files") mapFor(store).delete(id); });
+  for (const [store, id] of items) if (store === "texts") { if (PDFV.tid === id) closePdf(); SESS.delete(id); }
+  render(); toast("Deleted for good.");
+}
+function noRoom(kind, title, items) {
+  const what = kind === "text" ? `“${title}”${items.some(([st]) => st === "notes") ? " and its notes" : ""}` : kind === "note" ? "this note" : `“${title}”`;
+  openPanel(`<h2>No room to keep it</h2>
+    <p class="hint">This device is out of space for the app, so ${esc(what)} can't go to Recently deleted, where it could be restored. Nothing has been deleted.</p>
+    <div class="menu">
+      ${S.trash.size ? `<button class="menuitem" id="nr-trash">Open Recently deleted (${S.trash.size}) to make room</button>` : ""}
+      <button class="menuitem" id="nr-keep">Cancel, and keep it</button>
+      <button class="menuitem danger" id="nr-final" data-keep="1">Delete permanently, with no way to restore it</button>
+    </div>`, (b) => {
+    if (b.id === "nr-trash") go({ screen: "trash" });
+    else if (b.id === "nr-final") arm(b, () => closeOverlay().then(() => removeForGood(items)).catch((e) => toast(failMsg(e))));
+  });
+}
 const undoTrash = (tid) => (tid ? { label: "Undo", run: () => restoreTrash(tid).catch((e) => toast(failMsg(e))) } : undefined);
-const delToast = (msg, tid) => toast(tid === false ? `${msg} This device had no room to keep it in Recently deleted, so it is gone for good.` : msg, undoTrash(tid));
+const delToast = (msg, tid) => toast(msg, undoTrash(tid));
 // Puts back each record that isn't in the library now and leaves the ones that are, deciding inside the one transaction.
 function putBackMissing(tid, items) {
   return new Promise((res, rej) => {
@@ -2725,7 +2745,8 @@ function draftMore(id) {
     else if (b.id === "dm-copy") copyDraft(id);
     else if (b.id === "dm-delete") openPanel(`<h2>Delete “${esc(d.title)}”?</h2><div class="menu"><button class="menuitem danger" id="dm-delete-yes">Delete this draft</button></div>`, async (b2) => {
       if (b2.id !== "dm-delete-yes") return;
-      await back(); const tid = await trashAndRemove("draft", d.title || "Untitled draft", [["drafts", id, S.drafts.get(id)]]); render(); delToast("Draft deleted.", tid);
+      await back();
+      try { const tid = await trashAndRemove("draft", d.title || "Untitled draft", [["drafts", id, S.drafts.get(id)]]); render(); delToast("Draft deleted.", tid); } catch (e) { if (!e.noRoom) toast(failMsg(e)); }
     });
   });
 }
@@ -3187,7 +3208,7 @@ function cmpMore(cid) {
     else if (b.id === "cm-delete") openPanel(`<h2>Delete “${esc(c.title)}”?</h2><div class="menu"><button class="menuitem danger" id="cm-delete-yes">Delete this comparison</button></div>`, async (b2) => {
       if (b2.id !== "cm-delete-yes") return;
       await back();
-      try { const tid = await trashAndRemove("comparison", c.title || "", [["compares", cid, S.compares.get(cid)]]); render(); delToast("Comparison deleted.", tid); } catch (e) { toast(failMsg(e)); }
+      try { const tid = await trashAndRemove("comparison", c.title || "", [["compares", cid, S.compares.get(cid)]]); render(); delToast("Comparison deleted.", tid); } catch (e) { if (!e.noRoom) toast(failMsg(e)); }
     });
   });
 }
@@ -4402,7 +4423,7 @@ function noteSheet(nid, preset) {
     $("#n-pin", root).addEventListener("click", () => closeOverlay().then(() => pinNote(nid)));
     delBtn.addEventListener("click", () => arm(delBtn, async () => {
       try { const tid = await trashAndRemove("note", (S.texts.get(n.textId) || {}).title || "", [["notes", nid, S.notes.get(nid)]]); render(); await closeOverlay(); delToast("Note deleted.", tid); }
-      catch (e) { $("#err", root).textContent = failMsg(e); }
+      catch (e) { if (!e.noRoom) $("#err", root).textContent = failMsg(e); }
     }));
   });
 }
@@ -4465,7 +4486,7 @@ function confirmDelete(id = S.textId) {
     <div class="menu"><button class="menuitem danger" id="m-delete-yes">Delete this text</button></div>`, async (b) => {
     if (b.id !== "m-delete-yes") return;
     if (S.screen === "text" && S.textId === id) await back(); // its page goes with it; from the shelf, stay there
-    try { const tid = await deleteText(id); delToast("Deleted.", tid); } catch (err) { toast(`Couldn't delete “${t.title}”, so nothing was removed. ${err && err.name === "QuotaExceededError" ? failMsg(err) : "Try again."}`); }
+    try { const tid = await deleteText(id); delToast("Deleted.", tid); } catch (err) { if (!err.noRoom) toast(`Couldn't delete “${t.title}”, so nothing was removed. ${err && err.name === "QuotaExceededError" ? failMsg(err) : "Try again."}`); }
     render();
   });
 }

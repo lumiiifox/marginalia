@@ -9,7 +9,7 @@ Made-up records only, phone-sized screen. Checks that:
   6. backups leave Recently deleted out, and the home screen links to it only when something is there;
   7. restoring never writes over a record that came back another way (a backup), and puts back only what is missing;
   8. opening the app reads only the list of summaries, never the deleted records;
-  9. with no room to keep a copy, deleting still works, for good, and says so.
+  9. with no room to keep a copy, nothing is deleted until you choose Delete permanently and confirm it.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -146,14 +146,27 @@ async def main():
           return [seen, [...S.trash.values()].some((e) => e.title === 'Read check')]; })()""")
         check(r8 == [["trashlist"], True], f"opening the app reads only the summaries, not the deleted records ({r8})")
 
-        # 9 no room
-        r9 = await page.evaluate("""(async () => {
-          await put('notes', 'n8', { textId: 'e', kind: 'gloss', gloss: 'no room for me', page: '1', createdAt: 1 });
-          const orig = idbTx; idbTx = (stores, fn) => stores.includes('trash') ? Promise.reject(new DOMException('full', 'QuotaExceededError')) : orig(stores, fn);
-          const n = S.trash.size, tid = await trashAndRemove('note', 'Ethics', [['notes', 'n8', S.notes.get('n8')]]); idbTx = orig;
-          delToast('Note deleted.', tid);
-          return [tid, S.notes.has('n8'), !!(await idbGet('notes', 'n8')), S.trash.size === n, document.querySelector('#toast').textContent]; })()""")
-        check(r9[:4] == [False, False, False, True] and "gone for good" in r9[4], f"with no room to keep a copy, the note is still deleted, for good, and the message says so ({r9})")
+        # 9 no room: nothing goes until you choose to delete for good
+        await page.evaluate("""(async () => { await put('notes', 'n8', { textId: 'e', kind: 'gloss', gloss: 'no room for me', page: '1', createdAt: 1 });
+          window.__idbTx = idbTx; idbTx = (stores, fn) => stores.includes('trash') ? Promise.reject(new DOMException('full', 'QuotaExceededError')) : __idbTx(stores, fn); })()""")
+        n0 = await page.evaluate("S.trash.size")
+        await page.evaluate("noteSheet('n8')"); await page.wait_for_selector("#n-del")
+        await page.click("#n-del"); await page.click("#n-del"); await page.wait_for_timeout(500)
+        r9 = await page.evaluate("""(async () => [S.notes.has('n8'), !!(await idbGet('notes', 'n8')), document.querySelector('#sheetroot h2')?.textContent, document.querySelector('#sheetroot .hint')?.textContent || '',
+          !!document.querySelector('#nr-keep'), !!document.querySelector('#nr-trash'), !!document.querySelector('#nr-final')])()""")
+        check(r9[0] and r9[1] and r9[2] == "No room to keep it" and "Nothing has been deleted" in r9[3] and all(r9[4:7]),
+              f"with no room for a copy, the note is kept and you're offered Cancel, Recently deleted, or deleting for good ({r9})")
+        await page.click("#nr-keep"); await page.wait_for_timeout(300)
+        check(await page.evaluate("(async () => [S.notes.has('n8'), !!(await idbGet('notes', 'n8')), !!document.querySelector('#sheetroot .sheet')])()") == [True, True, False], "Cancel keeps it and closes the question")
+        await page.evaluate("confirmDelete('e')"); await page.click("#m-delete-yes"); await page.wait_for_timeout(500)
+        kept_book = await page.evaluate("(async () => [S.texts.has('e'), !!(await idbGet('content', 'e')), !!(await idbGet('files', 'e')), S.notes.has('n1'), document.querySelector('#sheetroot h2')?.textContent, document.querySelector('#toast').hidden || !/Couldn|Deleted/.test(document.querySelector('#toast').textContent)])()")
+        check(kept_book == [True, True, True, True, "No room to keep it", True], f"a book is kept whole too, with its text, PDF and notes, and no other message ({kept_book})")
+        await page.click("#nr-final"); await page.wait_for_timeout(200)
+        check(await page.evaluate("S.texts.has('e')"), "one tap on Delete permanently only asks again")
+        await page.click("#nr-final"); await page.wait_for_timeout(500)
+        gone9 = await page.evaluate("(async () => [S.texts.has('e'), !!(await idbGet('content', 'e')), !!(await idbGet('files', 'e')), S.notes.has('n1'), S.trash.size, document.querySelector('#toast').textContent])()")
+        check(gone9 == [False, False, False, False, n0, "Deleted for good."], f"tapped again, it is deleted for good, with nothing added to Recently deleted ({gone9})")
+        await page.evaluate("void (idbTx = __idbTx)") # void: a function result would be called
         full = await page.evaluate("failMsg(new DOMException('full', 'QuotaExceededError'))")
         check("Empty Recently deleted" in full and "Delete a text" not in full, f"the out-of-space message points to Recently deleted ({full})")
 
