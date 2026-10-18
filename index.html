@@ -1099,12 +1099,14 @@ async function showRestore(name, data, notice) {
   });
 }
 // A note's follow-ups and earlier wordings are only ever added to, so whichever copy of a note wins, those of the other copy are kept too.
+// An earlier wording is the same one only when its date and every word of it match.
+const wasKey = (w) => JSON.stringify([w.at, w.gloss || "", w.premises || [], w.conclusion || ""]);
 function withThoughts(base, other) {
   if (!other || base === other) return base;
-  const fu = new Map((base.followups || []).map((f) => [f.id, f])), was = new Map((base.was || []).map((w) => [w.at + ":" + (w.gloss || ""), w]));
+  const fu = new Map((base.followups || []).map((f) => [f.id, f])), was = new Map((base.was || []).map((w) => [wasKey(w), w]));
   const n1 = fu.size, n2 = was.size;
   for (const f of other.followups || []) if (!fu.has(f.id)) fu.set(f.id, f);
-  for (const w of other.was || []) { const k = w.at + ":" + (w.gloss || ""); if (!was.has(k)) was.set(k, w); }
+  for (const w of other.was || []) { const k = wasKey(w); if (!was.has(k)) was.set(k, w); }
   if (fu.size === n1 && was.size === n2) return base;
   const out = { ...base };
   if (fu.size) out.followups = [...fu.values()].sort((a, b) => a.at - b.at);
@@ -4261,7 +4263,7 @@ function noteSheet(nid, preset, focus) {
       <div class="field"><label for="n-prem">Premises, one per line</label><textarea id="n-prem" name="premises" rows="4" placeholder="Each thing strives to persevere in its being.">${esc((n.premises || []).join("\n"))}</textarea></div>
       <div class="field"><label for="n-conc">Conclusion</label><input id="n-conc" name="conclusion" value="${esc(n.conclusion)}"></div>
     </div>
-    <div class="field"><label for="n-gloss">Your note</label><textarea id="n-gloss" name="gloss">${esc(n.gloss)}</textarea><span class="hint">Add #tags anywhere in your note to collect it with related notes, like #naturalization.${nid ? " Changing it keeps what it said before, under Earlier wording." : ""}</span></div>
+    <div class="field"><label for="n-gloss">Your note</label><textarea id="n-gloss" name="gloss">${esc(n.gloss)}</textarea><span class="hint">Add #tags anywhere in your note to collect it with related notes, like #naturalization.${nid ? " Changing it keeps what it said before, under Earlier wording, once it is more than half an hour old; changes within half an hour of writing it are treated as corrections and not kept." : ""}</span></div>
     ${nid ? `<div class="field fuedit"><label for="n-fu">Follow up</label><div id="n-fus"></div>
       <textarea id="n-fu" name="fu" rows="3" placeholder="What you think of it now, dated today"></textarea>
       <div id="n-was"></div></div>` : ""}
