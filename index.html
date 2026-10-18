@@ -590,6 +590,28 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .efig.wide img { max-height: 420px; }
 .efig figcaption { font: 400 13px/1.4 var(--f-ui); color: var(--muted); }
 .efig figcaption a { color: var(--link); text-underline-offset: 3px; }
+/* diagrams drawn for glossary terms (FIGURES in data/glossary.js), in the app's colours */
+.efig.dia { justify-items: stretch; }
+.dsvg { padding: 12px 12px 8px; border: 1px solid var(--rule); border-radius: 6px; background: var(--field); color: var(--ink); }
+.dsvg svg { display: block; width: 100%; max-width: 440px; height: auto; margin: 0 auto; overflow: visible; }
+.dsvg text { font: 500 13px var(--f-ui); fill: currentColor; }
+.dsvg text.s { font-size: 12px; font-weight: 400; }
+.dsvg text.i { font-family: var(--f-text); font-style: italic; font-size: 14px; font-weight: 400; }
+.dsvg text.s.i { font-size: 13px; }
+.dsvg text.k { font-weight: 700; }
+.dsvg text.h { font-weight: 700; font-size: 13px; letter-spacing: 0.02em; }
+.dsvg text.m { fill: var(--muted); }
+.dsvg text.a2 { fill: var(--brass); }
+.dsvg .ln { fill: none; stroke: currentColor; stroke-width: 1.4; }
+.dsvg .ln.a { stroke: var(--brass); stroke-width: 1.8; }
+.dsvg .ln.d { stroke-dasharray: 3 3; opacity: 0.7; }
+.dsvg .rl { stroke: var(--rule); stroke-width: 1; }
+.dsvg .bx { fill: var(--paper); stroke: var(--rule); }
+.dsvg .bx.ac { stroke: var(--brass); stroke-width: 1.6; }
+.dsvg .hl { fill: color-mix(in srgb, var(--brass) 16%, transparent); }
+.dsvg .hl2 { fill: color-mix(in srgb, var(--rule) 40%, transparent); }
+.dsvg .af { fill: var(--brass); }
+.dsvg .sf { fill: color-mix(in srgb, var(--brass) 70%, var(--ink)); }
 .srclist { margin: 4px 0 0; padding-left: 1.2em; }
 .tconn { display: grid; gap: 10px; }
 .crow { display: grid; gap: 6px; }
@@ -3360,7 +3382,7 @@ function termHTML(g, tmap) {
     <summary><span class="tm">${esc(g.t)}</span><span class="ta">${esc(AREAS[g.a] || "")}${hits.length ? `, ${hits.length} in your notes` : ""}${g.edited ? ", edited by you" : ""}</span></summary>
     <div class="tbody">
       <p class="tdef">${esc(g.d)}</p>
-      ${figHTML(g.img)}
+      ${figHTML(g.img)}${diaHTML(g.fig)}
       ${parasHTML(g.x)}
       ${g.s ? `<p class="tsrc">${esc(g.s)}</p>` : ""}
       ${thinkerSources(g)}
@@ -3524,6 +3546,12 @@ function figHTML(im) {
   if (!im || !im.file) return "";
   const f = encodeURIComponent(im.file.replace(/ /g, "_"));
   return `<figure class="efig${im.wide ? " wide" : ""}"><img loading="lazy" decoding="async" src="${COMMONS}Special:FilePath/${f}?width=${im.wide ? 960 : 500}" alt="${esc(im.alt || "")}"><figcaption>${esc(im.cap || "")} <a href="${COMMONS}File:${f}" target="_blank" rel="noopener">Wikimedia Commons</a></figcaption></figure>`;
+}
+// A diagram drawn for a term (FIGURES in data/glossary.js): part of the app, so it shows offline and follows the theme.
+function diaHTML(key) {
+  const f = typeof FIGURES !== "undefined" && key && FIGURES[key];
+  if (!f) return "";
+  return `<figure class="efig dia"><div class="dsvg" role="img" aria-label="${esc(f.alt)}"><svg viewBox="0 0 320 ${f.h}" aria-hidden="true">${f.svg}</svg></div><figcaption>${esc(f.cap)}</figcaption></figure>`;
 }
 document.addEventListener("error", (e) => { const fig = e.target instanceof HTMLImageElement && e.target.closest(".efig"); if (fig) fig.remove(); }, true);
 // A longer account as paragraphs (separated by a blank line).

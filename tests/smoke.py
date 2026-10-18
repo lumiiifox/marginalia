@@ -68,6 +68,9 @@ async def main():
                     return { ok: true, hs: document.documentElement.scrollWidth > innerWidth }; } catch (e) { return { ok: false, err: String(e) }; } }""", [name, extra])
                 check(r["ok"] and not r["hs"] and len(errs) == n, f"{w}px {name}" + ("" if r["ok"] else f": {r['err']}") + (" (scrolls sideways)" if r.get("hs") else "") + (f" {errs[n:]}" if len(errs) > n else ""))
             if w == 390:
+                figs = await page.evaluate("[GLOSSARY.filter((g) => g.fig && !FIGURES[g.fig]).map((g) => g.id), Object.keys(FIGURES).filter((k) => !GLOSSARY.some((g) => g.fig === k)), (() => { S.gOpen = new Set(GLOSSARY.filter((g) => g.fig).map((g) => g.id)); go({ screen: 'glossary' }); return document.querySelectorAll('.dsvg svg').length; })()]")
+                check(figs[0] == [] and figs[1] == [] and figs[2] == len(await page.evaluate("Object.keys(FIGURES)")), f"every glossary diagram belongs to a term and draws ({figs})")
+                await page.evaluate("S.gOpen = new Set()")
                 home = await page.evaluate("(() => { go({ screen: 'library' }); return [!!document.querySelector('.nudge'), !!document.querySelector('#backup')]; })()")
                 check(home == [False, True], f"the home screen has no backup reminder, and Save backup stays in Backups and exports ({home})")
             await page.evaluate("S.screen = 'text'; S.textId = 't1'; render()")

@@ -42,6 +42,8 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
   are built from them in index.html. A new data file needs its `<script>` tag in index.html and its path in `SHELL` in `sw.js`.
   An entry's optional `img` (`figHTML`) is a public-domain Wikimedia Commons file, loaded from Commons when online and not cached
   by the service worker; a picture that fails to load removes its figure, so offline the entry simply shows without it.
+  A glossary term's optional `fig` names one of `FIGURES` (end of `data/glossary.js`): a diagram drawn as SVG, shown by `diaHTML` in the
+  app's colours and offline. Give each marker id a per-figure suffix, since closed entries hide the SVG that defines it.
 - Quiz yourself (`quizPanel`, from the glossary and the home screen's glossary section): questions made from `allTerms()` definitions
   (the term blanked out by `maskTerm`) and `THINKERS` key works (`worksOf` leaves out works by other authors); nothing is stored.
 - Thinkers' timeline (Thinkers → Timeline, `S.tl`; a period on the home screen opens it there): `lifeSpan` reads a thinker's dates line (BCE, centuries, "b. 1929"),
