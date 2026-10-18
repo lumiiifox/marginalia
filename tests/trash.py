@@ -6,7 +6,10 @@ Made-up records only, phone-sized screen. Checks that:
   3. deleting a note, a draft or a comparison files it there too; Restore puts each back;
   4. a note whose book was deleted after it can't be restored until the book is;
   5. Delete now and Empty remove entries for good; entries older than 30 days are cleared when the app opens;
-  6. backups leave Recently deleted out, and the home screen links to it only when something is there.
+  6. backups leave Recently deleted out, and the home screen links to it only when something is there;
+  7. restoring never writes over a record that came back another way (a backup), and puts back only what is missing;
+  8. opening the app reads only the list of summaries, never the deleted records;
+  9. with no room to keep a copy, deleting still works, for good, and says so.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -48,7 +51,7 @@ async def main():
         await page.goto(URL); await page.wait_for_function(READY)
 
         # 1 upgrade
-        up = await page.evaluate("[idb.version, [...idb.objectStoreNames].includes('trash'), S.texts.has('e'), S.notes.size, S.trash.size]")
+        up = await page.evaluate("[idb.version, ['trash', 'trashlist'].every((n) => [...idb.objectStoreNames].includes(n)), S.texts.has('e'), S.notes.size, S.trash.size]")
         check(up == [8, True, True, 2, 0], f"a version 7 library opens in version 8 with its book and notes ({up})")
         check(await page.query_selector("#opentrash") is None, "with nothing deleted, the home screen shows no Recently deleted link")
 
@@ -103,11 +106,11 @@ async def main():
         await page.evaluate("purgeTrash([...S.trash.keys()])"); await page.wait_for_timeout(200)
         check(await page.evaluate("(async () => (await idbAll('trash')).size)()") == 0, "Empty clears everything left")
         await page.evaluate("""(async () => { await trashAndRemove('draft', 'Old', [['drafts', 'd9', { title: 'Old', items: [], createdAt: 1, updatedAt: 1 }]]);
-          const all = await idbAll('trash'); for (const [k, e] of all) { e.at = Date.now() - 31 * 86400000; await idbDo('trash', (st) => st.put(e, k)); }
+          const all = await idbAll('trashlist'); for (const [k, e] of all) { e.at = Date.now() - 31 * 86400000; await idbDo('trashlist', (st) => st.put(e, k)); }
           await trashAndRemove('draft', 'Recent', [['drafts', 'd8', { title: 'Recent', items: [], createdAt: 1, updatedAt: 1 }]]); })()""")
         await page.reload(); await page.wait_for_function(READY)
-        kept = await page.evaluate("(async () => [...(await idbAll('trash')).values()].map((e) => e.title))()")
-        check(kept == ["Recent"], f"entries older than 30 days are cleared when the app opens ({kept})")
+        kept = await page.evaluate("(async () => [[...(await idbAll('trash')).values()].map((e) => e.title), [...(await idbAll('trashlist')).values()].map((e) => e.title)])()")
+        check(kept == [["Recent"], ["Recent"]], f"entries older than 30 days are cleared from both stores when the app opens ({kept})")
 
         # the buttons themselves: a note's Delete note, a draft's and a comparison's menus
         await page.evaluate("""(async () => { await put('notes', 'n7', { textId: 'e', kind: 'gloss', gloss: 'to be deleted by hand', page: '9', createdAt: 9 });
@@ -120,6 +123,39 @@ async def main():
         hand = await page.evaluate("[S.notes.has('n7'), S.drafts.has('d7'), S.compares.has('c7'), [...S.trash.values()].map((e) => e.kind + ':' + (e.snip || e.title)).sort()]")
         check(hand[:3] == [False, False, False] and hand[3] == sorted(["comparison:Hand comparison", "draft:Hand draft", "draft:Recent", "note:to be deleted by hand"]),
               f"Delete note and the draft and comparison menus move them to Recently deleted ({hand})")
+
+        # 7 a book back from a backup, then edited, then its old entry restored
+        r7 = await page.evaluate("""(async () => {
+          await purgeTrash([...S.trash.keys()]);
+          await put('notes', 'n2', { textId: 'e', kind: 'gloss', gloss: 'second note', page: '4', createdAt: 3 });
+          const before = { t: S.texts.get('e'), n1: S.notes.get('n1'), n2: S.notes.get('n2') };
+          const tid = await deleteText('e');
+          await put('texts', 'e', { ...before.t, title: 'Ethics (from backup)' });
+          await put('notes', 'n1', { ...before.n1, gloss: 'edited after the backup', updatedAt: Date.now() });
+          await restoreTrash(tid);
+          return [S.texts.get('e').title, S.notes.get('n1').gloss, (await idbGet('notes', 'n1')).gloss, S.notes.has('n2'), !!(await idbGet('content', 'e')),
+            (await idbAll('trash')).size, (await idbAll('trashlist')).size, document.querySelector('#toast').textContent]; })()""")
+        check(r7[:7] == ["Ethics (from backup)", "edited after the backup", "edited after the backup", True, True, 0, 0] and "left as" in r7[7],
+              f"restoring an old entry keeps the book and note that came back from a backup, with their edits, and puts back only the missing note and text ({r7})")
+
+        # 8 opening reads only the summaries
+        r8 = await page.evaluate("""(async () => {
+          await trashAndRemove('draft', 'Read check', [['drafts', 'd6', { title: 'Read check', items: [], createdAt: 1, updatedAt: 1 }]]);
+          const seen = [], orig = idbAll; idbAll = (st) => { seen.push(st); return orig(st); };
+          await loadTrash(); idbAll = orig;
+          return [seen, [...S.trash.values()].some((e) => e.title === 'Read check')]; })()""")
+        check(r8 == [["trashlist"], True], f"opening the app reads only the summaries, not the deleted records ({r8})")
+
+        # 9 no room
+        r9 = await page.evaluate("""(async () => {
+          await put('notes', 'n8', { textId: 'e', kind: 'gloss', gloss: 'no room for me', page: '1', createdAt: 1 });
+          const orig = idbTx; idbTx = (stores, fn) => stores.includes('trash') ? Promise.reject(new DOMException('full', 'QuotaExceededError')) : orig(stores, fn);
+          const n = S.trash.size, tid = await trashAndRemove('note', 'Ethics', [['notes', 'n8', S.notes.get('n8')]]); idbTx = orig;
+          delToast('Note deleted.', tid);
+          return [tid, S.notes.has('n8'), !!(await idbGet('notes', 'n8')), S.trash.size === n, document.querySelector('#toast').textContent]; })()""")
+        check(r9[:4] == [False, False, False, True] and "gone for good" in r9[4], f"with no room to keep a copy, the note is still deleted, for good, and the message says so ({r9})")
+        full = await page.evaluate("failMsg(new DOMException('full', 'QuotaExceededError'))")
+        check("Empty Recently deleted" in full and "Delete a text" not in full, f"the out-of-space message points to Recently deleted ({full})")
 
         # 6 backups
         bk = await page.evaluate("""(async () => { let out; const orig = saveFile; saveFile = async (n, t) => { out = JSON.parse(t); return true; }; await exportBackup(); saveFile = orig; return Object.keys(out); })()""")
