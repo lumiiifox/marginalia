@@ -71,6 +71,8 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
   and the reader's bottom buttons and toasts sit above it (`--pin-h`).
 - Your notes on the slider (`drawNavNotes`, `navNoteGroups`, `navNotesOpen`): a mark per note above it, notes within `NAVNOTE_PX` sharing
   a numbered mark that lists them; going to one uses `jumpTo`, so the trail offers ← Your place.
+- The icons (`icon-*.png`, `apple-touch-icon.png`) are drawn by `tools/build_icons.py`: a leaf carved in outline into oak. The home screen's
+  mark (`LEAF_SVG`) is the same leaf path; change both together.
 - Reader settings live in `localStorage` under `mg-reader`; other small preferences use `mg-*` keys (`mg-dict`: Wiktionary definitions kept for offline).
 - A text's `lang` (optional, e.g. "fr") sets the reader's `lang` for hyphenation; without it the language is guessed from the text (`guessLang`).
 - Book structure the owner marks in the reader (Edit → chapter title, heading, running head, title page, block quote, plain text) is stored on

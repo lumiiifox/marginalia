@@ -82,7 +82,11 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 
 /* controls */
 .top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-.mark-word { font: 500 34px/1 var(--f-mark); letter-spacing: 0.02em; }
+/* the app's mark: the leaf of its icon, cut into the desk */
+.mark-leaf { display: block; width: 60px; height: 60px; margin: -4px 0 -6px -1px; color: color-mix(in srgb, var(--ink) 82%, var(--wood)); }
+.mark-leaf svg { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 1px 0 rgba(255, 248, 234, 0.75)); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .mark-leaf svg { filter: drop-shadow(0 -1px 0 rgba(0, 0, 0, 0.55)); } }
+:root[data-theme="dark"] .mark-leaf svg { filter: drop-shadow(0 -1px 0 rgba(0, 0, 0, 0.55)); }
 .sub { color: var(--muted); font-size: 14px; }
 .btn { border: 1px solid var(--rule); background: var(--paper); border-radius: 8px; padding: 8px 15px; font: 500 15px/1.2 var(--f-ui); color: var(--ink); }
 .btn.primary { background: linear-gradient(rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0.08)), var(--leather); color: var(--leather-ink); border-color: transparent; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 1px 2px rgba(0, 0, 0, 0.25); }
@@ -2230,6 +2234,8 @@ function shelfList(st) {
   const fresh = books.filter(([, t]) => !Number.isFinite(t.rank)).sort(([, a], [, b]) => lastActive(b) - lastActive(a));
   return [...fresh, ...placed];
 }
+// The leaf of the app's icon (tools/build_icons.py draws the icon from the same path).
+const LEAF_SVG = `<svg viewBox="10 17 76 76" aria-hidden="true"><path d="M27.0 75.0 C23 51 42 29 76.0 23.0 C74 53 56 73 27.0 75.0 Z M27.0 75.0 Q50.5 51.5 71.8 27.6 M38.8 62.5 Q43.4 63.4 49.2 62.9 M38.8 62.5 Q37.7 58.4 37.9 52.9 M47.6 53.2 Q52.5 54.0 58.6 53.5 M47.6 53.2 Q46.5 48.8 46.6 43.1 M56.4 43.8 Q60.5 44.6 65.9 44.1 M56.4 43.8 Q55.4 40.1 55.6 35.1 M64.2 35.5 Q66.9 36.2 70.7 35.7 M64.2 35.5 Q63.3 33.2 63.7 29.5 M27.0 75.0 C24.5 78.5 21.5 81.5 16.5 83.5" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 function libraryView() {
   const texts = [...S.texts.entries()];
   let body = "";
@@ -2267,7 +2273,7 @@ function libraryView() {
     }).join("");
   }
   const searching = !!S.q.trim();
-  return `<header class="top"><h1 class="mark-word">Marginalia</h1></header>
+  return `<header class="top"><h1 class="mark-leaf">${LEAF_SVG}<span class="sr">Marginalia</span></h1></header>
     ${banner()}
     <input class="search" id="q" type="search" placeholder="Search your notes and the glossary" value="${esc(S.q)}" aria-label="Search your notes and the glossary">
     ${searching ? body : `
