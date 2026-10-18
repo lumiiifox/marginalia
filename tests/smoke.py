@@ -25,7 +25,7 @@ STORES = ["texts", "notes", "content", "drafts", "compares", "terms"]
 
 SEED = """async () => {
   const now = Date.now();
-  await put("texts", "t1", { title: "Test Book", author: "Author, Test", sections: [{ id: "s1", label: "Ch. 1" }], bookmarks: [{ at: 1 }], summaries: { s1: "summary" }, source: { name: "test.pdf", kind: "PDF", pages: 12 }, pos: 0, hasContent: true, createdAt: now, updatedAt: now, readAt: now });
+  await put("texts", "t1", { title: "Test Book", author: "Author, Test", sections: [{ id: "s1", label: "Ch. 1" }], bookmarks: [{ at: 1 }], summaries: { s1: "summary" }, next: "Work out why the paragraph comes first", source: { name: "test.pdf", kind: "PDF", pages: 12 }, pos: 0, hasContent: true, createdAt: now, updatedAt: now, readAt: now });
   await put("content", "t1", [{ k: "p", x: "First paragraph of the test text." }, { k: "p", x: "Second paragraph." },
     // structure marked in the reader (Edit): a hidden running head, a chapter title over two lines, a title glued to its paragraph
     { k: "pg", x: "2" }, { k: "p", x: "2 TEST BOOK", st: "hide" }, { k: "h", l: 2, x: "Chapter", st: "chapter", s: "s1" }, { k: "h", l: 2, x: "two", stj: true },
@@ -201,13 +201,23 @@ async def main():
         await page.evaluate("""(async () => { const t = S.texts.get('t1'); await put('texts', 't1', { ...t, pos: 7 });
           await put('notes', 'q1', { textId: 't1', kind: 'question', passage: 'Then the paragraph', gloss: 'Why this?', page: '2', at: 6, createdAt: Date.now() + 5, updatedAt: Date.now() + 5 });
           S.content.delete('t1'); go({ screen: 'text', textId: 't1' }); })()""")
-        await page.wait_for_function("!!document.querySelector('.brief .bsum')", timeout=5000)
-        brief = await page.evaluate("""(() => { const b = document.querySelector('.brief'); return [b.querySelector('.bwhere').textContent, b.querySelector('.bsum').textContent,
+        await page.wait_for_function("!!document.querySelector('#bsum')", timeout=5000)
+        brief = await page.evaluate("""(() => { const b = document.querySelector('.brief'); return [b.querySelector('.bwhere').textContent, b.querySelector('#bsum').textContent,
           [...b.querySelectorAll('.blab')].map((x) => x.textContent), b.querySelector('.brow').textContent, !!b.querySelector('.brow[data-goto-note="6"][data-tid="t1"]')]; })()""")
-        check(brief[0].startswith("p. 2 in Ch. 1") and brief[1] == "summary" and brief[2] == ["Your summary of this chapter", "Open questions in this book", "Your latest notes"] and "Why this?" in brief[3] and brief[4],
+        check(brief[0].startswith("p. 2 in Ch. 1") and brief[1] == "summary" and brief[2] == ["Next time", "Your summary of this chapter", "Open questions in this book", "Your latest notes"] and "Why this?" in brief[3] and brief[4],
               f"a book's page says where you left off: page, chapter, your summary, open questions and latest notes, each opening the text ({brief})")
         await page.evaluate("(async () => { await put('texts', 'tnew', { title: 'Unread', hasContent: false, pos: 0, createdAt: 1, updatedAt: 1 }); go({ screen: 'text', textId: 'tnew' }); })()"); await page.wait_for_timeout(300)
         check(await page.evaluate("!document.querySelector('.brief')"), "a book not started and without notes has no brief")
+        # next time: shown in the brief, asked for in a sheet, shown on continuing, cleared from the toast
+        await page.evaluate("(async () => { if (NAV.overlay) await closeOverlay(); go({ screen: 'text', textId: 't1' }); })()"); await page.wait_for_selector(".brief .bnext")
+        check("Work out why the paragraph comes first" in await page.inner_text(".brief .bnext"), "the brief shows the line left for next time")
+        await page.click("#editnext"); await page.fill("#nx-text", "Check the second paragraph"); await page.click("#sheetroot button[type=submit]"); await page.wait_for_timeout(500)
+        check(await page.evaluate("S.texts.get('t1').next") == "Check the second paragraph" and "Check the second paragraph" in await page.inner_text(".brief .bnext"), "Next time can be changed from the book's page")
+        await page.click("#read"); await page.wait_for_timeout(900)
+        check("Next time: Check the second paragraph" in await page.inner_text("#toast"), "continuing to read shows the line")
+        await page.click("#toast .toastbtn"); await page.wait_for_timeout(500)
+        check(await page.evaluate("S.texts.get('t1').next === undefined"), "Done with it clears it")
+        await page.evaluate("back()"); await page.wait_for_timeout(400)
         # pictures: Wikimedia Commons stood in for (Kant's loads, every other one fails as it would offline); this route takes precedence over fresh_page's
         async def commons(route):
             if "Immanuel_Kant" in route.request.url:

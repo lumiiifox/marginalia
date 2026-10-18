@@ -227,6 +227,8 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .brief .brow:first-of-type { border-top: 0; }
 .brief .brow small { font: 400 12.5px/1.3 var(--f-ui); color: var(--muted); }
 .brief .bmore { font-size: 14px; color: var(--muted); }
+.brief .bnext .linkbtn { font-size: 14px; }
+.brief .bnext .bsum { margin-bottom: 2px; }
 .summary p { margin: 12px 0; white-space: pre-wrap; overflow-wrap: anywhere; font: 400 17px/1.55 var(--f-text); }
 .across { display: grid; gap: 8px; }
 .tagchip { color: var(--link); }
@@ -942,7 +944,7 @@ const isS = (x) => typeof x === "string";
 const optNum = (x) => x === undefined || x === null || Number.isFinite(x);
 const optInt = (x) => x === undefined || (Number.isInteger(x) && x >= 0);
 const VALID = {
-  texts: (v) => isObj(v) && isS(v.title) && optStr(v.author) && optStr(v.edition) && optStr(v.lang) && optArr(v.pdfLabels, isS) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
+  texts: (v) => isObj(v) && isS(v.title) && optStr(v.author) && optStr(v.edition) && optStr(v.lang) && optStr(v.next) && optArr(v.pdfLabels, isS) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
     && optArr(v.bookmarks, (x) => isObj(x) && Number.isInteger(x.at)) && (v.summaries === undefined || isObj(v.summaries)) && (v.pos === undefined || Number.isInteger(v.pos))
     && (v.source === undefined || v.source === null || (isObj(v.source) && optStr(v.source.name) && optStr(v.source.kind) && optNum(v.source.pages))),
   notes: (v) => isObj(v) && isS(v.textId) && optStr(v.kind) && ["passage", "gloss", "original", "conclusion", "sectionId"].every((k) => optStr(v[k]))
@@ -2316,12 +2318,25 @@ function placeIn(blocks, t, at) {
   }
   return { page, sec, label: sec ? names.get(sec) : "", sum, sumLabel: sum ? names.get(sum) : "" };
 }
+// Next time: one line you leave yourself (t.next), shown here and when you next continue reading.
+function nextSheet(tid) {
+  const t = S.texts.get(tid); if (!t) return;
+  openSheet(`<h2>Next time</h2>
+    <div class="field"><label for="nx-text">What to pick up when you come back</label><textarea id="nx-text" name="next" rows="3" placeholder="Work out why he rejects…">${esc(t.next || "")}</textarea>
+    <span class="hint">Shown on the book's page and when you next continue reading. Leave it empty to clear it.</span></div>`,
+  async (fd) => {
+    const now = S.texts.get(tid); if (!now) return;
+    const v = fd.get("next").trim(), rec = { ...now, updatedAt: Date.now() };
+    if (v) rec.next = v; else delete rec.next;
+    await put("texts", tid, rec);
+  });
+}
 function briefHTML(id, t) {
   const pos = Number.isInteger(t.pos) && t.pos > 0 ? t.pos : null;
   const mine = notesFor(id), when = (n) => Math.max(n.updatedAt || 0, n.createdAt || 0);
   const open = mine.filter(([, n]) => OPENABLE.has(n.kind) && !n.resolved), shown = new Set(open.slice(0, 3).map(([nid]) => nid));
   const recent = mine.filter(([nid]) => !shown.has(nid)).sort((a, b) => when(b[1]) - when(a[1])).slice(0, 3);
-  if (pos === null && !mine.length) return "";
+  if (pos === null && !mine.length && !t.next) return "";
   let where = null;
   if (pos !== null && t.hasContent) {
     const B = S.content.get(id);
@@ -2332,9 +2347,11 @@ function briefHTML(id, t) {
   const summary = where && where.sum ? (t.summaries || {})[where.sum] : "";
   return `<section class="group"><div class="label">Where you left off</div><div class="paperpanel brief">
     ${pos !== null ? `<p class="bwhere">${where ? `${esc(where.page ? loc(where.page) : `${progressOf(t)}% through`)}${where.label ? ` <span>in ${esc(where.label)}</span>` : ""}` : `${progressOf(t)}% through`}${t.readAt ? ` <span>· ${esc(fmtDate(t.readAt))}</span>` : ""}</p>` : ""}
-    ${summary ? `<div><div class="blab">${where.sum === where.sec ? "Your summary of this chapter" : `Your summary of ${esc(where.sumLabel)}`}</div><p class="bsum">${esc(summary)}</p></div>` : ""}
+    ${t.next ? `<div class="bnext"><div class="blab">Next time</div><p class="bsum">${esc(t.next)}</p><button class="linkbtn" id="editnext">Change or clear it</button></div>` : ""}
+    ${summary ? `<div><div class="blab">${where.sum === where.sec ? "Your summary of this chapter" : `Your summary of ${esc(where.sumLabel)}`}</div><p class="bsum" id="bsum">${esc(summary)}</p></div>` : ""}
     ${open.length ? `<div><div class="blab">Open questions in this book</div>${open.slice(0, 3).map(row).join("")}${open.length > 3 ? `<div class="bmore">and ${open.length - 3} more</div>` : ""}</div>` : ""}
     ${recent.length ? `<div><div class="blab">Your latest notes</div>${recent.map(row).join("")}</div>` : ""}
+    ${t.next ? "" : `<div class="bnext"><button class="linkbtn" id="editnext">Leave yourself a line for next time</button></div>`}
   </div></section>`;
 }
 
@@ -4709,6 +4726,8 @@ async function openReader(tid, at, opts) {
   const place = () => (sess && opts.spot ? goToSpot(opts.spot) : Number.isInteger(at) ? goTo(target, true) : goToSpot({ i: target, f: t?.posF || 0 }));
   let placed = null;
   requestAnimationFrame(() => { layoutPages(); place(); placed = { spot: R.pagedSpot, y: window.scrollY }; R.landedY = readY(); updatePg(); drawTrail(); if (opts && opts.flash && Number.isInteger(at) && !sess) flash(at); });
+  // continuing to read (not a jump, not coming back from another screen): the line you left yourself
+  if (t && t.next && !Number.isInteger(at) && !sess) toast(`Next time: ${t.next}`, { label: "Done with it", run: () => { const now = S.texts.get(tid); if (!now) return; const rec = { ...now, updatedAt: Date.now() }; delete rec.next; put("texts", tid, rec).then(() => toast("Cleared.")).catch((e) => toast(failMsg(e))); } });
   // The book's fonts arriving change where the words fall. Not moved since opening (and soon after): place it again.
   // Moved (a page turned, a chapter chosen): stay on that spot, as after a change of screen size.
   const t0 = Date.now();
@@ -5968,6 +5987,7 @@ document.addEventListener("click", (e) => {
   }
   if (b.id === "openquestions") return go({ screen: "questions" });
   if (b.id === "editsummary") return summarySheet(S.textId, S.sec);
+  if (b.id === "editnext") return nextSheet(S.textId);
   if (b.id === "exporttag") return saveFile(`tag-${slug(S.tag)}.md`, quoteBankMarkdown(`#${S.tag}`, taggedWith(S.tag)), "text/markdown").catch(() => toast("Couldn't export."));
   if (b.id === "exportquestions") return saveFile(`open-questions-${stamp()}.md`, quoteBankMarkdown("Open questions", questionNotes().filter(([, n]) => !n.resolved)), "text/markdown").catch(() => toast("Couldn't export."));
   if (b.dataset.sec) { S.sec = S.sec === b.dataset.sec ? "all" : b.dataset.sec; return render(); }
