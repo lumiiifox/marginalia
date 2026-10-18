@@ -6573,7 +6573,20 @@ async function addClassics(force) {
 }
 
 /* ---------- boot ---------- */
+// Opening never fails silently: a step that throws, or storage that takes too long to open, says so on screen.
+function bootProblem(msg) {
+  const el = $("#main"); if (!el || S.screen === "reader") return;
+  let b = $("#bootmsg");
+  if (!b) { el.insertAdjacentHTML("afterbegin", `<div class="banner" id="bootmsg" role="alert"></div>`); b = $("#bootmsg"); }
+  b.textContent = msg;
+}
+const bootErr = (e) => { if (S.mode !== "ready" || !$("#main").childElementCount || S.renderFailed) bootProblem(`Marginalia couldn't open your library: ${(e && (e.message || e.name)) || e}. Your books and notes are still on this device. Close every copy of the app, open it again, and send this message if it comes back.`); };
+window.addEventListener("error", (e) => bootErr(e.error || e.message));
+window.addEventListener("unhandledrejection", (e) => bootErr(e.reason));
 render();
+const bootSlow = setTimeout(() => {
+  if (S.mode === "pending") bootProblem("Still opening your library. This usually means Marginalia is open somewhere else, waiting for an update: the installed app and a Chrome tab count separately. Close every copy (swipe them away in recent apps, and close Marginalia tabs in Chrome), then open it again. Your books and notes are safe.");
+}, 6000);
 (async () => {
   try {
     idb = await idbOpen();
@@ -6585,8 +6598,10 @@ render();
     S.compares = await idbAll("compares");
     await loadTrash().catch(() => {});
     S.mode = "ready";
-  } catch { idb = null; S.mode = "local"; }
-  render();
+  } catch (e) { idb = null; S.mode = "local"; S.openErr = e; }
+  clearTimeout(bootSlow);
+  try { render(); } catch (e) { S.renderFailed = true; bootErr(e); return; }
+  if (S.openErr && S.openErr.name && !["InvalidStateError", "SecurityError", "UnknownError"].includes(S.openErr.name)) bootProblem(`Storage didn't open (${S.openErr.name}: ${S.openErr.message}). Close every copy of the app and open it again; your books and notes are still on this device.`);
   addClassics().catch(() => {});
   try { if (navigator.storage && navigator.storage.persist) S.persisted = await navigator.storage.persist(); } catch {}
 })();
