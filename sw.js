@@ -21,6 +21,7 @@ self.addEventListener("fetch", (e) => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   const keep = (res) => { if (res && (res.ok || res.type === "opaque")) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); } return res; };
+  if (url.origin === self.location.origin && url.pathname.includes("/data/books/")) return; // the classics: fetched once into the library, so not kept here too
   if (url.origin === self.location.origin) {
     e.respondWith(fetch(req).then(keep).catch(() => caches.match(req).then((hit) => hit || caches.match("./index.html"))));
   } else if (/^(cdnjs\.cloudflare\.com|fonts\.googleapis\.com|fonts\.gstatic\.com)$/.test(url.hostname)) {

@@ -38,6 +38,7 @@ jobs:
           python3 tests/notes_lookup.py
           python3 tests/quotes_language.py
           python3 tests/pin.py
+          python3 tests/classics.py
       # printed_page.py uses the PDF.js copy that pdf_import.py downloads into tests/.cache, so the importer tests go first
       - name: Run PDF importer tests
         run: python3 tests/pdf_import.py
