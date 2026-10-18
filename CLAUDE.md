@@ -46,6 +46,8 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - A chapter's end (`chapterEndCheck`, from `updatePg`): reading on from within about a page of a chapter's end into the next asks
   for a summary (`summarySheet`, saved in `t.summaries`), once a visit and only without one; `RS.sum` "off" stops it.
 - Your words (`lookedUp`, `wordsPanel`; glossary): the `mg-dict` cache of Look up, one usable sense each; quiz mode "words".
+- Where you left off (`briefHTML`, `placeIn`, on a book's page under Continue reading): page and chapter at `t.pos`, your summary of that
+  chapter or the last one summarized, the book's open questions and latest notes. Nothing stored; it loads the book's text once for the chapter.
 - The pinned passage (`PIN`, `drawPin`, `pinGo`): one passage or note kept at the foot of the reader, from Pin on a selection or a note's
   sheet. Stored in `localStorage` as `mg-pin`, outside the library and backups; the pages are cut above it (`PINH` in `layoutPages`),
   and the reader's bottom buttons and toasts sit above it (`--pin-h`).

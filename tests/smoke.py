@@ -197,6 +197,17 @@ async def main():
         src = await page.evaluate("(() => { const a = document.querySelector('.sheet .tsrc a'); return [!!document.querySelector('.sheet .tmore'), a && a.href, a && a.target]; })()")
         check(src == [True, "https://plato.stanford.edu/entries/kant/", "_blank"], f"a thinker with a longer account shows it, with its source linked ({src})")
         check(not errs, "no script errors on the timeline" + (f": {errs}" if errs else ""))
+        # where you left off: page, chapter, summary, open questions, latest notes; a book not started yet has no brief
+        await page.evaluate("""(async () => { const t = S.texts.get('t1'); await put('texts', 't1', { ...t, pos: 7 });
+          await put('notes', 'q1', { textId: 't1', kind: 'question', passage: 'Then the paragraph', gloss: 'Why this?', page: '2', at: 6, createdAt: Date.now() + 5, updatedAt: Date.now() + 5 });
+          S.content.delete('t1'); go({ screen: 'text', textId: 't1' }); })()""")
+        await page.wait_for_function("!!document.querySelector('.brief .bsum')", timeout=5000)
+        brief = await page.evaluate("""(() => { const b = document.querySelector('.brief'); return [b.querySelector('.bwhere').textContent, b.querySelector('.bsum').textContent,
+          [...b.querySelectorAll('.blab')].map((x) => x.textContent), b.querySelector('.brow').textContent, !!b.querySelector('.brow[data-goto-note="6"][data-tid="t1"]')]; })()""")
+        check(brief[0].startswith("p. 2 in Ch. 1") and brief[1] == "summary" and brief[2] == ["Your summary of this chapter", "Open questions in this book", "Your latest notes"] and "Why this?" in brief[3] and brief[4],
+              f"a book's page says where you left off: page, chapter, your summary, open questions and latest notes, each opening the text ({brief})")
+        await page.evaluate("(async () => { await put('texts', 'tnew', { title: 'Unread', hasContent: false, pos: 0, createdAt: 1, updatedAt: 1 }); go({ screen: 'text', textId: 'tnew' }); })()"); await page.wait_for_timeout(300)
+        check(await page.evaluate("!document.querySelector('.brief')"), "a book not started and without notes has no brief")
         # pictures: Wikimedia Commons stood in for (Kant's loads, every other one fails as it would offline); this route takes precedence over fresh_page's
         async def commons(route):
             if "Immanuel_Kant" in route.request.url:
