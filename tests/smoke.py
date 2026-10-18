@@ -218,6 +218,18 @@ async def main():
         await page.click("#toast .toastbtn"); await page.wait_for_timeout(500)
         check(await page.evaluate("S.texts.get('t1').next === undefined"), "Done with it clears it")
         await page.evaluate("back()"); await page.wait_for_timeout(400)
+        # a glossary term's notes, grouped by author and book, each book in reading order, five or more folded
+        await page.evaluate("""(async () => { if (NAV.overlay) await closeOverlay();
+          await put('texts', 'sp', { title: 'Ethics', author: 'Spinoza, Baruch', hasContent: false, createdAt: 1, updatedAt: 1 });
+          await put('texts', 'ar', { title: 'Categories', author: 'Aristotle', hasContent: false, createdAt: 1, updatedAt: 1 });
+          for (let k = 0; k < 6; k++) await put('notes', 'sp' + k, { textId: 'sp', kind: 'passage', passage: 'By substance I understand ' + k, gloss: k === 0 ? 'Conceived through itself.' : '', page: String(10 - k), createdAt: k, updatedAt: k });
+          await put('notes', 'ar0', { textId: 'ar', kind: 'question', passage: 'A substance is neither said of a subject', gloss: 'Primary or secondary?', page: '2a11', createdAt: 9, updatedAt: 9 });
+          openTerm('substance'); })()"""); await page.wait_for_timeout(600)
+        grp = await page.evaluate("""(() => { const d = document.querySelector('[data-term-id="substance"]'); return [d.querySelector('.thits .hint')?.textContent,
+          [...d.querySelectorAll('.tbook')].map((b) => [b.querySelector('.tbh .src').textContent, b.querySelector('.tbh .cnt').textContent, b.querySelectorAll(':scope > .thit').length, b.querySelector('summary')?.textContent || '', b.querySelector('.thit p')?.textContent]),
+          d.querySelector('.tgl')?.textContent]; })()""")
+        check(grp[0] == "In 2 books by 2 authors, grouped by author, to compare how each uses it." and grp[1] == [["Categories", "1", 1, "", "A substance is neither said of a subject"], ["Ethics", "6", 4, "2 more from this book", "By substance I understand 5"]] and grp[2] == "Primary or secondary?",
+              f"a term's notes are grouped by author and book, in reading order, with your glosses and the rest folded ({grp})")
         # pictures: Wikimedia Commons stood in for (Kant's loads, every other one fails as it would offline); this route takes precedence over fresh_page's
         async def commons(route):
             if "Immanuel_Kant" in route.request.url:

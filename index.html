@@ -541,6 +541,15 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .tsrc { margin: 0; font: italic 400 15px/1.4 var(--f-text); color: var(--muted); }
 .thits { display: grid; gap: 10px; padding-top: 6px; }
 .thit { display: grid; gap: 4px; padding-left: 10px; border-left: 2px solid var(--brass); min-width: 0; }
+.tbook { display: grid; gap: 8px; }
+.tbook + .tbook { padding-top: 8px; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); }
+.tbh { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.tbh .src { font-weight: 600; }
+.tbh span { font: 400 14px/1.3 var(--f-ui); color: var(--muted); }
+.thit .tgl { font-style: italic; color: var(--muted); -webkit-line-clamp: 3; }
+.tmorehits { display: grid; gap: 8px; }
+.tmorehits summary { cursor: pointer; font: 400 14px/1.3 var(--f-ui); color: var(--link); padding: 2px 0; }
+.tmorehits[open] summary { margin-bottom: 8px; }
 .thit p { margin: 0; font: 16px/1.5 var(--f-text); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
 .bq-list { margin: 0; padding-left: 20px; display: grid; gap: 4px; font: 400 16px/1.5 var(--f-text); }
 .bq-list .tsrc { font-size: 14px; }
@@ -3288,6 +3297,23 @@ const thinkerChips = (ids) => ids.map((id) => THINKER.get(id)).filter(Boolean).m
 const branchChips = (ids) => ids.map((id) => BRANCH.get(id)).filter(Boolean).map((b) => `<button class="chip bchip2" data-branch="${esc(b.id)}">${esc(b.n)}</button>`).join("");
 const termChips = (ids, tmap) => ids.filter((id) => tmap.has(id)).map((id) => `<button class="chip tchip" data-term="${esc(id)}">${esc(tmap.get(id).t)}</button>`).join("");
 const termMap = () => new Map(allTerms().map((g) => [g.id, g]));
+// Your notes that use a term, grouped by author and then book, each book's in reading order: how the concept reads in each,
+// in the passages you kept and what you wrote about them. Only your notes; nothing is said about the term for you.
+function termHitsHTML(hits) {
+  if (!hits.length) return "";
+  const byBook = new Map();
+  for (const [id, n] of hits) { if (!byBook.has(n.textId)) byBook.set(n.textId, []); byBook.get(n.textId).push([id, n]); }
+  const books = [...byBook].map(([tid, list]) => [tid, S.texts.get(tid), list]).filter(([, t]) => t)
+    .sort(([, a], [, b]) => (a.author || "\uffff").localeCompare(b.author || "\uffff", undefined, { sensitivity: "base" }) || a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
+  const authors = new Set(books.map(([, t]) => fold(t.author || "")));
+  const note = (tid, t) => ([, n]) => `<div class="thit"><div class="meta">${n.page ? `<span>${esc(loc(n.page))}</span>` : ""}${KINDS[n.kind] && n.kind !== "passage" ? `<span>${esc(KINDS[n.kind])}</span>` : ""}${t.hasContent && Number.isInteger(n.at) ? `<button class="src" data-goto-note="${n.at}" data-tid="${esc(tid)}">Show in text</button>` : ""}</div>${n.passage ? `<p>${esc(n.passage)}</p>` : ""}${n.gloss ? `<p class="tgl">${esc(n.gloss)}</p>` : ""}</div>`;
+  const group = ([tid, t, list]) => {
+    const sorted = sortNotes(list, t), first = sorted.slice(0, 4), rest = sorted.slice(4);
+    return `<div class="tbook"><div class="tbh"><button class="src" data-open="${esc(tid)}">${esc(t.title)}</button>${t.author ? `<span>${esc(t.author)}</span>` : ""}<span class="cnt">${list.length}</span></div>
+      ${first.map(note(tid, t)).join("")}${rest.length ? `<details class="tmorehits"><summary>${rest.length} more from this book</summary>${rest.map(note(tid, t)).join("")}</details>` : ""}</div>`;
+  };
+  return `<div class="thits"><div class="label">In your notes</div>${books.length > 1 ? `<p class="hint">In ${books.length} books${authors.size > 1 ? ` by ${authors.size} authors` : ""}, grouped by author, to compare how each uses it.</p>` : ""}${books.map(group).join("")}</div>`;
+}
 function termHTML(g, tmap) {
   const hits = termNotes(g);
   const see = [...(LINKS.see.get(g.id) || [])], vs = [...(LINKS.vs.get(g.id) || [])];
@@ -3306,10 +3332,7 @@ function termHTML(g, tmap) {
       ${g.w ?`<p class="tsrc">Associated with ${esc(g.w)}</p>` : ""}
       ${aliasesOf(g.id).length ? `<p class="tsrc">Look up also finds: ${esc(aliasesOf(g.id).join(", "))}</p>` : ""}
       ${conn ? `<div class="tconn">${conn}</div>` : ""}
-      ${hits.length ? `<div class="thits"><div class="label">In your notes</div>${hits.slice(0, 20).map(([, n]) => {
-        const t = S.texts.get(n.textId);
-        return `<div class="thit"><div class="meta">${t ? `<button class="src" data-open="${esc(n.textId)}">${esc(t.title)}</button>` : ""}${n.page ? `<span>${esc(loc(n.page))}</span>` : ""}${t && t.hasContent && Number.isInteger(n.at) ? `<button class="src" data-goto-note="${n.at}" data-tid="${esc(n.textId)}">Show in text</button>` : ""}</div><p>${esc(n.passage || n.gloss)}</p></div>`;
-      }).join("")}${hits.length > 20 ? `<p class="hint">Showing 20 of ${hits.length}. Search your notes for the rest.</p>` : ""}</div>` : ""}
+      ${termHitsHTML(hits)}
       <div class="noteacts">
         <button class="btn ghost" data-editterm="${esc(g.id)}">Edit</button>
         ${g.edited ? `<button class="btn ghost" data-restoreterm="${esc(g.id)}">Restore original</button>` : ""}
