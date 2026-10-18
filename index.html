@@ -212,6 +212,16 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .passage span { background: var(--mark); box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: 1px 2px; }
 .gloss { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 16px; }
 .gloss.after { padding-left: 12px; border-left: 2px solid var(--brass); }
+.later { display: grid; gap: 8px; }
+.fu { margin: 0; padding-left: 12px; border-left: 2px dotted var(--brass); white-space: pre-wrap; overflow-wrap: anywhere; font-size: 16px; }
+.fud { display: block; font: 500 12px/1.3 var(--f-ui); letter-spacing: 0.04em; color: var(--muted); margin-bottom: 1px; }
+.earlier > summary { cursor: pointer; font: 500 13px/1.3 var(--f-ui); color: var(--muted); padding: 2px 0; }
+.earlier .fu { border-left-style: solid; border-left-color: var(--rule); color: var(--muted); margin-top: 8px; }
+.fuedit { display: grid; gap: 8px; }
+#n-fus { display: grid; gap: 12px; }
+#n-fus:empty { display: none; }
+.fuedit .furow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: start; }
+.fuedit .furow .btn { padding: 4px 10px; }
 .noteacts { display: flex; gap: 2px; flex-wrap: wrap; margin-left: -8px; }
 .empty { color: var(--muted); padding: 16px 0; margin: 0; }
 .empty b { color: var(--ink); font-weight: 700; }
@@ -978,7 +988,9 @@ const VALID = {
     && (v.source === undefined || v.source === null || (isObj(v.source) && optStr(v.source.name) && optStr(v.source.kind) && optNum(v.source.pages))),
   notes: (v) => isObj(v) && isS(v.textId) && optStr(v.kind) && ["passage", "gloss", "original", "conclusion", "sectionId"].every((k) => optStr(v[k]))
     && (v.page === undefined || isS(v.page) || typeof v.page === "number") && optArr(v.links, isS) && optArr(v.premises, isS) && (v.at === undefined || Number.isInteger(v.at))
-    && (v.anchor === undefined || (isObj(v.anchor) && ["a", "ao", "b", "bo"].every((k) => Number.isInteger(v.anchor[k])) && optStr(v.anchor.pre) && optStr(v.anchor.suf))),
+    && (v.anchor === undefined || (isObj(v.anchor) && ["a", "ao", "b", "bo"].every((k) => Number.isInteger(v.anchor[k])) && optStr(v.anchor.pre) && optStr(v.anchor.suf)))
+    && optArr(v.followups, (x) => isObj(x) && isS(x.id) && Number.isFinite(x.at) && isS(x.x)) && optNum(v.wordAt)
+    && optArr(v.was, (x) => isObj(x) && Number.isFinite(x.at) && optStr(x.gloss) && optArr(x.premises, isS) && optStr(x.conclusion)),
   drafts: (v) => isObj(v) && optStr(v.title) && Array.isArray(v.items) && v.items.every((x) => isObj(x) && (x.t === "note" ? isS(x.id) : (x.t === "h" || x.t === "p") && isS(x.x))),
   compares: (v) => isObj(v) && optStr(v.title) && optStr(v.q) && optStr(v.verdict) && Array.isArray(v.cols) && v.cols.every((x) => isObj(x) && isS(x.id) && isS(x.label) && optStr(x.src))
     && Array.isArray(v.rows) && v.rows.every((x) => isObj(x) && isS(x.id) && isS(x.q)) && (v.cells === undefined || (isObj(v.cells) && Object.values(v.cells).every((c) => isObj(c) && optStr(c.x) && optArr(c.notes, isS)))),
@@ -1086,11 +1098,25 @@ async function showRestore(name, data, notice) {
     else if (b.id === "rs-theirs") confirmRestore(name, data, sig, true).catch((e) => toast(failMsg(e)));
   });
 }
+// A note's follow-ups and earlier wordings are only ever added to, so whichever copy of a note wins, those of the other copy are kept too.
+function withThoughts(base, other) {
+  if (!other || base === other) return base;
+  const fu = new Map((base.followups || []).map((f) => [f.id, f])), was = new Map((base.was || []).map((w) => [w.at + ":" + (w.gloss || ""), w]));
+  const n1 = fu.size, n2 = was.size;
+  for (const f of other.followups || []) if (!fu.has(f.id)) fu.set(f.id, f);
+  for (const w of other.was || []) { const k = w.at + ":" + (w.gloss || ""); if (!was.has(k)) was.set(k, w); }
+  if (fu.size === n1 && was.size === n2) return base;
+  const out = { ...base };
+  if (fu.size) out.followups = [...fu.values()].sort((a, b) => a.at - b.at);
+  if (was.size) out.was = [...was.values()].sort((a, b) => a.at - b.at);
+  return out;
+}
 async function applyRestore(plan, theirs) {
   const take = (st) => st === "new" || st === "older" || (theirs && (st === "newer" || st === "conflict"));
   const ops = [];
   for (const [store] of RESTORE_KINDS) for (const r of plan.rows[store]) {
-    if (take(r.st)) ops.push([store, r.id, store === "texts" ? withReading(r.v, r.cur) : r.v]);
+    if (take(r.st)) ops.push([store, r.id, store === "texts" ? withReading(r.v, r.cur) : store === "notes" ? withThoughts(r.v, r.cur) : r.v]);
+    else if (store === "notes" && r.cur) { const m = withThoughts(r.cur, r.v); if (m !== r.cur) ops.push([store, r.id, m, "merged"]); } // the backup's follow-ups join this device's note
     else if (store === "texts" && r.cur) { const m = withReading(r.cur, r.v); if (m !== r.cur) ops.push([store, r.id, m, "pos"]); } // a later reading position travels on its own
   }
   for (const r of plan.content) if (take(r.st) || !S.content.has(r.id) && !(idb && (await idbGet("content", r.id)))) ops.push(["content", r.id, r.v]);
@@ -1288,8 +1314,11 @@ function citeTextPanel(tid) {
 }
 /* ---------- tags and Markdown ---------- */
 const TAG_RE = /(^|[^\p{L}\p{N}_&/])#([\p{L}\p{N}][\p{L}\p{N}_-]*)/gu;
+// A note's follow-ups, as text; and its earlier wordings, for search only (their tags no longer collect it).
+const fuTexts = (n) => (n.followups || []).map((f) => f.x);
+const wasTexts = (n) => (n.was || []).flatMap((w) => [w.gloss, ...(w.premises || []), w.conclusion]).filter(Boolean);
 function tagsOf(n) {
-  const out = new Set(), src = [n.gloss, ...(n.premises || []), n.conclusion].filter(Boolean).join(" ");
+  const out = new Set(), src = [n.gloss, ...(n.premises || []), n.conclusion, ...fuTexts(n)].filter(Boolean).join(" ");
   for (const m of src.matchAll(TAG_RE)) out.add(m[2].toLowerCase());
   return [...out];
 }
@@ -1310,6 +1339,7 @@ function noteMarkdown(n, t, withSource) {
   } else if (n.original) out.push(`*${n.original}*`, "");
   if (n.premises && n.premises.length) { n.premises.forEach((x, k) => out.push(`${k + 1}. ${x}`)); out.push("", `**Therefore:** ${n.conclusion}`, ""); }
   if (n.gloss) out.push(n.gloss, "");
+  for (const f of n.followups || []) out.push(`*Follow-up, ${fmtDate(f.at)}.* ${f.x}`, "");
   return out;
 }
 function notesMarkdown(tid) {
@@ -2148,7 +2178,7 @@ function sortNotes(list, t) {
     return sa - sb || pnum(a.page) - pnum(b.page) || (a.at ?? 1e9) - (b.at ?? 1e9) || (a.createdAt || 0) - (b.createdAt || 0);
   });
 }
-const matches = (n, q) => !q || fold([n.passage, n.gloss, n.page, n.original, ...(n.premises || []), n.conclusion].join(" ")).includes(fold(q));
+const matches = (n, q) => !q || fold([n.passage, n.gloss, n.page, n.original, ...(n.premises || []), n.conclusion, ...fuTexts(n), ...wasTexts(n)].join(" ")).includes(fold(q));
 
 /* ---------- render: library and text ---------- */
 function render() {
@@ -2207,15 +2237,25 @@ function noteHTML(id, n, t, showSrc) {
     ${n.original ? `<p class="orig"><span class="olabel">Original</span> ${esc(n.original)}</p>` : ""}
     ${arg ? `<div class="argbox"><ol class="arg">${n.premises.map((p) => `<li>${withTags(esc(p))}</li>`).join("")}</ol><p class="argc"><span aria-hidden="true">∴</span><span class="sr">Therefore:</span> ${withTags(esc(n.conclusion))}</p></div>` : ""}
     ${n.gloss ? `<p class="gloss ${n.passage || arg ? "after" : ""}">${withTags(esc(n.gloss))}</p>` : ""}
+    ${laterHTML(n)}
     ${links.length ? `<div class="links"><span class="clabel">Linked notes</span>${links.map((x) => { const m = S.notes.get(x); return `<button class="lrow" data-jump="${esc(x)}"><b>${esc(noteWhere(m, m.textId === n.textId))}</b><span>${esc(noteSnippet(m, 80))}</span></button>`; }).join("")}</div>` : ""}
     <div class="noteacts">
       ${t?.hasContent && Number.isInteger(n.at) ? `<button class="btn ghost" data-goto-note="${n.at}" data-tid="${esc(n.textId)}">Show in text</button>` : ""}
       <button class="btn ghost" data-cite="${esc(id)}">Cite</button>
       <button class="btn ghost" data-todraft="${esc(id)}">Add to draft</button>
       ${OPENABLE.has(n.kind) ? `<button class="btn ghost" data-resolve="${esc(id)}">${n.resolved ? "Reopen" : "Mark resolved"}</button>` : ""}
+      <button class="btn ghost" data-followup="${esc(id)}">Follow up</button>
       <button class="btn ghost" data-editnote="${esc(id)}">Edit</button>
     </div>
   </article>`;
+}
+// Follow-ups, dated, under the note; earlier wordings of your note folded below them.
+const wasHTML = (w) => `<p class="fu"><span class="fud">Written ${esc(fmtDate(w.at))}</span>${w.premises && w.premises.length ? esc(w.premises.map((x, k) => `${k + 1}. ${x}`).join("\n") + (w.conclusion ? `\n∴ ${w.conclusion}` : "")) + (w.gloss ? "\n" : "") : ""}${esc(w.gloss || "")}</p>`;
+function laterHTML(n) {
+  const fu = n.followups || [], was = n.was || [];
+  if (!fu.length && !was.length) return "";
+  return `<div class="later">${fu.map((f) => `<p class="fu"><span class="fud">Follow-up, ${esc(fmtDate(f.at))}</span>${withTags(esc(f.x))}</p>`).join("")}
+    ${was.length ? `<details class="earlier"><summary>Earlier wording${was.length > 1 ? `s (${was.length})` : ""}</summary>${was.slice().reverse().map(wasHTML).join("")}</details>` : ""}</div>`;
 }
 
 // Books per shelf row: 3 on a phone, 4 once the screen is wide enough to keep covers readable.
@@ -2562,7 +2602,7 @@ function notePickerPanel(title, exclude, onDone) {
   const root = $("#sheetroot"), list = $("#pk-list", root), q = $("#pk-q", root);
   const draw = () => {
     const f = fold(q.value.trim());
-    const rows = all.filter(([, n]) => !f || fold([n.passage, n.gloss, n.original, n.conclusion, n.page, (S.texts.get(n.textId) || {}).title].join(" ")).includes(f)).slice(0, 150);
+    const rows = all.filter(([, n]) => !f || fold([n.passage, n.gloss, n.original, n.conclusion, n.page, (S.texts.get(n.textId) || {}).title, ...fuTexts(n)].join(" ")).includes(f)).slice(0, 150);
     list.innerHTML = rows.map(([id, n]) => `<button class="pkrow${chosen.has(id) ? " on" : ""}" data-keep="1" data-pick="${esc(id)}" aria-pressed="${chosen.has(id)}"><span class="pkbox" aria-hidden="true"></span><span class="pkt"><b>${esc(noteWhere(n, false))}</b><span>${esc(noteSnippet(n, 110))}</span></span></button>`).join("")
       || `<p class="empty">${all.length ? "No notes match." : exclude.size && S.notes.size ? "Every note is already in this draft." : "You have no notes to add yet."}</p>`;
   };
@@ -3021,7 +3061,7 @@ function cellSheet(cid, key) {
       box.innerHTML = linked.map((id) => rowHTML(id, S.notes.get(id), true)).join("");
       box.hidden = !linked.length;
       const f = fold(q.value.trim()), lim = !!(only && only.checked);
-      const hits = pool.filter(([id, n]) => !linked.includes(id) && (!lim || inSrc(n)) && (!f || fold([n.passage, n.gloss, n.original, n.conclusion, ...(n.premises || []), n.page, (S.texts.get(n.textId) || {}).title].join(" ")).includes(f)));
+      const hits = pool.filter(([id, n]) => !linked.includes(id) && (!lim || inSrc(n)) && (!f || fold([n.passage, n.gloss, n.original, n.conclusion, ...(n.premises || []), n.page, (S.texts.get(n.textId) || {}).title, ...fuTexts(n)].join(" ")).includes(f)));
       const msg = !S.notes.size ? "You have no notes yet." : f ? "No notes match."
         : lim && !pool.some(([, n]) => inSrc(n)) ? `No notes from ${srcLabel} yet. Untick the box to choose from all your notes.`
         : lim ? `Every note from ${srcLabel} is linked.` : "Every note is linked.";
@@ -3747,7 +3787,7 @@ function lookupTerms(q) {
 // Your notes, by the literal word (or its #tag); this book first.
 function lookupNotes(q, tid) {
   const re = wordRe(q), tag = q.replace(/\s+/g, "-");
-  const hits = [...S.notes.entries()].filter(([, n]) => re.test(fold([n.passage, n.gloss, n.original, ...(n.premises || []), n.conclusion].filter(Boolean).join(" \n "))) || tagsOf(n).includes(tag));
+  const hits = [...S.notes.entries()].filter(([, n]) => re.test(fold([n.passage, n.gloss, n.original, ...(n.premises || []), n.conclusion, ...fuTexts(n)].filter(Boolean).join(" \n "))) || tagsOf(n).includes(tag));
   const here = sortNotes(hits.filter(([, n]) => n.textId === tid), S.texts.get(tid));
   const there = hits.filter(([, n]) => n.textId !== tid).sort(([, a], [, b]) => ((S.texts.get(a.textId) || {}).title || "").localeCompare((S.texts.get(b.textId) || {}).title || "") || pnum(a.page) - pnum(b.page));
   return { here, there };
@@ -4200,12 +4240,15 @@ function fileSheet(tid) {
   (root) => wireFile(root, (r) => { parsed = r; }));
 }
 
-function noteSheet(nid, preset) {
+// Your note's earlier wording is kept when you change it, unless you wrote it within the last half hour (fixing what you just wrote).
+const REWORD_GRACE = 30 * 60 * 1000;
+function noteSheet(nid, preset, focus) {
   const n0 = nid ? S.notes.get(nid) : null, tid = n0 ? n0.textId : (preset && preset.textId) || S.textId;
   const t = S.texts.get(tid);
   const n = nid ? n0 : { kind: "passage", sectionId: S.sec !== "all" ? S.sec : "", ...(preset || {}) };
   if (!t || !n) return;
   let links = (n.links || []).filter((x) => x !== nid && S.notes.has(x));
+  let fus = (n.followups || []).slice(), was = (n.was || []).slice();
   openSheet(`<h2>${nid ? "Edit note" : preset ? "Save passage" : "Add a note"}</h2>
     <div class="row2">
       <div class="field"><label for="n-page">Page or locator</label><input id="n-page" name="page" value="${esc(n.page)}" placeholder="36, xii, A51/B75, §13" autocomplete="off"></div>
@@ -4218,14 +4261,18 @@ function noteSheet(nid, preset) {
       <div class="field"><label for="n-prem">Premises, one per line</label><textarea id="n-prem" name="premises" rows="4" placeholder="Each thing strives to persevere in its being.">${esc((n.premises || []).join("\n"))}</textarea></div>
       <div class="field"><label for="n-conc">Conclusion</label><input id="n-conc" name="conclusion" value="${esc(n.conclusion)}"></div>
     </div>
-    <div class="field"><label for="n-gloss">Your note</label><textarea id="n-gloss" name="gloss">${esc(n.gloss)}</textarea><span class="hint">Add #tags anywhere in your note to collect it with related notes, like #naturalization.</span></div>
+    <div class="field"><label for="n-gloss">Your note</label><textarea id="n-gloss" name="gloss">${esc(n.gloss)}</textarea><span class="hint">Add #tags anywhere in your note to collect it with related notes, like #naturalization.${nid ? " Changing it keeps what it said before, under Earlier wording." : ""}</span></div>
+    ${nid ? `<div class="field fuedit"><label for="n-fu">Follow up</label><div id="n-fus"></div>
+      <textarea id="n-fu" name="fu" rows="3" placeholder="What you think of it now, dated today"></textarea>
+      <div id="n-was"></div></div>` : ""}
     <div class="field"><span class="flabel">Linked notes</span><div class="nlinks" id="n-links"></div>
       <input id="n-linkq" type="search" placeholder="Search your notes to link one" autocomplete="off" aria-label="Search your notes to link one"><div class="nlinkres" id="n-linkres"></div></div>`,
   async (fd) => {
     const passage = fd.get("passage").trim(), gloss = fd.get("gloss").trim(), kind = fd.get("kind"), original = (fd.get("original") || "").trim();
     const premises = kind === "argument" ? (fd.get("premises") || "").split("\n").map((x) => x.trim()).filter(Boolean) : [];
     const conclusion = kind === "argument" ? (fd.get("conclusion") || "").trim() : "";
-    if (!passage && !gloss && !premises.length && !conclusion && !original) return "Write a passage, a note, or both.";
+    const fu = (fd.get("fu") || "").trim();
+    if (!passage && !gloss && !premises.length && !conclusion && !original && !fu && !fus.length) return "Write a passage, a note, or both.";
     if (kind === "argument" && (!premises.length || !conclusion)) return "An argument needs at least one premise and a conclusion.";
     const data = { ...(nid ? n : { createdAt: Date.now() }), textId: tid, page: fd.get("page").trim(), kind, sectionId: fd.get("sectionId") || "", passage, gloss, updatedAt: Date.now() };
     if (kind === "argument") { data.premises = premises; data.conclusion = conclusion; } else { delete data.premises; delete data.conclusion; }
@@ -4234,6 +4281,21 @@ function noteSheet(nid, preset) {
     if (keep.length) data.links = keep; else delete data.links;
     if (Number.isInteger(n.at)) data.at = n.at;
     if (n.anchor && !nid) data.anchor = n.anchor;
+    // what your note said before, when you change it later
+    if (nid) {
+      const words = (x) => JSON.stringify([x.gloss || "", x.premises || [], x.conclusion || ""]);
+      const now = Date.now(), wrote = n.wordAt || n.createdAt || 0;
+      if (words(data) !== words(n) && now - wrote > REWORD_GRACE) {
+        if (n.gloss || n.conclusion || (n.premises || []).length) {
+          const w = { at: wrote }; if (n.gloss) w.gloss = n.gloss; if ((n.premises || []).length) { w.premises = n.premises; w.conclusion = n.conclusion || ""; }
+          was.push(w);
+        }
+        data.wordAt = now; // the new wording's date, and the start of its own half hour
+      }
+      if (fu) fus.push({ id: gid(), at: now, x: fu });
+      if (fus.length) data.followups = fus; else delete data.followups;
+      if (was.length) data.was = was; else delete data.was;
+    }
     delete data.example;
     await put("notes", nid || gid(), data);
     const cur = S.texts.get(tid);
@@ -4251,7 +4313,7 @@ function noteSheet(nid, preset) {
     const search = () => {
       const f = fold(q.value.trim());
       if (f.length < 2) { res.innerHTML = ""; return; }
-      const hits = [...S.notes.entries()].filter(([x, m]) => x !== nid && !links.includes(x) && fold([m.passage, m.gloss, m.conclusion, m.original, m.page, (S.texts.get(m.textId) || {}).title].join(" ")).includes(f)).slice(0, 6);
+      const hits = [...S.notes.entries()].filter(([x, m]) => x !== nid && !links.includes(x) && fold([m.passage, m.gloss, m.conclusion, m.original, m.page, (S.texts.get(m.textId) || {}).title, ...fuTexts(m)].join(" ")).includes(f)).slice(0, 6);
       res.innerHTML = hits.map(([x, m]) => `<button type="button" class="lrow" data-link="${esc(x)}"><b>${esc(noteWhere(m, false))}</b><span>${esc(noteSnippet(m, 80))}</span></button>`).join("") || `<p class="hint">No notes match.</p>`;
     };
     q.addEventListener("input", search);
@@ -4264,6 +4326,19 @@ function noteSheet(nid, preset) {
     draw();
     if (preset) { const g = $("#n-gloss", root); if (g) g.focus(); }
     if (!nid) return;
+    // follow-ups and earlier wordings: removed here, gone when you save
+    const fuBox = $("#n-fus", root), wasBox = $("#n-was", root);
+    const drawFu = () => {
+      fuBox.innerHTML = fus.map((f) => `<div class="furow"><p class="fu"><span class="fud">${esc(fmtDate(f.at))}</span>${esc(f.x)}</p><button type="button" class="btn ghost" data-unfu="${esc(f.id)}" aria-label="Remove the follow-up of ${esc(fmtDate(f.at))}">✕</button></div>`).join("");
+      wasBox.innerHTML = was.length ? `<details class="earlier"><summary>Earlier wording${was.length > 1 ? `s (${was.length})` : ""}</summary>${was.map((w, k) => `<div class="furow">${wasHTML(w)}<button type="button" class="btn ghost" data-unwas="${k}" aria-label="Remove the wording of ${esc(fmtDate(w.at))}">✕</button></div>`).reverse().join("")}</details>` : "";
+    };
+    root.addEventListener("click", (e) => {
+      const b = e.target.closest("button"); if (!b) return;
+      if (b.dataset.unfu) { fus = fus.filter((f) => f.id !== b.dataset.unfu); drawFu(); }
+      else if (b.dataset.unwas) { was.splice(+b.dataset.unwas, 1); drawFu(); const d = $("#n-was details", root); if (d) d.open = true; }
+    });
+    drawFu();
+    if (focus === "fu") { const f = $("#n-fu", root); f.focus(); f.scrollIntoView({ block: "center" }); }
     const acts = $(".formacts", root);
     acts.insertAdjacentHTML("afterbegin", `<button type="button" class="btn ghost danger sheet-del" id="n-del">Delete note</button>`);
     const delBtn = $("#n-del", root);
@@ -6212,6 +6287,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "backup") return exportBackup().catch((e) => toast(failMsg(e)));
   if (b.id === "addnote") return noteSheet(null);
   if (b.dataset.editnote) return noteSheet(b.dataset.editnote);
+  if (b.dataset.followup) return noteSheet(b.dataset.followup, null, "fu");
   if (b.dataset.cite) return copyCitation(b.dataset.cite);
   if (b.dataset.jump) return jumpToNote(b.dataset.jump);
   if (b.dataset.todraft) return addToDraftPanel([b.dataset.todraft]);
