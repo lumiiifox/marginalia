@@ -40,6 +40,8 @@ jobs:
           python3 tests/pin.py
           python3 tests/followups.py
           python3 tests/classics.py
+      - name: Run Recently deleted tests (storage version 8)
+        run: python3 tests/trash.py
       # printed_page.py uses the PDF.js copy that pdf_import.py downloads into tests/.cache, so the importer tests go first
       - name: Run PDF importer tests
         run: python3 tests/pdf_import.py
