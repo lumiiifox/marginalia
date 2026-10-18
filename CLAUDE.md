@@ -51,6 +51,11 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - A book's menu (`bookMenu`, `moveBook`): holding a book on the shelf for half a second (`HOLD`, pointer events), right-clicking it or
   the keyboard's menu key opens Start/Continue reading, the book's page, Edit, Move to another shelf (its status, with Undo) and Delete
   (`confirmDelete(id)`, which stays on the shelf). The release after a hold is swallowed so it doesn't also open the book.
+- Arranging the shelf (`startDrag`, `dragTo`, `dropBook`, `shelfList`): after the hold lifts a book, moving the finger puts the menu away
+  and carries it (a mouse drags at once); `dragTo` marks the place beside the nearest book of the shelf under the finger, `edgeScroll`
+  scrolls near the screen's edges. Setting it down saves the shelf's order as each book's `rank` (another shelf also changes its status),
+  with Undo. `shelfList`: unranked books (new, or moved onto the shelf by status) first, newest first, then ranked ones in order; a shelf
+  never arranged is in order of use. `rank` is in `ACTIVITY`, so a restore compares records without it and keeps this device's order.
 - Classics (`CLASSICS`, `addClassics`, at start): public-domain books that come with the app, each added to the library once, queued,
   from `data/books/<id>.json` (`{ text, content }`, the shapes a backup holds) and its cover `<id>.jpg`. `mg-classics` lists those added,
   so a deleted classic stays deleted; one that can't be fetched is tried next time. Skipped in automated browsers unless a test passes
