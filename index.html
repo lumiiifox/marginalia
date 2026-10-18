@@ -795,7 +795,7 @@ const R = { tid: null, blocks: null, els: [], tops: [], dirty: true, pageAt: [],
 // result opened from outside) leaves your saved place alone until you go back to it, choose "Read from here", or read on.
 const SESS = new Map(); // per book, for this sitting only: the trail and the visit, so leaving the reader for a moment keeps them
 /* A pinned passage: one passage or note kept at the foot of the reader while you read elsewhere in the book or in another.
-   Kept in localStorage (mg-pin), outside the library and its backups: { tid, at, text, page, title, anchor?, noteId?, open }.
+   Kept in localStorage (mg-pin), outside the library, and carried in backups as `pin`: { tid, at, text, page, title, anchor?, noteId?, open }.
    It survives closing the app. A pinned note shows its current words; if it is deleted, or the book is, the words stay as
    pinned and the pin says so. Go to it finds the words again in the book, as notes are placed (placeNote). */
 let PIN = (() => { try { const p = JSON.parse(localStorage.getItem("mg-pin") || "null"); return p && typeof p.tid === "string" && typeof p.text === "string" ? p : null; } catch { return null; } })();
@@ -981,7 +981,7 @@ async function exportBackup() {
   const content = idb ? await idbAll("content") : S.content;
   const covers = {};
   for (const [id, b] of S.covers) { try { covers[id] = await blobToDataURL(b); } catch {} }
-  const data = { app: "marginalia", version: 5, exportedAt: new Date().toISOString(), texts: Object.fromEntries(S.texts), notes: Object.fromEntries(S.notes), content: Object.fromEntries(content), covers, terms: Object.fromEntries(S.terms), drafts: Object.fromEntries(S.drafts), compares: Object.fromEntries(S.compares) };
+  const data = { app: "marginalia", version: 5, exportedAt: new Date().toISOString(), ...(PIN ? { pin: PIN } : {}), texts: Object.fromEntries(S.texts), notes: Object.fromEntries(S.notes), content: Object.fromEntries(content), covers, terms: Object.fromEntries(S.terms), drafts: Object.fromEntries(S.drafts), compares: Object.fromEntries(S.compares) };
   const ok = await saveFile(`marginalia-backup-${stamp()}.json`, JSON.stringify(data), "application/json");
   if (ok) { try { localStorage.setItem("mg-backup", String(Date.now())); } catch {} render(); }
 }
@@ -1040,8 +1040,14 @@ function canon(v) {
   return JSON.stringify(v ?? null);
 }
 const stamp0 = (v) => v.updatedAt || v.createdAt || 0;
+// A backup's pinned passage, checked as a note's words are, since it is drawn the same way.
+const goodPin = (p) => isObj(p) && isS(p.tid) && goodId(p.tid) && isS(p.text) && p.text.length <= 20000 && ["page", "title", "noteId"].every((k) => optStr(p[k]))
+  && optInt(p.at) && (p.open === undefined || typeof p.open === "boolean")
+  && (p.anchor === undefined || (isObj(p.anchor) && ["a", "ao", "b", "bo"].every((k) => Number.isInteger(p.anchor[k])) && optStr(p.anchor.pre) && optStr(p.anchor.suf)));
 function planRestore(data) {
   const plan = { rows: {}, counts: {}, skipped: 0, content: [], covers: [], aliasSt: "" };
+  // The backup's pin comes back when this device has none pinned, or when you take the backup's version of everything.
+  if (data.pin !== undefined) { if (goodPin(data.pin)) plan.pin = PIN && canon({ ...data.pin, open: undefined }) === canon({ ...PIN, open: undefined }) ? null : data.pin; else plan.skipped++; }
   for (const [store] of RESTORE_KINDS) {
     const rows = [], c = { new: 0, same: 0, newer: 0, older: 0, conflict: 0 };
     for (const [id, v] of Object.entries((data[store] && typeof data[store] === "object" && data[store]) || {})) {
@@ -1074,7 +1080,7 @@ function restoreSummary(plan) {
     return total ? `<li><b>${total} ${total === 1 ? one : many}:</b> ${parts.join(", ")}</li>` : "";
   };
   const al = { new: "added", older: "updated from the backup", newer: "newer here (kept)", conflict: "changed in both (this device's kept)", same: "unchanged" }[plan.aliasSt];
-  return `<ul class="rs-list">${RESTORE_KINDS.map(([s, one, many]) => line(s, one, many)).join("")}${al ? `<li><b>Look-up aliases:</b> ${al}</li>` : ""}</ul>`;
+  return `<ul class="rs-list">${RESTORE_KINDS.map(([s, one, many]) => line(s, one, many)).join("")}${al ? `<li><b>Look-up aliases:</b> ${al}</li>` : ""}${plan.pin ? `<li><b>Pinned passage:</b> ${PIN ? "a different one is pinned here (kept)" : "pinned again"}</li>` : ""}</ul>`;
 }
 async function importBackup(file) {
   let data;
@@ -1101,6 +1107,7 @@ async function showRestore(name, data, notice) {
   let extra = 0;
   for (const r of plan.content) if (["new", "older"].includes(r.st) || (!S.content.has(r.id) && !(idb && (await idbGet("content", r.id).catch(() => null))))) extra++;
   for (const r of plan.covers) if (["new", "older"].includes(r.st) || !S.covers.has(r.id)) extra++;
+  if (plan.pin && !PIN) extra++;
   openPanel(`<h2>Restore this backup?</h2>
     ${notice ? `<p class="hint bad">${esc(notice)}</p>` : ""}
     <p class="hint">${esc(file.name)}${when ? `, saved ${esc(when)}` : ""}. Nothing changes until you choose below.</p>
@@ -1127,8 +1134,10 @@ async function applyRestore(plan, theirs) {
   }
   for (const r of plan.content) if (take(r.st) || !S.content.has(r.id) && !(idb && (await idbGet("content", r.id)))) ops.push(["content", r.id, r.v]);
   for (const r of plan.covers) if (take(r.st) || !S.covers.has(r.id)) { try { ops.push(["covers", r.id, await (await fetch(r.v)).blob()]); } catch {} }
-  if (!ops.length) { toast("Nothing to restore."); return; }
-  if (idb) await idbTx([...new Set(ops.map((o) => o[0]))], (st) => ops.forEach(([store, id, v]) => st(store).put(v, id)));
+  const pinBack = !!plan.pin && (!PIN || theirs);
+  if (!ops.length && !pinBack) { toast("Nothing to restore."); return; }
+  if (idb && ops.length) await idbTx([...new Set(ops.map((o) => o[0]))], (st) => ops.forEach(([store, id, v]) => st(store).put(v, id)));
+  if (pinBack) { PIN = { ...plan.pin, open: false }; savePin(); }
   ops.forEach(([store, id, v]) => (store === "content" ? S.content : mapFor(store)).set(id, v));
   render();
   const n = (store) => ops.filter((o) => o[0] === store && !o[3]).length;
