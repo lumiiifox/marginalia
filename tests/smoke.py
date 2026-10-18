@@ -52,6 +52,7 @@ async def fresh_page(browser, w, h):
     page.on("pageerror", lambda e: errs.append(str(e)))
     # Fonts and libraries fail to load without network; only script errors from the app count.
     page.on("console", lambda m: m.type == "error" and "Failed to load resource" not in m.text and errs.append(m.text))
+    await page.route("https://commons.wikimedia.org/**", lambda r: r.abort())  # entries' pictures: never fetched for real by the tests
     await page.goto(URL); await page.wait_for_function(READY)
     await page.evaluate(SEED)
     return page, errs
@@ -196,7 +197,7 @@ async def main():
         src = await page.evaluate("(() => { const a = document.querySelector('.sheet .tsrc a'); return [!!document.querySelector('.sheet .tmore'), a && a.href, a && a.target]; })()")
         check(src == [True, "https://plato.stanford.edu/entries/kant/", "_blank"], f"a thinker with a longer account shows it, with its source linked ({src})")
         check(not errs, "no script errors on the timeline" + (f": {errs}" if errs else ""))
-        # pictures: Wikimedia Commons stood in for (Kant's loads, every other one fails as it would offline)
+        # pictures: Wikimedia Commons stood in for (Kant's loads, every other one fails as it would offline); this route takes precedence over fresh_page's
         async def commons(route):
             if "Immanuel_Kant" in route.request.url:
                 await route.fulfill(status=200, content_type="image/svg+xml", body='<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500"><rect width="100%" height="100%" fill="#876"/></svg>')
