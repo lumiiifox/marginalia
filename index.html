@@ -275,6 +275,8 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .rnav-go input { width: 5.5em; padding: 6px 8px; font: 15px var(--f-ui); border: 1px solid var(--rule); border-radius: 8px; background: var(--field); color: var(--ink); }
 #reader:not([hidden]) .rnav:not([hidden]) ~ .rtrail { bottom: 132px; }
 #reader:has(#rnav:not([hidden])) .rfoot { visibility: hidden; }
+#reader.pinned.immersive .rfoot { bottom: calc(8px + var(--pin-h, 0px)); }
+#reader.pinned:not(.paged-reader) .book { padding-bottom: calc(160px + var(--pin-h, 0px)); }
 #reader.immersive .rtrail { padding-bottom: calc(26px + env(safe-area-inset-bottom, 0px)); } /* the page number stays readable below the buttons */
 .book { --fs: 20px; --lh: 1.62; --measure: 34em; max-width: var(--measure); margin: 0 auto; padding-inline: 20px; padding-block: 28px 160px; font: 400 var(--fs)/var(--lh) var(--f-text); overflow-wrap: break-word; }
 .book p { margin: 0; }
@@ -338,7 +340,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .segb.on { background: var(--leather); color: var(--leather-ink); border-color: transparent; }
 .rs-fs { min-width: 2.5em; text-align: center; font-size: 15px; }
 .rload { color: var(--muted); font: 15px var(--f-ui); text-indent: 0 !important; }
-.selbar { position: fixed; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; padding: 12px 16px calc(14px + env(safe-area-inset-bottom, 0px)); pointer-events: none; z-index: 10; }
+.selbar { position: fixed; left: 0; right: 0; bottom: var(--pin-h, 0px); display: flex; justify-content: center; padding: 12px 16px calc(14px + env(safe-area-inset-bottom, 0px)); pointer-events: none; z-index: 10; }
 .selbar .btn { pointer-events: auto; box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3); }
 .selbar { gap: 8px; flex-wrap: wrap; }
 .selbar .btn { padding-left: 12px; padding-right: 12px; }
@@ -409,11 +411,11 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .dctl .ricon:disabled { opacity: 0.35; }
 .dmissing { box-shadow: none; border: 1px dashed var(--rule); }
 /* reader: the way back, and looking things up */
-.rtrail { position: fixed; left: 0; right: 0; bottom: 0; z-index: 9; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; padding: 10px 16px calc(12px + env(safe-area-inset-bottom, 0px)); pointer-events: none; }
+.rtrail { position: fixed; left: 0; right: 0; bottom: var(--pin-h, 0px); z-index: 9; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; padding: 10px 16px calc(12px + env(safe-area-inset-bottom, 0px)); pointer-events: none; }
 .rtrail .btn { pointer-events: auto; background: var(--paper); color: var(--ink); border-color: var(--rule); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25); padding: 9px 14px; }
 .rtrail #rtback { font-weight: 600; box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3); }
 .rtrail #rthere { font-size: 14px; color: var(--muted); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); }
-#reader:not([hidden]) ~ .toast { bottom: calc(76px + env(safe-area-inset-bottom, 0px)); } /* above the reader's own buttons */
+#reader:not([hidden]) ~ .toast { bottom: calc(76px + env(safe-area-inset-bottom, 0px) + var(--pin-h, 0px)); } /* above the reader's own buttons */
 .toastbtn { margin-left: 12px; background: none; border: 0; padding: 2px 0; font: 700 15px var(--f-ui); color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .lk-q { overflow-wrap: anywhere; }
 .lk-sec { display: grid; gap: 8px; }
@@ -616,6 +618,22 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 @media (prefers-reduced-motion: reduce) { #reader.immersive .rbar { transition: none; } }
 #reader.immersive :is(#book, #flipbook) { padding-top: calc(22px + env(safe-area-inset-top, 0px)); padding-bottom: 34px; }
 .rfoot { display: none; }
+/* a pinned passage at the foot of the reader: one line when collapsed, its own scrolling when open; the page is cut above it */
+.pin { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: var(--paper); color: var(--ink); border-top: 1px solid var(--rule);
+  box-shadow: 0 -6px 18px rgba(30, 20, 10, 0.12); padding: 0 8px env(safe-area-inset-bottom, 0px) 14px; display: grid; }
+.pin[hidden] { display: none; }
+.pin-head { display: flex; align-items: center; gap: 4px; min-height: 46px; }
+.pin-tog { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 8px; background: none; border: 0; padding: 10px 0; color: inherit; text-align: left; font: 400 14px/1.3 var(--f-ui); }
+.pin-lab { font: 600 11.5px/1 var(--f-ui); letter-spacing: 0.06em; text-transform: uppercase; color: var(--leather); flex: none; }
+.pin-src { color: var(--muted); flex: none; max-width: 55%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pin-peek { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--f-text); font-size: 15px; }
+.pin.open .pin-src { max-width: none; flex: 1; }
+.pin-body { max-height: 34dvh; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; padding: 0 6px 8px 0; display: grid; gap: 8px; }
+.pin-q { margin: 0; padding-left: 12px; border-left: 2px solid var(--brass); font: 400 16.5px/1.55 var(--f-text); white-space: pre-wrap; }
+.pin-g { margin: 0; font: 400 15px/1.5 var(--f-text); color: var(--ink); }
+.pin-gone { margin: 0; font: italic 400 14px/1.4 var(--f-text); color: var(--muted); }
+.pin-acts { display: flex; gap: 8px; padding: 2px 0 10px; }
+.pin-acts .btn { padding: 7px 14px; }
 #reader.immersive .rfoot { display: block; position: fixed; left: 0; right: 0; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); text-align: center; font: 500 12px/1 var(--f-ui); letter-spacing: 0.04em; color: var(--muted); pointer-events: none; z-index: 1; }
 /* Scroll: paragraphs far off screen aren't laid out until they come near, so a long book opens and resizes quickly. */
 #reader:not(.paged-reader) #book > * { content-visibility: auto; contain-intrinsic-size: auto 4.8em; }
@@ -683,9 +701,10 @@ span.bhid { display: inline; }
     <div class="rnav-row"><label class="rnav-go">Go to page <input id="rnav-pg" inputmode="numeric" autocomplete="off" enterkeyhint="go" aria-label="Page number"></label><button class="btn ghost" id="rnav-pp" hidden>Printed page</button><button class="btn ghost" id="rnav-close">Done</button></div>
   </div>
   <div class="rtrail" id="rtrail" hidden></div>
+  <section class="pin" id="pin" aria-label="Pinned passage" hidden></section>
 </div>
 <div class="selcarry" id="selcarry" hidden></div>
-<div class="selbar" id="selbar" hidden><button class="btn" id="sellook" hidden>Look up</button><button class="btn" id="seledit">Edit</button><button class="btn" id="selhl">Highlight</button><button class="btn" id="selmore" hidden>Continue on next page</button><button class="btn primary" id="selsave">Add a note</button></div>
+<div class="selbar" id="selbar" hidden><button class="btn" id="sellook" hidden>Look up</button><button class="btn" id="seledit">Edit</button><button class="btn" id="selhl">Highlight</button><button class="btn" id="selmore" hidden>Continue on next page</button><button class="btn" id="selpin">Pin</button><button class="btn primary" id="selsave">Add a note</button></div>
 <div id="sheetroot"></div>
 <div class="toast" id="toast" role="status" hidden></div>
 
@@ -702,6 +721,12 @@ const R = { tid: null, blocks: null, els: [], tops: [], dirty: true, pageAt: [],
 // Where you are reading and where you are looking are kept apart: a jump (Find, Contents, a bookmark, a note or search
 // result opened from outside) leaves your saved place alone until you go back to it, choose "Read from here", or read on.
 const SESS = new Map(); // per book, for this sitting only: the trail and the visit, so leaving the reader for a moment keeps them
+/* A pinned passage: one passage or note kept at the foot of the reader while you read elsewhere in the book or in another.
+   Kept in localStorage (mg-pin), outside the library and its backups: { tid, at, text, page, title, anchor?, noteId?, open }.
+   It survives closing the app. A pinned note shows its current words; if it is deleted, or the book is, the words stay as
+   pinned and the pin says so. Go to it finds the words again in the book, as notes are placed (placeNote). */
+let PIN = (() => { try { const p = JSON.parse(localStorage.getItem("mg-pin") || "null"); return p && typeof p.tid === "string" && typeof p.text === "string" ? p : null; } catch { return null; } })();
+let PINH = 0; // the pin's height on screen, kept out of the pages
 let idb = null;
 
 const LIBS = {
@@ -2092,7 +2117,7 @@ function render() {
   const reading = S.screen === "reader";
   $("#main").hidden = reading;
   $("#reader").hidden = !reading;
-  syncThemeColor();
+  syncThemeColor(); drawPin();
   if (reading) { refreshMarks(); return; }
   wakeOff();
   $("#selbar").hidden = true;
@@ -4121,6 +4146,8 @@ function noteSheet(nid, preset) {
     const acts = $(".formacts", root);
     acts.insertAdjacentHTML("afterbegin", `<button type="button" class="btn ghost danger sheet-del" id="n-del">Delete note</button>`);
     const delBtn = $("#n-del", root);
+    delBtn.insertAdjacentHTML("afterend", `<button type="button" class="btn ghost" id="n-pin">Pin</button>`);
+    $("#n-pin", root).addEventListener("click", () => closeOverlay().then(() => pinNote(nid)));
     delBtn.addEventListener("click", () => arm(delBtn, async () => {
       try { await del("notes", nid); await closeOverlay(); toast("Note deleted."); }
       catch (e) { $("#err", root).textContent = failMsg(e); }
@@ -4446,7 +4473,7 @@ function layoutPages() {
   if (RS.flow !== "pages") { ["--page-w", "--page-h", "--col-w"].forEach((k) => book.style.removeProperty(k)); R.pageW = 0; return; }
   const w = Math.floor(reader.getBoundingClientRect().width || window.innerWidth);
   const barBottom = immersive() ? 0 : $(".rbar").getBoundingClientRect().bottom;
-  const h = Math.floor(window.innerHeight - Math.max(0, barBottom));
+  const h = Math.floor(window.innerHeight - Math.max(0, barBottom) - PINH); // the pinned passage, if any, sits below the page
   if (w < 200 || h < 200) return; // the reader isn't on screen yet
   book.style.setProperty("--page-w", w + "px");
   book.style.setProperty("--page-h", h + "px");
@@ -4914,6 +4941,7 @@ function settle() {
   if (Date.now() - R.landedAt >= 120000 && readY() - R.landedY >= 3 * window.innerHeight) readFromHere(true);
 }
 function drawTrail() {
+  drawPin();
   const bar = $("#rtrail"); if (!bar) return;
   const show = S.screen === "reader" && !!R.blocks && (R.visiting || FIND.on) && $("#selbar").hidden;
   bar.hidden = !show; if (!show) return;
@@ -5349,6 +5377,82 @@ function drawCarry() {
   if (C) el.innerHTML = `<span>Select where the passage ends. It starts on ${esc(pgLabel(C.i) || "the page before")}.</span><button class="btn" id="selcarryx">Cancel</button>`;
 }
 const endCarry = () => { R.selCarry = null; drawCarry(); };
+
+/* ---------- the pinned passage (PIN) ---------- */
+function savePin() { try { if (PIN) localStorage.setItem("mg-pin", JSON.stringify(PIN)); else localStorage.removeItem("mg-pin"); } catch {} }
+// Pinning replaces whatever was pinned before; the toast can undo either.
+function setPin(p) {
+  const before = PIN; PIN = p; savePin(); drawPin();
+  toast(!p ? "Unpinned." : before ? "Pinned. It replaces the passage pinned before." : "Pinned. It stays at the foot of the page while you read.", { label: "Undo", run: () => { PIN = before; savePin(); drawPin(); } });
+}
+function pinSel() {
+  const s = R.sel; if (!s || !R.tid) return;
+  $("#selbar").hidden = true; endCarry();
+  try { window.getSelection().removeAllRanges(); } catch {}
+  const t = S.texts.get(R.tid);
+  setPin({ tid: R.tid, at: s.i, text: s.text, page: s.page || "", title: t ? t.title || "" : "", ...(s.anchor ? { anchor: s.anchor } : {}), open: true });
+}
+function pinNote(nid) {
+  const n = S.notes.get(nid); if (!n) return;
+  const t = S.texts.get(n.textId);
+  setPin({ tid: n.textId, at: Number.isInteger(n.at) ? n.at : null, text: n.passage || n.gloss || n.conclusion || "", page: n.page || "", title: t ? t.title || "" : "", noteId: nid, ...(n.anchor ? { anchor: n.anchor } : {}), open: true });
+}
+// What the pin shows now, and anything that has changed since it was pinned.
+function pinState(p) {
+  const t = S.texts.get(p.tid), n = p.noteId ? S.notes.get(p.noteId) : null;
+  const passage = n ? n.passage || "" : p.text, gloss = n ? n.gloss || n.conclusion || "" : "";
+  const at = n && Number.isInteger(n.at) ? n.at : p.at, anchor = n ? n.anchor : p.anchor;
+  let gone = "";
+  if (!t) gone = "This book is no longer in your library. The words are kept as you pinned them.";
+  else if (p.noteId && !n) gone = "Its note was deleted. The words are kept as you pinned them.";
+  else if (passage && Number.isInteger(at) && R.tid === p.tid && R.blocks && !placeNote({ passage, at, anchor }, R.blocks)) gone = "These words have changed in the book since you pinned them.";
+  return { t, n, passage, gloss, at, anchor, gone, title: t ? t.title : p.title, page: n ? n.page || "" : p.page };
+}
+function drawPin() {
+  const el = $("#pin"); if (!el) return;
+  const show = !!PIN && S.screen === "reader"; // the slider, when open, lies over it, so the pages keep their size
+  el.hidden = !show; $("#reader").classList.toggle("pinned", show);
+  if (show) {
+    const p = PIN, s = pinState(p), where = [s.title, loc(s.page)].filter(Boolean).join(", ");
+    const peek = (s.passage || s.gloss).replace(/\s+/g, " ").trim();
+    const html = `<div class="pin-head"><button class="pin-tog" id="pin-tog" aria-expanded="${p.open ? "true" : "false"}"><span class="pin-lab">Pinned</span><span class="pin-src">${esc(where)}</span>${p.open ? "" : `<span class="pin-peek">${esc(peek)}</span>`}</button><button class="btn ghost ricon" id="pin-x" aria-label="Unpin">×</button></div>`
+      + (p.open ? `<div class="pin-body" id="pin-body" tabindex="0">${s.passage ? `<blockquote class="pin-q">${esc(s.passage)}</blockquote>` : ""}${s.gloss ? `<p class="pin-g">${esc(s.gloss)}</p>` : ""}${s.gone ? `<p class="pin-gone">${esc(s.gone)}</p>` : ""}</div>
+        <div class="pin-acts">${s.t && Number.isInteger(s.at) ? `<button class="btn" id="pin-go">Go to it</button>` : ""}<button class="btn ghost" id="pin-min">Collapse</button></div>` : "");
+    if (el.dataset.html !== html) { el.dataset.html = html; el.innerHTML = html; } // redrawn only when it changes, so its scroll stays put
+    el.classList.toggle("open", !!p.open);
+  }
+  pinSize();
+}
+// The pages are cut above the pin, so it never covers a line; changing its size keeps your place, as a resize does.
+function pinSize() {
+  const el = $("#pin"), h = el && !el.hidden ? Math.ceil(el.getBoundingClientRect().height) : 0;
+  if (h === PINH) return;
+  PINH = h; document.documentElement.style.setProperty("--pin-h", h + "px");
+  if (isPaged() && R.blocks && R.pageW) { const sp = R.pagedSpot || currentSpot(); layoutPages(); goToSpot(sp); }
+}
+// Go to it: the words found again in their book (moved by an edit, or changed); your place and a way back are kept.
+async function pinGo() {
+  const p = PIN, s = p && pinState(p); if (!s || !s.t || !Number.isInteger(s.at)) return;
+  let B = R.tid === p.tid && R.blocks ? R.blocks : null;
+  if (!B) { try { B = await loadContent(p.tid); } catch { B = null; } }
+  const A = B && s.passage ? placeNote({ passage: s.passage, at: s.at, anchor: s.anchor }, B) : null;
+  const i = A ? A.a : s.at;
+  PIN = { ...PIN, open: false }; savePin();
+  const changed = B && s.passage && !A ? "These words have changed in the book since you pinned them. This is where they were." : "";
+  if (S.screen === "reader" && R.tid === p.tid && R.blocks) { jumpTo(i); drawPin(); if (changed) toast(changed); return; }
+  const from = S.screen === "reader" ? S.texts.get(R.tid) : null;
+  go({ screen: "reader", textId: p.tid, at: i, flash: true });
+  if (from) toast(`${changed ? changed + " " : ""}Back returns you to ${from.title || "the book you were reading"}.`, { label: "Back", run: () => back() });
+  else if (changed) toast(changed);
+}
+$("#pin").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b || !PIN) return;
+  if (b.id === "pin-tog") { PIN = { ...PIN, open: !PIN.open }; savePin(); drawPin(); }
+  else if (b.id === "pin-min") { PIN = { ...PIN, open: false }; savePin(); drawPin(); }
+  else if (b.id === "pin-x") setPin(null);
+  else if (b.id === "pin-go") pinGo();
+});
+if (window.ResizeObserver) new ResizeObserver(() => pinSize()).observe($("#pin"));
 // How far into block k's text (in characters, italics markers left out) a point of the selection is.
 function offsetIn(k, node, off) {
   const el = R.els[k]; if (!el || !el.contains(node)) return null;
@@ -5608,7 +5712,7 @@ function saveSel() {
   endCarry();
   noteSheet(null, { passage: s.text, page: s.page, sectionId: s.sec, at: s.i, kind: "passage", ...(s.anchor ? { anchor: s.anchor } : {}) });
 }
-["mousedown", "pointerdown"].forEach((ev) => ["#selsave", "#selhl", "#sellook", "#seledit", "#selmore"].forEach((id) => $(id).addEventListener(ev, (e) => e.preventDefault())));
+["mousedown", "pointerdown"].forEach((ev) => ["#selsave", "#selhl", "#sellook", "#seledit", "#selmore", "#selpin"].forEach((id) => $(id).addEventListener(ev, (e) => e.preventDefault())));
 // The selected words, leaving out any of your notes shown in the margin.
 function selectionText(r) {
   const frag = r.cloneContents();
@@ -5771,6 +5875,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "rnav-pp") return printedPagePanel();
   if (b.id === "selsave") return saveSel();
   if (b.id === "selhl") return quickHighlight();
+  if (b.id === "selpin") return pinSel();
   if (b.id === "selmore") return carrySel();
   if (b.id === "selcarryx") return endCarry();
   if (b.id === "seledit") return structurePanel();
