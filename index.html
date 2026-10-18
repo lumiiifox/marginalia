@@ -2267,7 +2267,9 @@ function libraryView() {
     const th = allTerms().filter((g) => g.t.toLowerCase().includes(ql)).slice(0, 6);
     const fq = fold(S.q.trim()), who = fq.length > 2 ? THINKERS.filter((p) => thinkerMatches(p, fq)).slice(0, 6) : [];
     const anyLoaded = [...S.texts.values()].some((t) => t.hasContent);
-    body = `${anyLoaded && S.q.trim().length > 1 ? `<button class="btn searchbooks" id="searchbooks">Search inside your books for “${esc(S.q.trim())}”</button>` : ""}${th.length || who.length ? `<section class="group"><div class="label">In the glossary</div>${who.length ? `<div class="chips">${thinkerChips(who.map((p) => p.id))}</div>` : ""}${th.length ? `<div class="termhits">${th.map((g) => `<button class="termhit" data-term="${esc(g.id)}"><b>${esc(g.t)}</b><span>${esc(g.d.length > 150 ? g.d.slice(0, 150) + "…" : g.d)}</span></button>`).join("")}</div>` : ""}</section>` : ""}
+    const fb = fold(S.q.trim()), bk = texts.filter(([, t]) => fold(`${t.title} ${t.author || ""}`).includes(fb)).slice(0, 8);
+    const booksHit = bk.length ? `<section class="group"><div class="label">Your books<span class="cnt">${bk.length}</span></div><div class="termhits">${bk.map(([id, t]) => `<button class="termhit" data-open="${esc(id)}"><b>${esc(t.title)}</b><span>${[t.author, `${STATUS[t.status || "reading"] || ""} shelf`].filter(Boolean).map(esc).join(" · ")}</span></button>`).join("")}</div></section>` : "";
+    body = `${booksHit}${anyLoaded && S.q.trim().length > 1 ? `<button class="btn searchbooks" id="searchbooks">Search inside your books for “${esc(S.q.trim())}”</button>` : ""}${th.length || who.length ? `<section class="group"><div class="label">In the glossary</div>${who.length ? `<div class="chips">${thinkerChips(who.map((p) => p.id))}</div>` : ""}${th.length ? `<div class="termhits">${th.map((g) => `<button class="termhit" data-term="${esc(g.id)}"><b>${esc(g.t)}</b><span>${esc(g.d.length > 150 ? g.d.slice(0, 150) + "…" : g.d)}</span></button>`).join("")}</div>` : ""}</section>` : ""}
       <section class="group"><div class="label">${hits.length ? `${hits.length} note${hits.length === 1 ? "" : "s"} matching “${esc(S.q)}”` : `Notes matching “${esc(S.q)}”`}</div>
       <div class="noteslist">${hits.map(([id, n]) => noteHTML(id, n, S.texts.get(n.textId), true)).join("") || `<p class="empty">No notes match. Search looks through passages, your notes and page numbers.</p>`}</div></section>`;
   } else if (!texts.length && S.mode !== "pending") {
@@ -2297,7 +2299,7 @@ function libraryView() {
   const searching = !!S.q.trim();
   return `<header class="top"><h1 class="mark-leaf">${LEAF_SVG}<span class="sr">Marginalia</span></h1></header>
     ${banner()}
-    <input class="search" id="q" type="search" placeholder="Search your notes and the glossary" value="${esc(S.q)}" aria-label="Search your notes and the glossary">
+    <input class="search" id="q" type="search" placeholder="Search books, notes, glossary" value="${esc(S.q)}" aria-label="Search your books, notes and the glossary">
     ${searching ? body : `
     <section class="home-sec">
       <div class="sec-head"><div><h2>Bookshelf</h2><div class="sub">${S.texts.size} text${S.texts.size === 1 ? "" : "s"}, ${S.notes.size} note${S.notes.size === 1 ? "" : "s"}</div></div><button class="btn primary" id="addtext">Add text</button></div>
