@@ -37,6 +37,8 @@ BOOKS = [
          text=dict(title="Euthyphro, Apology, Crito, Phaedo", author="Plato", edition="trans. Benjamin Jowett", publisher="Standard Ebooks", year="2022", orig="")),
     dict(id="classic-aristotle-ethics", repo="aristotle_nicomachean-ethics_f-h-peters", files=None, skip={"foreword"},
          text=dict(title="Nicomachean Ethics", author="Aristotle", edition="trans. F. H. Peters", publisher="Standard Ebooks", year="2018", orig="")),
+    dict(id="classic-hobbes-leviathan", repo="thomas-hobbes_leviathan", files=None, parts=True,
+         text=dict(title="Leviathan", author="Thomas Hobbes", edition="", publisher="Standard Ebooks", year="2024", orig="1651")),
     dict(id="classic-descartes-meditations", repo="rene-descartes_philosophical-works_john-veitch", files=["discourse-on-the-method", "meditations-on-the-first-philosophy"], flatten=True, partOf="Discourse", cover=dict(title="Discourse on the Method and Meditations on First Philosophy", size=25),
          text=dict(title="Discourse on the Method and Meditations on First Philosophy", author="René Descartes", edition="trans. John Veitch", publisher="Standard Ebooks", year="2025", orig="1637–41")),
     dict(id="classic-hume-enquiry", repo="david-hume_an-enquiry-concerning-human-understanding", files=None,
@@ -44,10 +46,14 @@ BOOKS = [
     dict(id="classic-kant-groundwork", text_source=dict(repo="https://github.com/GITenberg/Fundamental-Principles-of-the-Metaphysic-of-Morals_5682", file="5682.txt", convert="kant_groundwork"),
          cover=dict(title="Fundamental Principles of the Metaphysic of Morals", size=25, art="stars"),
          text=dict(title="Fundamental Principles of the Metaphysic of Morals", author="Immanuel Kant", edition="trans. Thomas Kingsmill Abbott", orig="1785")),
+    dict(id="classic-rousseau-social-contract", repo="jean-jacques-rousseau_the-social-contract_g-d-h-cole", files=None,
+         text=dict(title="The Social Contract", author="Jean-Jacques Rousseau", edition="trans. G. D. H. Cole", publisher="Standard Ebooks", year="2024", orig="1762")),
     dict(id="classic-wollstonecraft-vindication", repo="mary-wollstonecraft_a-vindication-of-the-rights-of-woman", files=None,
          text=dict(title="A Vindication of the Rights of Woman", author="Mary Wollstonecraft", edition="", publisher="Standard Ebooks", year="2024", orig="1792")),
     dict(id="classic-marx-engels-manifesto", repo="karl-marx_friedrich-engels_the-communist-manifesto_samuel-moore", files=None,
          text=dict(title="The Communist Manifesto", author="Karl Marx and Friedrich Engels", edition="trans. Samuel Moore", publisher="Standard Ebooks", year="2017", orig="1848")),
+    dict(id="classic-cooper-voice", repo="anna-julia-cooper_a-voice-from-the-south", files=None, parts=True,
+         text=dict(title="A Voice from the South", author="Anna Julia Cooper", edition="", publisher="Standard Ebooks", year="2024", orig="1892")),
     dict(id="classic-du-bois-souls", repo="w-e-b-du-bois_the-souls-of-black-folk", files=None,
          text=dict(title="The Souls of Black Folk", author="W. E. B. Du Bois", edition="", publisher="Standard Ebooks", year="2021", orig="1903")),
     dict(id="classic-nietzsche-genealogy", repo="friedrich-nietzsche_the-genealogy-of-morals_horace-b-samuel", files=None,
@@ -55,7 +61,7 @@ BOOKS = [
 ]
 SKIP = {"titlepage", "imprint", "halftitlepage", "colophon", "uncopyright", "endnotes", "loi"}
 
-BUILD = r"""async ({ id, files, endnotes, flatten }) => {
+BUILD = r"""async ({ id, files, endnotes, flatten, parts }) => {
   const XH = "http://www.w3.org/1999/xhtml", P = new DOMParser();
   const parse = (s) => P.parseFromString(s.replace(/\u2060/g, ""), "application/xhtml+xml");
   const et = (el) => (el && el.getAttribute && el.getAttribute("epub:type")) || "";
@@ -117,6 +123,14 @@ BUILD = r"""async ({ id, files, endnotes, flatten }) => {
       if (cap && cap.textContent.trim()) { const p = d.createElementNS(XH, "p"); while (cap.firstChild) p.appendChild(cap.firstChild); f.replaceWith(p); } else f.remove();
     }
   }
+  // a book in parts whose chapters are the units (Hobbes, Cooper): each part's title above, its chapters as the chapters
+  if (parts) docs.forEach((d, k) => {
+    for (const h of [...d.getElementsByTagName("*")].filter((el) => /^h[2-5]$/.test(el.localName))) {
+      const lv = +h.localName[1], to = parts[k] ? (lv === 2 ? 1 : lv) : lv >= 3 ? lv - 1 : lv;
+      if (to === lv) continue;
+      const n = d.createElementNS(XH, "h" + to); while (h.firstChild) n.appendChild(h.firstChild); h.replaceWith(n);
+    }
+  });
   // works collected in one book (Descartes): each work's title above its parts, and the parts as the chapters
   if (flatten) for (const d of docs) {
     const hs = [...d.getElementsByTagName("*")].filter((el) => /^h[1-6]$/.test(el.localName));
@@ -147,7 +161,10 @@ BUILD = r"""async ({ id, files, endnotes, flatten }) => {
   }
   const blocks = [];
   for (const d of all) { const b = d.getElementsByTagName("body")[0]; if (b) domToBlocks(b, blocks); }
-  const fin = finalize(blocks), secs = makeSections(fin);
+  const fin = finalize(blocks);
+  // in parts, the chapters (now the second level) are the chapters, though there are fewer than three parts above them
+  if (parts) fin.forEach((b, k) => { if (b.k === "h" && (b.l || 2) === 2) b.s = "c" + k; });
+  const secs = makeSections(fin);
   // stable section ids, so a rebuilt book keeps them
   const ids = new Map(secs.map((s, k) => [s.id, `${id}-s${k + 1}`]));
   fin.forEach((b) => { if (b.s && ids.has(b.s)) b.s = ids.get(b.s); });
@@ -275,9 +292,11 @@ async def main(only):
                     files = [(text_dir / f"{n}.xhtml").read_text(encoding="utf-8") for n in names]
                     en = text_dir / "endnotes.xhtml"; endnotes = en.read_text(encoding="utf-8") if en.exists() else None
                 else:
+                    names = []
                     ts = bk["text_source"]
                     files, endnotes = [CONVERT[ts["convert"]]((TEXTS / bk["id"] / ts["file"]).read_text(encoding="latin-1"))], None
-                r = await page.evaluate(BUILD, {"id": bk["id"], "flatten": bool(bk.get("flatten")), "files": files, "endnotes": endnotes})
+                r = await page.evaluate(BUILD, {"id": bk["id"], "flatten": bool(bk.get("flatten")), "files": files, "endnotes": endnotes,
+                                                "parts": [n.startswith("part-") for n in names] if bk.get("parts") else None})
                 for s in r["sections"]:
                     if bk.get("partOf") and re.fullmatch(r"Part [IVX]+", s["label"]): s["label"] = f'{bk["partOf"]}, {s["label"]}'
                 rec = {**{k: v for k, v in bk["text"].items() if v}, "lang": r["lang"], "sections": r["sections"],

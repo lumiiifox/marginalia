@@ -6254,8 +6254,9 @@ document.addEventListener("input", (e) => {
    content }, built by tools/build_classics.py) and its cover from data/books/<id>.jpg, on the Queued shelf. mg-classics
    lists those added, so a classic you delete stays deleted; one that can't be fetched (offline) is tried again next time.
    Tests run in an automated browser, which is left out unless a test asks (addClassics(true)). */
-const CLASSICS = ["classic-plato-socrates", "classic-aristotle-ethics", "classic-descartes-meditations", "classic-hume-enquiry", "classic-kant-groundwork", "classic-wollstonecraft-vindication",
-  "classic-marx-engels-manifesto", "classic-nietzsche-genealogy", "classic-du-bois-souls"]; // in historical order, the shelf's order
+const CLASSICS = ["classic-plato-socrates", "classic-aristotle-ethics", "classic-descartes-meditations", "classic-hobbes-leviathan", "classic-hume-enquiry",
+  "classic-rousseau-social-contract", "classic-kant-groundwork", "classic-wollstonecraft-vindication", "classic-marx-engels-manifesto", "classic-nietzsche-genealogy",
+  "classic-cooper-voice", "classic-du-bois-souls"]; // in historical order, the shelf's order
 let classicsBusy = false;
 async function addClassics(force) {
   if (classicsBusy || !idb || S.mode !== "ready" || (navigator.webdriver && !force)) return [];
