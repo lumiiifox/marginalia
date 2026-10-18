@@ -645,6 +645,8 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .tl-bar.approx { opacity: 0.4; }
 .tl-bar.open { background: linear-gradient(to right, var(--leather) 70%, transparent); }
 .thinkrow .td { grid-column: 1 / -1; font-size: 14px; color: var(--muted); }
+.trashrow b { color: var(--ink); }
+.trashacts { grid-column: 1 / -1; display: flex; gap: 8px; margin-top: 6px; }
 .authlink { justify-self: start; margin-top: 2px; }
 .sheet .tconn { padding-top: 2px; }
 
@@ -788,7 +790,7 @@ span.bhid { display: inline; }
 const KINDS = { passage: "Passage", gloss: "Gloss", question: "Question", objection: "Objection", argument: "Argument" };
 const STATUS = { reading: "Reading", queued: "Queued", finished: "Finished" };
 const I0 = "\u0001", I1 = "\u0002";
-const S = { texts: new Map(), notes: new Map(), content: new Map(), covers: new Map(), terms: new Map(), drafts: new Map(), compares: new Map(), cmpId: null, cmpGaps: false, bOpen: new Set(), shelfOpen: new Set(), screen: "library", textId: null, sec: "all", kind: "all", q: "", tq: "", gq: "", gArea: "all", gOpen: new Set(), mode: "pending" };
+const S = { texts: new Map(), notes: new Map(), content: new Map(), covers: new Map(), terms: new Map(), drafts: new Map(), compares: new Map(), trash: new Map(), cmpId: null, cmpGaps: false, bOpen: new Set(), shelfOpen: new Set(), screen: "library", textId: null, sec: "all", kind: "all", q: "", tq: "", gq: "", gArea: "all", gOpen: new Set(), mode: "pending" };
 const R = { tid: null, blocks: null, els: [], tops: [], dirty: true, pageAt: [], secAt: [], sig: new Map(), saved: -1, sel: null,
   visiting: false, home: null, trail: [], landed: 0, landedAt: 0, landedY: 0 };
 // Where you are reading and where you are looking are kept apart: a jump (Find, Contents, a bookmark, a note or search
@@ -836,10 +838,10 @@ async function need(key, ok, msg) {
 }
 
 /* ---------- store: IndexedDB on this device ---------- */
-const STORES = ["texts", "notes", "content", "covers", "terms", "drafts", "compares", "files"]; // files: original PDFs, never loaded at start or backed up
+const STORES = ["texts", "notes", "content", "covers", "terms", "drafts", "compares", "files", "trash"]; // files: original PDFs; trash: Recently deleted. Neither is loaded at start or backed up
 function idbOpen() {
   return new Promise((res, rej) => {
-    const r = indexedDB.open("marginalia", 7); // 5 added the drafts store, 6 the comparisons store, 7 the original PDFs
+    const r = indexedDB.open("marginalia", 8); // 5 added the drafts store, 6 the comparisons store, 7 the original PDFs, 8 Recently deleted
     r.onupgradeneeded = () => { const d = r.result; STORES.forEach((n) => { if (!d.objectStoreNames.contains(n)) d.createObjectStore(n); }); };
     r.onsuccess = () => {
       const d = r.result;
@@ -887,6 +889,52 @@ async function del(col, id) {
   if (idb) await idbDo(col, (s) => s.delete(id));
   mapFor(col).delete(id);
   if (col !== "content") render();
+}
+/* Recently deleted: what you delete is kept for TRASH_DAYS in the "trash" store, as one entry per deletion:
+   { at, kind: "text" | "note" | "draft" | "comparison", title, items: [[store, id, record], ...] }. A book's entry holds the
+   book, its notes, its text, its cover and its PDF, so Restore puts them all back at once. S.trash keeps a short summary of
+   each entry for the list; the records themselves are read only when restored. Without storage (private browsing) a
+   deletion is final, as before. */
+const TRASH_DAYS = 30, DAY = 86400000;
+const trashSum = (e) => {
+  const note = e.kind === "note" && e.items[0] ? e.items[0][2] : null;
+  return { at: e.at, kind: e.kind, title: e.title || "", notes: e.items.filter(([st]) => st === "notes").length, snip: note ? noteSnippet(note, 120) : "", book: note ? note.textId : "" };
+};
+async function loadTrash() {
+  if (!idb) return;
+  const all = await idbAll("trash"), old = [...all].filter(([, e]) => !e || !Number.isFinite(e.at) || Date.now() - e.at > TRASH_DAYS * DAY).map(([k]) => k);
+  if (old.length) await idbDo("trash", (st) => old.forEach((k) => st.delete(k)));
+  S.trash = new Map([...all].filter(([k]) => !old.includes(k)).map(([k, e]) => [k, trashSum(e)]));
+}
+// Removes the records and files them together in Recently deleted, in one transaction. Returns the entry's id (null without storage).
+async function trashAndRemove(kind, title, items) {
+  let tid = null;
+  if (idb) {
+    tid = "tr-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8);
+    const e = { at: Date.now(), kind, title, items: items.filter(([, , v]) => v !== undefined && v !== null) };
+    await idbTx([...new Set(["trash", ...items.map((x) => x[0])])], (st) => { items.forEach(([store, id]) => st(store).delete(id)); st("trash").put(e, tid); });
+    S.trash.set(tid, trashSum(e));
+  }
+  items.forEach(([store, id]) => { if (store !== "files") mapFor(store).delete(id); });
+  return tid;
+}
+const undoTrash = (tid) => (tid ? { label: "Undo", run: () => restoreTrash(tid).catch((e) => toast(failMsg(e))) } : undefined);
+async function restoreTrash(tid) {
+  const e = idb && (await idbGet("trash", tid));
+  if (!e) { S.trash.delete(tid); render(); toast("That's no longer in Recently deleted."); return false; }
+  const book = e.items.find(([st]) => st === "texts");
+  if (e.items.some(([st, , v]) => st === "notes" && !S.texts.has(v.textId) && !(book && book[1] === v.textId))) {
+    toast("This note's book was deleted too. Restore the book first."); return false;
+  }
+  await idbTx([...new Set(["trash", ...e.items.map((x) => x[0])])], (st) => { e.items.forEach(([store, id, v]) => st(store).put(v, id)); st("trash").delete(tid); });
+  e.items.forEach(([store, id, v]) => { if (store !== "files") mapFor(store).set(id, v); });
+  S.trash.delete(tid); render();
+  toast(e.kind === "text" ? `“${e.title}” is back on its shelf${e.items.some(([st]) => st === "notes") ? ", with its notes" : ""}.` : e.kind === "note" ? "Note restored." : e.kind === "draft" ? "Draft restored." : "Comparison restored.");
+  return true;
+}
+async function purgeTrash(ids) {
+  if (idb) await idbDo("trash", (st) => ids.forEach((k) => st.delete(k)));
+  ids.forEach((k) => S.trash.delete(k)); render();
 }
 function failMsg(e) {
   if (e && (e.name === "QuotaExceededError" || /quota/i.test(e.message || ""))) return "This device is out of storage space for the app. Delete a text or free up space, then try again.";
@@ -2195,7 +2243,7 @@ function render() {
   if (reading) { refreshMarks(); return; }
   wakeOff();
   $("#selbar").hidden = true;
-  const views = { text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, concord: concordView, compares: comparesView, compare: compareView };
+  const views = { text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, concord: concordView, compares: comparesView, compare: compareView };
   $("#main").innerHTML = (views[S.screen] || libraryView)();
 }
 
@@ -2325,9 +2373,23 @@ function backupView() {
       <span class="btn filebtn">Restore<input id="restore" type="file" aria-label="Restore from a backup file"></span>
       <button class="btn" id="exportbtn">Export</button>
     </div>
+    ${S.trash.size ? `<button class="btn ghost" id="opentrash" style="padding-left:0">Recently deleted (${S.trash.size})</button>` : ""}
   </footer>`;
 }
 
+function trashView() {
+  const list = [...S.trash.entries()].sort(([, a], [, b]) => b.at - a.at);
+  const what = (e) => e.kind === "text" ? `“${esc(e.title)}”${e.notes ? ` and its ${e.notes === 1 ? "note" : `${e.notes} notes`}` : ""}`
+    : e.kind === "note" ? `A note${e.title ? ` in “${esc(e.title)}”` : ""}` : `${e.kind === "draft" ? "Draft" : "Comparison"} “${esc(e.title)}”`;
+  const left = (e) => { const d = Math.max(1, Math.ceil((e.at + TRASH_DAYS * DAY - Date.now()) / DAY)); return `${d} day${d === 1 ? "" : "s"} left`; };
+  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>${banner()}
+    <header class="gl-head"><div><h1>Recently deleted</h1><div class="sub">${list.length} item${list.length === 1 ? "" : "s"}</div></div>${list.length > 1 ? `<button class="btn ghost danger" id="trash-empty">Empty</button>` : ""}</header>
+    <p class="hint">Books, notes, drafts and comparisons you delete stay here for ${TRASH_DAYS} days, then go for good. Backups don't include them.</p>
+    ${list.length ? `<div class="gl-list">${list.map(([id, e]) => `<div class="thinkrow trashrow"><b>${what(e)}</b><span class="ty">${esc(fmtDate(e.at))}</span>
+      ${e.snip ? `<span class="td">${esc(e.snip)}</span>` : ""}<span class="td">${left(e)}</span>
+      <div class="trashacts"><button class="btn" data-untrash="${esc(id)}">Restore</button><button class="btn ghost danger" data-purge="${esc(id)}">Delete now</button></div></div>`).join("")}</div>`
+      : `<p class="empty"><b>Nothing here.</b> What you delete waits here for ${TRASH_DAYS} days before it goes.</p>`}`;
+}
 function textView() {
   const id = S.textId, t = S.texts.get(id), secs = t.sections || [];
   const all = notesFor(id);
@@ -2636,7 +2698,7 @@ function draftMore(id) {
     else if (b.id === "dm-copy") copyDraft(id);
     else if (b.id === "dm-delete") openPanel(`<h2>Delete “${esc(d.title)}”?</h2><div class="menu"><button class="menuitem danger" id="dm-delete-yes">Delete this draft</button></div>`, async (b2) => {
       if (b2.id !== "dm-delete-yes") return;
-      await back(); await del("drafts", id); toast("Draft deleted.");
+      await back(); const tid = await trashAndRemove("draft", d.title || "Untitled draft", [["drafts", id, S.drafts.get(id)]]); render(); toast("Draft deleted.", undoTrash(tid));
     });
   });
 }
@@ -3098,7 +3160,7 @@ function cmpMore(cid) {
     else if (b.id === "cm-delete") openPanel(`<h2>Delete “${esc(c.title)}”?</h2><div class="menu"><button class="menuitem danger" id="cm-delete-yes">Delete this comparison</button></div>`, async (b2) => {
       if (b2.id !== "cm-delete-yes") return;
       await back();
-      try { await del("compares", cid); toast("Comparison deleted."); } catch (e) { toast(failMsg(e)); }
+      try { const tid = await trashAndRemove("comparison", c.title || "", [["compares", cid, S.compares.get(cid)]]); render(); toast("Comparison deleted.", undoTrash(tid)); } catch (e) { toast(failMsg(e)); }
     });
   });
 }
@@ -4312,7 +4374,7 @@ function noteSheet(nid, preset) {
     delBtn.insertAdjacentHTML("afterend", `<button type="button" class="btn ghost" id="n-pin">Pin</button>`);
     $("#n-pin", root).addEventListener("click", () => closeOverlay().then(() => pinNote(nid)));
     delBtn.addEventListener("click", () => arm(delBtn, async () => {
-      try { await del("notes", nid); await closeOverlay(); toast("Note deleted."); }
+      try { const tid = await trashAndRemove("note", (S.texts.get(n.textId) || {}).title || "", [["notes", nid, S.notes.get(nid)]]); render(); await closeOverlay(); toast("Note deleted.", undoTrash(tid)); }
       catch (e) { $("#err", root).textContent = failMsg(e); }
     }));
   });
@@ -4361,20 +4423,22 @@ function exportNotes() {
 }
 // The book, its notes, its text and its cover go together or not at all. Drafts and comparisons only point at notes.
 async function deleteText(id) {
-  const nids = notesFor(id).map(([nid]) => nid);
-  if (idb) await idbTx(["notes", "content", "covers", "texts", "files"], (st) => { nids.forEach((n) => st("notes").delete(n)); st("content").delete(id); st("covers").delete(id); st("texts").delete(id); st("files").delete(id); });
+  const t = S.texts.get(id), items = [["texts", id, t], ...notesFor(id).map(([nid, n]) => ["notes", nid, n])];
+  for (const st of ["content", "covers", "files"]) items.push([st, id, idb ? await idbGet(st, id) : st === "files" ? undefined : mapFor(st).get(id)]);
+  const tid = await trashAndRemove("text", t ? t.title : "", items);
   if (PDFV.tid === id) closePdf();
-  nids.forEach((n) => S.notes.delete(n)); S.content.delete(id); S.covers.delete(id); S.texts.delete(id); SESS.delete(id);
+  SESS.delete(id);
+  return tid;
 }
 function confirmDelete(id = S.textId) {
   const t = S.texts.get(id); if (!t) return;
   const n = notesFor(id).length;
   openPanel(`<h2>Delete “${esc(t.title)}”?</h2>
-    <p class="hint">This removes the text${n ? `, its ${n} note${n === 1 ? "" : "s"}` : ""} and its cover from this device. Restoring a backup brings them back.</p>
+    <p class="hint">This moves the text${n ? `, its ${n} note${n === 1 ? "" : "s"}` : ""} and its cover to Recently deleted, at the foot of the home screen. They stay there ${TRASH_DAYS} days.</p>
     <div class="menu"><button class="menuitem danger" id="m-delete-yes">Delete this text</button></div>`, async (b) => {
     if (b.id !== "m-delete-yes") return;
     if (S.screen === "text" && S.textId === id) await back(); // its page goes with it; from the shelf, stay there
-    try { await deleteText(id); toast("Deleted."); } catch (err) { toast(`Couldn't delete “${t.title}”, so nothing was removed. ${err && err.name === "QuotaExceededError" ? failMsg(err) : "Try again."}`); }
+    try { const tid = await deleteText(id); toast("Deleted.", undoTrash(tid)); } catch (err) { toast(`Couldn't delete “${t.title}”, so nothing was removed. ${err && err.name === "QuotaExceededError" ? failMsg(err) : "Try again."}`); }
     render();
   });
 }
@@ -6278,6 +6342,10 @@ document.addEventListener("click", (e) => {
   if (b.dataset.kind) { S.kind = b.dataset.kind; return render(); }
   // drafts
   if (b.id === "opendrafts") return go({ screen: "drafts" });
+  if (b.id === "opentrash") return go({ screen: "trash" });
+  if (b.dataset.untrash) return restoreTrash(b.dataset.untrash).catch((e) => toast(failMsg(e)));
+  if (b.dataset.purge) return arm(b, () => purgeTrash([b.dataset.purge]).catch((e) => toast(failMsg(e))));
+  if (b.id === "trash-empty") return arm(b, () => purgeTrash([...S.trash.keys()]).catch((e) => toast(failMsg(e))));
   if (b.id === "newdraft") return draftTitleSheet(null);
   if (b.dataset.draft) return go({ screen: "draft", draftId: b.dataset.draft });
   if (b.id === "d-addnotes") { const d = S.drafts.get(S.draftId); if (!d) return; const have = new Set((d.items || []).filter((x) => x.t === "note").map((x) => x.id)); const id = S.draftId; return notePickerPanel("Add notes", have, (ids) => addNotesToDraft(id, ids).then((n) => toast(`Added ${n} note${n === 1 ? "" : "s"}.`))); }
@@ -6380,6 +6448,7 @@ render();
     S.terms = await idbAll("terms");
     S.drafts = await idbAll("drafts");
     S.compares = await idbAll("compares");
+    await loadTrash().catch(() => {});
     S.mode = "ready";
   } catch { idb = null; S.mode = "local"; }
   render();
