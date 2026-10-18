@@ -39,7 +39,7 @@
   --plank: #6e4527; --plank-hi: #8a5a35; --plank-edge: #573519; --plank-edge-lo: #3f2512;
   --shelf-shade: rgba(43, 25, 12, 0.35);
   --paper-shadow: 0 1px 0 rgba(80, 55, 30, 0.08), 0 10px 22px -16px rgba(80, 55, 30, 0.6);
-  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.005 0.16' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.42 0 0 0 0 0.27 0 0 0 0 0.13 0.48 0 0 0 -0.19'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.005 0.16' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.42 0 0 0 0 0.27 0 0 0 0 0.13 0.28 0 0 0 -0.11'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
   --grain-plank: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='60'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.008 0.42' numOctaves='3' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.08 0 0 0 0 0.03 1 0 0 0 -0.32'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
   --f-text: "Alegreya", "Iowan Old Style", Georgia, serif;
   --f-ui: "Alegreya Sans", "Gill Sans", "Segoe UI", system-ui, sans-serif;
@@ -139,7 +139,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .dropmark { position: fixed; z-index: 41; box-shadow: 0 0 0 2px var(--paper); width: 4px; border-radius: 2px; background: var(--leather); pointer-events: none; }
 .dropmark[hidden] { display: none; }
 @media (prefers-reduced-motion: reduce) { .shelfbook .cover { transition: none; } }
-.sb-title { font: 500 15px/1.25 var(--f-text); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; hyphens: auto; }
+.sb-title { font: 500 15px/1.25 var(--f-text); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; hyphens: auto; }
 .sb-meta { font-size: 13px; line-height: 1.3; color: var(--muted); }
 .shelfmore { justify-self: start; margin-top: 2px; }
 .sb-prog { display: block; height: 3px; border-radius: 2px; background: color-mix(in srgb, var(--rule) 70%, transparent); overflow: hidden; }
