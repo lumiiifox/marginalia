@@ -48,6 +48,9 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - A chapter's end (`chapterEndCheck`, from `updatePg`): reading on from within about a page of a chapter's end into the next asks
   for a summary (`summarySheet`, saved in `t.summaries`), once a visit and only without one; `RS.sum` "off" stops it.
 - Your words (`lookedUp`, `wordsPanel`; glossary): the `mg-dict` cache of Look up, one usable sense each; quiz mode "words".
+- A book's menu (`bookMenu`, `moveBook`): holding a book on the shelf for half a second (`HOLD`, pointer events), right-clicking it or
+  the keyboard's menu key opens Start/Continue reading, the book's page, Edit, Move to another shelf (its status, with Undo) and Delete
+  (`confirmDelete(id)`, which stays on the shelf). The release after a hold is swallowed so it doesn't also open the book.
 - Classics (`CLASSICS`, `addClassics`, at start): public-domain books that come with the app, each added to the library once, queued,
   from `data/books/<id>.json` (`{ text, content }`, the shapes a backup holds) and its cover `<id>.jpg`. `mg-classics` lists those added,
   so a deleted classic stays deleted; one that can't be fetched is tried next time. Skipped in automated browsers unless a test passes

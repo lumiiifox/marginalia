@@ -128,6 +128,12 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
   background: var(--grain-plank), linear-gradient(var(--plank-edge), var(--plank-edge-lo)); background-size: 600px 60px, auto; background-position: 0 -24px, 0 0; }
 .shelfbook { position: relative; z-index: 1; min-width: 0; display: grid; gap: 3px; align-content: start; text-align: left; background: none; border: 0; padding: 0; color: inherit; }
 .shelfbook .cover { margin-bottom: 25px; }
+/* holding a book opens its menu: no text selection, image menu or drag on the way, and the cover sinks a little while held */
+.shelfbook { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+.shelfbook img { -webkit-user-drag: none; }
+.shelfbook .cover { transition: transform 0.45s ease-out; }
+.shelfbook.held .cover { transform: scale(0.95); }
+@media (prefers-reduced-motion: reduce) { .shelfbook .cover { transition: none; } }
 .sb-title { font: 500 15px/1.25 var(--f-text); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; hyphens: auto; }
 .sb-meta { font-size: 13px; line-height: 1.3; color: var(--muted); }
 .shelfmore { justify-self: start; margin-top: 2px; }
@@ -4294,18 +4300,78 @@ async function deleteText(id) {
   if (PDFV.tid === id) closePdf();
   nids.forEach((n) => S.notes.delete(n)); S.content.delete(id); S.covers.delete(id); S.texts.delete(id); SESS.delete(id);
 }
-function confirmDelete() {
-  const id = S.textId, t = S.texts.get(id); if (!t) return;
+function confirmDelete(id = S.textId) {
+  const t = S.texts.get(id); if (!t) return;
   const n = notesFor(id).length;
   openPanel(`<h2>Delete “${esc(t.title)}”?</h2>
     <p class="hint">This removes the text${n ? `, its ${n} note${n === 1 ? "" : "s"}` : ""} and its cover from this device. Restoring a backup brings them back.</p>
     <div class="menu"><button class="menuitem danger" id="m-delete-yes">Delete this text</button></div>`, async (b) => {
     if (b.id !== "m-delete-yes") return;
-    await back();
+    if (S.screen === "text" && S.textId === id) await back(); // its page goes with it; from the shelf, stay there
     try { await deleteText(id); toast("Deleted."); } catch (err) { toast(`Couldn't delete “${t.title}”, so nothing was removed. ${err && err.name === "QuotaExceededError" ? failMsg(err) : "Try again."}`); }
     render();
   });
 }
+
+/* ---------- a book's menu: hold a book on the shelf, or right-click it ---------- */
+function bookMenu(id) {
+  const t = S.texts.get(id); if (!t) return;
+  const cur = t.status || "reading";
+  openPanel(`<h2>${esc(t.title)}</h2>
+    <p class="hint">${t.author ? `${esc(t.author)} · ` : ""}On the ${esc(STATUS[cur] || cur)} shelf</p>
+    <div class="menu">
+      ${t.hasContent ? `<button class="menuitem" id="bm-read">${t.pos > 0 ? "Continue reading" : "Start reading"}</button>` : ""}
+      <button class="menuitem" id="bm-open">Open the book's page</button>
+      <button class="menuitem" id="bm-edit">Edit details and cover</button>
+      ${Object.entries(STATUS).filter(([k]) => k !== cur).map(([k, v]) => `<button class="menuitem" data-move="${k}">Move to ${esc(v)}</button>`).join("")}
+      <button class="menuitem danger" id="bm-delete">Delete this text</button>
+    </div>`, (b) => {
+    if (b.id === "bm-read") go({ screen: "reader", textId: id });
+    else if (b.id === "bm-open") go({ screen: "text", textId: id });
+    else if (b.id === "bm-edit") textSheet(id);
+    else if (b.dataset.move) moveBook(id, b.dataset.move);
+    else if (b.id === "bm-delete") confirmDelete(id);
+  });
+}
+// Another shelf: the book goes to the front of it, as when its status is changed on its page; Undo puts it back.
+async function moveBook(id, st) {
+  const t = S.texts.get(id); if (!t || !STATUS[st]) return;
+  const was = { status: t.status, updatedAt: t.updatedAt };
+  try {
+    await put("texts", id, { ...t, status: st, updatedAt: Date.now() });
+    toast(`Moved to ${STATUS[st]}.`, { label: "Undo", run: () => {
+      const now = S.texts.get(id); if (!now) return;
+      const rec = { ...now, updatedAt: was.updatedAt }; if (was.status) rec.status = was.status; else delete rec.status;
+      put("texts", id, rec).catch((e) => toast(failMsg(e)));
+    } });
+  } catch (e) { toast(failMsg(e)); }
+}
+// Holding: a finger kept still on a book for half a second opens its menu (a move, a scroll or lifting it sooner is a
+// tap or a scroll as before). The release that follows doesn't count as a tap. A mouse uses right-click, a keyboard the
+// menu key; both arrive as contextmenu, which is also what Android sends for a long press, so it never opens twice.
+const HOLD = { timer: 0, id: null, x: 0, y: 0, el: null, fired: false, swallow: false };
+const endHold = () => { clearTimeout(HOLD.timer); HOLD.timer = 0; if (HOLD.el) HOLD.el.classList.remove("held"); HOLD.el = null; };
+document.addEventListener("pointerdown", (e) => {
+  HOLD.swallow = false; HOLD.fired = false; endHold();
+  const b = e.target.closest && e.target.closest(".shelfbook[data-open]");
+  if (!b || e.pointerType === "mouse" || !e.isPrimary) return;
+  Object.assign(HOLD, { id: e.pointerId, x: e.clientX, y: e.clientY, el: b });
+  b.classList.add("held");
+  HOLD.timer = setTimeout(() => { const id = b.dataset.open; endHold(); HOLD.fired = true; try { navigator.vibrate && navigator.vibrate(12); } catch {} bookMenu(id); }, 500);
+}, true);
+document.addEventListener("pointermove", (e) => { if (HOLD.timer && e.pointerId === HOLD.id && Math.hypot(e.clientX - HOLD.x, e.clientY - HOLD.y) > 10) endHold(); }, true);
+document.addEventListener("pointercancel", endHold, true);
+document.addEventListener("pointerup", (e) => {
+  endHold();
+  if (HOLD.fired && e.pointerId === HOLD.id) { HOLD.swallow = true; setTimeout(() => { HOLD.swallow = false; }, 400); }
+}, true);
+document.addEventListener("click", (e) => { if (HOLD.swallow) { HOLD.swallow = false; e.preventDefault(); e.stopPropagation(); } }, true);
+document.addEventListener("contextmenu", (e) => {
+  const b = e.target.closest && e.target.closest(".shelfbook[data-open]"); if (!b) return;
+  e.preventDefault(); endHold();
+  if (NAV.overlay) return; // the hold has already opened it
+  HOLD.fired = true; bookMenu(b.dataset.open);
+});
 
 /* ---------- reader ---------- */
 // Reading settings live on this device only.
