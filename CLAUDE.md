@@ -37,6 +37,8 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - Data: reference content lives in `data/`, loaded by plain `<script>` tags before the app script: `data/glossary.js` (`GLOSSARY`),
   `data/thinkers.js` (`THINKERS`), `data/branches.js` (`BRANCHES`). Edit entries there, not in index.html. `LINKS`, `THINKER` and `BRANCH`
   are built from them in index.html. A new data file needs its `<script>` tag in index.html and its path in `SHELL` in `sw.js`.
+  An entry's optional `img` (`figHTML`) is a public-domain Wikimedia Commons file, loaded from Commons when online and not cached
+  by the service worker; a picture that fails to load removes its figure, so offline the entry simply shows without it.
 - Quiz yourself (`quizPanel`, from the glossary and the home screen's glossary section): questions made from `allTerms()` definitions
   (the term blanked out by `maskTerm`) and `THINKERS` key works (`worksOf` leaves out works by other authors); nothing is stored.
 - Thinkers' timeline (Thinkers → Timeline, `S.tl`; a period on the home screen opens it there): `lifeSpan` reads a thinker's dates line (BCE, centuries, "b. 1929"),

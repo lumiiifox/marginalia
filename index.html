@@ -538,6 +538,12 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .termhit span { font-size: 14px; color: var(--muted); }
 /* glossary connections */
 .tmore { margin: 0; font: 400 16px/1.6 var(--f-text); color: var(--ink); }
+/* an entry's picture: portraits kept small, wide works (paintings, plans) at full width */
+.efig { margin: 2px 0; display: grid; gap: 6px; justify-items: start; }
+.efig img { display: block; max-width: 100%; max-height: 240px; width: auto; height: auto; border-radius: 6px; border: 1px solid var(--rule); background: var(--field); }
+.efig.wide img { max-height: 420px; }
+.efig figcaption { font: 400 13px/1.4 var(--f-ui); color: var(--muted); }
+.efig figcaption a { color: var(--link); text-underline-offset: 3px; }
 .srclist { margin: 4px 0 0; padding-left: 1.2em; }
 .tconn { display: grid; gap: 10px; }
 .crow { display: grid; gap: 6px; }
@@ -3200,10 +3206,11 @@ function termHTML(g, tmap) {
     <summary><span class="tm">${esc(g.t)}</span><span class="ta">${esc(AREAS[g.a] || "")}${hits.length ? `, ${hits.length} in your notes` : ""}${g.edited ? ", edited by you" : ""}</span></summary>
     <div class="tbody">
       <p class="tdef">${esc(g.d)}</p>
+      ${figHTML(g.img)}
       ${parasHTML(g.x)}
       ${g.s ? `<p class="tsrc">${esc(g.s)}</p>` : ""}
       ${thinkerSources(g)}
-      ${g.w ? `<p class="tsrc">Associated with ${esc(g.w)}</p>` : ""}
+      ${g.w ?`<p class="tsrc">Associated with ${esc(g.w)}</p>` : ""}
       ${aliasesOf(g.id).length ? `<p class="tsrc">Look up also finds: ${esc(aliasesOf(g.id).join(", "))}</p>` : ""}
       ${conn ? `<div class="tconn">${conn}</div>` : ""}
       ${hits.length ? `<div class="thits"><div class="label">In your notes</div>${hits.slice(0, 20).map(([, n]) => {
@@ -3359,8 +3366,17 @@ function authorThinkers(author) {
     return !/\s|\(/.test(sn) && sn.length > 3 && new RegExp(`(^|[^\\p{L}])${reEsc(sn)}($|[^\\p{L}])`, "u").test(a);
   });
 }
+// An entry's picture (img: { file, alt, cap, wide }): a public-domain file on Wikimedia Commons, loaded only when online
+// and only once the entry is open. A picture that can't load removes its figure (the error listener below).
+const COMMONS = "https://commons.wikimedia.org/wiki/";
+function figHTML(im) {
+  if (!im || !im.file) return "";
+  const f = encodeURIComponent(im.file.replace(/ /g, "_"));
+  return `<figure class="efig${im.wide ? " wide" : ""}"><img loading="lazy" decoding="async" src="${COMMONS}Special:FilePath/${f}?width=${im.wide ? 960 : 500}" alt="${esc(im.alt || "")}"><figcaption>${esc(im.cap || "")} <a href="${COMMONS}File:${f}" target="_blank" rel="noopener">Wikimedia Commons</a></figcaption></figure>`;
+}
+document.addEventListener("error", (e) => { const fig = e.target instanceof HTMLImageElement && e.target.closest(".efig"); if (fig) fig.remove(); }, true);
 // A longer account as paragraphs (separated by a blank line).
-const parasHTML = (x) => (x ? String(x).split(/\n\s*\n/).map((para) => para.trim()).filter(Boolean).map((para) => `<p class="tmore">${esc(para)}</p>`).join("") : "");
+const parasHTML =(x) => (x ? String(x).split(/\n\s*\n/).map((para) => para.trim()).filter(Boolean).map((para) => `<p class="tmore">${esc(para)}</p>`).join("") : "");
 // An entry's sources (thinker, term or branch): the main one (src, srcName), then any further ones for particular claims (srcs: [{ src, srcName }]).
 function thinkerSources(p) {
   const all = [p.src ? { src: p.src, srcName: p.srcName } : null, ...(Array.isArray(p.srcs) ? p.srcs : [])].filter((x) => x && x.src);
@@ -3377,6 +3393,7 @@ function thinkerPanel(id) {
   const shelf = [...S.texts.entries()].filter(([, t]) => authorThinkers(t.author).some((x) => x.id === id));
   openPanel(`<h2>${esc(p.n)}</h2>
     ${p.y ? `<p class="hint">${esc(p.y)}</p>` : ""}
+    ${figHTML(p.img)}
     <p class="tdef">${esc(p.d)}</p>
     ${parasHTML(p.x)}
     ${thinkerSources(p)}
@@ -3737,6 +3754,7 @@ function branchesView() {
       <summary><span class="tm">${esc(b.n)}</span><span class="ta">${terms.length} glossary term${terms.length === 1 ? "" : "s"}, ${b.p.length} thinker${b.p.length === 1 ? "" : "s"}</span></summary>
       <div class="tbody">
         <p class="tdef">${esc(b.d)}</p>
+        ${figHTML(b.img)}
         ${parasHTML(b.x)}${thinkerSources(b)}
         <div class="label">Questions it asks</div>
         <ul class="bq-list">${b.q.map((q) => `<li>${esc(q)}</li>`).join("")}</ul>

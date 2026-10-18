@@ -196,6 +196,22 @@ async def main():
         src = await page.evaluate("(() => { const a = document.querySelector('.sheet .tsrc a'); return [!!document.querySelector('.sheet .tmore'), a && a.href, a && a.target]; })()")
         check(src == [True, "https://plato.stanford.edu/entries/kant/", "_blank"], f"a thinker with a longer account shows it, with its source linked ({src})")
         check(not errs, "no script errors on the timeline" + (f": {errs}" if errs else ""))
+        # pictures: Wikimedia Commons stood in for (Kant's loads, every other one fails as it would offline)
+        async def commons(route):
+            if "Immanuel_Kant" in route.request.url:
+                await route.fulfill(status=200, content_type="image/svg+xml", body='<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500"><rect width="100%" height="100%" fill="#876"/></svg>')
+            else: await route.abort()
+        await page.route("https://commons.wikimedia.org/**", commons)
+        imgs = await page.evaluate("""() => [...GLOSSARY, ...THINKERS, ...BRANCHES].filter((e) => e.img).map((e) => [e.id, !!(e.img.file && e.img.alt && /via$/.test(e.img.cap))])""")
+        check(len(imgs) >= 10 and all(ok for _, ok in imgs), f"{len(imgs)} entries have a picture with a file, a description and a credit ({[i for i, ok in imgs if not ok]})")
+        n = len(errs)
+        await page.evaluate("document.querySelector('#pclose') && document.querySelector('#pclose').click(); thinkerPanel('kant')")
+        await page.wait_for_function("document.querySelector('.sheet .efig img') && document.querySelector('.sheet .efig img').complete")
+        fig = await page.evaluate("(() => { const f = document.querySelector('.sheet .efig'), a = f.querySelector('figcaption a'); return [f.querySelector('img').naturalWidth, f.querySelector('img').alt, a.href, a.target]; })()")
+        check(fig == [400, "Painted portrait of Immanuel Kant", "https://commons.wikimedia.org/wiki/File:Immanuel_Kant_-_Gemaelde_1.jpg", "_blank"], f"Kant's card shows his portrait, credited and linked to its Commons page ({fig})")
+        await page.evaluate("document.querySelector('#pclose').click(); thinkerPanel('hegel')"); await page.wait_for_timeout(600)
+        gone = await page.evaluate("[!!document.querySelector('.sheet .tdef'), document.querySelectorAll('.sheet .efig').length]")
+        check(gone == [True, 0] and len(errs) == n, f"a picture that can't load leaves the card without a gap or an error ({gone}, {errs[n:]})")
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

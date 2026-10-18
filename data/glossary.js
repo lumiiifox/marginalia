@@ -1,5 +1,6 @@
 // Marginalia reference data, loaded by index.html before the app. Plain JavaScript so it keeps its comments.
 // General reference definitions, each with a longer note (x), its thinkers (p), related terms (r), contrasting terms (vs) and branches or traditions (br).
+// Some have a picture, img: { file: a public-domain file on Wikimedia Commons, alt, cap: its credit (the app adds the link), wide: true to show it full width }.
 // Spinoza is quoted from Curley's translation. Deleuze and Guattari's concepts are left for you to add from their texts.
 const GLOSSARY = [
   // Metaphysics
@@ -411,6 +412,7 @@ const GLOSSARY = [
     d: "The experience of something overwhelmingly vast or powerful (a storm, the night sky, a mountain range) that exceeds our capacity to take it in, mixing pain with a kind of elevation.",
     x: "Longinus wrote on sublimity in style. Burke separated the sublime, rooted in terror and astonishment, from the beautiful, rooted in love and pleasure. Kant distinguished the mathematical sublime (magnitude) from the dynamical sublime (power), and argued that the feeling discloses our rational vocation, which nature's might cannot touch. Lyotard made the sublime central to his account of the avant-garde and the postmodern.",
     s: "Burke, A Philosophical Enquiry into the Origin of Our Ideas of the Sublime and Beautiful (1757); Kant, Critique of the Power of Judgment (1790), §§23–29; Lyotard, “The Sublime and the Avant-Garde” (1984)",
+    img: { file: "Caspar_David_Friedrich_-_Wanderer_above_the_Sea_of_Fog.jpeg", alt: "Painting of a man seen from behind, standing on a rocky peak above a sea of fog", cap: "Caspar David Friedrich, Wanderer above the Sea of Fog, about 1818 (Hamburger Kunsthalle). Public domain, via" },
     p: ["burke", "kant", "lyotard"], r: ["aura", "transcendence", "transgression"], br: ["aesthetics"], k: ["sublime", "sublimity"], src: "https://plato.stanford.edu/entries/burke/", srcName: "Stanford Encyclopedia of Philosophy, “Edmund Burke”" },
   { id: "ontological-argument", t: "Ontological argument", a: "aes",
     d: "An argument for God's existence from the concept of God alone. Anselm: God is that than which nothing greater can be conceived; a being that exists in reality is greater than one that exists only in the mind; so God exists in reality.",
@@ -638,6 +640,7 @@ const GLOSSARY = [
     d: "Foucault's name for disciplinary power modeled on Bentham's Panopticon, a prison in which inmates can always be seen and never know when they are watched, so that they come to watch themselves.",
     x: "Bentham published the Panopticon design in 1791: a central tower surrounded by a ring of cells. For Foucault it is a diagram of power that can be applied in schools, hospitals, factories and barracks: visibility is a trap, and the permanent possibility of observation produces self-discipline. Later writers describe digital surveillance as working through data collection, prediction and sorting, as in Shoshana Zuboff's account of surveillance capitalism.",
     s: "Bentham, Panopticon; or, The Inspection-House (1791); Foucault, Discipline and Punish (1975), Part 3, ch. 3",
+    img: { file: "Panopticon_Willey_Reveley_1791.png", alt: "Plan and section of Bentham’s circular panopticon prison", cap: "Elevation, section and plan of Bentham’s panopticon, drawn by Willey Reveley, 1791. Public domain, via", wide: true },
     p: ["bentham", "foucault"], r: ["power-knowledge", "governmentality", "biopower"], br: ["poststructuralism", "political"], k: ["panopticism", "panopticon", "panoptic", "surveillance"], src: "https://plato.stanford.edu/entries/bentham/", srcName: "Stanford Encyclopedia of Philosophy, “Jeremy Bentham”" },
   { id: "subjectivation", t: "Subjectivation", a: "crit",
     d: "The process by which individuals are formed as subjects. The French assujettissement also means subjection.",
@@ -901,6 +904,7 @@ const GLOSSARY = [
     d: "Camus: the confrontation between the human demand for meaning and clarity and a world that remains silent. The absurd lies in their encounter.",
     x: "The Myth of Sisyphus (1942) begins with the question of suicide and rejects both physical suicide and “philosophical suicide”, the leap into hope or transcendence by which Kierkegaard, Shestov and Jaspers evaded the absurd. The right response is revolt, freedom and passion: to live lucidly without appeal. Sisyphus, condemned to push his rock forever, is the absurd hero, and one must imagine him happy. The Rebel (1951) turned the analysis toward politics and the limits of revolt.",
     s: "Camus, The Myth of Sisyphus (1942); The Rebel (1951)",
+    img: { file: "Punishment_sisyph.jpg", alt: "Titian’s painting of Sisyphus carrying a great rock", cap: "Titian, Sisyphus, 1548–49 (Museo del Prado, Madrid). Public domain, via" },
     p: ["camus", "kierkegaard", "nagel"], r: ["existentialism", "bad-faith"], br: ["phenomenology"], k: ["the absurd", "absurd", "absurdism", "Sisyphus"], src: "https://plato.stanford.edu/entries/camus/", srcName: "Stanford Encyclopedia of Philosophy, “Albert Camus”" },
   { id: "face", t: "The face (of the other)", a: "phen",
     d: "Levinas: the other person as encountered in their vulnerability and alterity, which addresses me with an ethical demand, “you shall not kill”, before I can comprehend or master them.",
