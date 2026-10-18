@@ -18,7 +18,8 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 ## Rules
 
 - **Never commit books, PDFs or backup files.** The repository is public. The one exception is `data/books/`: the classics that come
-  with the app, built by `tools/build_classics.py` from Standard Ebooks editions and public domain in both the US and Canada
+  with the app, built by `tools/build_classics.py` from Standard Ebooks editions (or, for a work they lack, a public-domain
+  transcription of a public-domain translation) and public domain in both the US and Canada
   (author and any translator died in 1971 or earlier). Nothing from the owner's library ever goes there.
 - Changing the stored shape of a record: bump `indexedDB.open("marginalia", N)` only when a store is added or needs migration,
   keep old records readable, and update `VALID` so old backups still restore.
@@ -59,7 +60,8 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - Classics (`CLASSICS`, `addClassics`, at start): public-domain books that come with the app, each added to the library once, queued,
   from `data/books/<id>.json` (`{ text, content }`, the shapes a backup holds) and its cover `<id>.jpg`. `mg-classics` lists those added,
   so a deleted classic stays deleted; one that can't be fetched is tried next time. Skipped in automated browsers unless a test passes
-  `true`. `tools/build_classics.py` builds them from Standard Ebooks sources with the app's own parser; add a new id to `CLASSICS`.
+  `true`. `tools/build_classics.py` builds them from Standard Ebooks sources (Kant from a plain-text transcription, through its converter) with
+  the app's own parser; add a new id to `CLASSICS`.
 - A glossary term's "In your notes" (`termHitsHTML`, from `termNotes`): your notes using the term, grouped by author and then book, each book in
   reading order with your glosses, four shown and the rest folded. Only your own notes; nothing is written about the term for you.
 - Where you left off (`briefHTML`, `placeIn`, on a book's page under Continue reading): page and chapter at `t.pos`, your summary of that

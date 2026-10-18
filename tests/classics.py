@@ -53,7 +53,11 @@ async def main():
         check(len(recs) == len(IDS) and not bad, f"every classic is in the library, queued, with its text, chapters and cover ({bad or len(recs)})")
         await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(300)
         lib = await page.inner_text("#main")
-        check(all(t in lib for t in ["The Communist Manifesto", "A Vindication of the Rights of Woman", "The Genealogy of Morals"]), "they show on the home screen")
+        shelf = await page.evaluate("[...document.querySelectorAll('.shelf[data-st=\"queued\"] .shelfbook')].map((b) => b.dataset.open)")
+        more = await page.evaluate("document.querySelector('.shelf[data-st=\"queued\"] .shelfmore')?.textContent || ''")
+        late = "classic-du-bois-souls" # added on the second try above, so it arrived last and stands first
+        want = [late] + [x for x in IDS if x != late]
+        check(shelf == want[:len(shelf)] and len(shelf) >= 6 and (len(shelf) == len(IDS) or more == f"Show all {len(IDS)}"), f"they show on the Queued shelf, newest arrival first, the rest in historical order ({shelf}, {more!r})")
 
         # 3 opening again adds nothing; deleting one keeps it deleted
         await page.reload(); await page.wait_for_function(READY)
