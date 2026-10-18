@@ -173,6 +173,25 @@ async def main():
         pad = await page.evaluate("[parseFloat(getComputedStyle(document.querySelector('#book')).paddingBottom), document.querySelector('#pin').getBoundingClientRect().height]")
         check(pad[0] >= 160 + pad[1] - 1, f"in Scroll mode the end of the book can be scrolled clear of the pin ({pad})")
 
+        # 10 backups carry the pin
+        await page.evaluate("setPin({ tid: 'a', at: 40, text: 'Paragraph', page: '5', title: 'First book', open: true })"); await page.wait_for_timeout(200)
+        bk = await page.evaluate("""(async () => {
+          let out; const orig = saveFile; saveFile = async (n, txt) => { out = JSON.parse(txt); return true; };
+          await exportBackup(); saveFile = orig; return out; })()""")
+        check(bk.get("pin", {}).get("text") == "Paragraph", "a backup includes the pinned passage")
+        back = await page.evaluate("""async (bk) => {
+          PIN = null; savePin();
+          const sum = restoreSummary(planRestore(bk));
+          await applyRestore(planRestore(bk), false);
+          const p = JSON.parse(localStorage.getItem('mg-pin') || 'null');
+          setPin({ tid: 'b', at: 1, text: 'Other words', page: '1', title: 'Second book', open: false });
+          await applyRestore(planRestore(bk), false); const kept = JSON.parse(localStorage.getItem('mg-pin')).text;
+          await applyRestore(planRestore(bk), true); const theirs = JSON.parse(localStorage.getItem('mg-pin')).text;
+          const bad = planRestore({ ...bk, pin: { tid: 'a', text: 5 } });
+          return [p && p.text, p && p.open, sum.includes('Pinned passage'), kept, theirs, bad.pin === undefined && bad.skipped > 0];
+        }""", bk)
+        check(back == ["Paragraph", False, True, "Other words", "Paragraph", True], f"restoring brings the pin back when none is pinned, keeps this device's otherwise, takes the backup's when asked, and skips a malformed one ({back})")
+
         check(not errs, "no script errors" + (f": {errs}" if errs else ""))
         await browser.close()
 

@@ -69,7 +69,7 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - Where you left off (`briefHTML`, `placeIn`, on a book's page under Continue reading): page and chapter at `t.pos`, your summary of that
   chapter or the last one summarized, the book's open questions and latest notes. Nothing stored; it loads the book's text once for the chapter.
 - The pinned passage (`PIN`, `drawPin`, `pinGo`): one passage or note kept at the foot of the reader, from Pin on a selection or a note's
-  sheet. Stored in `localStorage` as `mg-pin`, outside the library and backups; the pages are cut above it (`PINH` in `layoutPages`),
+  sheet. Stored in `localStorage` as `mg-pin`, outside the library; backups carry it as `pin` (`goodPin` checks it on restore); the pages are cut above it (`PINH` in `layoutPages`),
   and the reader's bottom buttons and toasts sit above it (`--pin-h`).
 - Your notes on the slider (`drawNavNotes`, `navNoteGroups`, `navNotesOpen`): a mark per note above it, notes within `NAVNOTE_PX` sharing
   a numbered mark that lists them; going to one uses `jumpTo`, so the trail offers ← Your place.
