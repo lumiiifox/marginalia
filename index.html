@@ -132,6 +132,12 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
   background: var(--grain-plank), linear-gradient(var(--plank-edge), var(--plank-edge-lo)); background-size: 600px 60px, auto; background-position: 0 -24px, 0 0; }
 .shelfbook { position: relative; z-index: 1; min-width: 0; display: grid; gap: 3px; align-content: start; text-align: left; background: none; border: 0; padding: 0; color: inherit; }
 .shelfbook .cover { margin-bottom: 25px; }
+.sbwrap { position: relative; min-width: 0; display: grid; }
+/* the book's menu, also opened by holding the book: a small tab on the cover's top corner */
+.sbmenu { position: absolute; z-index: 2; top: 0; right: 0; width: 36px; height: 34px; padding: 5px 5px 0 0; border: 0; background: none; display: flex; align-items: flex-start; justify-content: flex-end; }
+.sbmenu::after { content: "⋯"; display: block; width: 26px; height: 18px; border-radius: 9px; background: rgba(0, 0, 0, 0.45); color: #fff; font: 700 15px/16px var(--f-ui); text-align: center; }
+.sbmenu { font-size: 0; }
+.shelfbook.dragging + .sbmenu, .shelfbook.lifted + .sbmenu { visibility: hidden; }
 /* holding a book opens its menu: no text selection, image menu or drag on the way, and the cover sinks a little while held */
 .shelfbook { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
 .shelfbook img { -webkit-user-drag: none; }
@@ -2286,12 +2292,12 @@ function libraryView() {
         ${rows.map((row) => `<div class="shelfrow" style="--per:${per}"><div class="plank"></div>${row.map(([id, t]) => {
           const nc = notesFor(id).length, p0 = progressOf(t), pc = p0 > 0 ? p0 : null;
           const meta = [pc != null ? `${pc}%` : "", nc ? `${nc} note${nc === 1 ? "" : "s"}` : ""].filter(Boolean).join(", ");
-          return `<button class="shelfbook" data-open="${esc(id)}" aria-label="${esc(t.title)}">
+          return `<div class="sbwrap"><button class="shelfbook" data-open="${esc(id)}" aria-label="${esc(t.title)}">
             ${coverHTML(t, coverURL(id))}
             <span class="sb-title">${esc(t.title)}</span>
             ${meta ? `<span class="sb-meta">${meta}</span>` : ""}
             ${pc != null ? `<span class="sb-prog"><i style="width:${pc}%"></i></span>` : ""}
-          </button>`; }).join("")}</div>`).join("")}
+          </button><button class="sbmenu" data-bookmenu="${esc(id)}" aria-label="More for ${esc(t.title)}">⋯</button></div>`; }).join("")}</div>`).join("")}
         ${books.length > cap + 1 ? `<button class="btn shelfmore" data-shelf="${st}" aria-expanded="${open}">${open ? "Show fewer" : `Show all ${books.length}`}</button>` : ""}
       </section>`;
     }).join("");
@@ -6195,6 +6201,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "addtext") return textSheet(null);
   if (b.id === "back") return back();
   if (b.dataset.open) return go({ screen: "text", textId: b.dataset.open });
+  if (b.dataset.bookmenu) return bookMenu(b.dataset.bookmenu);
   if (b.dataset.shelf) {
     const st = b.dataset.shelf, closing = S.shelfOpen.has(st);
     if (closing) S.shelfOpen.delete(st); else S.shelfOpen.add(st);
