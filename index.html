@@ -6071,6 +6071,41 @@ document.addEventListener("input", (e) => {
   clearTimeout(qTimer); qTimer = setTimeout(() => { render(); const el = $("#" + key); if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); } }, 180);
 });
 
+/* ---------- classics: public-domain books that come with the app ----------
+   Each is added to the library once, the first time the app opens with it: its text from data/books/<id>.json ({ text,
+   content }, built by tools/build_classics.py) and its cover from data/books/<id>.jpg, on the Queued shelf. mg-classics
+   lists those added, so a classic you delete stays deleted; one that can't be fetched (offline) is tried again next time.
+   Tests run in an automated browser, which is left out unless a test asks (addClassics(true)). */
+const CLASSICS = ["classic-plato-socrates", "classic-descartes-meditations", "classic-wollstonecraft-vindication", "classic-marx-engels-manifesto", "classic-nietzsche-genealogy", "classic-du-bois-souls"]; // in historical order, the shelf's order
+let classicsBusy = false;
+async function addClassics(force) {
+  if (classicsBusy || !idb || S.mode !== "ready" || (navigator.webdriver && !force)) return [];
+  classicsBusy = true;
+  const added = [], t0 = Date.now();
+  try {
+    let done; try { done = new Set(JSON.parse(localStorage.getItem("mg-classics") || "[]")); } catch { done = new Set(); }
+    const mark = (id) => { done.add(id); try { localStorage.setItem("mg-classics", JSON.stringify([...done])); } catch {} };
+    for (const id of CLASSICS) {
+      if (done.has(id)) continue;
+      if (S.texts.has(id)) { mark(id); continue; } // already here, from a backup
+      try {
+        const r = await fetch(`data/books/${id}.json`); if (!r.ok) continue;
+        const book = await r.json();
+        if (!book || !VALID.texts(book.text) || !VALID.content(book.content)) continue;
+        if (S.texts.has(id)) { mark(id); continue; }
+        let cover = null;
+        try { const c = await fetch(`data/books/${id}.jpg`); if (c.ok && /^image\//.test(c.headers.get("content-type") || "")) cover = await c.blob(); } catch {}
+        const now = t0 - CLASSICS.indexOf(id), rec = { ...book.text, status: "queued", hasContent: true, pos: 0, total: book.content.length, createdAt: now, updatedAt: now }; // the earliest first on the shelf
+        await idbTx(cover ? ["content", "texts", "covers"] : ["content", "texts"], (st) => { st("content").put(book.content, id); st("texts").put(rec, id); if (cover) st("covers").put(cover, id); });
+        S.texts.set(id, rec); if (cover) S.covers.set(id, cover);
+        mark(id); added.push(rec.title);
+      } catch {} // offline, or the file is missing: next time
+    }
+  } finally { classicsBusy = false; }
+  if (added.length) { render(); toast(added.length === 1 ? `“${added[0]}” was added to your library, on the Queued shelf.` : `${added.length} classics were added to your library, on the Queued shelf.`); }
+  return added;
+}
+
 /* ---------- boot ---------- */
 render();
 (async () => {
@@ -6085,6 +6120,7 @@ render();
     S.mode = "ready";
   } catch { idb = null; S.mode = "local"; }
   render();
+  addClassics().catch(() => {});
   try { if (navigator.storage && navigator.storage.persist) S.persisted = await navigator.storage.persist(); } catch {}
 })();
 if ("serviceWorker" in navigator && location.protocol === "https:") {
