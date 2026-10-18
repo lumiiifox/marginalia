@@ -76,6 +76,7 @@ async def main():
             await page.close()
 
         page, errs = await fresh_page(browser, 390, 844)
+        await page.evaluate("put('texts', 't1', { ...S.texts.get('t1'), rank: 2 })") # a book's place on its arranged shelf travels with the backup
         before = await page.evaluate(DUMP, STORES)
         async with page.expect_download() as dl: await page.evaluate("exportBackup()")
         backup = await (await dl.value).path()
@@ -286,6 +287,45 @@ async def main():
         check(await page.evaluate("!S.texts.has('tdel') && S.screen === 'library' && !document.querySelector(\".shelfbook[data-open='tdel']\")"), "Delete, once confirmed, removes the book and stays on the shelf")
         await touch(".shelfbook[data-open='t1']", 60)
         check(await page.evaluate("S.screen === 'text' && S.textId === 't1'"), "a quick tap still opens the book's page")
+
+        # carrying a book: hold, then move; set it down beside another, or on another shelf
+        await page.evaluate("""(async () => { for (const [id, k] of [['r1', 4], ['r2', 3], ['r3', 2], ['r4', 1]]) await put('texts', id, { title: 'Book ' + id, createdAt: k, updatedAt: k });
+          await put('texts', 'q1', { title: 'Queued one', status: 'queued', createdAt: 1, updatedAt: 1 }); go({ screen: 'library' }); })()"""); await page.wait_for_timeout(400)
+        SHELF = "(st) => shelfList(st).map(([x]) => x)"
+        async def spot(sel, fx=0.5):
+            return await page.evaluate(f"(() => {{ const r = document.querySelector(`{sel} .cover`).getBoundingClientRect(); return [r.left + r.width * {fx}, r.top + r.height / 2]; }})()")
+        async def carry(src, dst, fx, mid=None):
+            a, b = await spot(src), await spot(dst, fx)
+            pt = lambda x, y: [{"x": x, "y": y, "id": 1}]
+            await cdp.send("Input.dispatchTouchEvent", {"type": "touchStart", "touchPoints": pt(*a)}); await asyncio.sleep(0.65)
+            seen = None
+            for k in range(1, 13):
+                await cdp.send("Input.dispatchTouchEvent", {"type": "touchMove", "touchPoints": pt(a[0] + (b[0] - a[0]) * k / 12, a[1] + (b[1] - a[1]) * k / 12)}); await asyncio.sleep(0.03)
+                if k == 6 and mid: seen = await page.evaluate(mid)
+            await cdp.send("Input.dispatchTouchEvent", {"type": "touchEnd", "touchPoints": []}); await page.wait_for_timeout(600)
+            return seen
+        before = await page.evaluate(SHELF, "reading")
+        mid = await carry(".shelfbook[data-open='r3']", ".shelfbook[data-open='t1']", 0.25, "[!!document.querySelector('.sheet'), !!document.querySelector('.dragghost'), !document.querySelector('.dropmark').hidden]")
+        after = await page.evaluate(SHELF, "reading")
+        check(before == ["t1", "r1", "r2", "r3", "r4"] and mid == [False, True, True] and after == ["r3", "t1", "r1", "r2", "r4"],
+              f"holding a book then moving it puts the menu away, carries it with a marker where it will go, and sets it down there ({before} → {after}, {mid})")
+        check(await page.evaluate("[S.screen, document.querySelector('#toast').textContent, ['r3', 't1', 'r1', 'r2', 'r4'].map((x) => S.texts.get(x).rank)]") == ["library", "Moved.Undo", [0, 1, 2, 3, 4]], "the shelf keeps that order (each book's place is saved), and letting go opens nothing")
+        await page.click("#toast .toastbtn"); await page.wait_for_timeout(400)
+        check(await page.evaluate(SHELF, "reading") == before and await page.evaluate("['r3', 't1', 'r1'].every((x) => S.texts.get(x).rank === undefined)"), "Undo puts the shelf back as it was, in order of use")
+        await carry(".shelfbook[data-open='r1']", ".shelfbook[data-open='t1']", 0.75)
+        check(await page.evaluate(SHELF, "reading") == before and await page.evaluate("S.texts.get('r1').rank === undefined && document.querySelector('#toast').hidden"), "set down where it was, nothing changes")
+        await page.evaluate("document.querySelector(\".shelfbook[data-open='r4']\").scrollIntoView({ block: 'start' })"); await page.wait_for_timeout(200)
+        await carry(".shelfbook[data-open='r4']", ".shelfbook[data-open='q1']", 0.25)
+        cross = await page.evaluate("[S.texts.get('r4').status, shelfList('queued').map(([x]) => x), document.querySelector('#toast').textContent]")
+        check(cross == ["queued", ["r4", "q1"], "Moved to Queued.Undo"], f"carried onto another shelf, it moves there, in the place it was set down ({cross})")
+        await page.evaluate("window.scrollTo(0, 0)"); await page.wait_for_timeout(200)
+        await carry(".shelfbook[data-open='r2']", ".shelfbook[data-open='t1']", 0.25)
+        await page.reload(); await page.wait_for_function(READY); await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(300)
+        check(await page.evaluate(SHELF, "reading") == ["r2", "t1", "r1", "r3"], "the order is still there after closing and opening the app")
+        await page.evaluate("(async () => { await put('texts', 'new1', { title: 'Just added', createdAt: Date.now(), updatedAt: Date.now() }); await put('texts', 'r1', { ...S.texts.get('r1'), readAt: Date.now() + 5 }); })()"); await page.wait_for_timeout(300)
+        check(await page.evaluate(SHELF, "reading") == ["new1", "r2", "t1", "r1", "r3"], "on an arranged shelf a new book arrives at the front, and reading a book doesn't move it")
+        await page.evaluate("moveBook('r3', 'finished')"); await page.wait_for_timeout(300); await page.evaluate("moveBook('r3', 'reading')"); await page.wait_for_timeout(300)
+        check(await page.evaluate(SHELF, "reading") == ["r3", "new1", "r2", "t1", "r1"] or await page.evaluate(SHELF, "reading") == ["new1", "r3", "r2", "t1", "r1"], "moved onto a shelf from the menu, a book goes to its front")
         check(not errs, "no script errors holding books" + (f": {errs}" if errs else ""))
         await ctx.close()
         page, errs = await fresh_page(browser, 1280, 800)
@@ -294,6 +334,14 @@ async def main():
         check(await page.evaluate("S.screen === 'library' && !!document.querySelector('#bm-open')"), "on a computer, right-clicking a book opens the same menu")
         await page.click("#bm-open"); await page.wait_for_timeout(400)
         check(await page.evaluate("S.screen === 'text' && S.textId === 't1'"), "Open the book's page opens it")
+        # with a mouse, dragging a book carries it straight away
+        await page.evaluate("(async () => { await put('texts', 'm1', { title: 'Mouse one', createdAt: 2, updatedAt: 2 }); await put('texts', 'm2', { title: 'Mouse two', createdAt: 1, updatedAt: 1 }); go({ screen: 'library' }); })()"); await page.wait_for_timeout(400)
+        box = lambda sel, fx: page.evaluate(f"(() => {{ const r = document.querySelector(`{sel} .cover`).getBoundingClientRect(); return [r.left + r.width * {fx}, r.top + r.height / 2]; }})()")
+        a, b = await box(".shelfbook[data-open='m2']", 0.5), await box(".shelfbook[data-open='t1']", 0.2)
+        await page.mouse.move(*a); await page.mouse.down()
+        for k in range(1, 11): await page.mouse.move(a[0] + (b[0] - a[0]) * k / 10, a[1] + (b[1] - a[1]) * k / 10); await page.wait_for_timeout(20)
+        await page.mouse.up(); await page.wait_for_timeout(500)
+        check(await page.evaluate("[S.screen, shelfList('reading').map(([x]) => x)]") == ["library", ["m2", "t1", "m1"]], "with a mouse, dragging a book moves it, and the drag doesn't open it")
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

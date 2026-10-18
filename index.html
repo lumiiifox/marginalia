@@ -133,6 +133,11 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .shelfbook img { -webkit-user-drag: none; }
 .shelfbook .cover { transition: transform 0.45s ease-out; }
 .shelfbook.held .cover { transform: scale(0.95); }
+.shelfbook.lifted .cover { transform: scale(1.05); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 16px 28px -10px rgba(0, 0, 0, 0.6); transition: transform 0.15s ease-out, box-shadow 0.15s; }
+.shelfbook.dragging { opacity: 0.3; }
+.cover.dragghost { position: fixed; z-index: 40; margin: 0; pointer-events: none; opacity: 0.88; transform: rotate(-2deg) scale(1.05); box-shadow: 0 18px 34px -10px rgba(0, 0, 0, 0.6); }
+.dropmark { position: fixed; z-index: 41; box-shadow: 0 0 0 2px var(--paper); width: 4px; border-radius: 2px; background: var(--leather); pointer-events: none; }
+.dropmark[hidden] { display: none; }
 @media (prefers-reduced-motion: reduce) { .shelfbook .cover { transition: none; } }
 .sb-title { font: 500 15px/1.25 var(--f-text); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; hyphens: auto; }
 .sb-meta { font-size: 13px; line-height: 1.3; color: var(--muted); }
@@ -959,7 +964,7 @@ const isS = (x) => typeof x === "string";
 const optNum = (x) => x === undefined || x === null || Number.isFinite(x);
 const optInt = (x) => x === undefined || (Number.isInteger(x) && x >= 0);
 const VALID = {
-  texts: (v) => isObj(v) && isS(v.title) && optStr(v.author) && optStr(v.edition) && optStr(v.lang) && optStr(v.next) && optArr(v.pdfLabels, isS) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
+  texts: (v) => isObj(v) && isS(v.title) && optStr(v.author) && optStr(v.edition) && optStr(v.lang) && optStr(v.next) && (v.rank === undefined || Number.isFinite(v.rank)) && optArr(v.pdfLabels, isS) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
     && optArr(v.bookmarks, (x) => isObj(x) && Number.isInteger(x.at)) && (v.summaries === undefined || isObj(v.summaries)) && (v.pos === undefined || Number.isInteger(v.pos))
     && (v.source === undefined || v.source === null || (isObj(v.source) && optStr(v.source.name) && optStr(v.source.kind) && optNum(v.source.pages))),
   notes: (v) => isObj(v) && isS(v.textId) && optStr(v.kind) && ["passage", "gloss", "original", "conclusion", "sectionId"].every((k) => optStr(v[k]))
@@ -974,8 +979,9 @@ const VALID = {
   covers: (v) => typeof v === "string" && v.startsWith("data:image/"),
 };
 const goodId = (id) => typeof id === "string" && id.length > 0 && id.length < 200;
-// Reading position and activity are left out when deciding whether two versions differ; they follow the later reading.
-const ACTIVITY = new Set(["updatedAt", "readAt", "activeAt", "pos", "posF", "total"]);
+// Reading position, activity and a book's place on its shelf (rank) are left out when deciding whether two versions differ;
+// the reading follows the later reading, and the place stays as it is on this device.
+const ACTIVITY = new Set(["updatedAt", "readAt", "activeAt", "pos", "posF", "total", "rank"]);
 // The reading position follows whichever copy was read more recently, whichever copy's details win,
 // unless the two hold different versions of the book's text: then the position stays with its own text.
 const READING = ["pos", "posF", "total", "readAt"];
@@ -2207,6 +2213,14 @@ function noteHTML(id, n, t, showSrc) {
 const wideShelf = window.matchMedia ? matchMedia("(min-width: 520px)") : null;
 const shelfPer = () => (wideShelf && wideShelf.matches ? 4 : 3);
 if (wideShelf) wideShelf.addEventListener("change", () => { if (S.screen === "library") render(); });
+// A shelf's books in order: books you've put in place (rank) keep their places, after any that have come onto the shelf since,
+// newest first. A shelf you've never arranged is simply in order of recent use.
+function shelfList(st) {
+  const books = [...S.texts.entries()].filter(([, t]) => (t.status || "reading") === st);
+  const placed = books.filter(([, t]) => Number.isFinite(t.rank)).sort(([, a], [, b]) => a.rank - b.rank);
+  const fresh = books.filter(([, t]) => !Number.isFinite(t.rank)).sort(([, a], [, b]) => lastActive(b) - lastActive(a));
+  return [...fresh, ...placed];
+}
 function libraryView() {
   const texts = [...S.texts.entries()];
   let body = "";
@@ -2224,12 +2238,12 @@ function libraryView() {
   } else {
     const per = shelfPer();
     body = Object.keys(STATUS).map((st) => {
-      const books = texts.filter(([, t]) => (t.status || "reading") === st).sort(([, a], [, b]) => lastActive(b) - lastActive(a));
+      const books = shelfList(st);
       if (!books.length) return "";
       // Long shelves show their two most recent rows until you ask for the rest.
       const cap = per * 2, open = S.shelfOpen.has(st) || books.length <= cap + 1, shown = open ? books : books.slice(0, cap);
       const rows = []; for (let k = 0; k < shown.length; k += per) rows.push(shown.slice(k, k + per));
-      return `<section class="shelf"><div class="label">${STATUS[st]}<span class="cnt">${books.length}</span></div>
+      return `<section class="shelf" data-st="${st}"><div class="label">${STATUS[st]}<span class="cnt">${books.length}</span></div>
         ${rows.map((row) => `<div class="shelfrow" style="--per:${per}"><div class="plank"></div>${row.map(([id, t]) => {
           const nc = notesFor(id).length, p0 = progressOf(t), pc = p0 > 0 ? p0 : null;
           const meta = [pc != null ? `${pc}%` : "", nc ? `${nc} note${nc === 1 ? "" : "s"}` : ""].filter(Boolean).join(", ");
@@ -4117,6 +4131,7 @@ function textSheet(id) {
     const tid = id || gid();
     const data = { ...(id ? t : { createdAt: Date.now() }), ...(fd.get("lang") ? { lang: fd.get("lang") } : {}), title, author: fd.get("author").trim(), edition: fd.get("edition").trim(), publisher: fd.get("publisher").trim(), year: fd.get("year").trim(), orig: (fd.get("orig") || "").trim(), status: fd.get("status"), sections, updatedAt: Date.now() };
     if (!fd.get("lang")) delete data.lang; // worked out from the text
+    if (id && (t.status || "reading") !== data.status) delete data.rank; // another shelf: its front
     if (parsed) {
       linkHeadings(parsed.blocks, parsed.sections, sections);
       const prog = $("#f-prog"); const say = (m) => { if (prog) prog.textContent = m; };
@@ -4336,42 +4351,139 @@ function bookMenu(id) {
 // Another shelf: the book goes to the front of it, as when its status is changed on its page; Undo puts it back.
 async function moveBook(id, st) {
   const t = S.texts.get(id); if (!t || !STATUS[st]) return;
-  const was = { status: t.status, updatedAt: t.updatedAt };
+  const was = { status: t.status, updatedAt: t.updatedAt, rank: t.rank };
   try {
-    await put("texts", id, { ...t, status: st, updatedAt: Date.now() });
+    const moved = { ...t, status: st, updatedAt: Date.now() }; delete moved.rank; // the front of its new shelf
+    await put("texts", id, moved);
     toast(`Moved to ${STATUS[st]}.`, { label: "Undo", run: () => {
       const now = S.texts.get(id); if (!now) return;
       const rec = { ...now, updatedAt: was.updatedAt }; if (was.status) rec.status = was.status; else delete rec.status;
+      if (Number.isFinite(was.rank)) rec.rank = was.rank; else delete rec.rank;
       put("texts", id, rec).catch((e) => toast(failMsg(e)));
     } });
   } catch (e) { toast(failMsg(e)); }
 }
-// Holding: a finger kept still on a book for half a second opens its menu (a move, a scroll or lifting it sooner is a
-// tap or a scroll as before). The release that follows doesn't count as a tap. A mouse uses right-click, a keyboard the
-// menu key; both arrive as contextmenu, which is also what Android sends for a long press, so it never opens twice.
-const HOLD = { timer: 0, id: null, x: 0, y: 0, el: null, fired: false, swallow: false };
-const endHold = () => { clearTimeout(HOLD.timer); HOLD.timer = 0; if (HOLD.el) HOLD.el.classList.remove("held"); HOLD.el = null; };
+// The shelf by hand. A finger kept still on a book for half a second lifts it and opens its menu; moving the finger then puts
+// the menu away and carries the book, to another place on its shelf or onto another shelf, and letting go sets it down there.
+// Letting go without moving leaves the menu open; moving sooner scrolls, and a quick tap opens the book, as before. With a
+// mouse, dragging a book carries it straight away and right-click opens the menu; the keyboard's menu key opens it too.
+// Android's own long press arrives as contextmenu, which here only lifts the book a moment early.
+const HOLD = { timer: 0, id: null, x: 0, y: 0, px: 0, py: 0, el: null, touch: false, mouse: false, lifted: false, swallow: false, drag: null, raf: 0 };
+function endHold() {
+  clearTimeout(HOLD.timer); HOLD.timer = 0;
+  if (HOLD.el) HOLD.el.classList.remove("held", "lifted");
+  Object.assign(HOLD, { el: null, touch: false, mouse: false, lifted: false });
+}
+function liftBook() {
+  const b = HOLD.el; if (!b || HOLD.lifted || HOLD.drag) return;
+  clearTimeout(HOLD.timer); HOLD.timer = 0; HOLD.lifted = true;
+  b.classList.remove("held"); b.classList.add("lifted");
+  try { navigator.vibrate && navigator.vibrate(12); } catch {}
+  bookMenu(b.dataset.open);
+}
 document.addEventListener("pointerdown", (e) => {
-  HOLD.swallow = false; HOLD.fired = false; endHold();
-  const b = e.target.closest && e.target.closest(".shelfbook[data-open]");
-  if (!b || e.pointerType === "mouse" || !e.isPrimary) return;
-  Object.assign(HOLD, { id: e.pointerId, x: e.clientX, y: e.clientY, el: b });
-  b.classList.add("held");
-  HOLD.timer = setTimeout(() => { const id = b.dataset.open; endHold(); HOLD.fired = true; try { navigator.vibrate && navigator.vibrate(12); } catch {} bookMenu(id); }, 500);
-}, true);
-document.addEventListener("pointermove", (e) => { if (HOLD.timer && e.pointerId === HOLD.id && Math.hypot(e.clientX - HOLD.x, e.clientY - HOLD.y) > 10) endHold(); }, true);
-document.addEventListener("pointercancel", endHold, true);
-document.addEventListener("pointerup", (e) => {
+  HOLD.swallow = false;
+  if (HOLD.drag) return;
   endHold();
-  if (HOLD.fired && e.pointerId === HOLD.id) { HOLD.swallow = true; setTimeout(() => { HOLD.swallow = false; }, 400); }
+  const b = e.target.closest && e.target.closest(".shelfbook[data-open]");
+  if (!b || !e.isPrimary || (e.pointerType === "mouse" && e.button !== 0)) return;
+  Object.assign(HOLD, { id: e.pointerId, x: e.clientX, y: e.clientY, px: e.clientX, py: e.clientY, el: b, touch: e.pointerType !== "mouse", mouse: e.pointerType === "mouse" });
+  if (HOLD.touch) { b.classList.add("held"); HOLD.timer = setTimeout(liftBook, 500); }
 }, true);
+document.addEventListener("pointermove", (e) => {
+  if (e.pointerId !== HOLD.id) return;
+  HOLD.px = e.clientX; HOLD.py = e.clientY;
+  if (HOLD.drag) { dragTo(); return; }
+  if (!HOLD.el) return;
+  const far = Math.hypot(e.clientX - HOLD.x, e.clientY - HOLD.y);
+  if (HOLD.touch && !HOLD.lifted) { if (far > 10) endHold(); return; } // the finger moved first: a scroll
+  if ((HOLD.lifted && far > 10) || (HOLD.mouse && (e.buttons & 1) && far > 6)) startDrag();
+}, true);
+// once a book is lifted, the page stays put under the finger (on #main only, so the reader's scrolling never waits for this)
+$("#main").addEventListener("touchmove", (e) => { if ((HOLD.lifted || HOLD.drag) && e.cancelable) e.preventDefault(); }, { passive: false });
+document.addEventListener("pointerup", (e) => {
+  if (e.pointerId !== HOLD.id) return;
+  const held = HOLD.lifted || !!HOLD.drag;
+  if (HOLD.drag) dropBook(false);
+  endHold();
+  if (held) { HOLD.swallow = true; setTimeout(() => { HOLD.swallow = false; }, 400); } // the release isn't a tap
+}, true);
+document.addEventListener("pointercancel", (e) => { if (e.pointerId !== HOLD.id) return; if (HOLD.drag) dropBook(true); endHold(); }, true);
 document.addEventListener("click", (e) => { if (HOLD.swallow) { HOLD.swallow = false; e.preventDefault(); e.stopPropagation(); } }, true);
 document.addEventListener("contextmenu", (e) => {
-  const b = e.target.closest && e.target.closest(".shelfbook[data-open]"); if (!b) return;
-  e.preventDefault(); endHold();
-  if (NAV.overlay) return; // the hold has already opened it
-  HOLD.fired = true; bookMenu(b.dataset.open);
+  const b = e.target.closest && e.target.closest(".shelfbook[data-open]");
+  if (!b && !HOLD.lifted && !HOLD.drag) return;
+  e.preventDefault();
+  if (HOLD.touch) { liftBook(); return; }
+  if (!b || HOLD.drag || NAV.overlay) return;
+  bookMenu(b.dataset.open);
 });
+function startDrag() {
+  const b = HOLD.el, cov = b && b.querySelector(".cover"); if (!cov) return;
+  if (NAV.overlay) closeOverlay(); // the menu goes once the book moves
+  const r = cov.getBoundingClientRect(), ghost = cov.cloneNode(true), mark = document.createElement("div");
+  ghost.classList.add("dragghost"); ghost.setAttribute("aria-hidden", "true");
+  Object.assign(ghost.style, { left: r.left + "px", top: r.top + "px", width: r.width + "px", height: r.height + "px" });
+  mark.className = "dropmark"; mark.hidden = true;
+  document.body.append(mark, ghost);
+  b.classList.remove("held", "lifted"); b.classList.add("dragging");
+  HOLD.drag = { id: b.dataset.open, el: b, ghost, mark, ox: HOLD.x - r.left, oy: HOLD.y - r.top, target: null };
+  HOLD.lifted = false;
+  dragTo(); HOLD.raf = requestAnimationFrame(edgeScroll);
+}
+// Where the carried book would go: beside the nearest book of the shelf under the finger (row first, then side).
+function dragTo() {
+  const d = HOLD.drag; if (!d) return;
+  const x = HOLD.px, y = HOLD.py;
+  d.ghost.style.left = x - d.ox + "px"; d.ghost.style.top = y - d.oy + "px";
+  const under = document.elementFromPoint(x, y), shelf = under && under.closest && under.closest(".shelf[data-st]");
+  d.target = null; d.mark.hidden = true;
+  if (!shelf) return;
+  const books = [...shelf.querySelectorAll(".shelfbook[data-open]")].filter((b) => b.dataset.open !== d.id);
+  if (!books.length) { d.target = { st: shelf.dataset.st, at: 0 }; return; }
+  let best = null, bd = Infinity;
+  for (const b of books) {
+    const c = b.querySelector(".cover").getBoundingClientRect(), dist = Math.hypot(x - (c.left + c.width / 2), 2 * (y - (c.top + c.height / 2)));
+    if (dist < bd) { bd = dist; best = { b, c }; }
+  }
+  const after = x > best.c.left + best.c.width / 2;
+  d.target = { st: shelf.dataset.st, at: books.indexOf(best.b) + (after ? 1 : 0) };
+  Object.assign(d.mark.style, { left: (after ? best.c.right + 5 : best.c.left - 9) + "px", top: best.c.top + "px", height: best.c.height + "px" });
+  d.mark.hidden = false;
+}
+// Near the top or bottom of the screen the page scrolls, so a book can be carried to a shelf out of sight.
+function edgeScroll() {
+  if (!HOLD.drag) return;
+  const edge = 72, y = HOLD.py, v = y < edge ? -Math.ceil((edge - y) / 5) : y > innerHeight - edge ? Math.ceil((y - innerHeight + edge) / 5) : 0;
+  if (v) { const before = scrollY; window.scrollBy(0, v); if (scrollY !== before) dragTo(); }
+  HOLD.raf = requestAnimationFrame(edgeScroll);
+}
+// Setting it down: the shelf takes the order you see, each book keeping its place (rank); dropped on another shelf, the
+// book moves there too. Dropped where it was, or off the shelves, nothing changes. Undo puts the shelves back.
+async function dropBook(cancel) {
+  const d = HOLD.drag; HOLD.drag = null; cancelAnimationFrame(HOLD.raf);
+  d.ghost.remove(); d.mark.remove(); d.el.classList.remove("dragging");
+  const t = S.texts.get(d.id); if (cancel || !d.target || !t) return;
+  const st = d.target.st, from = t.status || "reading", was = shelfList(st);
+  const list = was.filter(([x]) => x !== d.id);
+  list.splice(Math.min(d.target.at, list.length), 0, [d.id, t]);
+  if (st === from && list.every(([x], k) => was[k][0] === x)) return;
+  const now = Date.now(), changed = [];
+  list.forEach(([x, cur], k) => {
+    const rec = { ...cur, rank: k };
+    if (x === d.id && st !== from) { rec.status = st; rec.updatedAt = now; }
+    if (rec.rank !== cur.rank || rec.status !== cur.status) changed.push([x, rec, cur]);
+  });
+  const put3 = async (pairs) => { await idbTx(["texts"], (s) => pairs.forEach(([x, rec]) => s("texts").put(rec, x))); pairs.forEach(([x, rec]) => S.texts.set(x, rec)); render(); };
+  try {
+    await put3(changed.map(([x, rec]) => [x, rec]));
+    toast(st !== from ? `Moved to ${STATUS[st]}.` : "Moved.", { label: "Undo", run: () => {
+      // only where they stood is put back, so anything changed since stays
+      const back = changed.filter(([x]) => S.texts.has(x)).map(([x, , old]) => { const rec = { ...S.texts.get(x) }; for (const k of ["rank", "status", "updatedAt"]) { if (old[k] === undefined) delete rec[k]; else rec[k] = old[k]; } return [x, rec]; });
+      put3(back).catch((e) => toast(failMsg(e)));
+    } });
+  } catch (e) { toast(failMsg(e)); }
+}
 
 /* ---------- reader ---------- */
 // Reading settings live on this device only.
@@ -6119,7 +6231,7 @@ document.addEventListener("change", (e) => {
   if (e.target.id === "restore") { const f = e.target.files && e.target.files[0]; e.target.value = ""; if (f) importBackup(f); return; }
   if (S.screen !== "text") return;
   const t = S.texts.get(S.textId);
-  if (e.target.id === "status" && t) put("texts", S.textId, { ...t, status: e.target.value, updatedAt: Date.now() }).catch(() => {});
+  if (e.target.id === "status" && t) { const rec = { ...t, status: e.target.value, updatedAt: Date.now() }; delete rec.rank; put("texts", S.textId, rec).catch(() => {}); } // to the front of its new shelf
   if (e.target.dataset && e.target.dataset.tick && t) {
     const sections = t.sections.map((s) => (s.id === e.target.dataset.tick ? { ...s, done: e.target.checked } : s));
     put("texts", S.textId, { ...t, sections, updatedAt: Date.now() }).catch(() => {});
