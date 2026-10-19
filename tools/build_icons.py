@@ -1,7 +1,7 @@
 """Draws the app's icons: a leaf, carved in outline into an oak board, the grain of the app's desk.
 Run:  python3 tools/build_icons.py   (writes icon-192.png, icon-512.png, icon-maskable-512.png, apple-touch-icon.png)
       python3 tools/build_icons.py --shrink   (only reduces the existing files to 256 colours)
-The same leaf is the home screen's mark (LEAF in index.html); keep the two paths alike if you change it.
+The same leaf is the home screen's mark (LEAF_SVG in js/library.js); keep the two paths alike if you change it.
 Needs: pip install playwright numpy scipy pillow && playwright install chromium
 """
 import asyncio, base64, io, sys

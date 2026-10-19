@@ -12,7 +12,9 @@ On iPhone, add the app to the Home Screen (Share → Add to Home Screen). Safari
 
 ## Files
 
-- `index.html`: the whole app
+- `index.html`: the page itself, which loads the rest
+- `css/app.css`: the styles
+- `js/`: the app, in fourteen plain scripts by area (storage, importing, the reader, study tools and so on), listed in `CLAUDE.md`
 - `sw.js`: service worker for offline use
 - `data/`: the glossary, thinkers and branches; `data/books/`: the classics that come with the app (Standard Ebooks editions, public domain), built by `tools/build_classics.py`
 - `manifest.webmanifest`, `icon-*.png`, `apple-touch-icon.png`: Home Screen install

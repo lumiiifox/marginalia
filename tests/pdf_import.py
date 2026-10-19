@@ -31,7 +31,7 @@ CACHE = ROOT / "tests" / ".cache"
 PORT = 8798
 
 def pdfjs_dir():
-    ver = re.search(r"pdf\.js/([\d.]+)/pdf\.min\.js", (ROOT / "index.html").read_text()).group(1)
+    ver = re.search(r"pdf\.js/([\d.]+)/pdf\.min\.js", (ROOT / "js" / "core.js").read_text()).group(1)
     d = CACHE / f"pdfjs-{ver}"
     if not (d / "build" / "pdf.worker.js").exists():
         print(f"Downloading PDF.js {ver}…")
@@ -192,7 +192,7 @@ def check(ok, what):
 async def main(paths):
     build = pdfjs_dir()
     tmp = Path(tempfile.mkdtemp())
-    (tmp / "index.html").symlink_to(ROOT / "index.html"); (tmp / "data").symlink_to(ROOT / "data"); (tmp / "lib").symlink_to(build)
+    (tmp / "index.html").symlink_to(ROOT / "index.html"); (tmp / "data").symlink_to(ROOT / "data"); (tmp / "js").symlink_to(ROOT / "js"); (tmp / "css").symlink_to(ROOT / "css"); (tmp / "lib").symlink_to(build)
     server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(tmp)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     try:
         time.sleep(1)

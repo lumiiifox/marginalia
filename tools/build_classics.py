@@ -16,7 +16,7 @@ the app keeps covers; a book taken from a larger volume gets the volume's art wi
 A work Standard Ebooks hasn't produced comes from a plain-text transcription of a public-domain translation (`text`: a git
 repository and file, with a converter here that drops the transcription's license header and footer, finds the headings,
 turns its starred footnotes into numbered ones and straight quotes and spaced hyphens into curly quotes and dashes), and
-gets a cover drawn here. After building, add a new book's id to CLASSICS in index.html.
+gets a cover drawn here. After building, add a new book's id to CLASSICS in js/boot.js.
 """
 import asyncio, base64, json, re, subprocess, sys, time
 from pathlib import Path
