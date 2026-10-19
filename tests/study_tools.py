@@ -43,6 +43,10 @@ Uses made-up records only. Checks that:
       Step back undoes; running out of steps or Show a way ends it with a real shortest route.
   14. order of birth: five thinkers with exact birth years at least twelve years apart (one period's, when asked); tapping them in
       order and Check scores them, a placed name can be taken back first, and the answer is drawn on one time scale.
+  15. bookplates: worked out from the library; firsts dated by the earliest note, follow-up, draft or comparison that earns them; a book
+      read through or summed up only when every chapter is (back matter like Notes left out) and it has two or more; Finished from its
+      shelf; a reading path walked once every step is done; the example book never counts; the home screen's chip and a book's page
+      show them, a plate opens its book, and what is still to come is listed apart.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -532,6 +536,45 @@ async def order(browser):
     check(not errs, "no script errors in Order of birth" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+PLSEED = r"""async () => { const now = Date.now(), D = 86400000;
+  await put("texts", "b1", { title: "Anti-Oedipus", author: "Deleuze, Gilles and Guattari, Félix", status: "finished", sections: [{ id: "a", label: "Chapter 1", done: true }, { id: "b", label: "Chapter 2", done: true }, { id: "n", label: "Notes" }], summaries: { a: "Desire produces.", b: "Psychoanalysis and familialism." }, hasContent: false, createdAt: now - 90 * D, updatedAt: now });
+  await put("texts", "b2", { title: "Leviathan", status: "reading", sections: [{ id: "x", label: "I" }, { id: "y", label: "II" }], createdAt: now - 20 * D, updatedAt: now });
+  await put("notes", "n1", { textId: "b1", kind: "passage", passage: "p", gloss: "mine", links: [], createdAt: now - 80 * D, updatedAt: now - 80 * D, followups: [{ id: "f", at: now - 30 * D, x: "later" }] });
+  await put("notes", "n2", { textId: "b2", kind: "question", gloss: "Why fear?", links: [], createdAt: now - 10 * D, updatedAt: now - 10 * D });
+  await put("drafts", "d1", { title: "Desire and lack", items: [], createdAt: now - 5 * D, updatedAt: now });
+}"""
+
+async def plates(browser):
+    page, errs = await fresh(browser)
+    await page.evaluate("go({ screen: 'plates' })"); await page.wait_for_timeout(150)
+    e = await page.evaluate("[bookplates().count, bookplates().todo.length, !!document.querySelector('.empty')]")
+    check(e == [0, 10, True], f"an empty library has no plates, and everything still to come ({e})")
+    await page.evaluate(PLSEED)
+    await page.evaluate("put('texts', 'ex', { title: 'Example', example: true, status: 'finished', sections: [{ id: 'a', label: 'A', done: true }, { id: 'b', label: 'B', done: true }], createdAt: 1, updatedAt: 1 }).then(() => put('notes', 'ex1', { textId: 'ex', kind: 'objection', gloss: 'not mine', links: [], createdAt: 1, updatedAt: 1 }))")
+    P = await page.evaluate("(() => { const P = bookplates(); return { firsts: P.firsts.map((x) => [x.id, x.sub]), books: P.books.map((x) => x.id), paths: P.paths.length, todo: P.todo.map((x) => x[0]), count: P.count }; })()")
+    check(P["firsts"] == [["gloss", "Anti-Oedipus"], ["question", "Leviathan"], ["followup", "Anti-Oedipus"], ["summary", "Anti-Oedipus"], ["draft", "Desire and lack"]], f"firsts, each from what earned it, the example book left out ({P['firsts']})")
+    check(P["books"] == ["read:b1", "sum:b1", "fin:b1"], f"a book with every chapter ticked and summed up (its Notes left out) and on the Finished shelf; the example book never ({P['books']})")
+    check("First objection" in P["todo"] and "First comparison" in P["todo"] and "A path walked" in P["todo"], f"what isn't earned yet is still to come ({P['todo']})")
+    one = await page.evaluate("(() => { const t = { title: 'One', sections: [{ id: 'a', label: 'All of it', done: true }], summaries: { a: 'x' } }; return bookPlates('z', t).length; })()")
+    check(one == 0, "a book with a single chapter doesn't count as read through or summed up")
+    await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(200)
+    chip = await page.evaluate("document.querySelector('#openplates')?.textContent")
+    check(chip == f"Bookplates{P['count']}", f"the home screen's chip shows how many ({chip})")
+    await page.click("#openplates"); await page.wait_for_timeout(200)
+    check(await page.locator(".plate").count() == P["count"], "the chip opens them all")
+    await page.click(".plate[data-open='b2']"); await page.wait_for_timeout(200)
+    check(await page.evaluate("[S.screen, S.textId]") == ["text", "b2"], "a plate opens its book")
+    check(await page.locator(".plate").count() == 0, "a book with no plates of its own shows none on its page")
+    await page.evaluate("go({ screen: 'text', textId: 'b1' })"); await page.wait_for_timeout(200)
+    check(await page.evaluate("[...document.querySelectorAll('.plate .pl-n')].map((x) => x.textContent)") == ["Read through", "Every chapter summed up", "Finished"], "a book's page shows its own plates")
+    await page.evaluate("addClassics(true)"); await page.wait_for_timeout(300)
+    await page.evaluate("""(async () => { const P = PATHS.find((x) => x.id === 'what-can-we-know');
+      for (const st of P.steps) { const t = S.texts.get(st.book); await put('texts', st.book, { ...t, sections: t.sections.map((x) => st.secs.includes(x.id) ? { ...x, done: true } : x) }); } })()""")
+    paths = await page.evaluate("bookplates().paths.map((x) => [x.n, x.sub])")
+    check(paths == [["A path walked", "What can we know?"]], f"a reading path walked, once every step is done ({paths})")
+    check(not errs, "no script errors in bookplates" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
@@ -549,6 +592,7 @@ async def main():
         await guess(browser)
         await connect(browser)
         await order(browser)
+        await plates(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

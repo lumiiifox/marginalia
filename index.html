@@ -621,6 +621,19 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .obyr { font: 500 13px/1 var(--f-ui); color: var(--ink); white-space: nowrap; }
 .oblist li.ok .obrow { background: var(--mk-gloss); }
 .oblist li.no .obrow { background: var(--mk-objection); }
+/* bookplates */
+.plates { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.plate { display: grid; justify-items: center; align-content: start; gap: 3px; text-align: center; padding: 14px 10px 12px; border-radius: 4px;
+  background: var(--paper); border: 1px solid color-mix(in srgb, var(--brass) 70%, var(--rule));
+  box-shadow: inset 0 0 0 4px var(--paper), inset 0 0 0 5px color-mix(in srgb, var(--brass) 45%, transparent), var(--paper-shadow); color: var(--ink); }
+.plate:disabled { opacity: 1; cursor: default; }
+.pl-leaf { width: 30px; height: 30px; color: color-mix(in srgb, var(--brass) 75%, var(--ink)); }
+.pl-leaf svg { width: 100%; height: 100%; display: block; }
+.pl-ex { font: 400 12px/1.2 var(--f-mark); letter-spacing: 0.14em; text-transform: lowercase; color: color-mix(in srgb, var(--brass) 72%, var(--ink)); }
+.pl-n { font: 700 17px/1.25 var(--f-text); margin-top: 2px; }
+.pl-sub { font: italic 400 14px/1.3 var(--f-text); overflow-wrap: anywhere; }
+.pl-at { font: 400 12.5px/1.3 var(--f-ui); color: var(--muted); }
+.plates-todo { margin-top: 18px; }
 /* reading paths */
 .path { margin-top: 18px; }
 .path .pd { margin: 0; font: 400 16.5px/1.5 var(--f-text); }
@@ -2438,7 +2451,7 @@ function render() {
   if (reading) { refreshMarks(); return; }
   wakeOff();
   $("#selbar").hidden = true;
-  const views = { text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, paths: pathsView, concord: concordView, compares: comparesView, compare: compareView };
+  const views = { text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, paths: pathsView, plates: platesView, concord: concordView, compares: comparesView, compare: compareView };
   $("#main").innerHTML = (views[S.screen] || libraryView)();
 }
 
@@ -2567,6 +2580,57 @@ function libraryView() {
     </section>
     ${S.mode === "pending" ? "" : resurfHTML() + referenceHome() + backupView()}`}`;
 }
+/* ---------- bookplates: marks of reading, worked out from the library each time; nothing is stored and none expire ----------
+   Firsts (your first gloss, question, objection, argument, return to a note, summary, draft, comparison), per book (every chapter
+   read, every chapter summed up, finished) and each reading path walked. Back matter doesn't count as a chapter (BACK_MATTER). */
+const BACK_MATTER = /^(notes|endnotes|footnotes|index|bibliography|contents|glossary|editor[’']s note)$/i;
+const FIRSTS = [
+  ["gloss", "First gloss", "Write a note in your own words.", (n) => n.gloss && n.gloss.trim()],
+  ["question", "First question", "Save a note as a Question.", (n) => n.kind === "question"],
+  ["objection", "First objection", "Save a note as an Objection.", (n) => n.kind === "objection"],
+  ["argument", "First argument set out", "Save an Argument note with its premises and conclusion.", (n) => (n.premises || []).length > 0],
+];
+function bookPlates(tid, t = S.texts.get(tid)) {
+  if (!t || t.example) return [];
+  const secs = (t.sections || []).filter((x) => !BACK_MATTER.test(String(x.label || "").trim())), sums = t.summaries || {}, out = [];
+  if (secs.length >= 2 && secs.every((x) => x.done)) out.push({ id: `read:${tid}`, n: "Read through", sub: t.title, tid, how: "every chapter ticked as read" });
+  if (secs.length >= 2 && secs.every((x) => (sums[x.id] || "").trim())) out.push({ id: `sum:${tid}`, n: "Every chapter summed up", sub: t.title, tid, how: "a summary for each chapter" });
+  if (t.status === "finished") out.push({ id: `fin:${tid}`, n: "Finished", sub: t.title, tid, how: "on the Finished shelf" });
+  return out;
+}
+function bookplates() {
+  const notes = [...S.notes.values()].filter((n) => { const t = S.texts.get(n.textId); return t && !t.example; }).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+  const earned = [], todo = [];
+  const where = (n) => S.texts.get(n.textId)?.title || "";
+  for (const [id, name, how, test] of FIRSTS) { const n = notes.find(test); if (n) earned.push({ id, n: name, sub: where(n), at: n.createdAt, tid: n.textId, first: true }); else todo.push([name, how]); }
+  let fu = null; for (const n of notes) for (const f of n.followups || []) if (!fu || f.at < fu.f.at) fu = { n, f };
+  if (fu) earned.push({ id: "followup", n: "First return to a note", sub: where(fu.n), at: fu.f.at, tid: fu.n.textId, first: true }); else todo.push(["First return to a note", "Add a follow-up to a note you made earlier."]);
+  const summed = [...S.texts.entries()].find(([, t]) => !t.example && Object.values(t.summaries || {}).some((x) => String(x).trim()));
+  if (summed) earned.push({ id: "summary", n: "First chapter summed up", sub: summed[1].title, tid: summed[0], first: true }); else todo.push(["First chapter summed up", "Write a summary when a chapter ends, or from its name on the book's page."]);
+  const firstOf = (m) => [...m.values()].sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0))[0];
+  const d = firstOf(S.drafts); if (d) earned.push({ id: "draft", n: "First draft", sub: d.title || "", at: d.createdAt, first: true }); else todo.push(["First draft", "Start a draft from your notes, or from an essay template."]);
+  const c = firstOf(S.compares); if (c) earned.push({ id: "compare", n: "First comparison", sub: c.title || "", at: c.createdAt, first: true }); else todo.push(["First comparison", "Set two views side by side in Comparisons."]);
+  const books = [...S.texts.keys()].flatMap((tid) => bookPlates(tid));
+  const paths = (typeof PATHS === "undefined" ? [] : PATHS).filter((P) => P.steps.every((st) => stepState(st).done)).map((P) => ({ id: `path:${P.id}`, n: "A path walked", sub: P.n, path: P.id }));
+  if (!books.length) todo.push(["A book read through", "Tick every chapter of a book as read, on its page."]);
+  if (!paths.length) todo.push(["A path walked", "Finish every step of a reading path."]);
+  return { firsts: earned, books, paths, todo, count: earned.length + books.length + paths.length };
+}
+function plateHTML(x) {
+  const attr = x.tid ? ` data-open="${esc(x.tid)}"` : x.path ? ` data-path="${esc(x.path)}"` : "";
+  return `<button class="plate"${attr}${attr ? "" : " disabled"}><span class="pl-leaf" aria-hidden="true">${LEAF_SVG}</span><span class="pl-ex">ex libris</span>
+    <span class="pl-n">${esc(x.n)}</span>${x.sub ? `<span class="pl-sub">${esc(x.sub)}</span>` : ""}${x.at ? `<span class="pl-at">${esc(fmtDate(x.at))}</span>` : x.how ? `<span class="pl-at">${esc(x.how)}</span>` : ""}</button>`;
+}
+function platesView() {
+  const P = bookplates(), grid = (list) => `<div class="plates">${list.map(plateHTML).join("")}</div>`;
+  const sec = (title, list) => (list.length ? `<section class="group"><div class="label">${title}<span class="cnt">${list.length}</span></div>${grid(list)}</section>` : "");
+  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
+    <header class="gl-head"><div><h1>Bookplates</h1><div class="sub">${P.count ? `${P.count} earned` : "None yet"}</div></div></header>
+    <p class="hint">Marks of reading and argument, worked out from your library each time you look. Nothing is counted for you to keep up, and none expire.</p>
+    ${sec("Firsts", P.firsts)}${sec("Books", P.books)}${sec("Reading paths", P.paths)}
+    ${P.count ? "" : `<p class="empty"><b>No bookplates yet.</b> They come from your notes, summaries and the chapters you tick as read.</p>`}
+    ${P.todo.length ? `<details class="tmorehits plates-todo"><summary>Still to come (${P.todo.length})</summary><ul class="bq-list">${P.todo.map(([n, how]) => `<li><b>${esc(n)}</b>: ${esc(how)}</li>`).join("")}</ul></details>` : ""}`;
+}
 /* ---------- from your margins: one of your older notes a day, on the home screen ----------
    A note made at least RESURF_DAYS ago, chosen by the date so it stays the same all day; Another shows the next one for now.
    Nothing is stored. */
@@ -2660,6 +2724,7 @@ function textView() {
       </div>
     </header>
     ${briefHTML(id, t)}
+    ${bookPlates(id, t).length ? `<section class="group"><div class="label">Bookplates</div><div class="plates">${bookPlates(id, t).map((x) => plateHTML({ ...x, tid: null, sub: "" })).join("")}</div></section>` : ""}
     ${spreadHTML(id, t)}
     ${secs.length ? `<section class="group"><div><div class="label">Sections</div><p class="hint">Tick a section once you have read it. Tap its name to see its notes.</p></div><div class="sections">
       ${secs.map((s) => `<div class="sec ${s.done ? "done" : ""} ${S.sec === s.id ? "sel" : ""}">
@@ -2810,6 +2875,7 @@ function acrossHTML() {
     ${drafts || S.notes.size ? `<button class="chip qchip" id="opendrafts">Drafts<span class="cnt">${drafts}</span></button>` : ""}
     ${S.compares.size || S.notes.size ? `<button class="chip qchip" id="opencompares">Comparisons<span class="cnt">${S.compares.size}</span></button>` : ""}
     ${qs.length ? `<button class="chip qchip" id="openquestions">Open questions<span class="cnt">${open}</span></button>` : ""}
+    ${S.notes.size ? (() => { const k = bookplates().count; return k ? `<button class="chip qchip" id="openplates">Bookplates<span class="cnt">${k}</span></button>` : ""; })() : ""}
     ${tags.slice(0, 8).map(([tg, c]) => `<button class="chip tagchip" data-tag="${esc(tg)}">#${esc(tg)}<span class="cnt">${c}</span></button>`).join("")}
     ${tags.length > 8 ? `<button class="chip" data-tag="">All ${tags.length} tags</button>` : ""}
   </div></div>`;
@@ -7223,6 +7289,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "mywords") return wordsPanel();
   if (b.id === "resurfnext") { resurfSkip++; const el = $("#resurf"); if (el) el.outerHTML = resurfHTML(); return; }
   if (b.id === "openpaths") return go({ screen: "paths" });
+  if (b.id === "openplates") return go({ screen: "plates" });
   if (b.dataset.path) return go({ screen: "paths", path: b.dataset.path });
   if (b.dataset.pathread) { const [tid, sec] = b.dataset.pathread.split("|"); return readStep(tid, sec.split(",")); }
   if (b.dataset.pathadd) return readdClassic(b.dataset.pathadd);
