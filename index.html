@@ -669,6 +669,11 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .thinkrow .ty { font-size: 13px; color: var(--muted); align-self: baseline; white-space: nowrap; }
 /* thinkers on a timeline: each period on its own scale */
 .tl-era { margin: 18px 0 4px; }
+.cfold summary { font: 500 14px/1.3 var(--f-ui); color: var(--link); cursor: pointer; padding: 4px 0; }
+.cfold[open] summary { margin-bottom: 6px; }
+.ttime { display: grid; padding: 10px 12px 6px; border: 1px solid var(--rule); border-radius: 6px; background: var(--field); }
+.ttime .label { margin-bottom: 2px; }
+.ttime .tl-row { padding: 4px 0 5px; }
 .tl-era h3 { font: 700 19px/1.25 var(--f-text); margin: 0; }
 .tl-era .hint { font-size: 13px; }
 .tl-scale { position: relative; height: 18px; margin: 6px 0 2px; border-bottom: 1px solid var(--rule); font: 500 11px/1 var(--f-ui); color: var(--muted); }
@@ -3587,6 +3592,9 @@ const LINKS = (() => {
 const chipRow = (label, html) => (html ? `<div class="crow"><span class="clabel">${label}</span><div class="chips">${html}</div></div>` : "");
 const thinkerChips = (ids) => ids.map((id) => THINKER.get(id)).filter(Boolean).map((p) => `<button class="chip pchip" data-thinker="${esc(p.id)}">${esc(p.sn)}</button>`).join("");
 const branchChips = (ids) => ids.map((id) => BRANCH.get(id)).filter(Boolean).map((b) => `<button class="chip bchip2" data-branch="${esc(b.id)}">${esc(b.n)}</button>`).join("");
+// A long row of thinkers: the first few, then the rest folded away.
+const foldChips = (label, ids, k = 8) => !ids.length ? "" : ids.length <= k + 2 ? chipRow(label, thinkerChips(ids))
+  : `<div class="crow"><span class="clabel">${label}</span><div class="chips">${thinkerChips(ids.slice(0, k))}</div><details class="cfold"><summary>${ids.length - k} more</summary><div class="chips">${thinkerChips(ids.slice(k))}</div></details></div>`;
 const termChips = (ids, tmap) => ids.filter((id) => tmap.has(id)).map((id) => `<button class="chip tchip" data-term="${esc(id)}">${esc(tmap.get(id).t)}</button>`).join("");
 const termMap = () => new Map(allTerms().map((g) => [g.id, g]));
 // Your notes that use a term, grouped by author and then book, each book's in reading order: how the concept reads in each,
@@ -3624,6 +3632,7 @@ function termHTML(g, tmap) {
       ${g.w ?`<p class="tsrc">Associated with ${esc(g.w)}</p>` : ""}
       ${aliasesOf(g.id).length ? `<p class="tsrc">Look up also finds: ${esc(aliasesOf(g.id).join(", "))}</p>` : ""}
       ${conn ? `<div class="tconn">${conn}</div>` : ""}
+      ${termTimeHTML(g.p)}
       ${termHitsHTML(hits)}
       <div class="noteacts">
         ${sayBtn(g.t)}
@@ -3676,6 +3685,28 @@ function timelineHTML(list) {
   }).join("");
   const undated = lives.filter((x) => !x.s).map((x) => x.p);
   return eras + (undated.length ? `<section class="tl-era"><h3>Dates not given</h3><div class="gl-list">${undated.map(thinkerRow).join("")}</div></section>` : "");
+}
+// A term's thinkers on one scale, in order of birth: who the entry names, and when they lived. Undated thinkers are left out.
+function termTimeHTML(ids) {
+  const rows = (ids || []).map((id) => THINKER.get(id)).filter(Boolean).map((p) => ({ p, s: lifeSpan(p.y) })).filter((x) => x.s).sort((x, y) => x.s.a - y.s.a || x.s.b - y.s.b);
+  if (rows.length < 2) return "";
+  const min = Math.min(...rows.map((x) => x.s.a)), max = Math.max(...rows.map((x) => x.s.b)), ancient = min < 1400;
+  const span = Math.max(1, max - min), step = [25, 50, 100, 250, 500, 1000].find((k) => span / k <= 4) || 1000;
+  const from = Math.floor(min / step) * step, to = Math.ceil(max / step) * step, W = to - from, pct = (v) => (100 * (v - from)) / W;
+  const ticks = []; for (let v = from; v < to; v += step) ticks.push(v);
+  return `<div class="ttime"><div class="label">Its thinkers in time</div>
+    <div class="tl-scale">${ticks.map((v) => `<span style="left:${pct(v)}%">${yearLabel(v, ancient)}</span>`).join("")}</div>
+    ${rows.map(({ p, s }) => `<button class="tl-row" data-thinker="${esc(p.id)}" style="--tick:${(100 * step) / W}%"><span class="tl-n">${esc(p.sn || p.n)}<span>${esc(p.y)}</span></span>
+      <span class="tl-bar${s.approx ? " approx" : ""}${s.open ? " open" : ""}" style="margin-left:${pct(s.a)}%;width:${Math.max(0.8, pct(s.b) - pct(s.a))}%" aria-hidden="true"></span></button>`).join("")}</div>`;
+}
+// Thinkers two steps away along "drew on": those their sources drew on, and those who took up the ones who took them up.
+function lineageSteps(id) {
+  const back1 = new Set(THINKER.get(id)?.i || []), on1 = new Set(THINKERS.filter((x) => x.i.includes(id)).map((x) => x.id));
+  const back2 = new Set(), on2 = new Set();
+  for (const b of back1) for (const x of THINKER.get(b)?.i || []) if (x !== id && !back1.has(x)) back2.add(x);
+  for (const o of on1) for (const x of THINKERS) if (x.i.includes(o) && x.id !== id && !on1.has(x.id)) on2.add(x.id);
+  const byBirth = (set) => [...set].filter((x) => THINKER.has(x)).sort((a, b) => birthYear(THINKER.get(a).y) - birthYear(THINKER.get(b).y));
+  return { back: byBirth(back2), on: byBirth(on2) };
 }
 // People whose lives overlapped by twenty years or more: who could have read, met or argued with whom.
 function contemporariesOf(p) {
@@ -3820,7 +3851,7 @@ function thinkerPanel(id) {
   const tmap = termMap();
   const terms = [...tmap.values()].filter((g) => (g.p || []).includes(id)).map((g) => g.id);
   const trad = BRANCHES.filter((b) => b.p.includes(id)).map((b) => b.id);
-  const took = THINKERS.filter((x) => x.i.includes(id)).map((x) => x.id);
+  const took = THINKERS.filter((x) => x.i.includes(id)).map((x) => x.id), steps = lineageSteps(id);
   const shelf = [...S.texts.entries()].filter(([, t]) => authorThinkers(t.author).some((x) => x.id === id));
   openPanel(`<h2>${esc(p.n)}</h2>
     ${p.y || CAN_SAY ? `<div class="sayline">${p.y ? `<p class="hint">${esc(p.y)}</p>` : ""}${sayBtn(p.n, "linkbtn")}</div>` : ""}
@@ -3834,7 +3865,9 @@ function thinkerPanel(id) {
       ${chipRow("Glossary terms", termChips(terms, tmap))}
       ${chipRow("Branches and traditions", branchChips(trad))}
       ${chipRow("Drew on", thinkerChips(p.i))}
+      ${foldChips("Further back", steps.back)}
       ${chipRow("Taken up by", thinkerChips(took))}
+      ${foldChips("Further on", steps.on)}
       ${chipRow("Lived at the same time", thinkerChips(contemporariesOf(p)))}
     </div>`, (b) => {
     if (b.dataset.say) return sayIt(b.dataset.say);

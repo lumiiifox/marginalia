@@ -14,6 +14,9 @@ Uses made-up records only. Checks that:
      passage in front and your words, follow-ups and the place on the back; the terms you added or edited; the words you looked up;
      tabs, line breaks, quotes and markup can't break a row or a field; the whole glossary as its own file; with nothing of your
      own, a message instead of an empty file.
+  5. a glossary term shows its thinkers on one time scale in order of birth, each opening their card (none for fewer than two
+     dated thinkers); a thinker's card goes two steps along "drew on" both ways, without repeating the first step or the thinker,
+     in order of birth, long rows folded after eight.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -199,6 +202,34 @@ async def anki(browser):
     check(not errs, "no script errors exporting flashcards" + (f": {errs}" if errs else ""))
     await ctx2.close()
 
+async def lineage(browser):
+    page, errs = await fresh(browser)
+    await page.evaluate("openTerm('ontology')"); await page.wait_for_timeout(200)
+    rows = await page.evaluate("[...document.querySelectorAll(\"[data-term-id='ontology'] .ttime .tl-row\")].map((r) => r.dataset.thinker)")
+    want = await page.evaluate("GLOSSARY.find((g) => g.id === 'ontology').p.filter((id) => lifeSpan(THINKER.get(id).y)).sort((a, b) => lifeSpan(THINKER.get(a).y).a - lifeSpan(THINKER.get(b).y).a)")
+    check(rows == want and len(rows) >= 2, f"a term's thinkers are on one scale in order of birth ({rows})")
+    left = await page.evaluate("[...document.querySelectorAll(\"[data-term-id='ontology'] .ttime .tl-bar\")].map((b) => parseFloat(b.style.marginLeft))")
+    check(left == sorted(left) and all(0 <= x <= 100 for x in left), f"the bars run left to right in time ({left})")
+    await page.click("[data-term-id='ontology'] .ttime .tl-row >> nth=1"); await page.wait_for_timeout(200)
+    check(await page.evaluate("document.querySelector('.sheet h2')?.textContent") == await page.evaluate(f"THINKER.get('{want[1]}').n"), "tapping one opens their card")
+    await page.click("#pclose"); await page.wait_for_timeout(200)
+    none = await page.evaluate("[termTimeHTML([]), termTimeHTML(['kant']), termTimeHTML(['nobody', 'kant'])]")
+    check(none == ["", "", ""], "fewer than two dated thinkers: no time scale")
+    ok = await page.evaluate("""(() => { const bad = [];
+      for (const t of THINKERS) { const s = lineageSteps(t.id), back1 = new Set(t.i), on1 = new Set(THINKERS.filter((x) => x.i.includes(t.id)).map((x) => x.id));
+        for (const x of s.back) if (x === t.id || back1.has(x) || ![...back1].some((b) => (THINKER.get(b)?.i || []).includes(x))) bad.push(t.id + ' back ' + x);
+        for (const x of s.on) if (x === t.id || on1.has(x) || !THINKER.get(x).i.some((o) => on1.has(o))) bad.push(t.id + ' on ' + x);
+        for (const l of [s.back, s.on]) for (let k = 1; k < l.length; k++) if (birthYear(THINKER.get(l[k - 1]).y) > birthYear(THINKER.get(l[k]).y)) bad.push(t.id + ' order');
+        if (new Set(s.back).size !== s.back.length || new Set(s.on).size !== s.on.length) bad.push(t.id + ' twice'); }
+      return bad; })()""")
+    check(ok == [], f"two steps back and on: each reached through the first step, never the thinker or the first step again, in order of birth ({ok[:5]})")
+    await page.evaluate("thinkerPanel('aristotle')"); await page.wait_for_timeout(200)
+    fold = await page.evaluate("""(() => { const rows = [...document.querySelectorAll('.sheet .crow')].filter((r) => r.querySelector('.clabel').textContent === 'Further on');
+      const r = rows[0]; return r ? [r.querySelectorAll(':scope > .chips .chip').length, r.querySelector('.cfold summary')?.textContent, r.querySelectorAll('.chip').length, lineageSteps('aristotle').on.length] : null; })()""")
+    check(fold and fold[0] == 8 and fold[1] == f"{fold[3] - 8} more" and fold[2] == fold[3], f"a long row shows eight names and folds the rest ({fold})")
+    check(not errs, "no script errors in time scales and lineage" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
@@ -206,6 +237,7 @@ async def main():
         await term_of_day(browser)
         await hear_it(browser)
         await anki(browser)
+        await lineage(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
