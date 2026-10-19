@@ -568,6 +568,15 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .saybtn svg { width: 18px; height: 18px; flex: none; }
 .sayline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
 .sayline .hint { margin: 0; }
+/* your notes through the book */
+.spread { padding: 12px 14px 10px; display: grid; gap: 4px; }
+.sp-bars { position: relative; height: 54px; border-bottom: 1px solid var(--rule); }
+.sp-bin { position: absolute; bottom: 0; width: calc(100% / 48 - 1px); min-width: 3px; padding: 0; border: 0; border-radius: 2px 2px 0 0; background: var(--leather); opacity: 0.85; }
+.sp-bin::after { content: ""; position: absolute; left: -4px; right: -4px; bottom: 0; top: -14px; } /* an easier target for a finger */
+.sp-ch { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px dashed color-mix(in srgb, var(--muted) 55%, transparent); }
+.sp-pos { position: absolute; bottom: -5px; width: 9px; height: 9px; margin-left: -4.5px; border-radius: 50%; background: var(--brass); box-shadow: 0 0 0 2px var(--paper); }
+.sp-ends { display: flex; justify-content: space-between; font: 500 11.5px/1 var(--f-ui); color: var(--muted); margin-top: 4px; }
+.spread .hint { margin: 4px 0 0; }
 /* truth tables */
 .tt-syms .segb { min-width: 44px; font: 500 18px/1 var(--f-text); padding: 9px 10px; }
 .tt-ascii { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; letter-spacing: 0.04em; }
@@ -2548,6 +2557,7 @@ function textView() {
       </div>
     </header>
     ${briefHTML(id, t)}
+    ${spreadHTML(id, t)}
     ${secs.length ? `<section class="group"><div><div class="label">Sections</div><p class="hint">Tick a section once you have read it. Tap its name to see its notes.</p></div><div class="sections">
       ${secs.map((s) => `<div class="sec ${s.done ? "done" : ""} ${S.sec === s.id ? "sel" : ""}">
         <input type="checkbox" id="chk-${esc(s.id)}" data-tick="${esc(s.id)}" ${s.done ? "checked" : ""} aria-label="Mark ${esc(s.label)} as read">
@@ -2564,6 +2574,32 @@ function textView() {
       <input class="search" id="tq" type="search" placeholder="Search this text's notes" value="${esc(S.tq)}" aria-label="Search this text's notes">
       <div class="noteslist">${list.map(([nid, n]) => noteHTML(nid, n, t, false)).join("") || `<p class="empty">${all.length ? "No notes match these filters." : t.hasContent ? `<b>No notes yet.</b> Open the text, select a passage and save it.` : `<b>No notes yet.</b> Log a passage word for word with its page, or load the book's file to read and select passages here.`}</p>`}</div>
     </section>`;
+}
+
+/* ---------- your notes through the book: where in it you took them, on a book's page ----------
+   The book in SPREAD_BINS stretches, each bar as tall as its share of your notes; lines where chapters begin (once the text is loaded)
+   and a dot at your place. A bar with notes goes to the first of them. Nothing is stored. */
+const SPREAD_BINS = 48;
+function spreadHTML(id, t) {
+  const total = t.total || (S.content.get(id) || []).length;
+  if (!t.hasContent || total < 2) return "";
+  const at = notesFor(id).map(([, n]) => n).filter((n) => Number.isInteger(n.at) && n.at >= 0 && n.at < total).sort((a, b) => a.at - b.at);
+  if (at.length < 2) return "";
+  const bin = (i) => Math.min(SPREAD_BINS - 1, Math.floor((SPREAD_BINS * i) / total)), bins = Array.from({ length: SPREAD_BINS }, () => []);
+  at.forEach((n) => bins[bin(n.at)].push(n));
+  const top = Math.max(...bins.map((b) => b.length)), pct = (i) => (100 * i) / total;
+  const B = S.content.get(id), chapters = B ? B.map((b, i) => [b, i]).filter(([b]) => b.s && !b.stj && roleOf(b) === "chapter").map(([, i]) => i) : [];
+  const half = Math.round(SPREAD_BINS / 2), firstHalf = bins.slice(0, half).reduce((k, b) => k + b.length, 0);
+  const busiest = bins.indexOf(bins.reduce((a, b) => (b.length > a.length ? b : a))), from = Math.round((100 * busiest) / SPREAD_BINS);
+  return `<section class="group"><div class="label">Your notes through the book</div><div class="paperpanel spread">
+    <div class="sp-bars" role="group" aria-label="Where in the book your ${at.length} notes are">
+      ${chapters.map((i) => `<i class="sp-ch" style="left:${pct(i)}%" aria-hidden="true"></i>`).join("")}
+      ${bins.map((b, k) => b.length ? `<button class="sp-bin" style="left:${(100 * k) / SPREAD_BINS}%;height:${Math.max(14, Math.round((100 * b.length) / top))}%" data-goto-note="${b[0].at}" data-tid="${esc(id)}" aria-label="${b.length} note${b.length === 1 ? "" : "s"} about ${Math.round((100 * k) / SPREAD_BINS)}% through"></button>` : "").join("")}
+      ${Number.isInteger(t.pos) && t.pos > 0 ? `<i class="sp-pos" style="left:${pct(t.pos)}%" title="Your place" aria-hidden="true"></i>` : ""}
+    </div>
+    <div class="sp-ends"><span>Start</span><span>End</span></div>
+    <p class="hint">${at.length} notes; the most around ${from}% of the way through${at.length >= 6 ? `, ${firstHalf > at.length * 0.65 ? "most in the first half" : firstHalf < at.length * 0.35 ? "most in the second half" : "spread across both halves"}` : ""}. ${chapters.length ? "Lines mark chapters. " : ""}${Number.isInteger(t.pos) && t.pos > 0 ? "The dot is your place. " : ""}Tap a bar to go to its notes.</p>
+  </div></section>`;
 }
 
 /* ---------- where I left off: the brief on a book's page, beside Continue reading ----------

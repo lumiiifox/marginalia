@@ -17,6 +17,8 @@ Uses made-up records only. Checks that:
   5. a glossary term shows its thinkers on one time scale in order of birth, each opening their card (none for fewer than two
      dated thinkers); a thinker's card goes two steps along "drew on" both ways, without repeating the first step or the thinker,
      in order of birth, long rows folded after eight.
+  6. a book's page shows where in the book your notes are: a bar per stretch with notes, as tall as its share, lines at chapters, a dot
+     at your place, a line saying where they gather; a bar opens the reader at its first note; none for fewer than two placed notes.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -230,6 +232,34 @@ async def lineage(browser):
     check(not errs, "no script errors in time scales and lineage" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+SPREAD = r"""async () => { const now = Date.now(); const B = [];
+  for (let i = 0; i < 600; i++) B.push(i % 100 === 0 ? { k: "h", l: 2, x: "Chapter " + (i / 100 + 1), st: "chapter", s: "c" + i } : { k: "p", x: "Words " + i });
+  await put("content", "sp", B);
+  await put("texts", "sp", { title: "Spread Book", author: "Writer, A", sections: [0,100,200,300,400,500].map((i) => ({ id: "c" + i, label: "Chapter " + (i / 100 + 1) })), hasContent: true, total: 600, pos: 260, createdAt: now, updatedAt: now, readAt: now });
+  const ats = [3, 5, 8, 12, 40, 41, 42, 44, 45, 47, 130, 150, 151, 220, 255, 256, 257, 258];
+  for (const [k, a] of ats.entries()) await put("notes", "sn" + k, { textId: "sp", kind: "passage", passage: "p" + a, gloss: "", page: String(a), at: a, links: [], createdAt: now + k, updatedAt: now + k });
+  await put("texts", "s1", { title: "One note", sections: [], hasContent: true, total: 100, pos: 0, createdAt: now, updatedAt: now });
+  await put("notes", "on1", { textId: "s1", kind: "passage", passage: "x", at: 5, links: [], createdAt: now, updatedAt: now });
+}"""
+
+async def spread(browser):
+    page, errs = await fresh(browser)
+    await page.evaluate(SPREAD)
+    await page.evaluate("go({ screen: 'text', textId: 'sp' })"); await page.wait_for_timeout(500)
+    bins = await page.evaluate("[...document.querySelectorAll('.sp-bin')].map((b) => [Math.round(parseFloat(b.style.left) * 48 / 100), parseFloat(b.style.height), +b.dataset.gotoNote])")
+    check([b[0] for b in bins] == [0, 3, 10, 12, 17, 20] and [b[2] for b in bins] == [3, 40, 130, 150, 220, 255], f"a bar for each stretch with notes, going to its first note ({bins})")
+    hs = [b[1] for b in bins]
+    check(hs[1] == 100 and hs[0] == 67 and hs[2] == max(14, round(100 / 6)) and hs[3] == 33, f"each as tall as its share of the busiest stretch ({hs})")
+    marks = await page.evaluate("[[...document.querySelectorAll('.sp-ch')].map((x) => parseFloat(x.style.left)), parseFloat(document.querySelector('.sp-pos').style.left).toFixed(1), document.querySelector('.spread .hint').textContent]")
+    check(marks[0] == [0, 100 / 6, 200 / 6, 50, 400 / 6, 500 / 6] or [round(x, 3) for x in marks[0]] == [round(x, 3) for x in [0, 100 / 6, 200 / 6, 50, 400 / 6, 500 / 6]], f"a line at each chapter ({marks[0]})")
+    check(marks[1] == f"{100 * 260 / 600:.1f}" and marks[2].startswith("18 notes; the most around 6% of the way through, most in the first half."), f"a dot at your place, and a line saying where the notes gather ({marks[1:]})")
+    await page.click(".sp-bin >> nth=2"); await page.wait_for_timeout(700)
+    check(await page.evaluate("[S.screen, R.tid]") == ["reader", "sp"], "a bar opens the reader at its notes")
+    await page.evaluate("go({ screen: 'text', textId: 's1' })"); await page.wait_for_timeout(300)
+    check(await page.locator(".spread").count() == 0, "a book with fewer than two placed notes has no strip")
+    check(not errs, "no script errors in the strip" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
@@ -238,6 +268,7 @@ async def main():
         await hear_it(browser)
         await anki(browser)
         await lineage(browser)
+        await spread(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
