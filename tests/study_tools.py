@@ -61,6 +61,8 @@ Uses made-up records only. Checks that:
       #disputation, and the list says so; Read the passage opens the reader there; a deleted classic can be added back.
   20. questions to read with: every path step has three, folded on the path; Add to my questions makes a Question note on the book at
       the step's first chapter, once; a book's Where you left off shows a step's questions only while your place is inside its chapters.
+  21. primers: every classic has one, with words to know that are in the glossary and a source; a classic's page shows it open until
+      you start reading or take a note, folded after; it links to the reading paths that use the book.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -737,6 +739,28 @@ async def readqs(browser):
     check(not errs, "no script errors with reading questions" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def primers(browser):
+    page, errs = await fresh(browser)
+    bad = await page.evaluate("""(() => { const ids = new Set(GLOSSARY.map((g) => g.id)), bad = [];
+      for (const id of CLASSICS) { const p = PRIMERS[id]; if (!p) { bad.push(id + ' none'); continue; }
+        if (!p.about || p.about.length < 120 || !p.built || !p.src || !p.srcName) bad.push(id + ' fields');
+        for (const t of p.terms || []) if (!ids.has(t)) bad.push(id + ' term ' + t); }
+      for (const id of Object.keys(PRIMERS)) if (!CLASSICS.includes(id)) bad.push(id + ' not a classic');
+      return bad; })()""")
+    check(bad == [], f"every classic has a primer, its words in the glossary, with a source ({bad})")
+    await page.evaluate("addClassics(true)"); await page.wait_for_timeout(300)
+    await page.evaluate("go({ screen: 'text', textId: 'classic-hume-enquiry' })"); await page.wait_for_timeout(200)
+    st = await page.evaluate("[document.querySelector('details.primer')?.open, [...document.querySelectorAll('.primer [data-path]')].map((b) => b.dataset.path), document.querySelectorAll('.primer .tchip').length]")
+    check(st == [True, ["what-can-we-know"], 3], f"a classic you haven't started shows its primer open, with its path and words ({st})")
+    await page.evaluate("put('texts', 'classic-hume-enquiry', { ...S.texts.get('classic-hume-enquiry'), pos: 40 })"); await page.wait_for_timeout(200)
+    check(await page.evaluate("document.querySelector('details.primer').open") is False, "once you've started, it's folded")
+    await page.click(".primer summary"); await page.click(".primer [data-path]"); await page.wait_for_timeout(300)
+    check(await page.evaluate("S.screen") == "paths", "its path chip opens the path")
+    await page.evaluate("put('texts', 'own', { title: 'Own', sections: [], createdAt: 1, updatedAt: 1 }).then(() => go({ screen: 'text', textId: 'own' }))"); await page.wait_for_timeout(200)
+    check(await page.locator("details.primer").count() == 0, "a book of your own has no primer")
+    check(not errs, "no script errors with primers" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
@@ -760,6 +784,7 @@ async def main():
         await quizsets(browser)
         await disputes(browser)
         await readqs(browser)
+        await primers(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

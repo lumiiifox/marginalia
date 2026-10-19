@@ -655,6 +655,10 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .dspclassic { padding: 12px 16px; display: grid; gap: 6px; }
 .dspclassic .dspwho { margin: 0; font: 700 16px/1.35 var(--f-text); }
 /* reading paths */
+.primer > summary { cursor: pointer; list-style: revert; }
+.primerbody { padding: 12px 16px; display: grid; gap: 10px; margin-top: 8px; }
+.primerbody .tdef { margin: 0; }
+
 .readqd summary { font: 500 14px/1.3 var(--f-ui); color: var(--link); cursor: pointer; padding: 2px 0; }
 .readqs { margin: 6px 0 2px; padding-left: 20px; display: grid; gap: 8px; font: 400 15.5px/1.45 var(--f-text); }
 .readqs li > span { display: block; }
@@ -2878,6 +2882,7 @@ function textView() {
         ${t.example ? `<span class="chip ex">Example</span>` : ""}
       </div>
     </header>
+    ${primerHTML(id, t)}
     ${briefHTML(id, t)}
     ${bookPlates(id, t).length ? `<section class="group"><div class="label">Bookplates</div><div class="plates">${bookPlates(id, t).map((x) => plateHTML({ ...x, tid: null, sub: "" })).join("")}</div></section>` : ""}
     ${spreadHTML(id, t)}
@@ -5232,6 +5237,19 @@ async function askQuestion(ref) {
     await put("notes", gid(), note);
     toast(`Added to your questions on “${S.texts.get(st.book).title}”.`);
   } catch (e) { toast(failMsg(e)); }
+}
+// A classic's primer (PRIMERS in data/branches.js) on its page: open until you've started reading or taken a note, then folded.
+function primerHTML(id, t) {
+  const p = typeof PRIMERS !== "undefined" && PRIMERS[id]; if (!p) return "";
+  const fresh = !(t.pos > 0) && !notesFor(id).length;
+  const paths = (typeof PATHS === "undefined" ? [] : PATHS).flatMap((P) => P.steps.map((st, k) => [P, k, st]).filter(([, , st]) => st.book === id));
+  return `<section class="group"><details class="primer"${fresh ? " open" : ""}><summary class="label">Before you start</summary><div class="paperpanel primerbody">
+    <p class="tdef">${esc(p.about)}</p>
+    <div class="crow"><span class="clabel">How it's built</span><p class="tdef">${esc(p.built)}</p></div>
+    ${chipRow("Words to know", termChips(p.terms || [], termMap()))}
+    ${paths.length ? chipRow("Read it in a path", paths.map(([P, k]) => `<button class="chip" data-path="${esc(P.id)}">${esc(P.n)} · step ${k + 1}</button>`).join("")) : ""}
+    ${thinkerSources(p)}
+  </div></details></section>`;
 }
 // Titles for steps whose book isn't in the library: the classics' own titles (tests/study_tools.py checks them against data/books/).
 const CLASSIC_TITLES = { "classic-plato-socrates": "Euthyphro, Apology, Crito, Phaedo", "classic-aristotle-ethics": "Nicomachean Ethics", "classic-descartes-meditations": "Discourse on the Method and Meditations on First Philosophy",
