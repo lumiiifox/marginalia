@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parent.parent
 PORT = 8807
 URL = f"http://localhost:{PORT}/index.html"
 READY = "typeof idb !== 'undefined' && idb && S.mode === 'ready'"
-IDS = re.search(r"const CLASSICS = (\[[^\]]*\])", (ROOT / "index.html").read_text(encoding="utf-8")).group(1)
+IDS = re.search(r"const CLASSICS = (\[[^\]]*\])", (ROOT / "js" / "boot.js").read_text(encoding="utf-8")).group(1)
 IDS = json.loads(IDS)
 failures = []
 def check(ok, what):

@@ -43,10 +43,36 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
   keep old records readable, and update `VALID` so old backups still restore.
 - Keep the app a single static site with no build step. Libraries load from cdnjs; fonts from Google Fonts (the service worker caches only those hosts).
 - If `sw.js` changes in a way that needs old caches dropped, bump `CACHE`.
+- Every file `index.html` loads must be in `SHELL` in `sw.js` (smoke.py checks), or the app can't open offline. A new file under `js/`, `css/`
+  or `data/` needs both its tag in `index.html` and its line in `SHELL`, and a `CACHE` bump.
 
-## Map of index.html
+## Map of the code
 
-- `<style>` near the top; one `<script>` holds the whole app, after the data scripts.
+`index.html` is only the page's skeleton: the reader's and sheets' fixed markup, then the stylesheet and the scripts. The styles are
+`css/app.css`. The app is plain scripts in `js/`, loaded in this order and sharing one global scope, so a function or `const` in one is
+visible to all the others once they've loaded. Code that runs while the page loads (outside a function) may only use what earlier files
+and its own file define; everything else (event handlers, rendering) runs after `boot.js` and can use anything. Moving code between files
+can break that order: keep new code in the file of its area, and check with a test.
+
+| File | What's in it |
+|---|---|
+| `js/core.js` | the app's state (`S`, `R`), the libraries loaded from cdnjs (`LIBS`), small helpers (`$`, `esc`, `plain`, …) |
+| `js/storage.js` | IndexedDB (`STORES`, `idbOpen`, `put`), Recently deleted, covers, toasts and `saveFile`, backup and restore (`VALID`, `planRestore`, `applyRestore`) |
+| `js/cite.js` | citations, tags, the Markdown export of notes |
+| `js/import.js` | parsing PDF (and highlights from a PDF), EPUB, Word, HTML, plain text and Markdown |
+| `js/library.js` | the home screen and a book's page, with what's drawn on them (bookplates, from your margins, notes through the book, reading pace, where you left off), tags and open questions |
+| `js/writing.js` | drafts, comparisons, the concordance, search across books, exports and Anki |
+| `js/study.js` | the glossary and Quiz yourself, guess the thinker, puzzles, the reconstruction guide, quiz sets, truth tables |
+| `js/reference.js` | Look up, thinkers and branches, reading paths, disputations |
+| `js/sheets.js` | navigation and the back button, and the sheets (forms) |
+| `js/wikisource.js` | the Wikisource search and import |
+| `js/bookmenu.js` | a book's More menu (another edition's pages, the paired original), the book menu and arranging the shelf |
+| `js/reader.js` | the reader: layout, swipe pages and the flip, your place and jumps, reading pace, highlights and notes in the text, the pinned passage |
+| `js/structure.js` | Edit → marking a book's structure, and the reader's gestures and controls |
+| `js/boot.js` | events for the whole app, the classics (`CLASSICS`) and starting up |
+
+Each entry below names its functions; `grep -n` over `js/` finds them.
+
 - Storage: `STORES`, `idbOpen`, `put`, `del`, `idbTx`. Backup export and restore follow. The `trash` and `trashlist` stores (version 8) are Recently deleted: every delete of a book, note, draft or comparison goes through `trashAndRemove`, filing the removed records as one entry in `trash` and its summary in `trashlist` (on a full device nothing is removed: `noRoom` asks, and only a confirmed Delete permanently runs `removeForGood`). Only `trashlist` is read at start (`loadTrash`, which also clears entries past `TRASH_DAYS`). `restoreTrash` puts back only records missing from the library (`putBackMissing`), never over one that came back another way. Neither store is backed up. The `files` store (version 7) holds
   original PDFs kept for the printed page, by text id; it is never loaded at start and never backed up (`keepPdf`, `pdfDoc`).
   A text's `pdfLabels` are its PDF pages' labels, used to find the PDF page for a printed page number.
@@ -76,8 +102,8 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
   `referenceView`: every term, branch or thinker as one list (`S.rk` picks the group, `S.rq` searches), each row opening its entry
   and each group linking to its full screen.
 - Data: reference content lives in `data/`, loaded by plain `<script>` tags before the app script: `data/glossary.js` (`GLOSSARY`),
-  `data/thinkers.js` (`THINKERS`), `data/branches.js` (`BRANCHES`). Edit entries there, not in index.html. `LINKS`, `THINKER` and `BRANCH`
-  are built from them in index.html. A new data file needs its `<script>` tag in index.html and its path in `SHELL` in `sw.js`.
+  `data/thinkers.js` (`THINKERS`), `data/branches.js` (`BRANCHES`). Edit entries there, not in `js/`. `LINKS`, `THINKER` and `BRANCH`
+  are built from them in `js/`. A new data file needs its `<script>` tag in index.html and its path in `SHELL` in `sw.js`.
   An entry's optional `img` (`figHTML`) is a public-domain Wikimedia Commons file, loaded from Commons when online and not cached
   by the service worker; a picture that fails to load removes its figure, so offline the entry simply shows without it.
   A glossary term's optional `fig` names one of `FIGURES` (end of `data/glossary.js`): a diagram drawn as SVG, shown by `diaHTML` in the

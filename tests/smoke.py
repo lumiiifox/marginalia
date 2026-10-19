@@ -12,6 +12,7 @@ Uses made-up records only (never real books). Checks that:
      Thinkers is its own screen (the glossary no longer lists thinkers as an area): in order of birth or on a timeline,
      every dated life read from its dates line, each period on its own scale; a period in the list opens the timeline
      there; search; its quiz asks who wrote what; a thinker's card lists who lived at the same time.
+  7. every file index.html loads (css/, js/, data/) is in the service worker's list, and the app opens offline from it.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, json, subprocess, sys, time
@@ -57,6 +58,28 @@ async def fresh_page(browser, w, h):
     await page.goto(URL); await page.wait_for_function(READY)
     await page.evaluate(SEED)
     return page, errs
+
+# The app is split into files (css/, js/, data/): every one of them must be in the service worker's SHELL, or the app can't open offline.
+async def offline(browser):
+    import re
+    html = (ROOT / "index.html").read_text(encoding="utf-8")
+    local = sorted(set(re.findall(r'<(?:script src|link rel="stylesheet" href)="((?:js|css|data)/[^"]+)"', html)))
+    shell = re.search(r"const SHELL = (\[[^\]]*\])", (ROOT / "sw.js").read_text(encoding="utf-8")).group(1)
+    listed = set(re.findall(r'"\./([^"]+)"', shell))
+    check(local and all(f in listed for f in local) and all((ROOT / f).exists() for f in listed), f"every file index.html loads is kept for offline ({[f for f in local if f not in listed]} missing)")
+    ctx = await browser.new_context(viewport={"width": 390, "height": 844}); page = await ctx.new_page(); errs = []
+    page.on("pageerror", lambda e: errs.append(str(e)))
+    await page.goto(URL); await page.wait_for_function(READY)
+    await page.evaluate("navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready)")
+    await page.reload(); await page.wait_for_function(READY)
+    controlled = await page.evaluate("!!navigator.serviceWorker.controller")
+    await ctx.set_offline(True)
+    await page.reload(); ok = True
+    try: await page.wait_for_function(READY, timeout=10000)
+    except Exception: ok = False
+    shown = await page.evaluate("document.querySelector('#main').innerText.length > 50") if ok else False
+    check(controlled and ok and shown and not errs, f"offline, the app opens from the service worker's copy ({controlled}, {ok}, {shown}, {errs})")
+    await ctx.close()
 
 async def main():
     async with async_playwright() as p:
@@ -346,6 +369,7 @@ async def main():
         for k in range(1, 11): await page.mouse.move(a[0] + (b[0] - a[0]) * k / 10, a[1] + (b[1] - a[1]) * k / 10); await page.wait_for_timeout(20)
         await page.mouse.up(); await page.wait_for_timeout(500)
         check(await page.evaluate("[S.screen, shelfList('reading').map(([x]) => x)]") == ["library", ["m2", "t1", "m1"]], "with a mouse, dragging a book moves it, and the drag doesn't open it")
+        await offline(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

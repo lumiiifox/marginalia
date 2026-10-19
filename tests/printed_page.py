@@ -22,7 +22,7 @@ BODY = ("The question of method returns whenever philosophy examines the conditi
         "intelligible. Genealogy uncovers the contingent struggles sedimented in values that present themselves as eternal. ")
 
 def pdfjs_build():
-    ver = re.search(r"pdf\.js/([\d.]+)/pdf\.min\.js", (ROOT / "index.html").read_text()).group(1)
+    ver = re.search(r"pdf\.js/([\d.]+)/pdf\.min\.js", (ROOT / "js" / "core.js").read_text()).group(1)
     d = ROOT / "tests" / ".cache" / f"pdfjs-{ver}" / "build"
     if not (d / "pdf.worker.js").exists(): sys.exit("PDF.js isn't in tests/.cache yet: run python3 tests/pdf_import.py once first.")
     return d
@@ -38,7 +38,7 @@ def check(ok, what):
 
 async def main():
     tmp = Path(tempfile.mkdtemp())
-    (tmp / "index.html").symlink_to(ROOT / "index.html"); (tmp / "data").symlink_to(ROOT / "data"); (tmp / "lib").symlink_to(pdfjs_build())
+    (tmp / "index.html").symlink_to(ROOT / "index.html"); (tmp / "data").symlink_to(ROOT / "data"); (tmp / "js").symlink_to(ROOT / "js"); (tmp / "css").symlink_to(ROOT / "css"); (tmp / "lib").symlink_to(pdfjs_build())
     server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(tmp)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     try:
         time.sleep(1)
