@@ -361,7 +361,7 @@ async def paths(browser):
     await page.evaluate("(() => { const id = 'classic-kant-groundwork', t = S.texts.get(id); return put('texts', id, { ...t, sections: t.sections.map((x) => ['classic-kant-groundwork-s2', 'classic-kant-groundwork-s3'].includes(x.id) ? { ...x, done: true } : x) }); })()")
     await page.evaluate("go({ screen: 'paths' })"); await page.wait_for_timeout(300)
     d = await page.evaluate("(() => { const s = document.querySelector('section.path[data-path-id=\"how-to-live\"]'); return [s.querySelector('.sub').textContent, [...s.querySelectorAll('.pstep')].map((x) => x.classList.contains('done')), s.querySelectorAll('.pbar i.on').length]; })()")
-    check(d == ["4 books, 1 done", [False, False, True, False], 1], f"ticking a step's chapters as read marks it done ({d})")
+    check(d == ["5 books, 1 done", [False, False, False, True, False], 1], f"ticking a step's chapters as read marks it done ({d})")
     # deleted, then added back
     await page.evaluate("deleteText('classic-cooper-voice')"); await page.wait_for_timeout(300)
     await page.evaluate("go({ screen: 'paths' })"); await page.wait_for_timeout(300)
