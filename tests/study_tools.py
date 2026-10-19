@@ -59,6 +59,8 @@ Uses made-up records only. Checks that:
       a source; from the home screen, each opens with its argument; Compare waits for an objection of some length, Just show me doesn't;
       what you write survives closing the panel; Save makes an Objection note on the book, in that chapter at that passage, tagged
       #disputation, and the list says so; Read the passage opens the reader there; a deleted classic can be added back.
+  20. questions to read with: every path step has three, folded on the path; Add to my questions makes a Question note on the book at
+      the step's first chapter, once; a book's Where you left off shows a step's questions only while your place is inside its chapters.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -707,6 +709,34 @@ async def disputes(browser):
     check(not errs, "no script errors in disputations" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def readqs(browser):
+    page, errs = await fresh(browser)
+    await page.evaluate("addClassics(true)"); await page.wait_for_timeout(300)
+    bad = await page.evaluate("PATHS.flatMap((P) => P.steps.filter((st) => !Array.isArray(st.q) || st.q.length !== 3 || st.q.some((q) => typeof q !== 'string' || q.length < 20)).map((st) => P.id + ' ' + st.book))")
+    check(bad == [], f"every path step has three questions to read with ({bad})")
+    await page.evaluate("go({ screen: 'paths' })"); await page.wait_for_timeout(200)
+    n = await page.evaluate("[document.querySelectorAll('.readqd').length, PATHS.reduce((k, P) => k + P.steps.length, 0), [...document.querySelectorAll('.readqd')].every((d) => !d.open && d.querySelectorAll('li').length === 3)]")
+    check(n[0] == n[1] and n[2], f"each step folds its three questions ({n})")
+    await page.evaluate("document.querySelector('[data-askq=\"why-obey|2|1\"]').closest('details').open = true")
+    await page.click("[data-askq='why-obey|2|1']"); await page.wait_for_timeout(400)
+    note = await page.evaluate("""(async () => { const B = await loadContent('classic-mill-liberty'), r = stepRange(B, ['classic-mill-liberty-s2']);
+      const ns = notesFor('classic-mill-liberty').filter(([, n]) => n.kind === 'question'); const n = ns[0] && ns[0][1];
+      return [ns.length, n && n.gloss === PATHS[2].steps[2].q[1], n && n.sectionId === 'classic-mill-liberty-s2', n && n.at === r[0]]; })()""")
+    check(note == [1, True, True, True], f"Add to my questions makes a Question note at the step's first chapter ({note})")
+    shown = await page.evaluate("[...document.querySelectorAll('section.path[data-path-id=\"why-obey\"] .readqs')[2].querySelectorAll('li')].map((li) => !!li.querySelector('small'))")
+    check(shown == [False, True, False], f"...and the path then says it's in your questions ({shown})")
+    await page.evaluate("askQuestion('why-obey|2|1')"); await page.wait_for_timeout(200)
+    check(await page.evaluate("notesFor('classic-mill-liberty').filter(([, n]) => n.kind === 'question').length") == 1 and "already" in await page.inner_text("#toast"), "asking twice adds nothing")
+    brief = await page.evaluate("""(async () => { const id = 'classic-mill-liberty', B = await loadContent(id), r = stepRange(B, ['classic-mill-liberty-s2']), t = S.texts.get(id), out = [];
+      for (const pos of [r[0] + 3, 2]) { await put('texts', id, { ...S.texts.get(id), pos }); go({ screen: 'text', textId: id }); await new Promise((z) => setTimeout(z, 150)); out.push(document.querySelectorAll('.brief .readqs li').length); }
+      const w = 'classic-wollstonecraft-vindication', BW = await loadContent(w), rw = stepRange(BW, ['classic-wollstonecraft-vindication-s2']);
+      await put('texts', w, { ...S.texts.get(w), pos: rw[0] + 1 }); go({ screen: 'text', textId: w }); await new Promise((z) => setTimeout(z, 150));
+      out.push(document.querySelector('.brief .bmore:last-child')?.textContent || ''); return out; })()""")
+    check(brief[:2] == [3, 0], f"Where you left off shows a step's questions inside its chapters only ({brief[:2]})")
+    check("Why obey the state?" in brief[2], f"where two paths share a chapter, the first path's questions show ({brief[2]!r})")
+    check(not errs, "no script errors with reading questions" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
@@ -729,6 +759,7 @@ async def main():
         await recon(browser)
         await quizsets(browser)
         await disputes(browser)
+        await readqs(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

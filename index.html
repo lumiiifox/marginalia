@@ -655,6 +655,12 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .dspclassic { padding: 12px 16px; display: grid; gap: 6px; }
 .dspclassic .dspwho { margin: 0; font: 700 16px/1.35 var(--f-text); }
 /* reading paths */
+.readqd summary { font: 500 14px/1.3 var(--f-ui); color: var(--link); cursor: pointer; padding: 2px 0; }
+.readqs { margin: 6px 0 2px; padding-left: 20px; display: grid; gap: 8px; font: 400 15.5px/1.45 var(--f-text); }
+.readqs li > span { display: block; }
+.readqs .linkbtn { font-size: 13.5px; padding: 2px 0 0; }
+.readqs small { display: block; font: 400 13px/1.3 var(--f-ui); color: var(--muted); padding-top: 2px; }
+
 .path { margin-top: 18px; }
 .path .pd { margin: 0; font: 400 16.5px/1.5 var(--f-text); }
 .pbar { display: flex; gap: 4px; }
@@ -2970,6 +2976,7 @@ function briefHTML(id, t) {
     ${summary ? `<div><div class="blab">${where.sum === where.sec ? "Your summary of this chapter" : `Your summary of ${esc(where.sumLabel)}`}</div><p class="bsum" id="bsum">${esc(summary)}</p></div>` : ""}
     ${open.length ? `<div><div class="blab">Open questions in this book</div>${open.slice(0, 3).map(row).join("")}${open.length > 3 ? `<div class="bmore">and ${open.length - 3} more</div>` : ""}</div>` : ""}
     ${recent.length ? `<div><div class="blab">Your latest notes</div>${recent.map(row).join("")}</div>` : ""}
+    ${(() => { const at = where && stepAt(id, S.content.get(id), pos); return at ? `<div><div class="blab">Questions to read these chapters with</div>${readQsHTML(at.P, at.k, true, true)}<div class="bmore">From the reading path “${esc(at.P.n)}”</div></div>` : ""; })()}
     ${t.next ? "" : `<div class="bnext"><button class="linkbtn" id="editnext">Leave yourself a line for next time</button></div>`}
   </div></section>`;
 }
@@ -5179,6 +5186,7 @@ function pathsView() {
         <div class="pt"><b>${esc(title)}</b>${t && t.author ? `<span>${esc(t.author)}</span>` : ""}</div>
         ${ch ? `<div class="pch">${esc(ch)}</div>` : ""}
         <p>${esc(st.why)}</p>
+        ${readQsHTML(P, k, !!t)}
         <div class="noteacts">${t ? `<button class="btn${s.done ? "" : " primary"}" data-pathread="${esc(st.book)}|${esc(st.secs.join(","))}">${s.done ? "Read again" : progressIn(st) ? "Continue" : "Read these chapters"}</button><button class="btn ghost" data-open="${esc(st.book)}">The book's page</button>`
           : `<span class="hint">Not on your shelf: you deleted it.</span><button class="btn" data-pathadd="${esc(st.book)}">Add it back</button>`}</div>
       </div></li>`;
@@ -5196,6 +5204,34 @@ function pathsView() {
     <header class="gl-head"><div><h1>Reading paths</h1><div class="sub">${list.length} routes through the classics that come with the app</div></div></header>
     <p class="hint">Each path reads a few chapters from each book, in an order where each answers the one before. A step is done once you tick its chapters as read on the book's page.</p>
     ${list.map(path).join("") || `<p class="empty">No paths yet.</p>`}`;
+}
+// Questions to read a step with: folded on the path, open in Where you left off; each can become a Question note on the book.
+function readQsHTML(P, k, canAsk, open) {
+  const st = P.steps[k], qs = st.q || []; if (!qs.length) return "";
+  const have = new Set(notesFor(st.book).filter(([, n]) => n.kind === "question").map(([, n]) => n.gloss));
+  const list = `<ol class="readqs">${qs.map((q, i) => `<li><span>${esc(q)}</span>${canAsk ? (have.has(q) ? `<small>In your questions</small>` : `<button class="linkbtn" data-askq="${esc(P.id)}|${k}|${i}">Add to my questions</button>`) : ""}</li>`).join("")}</ol>`;
+  return open ? list : `<details class="readqd"><summary>Questions to read with</summary>${list}</details>`;
+}
+// The path step whose chapters hold a place in a book, if any (the first, where two paths share chapters).
+function stepAt(tid, B, pos) {
+  if (typeof PATHS === "undefined" || !B) return null;
+  for (const P of PATHS) for (const [k, st] of P.steps.entries()) {
+    if (st.book !== tid || !(st.q || []).length) continue;
+    const r = stepRange(B, st.secs); if (r && pos >= r[0] && pos < r[1]) return { P, k };
+  }
+  return null;
+}
+async function askQuestion(ref) {
+  const [pid, k, i] = ref.split("|"), P = PATHS.find((x) => x.id === pid), st = P && P.steps[+k], q = st && (st.q || [])[+i];
+  if (!q || !S.texts.has(st.book)) return;
+  if (notesFor(st.book).some(([, n]) => n.kind === "question" && n.gloss === q)) return toast("That's already in your questions.");
+  try {
+    const B = await loadContent(st.book), r = B ? stepRange(B, st.secs) : null;
+    const note = { textId: st.book, kind: "question", passage: "", gloss: q, page: r ? pagesOf(B)[r[0]] || "" : "", sectionId: st.secs[0], createdAt: Date.now(), updatedAt: Date.now() };
+    if (r) note.at = r[0];
+    await put("notes", gid(), note);
+    toast(`Added to your questions on “${S.texts.get(st.book).title}”.`);
+  } catch (e) { toast(failMsg(e)); }
 }
 // Titles for steps whose book isn't in the library: the classics' own titles (tests/study_tools.py checks them against data/books/).
 const CLASSIC_TITLES = { "classic-plato-socrates": "Euthyphro, Apology, Crito, Phaedo", "classic-aristotle-ethics": "Nicomachean Ethics", "classic-descartes-meditations": "Discourse on the Method and Meditations on First Philosophy",
@@ -7668,6 +7704,7 @@ document.addEventListener("click", (e) => {
   if (b.dataset.path) return go({ screen: "paths", path: b.dataset.path });
   if (b.dataset.pathread) { const [tid, sec] = b.dataset.pathread.split("|"); return readStep(tid, sec.split(",")); }
   if (b.dataset.pathadd) return readdClassic(b.dataset.pathadd);
+  if (b.dataset.askq) return askQuestion(b.dataset.askq);
   if (b.dataset.pathshare) { const P = PATHS.find((x) => x.id === b.dataset.pathshare); return shareLink(`${appURL()}#path=${encodeURIComponent(P.id)}`, `Reading path: ${P.n}`); }
   if (b.dataset.argquiz) return quizPanel(b.dataset.argquiz);
   if (b.dataset.steps) return stepsPanel();
