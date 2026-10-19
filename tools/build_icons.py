@@ -1,5 +1,6 @@
 """Draws the app's icons: a leaf, carved in outline into an oak board, the grain of the app's desk.
 Run:  python3 tools/build_icons.py   (writes icon-192.png, icon-512.png, icon-maskable-512.png, apple-touch-icon.png)
+      python3 tools/build_icons.py --shrink   (only reduces the existing files to 256 colours)
 The same leaf is the home screen's mark (LEAF in index.html); keep the two paths alike if you change it.
 Needs: pip install playwright numpy scipy pillow && playwright install chromium
 """
@@ -97,7 +98,16 @@ async def main(out):
             await page.set_viewport_size({"width": size, "height": size})
             await page.set_content(f"<html><body style='margin:0'>{svg(size, scale)}</body></html>")
             await page.screenshot(path=str(out / name), clip={"x": 0, "y": 0, "width": size, "height": size})
+            shrink(out / name)
         await b.close()
 
+def shrink(path):
+    """256 colours with dithering: the grain looks the same and the file is about a third smaller (the icons are opaque)."""
+    im = Image.open(path).convert("RGB")
+    im.quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.FLOYDSTEINBERG).save(path, optimize=True)
+
 if __name__ == "__main__":
-    asyncio.run(main(Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT))
+    if sys.argv[1:2] == ["--shrink"]:  # only make the existing icons smaller
+        for f in ["icon-512.png", "icon-192.png", "icon-maskable-512.png", "apple-touch-icon.png"]: shrink(ROOT / f)
+    else:
+        asyncio.run(main(Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT))
