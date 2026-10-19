@@ -563,6 +563,9 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .qz-opt.dim { opacity: 0.55; }
 .qz-say { font: 400 15px/1.45 var(--f-text); margin: 0; }
 .qz-arg { display: grid; gap: 2px; margin-top: 10px; padding: 10px 14px; border: 1px solid var(--rule); border-radius: 8px; background: var(--field); font: 500 18px/1.4 var(--f-text); font-variant-ligatures: none; }
+.qz-arg .qz-gap { color: var(--muted); letter-spacing: 0.2em; }
+.stproof { margin: 0; padding-left: 22px; display: grid; gap: 6px; font: 500 16px/1.35 var(--f-text); }
+.stproof small { display: block; font: 400 13px/1.35 var(--f-ui); color: var(--muted); }
 .qz-arg .qz-c { border-top: 1px solid var(--rule); margin-top: 4px; padding-top: 4px; }
 .qz-say .bad { color: var(--warn); }
 .qz-missed { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
@@ -4322,12 +4325,66 @@ function orderPanel() {
 }
 /* quiz: questions made from the glossary's own definitions and the thinkers' key works */
 const QZ = { mode: "def", area: "all", qs: [], k: 0, picked: -1, right: 0, missed: [] };
-const QZ_MODES = { def: "Name the term", term: "Pick the definition", work: "Who wrote it?", fallacy: "Name the fallacy", valid: "Valid or not?", words: "Words you looked up" };
+const QZ_MODES = { def: "Name the term", term: "Pick the definition", work: "Who wrote it?", fallacy: "Name the fallacy", valid: "Valid or not?", missing: "Missing premise", words: "Words you looked up" };
 // Fallacies easily mistaken for one another are never offered as each other's wrong answers.
 const FAL_NEAR = [["straw-man", "irrelevant-conclusion"], ["ad-hominem", "genetic-fallacy"], ["post-hoc", "hasty-generalization"], ["begging", "many-questions"], ["appeal-authority", "ad-populum"], ["affirming-consequent", "denying-antecedent"]];
 const falNear = (a, b) => FAL_NEAR.some((p) => p.includes(a) && p.includes(b));
 // Valid or not: a small argument in letters, made at random and checked by the truth table; half valid, half not. Premises that
 // can't all be true, and conclusions true in every row, are left out, since they make the question trivial or a trick.
+/* Put the steps in order: a chain of modus ponens (a fact, then conditionals each leading from the last), shuffled; tap them in
+   the order a proof would use them. The order is unique, so it can be checked exactly. */
+const ST = { prem: [], order: [], placed: [], checked: false, concl: "" };
+function stepsNew() {
+  const L = shuffle(["P", "Q", "R", "S", "T"]).slice(0, Math.random() < 0.5 ? 4 : 5).map((x) => (Math.random() < 0.3 ? "¬" + x : x));
+  const order = [L[0], ...L.slice(1).map((x, i) => `${L[i]} → ${x}`)];
+  Object.assign(ST, { order, prem: shuffle(order), placed: [], checked: false, concl: L[L.length - 1] });
+  if (ST.prem.join() === order.join()) ST.prem.push(ST.prem.shift());
+}
+function stepsHTML() {
+  const rest = ST.prem.filter((x) => !ST.placed.includes(x)), ok = ST.checked && ST.placed.join() === ST.order.join();
+  const row = (x, k) => `<li class="${ST.checked ? (ST.order[k] === x ? "ok" : "no") : ""}"><button class="obrow" data-keep="1" data-stout="${esc(x)}"${ST.checked ? " disabled" : ""}><span class="obk">${k + 1}</span><span class="tt-ascii">${esc(x)}</span></button></li>`;
+  if (!ST.checked) return `<p class="qz-q">Tap the premises in the order a proof of <b>${esc(ST.concl)}</b> would use them.</p>
+    ${ST.placed.length ? `<ol class="oblist">${ST.placed.map(row).join("")}</ol>` : ""}
+    ${rest.length ? `<div class="obpick">${rest.map((x) => `<button class="qz-opt tt-ascii" data-keep="1" data-stin="${esc(x)}">${esc(x)}</button>`).join("")}</div>` : ""}
+    <div class="noteacts">${rest.length ? "" : `<button class="btn primary" data-keep="1" data-stcheck="1">Check</button>`}<button class="btn ghost" data-keep="1" data-stnew="1">Another</button></div>`;
+  let cur = ST.order[0];
+  const proof = [`<li><span class="tt-ascii">${esc(cur)}</span><small>premise</small></li>`, ...ST.order.slice(1).map((c) => { const to = c.split(" → ")[1], line = `<li><span class="tt-ascii">${esc(to)}</span><small>from ${esc(cur)} and ${esc(c)}, by modus ponens</small></li>`; cur = to; return line; })];
+  return `<p class="qz-say">${ok ? "<b>Right.</b> Each step's “if” is what the step before established." : `<b class="bad">Not this order.</b> Start from the plain fact, then use the conditional whose “if” it is, and so on.`}</p>
+    <ol class="oblist">${ST.placed.map(row).join("")}</ol>
+    <div class="label">The proof</div><ol class="stproof">${proof.join("")}</ol>
+    <div class="noteacts"><button class="btn primary" data-keep="1" data-stnew="1">Another</button><button class="btn ghost" data-term="modus">Modus ponens in the glossary</button></div>`;
+}
+function stepsPanel() {
+  stepsNew();
+  openPanel(`<h2>Put the steps in order</h2><div id="stbox" style="display:grid;gap:12px">${stepsHTML()}</div>`, (b) => {
+    if (b.dataset.term) return openTerm(b.dataset.term);
+    if (b.dataset.stnew) stepsNew();
+    else if (b.dataset.stin && !ST.placed.includes(b.dataset.stin)) ST.placed.push(b.dataset.stin);
+    else if (b.dataset.stout && !ST.checked) ST.placed = ST.placed.filter((x) => x !== b.dataset.stout);
+    else if (b.dataset.stcheck && ST.placed.length === ST.prem.length) ST.checked = true;
+    $("#stbox").innerHTML = stepsHTML();
+  });
+}
+// Missing premise: a valid argument with one premise taken out; four candidates, of which only the right one makes it valid again
+// (the truth table checks each), and the rest alone don't already prove the conclusion.
+function ttFlip(x) { return x.startsWith("¬") && !x.startsWith("¬(") ? x.slice(1) : /^[A-Z]$/.test(x) ? "¬" + x : `¬(${x})`; }
+function missingQuestion() {
+  const valid = (prem, c) => { const r = ttCheck(prem.join("\n"), c); return r.err === undefined && r.live > 0 && r.cx === 0; };
+  for (let k = 0; k < 300; k++) {
+    let v = validQuestion(); if (!v.ok) continue;
+    const i = Math.floor(Math.random() * v.prem.length), right = v.prem[i], rest = v.prem.filter((_, j) => j !== i);
+    if (valid(rest, v.concl)) continue; // the rest already prove it: any premise would do
+    const letters = ttVars([...v.prem, v.concl].map(ttParse)), m = right.match(/^(¬?\w)\s*(→|∨|∧|↔)\s*(¬?\w)$/);
+    const cands = [ttFlip(right), ...(m ? [`${m[3]} ${m[2]} ${m[1]}`, `${m[1]} ${m[2] === "→" ? "∨" : "→"} ${m[3]}`, `${ttFlip(m[1])} ${m[2]} ${m[3]}`, `${m[1]} ${m[2]} ${ttFlip(m[3])}`] : []),
+      ...letters.flatMap((x) => [x, "¬" + x]), v.concl, ttFlip(v.concl)];
+    const shown = (x) => ttShow(ttParse(x));
+    const wrong = shuffle([...new Set(cands.map(shown))]).filter((x) => x !== shown(right) && x !== shown(v.concl) && ttCheck([...rest, x].join("\n"), v.concl).cx > 0).slice(0, 3); // each wrong one has a real counterexample
+    if (wrong.length < 3) continue;
+    const opts = shuffle([shown(right), ...wrong]);
+    return { rest: rest.map(shown), concl: shown(v.concl), opts, answer: opts.indexOf(shown(right)) };
+  }
+  return { rest: ["P → Q"], concl: "Q", opts: ["P", "Q", "¬P", "Q → P"], answer: 0 };
+}
 function validQuestion() {
   const pick = (a) => a[Math.floor(Math.random() * a.length)];
   const lit = (v) => (Math.random() < 0.3 ? "¬" + v : v);
@@ -4345,7 +4402,7 @@ function validQuestion() {
   return { prem: ["P → Q", "P"], concl: "Q", ok: true, res: ttCheck("P → Q\nP", "Q") };
 }
 const quizModes = () => Object.entries(QZ_MODES).filter(([m]) => m !== "words" || lookedUp().length >= 4);
-const argModes = new Set(["fallacy", "valid"]);
+const argModes = new Set(["fallacy", "valid", "missing"]);
 const shuffle = (a) => { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
 // A definition with the term's own words blanked out, so it doesn't give the answer away.
 function maskTerm(g) {
@@ -4369,6 +4426,10 @@ function quizQuestions(mode, area) {
       return { prompt: `Which fallacy is this? <i>${esc(x)}</i>`, opts: opts.map((y) => esc(y.t)), answer: opts.indexOf(g), g };
     });
   }
+  if (mode === "missing") return Array.from({ length: 10 }, () => {
+    const m = missingQuestion();
+    return { prompt: `Which premise makes this valid?<span class="qz-arg">${m.rest.map((x) => `<span>${esc(x)}</span>`).join("")}<span class="qz-gap">?</span><span class="qz-c">∴ ${esc(m.concl)}</span></span>`, opts: m.opts.map(esc), answer: m.answer, m };
+  });
   if (mode === "valid") return Array.from({ length: 10 }, () => {
     const v = validQuestion();
     return { prompt: `Is this argument valid?<span class="qz-arg">${v.prem.map((x) => `<span>${esc(x)}</span>`).join("")}<span class="qz-c">∴ ${esc(v.concl)}</span></span>`, opts: ["Valid", "Not valid"], answer: v.ok ? 0 : 1, v };
@@ -4407,19 +4468,22 @@ function quizStart(mode, area) {
 }
 function quizHTML() {
   const modes = `<div class="chips">${quizModes().map(([m, label]) => `<button class="chip ${QZ.mode === m ? "on" : ""}" data-keep="1" data-qzmode="${m}">${label}</button>`).join("")}</div>`;
-  const from = QZ.mode === "fallacy" ? "the fallacies in the glossary" : QZ.mode === "valid" ? "arguments made at random" : QZ.mode === "words" ? "words you looked up" : QZ.mode === "work" ? "the thinkers' key works" : QZ.area !== "all" && AREAS[QZ.area] ? `terms in ${esc(AREAS[QZ.area])}` : "the whole glossary";
+  const from = QZ.mode === "missing" ? "arguments made at random" : QZ.mode === "fallacy" ? "the fallacies in the glossary" : QZ.mode === "valid" ? "arguments made at random" : QZ.mode === "words" ? "words you looked up" : QZ.mode === "work" ? "the thinkers' key works" : QZ.area !== "all" && AREAS[QZ.area] ? `terms in ${esc(AREAS[QZ.area])}` : "the whole glossary";
   if (QZ.qs.length < 4) return `${modes}<p class="hint">There aren't enough entries here for a quiz yet.</p>`;
   if (QZ.k >= QZ.qs.length) {
     const n = QZ.qs.length;
     return `${modes}<p class="qz-q"><b>${QZ.right} of ${n}</b> right.</p>
-      ${QZ.missed.length ? `<div class="crow"><span class="clabel">To look at again</span><ul class="qz-missed">${QZ.missed.map((q) => q.v ? `<li>${esc(q.v.prem.join("; "))} ∴ ${esc(q.v.concl)}: ${q.v.ok ? "valid" : "not valid"}</li>` : q.wd ? `<li><b>${esc(q.wd.word)}</b>: ${esc(q.wd.sense)}</li>` : q.g ? `<li><button class="linkbtn" data-term="${esc(q.g.id)}">${esc(q.g.t)}</button></li>` : `<li><button class="linkbtn" data-thinker="${esc(q.p.id)}">${esc(q.p.n)}</button></li>`).join("")}</ul></div>` : `<p class="hint">Every one right.</p>`}
+      ${QZ.missed.length ? `<div class="crow"><span class="clabel">To look at again</span><ul class="qz-missed">${QZ.missed.map((q) => q.m ? `<li>${esc(q.m.rest.join("; "))}; <b>${esc(q.m.opts[q.answer])}</b> ∴ ${esc(q.m.concl)}</li>` : q.v ? `<li>${esc(q.v.prem.join("; "))} ∴ ${esc(q.v.concl)}: ${q.v.ok ? "valid" : "not valid"}</li>` : q.wd ? `<li><b>${esc(q.wd.word)}</b>: ${esc(q.wd.sense)}</li>` : q.g ? `<li><button class="linkbtn" data-term="${esc(q.g.id)}">${esc(q.g.t)}</button></li>` : `<li><button class="linkbtn" data-thinker="${esc(q.p.id)}">${esc(q.p.n)}</button></li>`).join("")}</ul></div>` : `<p class="hint">Every one right.</p>`}
       <div class="noteacts"><button class="btn primary" data-keep="1" data-qzagain="1">Another ten</button></div>`;
   }
   const q = QZ.qs[QZ.k], done = QZ.picked >= 0;
   const cls = (i) => (!done ? "" : i === q.answer ? " right" : i === QZ.picked ? " wrong" : " dim");
   const next = `<button class="btn primary" data-keep="1" data-qznext="1">${QZ.k + 1 < QZ.qs.length ? "Next" : "See the score"}</button>`;
   const cxRow = (v) => { const x = v.res.rows.find((r) => r.cx); return x ? v.res.vars.map((k) => `${k} ${x.env[k] ? "true" : "false"}`).join(", ") : ""; };
-  const say = !done ? "" : q.v
+  const say = !done ? "" : q.m
+    ? `<p class="qz-say">${QZ.picked === q.answer ? "<b>Right.</b>" : `<b class="bad">Not this time.</b>`} With <b>${esc(q.m.opts[q.answer])}</b>, no row makes every premise true and the conclusion false.${QZ.picked !== q.answer ? ` With ${esc(q.m.opts[QZ.picked])} there is such a row.` : ""}</p>
+       <div class="noteacts">${next}<button class="btn ghost" data-keep="1" data-qzmt="1">See it in a truth table</button></div>`
+    : q.v
     ? `<p class="qz-say">${QZ.picked === q.answer ? "<b>Right.</b>" : `<b class="bad">Not this time.</b>`} ${q.v.ok ? "It's valid: no row of its truth table makes every premise true and the conclusion false." : `It's not valid: with ${cxRow(q.v)}, every premise is true and the conclusion false.`}</p>
        <div class="noteacts">${next}<button class="btn ghost" data-keep="1" data-qztt="1">See its truth table</button></div>`
     : q.wd
@@ -4445,6 +4509,7 @@ function quizPanel(area) {
     } else if (b.dataset.qznext) { QZ.k++; QZ.picked = -1; }
     else if (b.dataset.qzmode) quizStart(b.dataset.qzmode, QZ.area);
     else if (b.dataset.qzagain) quizStart(QZ.mode, QZ.area);
+    else if (b.dataset.qzmt) { const m = QZ.qs[QZ.k].m; return truthPanel({ prem: [...m.rest, m.opts[QZ.picked]].join("\n"), concl: m.concl }); }
     else if (b.dataset.qztt) { const v = QZ.qs[QZ.k].v; return truthPanel({ prem: v.prem.join("\n"), concl: v.concl }); }
     else if (b.dataset.term) return openTerm(b.dataset.term);
     else if (b.dataset.thinker) return thinkerPanel(b.dataset.thinker);
@@ -4941,7 +5006,7 @@ function branchesView() {
         <p class="tdef">${esc(b.d)}</p>
         ${figHTML(b.img)}
         ${parasHTML(b.x)}${thinkerSources(b)}
-        ${b.id === "logic" ? `<div class="noteacts"><button class="btn" data-truth="-1">Check an argument with a truth table</button><button class="btn" data-argquiz="fallacy">Name the fallacy</button><button class="btn" data-argquiz="valid">Valid or not?</button></div>${fallacyCatalogHTML(all)}` : ""}
+        ${b.id === "logic" ? `<div class="noteacts"><button class="btn" data-truth="-1">Check an argument with a truth table</button><button class="btn" data-argquiz="fallacy">Name the fallacy</button><button class="btn" data-argquiz="valid">Valid or not?</button><button class="btn" data-argquiz="missing">Missing premise</button><button class="btn" data-steps="1">Put the steps in order</button></div>${fallacyCatalogHTML(all)}` : ""}
         <div class="label">Questions it asks</div>
         <ul class="bq-list">${b.q.map((q) => `<li>${esc(q)}</li>`).join("")}</ul>
         <div class="tconn">
@@ -7294,6 +7359,7 @@ document.addEventListener("click", (e) => {
   if (b.dataset.pathread) { const [tid, sec] = b.dataset.pathread.split("|"); return readStep(tid, sec.split(",")); }
   if (b.dataset.pathadd) return readdClassic(b.dataset.pathadd);
   if (b.dataset.argquiz) return quizPanel(b.dataset.argquiz);
+  if (b.dataset.steps) return stepsPanel();
   if (b.id === "guess") return guessPanel();
   if (b.id === "puzzles") return puzzlesMenu();
   if (b.dataset.truth) { const ex = TT_EXAMPLES[+b.dataset.truth]; return truthPanel(ex ? { prem: ex[1], concl: ex[2] } : undefined); }

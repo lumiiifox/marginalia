@@ -47,6 +47,9 @@ Uses made-up records only. Checks that:
       read through or summed up only when every chapter is (back matter like Notes left out) and it has two or more; Finished from its
       shelf; a reading path walked once every step is done; the example book never counts; the home screen's chip and a book's page
       show them, a plate opens its book, and what is still to come is listed apart.
+  16. missing premise: four different options, only the right one makes the argument valid (the others each have a counterexample),
+      and the remaining premises alone don't prove the conclusion; put the steps in order: a modus ponens chain, checked exactly,
+      with the proof written out; both from the Logic branch.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -575,6 +578,40 @@ async def plates(browser):
     check(not errs, "no script errors in bookplates" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def more_puzzles(browser):
+    page, errs = await fresh(browser)
+    bad = await page.evaluate("""(() => { const bad = []; for (let k = 0; k < 150; k++) { const m = missingQuestion();
+        if (new Set(m.opts).size !== 4) bad.push('dup');
+        m.opts.forEach((o, i) => { const r = ttCheck([...m.rest, o].join('\\n'), m.concl);
+          if (i === m.answer ? !(r.cx === 0 && r.live > 0) : r.cx === 0) bad.push((i === m.answer ? 'right ' : 'wrong ') + m.rest + ' + ' + o + ' / ' + m.concl); });
+        if (ttCheck(m.rest.join('\\n'), m.concl).cx === 0) bad.push('rest alone'); } return bad.slice(0, 4); })()""")
+    check(bad == [], f"Missing premise: only the right option makes it valid, each wrong one has a counterexample, the rest alone don't prove it ({bad})")
+    await page.evaluate("go({ screen: 'branches', focus: 'logic' })"); await page.wait_for_timeout(200)
+    await page.click("details[data-branch-id='logic'] [data-argquiz='missing']"); await page.wait_for_selector(".qz-gap")
+    a = await page.evaluate("QZ.qs[0].answer"); wrong = (a + 1) % 4
+    await page.click(f".qz-opt >> nth={wrong}"); await page.wait_for_selector("[data-qzmt]")
+    check("there is such a row" in await page.inner_text(".qz-say"), "a wrong pick is told there's a counterexample")
+    await page.click("[data-qzmt]"); await page.wait_for_selector("#tt-p")
+    check((await page.inner_text("#ttout")).startswith("Not valid."), "See it in a truth table shows the counterexample for what you picked")
+    await page.click("#pclose"); await page.wait_for_timeout(200)
+    ok = await page.evaluate("""(() => { const bad = []; for (let k = 0; k < 50; k++) { stepsNew();
+        if (ST.prem.join() === ST.order.join() || [...ST.prem].sort().join() !== [...ST.order].sort().join()) bad.push('shuffle');
+        if (ttCheck(ST.order.join('\\n'), ST.concl).cx !== 0) bad.push('valid'); } return bad; })()""")
+    check(ok == [], f"the steps are a valid chain, always shuffled ({ok[:3]})")
+    await page.click("details[data-branch-id='logic'] [data-steps]"); await page.wait_for_selector("#stbox")
+    order = await page.evaluate("ST.order")
+    await page.click(f"[data-stin='{order[1]}']"); await page.click(f"[data-stout='{order[1]}']")
+    for x in order: await page.click(f"[data-stin='{x}']"); await page.wait_for_timeout(20)
+    await page.click("[data-stcheck]"); await page.wait_for_timeout(60)
+    t = await page.inner_text("#stbox")
+    check(t.startswith("Right.") and await page.locator(".stproof li").count() == len(order) and "by modus ponens" in t, "in order, Check says so and writes out the proof")
+    await page.click("[data-stnew]"); order = await page.evaluate("ST.order")
+    for x in [order[1], order[0]] + order[2:]: await page.click(f"[data-stin='{x}']"); await page.wait_for_timeout(20)
+    await page.click("[data-stcheck]"); await page.wait_for_timeout(60)
+    check((await page.inner_text("#stbox")).startswith("Not this order.") and await page.locator("#stbox .oblist li.no").count() == 2, "out of order, the misplaced ones are marked")
+    check(not errs, "no script errors in the new puzzles" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
@@ -593,6 +630,7 @@ async def main():
         await connect(browser)
         await order(browser)
         await plates(browser)
+        await more_puzzles(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
