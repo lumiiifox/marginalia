@@ -6,6 +6,8 @@ Uses made-up records only. Checks that:
      and the order of binding come out right; mistakes get a plain message; an inconsistent set of premises and a tautology are
      explained; more than six letters is refused; the symbol keys type into the field you were in; nothing is stored;
      the table scrolls inside its frame instead of the page at phone width.
+  2. term of the day: one of the glossary's entries on the home screen, the same all day, every entry once before any repeats,
+     your edit of it shown if you made one; tapping it opens it in the glossary; nothing is stored.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -92,10 +94,32 @@ async def truth_table(browser):
     check(not errs, "no script errors in the truth table" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def term_of_day(browser):
+    page, errs = await fresh(browser)
+    r = await page.evaluate("""(() => { const n = GLOSSARY.length, d0 = dayNumber(new Date(2026, 9, 18));
+      const ids = []; for (let d = d0 - (d0 % n); d < d0 - (d0 % n) + n; d++) ids.push(termOfDay(d).id);
+      const next = []; for (let d = d0 - (d0 % n) + n; d < d0 - (d0 % n) + 2 * n; d++) next.push(termOfDay(d).id);
+      return [n, new Set(ids).size, ids.every((id) => GLOSSARY.some((g) => g.id === id)), ids.join() !== next.join(), termOfDay(d0).id === termOfDay(dayNumber(new Date(2026, 9, 18, 23, 59))).id,
+        termOfDay(d0).id !== termOfDay(d0 + 1).id]; })()""")
+    check(r[1] == r[0] and r[2] and r[3] and r[4] and r[5], f"every glossary entry comes up once in each round of days, the same all day, a new order each round ({r})")
+    await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(200)
+    tod = await page.evaluate("[document.querySelector('.tod .rc-t')?.textContent, termOfDay().t, document.querySelector('.tod').nextElementSibling.className]")
+    check(tod[0] == tod[1] and tod[2] == "refcards", f"the home screen shows today's term above the glossary, branches and thinkers ({tod})")
+    tid = await page.evaluate("termOfDay().id")
+    await page.click(".tod"); await page.wait_for_timeout(300)
+    opened = await page.evaluate(f"[S.screen, document.querySelector(\"details[data-term-id='{tid}']\")?.open]")
+    check(opened == ["glossary", True], f"tapping it opens that term in the glossary ({opened})")
+    await page.evaluate(f"put('terms', '{tid}', {{ ...GLOSSARY.find((g) => g.id === '{tid}'), t: 'My wording', createdAt: 1, updatedAt: 1 }}).then(() => go({{ screen: 'library' }}))"); await page.wait_for_timeout(300)
+    check(await page.evaluate("document.querySelector('.tod .rc-t').textContent") == "My wording", "your edit of the term is what it shows")
+    store = await page.evaluate("Object.keys(localStorage).filter((k) => /tod|day/i.test(k))")
+    check(store == [] and not errs, f"nothing is stored, and no script errors ({store}{errs})")
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         await truth_table(browser)
+        await term_of_day(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
