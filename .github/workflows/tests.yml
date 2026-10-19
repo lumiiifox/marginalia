@@ -24,7 +24,7 @@ jobs:
       - name: Install Playwright
         run: |
           python -m pip install --upgrade pip
-          python -m pip install playwright
+          python -m pip install playwright pypdf
           python -m playwright install --with-deps chromium
       - name: Run smoke tests
         run: python3 tests/smoke.py
@@ -49,3 +49,5 @@ jobs:
         run: python3 tests/pdf_import.py
       - name: Run printed page tests
         run: python3 tests/printed_page.py
+      - name: Run PDF highlights tests
+        run: python3 tests/pdf_highlights.py

@@ -1912,23 +1912,151 @@ function ocrRepair(blocks, counts) {
   return blocks.map((b) => (b.k === "pg" || !b.x ? b : { ...b, x: repair(b.x) }));
 }
 
-async function parsePDF(buf, say) {
-  say("Loading the PDF reader…");
+// PDF.js on a PDF, in a background worker so long books don't freeze the page: { pdf, stop }. stop() ends the worker.
+async function pdfOpen(buf) {
   await need("pdf", () => !!window.pdfjsLib);
   const lib = window.pdfjsLib;
-  // Run PDF.js in a background worker so long books don't freeze the page.
   let wk = null, pw = null;
   try {
     wk = new Worker(URL.createObjectURL(new Blob([`importScripts(${JSON.stringify(LIBS.pdfw[0])});`], { type: "text/javascript" })));
     pw = lib.PDFWorker.fromPort({ port: wk });
   } catch { wk = null; pw = null; }
   if (!pw) { try { await need("pdfw", () => !!window.pdfjsWorker); } catch {} try { lib.GlobalWorkerOptions.workerSrc = LIBS.pdfw[0]; } catch {} }
-  const stopWorker = () => { try { if (pw) pw.destroy(); } catch {} try { if (wk) wk.terminate(); } catch {} };
+  const stop = () => { try { if (pw) pw.destroy(); } catch {} try { if (wk) wk.terminate(); } catch {} };
   const wkFail = new Promise((_, rej) => { if (wk) wk.addEventListener("error", () => rej(new UErr("Couldn't start the PDF reader. Check your connection and try again."))); });
   let pdf;
   try { pdf = await Promise.race([lib.getDocument({ data: new Uint8Array(buf), isEvalSupported: false, ...(pw ? { worker: pw } : {}) }).promise, wkFail]); }
-  catch (e) { stopWorker(); if (e && e.name === "PasswordException") throw new UErr("This PDF is password-protected. Remove the password, then load it again."); throw e; }
-  const n = pdf.numPages;
+  catch (e) { stop(); if (e && e.name === "PasswordException") throw new UErr("This PDF is password-protected. Remove the password, then load it again."); throw e; }
+  return { pdf, stop };
+}
+/* ---------- highlights made in another app: Highlight, Underline and Squiggly annotations, with their comments ----------
+   The words under each one are read from the page's text items (whole words, line by line), then found in the book's own text. */
+const MARK_TYPES = new Set(["Highlight", "Underline", "Squiggly"]);
+function quadsOf(a) {
+  const q = a.quadPoints, box = (xs, ys) => [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+  if (!q || !q.length) return a.rect ? [box([a.rect[0], a.rect[2]], [a.rect[1], a.rect[3]])] : [];
+  if (typeof q[0] === "number") { const out = []; for (let i = 0; i + 7 < q.length; i += 8) out.push(box([q[i], q[i + 2], q[i + 4], q[i + 6]], [q[i + 1], q[i + 3], q[i + 5], q[i + 7]])); return out; }
+  return q.map((pts) => box(pts.map((p) => p.x), pts.map((p) => p.y)));
+}
+function marksOnPage(anns, items) {
+  const out = [];
+  for (const a of anns || []) {
+    if (!MARK_TYPES.has(a.subtype)) continue;
+    const lines = [];
+    for (const [x0, y0, x1, y1] of quadsOf(a)) {
+      const line = [];
+      for (const it of items) {
+        if (!it.str || !it.transform || !it.width) continue;
+        const [, , c, d, e, f] = it.transform, h = it.height || Math.hypot(c, d) || 10, w = it.width;
+        const iy0 = f - 0.25 * h, iy1 = f + 0.85 * h;
+        if (Math.min(iy1, y1) - Math.max(iy0, y0) < 0.4 * Math.min(iy1 - iy0, y1 - y0)) continue; // not this line
+        if (Math.min(e + w, x1) - Math.max(e, x0) <= Math.min(2, w / 4)) continue; // not under the mark
+        const str = it.str, n = str.length;
+        let i0 = Math.max(0, Math.round(((x0 - e) / w) * n)), i1 = Math.min(n, Math.round(((x1 - e) / w) * n));
+        while (i0 > 0 && /\S/.test(str[i0 - 1]) && /\S/.test(str[i0] || "")) i0--; // whole words: a mark rarely ends inside one
+        while (i1 > 0 && i1 < n && /\S/.test(str[i1]) && /\S/.test(str[i1 - 1])) i1++;
+        const part = str.slice(i0, i1).trim(); if (part) line.push([e + (w * i0) / n, part]);
+      }
+      if (line.length) lines.push(line.sort((p, q) => p[0] - q[0]).map((p) => p[1]).join(" "));
+    }
+    const text = lines.join("\n").trim(), comment = clean((a.contentsObj && a.contentsObj.str) || (typeof a.contents === "string" ? a.contents : "") || "");
+    if (text) out.push({ text, comment });
+  }
+  return out;
+}
+// Every mark in a PDF: [{ text, comment, p (page index) }], and its number of pages.
+async function readPdfMarks(buf, say = () => {}) {
+  say("Loading the PDF reader…");
+  const { pdf, stop } = await pdfOpen(buf), marks = [];
+  try {
+    for (let p = 1; p <= pdf.numPages; p++) {
+      if (p === 1 || p % 10 === 0) { say(`Looking for highlights, page ${p} of ${pdf.numPages}…`); await new Promise((r) => setTimeout(r, 0)); }
+      const page = await pdf.getPage(p), anns = await page.getAnnotations().catch(() => []);
+      if (anns.some((a) => MARK_TYPES.has(a.subtype))) marks.push(...marksOnPage(anns, (await page.getTextContent()).items).map((m) => ({ ...m, p: p - 1 })));
+      page.cleanup();
+    }
+    return { marks, pages: pdf.numPages };
+  } finally { try { await pdf.destroy(); } catch {} stop(); }
+}
+// The book's text without spaces, each character remembering its block and place (as placeNote counts them), with typographic
+// variants made alike: curly quotes, dashes, ligatures and soft hyphens.
+const MARK_NORM = { "’": "'", "‘": "'", "“": '"', "”": '"', "–": "-", "—": "-", "\u00AD": "" };
+const markNorm = (ch) => (ch in MARK_NORM ? MARK_NORM[ch] : ch.normalize("NFKC"));
+function bookIndex(B) {
+  let txt = ""; const blk = [], off = [];
+  for (let k = 0; k < B.length; k++) {
+    if (!markable(B[k])) continue;
+    const x = plain(B[k].x || "");
+    for (let c = 0; c < x.length; c++) { if (/\s/.test(x[c])) continue; for (const ch of markNorm(x[c])) { txt += ch; blk.push(k); off.push(c); } }
+  }
+  return { txt, blk, off };
+}
+// Where a mark's words are in the book: { a, ao, b, bo } or null. near is the block range [lo, hi) its page covers (or one block):
+// a place inside it wins, then the nearest outside it.
+function findMark(I, text, near) {
+  const [lo, hi] = Array.isArray(near) ? near : [near, near + 1], dist = (k) => (k < lo ? lo - k : k >= hi ? k - hi + 1 : 0);
+  const flat = (x) => [...unspace(x)].map(markNorm).join("");
+  const lines = text.split("\n"), wants = [...new Set([flat(lines.join("")), flat(lines.map((l, k) => (k < lines.length - 1 ? l.replace(/[-\u00AD]$/, "") : l)).join(""))])];
+  const span = (p, len) => ({ a: I.blk[p], ao: I.off[p], b: I.blk[p + len - 1], bo: I.off[p + len - 1] + 1 });
+  const nearest = (w) => { let best = -1; for (let p = I.txt.indexOf(w); p >= 0; p = I.txt.indexOf(w, p + 1)) if (best < 0 || dist(I.blk[p]) < dist(I.blk[best])) best = p; return best; };
+  for (const w of wants) { if (!w) continue; const p = nearest(w); if (p >= 0) return span(p, w.length); }
+  // the start and the end, with something between that reads differently (a footnote number, a repaired word)
+  const w = wants[wants.length - 1]; if (w.length < 50) return null;
+  const p = nearest(w.slice(0, 30)); if (p < 0) return null;
+  const q = I.txt.indexOf(w.slice(-20), p + 30); if (q < 0 || q - p > w.length * 1.3 + 40) return null;
+  return span(p, q + 20 - p);
+}
+// Notes from marks: a passage note each, the comment as your note; ones already in your notes are left out.
+async function addMarks(tid, marks, pages) {
+  const t = S.texts.get(tid), B = await loadContent(tid); if (!t || !B) throw new UErr("This book's text isn't here, so its highlights can't be placed.");
+  const I = bookIndex(B), pgs = pagesOf(B), starts = B.map((b, i) => (b.k === "pg" ? i : -1)).filter((i) => i >= 0);
+  const have = new Set(notesFor(tid).map(([, n]) => unspace(n.passage))), now = Date.now(), add = [];
+  let missed = 0, dup = 0;
+  for (const [k, m] of marks.entries()) {
+    // the blocks of the mark's page: between its page marker and the next, when the book kept one per page; else its share of the book
+    const near = starts.length >= pages * 0.6 ? [starts[Math.min(m.p, starts.length - 1)], m.p + 1 < starts.length ? starts[m.p + 1] : B.length]
+      : [Math.floor((m.p / Math.max(1, pages)) * B.length), Math.ceil(((m.p + 1) / Math.max(1, pages)) * B.length)];
+    const A = findMark(I, m.text, near); if (!A) { missed++; continue; }
+    const passage = quoteOf(B, A), key = unspace(passage);
+    if (have.has(key)) { dup++; continue; } have.add(key);
+    const xa = plain(B[A.a].x || ""), xb = plain(B[A.b].x || "");
+    const note = { textId: tid, kind: "passage", passage, gloss: m.comment || "", page: pgs[A.a] || "", at: A.a, anchor: { ...A, pre: xa.slice(Math.max(0, A.ao - 32), A.ao), suf: xb.slice(A.bo, A.bo + 32) }, createdAt: now + k, updatedAt: now + k };
+    const sec = placeIn(B, t, A.a).sec; if (sec) note.sectionId = sec;
+    add.push([gid() + k, note]);
+  }
+  if (add.length) {
+    if (idb) await idbTx(["notes"], (st) => { for (const [id, n] of add) st("notes").put(n, id); });
+    for (const [id, n] of add) S.notes.set(id, n);
+    render();
+  }
+  return { added: add.length, missed, dup };
+}
+function marksSaid(r) {
+  return `${r.added ? `Added ${r.added} highlight${r.added === 1 ? "" : "s"} as notes.` : "No new highlights to add."}${r.dup ? ` ${r.dup} ${r.dup === 1 ? "was" : "were"} already in your notes.` : ""}${r.missed ? ` ${r.missed} couldn't be found in the book's text.` : ""}`;
+}
+function offerMarks(tid, marks, pages) {
+  const k = marks.length;
+  toast(`This PDF has ${k} highlight${k === 1 ? "" : "s"}.`, { label: "Add as notes", run: () => addMarks(tid, marks, pages).then((r) => toast(marksSaid(r))).catch((e) => toast(e instanceof UErr ? e.message : failMsg(e))) });
+}
+function marksSheet(tid) {
+  const t = S.texts.get(tid); if (!t) return;
+  openSheet(`<h2>Highlights from a PDF</h2><p class="sub">${esc(t.title)}</p>
+    <p class="hint">Choose a copy of this book you marked up in another app (Acrobat, Preview, Xodo, Drive). Each highlight, underline or squiggle becomes a passage note, found in the book's own text, with its comment as your note. Ones already in your notes are left out.</p>
+    <div class="field"><label for="h-file">The marked-up PDF</label><input id="h-file" name="file" type="file" accept="application/pdf,.pdf"></div>
+    <p class="hint" id="h-prog" role="status"></p>`, async (fd) => {
+    const f = fd.get("file"); if (!f || !f.size) return "Choose the PDF with your highlights.";
+    const say = (m) => { const el = $("#h-prog"); if (el) el.textContent = m; };
+    const { marks, pages } = await readPdfMarks(await f.arrayBuffer(), say);
+    if (!marks.length) return "This PDF has no highlights, underlines or squiggles.";
+    say("Finding them in the book…");
+    const r = await addMarks(tid, marks, pages);
+    return () => toast(marksSaid(r));
+  });
+}
+async function parsePDF(buf, say) {
+  say("Loading the PDF reader…");
+  const { pdf, stop: stopWorker } = await pdfOpen(buf);
+  const n = pdf.numPages, marks = [];
   let title = "", author = "";
   try { const m = await pdf.getMetadata(); title = clean(m?.info?.Title || ""); author = clean(m?.info?.Author || ""); } catch {}
   if (/^(microsoft|untitled)|\.(pdf|docx?|indd|tex)$/i.test(title)) title = "";
@@ -1941,6 +2069,7 @@ async function parsePDF(buf, say) {
       const vb = page.getViewport({ scale: 1 }).viewBox;
       const tc = await page.getTextContent();
       pages.push({ lines: linesOf(tc.items), y0: vb[1], y1: vb[3] });
+      try { const anns = await page.getAnnotations(); if (anns.some((a) => MARK_TYPES.has(a.subtype))) marks.push(...marksOnPage(anns, tc.items).map((m) => ({ ...m, p: p - 1 }))); } catch {}
       page.cleanup();
     }
   } catch (e) { try { await pdf.destroy(); } catch {} stopWorker(); throw e; } // a page that can't be read doesn't leave the worker running
@@ -2239,7 +2368,7 @@ async function parsePDF(buf, say) {
     if (fn) blocks.push({ k: "fn", x: fn });
   });
   flush();
-  return { title, author, kind: "PDF", blocks: scanned ? ocrRepair(blocks, counts) : blocks, pageSource, cover, labels: lab };
+  return { title, author, kind: "PDF", blocks: scanned ? ocrRepair(blocks, counts) : blocks, pageSource, cover, labels: lab, marks, nPages: n };
 }
 
 /* ---------- parsing: EPUB / Word / HTML ---------- */
@@ -5382,7 +5511,7 @@ function textSheet(id) {
       S.content.set(tid, next); S.texts.set(tid, data); render();
     } else await put("texts", tid, data);
     if (!S.texts.has(tid)) S.texts.set(tid, data);
-    if (!id) return () => go({ screen: "text", textId: tid });
+    if (!id) return () => { go({ screen: "text", textId: tid }); if (parsed && parsed.marks && parsed.marks.length) offerMarks(tid, parsed.marks, parsed.nPages); };
   },
   (root) => {
     const getT = () => ({ title: $("#f-title", root).value.trim() || "Untitled", author: $("#f-author", root).value.trim() });
@@ -5559,6 +5688,7 @@ function moreMenu() {
       <button class="menuitem" id="m-file">${t.hasContent ? "Replace the book's file" : "Load the book's file"}</button>
       <button class="menuitem" id="m-edit">Edit details and cover</button>
       ${t.source && t.source.kind === "PDF" ? `<button class="menuitem" id="m-pdf">${t.pdfLabels ? "The kept PDF" : "Keep the original PDF"}</button>` : ""}
+      ${t.hasContent ? `<button class="menuitem" id="m-marks">Bring in highlights from a PDF</button>` : ""}
       <button class="menuitem" id="m-cite">Cite this text</button>
       <button class="menuitem" id="m-export">Export notes as Markdown</button>
       <button class="menuitem danger" id="m-delete">Delete this text</button>
@@ -5566,6 +5696,7 @@ function moreMenu() {
     if (b.id === "m-file") fileSheet(S.textId);
     else if (b.id === "m-edit") textSheet(S.textId);
     else if (b.id === "m-pdf") keepPdfSheet(S.textId);
+    else if (b.id === "m-marks") marksSheet(S.textId);
     else if (b.id === "m-export") exportNotes();
     else if (b.id === "m-cite") citeTextPanel(S.textId);
     else if (b.id === "m-delete") confirmDelete();
