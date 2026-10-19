@@ -602,6 +602,25 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .gclues li.new .gk { background: var(--leather); color: var(--leather-ink); border-color: transparent; }
 .gdone { padding: 12px 16px; display: grid; gap: 8px; }
 .gdone .qz-q { margin: 0; }
+/* puzzles */
+.pzmenu .menuitem b { display: block; }
+.pzmenu .menuitem span { display: block; font: 400 13.5px/1.35 var(--f-ui); color: var(--muted); margin-top: 2px; }
+.cnchain { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 4px; align-items: center; font: 500 16px/1.3 var(--f-text); }
+.cnchain li + li::before { content: "→"; color: var(--muted); margin-right: 4px; }
+.cnchain li.cur { font-weight: 700; }
+.cnchain li.goal { color: var(--muted); }
+.cnchain li.goal::before { content: "→ … →"; }
+.chip.hinted { box-shadow: 0 0 0 2px var(--brass); }
+.chip.used { opacity: 0.45; }
+.obpick { display: grid; gap: 8px; }
+.obpick .qz-opt small { display: block; font: 400 13px/1.35 var(--f-ui); color: var(--muted); margin-top: 2px; }
+.oblist { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.obrow { width: 100%; display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 10px; align-items: center; text-align: left; padding: 9px 12px; border: 1px solid var(--rule); border-radius: 8px; background: var(--field); font: 500 16px/1.3 var(--f-text); color: var(--ink); }
+.obrow:disabled { opacity: 1; }
+.obk { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font: 700 12.5px/1 var(--f-ui); background: var(--leather); color: var(--leather-ink); }
+.obyr { font: 500 13px/1 var(--f-ui); color: var(--ink); white-space: nowrap; }
+.oblist li.ok .obrow { background: var(--mk-gloss); }
+.oblist li.no .obrow { background: var(--mk-objection); }
 /* reading paths */
 .path { margin-top: 18px; }
 .path .pd { margin: 0; font: 400 16.5px/1.5 var(--f-text); }
@@ -3845,14 +3864,14 @@ function timelineHTML(list) {
   return eras + (undated.length ? `<section class="tl-era"><h3>Dates not given</h3><div class="gl-list">${undated.map(thinkerRow).join("")}</div></section>` : "");
 }
 // A term's thinkers on one scale, in order of birth: who the entry names, and when they lived. Undated thinkers are left out.
-function termTimeHTML(ids) {
+function termTimeHTML(ids, label = "Its thinkers in time") {
   const rows = (ids || []).map((id) => THINKER.get(id)).filter(Boolean).map((p) => ({ p, s: lifeSpan(p.y) })).filter((x) => x.s).sort((x, y) => x.s.a - y.s.a || x.s.b - y.s.b);
   if (rows.length < 2) return "";
   const min = Math.min(...rows.map((x) => x.s.a)), max = Math.max(...rows.map((x) => x.s.b)), ancient = min < 1400;
   const span = Math.max(1, max - min), step = [25, 50, 100, 250, 500, 1000].find((k) => span / k <= 4) || 1000;
   const from = Math.floor(min / step) * step, to = Math.ceil(max / step) * step, W = to - from, pct = (v) => (100 * (v - from)) / W;
   const ticks = []; for (let v = from; v < to; v += step) ticks.push(v);
-  return `<div class="ttime"><div class="label">Its thinkers in time</div>
+  return `<div class="ttime"><div class="label">${esc(label)}</div>
     <div class="tl-scale">${ticks.map((v) => `<span style="left:${pct(v)}%">${yearLabel(v, ancient)}</span>`).join("")}</div>
     ${rows.map(({ p, s }) => `<button class="tl-row" data-thinker="${esc(p.id)}" style="--tick:${(100 * step) / W}%"><span class="tl-n">${esc(p.sn || p.n)}<span>${esc(p.y)}</span></span>
       <span class="tl-bar${s.approx ? " approx" : ""}${s.open ? " open" : ""}" style="margin-left:${pct(s.a)}%;width:${Math.max(0.8, pct(s.b) - pct(s.a))}%" aria-hidden="true"></span></button>`).join("")}</div>`;
@@ -3911,7 +3930,7 @@ function thinkersView() {
     ? `<p class="hint">Each bar is a life, on the scale of its period, so you can see who lived at the same time. Pale bars are approximate dates; a bar that fades runs to the present.</p>${timelineHTML(list)}`
     : `<p class="hint">In order of birth; the last few have no published birth year.</p><div class="gl-list">${list.map(thinkerRow).join("")}</div>`;
   return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
-    <header class="gl-head"><div><h1>Thinkers</h1><div class="sub">${THINKERS.length} philosophers and theorists</div></div><div class="gl-acts"><button class="btn" id="guess">Guess the thinker</button><button class="btn" id="quiz">Who wrote it?</button></div></header>
+    <header class="gl-head"><div><h1>Thinkers</h1><div class="sub">${THINKERS.length} philosophers and theorists</div></div><div class="gl-acts"><button class="btn" id="puzzles">Puzzles</button><button class="btn" id="quiz">Who wrote it?</button></div></header>
     <p class="hint">Tap a name for their key works, the glossary terms and traditions they belong to, who they drew on and who took them up, and who lived at the same time.</p>
     <input class="search" id="pq" type="search" placeholder="Search names, descriptions and works" value="${esc(S.pq || "")}" aria-label="Search the thinkers">
     ${views}
@@ -4109,6 +4128,131 @@ function guessPanel() {
     }
   });
   $("#sheetroot .veil").addEventListener("keydown", (e) => { if (e.key === "Enter" && e.target.id === "g-in") { e.preventDefault(); const g = $("#sheetroot [data-gtry]"); if (g) g.click(); } });
+}
+/* ---------- puzzles about the thinkers (Thinkers → Puzzles): nothing is stored ---------- */
+function puzzlesMenu() {
+  openPanel(`<h2>Puzzles</h2><p class="hint">Played on the app's own thinker entries: their dates, and who they drew on.</p>
+    <div class="menu pzmenu">
+      <button class="menuitem" id="pz-guess"><b>Guess the thinker</b><span>Today's thinker, from clues that get more telling</span></button>
+      <button class="menuitem" id="pz-connect"><b>Connect two thinkers</b><span>From one to another through who took up whom</span></button>
+      <button class="menuitem" id="pz-order"><b>Order of birth</b><span>Put five thinkers in the order they were born</span></button>
+    </div>`, (b) => {
+    if (b.id === "pz-guess") guessPanel();
+    else if (b.id === "pz-connect") connectPanel();
+    else if (b.id === "pz-order") orderPanel();
+  });
+}
+// Who took each thinker up: the "drew on" lists read the other way. Built on first use.
+let TOOK_MAP = null;
+function tookMap() {
+  if (TOOK_MAP) return TOOK_MAP;
+  TOOK_MAP = new Map(THINKERS.map((p) => [p.id, []]));
+  for (const p of THINKERS) for (const i of p.i) if (TOOK_MAP.has(i)) TOOK_MAP.get(i).push(p.id);
+  return TOOK_MAP;
+}
+// Steps forward from a, along "taken up by": each reachable thinker's distance, and one way back to a.
+function lineFrom(a) {
+  const on = tookMap(), dist = new Map([[a, 0]]), prev = new Map(), q = [a];
+  while (q.length) { const x = q.shift(); for (const y of on.get(x) || []) if (!dist.has(y)) { dist.set(y, dist.get(x) + 1); prev.set(y, x); q.push(y); } }
+  return { dist, route: (b) => { if (!dist.has(b)) return null; const r = [b]; while (r[0] !== a) r.unshift(prev.get(r[0])); return r; } };
+}
+/* Connect two thinkers: from a start to a target that is k steps on, choosing at each step one of those who took up the current
+   thinker. A few steps beyond the shortest are allowed; Hint marks a choice that still leads there in the fewest. */
+const CN = { k: 3, a: "", b: "", chain: [], over: "", hint: "", shortest: 0 };
+const CN_SLACK = 3;
+function connectNew(k = CN.k) {
+  const starts = shuffle(THINKERS.filter((p) => tookMap().get(p.id).length));
+  for (const p of starts) {
+    const { dist } = lineFrom(p.id), ends = [...dist].filter(([, d]) => d === k).map(([id]) => id);
+    if (ends.length) { Object.assign(CN, { k, a: p.id, b: ends[Math.floor(Math.random() * ends.length)], chain: [p.id], over: "", hint: "", shortest: k }); return; }
+  }
+  Object.assign(CN, { k, a: "", b: "" });
+}
+const cnName = (id) => esc(THINKER.get(id)?.sn || THINKER.get(id)?.n || id);
+function connectHTML() {
+  if (!CN.a) return `<p class="hint">The thinker entries don't have a chain that long.</p>`;
+  const cur = CN.chain[CN.chain.length - 1], steps = CN.chain.length - 1, left = CN.shortest + CN_SLACK - steps;
+  const diff = `<div class="chips">${[2, 3, 4].map((k) => `<button class="chip ${CN.k === k ? "on" : ""}" data-keep="1" data-cnk="${k}">${k} steps</button>`).join("")}</div>`;
+  const chain = `<ol class="cnchain">${CN.chain.map((id, i) => `<li class="${i === CN.chain.length - 1 ? "cur" : ""}">${cnName(id)}</li>`).join("")}${CN.over === "solved" ? "" : `<li class="goal">${cnName(CN.b)}</li>`}</ol>`;
+  const head = `<p class="qz-q">From <b>${cnName(CN.a)}</b> to <b>${cnName(CN.b)}</b> <span class="hint">(${esc(THINKER.get(CN.b).y)})</span>, through who took up whom. The shortest way takes ${CN.shortest} steps.</p>`;
+  if (CN.over) {
+    const best = lineFrom(CN.a).route(CN.b);
+    const said = CN.over === "solved"
+      ? `<b>There in ${steps} step${steps === 1 ? "" : "s"}.</b> ${steps === CN.shortest ? "That's the shortest way." : `The shortest takes ${CN.shortest}.`}`
+      : `<b class="bad">${CN.over === "gave" ? "Here's a way." : "Out of steps."}</b>`;
+    return `${diff}${head}${chain}<p class="qz-say">${said}${CN.over !== "solved" || steps > CN.shortest ? ` One shortest route: ${best.map(cnName).join(" → ")}.` : ""}</p>
+      <div class="noteacts"><button class="btn primary" data-keep="1" data-cnnew="1">Another</button><button class="btn" data-thinker="${esc(CN.b)}">About ${cnName(CN.b)}</button></div>`;
+  }
+  const next = [...tookMap().get(cur)].sort((x, y) => birthYear(THINKER.get(x).y) - birthYear(THINKER.get(y).y));
+  const choices = next.length
+    ? `<div class="label">Who took up ${cnName(cur)}?</div><div class="chips">${next.map((id) => `<button class="chip pchip${CN.hint === id ? " hinted" : ""}${CN.chain.includes(id) ? " used" : ""}" data-keep="1" data-cngo="${esc(id)}"${CN.chain.includes(id) ? " disabled" : ""}>${cnName(id)}</button>`).join("")}</div>`
+    : `<p class="hint">No one in the app's entries took up ${cnName(cur)}. Step back and try another way.</p>`;
+  return `${diff}${head}${chain}${choices}
+    <p class="hint">${left} step${left === 1 ? "" : "s"} left.</p>
+    <div class="noteacts">${steps ? `<button class="btn" data-keep="1" data-cnback="1">Step back</button>` : ""}${next.length ? `<button class="btn" data-keep="1" data-cnhint="1">Hint</button>` : ""}<button class="btn ghost" data-keep="1" data-cngive="1">Show a way</button></div>`;
+}
+function connectPanel() {
+  connectNew();
+  openPanel(`<h2>Connect two thinkers</h2><p class="hint">Each step goes to someone whose entry lists the one before among those they drew on.</p><div id="cnbox" style="display:grid;gap:12px">${connectHTML()}</div>`, (b) => {
+    if (b.dataset.thinker) return thinkerPanel(b.dataset.thinker);
+    const cur = () => CN.chain[CN.chain.length - 1];
+    if (b.dataset.cnk) connectNew(+b.dataset.cnk);
+    else if (b.dataset.cnnew) connectNew();
+    else if (b.dataset.cngo && !CN.over) {
+      CN.chain.push(b.dataset.cngo); CN.hint = "";
+      if (b.dataset.cngo === CN.b) CN.over = "solved";
+      else if (CN.chain.length - 1 >= CN.shortest + CN_SLACK) CN.over = "out";
+    } else if (b.dataset.cnback && CN.chain.length > 1) { CN.chain.pop(); CN.hint = ""; }
+    else if (b.dataset.cnhint) { const r = lineFrom(cur()).route(CN.b); CN.hint = r && r[1] && !CN.chain.includes(r[1]) ? r[1] : ""; if (!CN.hint) toast(`${THINKER.get(CN.b).sn} can't be reached from here. Step back.`); }
+    else if (b.dataset.cngive) CN.over = "gave";
+    $("#cnbox").innerHTML = connectHTML();
+  });
+}
+/* Order of birth: five thinkers with known birth years, at least ORDER_GAP years apart; tap them from earliest to latest. */
+const OB = { ids: [], placed: [], checked: false, era: false };
+const ORDER_GAP = 12;
+function orderNew(era = OB.era) {
+  const dated = THINKERS.filter((p) => { const s = lifeSpan(p.y); return s && !s.approx && !s.open; });
+  for (let tries = 0; tries < 200; tries++) {
+    let pool = dated;
+    if (era) { const e = TL_ERAS[Math.floor(Math.random() * TL_ERAS.length)]; pool = dated.filter((p) => { const a = lifeSpan(p.y).a; return a >= e[1] && a < e[2]; }); }
+    const pick = [];
+    for (const p of shuffle(pool)) { const a = lifeSpan(p.y).a; if (pick.every((q) => Math.abs(lifeSpan(q.y).a - a) >= ORDER_GAP)) pick.push(p); if (pick.length === 5) break; }
+    if (pick.length === 5) { Object.assign(OB, { ids: pick.map((p) => p.id), placed: [], checked: false, era }); return; }
+  }
+}
+const obRight = () => [...OB.ids].sort((x, y) => lifeSpan(THINKER.get(x).y).a - lifeSpan(THINKER.get(y).y).a);
+function orderHTML() {
+  const mode = `<div class="chips"><button class="chip ${OB.era ? "" : "on"}" data-keep="1" data-obera="0">Across history</button><button class="chip ${OB.era ? "on" : ""}" data-keep="1" data-obera="1">Within one period</button></div>`;
+  if (OB.ids.length < 5) return `${mode}<p class="hint">There aren't enough dated thinkers for this yet.</p>`;
+  const right = obRight(), name = (id) => esc(THINKER.get(id).n);
+  const placed = OB.placed.map((id, k) => {
+    const ok = OB.checked && right[k] === id, born = lifeSpan(THINKER.get(id).y).a;
+    return `<li class="${OB.checked ? (ok ? "ok" : "no") : ""}"><button class="obrow" data-keep="1" data-obout="${esc(id)}"${OB.checked ? " disabled" : ""}><span class="obk">${k + 1}</span><span>${name(id)}</span>${OB.checked ? `<span class="obyr">${esc(yearLabel(born, born < 1400))}${ok ? "" : ` · ${ordinal(right.indexOf(id) + 1)}`}</span>` : ""}</button></li>`;
+  }).join("");
+  const rest = OB.ids.filter((id) => !OB.placed.includes(id));
+  if (!OB.checked) return `${mode}<p class="qz-q">Tap them in order of birth, earliest first.</p>
+    ${OB.placed.length ? `<ol class="oblist">${placed}</ol><p class="hint">Tap a placed name to take it back.</p>` : ""}
+    ${rest.length ? `<div class="obpick">${rest.map((id) => `<button class="qz-opt" data-keep="1" data-obin="${esc(id)}">${name(id)}<small>${esc(THINKER.get(id).d)}</small></button>`).join("")}</div>` : ""}
+    <div class="noteacts">${rest.length ? "" : `<button class="btn primary" data-keep="1" data-obcheck="1">Check</button>`}<button class="btn ghost" data-keep="1" data-obnew="1">Five others</button></div>`;
+  const n = OB.placed.filter((id, k) => right[k] === id).length;
+  return `${mode}<p class="qz-say"><b>${n} of 5</b> in the right place${n === 5 ? ". All of them." : "; the number after a year is where it belongs."}</p>
+    <ol class="oblist">${placed}</ol>
+    ${termTimeHTML(OB.ids, "On one time scale")}
+    <div class="noteacts"><button class="btn primary" data-keep="1" data-obnew="1">Five others</button></div>`;
+}
+const ordinal = (k) => ["1st", "2nd", "3rd", "4th", "5th"][k - 1] || `${k}th`;
+function orderPanel() {
+  orderNew();
+  openPanel(`<h2>Order of birth</h2><div id="obbox" style="display:grid;gap:12px">${orderHTML()}</div>`, (b) => {
+    if (b.dataset.thinker) return thinkerPanel(b.dataset.thinker);
+    if (b.dataset.obera) orderNew(b.dataset.obera === "1");
+    else if (b.dataset.obnew) orderNew();
+    else if (b.dataset.obin && !OB.placed.includes(b.dataset.obin)) OB.placed.push(b.dataset.obin);
+    else if (b.dataset.obout && !OB.checked) OB.placed = OB.placed.filter((x) => x !== b.dataset.obout);
+    else if (b.dataset.obcheck && OB.placed.length === 5) OB.checked = true;
+    $("#obbox").innerHTML = orderHTML();
+  });
 }
 /* quiz: questions made from the glossary's own definitions and the thinkers' key works */
 const QZ = { mode: "def", area: "all", qs: [], k: 0, picked: -1, right: 0, missed: [] };
@@ -7084,6 +7228,7 @@ document.addEventListener("click", (e) => {
   if (b.dataset.pathadd) return readdClassic(b.dataset.pathadd);
   if (b.dataset.argquiz) return quizPanel(b.dataset.argquiz);
   if (b.id === "guess") return guessPanel();
+  if (b.id === "puzzles") return puzzlesMenu();
   if (b.dataset.truth) { const ex = TT_EXAMPLES[+b.dataset.truth]; return truthPanel(ex ? { prem: ex[1], concl: ex[2] } : undefined); }
   if (b.dataset.say) return sayIt(b.dataset.say);
   if (b.dataset.editterm) return termSheet(b.dataset.editterm);

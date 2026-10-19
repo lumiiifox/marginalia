@@ -15,7 +15,7 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - After any change to PDF import, also run `python3 tests/pdf_import.py` (generated books: headings, page order, broken words, a scan-like book). `python3 tests/pdf_import.py some.pdf` shows what the parser makes of a real book, for checking a bad import; real books stay out of the repo.
 - After any change to the reader, also run `python3 tests/paged_reader.py` (Swipe pages: gestures, alignment, flips, joined paragraphs, chapters) `python3 tests/structure.py` (marking chapters, headings, running heads and title pages with Edit) `python3 tests/comfort.py` (tap to turn, the hidden toolbar, the screen kept on, status-bar colours, Scroll mode on a long book) `python3 tests/navigate.py` (Find with marks and arrows, the slider and your notes marked above it, Go to page, pages left in the chapter, the Contents tabs) `python3 tests/highlights.py` (highlights on the exact words, across paragraphs and pages, after corrections; Continue on next page) `python3 tests/notes_lookup.py` (tapping note numbers for footnotes and endnotes; Wiktionary in Look up, with a stand-in for the API) `python3 tests/quotes_language.py` (Edit → A block quote; a book's language for hyphenation) `python3 tests/pin.py` (the pinned passage: Pin, collapse, gestures, Go to it and back, notes, changed or removed sources) `python3 tests/followups.py` (follow-ups on notes and earlier wordings: the card, the sheet, search, tags, export, restore keeping both copies' ones) `python3 tests/classics.py` (the classics that come with the app: added once, deleted stays deleted, each opens with its chapters and notes; also after rebuilding them) and `python3 tests/printed_page.py` (keeping a book's PDF and showing its printed pages; the storage upgrade to version 7).
 - After changes to colours or styles, run `python3 tests/contrast.py` (every screen and the main panels, light and dark, against WCAG AA).
-- After changes to the study tools around the reference sections (the truth table, term of the day, Hear it, the Anki export, a term's thinkers in time, two-step lineage, your notes through the book, the fallacies, reading paths, from your margins, essay templates, argument puzzles, guess the thinker), run `python3 tests/study_tools.py`.
+- After changes to the study tools around the reference sections (the truth table, term of the day, Hear it, the Anki export, a term's thinkers in time, two-step lineage, your notes through the book, the fallacies, reading paths, from your margins, essay templates, argument puzzles, guess the thinker, connect two thinkers, order of birth), run `python3 tests/study_tools.py`.
 - This session can't delete remote branches; the repo is set to delete merged PR branches automatically (if not, tell the owner).
 
 ## Rules
@@ -71,7 +71,11 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
   `dayNumber`; Another (`resurfSkip`) redraws only the card. Nothing stored.
 - Essay templates (`ESSAY_TEMPLATES`, in New draft, `draftTitleSheet`): headings, each followed by a paragraph starting with `GUIDE`, drawn
   muted (`.dguide`); ordinary draft items, so backups need nothing new.
-- Guess the thinker (`guessPanel`, from the Thinkers screen): `guessOfDay` picks from `guessPool` by `dayNumber`, every one once a round;
+- Puzzles (Thinkers → Puzzles, `puzzlesMenu`): Guess the thinker, Connect two thinkers and Order of birth. Connect (`connectPanel`, state in `CN`):
+  `tookMap` reads the "drew on" lists the other way, `lineFrom` finds distances and a shortest route; a target is `CN.k` steps on, with
+  `CN_SLACK` steps to spare. Order of birth (`orderPanel`, `OB`): five exact births `ORDER_GAP` years apart, the answer drawn by `termTimeHTML`.
+  Nothing stored.
+- Guess the thinker (`guessPanel`, from Thinkers → Puzzles): `guessOfDay` picks from `guessPool` by `dayNumber`, every one once a round;
   `guessClues` builds up to `GUESS_MAX` clues from the entries with the name blanked out. Today's game is in `localStorage` as `mg-guess` (not in
   backups); `guessResult` is the text to share. No streaks or scores are kept.
 - Truth table (`truthPanel`, from the Logic branch and the glossary's `TT_TERMS`): `ttLex`/`ttParse` read premises and a conclusion

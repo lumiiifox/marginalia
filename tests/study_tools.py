@@ -38,6 +38,11 @@ Uses made-up records only. Checks that:
   12. guess the thinker: one thinker a day, the same all day; every thinker it can pick has at least four clues, none giving the
       name away; a wrong guess shows the next clue and is listed; a name not in the app is refused; a right guess or Show me ends
       the game, offering their card and a result to share; today's game survives closing the panel, and tomorrow starts afresh.
+  13. connect two thinkers (Thinkers → Puzzles): a target exactly the chosen number of steps on; each choice is someone whose entry
+      lists the current thinker as drawn on; following a shortest route arrives in the fewest steps; Hint marks a choice on one;
+      Step back undoes; running out of steps or Show a way ends it with a real shortest route.
+  14. order of birth: five thinkers with exact birth years at least twelve years apart (one period's, when asked); tapping them in
+      order and Check scores them, a placed name can be taken back first, and the answer is drawn on one time scale.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -445,7 +450,7 @@ async def guess(browser):
         if (c.length < 4) bad.push(p.id + ' clues'); for (const w of [p.sn, ...p.n.split(/\\s+/)].filter((w) => w.length > 3 && !/^(the|of|de|von|van)$/i.test(w))) if (new RegExp(`(^|[^\\p{L}])${reEsc(w.toLowerCase())}($|[^\\p{L}])`, 'u').test(all)) bad.push(p.id + ' names ' + w); }
       const d = dayNumber(), n = guessPool().length, d0 = d - (d % n); return [n, bad.slice(0, 6), guessOfDay(d).id === guessOfDay(d).id, new Set([...Array(n).keys()].map((k) => guessOfDay(d0 + k).id)).size === n]; })()""")
     check(pool[0] > 50 and pool[1] == [] and pool[2] and pool[3], f"a thinker a day, the same all day, every one once before any repeats, each with four clues or more and none naming them ({pool[:1]}, {pool[1]}, {pool[3]})")
-    await page.evaluate("go({ screen: 'thinkers' })"); await page.click("#guess"); await page.wait_for_selector(".gclues")
+    await page.evaluate("go({ screen: 'thinkers' })"); await page.click("#puzzles"); await page.click("#pz-guess"); await page.wait_for_selector(".gclues")
     check(await page.locator(".gclues li").count() == 1, "it starts with one clue")
     ans = await page.evaluate("guessOfDay().id"); other = await page.evaluate(f"THINKERS.find((p) => p.id !== '{ans}').n")
     await page.fill("#g-in", "Nobody Atall"); await page.click("[data-gtry]"); await page.wait_for_timeout(100)
@@ -453,7 +458,7 @@ async def guess(browser):
     await page.fill("#g-in", other); await page.press("#g-in", "Enter"); await page.wait_for_timeout(100)
     st = await page.evaluate("[document.querySelectorAll('.gclues li').length, document.querySelector('#gbox .hint')?.textContent || '']")
     check(st[0] == 2 and st[1].startswith("Not "), f"a wrong guess (Enter works) shows the next clue and is listed ({st})")
-    await page.click("#pclose"); await page.wait_for_timeout(200); await page.click("#guess"); await page.wait_for_selector(".gclues")
+    await page.click("#pclose"); await page.wait_for_timeout(200); await page.evaluate("guessPanel()"); await page.wait_for_selector(".gclues")
     check(await page.locator(".gclues li").count() == 2, "closing and opening again keeps today's game")
     name = await page.evaluate(f"THINKER.get('{ans}').n")
     await page.fill("#g-in", name.lower()); await page.click("[data-gtry]"); await page.wait_for_timeout(100)
@@ -468,6 +473,63 @@ async def guess(browser):
     await page.evaluate("guessPanel()"); await page.wait_for_selector("[data-ggive]"); await page.click("[data-ggive]"); await page.wait_for_timeout(100)
     check((await page.inner_text(".gdone .qz-q")).startswith("It was") and "Didn't get it" in await page.evaluate("guessResult(guessState(), guessClues(guessOfDay()))"), "Show me ends it and names them")
     check(not errs, "no script errors in Guess the thinker" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
+async def connect(browser):
+    page, errs = await fresh(browser)
+    ok = await page.evaluate("""(() => { const bad = []; for (const k of [2, 3, 4]) for (let n = 0; n < 15; n++) { connectNew(k);
+        if (lineFrom(CN.a).dist.get(CN.b) !== k || CN.shortest !== k) bad.push(k + ' ' + CN.a + '>' + CN.b); } return bad; })()""")
+    check(ok == [], f"the target is exactly the chosen number of steps on ({ok[:3]})")
+    await page.evaluate("go({ screen: 'thinkers' })"); await page.click("#puzzles"); await page.click("#pz-connect"); await page.wait_for_selector("#cnbox")
+    opts = await page.evaluate("(() => { const cur = CN.chain.at(-1); return [[...document.querySelectorAll('[data-cngo]')].map((b) => b.dataset.cngo).sort(), THINKERS.filter((p) => p.i.includes(cur)).map((p) => p.id).sort()]; })()")
+    check(opts[0] == opts[1] and len(opts[0]) > 0, f"the choices are exactly those who took up the current thinker ({len(opts[0])})")
+    route = await page.evaluate("lineFrom(CN.a).route(CN.b)")
+    await page.click("[data-cnhint]"); await page.wait_for_timeout(80)
+    hinted = await page.evaluate("[document.querySelector('[data-cngo].hinted')?.dataset.cngo, lineFrom(CN.chain.at(-1)).dist.get(CN.b)]")
+    check(hinted[0] and await page.evaluate(f"lineFrom('{hinted[0]}').dist.get(CN.b)") == hinted[1] - 1, f"Hint marks a choice that is one step nearer ({hinted})")
+    await page.click(f"[data-cngo='{route[1]}']"); await page.click("[data-cnback]"); await page.wait_for_timeout(60)
+    check(await page.evaluate("CN.chain.length") == 1, "Step back undoes a step")
+    for id in route[1:]:
+        await page.click(f"[data-cngo='{id}']"); await page.wait_for_timeout(50)
+    done = await page.inner_text("#cnbox")
+    check(await page.evaluate("CN.over") == "solved" and "That's the shortest way." in done, f"following a shortest route arrives in the fewest steps ({done.splitlines()[-3:]})")
+    await page.click("[data-cnnew]"); await page.wait_for_timeout(60)
+    await page.evaluate("(() => { while (CN.chain.length - 1 < CN.shortest + CN_SLACK - 1) CN.chain.push('x' + CN.chain.length); CN.chain.push(CN.a); document.querySelector('#cnbox').innerHTML = connectHTML(); })()")
+    await page.evaluate("(() => { CN.chain.pop(); CN.chain.pop(); CN.chain.push(CN.a); document.querySelector('#cnbox').innerHTML = connectHTML(); })()")
+    c = await page.evaluate("document.querySelector('[data-cngo]:not([disabled])')?.dataset.cngo")
+    if c and c != await page.evaluate("CN.b"):
+        await page.click(f"[data-cngo='{c}']"); await page.wait_for_timeout(60)
+        check(await page.evaluate("CN.over") == "out" and "Out of steps." in await page.inner_text("#cnbox"), "running out of steps ends it")
+    await page.click("[data-cnnew]"); await page.click("[data-cngive]"); await page.wait_for_timeout(60)
+    shown = await page.evaluate("""(() => { const t = document.querySelector('#cnbox .qz-say').textContent, r = lineFrom(CN.a).route(CN.b);
+      return [t.includes('One shortest route: ' + r.map((id) => THINKER.get(id).sn || THINKER.get(id).n).join(' → ')), r.every((id, k) => !k || THINKER.get(id).i.includes(r[k - 1])), r.length - 1 === CN.shortest]; })()""")
+    check(shown == [True, True, True], f"Show a way gives a real shortest route, each step a 'drew on' link ({shown})")
+    check(not errs, "no script errors connecting thinkers" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
+async def order(browser):
+    page, errs = await fresh(browser)
+    ok = await page.evaluate("""(() => { const bad = []; for (const era of [false, true]) for (let n = 0; n < 25; n++) { orderNew(era);
+        const b = OB.ids.map((id) => lifeSpan(THINKER.get(id).y)); if (OB.ids.length !== 5 || new Set(OB.ids).size !== 5) bad.push('five');
+        if (b.some((s) => !s || s.approx || s.open)) bad.push('exact');
+        for (let i = 0; i < 5; i++) for (let j = i + 1; j < 5; j++) if (Math.abs(b[i].a - b[j].a) < ORDER_GAP) bad.push('gap');
+        if (era && new Set(b.map((s) => TL_ERAS.findIndex(([, lo, hi]) => s.a >= lo && s.a < hi))).size !== 1) bad.push('era'); } return [...new Set(bad)]; })()""")
+    check(ok == [], f"five thinkers with exact births at least {12} years apart, from one period when asked ({ok})")
+    await page.evaluate("go({ screen: 'thinkers' })"); await page.click("#puzzles"); await page.click("#pz-order"); await page.wait_for_selector("#obbox")
+    right = await page.evaluate("obRight()")
+    await page.click(f"[data-obin='{right[1]}']"); await page.click(f"[data-obout='{right[1]}']"); await page.wait_for_timeout(50)
+    check(await page.evaluate("OB.placed.length") == 0, "a placed name can be taken back")
+    for id in right: await page.click(f"[data-obin='{id}']"); await page.wait_for_timeout(30)
+    await page.click("[data-obcheck]"); await page.wait_for_timeout(80)
+    t = await page.inner_text("#obbox")
+    check(t.find("5 of 5") >= 0 and await page.locator("#obbox .oblist li.ok").count() == 5 and await page.locator("#obbox .ttime .tl-row").count() == 5, "in the right order, Check scores five of five and draws them on one time scale")
+    await page.click("[data-obnew]"); await page.wait_for_timeout(50)
+    right = await page.evaluate("obRight()")
+    for id in [right[1], right[0]] + right[2:]: await page.click(f"[data-obin='{id}']"); await page.wait_for_timeout(30)
+    await page.click("[data-obcheck]"); await page.wait_for_timeout(80)
+    marks = await page.evaluate("[...document.querySelectorAll('#obbox .oblist li')].map((x) => x.className)")
+    check(marks == ["no", "no", "ok", "ok", "ok"] and "3 of 5" in await page.inner_text("#obbox"), f"two swapped are marked, the rest right ({marks})")
+    check(not errs, "no script errors in Order of birth" + (f": {errs}" if errs else ""))
     await page.context.close()
 
 async def main():
@@ -485,6 +547,8 @@ async def main():
         await templates(browser)
         await puzzles(browser)
         await guess(browser)
+        await connect(browser)
+        await order(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
