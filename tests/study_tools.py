@@ -50,6 +50,8 @@ Uses made-up records only. Checks that:
   16. missing premise: four different options, only the right one makes the argument valid (the others each have a counterexample),
       and the remaining premises alone don't prove the conclusion; put the steps in order: a modus ponens chain, checked exactly,
       with the proof written out; both from the Logic branch.
+  17. how to reconstruct an argument: the guide opens from the Logic branch with its steps, an example and its sources, and its steps
+      fold out under an Argument note's premises.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -612,6 +614,20 @@ async def more_puzzles(browser):
     check(not errs, "no script errors in the new puzzles" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def recon(browser):
+    page, errs = await fresh(browser)
+    await page.evaluate("go({ screen: 'branches', focus: 'logic' })"); await page.wait_for_timeout(200)
+    await page.click("details[data-branch-id='logic'] [data-recon]"); await page.wait_for_selector(".sheet .recon")
+    g = await page.evaluate("[document.querySelectorAll('.sheet .recon li').length, RECON_STEPS.length, document.querySelectorAll('.sheet .qz-arg').length, document.querySelectorAll('.sheet .srclist a').length]")
+    check(g[0] == g[1] == 8 and g[2] == 2 and g[3] == 2, f"the guide opens from the Logic branch: its steps, a worked example in two versions, two sources ({g})")
+    await page.click(".sheet [data-term='genetic-fallacy']"); await page.wait_for_timeout(300)
+    check(await page.evaluate("document.querySelector(\"details[data-term-id='genetic-fallacy']\")?.open"), "it links to the fallacy its example turns on")
+    await page.evaluate("put('texts', 'r1', { title: 'R', sections: [], createdAt: 1, updatedAt: 1 }).then(() => go({ screen: 'text', textId: 'r1' }))"); await page.wait_for_timeout(200)
+    await page.evaluate("noteSheet(null)"); await page.wait_for_selector("#n-arg", state="attached")
+    check(await page.locator("#n-arg .reconfold .recon li").count() == 8, "an Argument note's premises have the steps to fold out")
+    check(not errs, "no script errors in the guide" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
@@ -631,6 +647,7 @@ async def main():
         await order(browser)
         await plates(browser)
         await more_puzzles(browser)
+        await recon(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

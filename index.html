@@ -564,6 +564,9 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .qz-say { font: 400 15px/1.45 var(--f-text); margin: 0; }
 .qz-arg { display: grid; gap: 2px; margin-top: 10px; padding: 10px 14px; border: 1px solid var(--rule); border-radius: 8px; background: var(--field); font: 500 18px/1.4 var(--f-text); font-variant-ligatures: none; }
 .qz-arg .qz-gap { color: var(--muted); letter-spacing: 0.2em; }
+.recon { margin: 0; padding-left: 22px; display: grid; gap: 8px; font: 400 15.5px/1.5 var(--f-text); }
+.recon b { font-weight: 700; }
+.qz-arg small { font: 400 12.5px/1 var(--f-ui); color: var(--muted); }
 .stproof { margin: 0; padding-left: 22px; display: grid; gap: 6px; font: 500 16px/1.35 var(--f-text); }
 .stproof small { display: block; font: 400 13px/1.35 var(--f-ui); color: var(--muted); }
 .qz-arg .qz-c { border-top: 1px solid var(--rule); margin-top: 4px; padding-top: 4px; }
@@ -4331,6 +4334,40 @@ const FAL_NEAR = [["straw-man", "irrelevant-conclusion"], ["ad-hominem", "geneti
 const falNear = (a, b) => FAL_NEAR.some((p) => p.includes(a) && p.includes(b));
 // Valid or not: a small argument in letters, made at random and checked by the truth table; half valid, half not. Premises that
 // can't all be true, and conclusions true in every row, are left out, since they make the question trivial or a trick.
+/* ---------- how to reconstruct an argument: a guide, from the Logic branch; its steps also fold out in an Argument note ---------- */
+const RECON_STEPS = [
+  ["Find the conclusion", "Ask what the passage is trying to get you to accept. Words like therefore, so, hence, thus and it follows that often mark it, but not always, and a conclusion can come first or be left unstated."],
+  ["Find the reasons", "Ask what is offered in support. Because, since, for, given that and as often mark a premise. Leave out what only repeats, illustrates or persuades: examples, rhetoric, asides."],
+  ["Set it out in standard form", "Number the premises, one claim to each, as complete sentences, with the conclusion last. Say whether premises work together (each needed) or separately (each enough on its own)."],
+  ["Supply what's left unsaid", "Most arguments rely on a premise nobody states (an enthymeme). Add the one the argument needs, choosing the most plausible version that makes it work, and mark it as yours, not the author's."],
+  ["Keep each term to one sense", "If a key word shifts meaning between premises, the argument only seems to follow. Fix what each term means and use it the same way throughout."],
+  ["Test the form", "Deductive: if every premise were true, could the conclusion still be false? If not, it is valid. Inductive: do the premises make the conclusion likely? Don't fault a strong inductive argument just for being invalid."],
+  ["Test the premises", "A valid argument with true premises is sound. Find the weakest premise and ask what can be said for and against it; that is usually where to aim an objection."],
+  ["Be charitable", "Reconstruct the strongest version the text supports, the one its author would accept as theirs. Refuting a weaker version proves nothing about the real one."],
+];
+const RECON_EXAMPLE = {
+  text: "“We shouldn't trust this study. It was paid for by the company that makes the drug.”",
+  first: [["The study was paid for by the drug's maker.", ""], ["Studies paid for by a product's maker can't be trusted.", "unstated"]], c1: "We shouldn't trust this study.",
+  note: "Valid as set out, but the unstated premise is too strong: plenty of industry-funded studies are accurate, and rejecting a claim for its source alone is the genetic fallacy. A charitable reader weakens the premise and the conclusion with it:",
+  second: [["The study was paid for by the drug's maker.", ""], ["Studies paid for by a product's maker are more likely to be biased in its favor.", "unstated"]], c2: "We should wait for independent studies before relying on this one.",
+};
+function reconSteps(short) {
+  return `<ol class="recon">${RECON_STEPS.map(([h, x]) => `<li><b>${esc(h)}.</b>${short ? "" : ` ${esc(x)}`}</li>`).join("")}</ol>`;
+}
+function reconPanel() {
+  const E = RECON_EXAMPLE, form = (ps, c) => `<span class="qz-arg">${ps.map(([x, tag], i) => `<span>${i + 1}. ${esc(x)}${tag ? ` <small>(${tag})</small>` : ""}</span>`).join("")}<span class="qz-c">∴ ${esc(c)}</span></span>`;
+  openPanel(`<h2>How to reconstruct an argument</h2>
+    <p class="hint">Putting an argument in your own words as numbered premises and a conclusion, so you can see exactly what it claims and test it.</p>
+    ${reconSteps(false)}
+    <div class="label">An example</div>
+    <p class="tdef">${esc(E.text)}</p>${form(E.first, E.c1)}<p class="tdef">${esc(E.note)}</p>${form(E.second, E.c2)}
+    <div class="noteacts"><button class="btn" data-truth="-1">Test a form in the truth table</button><button class="btn ghost" data-term="genetic-fallacy">The genetic fallacy</button></div>
+    <div class="tsrc">Sources:<ul class="srclist"><li><a href="https://iep.utm.edu/argument/" target="_blank" rel="noopener">Internet Encyclopedia of Philosophy, “Argument” (Matthew McKeon)</a></li><li><a href="https://www.uwo.ca/philosophy/undergraduate/Jim-Pryors-Guidelines-and-Writing-a-Philosophy-Paper-2.pdf" target="_blank" rel="noopener">Jim Pryor, Guidelines on Writing a Philosophy Paper</a></li></ul></div>
+    <p class="hint">To keep a reconstruction, save it as an Argument note on the passage, or start a draft from the “Reconstruct an argument” template.</p>`, (b) => {
+    if (b.dataset.truth) return truthPanel();
+    if (b.dataset.term) return openTerm(b.dataset.term);
+  });
+}
 /* Put the steps in order: a chain of modus ponens (a fact, then conditionals each leading from the last), shuffled; tap them in
    the order a proof would use them. The order is unique, so it can be checked exactly. */
 const ST = { prem: [], order: [], placed: [], checked: false, concl: "" };
@@ -5006,7 +5043,7 @@ function branchesView() {
         <p class="tdef">${esc(b.d)}</p>
         ${figHTML(b.img)}
         ${parasHTML(b.x)}${thinkerSources(b)}
-        ${b.id === "logic" ? `<div class="noteacts"><button class="btn" data-truth="-1">Check an argument with a truth table</button><button class="btn" data-argquiz="fallacy">Name the fallacy</button><button class="btn" data-argquiz="valid">Valid or not?</button><button class="btn" data-argquiz="missing">Missing premise</button><button class="btn" data-steps="1">Put the steps in order</button></div>${fallacyCatalogHTML(all)}` : ""}
+        ${b.id === "logic" ? `<div class="noteacts"><button class="btn" data-truth="-1">Check an argument with a truth table</button><button class="btn" data-argquiz="fallacy">Name the fallacy</button><button class="btn" data-argquiz="valid">Valid or not?</button><button class="btn" data-argquiz="missing">Missing premise</button><button class="btn" data-steps="1">Put the steps in order</button><button class="btn" data-recon="1">How to reconstruct an argument</button></div>${fallacyCatalogHTML(all)}` : ""}
         <div class="label">Questions it asks</div>
         <ul class="bq-list">${b.q.map((q) => `<li>${esc(q)}</li>`).join("")}</ul>
         <div class="tconn">
@@ -5328,6 +5365,7 @@ function noteSheet(nid, preset, focus) {
     <div class="argfields" id="n-arg"${n.kind === "argument" ? "" : " hidden"}>
       <div class="field"><label for="n-prem">Premises, one per line</label><textarea id="n-prem" name="premises" rows="4" placeholder="Each thing strives to persevere in its being.">${esc((n.premises || []).join("\n"))}</textarea></div>
       <div class="field"><label for="n-conc">Conclusion</label><input id="n-conc" name="conclusion" value="${esc(n.conclusion)}"></div>
+      <details class="optfield reconfold"><summary>How to set it out</summary>${reconSteps(false)}<span class="hint">Mark a premise you supplied yourself, for instance with “(mine)”. The full guide, with an example, is in Branches → Logic.</span></details>
     </div>
     <div class="field"><label for="n-gloss">Your note</label><textarea id="n-gloss" name="gloss">${esc(n.gloss)}</textarea><span class="hint">Add #tags anywhere in your note to collect it with related notes, like #naturalization.${nid ? " Changing it keeps what it said before, under Earlier wording, once it is more than half an hour old; changes within half an hour of writing it are treated as corrections and not kept." : ""}</span></div>
     ${nid ? `<div class="field fuedit"><label for="n-fu">Follow up</label><div id="n-fus"></div>
@@ -7360,6 +7398,7 @@ document.addEventListener("click", (e) => {
   if (b.dataset.pathadd) return readdClassic(b.dataset.pathadd);
   if (b.dataset.argquiz) return quizPanel(b.dataset.argquiz);
   if (b.dataset.steps) return stepsPanel();
+  if (b.dataset.recon) return reconPanel();
   if (b.id === "guess") return guessPanel();
   if (b.id === "puzzles") return puzzlesMenu();
   if (b.dataset.truth) { const ex = TT_EXAMPLES[+b.dataset.truth]; return truthPanel(ex ? { prem: ex[1], concl: ex[2] } : undefined); }
