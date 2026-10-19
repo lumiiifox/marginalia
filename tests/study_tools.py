@@ -55,6 +55,10 @@ Uses made-up records only. Checks that:
   18. quiz sets: chosen in Make a quiz set (from Quiz yourself), at least four, your own terms included; the link holds them all; opening
       it in a fresh browser starts a quiz on just those terms and cleans up the address; markup in a link is drawn as text, a damaged
       link is refused; a reading path's Share link opens that path.
+  19. disputations: each names a classic the app has, a chapter of it, and words found in that chapter, with glossary terms that exist and
+      a source; from the home screen, each opens with its argument; Compare waits for an objection of some length, Just show me doesn't;
+      what you write survives closing the panel; Save makes an Objection note on the book, in that chapter at that passage, tagged
+      #disputation, and the list says so; Read the passage opens the reader there; a deleted classic can be added back.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -662,6 +666,47 @@ async def quizsets(browser):
     check(not errs, "no script errors making a set" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def disputes(browser):
+    page, errs = await fresh(browser)
+    await page.evaluate("addClassics(true)"); await page.wait_for_timeout(300)
+    bad = await page.evaluate("""(async () => { const bad = [], ids = new Set(GLOSSARY.map((g) => g.id));
+      for (const d of DISPUTES) {
+        if (!CLASSICS.includes(d.book)) { bad.push(d.id + ' book'); continue; }
+        if (!S.texts.get(d.book).sections.some((x) => x.id === d.sec)) bad.push(d.id + ' chapter');
+        const at = await disputeBlock(d), B = S.content.get(d.book), r = stepRange(B, [d.sec]);
+        if (at < 0 || !r || at < r[0] || at >= r[1]) bad.push(d.id + ' passage ' + at + ' ' + r);
+        for (const t of d.terms || []) if (!ids.has(t)) bad.push(d.id + ' term ' + t);
+        if (!d.src || !d.srcName || !d.x || d.prem.length < 2 || !d.concl || !d.who) bad.push(d.id + ' fields');
+      } return bad; })()""")
+    check(bad == [], f"every disputation's book, chapter, passage, terms and source check out ({bad})")
+    await page.evaluate("go({ screen: 'library' })"); await page.click("#opendisputes"); await page.wait_for_timeout(200)
+    check(await page.locator("[data-dispute]").count() == await page.evaluate("DISPUTES.length"), "the home screen opens the list")
+    await page.click("[data-dispute='false-promise']"); await page.wait_for_selector("#dsp-x")
+    cmp = page.locator("#dspbox [data-dspshow]:not(.ghost)")
+    check(await cmp.is_disabled(), "Compare waits for an objection")
+    await page.fill("#dsp-x", "The test only finds a contradiction if promising is assumed to exist.")
+    check(not await cmp.is_disabled() and await page.locator("[data-dspsave]").count() == 1, "with one written, Compare and Save are offered")
+    await page.click("#pclose"); await page.wait_for_timeout(200); await page.click("[data-dispute='false-promise']"); await page.wait_for_selector("#dsp-x")
+    check(await page.input_value("#dsp-x") == "The test only finds a contradiction if promising is assumed to exist.", "what you wrote survives closing the panel")
+    await page.click("#dspbox [data-dspshow]:not(.ghost)"); await page.wait_for_timeout(80)
+    check("Hegel" in await page.inner_text(".dspclassic") and await page.locator(".dspclassic .tsrc a").count() >= 1, "Compare shows the classic objection with its source")
+    await page.click("[data-dspsave]"); await page.wait_for_timeout(400)
+    n = await page.evaluate("""(async () => { const d = DISPUTES.find((x) => x.id === 'false-promise'), [id, n] = disputeNotes(d)[0] || [];
+      return n && [n.kind, n.sectionId === d.sec, n.at === await disputeBlock(d), /#disputation/.test(n.gloss), n.gloss.startsWith('The test only'), tagsOf(n).includes('disputation')]; })()""")
+    check(n == ["objection", True, True, True, True, True], f"Save makes an Objection note on the book, at the passage, tagged #disputation ({n})")
+    check("Your objection saved: 1." in await page.inner_text("[data-dispute='false-promise']"), "the list says it's answered")
+    await page.click("[data-dispute='induction']"); await page.wait_for_selector("#dsp-x")
+    await page.click("#dspbox [data-dspshow].ghost"); await page.wait_for_timeout(80)
+    check("Strawson" in await page.inner_text(".dspclassic"), "Just show me shows it without writing")
+    await page.click("[data-dspread]"); await page.wait_for_timeout(900)
+    where = await page.evaluate("(async () => { const d = DISPUTES.find((x) => x.id === 'induction'), at = await disputeBlock(d); return [S.screen, R.tid, Math.abs(currentBlock() - at) <= 3]; })()")
+    check(where == ["reader", "classic-hume-enquiry", True], f"Read the passage opens the reader there ({where})")
+    await page.evaluate("go({ screen: 'disputes' })"); await page.evaluate("deleteText('classic-plato-socrates')"); await page.wait_for_timeout(300)
+    await page.click("[data-dispute='euthyphro']"); await page.wait_for_selector("[data-pathadd]")
+    check(await page.locator("[data-dspread]").count() == 0 and await page.locator("[data-dspsave]").count() == 0, "a deleted classic offers Add the book back, and nothing to read or save into")
+    check(not errs, "no script errors in disputations" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
@@ -683,6 +728,7 @@ async def main():
         await more_puzzles(browser)
         await recon(browser)
         await quizsets(browser)
+        await disputes(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

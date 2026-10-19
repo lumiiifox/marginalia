@@ -650,6 +650,10 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .mkrow b { font: 500 16px/1.3 var(--f-text); }
 .mkrow small { font: 400 12.5px/1.2 var(--f-ui); color: var(--muted); }
 #mk-link { font: 400 13px/1.3 var(--f-ui); }
+/* disputations */
+#dsp-x { width: 100%; border: 1px solid var(--rule); background: var(--field); border-radius: 8px; padding: 10px 11px; font: 400 16.5px/1.5 var(--f-text); color: var(--ink); resize: vertical; }
+.dspclassic { padding: 12px 16px; display: grid; gap: 6px; }
+.dspclassic .dspwho { margin: 0; font: 700 16px/1.35 var(--f-text); }
 /* reading paths */
 .path { margin-top: 18px; }
 .path .pd { margin: 0; font: 400 16.5px/1.5 var(--f-text); }
@@ -2596,7 +2600,7 @@ function render() {
   if (reading) { refreshMarks(); return; }
   wakeOff();
   $("#selbar").hidden = true;
-  const views = { text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, paths: pathsView, plates: platesView, concord: concordView, compares: comparesView, compare: compareView };
+  const views = { text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, paths: pathsView, plates: platesView, disputes: disputesView, concord: concordView, compares: comparesView, compare: compareView };
   $("#main").innerHTML = (views[S.screen] || libraryView)();
 }
 
@@ -4169,7 +4173,7 @@ function referenceHome() {
     ${card("glossary", "Glossary", `${allTerms().length} terms`)}
     ${card("branches", "Branches", `${BRANCHES.filter((b) => b.k === "branch").length} branches, ${BRANCHES.filter((b) => b.k === "tradition").length} traditions`)}
     ${card("thinkers", "Thinkers", `${THINKERS.length} philosophers and theorists`)}
-  </div>${typeof PATHS !== "undefined" && PATHS.length ? `<button class="refcard pathcard" id="openpaths"><span class="rc-t">Reading paths</span><span class="rc-s">${PATHS.length} routes through the classics on your shelf, chapter by chapter</span><span class="rc-go" aria-hidden="true">›</span></button>` : ""}</section>`;
+  </div>${typeof PATHS !== "undefined" && PATHS.length ? `<button class="refcard pathcard" id="openpaths"><span class="rc-t">Reading paths</span><span class="rc-s">${PATHS.length} routes through the classics on your shelf, chapter by chapter</span><span class="rc-go" aria-hidden="true">›</span></button>` : ""}${typeof DISPUTES !== "undefined" && DISPUTES.length ? `<button class="refcard pathcard" id="opendisputes"><span class="rc-t">Disputations</span><span class="rc-s">${DISPUTES.length} arguments to answer, then compare with the classic objection</span><span class="rc-go" aria-hidden="true">›</span></button>` : ""}</section>`;
 }
 // Everything in the three reference sections as one searchable list; each row opens its entry, and each group can open its
 // full screen (the glossary's areas and quiz, a branch's questions and reading, the thinkers' timeline).
@@ -5225,6 +5229,62 @@ async function readdClassic(id) {
     if (!rec) return toast("Couldn't fetch the book just now. Check your connection and try again.");
     render(); toast(`“${rec.title}” is back on your Queued shelf.`);
   } catch (e) { toast(failMsg(e)); }
+}
+/* ---------- disputations (DISPUTES, in data/branches.js): answer an argument from the classics, then compare with the classic objection ----------
+   What you write is kept only while the app is open (DSP), until you save it as an Objection note on the book, tagged #disputation. */
+const DSP = { text: {}, shown: new Set() };
+const disputeNotes = (d) => notesFor(d.book).filter(([, n]) => n.kind === "objection" && n.sectionId === d.sec && /#disputation\b/.test(n.gloss || ""));
+function disputesView() {
+  const list = typeof DISPUTES === "undefined" ? [] : DISPUTES;
+  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
+    <header class="gl-head"><div><h1>Disputations</h1><div class="sub">${list.length} arguments from the classics on your shelf</div></div></header>
+    <p class="hint">Read the argument, write the strongest objection you can, then compare it with the classic objection from the history of the debate. Save yours as an Objection note on the book if you want to keep it.</p>
+    <div class="gl-list">${list.map((d) => { const k = disputeNotes(d).length; return `<button class="thinkrow" data-dispute="${esc(d.id)}"><b>${esc(d.n)}</b><span class="ty">${esc(d.where)}</span><span class="td">${k ? `Your objection${k === 1 ? "" : "s"} saved: ${k}.` : "Not answered yet."}</span></button>`; }).join("")}</div>`;
+}
+async function disputeBlock(d) {
+  const B = await loadContent(d.book); if (!B) return -1;
+  const want = unspace(d.find); return B.findIndex((b) => b.x && unspace(plain(b.x)).includes(want));
+}
+function disputePanel(id) {
+  const d = DISPUTES.find((x) => x.id === id); if (!d) return;
+  const t = S.texts.get(d.book), tmap = termMap(), saved = disputeNotes(d);
+  const draw = () => {
+    const mine = DSP.text[id] || "", shown = DSP.shown.has(id);
+    return `<div class="noteacts"><textarea id="dsp-x" rows="5" aria-label="Your strongest objection" placeholder="The strongest objection you can make, in a few sentences.">${esc(mine)}</textarea></div>
+      ${shown ? `<div class="paperpanel dspclassic"><div class="label">${esc(d.label)}</div><p class="dspwho">${esc(d.who)}</p>${parasHTML(d.x)}${thinkerSources(d)}</div>` : ""}
+      <div class="noteacts">${shown ? "" : `<button class="btn primary" data-keep="1" data-dspshow="1"${mine.trim().length < 20 ? " disabled" : ""}>Compare with the ${d.label.includes("reply") ? "classic reply" : "classic objection"}</button><button class="btn ghost" data-keep="1" data-dspshow="1">Just show me</button>`}
+        ${t && mine.trim() ? `<button class="btn${shown ? " primary" : ""}" data-keep="1" data-dspsave="1">Save mine as an Objection note</button>` : ""}</div>
+      ${saved.length ? `<p class="hint">You've saved ${saved.length} objection${saved.length === 1 ? "" : "s"} to this argument, on the book's page under Notes.</p>` : ""}`;
+  };
+  openPanel(`<h2>${esc(d.n)}</h2><p class="hint">${esc(d.where)}${t ? "" : " · not on your shelf"}</p>
+    <span class="qz-arg">${d.prem.map((x, i) => `<span>${i + 1}. ${esc(x)}</span>`).join("")}<span class="qz-c">∴ ${esc(d.concl)}</span></span>
+    <p class="hint">The argument as set out here is a reconstruction; read it in the text before you answer it.</p>
+    <div class="noteacts">${t ? `<button class="btn" data-dspread="1">Read the passage</button>` : `<button class="btn" data-pathadd="${esc(d.book)}">Add the book back</button>`}${(d.terms || []).length ? termChips(d.terms, tmap) : ""}</div>
+    <div class="label">Your objection</div>
+    <div id="dspbox" style="display:grid;gap:12px">${draw()}</div>`, async (b) => {
+    if (b.dataset.dspshow) { DSP.shown.add(id); $("#dspbox").innerHTML = draw(); return; }
+    if (b.dataset.dspsave) {
+      const x = (DSP.text[id] || "").trim(); if (!x || !S.texts.get(d.book)) return;
+      try {
+        const at = await disputeBlock(d), B = S.content.get(d.book) || [];
+        const note = { textId: d.book, kind: "objection", passage: "", gloss: `${x}\n\n#disputation`, page: at >= 0 ? pagesOf(B)[at] || "" : "", sectionId: d.sec, createdAt: Date.now(), updatedAt: Date.now() };
+        if (at >= 0) note.at = at;
+        await put("notes", gid(), note);
+        delete DSP.text[id]; toast(`Saved to “${S.texts.get(d.book).title}”, with the book's open questions and objections.`);
+        closeOverlay();
+      } catch (e) { toast(failMsg(e)); }
+      return;
+    }
+    if (b.dataset.dspread) { const at = await disputeBlock(d); return go({ screen: "reader", textId: d.book, ...(at >= 0 ? { at, flash: true } : {}) }); }
+    if (b.dataset.pathadd) return readdClassic(b.dataset.pathadd);
+    if (b.dataset.term) return openTerm(b.dataset.term);
+  });
+  const veil = $("#sheetroot .veil");
+  veil.addEventListener("input", (e) => {
+    if (e.target.id !== "dsp-x") return; DSP.text[id] = e.target.value;
+    const cmp = $("#dspbox [data-dspshow]"); if (cmp && !cmp.classList.contains("ghost")) cmp.disabled = e.target.value.trim().length < 20;
+    const has = !!$("#dspbox [data-dspsave]"); if (has !== !!e.target.value.trim()) { const pos = e.target.selectionStart; $("#dspbox").innerHTML = draw(); const ta = $("#dsp-x"); ta.focus(); ta.setSelectionRange(pos, pos); }
+  });
 }
 // The fallacies in the glossary (fal), formal then informal, each opening its entry: shown in the Logic branch.
 function fallacyCatalogHTML(terms) {
@@ -7601,6 +7661,8 @@ document.addEventListener("click", (e) => {
   if (b.id === "mywords") return wordsPanel();
   if (b.id === "resurfnext") { resurfSkip++; const el = $("#resurf"); if (el) el.outerHTML = resurfHTML(); return; }
   if (b.id === "openpaths") return go({ screen: "paths" });
+  if (b.id === "opendisputes") return go({ screen: "disputes" });
+  if (b.dataset.dispute) return disputePanel(b.dataset.dispute);
   if (b.id === "openplates") return go({ screen: "plates" });
   if (b.dataset.path) return go({ screen: "paths", path: b.dataset.path });
   if (b.dataset.pathread) { const [tid, sec] = b.dataset.pathread.split("|"); return readStep(tid, sec.split(",")); }
