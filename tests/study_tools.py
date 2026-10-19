@@ -52,6 +52,9 @@ Uses made-up records only. Checks that:
       with the proof written out; both from the Logic branch.
   17. how to reconstruct an argument: the guide opens from the Logic branch with its steps, an example and its sources, and its steps
       fold out under an Argument note's premises.
+  18. quiz sets: chosen in Make a quiz set (from Quiz yourself), at least four, your own terms included; the link holds them all; opening
+      it in a fresh browser starts a quiz on just those terms and cleans up the address; markup in a link is drawn as text, a damaged
+      link is refused; a reading path's Share link opens that path.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -628,6 +631,37 @@ async def recon(browser):
     check(not errs, "no script errors in the guide" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def quizsets(browser):
+    page, errs = await fresh(browser)
+    await page.evaluate("put('terms', 'u1', { t: 'My own term', a: 'mine', d: 'A definition I wrote for my class.', createdAt: 1, updatedAt: 1 })")
+    await page.evaluate("go({ screen: 'glossary' })"); await page.click("#quiz"); await page.click("[data-mkset]"); await page.wait_for_selector("#mk-t")
+    await page.fill("#mk-t", "Week 3 <b>ethics</b>")
+    for q in ["deontology", "eudaimonia", "categorical imperative", "autonomy", "my own term"]:
+        await page.fill("#mk-q", q); await page.wait_for_timeout(60); await page.check(".mkrow input >> nth=0")
+    await page.click("[data-mklink]"); await page.wait_for_selector("#mk-link")
+    link = await page.input_value("#mk-link")
+    check(link.startswith("http://localhost:") and "#set=" in link and await page.inner_text(".mkcount") == "5 chosen", f"five chosen terms make a link ({len(link)} characters)")
+    await page.evaluate("MK.picked = new Set(['deontology']); document.querySelector('#mkbox').innerHTML = ''"); await page.click("[data-mklink]"); await page.wait_for_timeout(50)
+    check("at least four" in await page.inner_text("#mkout"), "fewer than four is refused")
+    ctx = await browser.new_context(viewport={"width": 390, "height": 844}); p2 = await ctx.new_page(); e2 = []
+    p2.on("pageerror", lambda e: e2.append(str(e)))
+    await p2.goto(link); await p2.wait_for_function(READY); await p2.wait_for_selector("#quizbox .qz-opt")
+    got = await p2.evaluate("[document.querySelector('.sheet h2').textContent, location.hash, QZ.set.terms.map((g) => g.t).sort(), QZ.qs.length, QZ.qs.every((q) => QZ.set.terms.includes(q.g)), document.querySelectorAll('[data-qzmode]').length]")
+    check(got[0] == "Week 3 <b>ethics</b>" and got[1] == "" and got[2] == ["Autonomy", "Categorical imperative", "Deontology", "Eudaimonia", "My own term"] and got[3] == 5 and got[4] and got[5] == 2, f"the link opens a quiz on just those terms, title as text, address cleaned up ({got})")
+    for k in range(5):
+        await p2.click(".qz-opt >> nth=0"); await p2.wait_for_selector("[data-qznext]"); await p2.click("[data-qznext]"); await p2.wait_for_timeout(40)
+    check("of 5" in await p2.inner_text("#quizbox") and not e2, "the set's quiz ends in a score" + (f" {e2}" if e2 else ""))
+    await p2.goto(link.split("#")[0] + "#set=" + await page.evaluate("b64u(JSON.stringify({ v: 1, t: '<img src=x onerror=\"window.__xss=1\">', ids: ['ontology', 'validity', 'dasein', 'eudaimonia'], own: [['<b>x</b>', '<img src=x onerror=\"window.__xss=1\">']] }))"))
+    await p2.wait_for_function(READY); await p2.wait_for_selector("#quizbox"); await p2.wait_for_timeout(300)
+    check(not await p2.evaluate("!!window.__xss") and await p2.evaluate("!document.querySelector('.sheet img')"), "markup in a link is drawn as text")
+    await p2.goto(link.split("#")[0] + "#set=bm90IGpzb24"); await p2.wait_for_function(READY); await p2.wait_for_timeout(300)
+    check(await p2.evaluate("!document.querySelector('#quizbox') && !document.querySelector('#toast').hidden && document.querySelector('#toast').textContent.includes('damaged')"), "a damaged link is refused with a message")
+    await p2.goto(link.split("#")[0] + "#path=who-counts"); await p2.wait_for_function(READY); await p2.wait_for_timeout(300)
+    check(await p2.evaluate("[S.screen, location.hash]") == ["paths", ""], "a reading path's link opens the paths")
+    await ctx.close()
+    check(not errs, "no script errors making a set" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
@@ -648,6 +682,7 @@ async def main():
         await plates(browser)
         await more_puzzles(browser)
         await recon(browser)
+        await quizsets(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
