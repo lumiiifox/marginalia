@@ -22,6 +22,17 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - After changes to the study tools around the reference sections (the truth table, term of the day, Hear it, the Anki export, a term's thinkers in time, two-step lineage, your notes through the book, the fallacies, reading paths, from your margins, essay templates, argument puzzles, guess the thinker, connect two thinkers, order of birth, bookplates, missing premise, steps in order, the reconstruction guide, quiz sets, disputations, questions to read with, primers), run `python3 tests/study_tools.py`.
 - This session can't delete remote branches; the repo is set to delete merged PR branches automatically (if not, tell the owner).
 
+## Save points
+
+- A known-good version is kept as a branch `saved/working-YYYY-MM-DD`, pointing at a commit on `main` whose tests all passed. Nothing is ever
+  pushed to these branches, and they are never merged. (This session can't create tags or GitHub releases; the owner can turn one into a
+  release on GitHub if they like.) Make a new one when the owner asks, from a `main` commit whose CI run passed.
+- To go back to one: bring its files back as one new commit on `main`, so the history in between stays (`git rm -rq . && git checkout
+  saved/working-YYYY-MM-DD -- .`), run the full test list above, then push. Never force-push or reset `main`.
+- Before restoring, check whether `indexedDB.open("marginalia", N)` has gone up since the save point. If it has, keep the newer N and its
+  upgrade code (and the stores it added) in the restored version: the owner's phone has already upgraded its database, and older code asking
+  for a lower version can't open it at all.
+
 ## Rules
 
 - **Never commit books, PDFs or backup files.** The repository is public. The one exception is `data/books/`: the classics that come
