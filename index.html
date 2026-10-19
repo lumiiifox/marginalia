@@ -562,6 +562,8 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .qz-opt.wrong { background: var(--mk-objection); border-color: color-mix(in srgb, var(--warn) 60%, var(--rule)); }
 .qz-opt.dim { opacity: 0.55; }
 .qz-say { font: 400 15px/1.45 var(--f-text); margin: 0; }
+.qz-arg { display: grid; gap: 2px; margin-top: 10px; padding: 10px 14px; border: 1px solid var(--rule); border-radius: 8px; background: var(--field); font: 500 18px/1.4 var(--f-text); font-variant-ligatures: none; }
+.qz-arg .qz-c { border-top: 1px solid var(--rule); margin-top: 4px; padding-top: 4px; }
 .qz-say .bad { color: var(--warn); }
 .qz-missed { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .saybtn { display: inline-flex; align-items: center; gap: 6px; }
@@ -4028,8 +4030,30 @@ function thinkerPanel(id) {
 }
 /* quiz: questions made from the glossary's own definitions and the thinkers' key works */
 const QZ = { mode: "def", area: "all", qs: [], k: 0, picked: -1, right: 0, missed: [] };
-const QZ_MODES = { def: "Name the term", term: "Pick the definition", work: "Who wrote it?", words: "Words you looked up" };
+const QZ_MODES = { def: "Name the term", term: "Pick the definition", work: "Who wrote it?", fallacy: "Name the fallacy", valid: "Valid or not?", words: "Words you looked up" };
+// Fallacies easily mistaken for one another are never offered as each other's wrong answers.
+const FAL_NEAR = [["straw-man", "irrelevant-conclusion"], ["ad-hominem", "genetic-fallacy"], ["post-hoc", "hasty-generalization"], ["begging", "many-questions"], ["appeal-authority", "ad-populum"], ["affirming-consequent", "denying-antecedent"]];
+const falNear = (a, b) => FAL_NEAR.some((p) => p.includes(a) && p.includes(b));
+// Valid or not: a small argument in letters, made at random and checked by the truth table; half valid, half not. Premises that
+// can't all be true, and conclusions true in every row, are left out, since they make the question trivial or a trick.
+function validQuestion() {
+  const pick = (a) => a[Math.floor(Math.random() * a.length)];
+  const lit = (v) => (Math.random() < 0.3 ? "¬" + v : v);
+  const two = (a, b) => pick([`${lit(a)} → ${lit(b)}`, `${lit(a)} ∨ ${lit(b)}`, `${lit(a)} ∧ ${lit(b)}`, `${a} ↔ ${b}`, `¬(${a} ∧ ${b})`]);
+  const want = Math.random() < 0.5;
+  for (let k = 0; k < 400; k++) {
+    const L = shuffle(["P", "Q", "R"]).slice(0, Math.random() < 0.6 ? 2 : 3), [a, b] = L, c = L[2] || pick(L);
+    const prem = [two(a, b), pick([lit(a), lit(b), two(b, c)])];
+    const concl = pick([lit(pick(L)), two(a, c)]);
+    if (prem.includes(concl) || prem[0] === prem[1]) continue;
+    const r = ttCheck(prem.join("\n"), concl);
+    if (r.err !== undefined || !r.live || r.rows.every((x) => x.cv) || (r.cx === 0) !== want) continue;
+    return { prem, concl, ok: want, res: r };
+  }
+  return { prem: ["P → Q", "P"], concl: "Q", ok: true, res: ttCheck("P → Q\nP", "Q") };
+}
 const quizModes = () => Object.entries(QZ_MODES).filter(([m]) => m !== "words" || lookedUp().length >= 4);
+const argModes = new Set(["fallacy", "valid"]);
 const shuffle = (a) => { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
 // A definition with the term's own words blanked out, so it doesn't give the answer away.
 function maskTerm(g) {
@@ -4044,6 +4068,19 @@ function worksOf(p) {
   return p.w.filter((w) => { const pre = w.split(",")[0].trim(); return !(w.includes(",") && THINKERS.some((x) => x.id !== p.id && (x.sn === pre || x.n === pre))); });
 }
 function quizQuestions(mode, area) {
+  if (mode === "fallacy") {
+    const fal = allTerms().filter((g) => g.fal && (g.ex || []).length);
+    if (fal.length < 4) return [];
+    const items = shuffle(fal.flatMap((g) => g.ex.map((x) => ({ g, x })))).slice(0, 10);
+    return items.map(({ g, x }) => {
+      const opts = shuffle([g, ...shuffle(fal.filter((y) => y.id !== g.id && !falNear(y.id, g.id))).slice(0, 3)]);
+      return { prompt: `Which fallacy is this? <i>${esc(x)}</i>`, opts: opts.map((y) => esc(y.t)), answer: opts.indexOf(g), g };
+    });
+  }
+  if (mode === "valid") return Array.from({ length: 10 }, () => {
+    const v = validQuestion();
+    return { prompt: `Is this argument valid?<span class="qz-arg">${v.prem.map((x) => `<span>${esc(x)}</span>`).join("")}<span class="qz-c">∴ ${esc(v.concl)}</span></span>`, opts: ["Valid", "Not valid"], answer: v.ok ? 0 : 1, v };
+  });
   if (mode === "words") {
     const all = lookedUp(); if (all.length < 4) return [];
     return shuffle(all).slice(0, 10).map((x) => {
@@ -4078,18 +4115,22 @@ function quizStart(mode, area) {
 }
 function quizHTML() {
   const modes = `<div class="chips">${quizModes().map(([m, label]) => `<button class="chip ${QZ.mode === m ? "on" : ""}" data-keep="1" data-qzmode="${m}">${label}</button>`).join("")}</div>`;
-  const from = QZ.mode === "words" ? "words you looked up" : QZ.mode === "work" ? "the thinkers' key works" : QZ.area !== "all" && AREAS[QZ.area] ? `terms in ${esc(AREAS[QZ.area])}` : "the whole glossary";
+  const from = QZ.mode === "fallacy" ? "the fallacies in the glossary" : QZ.mode === "valid" ? "arguments made at random" : QZ.mode === "words" ? "words you looked up" : QZ.mode === "work" ? "the thinkers' key works" : QZ.area !== "all" && AREAS[QZ.area] ? `terms in ${esc(AREAS[QZ.area])}` : "the whole glossary";
   if (QZ.qs.length < 4) return `${modes}<p class="hint">There aren't enough entries here for a quiz yet.</p>`;
   if (QZ.k >= QZ.qs.length) {
     const n = QZ.qs.length;
     return `${modes}<p class="qz-q"><b>${QZ.right} of ${n}</b> right.</p>
-      ${QZ.missed.length ? `<div class="crow"><span class="clabel">To look at again</span><ul class="qz-missed">${QZ.missed.map((q) => q.wd ? `<li><b>${esc(q.wd.word)}</b>: ${esc(q.wd.sense)}</li>` : q.g ? `<li><button class="linkbtn" data-term="${esc(q.g.id)}">${esc(q.g.t)}</button></li>` : `<li><button class="linkbtn" data-thinker="${esc(q.p.id)}">${esc(q.p.n)}</button></li>`).join("")}</ul></div>` : `<p class="hint">Every one right.</p>`}
+      ${QZ.missed.length ? `<div class="crow"><span class="clabel">To look at again</span><ul class="qz-missed">${QZ.missed.map((q) => q.v ? `<li>${esc(q.v.prem.join("; "))} ∴ ${esc(q.v.concl)}: ${q.v.ok ? "valid" : "not valid"}</li>` : q.wd ? `<li><b>${esc(q.wd.word)}</b>: ${esc(q.wd.sense)}</li>` : q.g ? `<li><button class="linkbtn" data-term="${esc(q.g.id)}">${esc(q.g.t)}</button></li>` : `<li><button class="linkbtn" data-thinker="${esc(q.p.id)}">${esc(q.p.n)}</button></li>`).join("")}</ul></div>` : `<p class="hint">Every one right.</p>`}
       <div class="noteacts"><button class="btn primary" data-keep="1" data-qzagain="1">Another ten</button></div>`;
   }
   const q = QZ.qs[QZ.k], done = QZ.picked >= 0;
   const cls = (i) => (!done ? "" : i === q.answer ? " right" : i === QZ.picked ? " wrong" : " dim");
   const next = `<button class="btn primary" data-keep="1" data-qznext="1">${QZ.k + 1 < QZ.qs.length ? "Next" : "See the score"}</button>`;
-  const say = !done ? "" : q.wd
+  const cxRow = (v) => { const x = v.res.rows.find((r) => r.cx); return x ? v.res.vars.map((k) => `${k} ${x.env[k] ? "true" : "false"}`).join(", ") : ""; };
+  const say = !done ? "" : q.v
+    ? `<p class="qz-say">${QZ.picked === q.answer ? "<b>Right.</b>" : `<b class="bad">Not this time.</b>`} ${q.v.ok ? "It's valid: no row of its truth table makes every premise true and the conclusion false." : `It's not valid: with ${cxRow(q.v)}, every premise is true and the conclusion false.`}</p>
+       <div class="noteacts">${next}<button class="btn ghost" data-keep="1" data-qztt="1">See its truth table</button></div>`
+    : q.wd
     ? `<p class="qz-say">${QZ.picked === q.answer ? "<b>Right.</b>" : `<b class="bad">Not this time.</b>`} <b>${esc(q.wd.word)}</b> (${esc(q.wd.pos)}): ${esc(q.wd.sense)}</p><div class="noteacts">${next}</div>`
     : q.g
     ? `<p class="qz-say">${QZ.picked === q.answer ? "<b>Right.</b>" : `<b class="bad">Not this time.</b>`} <b>${esc(q.g.t)}</b>: ${esc(q.g.d)}</p>
@@ -4103,7 +4144,7 @@ function quizHTML() {
     ${say}`;
 }
 function quizPanel(area) {
-  quizStart(area === "words" ? "words" : area === "thinkers" ? "work" : "def", area === "words" ? "all" : area || "all");
+  quizStart(area === "words" || argModes.has(area) ? area : area === "thinkers" ? "work" : "def", area === "words" || argModes.has(area) ? "all" : area || "all");
   openPanel(`<h2>Quiz yourself</h2><div id="quizbox" style="display:grid;gap:14px">${quizHTML()}</div>`, (b) => {
     const box = $("#quizbox");
     if (b.dataset.qzans !== undefined && QZ.picked < 0) {
@@ -4112,6 +4153,7 @@ function quizPanel(area) {
     } else if (b.dataset.qznext) { QZ.k++; QZ.picked = -1; }
     else if (b.dataset.qzmode) quizStart(b.dataset.qzmode, QZ.area);
     else if (b.dataset.qzagain) quizStart(QZ.mode, QZ.area);
+    else if (b.dataset.qztt) { const v = QZ.qs[QZ.k].v; return truthPanel({ prem: v.prem.join("\n"), concl: v.concl }); }
     else if (b.dataset.term) return openTerm(b.dataset.term);
     else if (b.dataset.thinker) return thinkerPanel(b.dataset.thinker);
     if (box) { box.innerHTML = quizHTML(); const sh = box.closest(".sheet"); if (sh && (b.dataset.qznext || b.dataset.qzmode || b.dataset.qzagain)) sh.scrollTop = 0; }
@@ -4607,7 +4649,7 @@ function branchesView() {
         <p class="tdef">${esc(b.d)}</p>
         ${figHTML(b.img)}
         ${parasHTML(b.x)}${thinkerSources(b)}
-        ${b.id === "logic" ? `<div class="noteacts"><button class="btn" data-truth="-1">Check an argument with a truth table</button></div>${fallacyCatalogHTML(all)}` : ""}
+        ${b.id === "logic" ? `<div class="noteacts"><button class="btn" data-truth="-1">Check an argument with a truth table</button><button class="btn" data-argquiz="fallacy">Name the fallacy</button><button class="btn" data-argquiz="valid">Valid or not?</button></div>${fallacyCatalogHTML(all)}` : ""}
         <div class="label">Questions it asks</div>
         <ul class="bq-list">${b.q.map((q) => `<li>${esc(q)}</li>`).join("")}</ul>
         <div class="tconn">
@@ -6958,6 +7000,7 @@ document.addEventListener("click", (e) => {
   if (b.dataset.path) return go({ screen: "paths", path: b.dataset.path });
   if (b.dataset.pathread) { const [tid, sec] = b.dataset.pathread.split("|"); return readStep(tid, sec.split(",")); }
   if (b.dataset.pathadd) return readdClassic(b.dataset.pathadd);
+  if (b.dataset.argquiz) return quizPanel(b.dataset.argquiz);
   if (b.dataset.truth) { const ex = TT_EXAMPLES[+b.dataset.truth]; return truthPanel(ex ? { prem: ex[1], concl: ex[2] } : undefined); }
   if (b.dataset.say) return sayIt(b.dataset.say);
   if (b.dataset.editterm) return termSheet(b.dataset.editterm);

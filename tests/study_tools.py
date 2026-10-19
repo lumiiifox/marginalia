@@ -31,6 +31,10 @@ Uses made-up records only. Checks that:
      Follow up opens the note's follow-up, Show in text appears when the book's text is here; with no note old enough, no card.
   10. essay templates: New draft offers a blank draft or a template; a template gives its headings, each with a line of guidance
       drawn apart from your own paragraphs, named after the template unless you give a title; the draft is the usual kind a backup holds.
+  11. argument puzzles: Name the fallacy asks about each fallacy's own examples, with four different fallacies to choose from and
+      never two easily confused ones together; Valid or not? makes arguments whose answer the truth table confirms, about half
+      valid, never with inconsistent premises or a tautology for a conclusion, and opens the truth table on the argument;
+      both open from the Logic branch.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -398,6 +402,40 @@ async def templates(browser):
     check(not errs, "no script errors with templates" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def puzzles(browser):
+    page, errs = await fresh(browser)
+    f = await page.evaluate("""(() => { const bad = []; for (let k = 0; k < 20; k++) for (const q of quizQuestions('fallacy')) {
+        const names = q.opts, right = q.g, picked = allTerms().filter((g) => g.fal && names.includes(esc(g.t)));
+        if (names.length !== 4 || new Set(names).size !== 4 || names[q.answer] !== esc(right.t)) bad.push('options ' + right.id);
+        if (!right.ex.some((x) => q.prompt.includes(esc(x)))) bad.push('example ' + right.id);
+        for (const o of picked) if (o.id !== right.id && falNear(o.id, right.id)) bad.push('near ' + right.id + '/' + o.id);
+      } return [bad.slice(0, 5), quizQuestions('fallacy').length]; })()""")
+    check(f[0] == [] and f[1] == 10, f"Name the fallacy: ten questions from the fallacies' examples, four different answers, no confusable pair ({f})")
+    v = await page.evaluate("""(() => { const out = { n: 0, ok: 0, bad: [] }; for (let k = 0; k < 300; k++) { const q = validQuestion(), r = ttCheck(q.prem.join('\\n'), q.concl);
+        out.n++; if (q.ok) out.ok++;
+        if ((r.cx === 0) !== q.ok) out.bad.push('answer ' + q.prem + ' / ' + q.concl);
+        if (!r.live) out.bad.push('inconsistent ' + q.prem);
+        if (r.rows.every((x) => x.cv)) out.bad.push('tautology ' + q.concl); } return out; })()""")
+    check(not v["bad"] and 0.35 < v["ok"] / v["n"] < 0.65, f"Valid or not? answers agree with the truth table, about half are valid, none trivial ({v['ok']}/{v['n']}, {v['bad'][:3]})")
+    await page.evaluate("go({ screen: 'branches', focus: 'logic' })"); await page.wait_for_timeout(200)
+    await page.click("details[data-branch-id='logic'] [data-argquiz='valid']"); await page.wait_for_selector(".qz-opt")
+    check(await page.evaluate("QZ.mode") == "valid" and await page.locator(".qz-arg").count() == 1, "Valid or not? opens from the Logic branch, the argument set out line by line")
+    await page.click(".qz-opt >> nth=0"); await page.wait_for_selector("[data-qztt]")
+    want = await page.evaluate("[QZ.qs[0].v.ok, QZ.qs[0].v.prem.join('\\n'), QZ.qs[0].v.concl]")
+    said = await page.inner_text(".qz-say")
+    check(("It's valid" in said) == want[0] and ("It's not valid: with" in said) == (not want[0]), f"the answer explains itself, with the counterexample when there is one ({said[:90]})")
+    await page.click("[data-qztt]"); await page.wait_for_selector("#tt-p")
+    tt = [await page.input_value("#tt-p"), await page.input_value("#tt-c"), (await page.inner_text("#ttout")).startswith("Valid")]
+    check(tt == [want[1], want[2], want[0]], f"See its truth table opens the table on that argument, with the same verdict ({tt})")
+    await page.click("#pclose"); await page.wait_for_timeout(200)
+    await page.click("details[data-branch-id='logic'] [data-argquiz='fallacy']"); await page.wait_for_selector(".qz-opt")
+    check(await page.evaluate("QZ.mode") == "fallacy", "Name the fallacy opens from the Logic branch")
+    for k in range(10):
+        await page.click(".qz-opt >> nth=0"); await page.wait_for_selector("[data-qznext]"); await page.click("[data-qznext]"); await page.wait_for_timeout(40)
+    check(" of 10" in await page.inner_text("#quizbox"), "ten fallacies end in a score")
+    check(not errs, "no script errors in the argument puzzles" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
@@ -411,6 +449,7 @@ async def main():
         await paths(browser)
         await margins(browser)
         await templates(browser)
+        await puzzles(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
