@@ -26,6 +26,9 @@ Uses made-up records only. Checks that:
      branches that exist; the home screen and a branch's entry open them; a step opens the reader at its first chapter, or at your
      place when you're already inside its chapters; ticking its chapters as read marks it done; a classic you deleted can be
      added back from its step.
+  9. from your margins: the home screen shows one of your notes made at least two weeks ago (none newer, none from the example
+     book), the same one all day and a different one on other days; Another moves to the next without redrawing the screen;
+     Follow up opens the note's follow-up, Show in text appears when the book's text is here; with no note old enough, no card.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -339,6 +342,43 @@ async def paths(browser):
     check(not errs, "no script errors in reading paths" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+RSEED = r"""async () => { const now = Date.now(), D = 86400000;
+  await put("texts", "rb", { title: "Old Book", author: "Writer, A", sections: [], hasContent: true, total: 10, pos: 0, createdAt: now - 200 * D, updatedAt: now });
+  await put("content", "rb", Array.from({ length: 10 }, (_, i) => ({ k: "p", x: "Paragraph " + i })));
+  await put("texts", "ex", { title: "Example", example: true, sections: [], createdAt: now - 300 * D, updatedAt: now });
+  await put("notes", "r1", { textId: "rb", kind: "passage", passage: "Kept long ago", gloss: "then", page: "26", at: 3, links: [], createdAt: now - 95 * D, updatedAt: now - 95 * D });
+  await put("notes", "r2", { textId: "rb", kind: "gloss", passage: "", gloss: "A newer thought", page: "30", links: [], createdAt: now - 2 * D, updatedAt: now - 2 * D });
+  await put("notes", "r3", { textId: "rb", kind: "question", passage: "", gloss: "Why production?", page: "40", links: [], createdAt: now - 40 * D, updatedAt: now - 40 * D });
+  await put("notes", "r4", { textId: "ex", kind: "passage", passage: "example passage", links: [], createdAt: now - 99 * D, updatedAt: now });
+}"""
+
+async def margins(browser):
+    page, errs = await fresh(browser)
+    await page.evaluate("put('texts', 'nb', { title: 'New', sections: [], createdAt: Date.now(), updatedAt: Date.now() }).then(() => put('notes', 'n0', { textId: 'nb', kind: 'gloss', gloss: 'fresh', links: [], createdAt: Date.now(), updatedAt: Date.now() })).then(() => go({ screen: 'library' }))")
+    await page.wait_for_timeout(200)
+    check(await page.locator("#resurf").count() == 0, "with no note two weeks old, there is no card")
+    await page.evaluate(RSEED); await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(300)
+    pool = await page.evaluate("resurfPool().map(([id]) => id)")
+    check(pool == ["r1", "r3"], f"only notes two weeks old or more, never the example book's ({pool})")
+    days = await page.evaluate("(() => { const d = dayNumber(); return [resurfaced(d)[0], resurfaced(d)[0], [...Array(10).keys()].map((k) => resurfaced(d + k)[0])]; })()")
+    check(days[0] == days[1] and len(set(days[2])) == 2, f"the same note all day, and both come up over ten days ({days})")
+    first = await page.evaluate("[document.querySelector('#resurf .gloss').textContent, document.querySelectorAll('#resurf [data-goto-note]').length]")
+    want = await page.evaluate("S.notes.get(resurfaced()[0]).gloss")
+    check(first[0] == want, f"the card shows today's note ({first})")
+    await page.evaluate("window.__mark = document.querySelector('.refcards')")
+    await page.click("#resurfnext"); await page.wait_for_timeout(150)
+    after = await page.evaluate("[document.querySelector('#resurf .gloss').textContent, window.__mark === document.querySelector('.refcards')]")
+    check(after[0] != first[0] and after[1], f"Another shows the other note without redrawing the screen ({after})")
+    shown = await page.evaluate("document.querySelector('#resurf .gloss').textContent")
+    if shown != "then": await page.click("#resurfnext"); await page.wait_for_timeout(150)
+    check(await page.locator("#resurf [data-goto-note='3']").count() == 1 and "p. 26" in await page.inner_text("#resurf") and "3 months ago" in await page.inner_text("#resurf"), "a note in a book whose text is here offers Show in text, with its page and how long ago")
+    await page.click("#resurf [data-followup]"); await page.wait_for_timeout(300)
+    check(await page.locator("#sheetroot form").count() == 1, "Follow up opens the note's sheet")
+    ago = await page.evaluate("[agoLabel(Date.now() - 15 * DAY), agoLabel(Date.now() - 40 * DAY), agoLabel(Date.now() - 400 * DAY), agoLabel(Date.now() - 800 * DAY)]")
+    check(ago == ["2 weeks ago", "6 weeks ago", "a year ago", "2 years ago"], f"how long ago, in words ({ago})")
+    check(not errs, "no script errors in From your margins" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
@@ -350,6 +390,7 @@ async def main():
         await spread(browser)
         await fallacies(browser)
         await paths(browser)
+        await margins(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

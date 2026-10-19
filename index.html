@@ -577,6 +577,11 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .sp-pos { position: absolute; bottom: -5px; width: 9px; height: 9px; margin-left: -4.5px; border-radius: 50%; background: var(--brass); box-shadow: 0 0 0 2px var(--paper); }
 .sp-ends { display: flex; justify-content: space-between; font: 500 11.5px/1 var(--f-ui); color: var(--muted); margin-top: 4px; }
 .spread .hint { margin: 4px 0 0; }
+/* from your margins */
+.rsurf { padding: 12px 16px; display: grid; gap: 6px; }
+.rsurf .passage, .rsurf .gloss, .rsurf .arg, .rsurf .argc { margin: 0; }
+.rs-ago { font-weight: 400; margin-left: 6px; }
+.rs-src { margin: 2px 0 0; display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: baseline; font: 400 13.5px/1.35 var(--f-ui); color: var(--muted); }
 /* reading paths */
 .path { margin-top: 18px; }
 .path .pd { margin: 0; font: 400 16.5px/1.5 var(--f-text); }
@@ -2521,7 +2526,44 @@ function libraryView() {
       ${body}
       ${S.mode === "pending" ? "" : acrossHTML()}
     </section>
-    ${S.mode === "pending" ? "" : referenceHome() + backupView()}`}`;
+    ${S.mode === "pending" ? "" : resurfHTML() + referenceHome() + backupView()}`}`;
+}
+/* ---------- from your margins: one of your older notes a day, on the home screen ----------
+   A note made at least RESURF_DAYS ago, chosen by the date so it stays the same all day; Another shows the next one for now.
+   Nothing is stored. */
+const RESURF_DAYS = 14;
+let resurfSkip = 0;
+function resurfPool() {
+  const cut = Date.now() - RESURF_DAYS * DAY;
+  return [...S.notes.entries()].filter(([, n]) => { const t = S.texts.get(n.textId); return t && !t.example && n.createdAt && n.createdAt <= cut && (n.passage || n.gloss || (n.premises || []).length); })
+    .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
+}
+function resurfaced(day = dayNumber()) {
+  const pool = resurfPool(); if (!pool.length) return null;
+  return pool[((day * 2654435761) % pool.length + resurfSkip) % pool.length]; // a large odd step, so neighbouring days land far apart
+}
+function agoLabel(ms) {
+  const d = Math.floor((Date.now() - ms) / DAY);
+  if (d < 14) return `${d} days ago`;
+  if (d < 60) return `${Math.round(d / 7)} weeks ago`;
+  if (d < 365) { const m = Math.round(d / 30.4); return m <= 1 ? "a month ago" : `${m} months ago`; }
+  const y = Math.floor(d / 365); return y === 1 ? "a year ago" : `${y} years ago`;
+}
+function resurfHTML() {
+  const hit = resurfaced(); if (!hit) return "";
+  const [id, n] = hit, t = S.texts.get(n.textId), cut = (x, k) => (x.length > k ? x.slice(0, k - 1).replace(/\s+\S*$/, "") + "…" : x);
+  const arg = (n.premises || []).length && !n.passage;
+  return `<section class="group" id="resurf"><div class="label">From your margins <span class="rs-ago">${esc(agoLabel(n.createdAt))}</span></div><div class="paperpanel rsurf">
+    ${n.passage ? `<p class="passage"><span>${esc(cut(n.passage, 320))}</span></p>` : ""}
+    ${arg ? `<ol class="arg">${n.premises.map((x) => `<li>${esc(x)}</li>`).join("")}</ol><p class="argc">∴ ${esc(n.conclusion || "")}</p>` : ""}
+    ${n.gloss ? `<p class="gloss${n.passage || arg ? " after" : ""}">${esc(cut(n.gloss, 400))}</p>` : ""}
+    <p class="rs-src"><button class="src" data-open="${esc(n.textId)}">${esc(t.title)}</button>${n.page ? ` <span>${esc(loc(n.page))}</span>` : ""}${(n.followups || []).length ? ` <span>· ${n.followups.length} follow-up${n.followups.length === 1 ? "" : "s"}</span>` : ""}</p>
+    <div class="noteacts">
+      ${t.hasContent && Number.isInteger(n.at) ? `<button class="btn ghost" data-goto-note="${n.at}" data-tid="${esc(n.textId)}">Show in text</button>` : ""}
+      <button class="btn ghost" data-followup="${esc(id)}">Follow up</button>
+      ${resurfPool().length > 1 ? `<button class="btn ghost" id="resurfnext">Another</button>` : ""}
+    </div>
+  </div></section>`;
 }
 function backupView() {
   let last = 0; try { last = +localStorage.getItem("mg-backup") || 0; } catch {}
@@ -6862,6 +6904,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "addterm") return termSheet(null);
   if (b.id === "quiz") return quizPanel(S.screen === "glossary" ? S.gArea : S.screen === "thinkers" || (S.screen === "reference" && S.rk === "thinkers") ? "thinkers" : "all");
   if (b.id === "mywords") return wordsPanel();
+  if (b.id === "resurfnext") { resurfSkip++; const el = $("#resurf"); if (el) el.outerHTML = resurfHTML(); return; }
   if (b.id === "openpaths") return go({ screen: "paths" });
   if (b.dataset.path) return go({ screen: "paths", path: b.dataset.path });
   if (b.dataset.pathread) { const [tid, sec] = b.dataset.pathread.split("|"); return readStep(tid, sec.split(",")); }
