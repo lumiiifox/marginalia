@@ -595,6 +595,13 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .tplopt small.tplsecs { color: var(--ink); opacity: 0.85; }
 .tplopt:has(input:checked) { border-color: var(--leather); box-shadow: 0 0 0 1px var(--leather) inset; }
 .ditem.dguide p { font-style: italic; color: var(--muted); }
+/* guess the thinker */
+.gclues { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.gclues li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; align-items: start; font: 400 16px/1.45 var(--f-text); }
+.gclues .gk { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font: 700 12.5px/1 var(--f-ui); border: 1px solid var(--rule); background: var(--field); margin-top: 1px; }
+.gclues li.new .gk { background: var(--leather); color: var(--leather-ink); border-color: transparent; }
+.gdone { padding: 12px 16px; display: grid; gap: 8px; }
+.gdone .qz-q { margin: 0; }
 /* reading paths */
 .path { margin-top: 18px; }
 .path .pd { margin: 0; font: 400 16.5px/1.5 var(--f-text); }
@@ -3904,7 +3911,7 @@ function thinkersView() {
     ? `<p class="hint">Each bar is a life, on the scale of its period, so you can see who lived at the same time. Pale bars are approximate dates; a bar that fades runs to the present.</p>${timelineHTML(list)}`
     : `<p class="hint">In order of birth; the last few have no published birth year.</p><div class="gl-list">${list.map(thinkerRow).join("")}</div>`;
   return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
-    <header class="gl-head"><div><h1>Thinkers</h1><div class="sub">${THINKERS.length} philosophers and theorists</div></div><div class="gl-acts"><button class="btn" id="quiz">Who wrote it?</button></div></header>
+    <header class="gl-head"><div><h1>Thinkers</h1><div class="sub">${THINKERS.length} philosophers and theorists</div></div><div class="gl-acts"><button class="btn" id="guess">Guess the thinker</button><button class="btn" id="quiz">Who wrote it?</button></div></header>
     <p class="hint">Tap a name for their key works, the glossary terms and traditions they belong to, who they drew on and who took them up, and who lived at the same time.</p>
     <input class="search" id="pq" type="search" placeholder="Search names, descriptions and works" value="${esc(S.pq || "")}" aria-label="Search the thinkers">
     ${views}
@@ -4027,6 +4034,81 @@ function thinkerPanel(id) {
     else if (b.dataset.branch) go({ screen: "branches", focus: b.dataset.branch });
     else if (b.dataset.open) go({ screen: "text", textId: b.dataset.open });
   });
+}
+/* ---------- guess the thinker: one a day, from clues out of the thinker entries ----------
+   Clues go from vague to telling: the period, a tradition, a glossary term, who they drew on or who took them up, a key work, the
+   entry's own description (the name blanked out). Each wrong guess or Another clue shows the next. Today's game is kept in
+   localStorage (mg-guess) so it survives closing the app; a new day starts afresh. No streaks, no scores kept. */
+const GUESS_KEY = "mg-guess", GUESS_MAX = 6;
+function guessPool() { return THINKERS.filter((p) => lifeSpan(p.y) && worksOf(p).length && (BRANCHES.some((b) => b.p.includes(p.id)) || GLOSSARY.some((g) => (g.p || []).includes(p.id)))); }
+function guessOfDay(day = dayNumber()) {
+  const pool = guessPool(), n = pool.length; if (!n) return null;
+  let seed = Math.floor(day / n) + 7919;
+  const rnd = () => { seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  const order = [...pool.keys()]; for (let i = n - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
+  return pool[order[day % n]];
+}
+function guessClues(p) {
+  const words = [...new Set([p.n, p.sn, ...p.n.replace(/\(.*?\)/g, " ").split(/\s+/)].filter((w) => w && w.length > 2))];
+  const hide = (x) => String(x).replace(new RegExp(`(^|[^\\p{L}])(${words.map(reEsc).join("|")})(?![\\p{L}])`, "giu"), "$1___");
+  const s = lifeSpan(p.y), era = TL_ERAS.find(([, lo, hi]) => s.a >= lo && s.a < hi), ancient = s.a < 1400;
+  const trad = BRANCHES.filter((b) => b.p.includes(p.id)), terms = GLOSSARY.filter((g) => (g.p || []).includes(p.id));
+  const took = THINKERS.filter((x) => x.i.includes(p.id)), drew = p.i.map((id) => THINKER.get(id)).filter(Boolean);
+  const pickOne = (a, k) => a[(p.id.length * 7 + k) % a.length]; // the same clue every time for the same thinker
+  const out = [`On the timeline: ${era ? era[0] : "undated"}${s.approx ? "" : `, born ${yearLabel(s.a, ancient)}`}.`];
+  if (trad.length) out.push(`Listed in Branches under ${trad.slice(0, 2).map((b) => b.n).join(" and ")}.`);
+  if (terms.length) out.push(`Listed in the glossary under “${hide(pickOne(terms, 1).t)}”.`);
+  if (drew.length || took.length) out.push(drew.length ? `Drew on ${pickOne(drew, 2).n}.` : `Was taken up by ${pickOne(took, 2).n}.`);
+  out.push(`Wrote ${hide(workTitle(pickOne(worksOf(p), 3)))}.`);
+  out.push(hide(p.d));
+  return out.slice(0, GUESS_MAX);
+}
+function guessState() {
+  const day = dayNumber(); let st = null;
+  try { st = JSON.parse(localStorage.getItem(GUESS_KEY) || "null"); } catch {}
+  return st && st.day === day && Array.isArray(st.wrong) ? st : { day, shown: 1, wrong: [], done: "" };
+}
+function guessSave(st) { try { localStorage.setItem(GUESS_KEY, JSON.stringify(st)); } catch {} }
+const guessFind = (v) => { const q = fold(v.trim()); return q ? THINKERS.find((p) => fold(p.n) === q || fold(p.sn) === q || fold(p.n.replace(/\s*\(.*?\)/g, "")) === q) : null; };
+function guessResult(st, clues) {
+  const date = new Date().toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" });
+  return `Marginalia · Guess the thinker · ${date}\n${st.done === "solved" ? `Got it with ${st.shown} of ${clues.length} clues${st.wrong.length ? ` and ${st.wrong.length} wrong guess${st.wrong.length === 1 ? "" : "es"}` : ""}.` : `Didn't get it in ${clues.length} clues.`}`;
+}
+function guessHTML() {
+  const p = guessOfDay(); if (!p) return `<p class="hint">There aren't enough thinker entries for this yet.</p>`;
+  const st = guessState(), clues = guessClues(p), over = !!st.done;
+  const shown = clues.slice(0, over ? clues.length : st.shown);
+  return `<ol class="gclues">${shown.map((c, k) => `<li${k === shown.length - 1 && !over ? ' class="new"' : ""}><span class="gk">${k + 1}</span>${esc(c)}</li>`).join("")}</ol>
+    ${st.wrong.length ? `<p class="hint">Not ${st.wrong.map((id) => esc(THINKER.get(id)?.sn || id)).join(", not ")}.</p>` : ""}
+    ${over ? `<div class="paperpanel gdone"><p class="qz-q">${st.done === "solved" ? "<b>Right:</b> " : "It was "}<b>${esc(p.n)}</b> <span class="hint">${esc(p.y)}</span></p>
+        <div class="noteacts"><button class="btn primary" data-thinker="${esc(p.id)}">About ${esc(p.sn)}</button><button class="btn" data-keep="1" data-gshare="1">Share the result</button></div>
+        <p class="hint">A new thinker tomorrow.</p></div>`
+      : `<div class="field"><label for="g-in">Who is it?</label><input id="g-in" list="g-names" autocomplete="off" autocapitalize="words" placeholder="Type a name"><datalist id="g-names">${THINKERS.map((x) => `<option value="${esc(x.n)}">`).join("")}</datalist></div>
+        <p class="tt-err" id="g-err" role="status"></p>
+        <div class="noteacts"><button class="btn primary" data-keep="1" data-gtry="1">Guess</button>${st.shown < clues.length ? `<button class="btn" data-keep="1" data-gmore="1">Another clue</button>` : ""}<button class="btn ghost" data-keep="1" data-ggive="1">Show me</button></div>`}`;
+}
+function guessPanel() {
+  openPanel(`<h2>Guess the thinker</h2><p class="hint">One thinker a day from the app's entries. Clues go from vague to telling; each wrong guess shows the next.</p><div id="gbox" style="display:grid;gap:12px">${guessHTML()}</div>`, async (b) => {
+    const p = guessOfDay(), st = guessState(), clues = p ? guessClues(p) : [];
+    const draw = () => { $("#gbox").innerHTML = guessHTML(); const i = $("#g-in"); if (i && b.dataset.gtry) i.focus(); };
+    if (b.dataset.thinker) return thinkerPanel(b.dataset.thinker);
+    if (!p) return;
+    if (b.dataset.gtry) {
+      const v = $("#g-in").value, who = guessFind(v);
+      if (!who) { $("#g-err").textContent = v.trim() ? "That isn't one of the app's thinkers. Pick a name from the list." : "Type a name first."; return; }
+      if (who.id === p.id) st.done = "solved";
+      else if (!st.wrong.includes(who.id)) { st.wrong.push(who.id); if (st.shown < clues.length) st.shown++; else st.done = "gave"; }
+      guessSave(st); return draw();
+    }
+    if (b.dataset.gmore) { st.shown = Math.min(clues.length, st.shown + 1); guessSave(st); return draw(); }
+    if (b.dataset.ggive) { st.done = "gave"; guessSave(st); return draw(); }
+    if (b.dataset.gshare) {
+      const text = guessResult(st, clues);
+      try { if (navigator.share && matchMedia("(pointer: coarse)").matches) { await navigator.share({ text }); return; } } catch (e) { if (e && e.name === "AbortError") return; }
+      toast((await copyText(text)) ? "Result copied." : "Couldn't copy the result.");
+    }
+  });
+  $("#sheetroot .veil").addEventListener("keydown", (e) => { if (e.key === "Enter" && e.target.id === "g-in") { e.preventDefault(); const g = $("#sheetroot [data-gtry]"); if (g) g.click(); } });
 }
 /* quiz: questions made from the glossary's own definitions and the thinkers' key works */
 const QZ = { mode: "def", area: "all", qs: [], k: 0, picked: -1, right: 0, missed: [] };
@@ -7001,6 +7083,7 @@ document.addEventListener("click", (e) => {
   if (b.dataset.pathread) { const [tid, sec] = b.dataset.pathread.split("|"); return readStep(tid, sec.split(",")); }
   if (b.dataset.pathadd) return readdClassic(b.dataset.pathadd);
   if (b.dataset.argquiz) return quizPanel(b.dataset.argquiz);
+  if (b.id === "guess") return guessPanel();
   if (b.dataset.truth) { const ex = TT_EXAMPLES[+b.dataset.truth]; return truthPanel(ex ? { prem: ex[1], concl: ex[2] } : undefined); }
   if (b.dataset.say) return sayIt(b.dataset.say);
   if (b.dataset.editterm) return termSheet(b.dataset.editterm);

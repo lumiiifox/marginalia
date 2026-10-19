@@ -35,6 +35,9 @@ Uses made-up records only. Checks that:
       never two easily confused ones together; Valid or not? makes arguments whose answer the truth table confirms, about half
       valid, never with inconsistent premises or a tautology for a conclusion, and opens the truth table on the argument;
       both open from the Logic branch.
+  12. guess the thinker: one thinker a day, the same all day; every thinker it can pick has at least four clues, none giving the
+      name away; a wrong guess shows the next clue and is listed; a name not in the app is refused; a right guess or Show me ends
+      the game, offering their card and a result to share; today's game survives closing the panel, and tomorrow starts afresh.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -436,6 +439,37 @@ async def puzzles(browser):
     check(not errs, "no script errors in the argument puzzles" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def guess(browser):
+    page, errs = await fresh(browser)
+    pool = await page.evaluate("""(() => { const bad = []; for (const p of guessPool()) { const c = guessClues(p), all = c.join(' ').toLowerCase();
+        if (c.length < 4) bad.push(p.id + ' clues'); for (const w of [p.sn, ...p.n.split(/\\s+/)].filter((w) => w.length > 3 && !/^(the|of|de|von|van)$/i.test(w))) if (new RegExp(`(^|[^\\p{L}])${reEsc(w.toLowerCase())}($|[^\\p{L}])`, 'u').test(all)) bad.push(p.id + ' names ' + w); }
+      const d = dayNumber(), n = guessPool().length, d0 = d - (d % n); return [n, bad.slice(0, 6), guessOfDay(d).id === guessOfDay(d).id, new Set([...Array(n).keys()].map((k) => guessOfDay(d0 + k).id)).size === n]; })()""")
+    check(pool[0] > 50 and pool[1] == [] and pool[2] and pool[3], f"a thinker a day, the same all day, every one once before any repeats, each with four clues or more and none naming them ({pool[:1]}, {pool[1]}, {pool[3]})")
+    await page.evaluate("go({ screen: 'thinkers' })"); await page.click("#guess"); await page.wait_for_selector(".gclues")
+    check(await page.locator(".gclues li").count() == 1, "it starts with one clue")
+    ans = await page.evaluate("guessOfDay().id"); other = await page.evaluate(f"THINKERS.find((p) => p.id !== '{ans}').n")
+    await page.fill("#g-in", "Nobody Atall"); await page.click("[data-gtry]"); await page.wait_for_timeout(100)
+    check("isn't one of the app's thinkers" in await page.inner_text("#g-err") and await page.locator(".gclues li").count() == 1, "a name not in the app is refused, and costs nothing")
+    await page.fill("#g-in", other); await page.press("#g-in", "Enter"); await page.wait_for_timeout(100)
+    st = await page.evaluate("[document.querySelectorAll('.gclues li').length, document.querySelector('#gbox .hint')?.textContent || '']")
+    check(st[0] == 2 and st[1].startswith("Not "), f"a wrong guess (Enter works) shows the next clue and is listed ({st})")
+    await page.click("#pclose"); await page.wait_for_timeout(200); await page.click("#guess"); await page.wait_for_selector(".gclues")
+    check(await page.locator(".gclues li").count() == 2, "closing and opening again keeps today's game")
+    name = await page.evaluate(f"THINKER.get('{ans}').n")
+    await page.fill("#g-in", name.lower()); await page.click("[data-gtry]"); await page.wait_for_timeout(100)
+    done = await page.evaluate("[!!document.querySelector('.gdone'), document.querySelector('.gdone .qz-q').textContent, document.querySelectorAll('.gclues li').length, guessClues(guessOfDay()).length]")
+    check(done[0] and done[1].startswith("Right:") and done[2] == done[3], f"the right name, in any case, ends the game and shows every clue ({done[:3]})")
+    res = await page.evaluate("guessResult(guessState(), guessClues(guessOfDay()))")
+    check(res.startswith("Marginalia · Guess the thinker · ") and "Got it with 2 of" in res and "1 wrong guess" in res, f"the result to share says how it went ({res!r})")
+    await page.click(".gdone [data-thinker]"); await page.wait_for_timeout(300)
+    check(await page.evaluate("document.querySelector('.sheet h2').textContent") == name, "it offers their card")
+    await page.evaluate("(() => { const s = guessState(); s.day -= 1; localStorage.setItem(GUESS_KEY, JSON.stringify(s)); })()")
+    check(await page.evaluate("[guessState().shown, guessState().wrong.length, guessState().done]") == [1, 0, ""], "a new day starts afresh")
+    await page.evaluate("guessPanel()"); await page.wait_for_selector("[data-ggive]"); await page.click("[data-ggive]"); await page.wait_for_timeout(100)
+    check((await page.inner_text(".gdone .qz-q")).startswith("It was") and "Didn't get it" in await page.evaluate("guessResult(guessState(), guessClues(guessOfDay()))"), "Show me ends it and names them")
+    check(not errs, "no script errors in Guess the thinker" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
@@ -450,6 +484,7 @@ async def main():
         await margins(browser)
         await templates(browser)
         await puzzles(browser)
+        await guess(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
