@@ -36,7 +36,7 @@ const BRANCHES = [
 // Reading paths through the classics that come with the app (data/books/). Each step names a book by its id, the chapters to read
 // (its section ids, in order), what they do (why) and questions to read them with (q); terms are glossary entries to look at along the
 // way; next points beyond the app's books.
-// A path's br lists the branches and traditions it belongs to; their entries offer it.
+// A path's br lists the branches and traditions it belongs to; their entries offer it. ws: a Wikisource search (lang, q) for its next reading.
 const PATHS = [
   { id: "how-to-live", n: "How should one live?", br: ["ethics"],
     d: "Classic answers, each taking up the ones before it: Socrates' examined life, the Republic's question whether justice pays, Aristotle's virtues, Kant's duty, and Nietzsche's attack on morality itself.",
@@ -47,7 +47,9 @@ const PATHS = [
       { book: "classic-kant-groundwork", secs: ["classic-kant-groundwork-s2", "classic-kant-groundwork-s3"], why: "The First and Second Sections: only a good will is good without qualification, and morality's supreme principle is a categorical imperative, binding on every rational being whatever they happen to want.", q: ["Why does Kant say that nothing can be called good without qualification except a good will? Test the claim against his examples.", "What is the difference between acting in accordance with duty and acting from duty? How does the dealer who doesn't overcharge show it?", "Take one of Kant's four examples in the Second Section. Does the maxim really fail to become a universal law?"] },
       { book: "classic-nietzsche-genealogy", secs: ["classic-nietzsche-genealogy-s2", "classic-nietzsche-genealogy-s3"], why: "The Preface and First Essay: Nietzsche asks what our moral values are worth, and traces the opposition of good and evil back to an older one of good and bad, overturned in what he calls the slave revolt in morality.", q: ["What question about the value of morality does Nietzsche set himself in the Preface?", "How does the opposition of good and bad differ from that of good and evil, and from whose point of view is each made?", "What does Nietzsche say resentment does when it becomes creative?"] },
     ],
-    terms: ["eudaimonia", "virtue-ethics", "deontology", "categorical-imperative", "autonomy", "ressentiment", "genealogy"] },
+    terms: ["eudaimonia", "virtue-ethics", "deontology", "categorical-imperative", "autonomy", "ressentiment", "genealogy"],
+    next: "Mill's Utilitarianism (1861), the classic statement of the view this path leaves out: that right actions are those that tend to promote happiness.",
+    ws: { lang: "en", q: "Utilitarianism Mill" } },
   { id: "what-can-we-know", n: "What can we know?", br: ["epistemology"],
     d: "Reason against experience. Descartes doubts all he can and rebuilds on what survives; Hume asks what experience can justify, and finds it less than we assume; Russell names what our reasoning from experience rests on, and asks how anything can be known before experience.",
     steps: [
@@ -56,7 +58,8 @@ const PATHS = [
       { book: "classic-russell-problems", secs: ["classic-russell-problems-s7", "classic-russell-problems-s8", "classic-russell-problems-s9"], why: "Chapters VI to VIII: our expectation that the sun will rise tomorrow rests on the principle of induction, which experience can neither prove nor disprove, so we must accept it on its intrinsic evidence or forgo all justification of our expectations about the future. Russell then asks how such general principles can be known before experience, sets out Kant's answer, and argues that it fails.", q: ["What is the man who feeds the chicken every day meant to show about expectations from experience?", "State the principle of induction in your own words. Why does Russell say experience can neither prove nor disprove it?", "How does Kant explain a priori knowledge, as Russell presents him, and what is Russell's main objection?"] },
     ],
     terms: ["rationalism", "empiricism", "skepticism", "dualism", "induction-problem", "a-priori", "synthetic-a-priori"],
-    next: "Kant's Critique of Pure Reason (1781), whose answer Russell sets out and rejects in Chapter VIII, is the way into the German philosophy that follows; it isn't among the app's books." },
+    next: "Kant's Critique of Pure Reason (1781), whose answer Russell sets out and rejects in Chapter VIII, is the way into the German philosophy that follows; it isn't among the app's books.",
+    ws: { lang: "en", q: "Critique of Pure Reason" } },
   { id: "why-obey", n: "Why obey the state?", br: ["political"],
     d: "The social contract, from Hobbes's absolute sovereign to Rousseau's general will; Mill on the limits of any power, a majority's included, over the individual; then two challenges to the contract's picture of who the citizens are: Wollstonecraft on women, Marx and Engels on class.",
     steps: [
@@ -66,7 +69,9 @@ const PATHS = [
       { book: "classic-wollstonecraft-vindication", secs: ["classic-wollstonecraft-vindication-s2", "classic-wollstonecraft-vindication-s3", "classic-wollstonecraft-vindication-s4"], why: "The Introduction and Chapters I–II: the rights claimed for men belong to women too, since virtue rests on reason and women share it; their apparent weakness comes from an education that trains them to please. Chapter V takes on Rousseau's picture of women in Émile.", q: ["What does Wollstonecraft blame for women's weakness, and why does she deny that it is natural?", "Why does she ground rights in reason and virtue, and what follows for women?", "Whose views of women is she answering in Chapter II (Milton, Rousseau, Dr. Gregory), and what does she object to in them?"] },
       { book: "classic-marx-engels-manifesto", secs: ["classic-marx-engels-manifesto-s3", "classic-marx-engels-manifesto-s4"], why: "Sections I and II: the history of society is the history of class struggles; the bourgeoisie has remade the world and, in doing so, created the class that will overthrow it.", q: ["What do Marx and Engels mean when they say the history of all hitherto existing society is the history of class struggles?", "What, by their account, has the bourgeoisie achieved, and why do they say it produces its own grave diggers?", "Section II answers objections to abolishing bourgeois property. Pick one objection and judge the reply."] },
     ],
-    terms: ["state-of-nature", "social-contract", "sovereignty", "general-will", "harm-principle", "historical-materialism", "ideology"] },
+    terms: ["state-of-nature", "social-contract", "sovereignty", "general-will", "harm-principle", "historical-materialism", "ideology"],
+    next: "Locke's Second Treatise of Government (1689), the social contract of natural rights and government by consent, between Hobbes and Rousseau.",
+    ws: { lang: "en", q: "Second Treatise of Government" } },
   { id: "who-counts", n: "Who counts?", br: ["feminist", "race"],
     d: "Three writers who took their age's talk of rights and progress and asked whom it left out.",
     steps: [
@@ -74,7 +79,9 @@ const PATHS = [
       { book: "classic-cooper-voice", secs: ["classic-cooper-voice-s1", "classic-cooper-voice-s2"], why: "Cooper's opening essays: Black women's education and standing are the measure of the progress of their race, and they speak from a place that neither white women nor Black men can speak for.", q: ["Cooper calls the Black woman the mute and voiceless note in the debate on race. What does she think that voice can add?", "What does Cooper mean by saying that only the Black woman can say “when and where I enter”? What would that make the measure of progress?", "How does Cooper tie the education of women to the progress of the race as a whole?"] },
       { book: "classic-du-bois-souls", secs: ["classic-du-bois-souls-s1", "classic-du-bois-souls-s2", "classic-du-bois-souls-s4"], why: "The Forethought, Chapter I and Chapter III: the problem of the twentieth century is the problem of the color line; life behind the veil and double consciousness; and Du Bois's break with Booker T. Washington.", q: ["What does Du Bois call the problem of the twentieth century in the Forethought?", "Describe double-consciousness in your own words. What does Du Bois say it costs?", "What does Du Bois object to in Booker T. Washington's program, and what does he grant him?"] },
     ],
-    terms: ["double-consciousness", "intersectionality", "standpoint", "matrix-of-domination", "racial-formation"] },
+    terms: ["double-consciousness", "intersectionality", "standpoint", "matrix-of-domination", "racial-formation"],
+    next: "Frederick Douglass's speech “What to the Slave Is the Fourth of July?” (1852), on what the nation's founding ideals meant to the people they excluded.",
+    ws: { lang: "en", q: "What to the Slave Is the Fourth of July" } },
 ];
 
 // Disputations: an argument from one of the classics, to answer with your own strongest objection before comparing it with the classic one.

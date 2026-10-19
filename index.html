@@ -654,6 +654,14 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 #dsp-x { width: 100%; border: 1px solid var(--rule); background: var(--field); border-radius: 8px; padding: 10px 11px; font: 400 16.5px/1.5 var(--f-text); color: var(--ink); resize: vertical; }
 .dspclassic { padding: 12px 16px; display: grid; gap: 6px; }
 .dspclassic .dspwho { margin: 0; font: 700 16px/1.35 var(--f-text); }
+/* wikisource */
+.wsrow { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+.wsrow select, .wsrow input { border: 1px solid var(--rule); background: var(--field); border-radius: 8px; padding: 9px 10px; font-size: 16px; min-width: 0; color: var(--ink); }
+.wsres { display: grid; gap: 6px; margin-top: 8px; max-height: 50vh; overflow-y: auto; }
+.wshit { display: grid; gap: 2px; text-align: left; padding: 9px 11px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); color: var(--ink); }
+.wshit b { font: 600 15.5px/1.3 var(--f-text); }
+.wshit span { font: 400 13px/1.35 var(--f-ui); color: var(--muted); }
+.wshit.on { border-color: var(--leather); box-shadow: 0 0 0 1px var(--leather) inset; }
 /* reading paths */
 .primer > summary { cursor: pointer; list-style: revert; }
 .primerbody { padding: 12px 16px; display: grid; gap: 10px; margin-top: 8px; }
@@ -2491,7 +2499,12 @@ async function parseDOCX(buf, say) {
 function parseHTML(src) {
   const doc = new DOMParser().parseFromString(src, "text/html");
   const blocks = []; domToBlocks(doc.body, blocks);
-  return { title: clean(doc.title || ""), author: "", kind: "HTML", blocks };
+  const meta = (n) => clean(doc.querySelector(`meta[name="${n}"]`)?.getAttribute("content") || "");
+  const r = { title: clean(doc.title || ""), author: meta("author"), kind: "HTML", blocks };
+  if (meta("marginalia:edition")) r.edition = meta("marginalia:edition"); // a text from Wikisource carries its translator and year
+  if (meta("marginalia:year")) r.year = meta("marginalia:year");
+  if (meta("marginalia:lang")) r.lang = meta("marginalia:lang");
+  return r;
 }
 
 /* ---------- parsing: plain text / Markdown ---------- */
@@ -2549,7 +2562,7 @@ async function parseFile(file, say) {
   r.name = fname;
   r.pages = r.blocks.filter((b) => b.k === "pg").length;
   r.title = r.title ? tidyTitle(r.title, false) : tidyTitle(fname, true);
-  r.lang = guessLang(r.blocks);
+  r.lang = r.lang || guessLang(r.blocks);
   if (r.kind === "PDF") r.file = file;
   return r;
 }
@@ -5202,7 +5215,7 @@ function pathsView() {
       <div class="pbar" aria-hidden="true">${P.steps.map((_, k) => `<i class="${states[k].done ? "on" : ""}"></i>`).join("")}</div>
       <ol class="psteps">${P.steps.map(step).join("")}</ol>
       ${chipRow("Terms along the way", termChips(P.terms || [], tmap))}
-      ${P.next ? `<p class="hint">Then: ${esc(P.next)}</p>` : ""}
+      ${P.next ? `<p class="hint">Then: ${esc(P.next)}</p>${P.ws ? `<div class="noteacts"><button class="btn" data-wsfind="${esc(P.ws.lang)}|${esc(P.ws.q)}">Find it on Wikisource</button></div>` : ""}` : ""}
     </section>`;
   };
   return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
@@ -5500,6 +5513,13 @@ const fileField = () => `<div class="field">
     <p class="hint" id="f-prog">The text is extracted and stored on this device only. Scanned PDFs need OCR first.</p>
     <label class="chkrow" id="f-keepwrap" hidden><input type="checkbox" name="keeppdf" id="f-keep" checked> <span id="f-keeplab">Keep the PDF on this device, to see its printed pages</span></label>
     <button type="button" class="linkbtn" id="f-pastebtn">Or paste the text instead</button>
+    <button type="button" class="linkbtn" id="f-wsbtn">Or find a public-domain text on Wikisource</button>
+    <div class="pastebox wsbox" id="f-wsbox" hidden>
+      <div class="wsrow"><select id="f-wslang" aria-label="Wikisource in">${Object.entries(WS_LANGS).map(([k, v]) => `<option value="${k}">${v}</option>`).join("")}</select>
+        <input id="f-wsq" type="search" placeholder="Title or author" aria-label="Search Wikisource" autocomplete="off"><button type="button" class="btn" id="f-wsgo">Search</button></div>
+      <div id="f-wsres" class="wsres"></div>
+      <p class="hint">Wikisource's texts are public domain or freely licensed (check a page's license for translations made there). The whole work is fetched once and kept on this device, so it reads offline like any other book.</p>
+    </div>
     <div class="pastebox" id="f-pastebox" hidden>
       <textarea id="f-paste" class="verbatim" rows="6" placeholder="Paste the text here. Leave a blank line between paragraphs."></textarea>
       <button type="button" class="btn" id="f-pasteuse">Use this text</button>
@@ -5533,6 +5553,95 @@ function wireFile(root, onParsed) {
     if (txt.trim().length < 20) { say("Paste some text into the box first.", true); return; }
     run(new File([txt], "Pasted text.txt", { type: "text/plain" }));
   });
+  // Wikisource: search, then fetch the chosen work (its chapters too) as one HTML file, read like any other
+  const wsBox = $("#f-wsbox", root), wsRes = $("#f-wsres", root), wsQ = $("#f-wsq", root), wsLang = $("#f-wslang", root);
+  const wsFind = async () => {
+    const q = wsQ.value.trim(); if (!q) { wsQ.focus(); return; }
+    if (navigator.onLine === false) { wsRes.innerHTML = `<p class="hint">You're offline. Wikisource needs a connection.</p>`; return; }
+    wsRes.innerHTML = `<p class="hint">Searching…</p>`;
+    try {
+      const hits = await wsSearch(wsLang.value, q);
+      wsRes.innerHTML = hits.length ? hits.map((h) => `<button type="button" class="wshit" data-wspage="${esc(h.title)}"><b>${esc(h.title)}</b><span>${esc(h.snippet)}</span></button>`).join("") : `<p class="hint">Nothing on Wikisource matches “${esc(q)}”. Try the title alone, or another language.</p>`;
+    } catch { wsRes.innerHTML = `<p class="hint">Couldn't reach Wikisource just now.</p>`; }
+  };
+  $("#f-wsbtn", root).addEventListener("click", () => { wsBox.hidden = !wsBox.hidden; if (!wsBox.hidden) wsQ.focus(); });
+  $("#f-wsgo", root).addEventListener("click", wsFind);
+  wsQ.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); wsFind(); } });
+  wsRes.addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-wspage]"); if (!b || busy) return;
+    const lang = wsLang.value, page = b.dataset.wspage;
+    wsRes.querySelectorAll(".wshit").forEach((x) => x.classList.toggle("on", x === b));
+    name.textContent = `${page} (Wikisource)`; btn.disabled = true;
+    try { const file = await wsFile(lang, page, (m) => say(m)); btn.disabled = false; run(file); }
+    catch (err) { btn.disabled = false; say(err instanceof UErr ? err.message : "Couldn't fetch that work from Wikisource just now. Try again.", true); }
+  });
+  root.wsStart = (lang, q) => { wsBox.hidden = false; if (WS_LANGS[lang]) wsLang.value = lang; wsQ.value = q || ""; if (q) wsFind(); };
+}
+/* ---------- Wikisource: public-domain texts, fetched through its API (the same MediaWiki API Look up uses with Wiktionary) ----------
+   A work's chapters are its subpages ("Title/Chapter 1"), linked in reading order from the main page (from its contents, ws-summary, when it
+   marks one). Navigation and headers marked ws-noexport are dropped; page numbers become page breaks and references become notes. */
+const WS_LANGS = { en: "English", fr: "French", de: "German", la: "Latin", el: "Greek", it: "Italian", es: "Spanish" };
+const WS_MAX = 200; // pages fetched for one work at most
+const wsApi = (lang, params) => `https://${lang}.wikisource.org/w/api.php?${new URLSearchParams({ ...params, format: "json", formatversion: "2", origin: "*" })}`;
+async function wsJSON(url) { const r = await fetch(url); if (!r.ok) throw new Error("http " + r.status); const j = await r.json(); if (j.error) throw new Error(j.error.info || "api"); return j; }
+async function wsSearch(lang, q) {
+  const j = await wsJSON(wsApi(lang, { action: "query", list: "search", srsearch: q, srnamespace: "0", srlimit: "15", srprop: "snippet" }));
+  const text = (h) => clean(new DOMParser().parseFromString(`<body>${h || ""}</body>`, "text/html").body.textContent || "");
+  return ((j.query && j.query.search) || []).map((h) => ({ title: h.title, snippet: text(h.snippet) }));
+}
+async function wsParse(lang, page) {
+  const j = await wsJSON(wsApi(lang, { action: "parse", page, prop: "text|displaytitle", redirects: "1", disableeditsection: "1" }));
+  return { title: j.parse.title, html: typeof j.parse.text === "string" ? j.parse.text : (j.parse.text && j.parse.text["*"]) || "" };
+}
+// One page's HTML: its metadata (ws-title, ws-author, ws-translator, ws-year), the subpages it links to in order, and its text made ready
+// for the HTML importer.
+function wsClean(html, title) {
+  const doc = new DOMParser().parseFromString(`<body>${html}</body>`, "text/html"), root = doc.querySelector(".mw-parser-output") || doc.body;
+  const pick = (n) => clean((root.querySelector(`#${n}, .${n}`) || {}).textContent || "");
+  const meta = { title: pick("ws-title"), author: pick("ws-author"), translator: pick("ws-translator"), year: pick("ws-year") };
+  const pre = title.replace(/ /g, "_") + "/", from = root.querySelector(".ws-summary") || root, seen = new Set(), subs = [];
+  for (const a of from.querySelectorAll("a[href]")) {
+    let h = a.getAttribute("href").split("#")[0]; if (!h.startsWith("/wiki/") || a.closest(".ws-noexport")) continue;
+    try { h = decodeURIComponent(h.slice(6)); } catch { continue; }
+    if (!h.startsWith(pre)) continue;
+    const t = h.replace(/_/g, " "); if (seen.has(t)) continue; seen.add(t); subs.push(t);
+  }
+  root.querySelectorAll(".ws-noexport, .mw-editsection, .noprint, script, style, link, .mw-cite-backlink, #toc, .toc, .ws-summary, .ws-noinclude").forEach((x) => x.remove());
+  root.querySelectorAll(".ws-pagenum, .pagenum").forEach((x) => {
+    const n = x.getAttribute("data-page-number") || (/^\d+$/.test(x.id) ? x.id : "") || x.textContent.replace(/[^\dIVXLCivxlc]/g, "");
+    const pb = doc.createElement("span"); pb.setAttribute("role", "doc-pagebreak"); pb.setAttribute("aria-label", n); x.replaceWith(pb);
+  });
+  root.querySelectorAll("sup.reference").forEach((x) => { const n = x.textContent.replace(/\D/g, ""); const s = doc.createElement("sup"); s.textContent = n; x.replaceWith(s); });
+  root.querySelectorAll("ol.references").forEach((x) => { const d = doc.createElement("div"); d.setAttribute("role", "doc-endnotes"); x.replaceWith(d); d.appendChild(x); });
+  return { meta, subs, body: root.innerHTML };
+}
+// The whole work as one HTML file for the importer: chapters as headings, the metadata in <meta> tags.
+async function wsFile(lang, page, say) {
+  say("Fetching the work from Wikisource…");
+  const main = await wsParse(lang, page), { meta: m, subs, body } = wsClean(main.html, main.title);
+  const parts = [], queue = subs.map((t) => [t, 2]);
+  let n = 0;
+  // a page's text, its own opening heading (if it has one) taking the chapter's place and level, else the subpage's name above it
+  const chapter = (html, name, lv) => {
+    const d = new DOMParser().parseFromString(`<body>${html}</body>`, "text/html"), first = [...d.body.querySelectorAll("*")].find((e) => e.textContent.trim() && (/^H[1-6]$/.test(e.tagName) || e.tagName === "P"));
+    if (first && /^H[1-6]$/.test(first.tagName)) { const h = d.createElement(`h${lv}`); h.innerHTML = first.innerHTML; first.replaceWith(h); return d.body.innerHTML; }
+    return `<h${lv}>${esc(name)}</h${lv}>${html}`;
+  };
+  const prose = (html) => [...new DOMParser().parseFromString(`<body>${html}</body>`, "text/html").body.querySelectorAll("p, blockquote, dd, .poem")].reduce((k, e) => k + e.textContent.trim().split(/\s+/).filter(Boolean).length, 0);
+  if (!queue.length) parts.push(body);
+  while (queue.length && n < WS_MAX) {
+    const [t, lv] = queue.shift(); n++;
+    say(`Fetching ${n} of ${n + queue.length}: ${t.slice(main.title.length + 1)}…`);
+    const sub = wsClean((await wsParse(lang, t)).html, t);
+    const words = new DOMParser().parseFromString(`<body>${sub.body}</body>`, "text/html").body.textContent.trim().split(/\s+/).length;
+    if (sub.subs.length && words < 400 && lv < 4) { queue.unshift(...sub.subs.filter((x) => !queue.some(([q]) => q === x)).map((x) => [x, lv + 1])); parts.push(`<h${lv}>${esc(t.split("/").pop())}</h${lv}>`); continue; } // a contents page: its own chapters, in place
+    parts.push(chapter(sub.body, t.split("/").pop(), lv));
+  }
+  if (queue.length) say(`This work has more than ${WS_MAX} pages; the first ${WS_MAX} were fetched.`);
+  const title = m.title || main.title.split("/")[0], ed = m.translator ? `trans. ${m.translator}` : "";
+  const head = `<title>${esc(title)}</title><meta name="author" content="${esc(m.author)}"><meta name="marginalia:edition" content="${esc(ed)}"><meta name="marginalia:year" content="${esc(m.year)}"><meta name="marginalia:lang" content="${esc(lang)}">`;
+  if (prose(parts.join("")) < 12) throw new UErr("That page has no text to read: it may be a list of editions or an author's page. Choose one of the works it lists.");
+  return new File([`<!doctype html><html lang="${esc(lang)}"><head><meta charset="utf-8">${head}</head><body>${parts.join("\n")}</body></html>`], `${title.replace(/[\\/:*?"<>|]/g, "")} (Wikisource ${lang}).html`, { type: "text/html" });
 }
 
 const coverField = (t, url) => `<div class="field">
@@ -5637,6 +5746,8 @@ function textSheet(id) {
       const fill = (sel, key, val) => { const el = $(sel, root); if (el && (!el.value.trim() || el.value === auto[key])) { el.value = val; auto[key] = val; } };
       fill("#f-title", "title", r.title);
       if (r.author) fill("#f-author", "author", r.author);
+      if (r.edition) fill("#f-edition", "edition", r.edition);
+      if (r.year) fill("#f-year", "year", r.year);
       fill("#f-secs", "secs", r.sections.map((s) => s.label).join("\n"));
       if (cover.blob === undefined || cover.auto) {
         if (r.cover) { cover.blob = r.cover; cover.auto = true; cover.show(r.cover); }
@@ -7723,6 +7834,7 @@ document.addEventListener("click", (e) => {
   if (b.dataset.pathread) { const [tid, sec] = b.dataset.pathread.split("|"); return readStep(tid, sec.split(",")); }
   if (b.dataset.pathadd) return readdClassic(b.dataset.pathadd);
   if (b.dataset.askq) return askQuestion(b.dataset.askq);
+  if (b.dataset.wsfind) { const [lang, q] = b.dataset.wsfind.split("|"); textSheet(null); const v = $("#sheetroot .veil"); if (v && v.wsStart) v.wsStart(lang, q); return; }
   if (b.dataset.pathshare) { const P = PATHS.find((x) => x.id === b.dataset.pathshare); return shareLink(`${appURL()}#path=${encodeURIComponent(P.id)}`, `Reading path: ${P.n}`); }
   if (b.dataset.argquiz) return quizPanel(b.dataset.argquiz);
   if (b.dataset.steps) return stepsPanel();
