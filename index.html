@@ -655,6 +655,10 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .dspclassic { padding: 12px 16px; display: grid; gap: 6px; }
 .dspclassic .dspwho { margin: 0; font: 700 16px/1.35 var(--f-text); }
 .note .meta .pg2 { color: var(--muted); }
+.pairtext { display: grid; gap: 10px; font: 400 17px/1.55 var(--f-text); hyphens: auto; }
+.pairtext p { margin: 0; }
+.pairtext p.here { background: var(--mark); border-radius: 4px; padding: 4px 6px; margin: 0 -6px; }
+.menuitem.on { font-weight: 700; }
 /* wikisource */
 .wsrow { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; align-items: center; }
 .wsrow select, .wsrow input { border: 1px solid var(--rule); background: var(--field); border-radius: 8px; padding: 9px 10px; font-size: 16px; min-width: 0; color: var(--ink); }
@@ -942,7 +946,7 @@ span.bhid { display: inline; }
     <div class="rnav-lab"><span id="rnav-where"></span><span id="rnav-pct"></span></div>
     <div class="rnav-notes" id="rnav-notes" hidden></div>
     <div class="rnav-track"><div class="rnav-ticks" id="rnav-ticks"></div><input type="range" id="rnav-r" min="0" max="1000" step="1" aria-label="Move through the book"></div>
-    <div class="rnav-row"><label class="rnav-go">Go to page <input id="rnav-pg" autocomplete="off" enterkeyhint="go" aria-label="Page number, or the other edition's: its name and page, such as Minuit 34"></label><button class="btn ghost" id="rnav-pp" hidden>Printed page</button><button class="btn ghost" id="rnav-close">Done</button></div>
+    <div class="rnav-row"><label class="rnav-go">Go to page <input id="rnav-pg" autocomplete="off" enterkeyhint="go" aria-label="Page number, or the other edition's: its name and page, such as Minuit 34"></label><button class="btn ghost" id="rnav-pp" hidden>Printed page</button><button class="btn ghost" id="rnav-pair" hidden>In the original</button><button class="btn ghost" id="rnav-close">Done</button></div>
   </div>
   <div class="rtrail" id="rtrail" hidden></div>
   <section class="pin" id="pin" aria-label="Pinned passage" hidden></section>
@@ -1273,6 +1277,7 @@ const VALID = {
   texts: (v) => isObj(v) && isS(v.title) && optStr(v.author) && optStr(v.edition) && optStr(v.lang) && optStr(v.next) && (v.rank === undefined || Number.isFinite(v.rank)) && optArr(v.pdfLabels, isS) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
     && optArr(v.bookmarks, (x) => isObj(x) && Number.isInteger(x.at)) && (v.summaries === undefined || isObj(v.summaries)) && (v.pos === undefined || Number.isInteger(v.pos))
     && (v.source === undefined || v.source === null || (isObj(v.source) && optStr(v.source.name) && optStr(v.source.kind) && optNum(v.source.pages)))
+    && (v.pair === undefined || (typeof v.pair === "string" && v.pair.length > 0 && v.pair.length < 200))
     && (v.conc === undefined || (isObj(v.conc) && isS(v.conc.label) && v.conc.label.length <= 60 && Array.isArray(v.conc.pairs) && v.conc.pairs.length <= CONC_MAX
       && v.conc.pairs.every((q) => Array.isArray(q) && q.length === 2 && q.every((x) => isS(x) && x.length > 0 && x.length <= 12)))),
   notes: (v) => isObj(v) && isS(v.textId) && optStr(v.kind) && ["passage", "gloss", "original", "conclusion", "sectionId"].every((k) => optStr(v[k]))
@@ -2889,6 +2894,7 @@ function textView() {
           <h1>${esc(t.title)}</h1>
           ${t.author || t.edition ? `<div class="byline">${esc([t.author, t.edition].filter(Boolean).join(", "))}</div>` : ""}
           ${authorThinkers(t.author).map((p) => `<button class="src authlink" data-thinker="${esc(p.id)}">About ${esc(p.sn)}</button>`).join("")}
+          ${pairOf(t) ? `<button class="src authlink" data-open="${esc(t.pair)}">Paired with “${esc(pairOf(t).title)}”</button>` : ""}
           ${t.source ? `<div class="srcline">From ${esc(t.source.name)}${t.source.pages ? `, ${esc(t.source.pages)} pages` : ""}${progressOf(t) > 0 ? `, ${progressOf(t)}% read` : ""}${t.readAt ? `, last read ${esc(fmtDate(t.readAt))}` : ""}</div>` : ""}
         </div>
       </div>
@@ -5956,6 +5962,67 @@ function concSheet(tid) {
     return () => toast(pairs.length ? `${pairs.length} pair${pairs.length === 1 ? "" : "s"} saved. ${label} pages now show beside this edition's.` : "The other edition's pages were removed.");
   });
 }
+/* ---------- a book and its original (or another translation): t.pair names the other book, kept on both ----------
+   From the reader (the page number → In the original), the passage in the other book that matches your place: chapter by chapter when
+   both have the same number of chapters, else through this book's pairs of pages (t.conc) when the other has page numbers, else in proportion
+   to the text before it. Earlier and Later move a paragraph at a time; Open it there reads on in the other book. */
+const pairOf = (t) => { const p = t && t.pair && S.texts.get(t.pair); return p && p.hasContent ? p : null; };
+const pairName = (t, tp) => (tp.lang && t.lang && tp.lang !== t.lang ? `In the ${{ en: "English", fr: "French", de: "German", la: "Latin", el: "Greek", grc: "Greek", it: "Italian", es: "Spanish" }[tp.lang] || "other"}` : "In the paired book");
+const chapterHeads = (B) => B.map((b, i) => [b, i]).filter(([b]) => b.s && !b.stj && roleOf(b) === "chapter").map(([, i]) => i);
+function textCum(B) { const c = [0]; for (let i = 0; i < B.length; i++) c.push(c[i] + (B[i].k === "pg" || isHidden(B[i]) ? 0 : plain(B[i].x || "").length)); return c; }
+function pairSpot(ta, BA, i, tb, BB) {
+  // the middle of your paragraph, so a slightly different length of text before it doesn't land on the paragraph before
+  const A = textCum(BA), C = textCum(BB), mid = (A[i] + A[Math.min(i + 1, BA.length)]) / 2;
+  const at = (lo, hi, f) => { const want = C[lo] + f * (C[hi] - C[lo]); let k = lo; while (k < hi - 1 && C[k + 1] <= want) k++; return k; };
+  const ca = chapterHeads(BA), cb = chapterHeads(BB);
+  if (ca.length >= 2 && ca.length === cb.length && i >= ca[0]) {
+    let k = ca.length - 1; while (k > 0 && ca[k] > i) k--;
+    const aEnd = k + 1 < ca.length ? ca[k + 1] : BA.length, bEnd = k + 1 < cb.length ? cb[k + 1] : BB.length;
+    return { i: at(cb[k], bEnd, (mid - A[ca[k]]) / (A[aEnd] - A[ca[k]] || 1)), how: "chapter" };
+  }
+  const pg = pagesOf(BA)[i], r = pg && ((ta.conc && concPage(ta, pg)) || (tb.conc && concPage(tb, pg, true)));
+  if (r) { const j = BB.findIndex((b) => b.k === "pg" && String(b.x).toLowerCase() === String(r.p).toLowerCase()); if (j >= 0) return { i: Math.min(j + 1, BB.length - 1), how: "page" }; }
+  return { i: at(0, BB.length, mid / (A[BA.length] || 1)), how: "proportion" };
+}
+async function pairPanel() {
+  const t = S.texts.get(R.tid), tp = pairOf(t); if (!tp) return;
+  const BB = await loadContent(t.pair); if (!BB) return toast("The paired book's text isn't on this device.");
+  const pid = t.pair, here = currentBlock(), spot = pairSpot(t, R.blocks, here, tp, BB);
+  let i = spot.i;
+  const step = (d) => { let k = i + d; while (k > 0 && k < BB.length - 1 && !(markable(BB[k]) && plain(BB[k].x || "").trim())) k += d; i = Math.max(0, Math.min(BB.length - 1, k)); };
+  if (!(markable(BB[i]) && plain(BB[i].x || "").trim())) step(1);
+  const how = { chapter: "Matched chapter by chapter, by the amount of text before your place.", page: "Matched through your pairs of pages.", proportion: "Matched by how far through the book you are, so it may be some way off: use Earlier and Later." }[spot.how];
+  const draw = () => { const out = []; for (let k = i, n = 0; k < BB.length && n < 3; k++) { const b = BB[k]; if (!markable(b) || !plain(b.x || "").trim()) continue; out.push(`<p${k === i ? ' class="here"' : ""}>${b.k === "h" ? `<b>${inlineHTML(b.x || "")}</b>` : inlineHTML(b.x || "")}</p>`); n++; }
+    const pg = pagesOf(BB)[i]; return `${pg ? `<p class="hint">${esc(loc(pg))}</p>` : ""}<div class="pairtext"${tp.lang ? ` lang="${esc(tp.lang)}"` : ""}>${out.join("")}</div>`; };
+  openPanel(`<h2>${esc(tp.title)}</h2><p class="hint">${esc(how)}</p><div id="pairbox">${draw()}</div>
+    <div class="noteacts"><button class="btn" data-keep="1" data-pairmove="-1">Earlier</button><button class="btn" data-keep="1" data-pairmove="1">Later</button><button class="btn primary" data-pairopen="1">Open it there</button></div>`, (b) => {
+    if (b.dataset.pairmove) { step(+b.dataset.pairmove); $("#pairbox").innerHTML = draw(); return; }
+    if (b.dataset.pairopen) go({ screen: "reader", textId: pid, at: i, flash: true });
+  });
+}
+function pairSheet(tid) {
+  const t = S.texts.get(tid); if (!t) return;
+  const cur = t.pair && S.texts.get(t.pair) ? t.pair : "";
+  const list = [...S.texts.entries()].filter(([id, x]) => id !== tid && x.hasContent).sort(([, a], [, b]) => a.title.localeCompare(b.title));
+  openPanel(`<h2>Pair with the original</h2><p class="hint">Choose the original of “${esc(t.title)}” (or another translation of it) from your shelf, imported like any book: from a file, or from Wikisource. While you read either one, the page number's panel offers the matching passage in the other.</p>
+    <div class="menu">${list.map(([id, x]) => `<button class="menuitem${id === cur ? " on" : ""}" data-pairto="${esc(id)}">${esc(x.title)}${x.author ? ` <span class="hint">${esc(x.author)}</span>` : ""}${id === cur ? " ✓" : ""}</button>`).join("") || `<p class="empty">No other book with its text on your shelf yet.</p>`}
+    ${cur ? `<button class="menuitem danger" data-pairto="">Unpair</button>` : ""}</div>`, async (b) => {
+    if (b.dataset.pairto === undefined) return;
+    try { await setPair(tid, b.dataset.pairto); toast(b.dataset.pairto ? `Paired with “${S.texts.get(b.dataset.pairto).title}”.` : "Unpaired."); }
+    catch (e) { toast(failMsg(e)); }
+  });
+}
+// Pairs are kept on both books; pairing one with a third leaves its old partner unpaired.
+async function setPair(tid, other) {
+  const now = Date.now(), ops = [], put1 = (id, pair) => { const x = S.texts.get(id); if (!x) return; const rec = { ...x, updatedAt: now }; if (pair) rec.pair = pair; else delete rec.pair; ops.push([id, rec]); };
+  const t = S.texts.get(tid), old = t && t.pair;
+  if (old && old !== other && S.texts.get(old)?.pair === tid) put1(old, "");
+  if (other) { const o = S.texts.get(other); if (o && o.pair && o.pair !== tid && S.texts.get(o.pair)?.pair === other) put1(o.pair, ""); put1(other, tid); }
+  put1(tid, other);
+  if (idb) await idbTx(["texts"], (st) => ops.forEach(([id, r]) => st("texts").put(r, id)));
+  for (const [id, r] of ops) S.texts.set(id, r);
+  render();
+}
 function moreMenu() {
   const t = S.texts.get(S.textId); if (!t) return;
   openPanel(`<h2>${esc(t.title)}</h2>
@@ -5964,6 +6031,7 @@ function moreMenu() {
       <button class="menuitem" id="m-edit">Edit details and cover</button>
       ${t.source && t.source.kind === "PDF" ? `<button class="menuitem" id="m-pdf">${t.pdfLabels ? "The kept PDF" : "Keep the original PDF"}</button>` : ""}
       ${t.hasContent ? `<button class="menuitem" id="m-marks">Bring in highlights from a PDF</button>` : ""}
+      ${t.hasContent ? `<button class="menuitem" id="m-pair">${pairOf(t) ? `Paired with “${esc(pairOf(t).title)}”` : "Pair with the original or a translation"}</button>` : ""}
       ${t.hasContent ? `<button class="menuitem" id="m-conc">${t.conc ? `${esc(t.conc.label)} pages` : "Another edition's pages"}</button>` : ""}
       <button class="menuitem" id="m-cite">Cite this text</button>
       <button class="menuitem" id="m-export">Export notes as Markdown</button>
@@ -5974,6 +6042,7 @@ function moreMenu() {
     else if (b.id === "m-pdf") keepPdfSheet(S.textId);
     else if (b.id === "m-marks") marksSheet(S.textId);
     else if (b.id === "m-conc") concSheet(S.textId);
+    else if (b.id === "m-pair") pairSheet(S.textId);
     else if (b.id === "m-export") exportNotes();
     else if (b.id === "m-cite") citeTextPanel(S.textId);
     else if (b.id === "m-delete") confirmDelete();
@@ -6200,6 +6269,7 @@ function showNav(on) {
   R.blocks.forEach((b, i) => { if (b.s && !b.stj && roleOf(b) === "chapter") ticks.push(`<i style="left:${((100 * R.cum[i]) / total).toFixed(2)}%"></i>`); });
   $("#rnav-ticks").innerHTML = ticks.join("");
   const t = S.texts.get(R.tid); $("#rnav-pp").hidden = !(t && t.source && t.source.kind === "PDF");
+  const tp = pairOf(t); $("#rnav-pair").hidden = !tp; if (tp) $("#rnav-pair").textContent = pairName(t, tp);
   syncNav();
 }
 // Your notes on the slider. Notes closer together than a fingertip share one mark showing how many; a mark opens its notes,
@@ -7857,6 +7927,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "rpg") return showNav($("#rnav").hidden);
   if (b.id === "rnav-close") { showBars(false); return showNav(false); }
   if (b.id === "rnav-pp") return printedPagePanel();
+  if (b.id === "rnav-pair") return pairPanel();
   if (b.dataset.navnotes) return navNotesOpen(+b.dataset.navnotes);
   if (b.id === "selsave") return saveSel();
   if (b.id === "selhl") return quickHighlight();

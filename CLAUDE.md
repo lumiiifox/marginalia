@@ -49,6 +49,10 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - Another edition's pages (`t.conc = { label, pairs: [[this page, other page]] }`, `CONC_MAX`; book's More → `concSheet`): `concPage` gives the other
   edition's page (exact at a pair, in proportion between and beyond, `back` for the reverse); `concLabel` in the reader's footer (`updatePg`),
   on note cards and in the Markdown export; Go to page takes "Minuit 34". Checked by `VALID.texts`.
+- A book and its original (`t.pair`, the other book's id, kept on both by `setPair`, which unpairs an old partner; book's More → `pairSheet`): in the
+  reader, `#rnav-pair` under the page number (`pairName`: "In the French") opens `pairPanel`, the matching passage by `pairSpot`: chapter by chapter
+  when both have the same number of chapters (`chapterHeads`), else through `t.conc` pages, else in proportion (`textCum`), from the middle of
+  your paragraph; Earlier and Later, then Open it there. A pair pointing at a missing book is simply ignored (`pairOf`).
 - Citations: `CITE_STYLES`, `citeAt`, `bibEntry`, `bibtex`.
 - Import/parsing: `linesOf` and `unmerge` (PDF lines; scans' merged words), `parsePDF` (per-page body size, page numbers, headings, lost hyphens; `GAP` marks words OCR left blank as "[…]"), `ocrRepair` (scans only, gated by `ocrSigns`: split and misread words corrected against the book's own vocabulary, dashes, note numbers, split numbers, "[illegible]"), `domToBlocks` / `parseHTML` (EPUB, DOCX), `parsePlain`.
 - Views: `render` dispatches to `libraryView`, `textView`, `tagView`, `questionsView`, `draftsView`/`draftView`, `comparesView`/`compareView`, `concordView`, glossary, branches and `thinkersView`. The home screen reaches them through three buttons (`referenceHome`) that open

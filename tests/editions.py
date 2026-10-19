@@ -4,6 +4,9 @@ Uses made-up books only. Checks that:
   1. another edition's pages: pairs typed in the book's menu are read in any of the usual ways and saved with the book; the other edition's
      page is exact at a pair and estimated (≈) between and beyond them; the reader's footer, the note cards and the Markdown export show it;
      Go to page takes the other edition's numbers; a backup with malformed pairs is refused; a backup round trip keeps them.
+  2. a book and its original: pairing from the book's menu marks both books, and pairing one with a third unpairs its old partner; the
+     reader offers In the French (the original's language) under the page number; the passage shown matches your place chapter by chapter,
+     through the pairs of pages, or in proportion; Earlier and Later move it; Open it there reads on in the original; Unpair clears both.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, json, subprocess, sys, time
@@ -78,10 +81,55 @@ async def concordance(browser):
     check(not errs, "no script errors with another edition's pages" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def original(browser):
+    page, errs = await fresh(browser)
+    await page.evaluate(BOOK, ["en", "Anti-Oedipus", "en", "English"])
+    await page.evaluate(BOOK, ["fr", "L'Anti-Œdipe", "fr", "Français"])
+    await page.evaluate(BOOK, ["de", "Anti-Ödipus", "de", "Deutsch"])
+    await page.evaluate("go({ screen: 'text', textId: 'en' })"); await page.wait_for_timeout(200)
+    await page.click("#more"); await page.click("#m-pair"); await page.wait_for_selector("[data-pairto='fr']")
+    await page.click("[data-pairto='fr']"); await page.wait_for_timeout(300)
+    check(await page.evaluate("[S.texts.get('en').pair, S.texts.get('fr').pair]") == ["fr", "en"], "pairing marks both books")
+    check("Paired with “L'Anti-Œdipe”" in await page.inner_text("header.head"), "the book's page says what it's paired with")
+    # the reader: chapter by chapter
+    await page.evaluate("localStorage.setItem('mg-reader', JSON.stringify({ flow: 'pages', bars: 'hide' }))")
+    await page.evaluate("go({ screen: 'reader', textId: 'en' })"); await page.wait_for_timeout(800)
+    target = await page.evaluate("(() => { const B = R.blocks; return B.findIndex((b) => (b.x || '').startsWith('English 3.21:')); })()")
+    await page.evaluate(f"jumpTo({target}, false, true)"); await page.wait_for_timeout(300)
+    await page.evaluate("showNav(true)"); await page.wait_for_timeout(200)
+    check(await page.evaluate("[!document.querySelector('#rnav-pair').hidden, document.querySelector('#rnav-pair').textContent]") == [True, "In the French"], "the reader offers In the French under the page number")
+    await page.click("#rnav-pair"); await page.wait_for_selector("#pairbox")
+    here = await page.inner_text("#pairbox p.here")
+    mine = await page.evaluate("(R.blocks[currentBlock()].x || '').split(':')[0].replace('English ', '')")
+    check(here.startswith(f"Français {mine}:") and "chapter by chapter" in await page.inner_text(".sheet"), f"the passage matches your place chapter by chapter ({mine} → {here[:14]!r})")
+    await page.click("[data-pairmove='1']"); await page.click("[data-pairmove='1']"); await page.wait_for_timeout(80)
+    later = await page.inner_text("#pairbox p.here")
+    check(later != here and later.startswith("Français 3."), f"Later moves on a paragraph at a time ({later[:20]!r})")
+    await page.click("[data-pairopen]"); await page.wait_for_timeout(900)
+    opened = await page.evaluate("[S.screen, R.tid, (R.blocks[currentBlock()].x || '').slice(0, 12)]")
+    check(opened[0] == "reader" and opened[1] == "fr", f"Open it there reads on in the original ({opened})")
+    # through the pairs of pages, then in proportion
+    spot = await page.evaluate("""(async () => { const A = await loadContent('en'), B = await loadContent('fr');
+      const fewer = B.filter((b) => !(b.k === 'h' && b.s === 'fr-c5')).map((b) => ({ ...b, s: b.s === 'fr-c5' ? undefined : b.s, st: b.s === 'fr-c5' ? undefined : b.st }));
+      const i = A.findIndex((b) => b.k === 'pg' && b.x === '30') + 1;
+      const viaPages = pairSpot({ conc: { label: 'Minuit', pairs: [['30', '45']] } }, A, i, {}, fewer);
+      const prop = pairSpot({}, A, i, {}, fewer);
+      return [viaPages.how, (fewer[viaPages.i - 1] || {}).x, prop.how, Math.abs(prop.i - i) < 12]; })()""")
+    check(spot[:2] == ["page", "45"] and spot[2:] == ["proportion", True], f"with different chapters, through the pairs of pages, else in proportion ({spot})")
+    # re-pairing and unpairing
+    await page.evaluate("setPair('de', 'en')"); await page.wait_for_timeout(200)
+    check(await page.evaluate("[S.texts.get('en').pair, S.texts.get('de').pair, S.texts.get('fr').pair]") == ["de", "en", None], "pairing one with a third unpairs its old partner")
+    await page.evaluate("setPair('en', '')"); await page.wait_for_timeout(200)
+    check(await page.evaluate("[S.texts.get('en').pair, S.texts.get('de').pair]") == [None, None], "Unpair clears both")
+    check(await page.evaluate("[VALID.texts({ title: 'x', pair: 'fr' }), VALID.texts({ title: 'x', pair: 7 }), VALID.texts({ title: 'x', pair: '' })]") == [True, False, False], "a backup's pair must be a book's id")
+    check(not errs, "no script errors with a paired original" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         await concordance(browser)
+        await original(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
