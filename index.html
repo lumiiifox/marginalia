@@ -582,6 +582,17 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .rsurf .passage, .rsurf .gloss, .rsurf .arg, .rsurf .argc { margin: 0; }
 .rs-ago { font-weight: 400; margin-left: 6px; }
 .rs-src { margin: 2px 0 0; display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: baseline; font: 400 13.5px/1.35 var(--f-ui); color: var(--muted); }
+/* essay templates */
+.tplpick { border: 0; padding: 0; margin: 0; display: grid; gap: 8px; }
+.tplpick legend { font-size: 15px; font-weight: 500; padding: 0; margin-bottom: 6px; }
+.tplopt { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; align-items: start; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 8px; background: var(--field); }
+.tplopt input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--leather); }
+.tplopt span { display: grid; gap: 3px; }
+.tplopt b { font: 700 16px/1.3 var(--f-text); }
+.tplopt small { font: 400 13.5px/1.4 var(--f-ui); color: var(--muted); }
+.tplopt small.tplsecs { color: var(--ink); opacity: 0.85; }
+.tplopt:has(input:checked) { border-color: var(--leather); box-shadow: 0 0 0 1px var(--leather) inset; }
+.ditem.dguide p { font-style: italic; color: var(--muted); }
 /* reading paths */
 .path { margin-top: 18px; }
 .path .pd { margin: 0; font: 400 16.5px/1.5 var(--f-text); }
@@ -2807,7 +2818,7 @@ function draftItemHTML(it, k, last) {
       <button class="btn ghost" data-dremove="${k}">Remove</button>
     </div>`;
   if (it.t === "h") return `<div class="ditem dh"><h2>${esc(it.x)}</h2>${ctl}</div>`;
-  if (it.t === "p") return `<div class="ditem dp"><p>${esc(it.x)}</p>${ctl}</div>`;
+  if (it.t === "p") return `<div class="ditem dp${it.x.startsWith(GUIDE) ? " dguide" : ""}"><p>${esc(it.x)}</p>${ctl}</div>`;
   const n = S.notes.get(it.id);
   if (!n) return `<div class="ditem dmissing"><p class="hint">This note was deleted.</p>${ctl}</div>`;
   const t = S.texts.get(n.textId);
@@ -2844,15 +2855,53 @@ async function saveDraft(id, change) {
   const d = S.drafts.get(id); if (!d) return;
   await put("drafts", id, { ...d, ...change, updatedAt: Date.now() });
 }
+/* Essay templates for a new draft: headings, each followed by one line of guidance (a paragraph starting with GUIDE) that you
+   write over or remove. Plain headings and paragraphs, the draft's usual items. */
+const GUIDE = "Guide: ";
+const ESSAY_TEMPLATES = [
+  { id: "argue", n: "Argue for a thesis", d: "The usual philosophy essay: one claim, defended with reasons, against the strongest objection.", s: [
+    ["Introduction", "State the problem and why it is one, then your thesis in a sentence. Skip the warm-up and the dictionary definitions."],
+    ["The view at issue", "Explain the position or argument you're answering, accurately and charitably, in your own words, with page references for anything you quote."],
+    ["My argument", "Give your reasons a step at a time. Every claim needs support, and the reader should always know which claims are yours and which the author's."],
+    ["An objection", "The strongest objection a careful reader, or the author, would raise."],
+    ["Reply", "Answer it, or say how your thesis has to change because of it."],
+    ["Conclusion", "What you have shown, and what you haven't."]] },
+  { id: "reconstruct", n: "Reconstruct an argument", d: "Set out a philosopher's argument as premises and a conclusion, then test it.", s: [
+    ["The passage", "Where the argument is (book, chapter, pages) and the question it answers. Add the passage from your notes."],
+    ["The argument", "Number the premises and state the conclusion. Add any premise the author assumes without saying, and mark it as yours."],
+    ["Its terms", "The key words as the author uses them, where that differs from ordinary use."],
+    ["Is it valid?", "If the premises were true, would the conclusion have to be? If not, what would have to be added?"],
+    ["Are the premises true?", "Which premise is weakest, and what can be said for and against it?"],
+    ["Conclusion", "How strong the argument is, and what it would take to make it stronger."]] },
+  { id: "compare", n: "Compare two views", d: "Two answers to one question: what each says, where exactly they part, and which is better supported.", s: [
+    ["The question", "The question both views answer, worded so that each side could accept your wording."],
+    ["The first view", "Explain it charitably, with its best supporting reason."],
+    ["The second view", "Explain it charitably, with its best supporting reason."],
+    ["Where they agree", "Shared assumptions, which are often where the real disagreement hides."],
+    ["Where they differ", "The exact point of disagreement, and what follows from it."],
+    ["Assessment", "Which is better supported, and why; or why the question can't be settled between them."]] },
+  { id: "close", n: "Close reading of a passage", d: "One passage read slowly: what it says, the words carrying it, and its place in the book.", s: [
+    ["The passage", "Add the passage from your notes, and say where it sits in the book's argument."],
+    ["What it says", "Go through it sentence by sentence, in your own words, before interpreting."],
+    ["The words doing the work", "Terms, images and turns of phrase the passage depends on, and how they are used elsewhere in the book."],
+    ["How it connects", "What it answers from earlier in the book, and what it sets up later."],
+    ["What it shows", "Your reading, and what it leaves open."]] },
+];
+const templateItems = (tp) => tp.s.flatMap(([h, g]) => [{ t: "h", x: h }, { t: "p", x: GUIDE + g }]);
 function draftTitleSheet(id, then) {
   const d = id ? S.drafts.get(id) : null;
+  const pick = d ? "" : `<fieldset class="field tplpick"><legend>Start from</legend>
+      <label class="tplopt"><input type="radio" name="tpl" value="" checked><span><b>A blank draft</b></span></label>
+      ${ESSAY_TEMPLATES.map((tp) => `<label class="tplopt"><input type="radio" name="tpl" value="${tp.id}"><span><b>${esc(tp.n)}</b><small>${esc(tp.d)}</small><small class="tplsecs">${tp.s.map(([h]) => esc(h)).join(" · ")}</small></span></label>`).join("")}
+      <span class="hint">A template gives you its headings, each with a line of guidance to write over or remove. The structure follows common advice on philosophy essays, such as Jim Pryor's Guidelines on Writing a Philosophy Paper.</span></fieldset>`;
   openSheet(`<h2>${d ? "Rename draft" : "New draft"}</h2>
-    <div class="field"><label for="d-title">Title</label><input id="d-title" name="title" value="${esc(d ? d.title : "")}" placeholder="e.g. Conatus and capital" autocomplete="off"></div>`,
+    <div class="field"><label for="d-title">Title</label><input id="d-title" name="title" value="${esc(d ? d.title : "")}" placeholder="e.g. Conatus and capital" autocomplete="off"></div>${pick}`,
   async (fd) => {
-    const title = fd.get("title").trim() || "Untitled draft";
+    const tp = ESSAY_TEMPLATES.find((x) => x.id === fd.get("tpl"));
+    const title = fd.get("title").trim() || (tp ? tp.n : "Untitled draft");
     if (d) { await saveDraft(id, { title }); return; }
     const nid = gid();
-    await put("drafts", nid, { title, items: [], createdAt: Date.now(), updatedAt: Date.now() });
+    await put("drafts", nid, { title, items: tp ? templateItems(tp) : [], createdAt: Date.now(), updatedAt: Date.now() });
     return () => (then ? then(nid) : go({ screen: "draft", draftId: nid }));
   });
 }

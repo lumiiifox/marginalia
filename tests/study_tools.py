@@ -29,6 +29,8 @@ Uses made-up records only. Checks that:
   9. from your margins: the home screen shows one of your notes made at least two weeks ago (none newer, none from the example
      book), the same one all day and a different one on other days; Another moves to the next without redrawing the screen;
      Follow up opens the note's follow-up, Show in text appears when the book's text is here; with no note old enough, no card.
+  10. essay templates: New draft offers a blank draft or a template; a template gives its headings, each with a line of guidance
+      drawn apart from your own paragraphs, named after the template unless you give a title; the draft is the usual kind a backup holds.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -379,6 +381,23 @@ async def margins(browser):
     check(not errs, "no script errors in From your margins" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def templates(browser):
+    page, errs = await fresh(browser)
+    await page.evaluate("go({ screen: 'drafts' })"); await page.click("#newdraft"); await page.wait_for_selector(".tplopt")
+    opts = await page.evaluate("[...document.querySelectorAll('.tplopt input')].map((x) => [x.value, x.checked])")
+    check(opts[0] == ["", True] and [o[0] for o in opts[1:]] == await page.evaluate("ESSAY_TEMPLATES.map((t) => t.id)"), f"New draft starts blank, with each template to pick ({opts})")
+    await page.click(".tplopt input[value='reconstruct']"); await page.click("#sheetroot button[type=submit]"); await page.wait_for_timeout(400)
+    d = await page.evaluate("(() => { const d = S.drafts.get(S.draftId); return [S.screen, d.title, d.items.map((x) => x.t).join(''), d.items.filter((x) => x.t === 'p').every((x) => x.x.startsWith(GUIDE)), VALID.drafts(d), document.querySelectorAll('.ditem.dguide').length, document.querySelectorAll('.ditem.dh').length]; })()")
+    n = await page.evaluate("ESSAY_TEMPLATES.find((t) => t.id === 'reconstruct').s.length")
+    check(d[0] == "draft" and d[1] == "Reconstruct an argument" and d[2] == "hp" * n and d[3] and d[4] and d[5] == n and d[6] == n, f"a template's draft has its headings, each with a line of guidance shown apart, named after it, and a backup accepts it ({d})")
+    await page.evaluate("go({ screen: 'drafts' })"); await page.click("#newdraft"); await page.wait_for_selector(".tplopt")
+    await page.fill("#d-title", "Blank one"); await page.click("#sheetroot button[type=submit]"); await page.wait_for_timeout(400)
+    check(await page.evaluate("[S.drafts.get(S.draftId).title, S.drafts.get(S.draftId).items.length]") == ["Blank one", 0], "a blank draft is still empty")
+    await page.evaluate("draftTitleSheet(S.draftId)"); await page.wait_for_timeout(200)
+    check(await page.locator(".tplopt").count() == 0, "renaming a draft doesn't offer templates")
+    check(not errs, "no script errors with templates" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
@@ -391,6 +410,7 @@ async def main():
         await fallacies(browser)
         await paths(browser)
         await margins(browser)
+        await templates(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
