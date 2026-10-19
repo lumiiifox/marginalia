@@ -558,6 +558,23 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .qz-say { font: 400 15px/1.45 var(--f-text); margin: 0; }
 .qz-say .bad { color: var(--warn); }
 .qz-missed { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+/* truth tables */
+.tt-syms .segb { min-width: 44px; font: 500 18px/1 var(--f-text); padding: 9px 10px; }
+.tt-ascii { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; letter-spacing: 0.04em; }
+.tt-err { margin: 0; font: 400 15px/1.45 var(--f-ui); color: var(--warn); }
+.tt-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--field); max-width: 100%; }
+.tt { border-collapse: collapse; width: 100%; font: 500 14px/1.2 var(--f-ui); font-variant-numeric: tabular-nums; }
+.tt th, .tt td { padding: 6px 8px; text-align: center; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+.tt th { font: 500 14px/1.25 var(--f-text); color: var(--ink); white-space: normal; min-width: 2.2em; vertical-align: bottom; }
+.tt th.tv, .tt td:nth-child(1) { padding-left: 10px; }
+.tt th.tc { border-left: 1px solid var(--rule); }
+.tt tr > td:nth-last-child(2) { border-left: 1px solid var(--rule); font-weight: 700; }
+.tt td.f { color: var(--muted); }
+.tt td.tm { width: 1.6em; padding-left: 2px; font-weight: 700; }
+.tt tr.ok td { background: var(--mk-gloss); }
+.tt tr.cx td { background: var(--mk-objection); }
+.tt tr.cx td.tm { color: var(--warn); }
+.tt tbody tr:last-child td { border-bottom: 0; }
 .wlist { display: grid; }
 .witem { padding: 10px 0; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); }
 .witem:first-child { border-top: 0; }
@@ -3560,6 +3577,7 @@ function termHTML(g, tmap) {
       ${conn ? `<div class="tconn">${conn}</div>` : ""}
       ${termHitsHTML(hits)}
       <div class="noteacts">
+        ${TT_TERMS.has(g.id) ? `<button class="btn" data-truth="1">Try it in a truth table</button>` : ""}
         <button class="btn ghost" data-editterm="${esc(g.id)}">Edit</button>
         ${g.edited ? `<button class="btn ghost" data-restoreterm="${esc(g.id)}">Restore original</button>` : ""}
         ${g.builtIn ? "" : `<button class="btn ghost danger" data-delterm="${esc(g.id)}">Delete</button>`}
@@ -3851,6 +3869,140 @@ function quizPanel(area) {
     if (box) { box.innerHTML = quizHTML(); const sh = box.closest(".sheet"); if (sh && (b.dataset.qznext || b.dataset.qzmode || b.dataset.qzagain)) sh.scrollTop = 0; }
   });
 }
+/* ---------- truth tables: is an argument in propositional logic valid? ----------
+   Letters stand for sentences; the connectives are ¬ ∧ ∨ → ↔, also typed as ~ & | -> <-> or the words not, and, or, implies, iff
+   ("v" between letters is or). Binding, tightest first: ¬, ∧, ∨, →, ↔; → groups to the right. Nothing is stored. */
+const TT = { prem: "", concl: "", field: "tt-p" };
+const TT_MAX = 6; // 64 rows: about as many as a phone can show
+const TT_PREC = { "↔": 1, "→": 2, "∨": 3, "∧": 4 };
+const TT_EXAMPLES = [
+  ["Modus ponens", "P → Q\nP", "Q"], ["Modus tollens", "P → Q\n¬Q", "¬P"], ["Disjunctive syllogism", "P ∨ Q\n¬P", "Q"],
+  ["Hypothetical syllogism", "P → Q\nQ → R", "P → R"], ["Affirming the consequent", "P → Q\nQ", "P"], ["Denying the antecedent", "P → Q\n¬P", "¬Q"],
+];
+function ttLex(s) {
+  const ops = [["<->", "↔"], ["<=>", "↔"], ["->", "→"], ["=>", "→"], ["↔", "↔"], ["≡", "↔"], ["→", "→"], ["⊃", "→"], ["∧", "∧"], ["&", "∧"], ["^", "∧"], ["·", "∧"],
+    ["∨", "∨"], ["|", "∨"], ["¬", "¬"], ["~", "¬"], ["!", "¬"], ["-", "¬"], ["(", "("], [")", ")"], ["[", "("], ["]", ")"]];
+  const words = { not: "¬", and: "∧", or: "∨", implies: "→", iff: "↔" };
+  const out = []; let i = 0;
+  while (i < s.length) {
+    if (/\s/.test(s[i])) { i++; continue; }
+    const op = ops.find(([k]) => s.startsWith(k, i));
+    if (op) { out.push({ op: op[1] }); i += op[0].length; continue; }
+    const w = s.slice(i).match(/^\p{L}+/u);
+    if (!w) throw new Error(`“${s[i]}” isn't a connective. Use ¬ ∧ ∨ → ↔ and brackets.`);
+    const lw = w[0].toLowerCase();
+    if (words[lw]) { out.push({ op: words[lw] }); i += w[0].length; continue; }
+    if (w[0] === "v") { out.push({ op: "∨" }); i++; continue; }
+    if (w[0].length > 1) throw new Error(`“${w[0]}” isn't one sentence letter. Use a single letter (P, Q, R) for each sentence.`);
+    const sub = s.slice(i + 1).match(/^[0-9′']*/)[0];
+    out.push({ v: w[0] + sub }); i += 1 + sub.length;
+  }
+  return out;
+}
+function ttParse(src) {
+  const toks = ttLex(src); let k = 0;
+  if (!toks.length) throw new Error("Empty.");
+  const peek = () => toks[k] && toks[k].op, take = () => toks[k++];
+  const bin = (next, op) => () => { let a = next(); while (peek() === op) { take(); a = { op, a, b: next() }; } return a; };
+  const atom = () => {
+    const t = take();
+    if (!t) throw new Error("It ends too soon: a sentence letter or a bracket is missing.");
+    if (t.v) return { v: t.v };
+    if (t.op === "¬") return { op: "¬", a: atom() };
+    if (t.op === "(") { const e = iff(); if (peek() !== ")") throw new Error("A bracket is opened and never closed."); take(); return e; }
+    throw new Error(t.op === ")" ? "A closing bracket has no opening one." : `${t.op} needs a sentence on its left.`);
+  };
+  const and = bin(atom, "∧"), or = bin(and, "∨");
+  const imp = () => { const a = or(); if (peek() === "→") { take(); return { op: "→", a, b: imp() }; } return a; };
+  const iff = bin(imp, "↔");
+  const e = iff();
+  if (k < toks.length) throw new Error(toks[k].op === ")" ? "A closing bracket has no opening one." : `Something is missing before ${toks[k].op || toks[k].v}: a connective between two sentences?`);
+  return e;
+}
+function ttVal(n, env) {
+  if (n.v) return env[n.v];
+  const a = ttVal(n.a, env);
+  if (n.op === "¬") return !a;
+  const b = ttVal(n.b, env);
+  return n.op === "∧" ? a && b : n.op === "∨" ? a || b : n.op === "→" ? !a || b : a === b;
+}
+// A formula written out again with the app's symbols and only the brackets it needs.
+function ttShow(n, outer = 0) {
+  if (n.v) return n.v;
+  if (n.op === "¬") return "¬" + ttShow(n.a, 9);
+  const p = TT_PREC[n.op], s = `${ttShow(n.a, n.op === "→" ? p + 0.5 : p)} ${n.op} ${ttShow(n.b, n.op === "→" ? p : p + 0.5)}`;
+  return p < outer ? `(${s})` : s;
+}
+function ttVars(nodes) {
+  const seen = new Set(), walk = (n) => { if (n.v) seen.add(n.v); else { walk(n.a); if (n.b) walk(n.b); } };
+  nodes.forEach(walk);
+  return [...seen].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+}
+// Every row of the table, the rows that make each premise true, and the counterexamples among them.
+function ttCheck(premText, conclText) {
+  const lines = premText.split(/\n|;/).map((x) => x.trim()).filter(Boolean);
+  const prem = [];
+  for (const [k, x] of lines.entries()) { try { prem.push(ttParse(x)); } catch (e) { return { err: `Premise ${k + 1}: ${e.message}` }; } }
+  if (!conclText.trim()) return { err: "" };
+  let concl; try { concl = ttParse(conclText); } catch (e) { return { err: `Conclusion: ${e.message}` }; }
+  const vars = ttVars([...prem, concl]);
+  if (vars.length > TT_MAX) return { err: `This checks up to ${TT_MAX} sentence letters (${2 ** TT_MAX} rows); this argument has ${vars.length}.` };
+  const rows = [];
+  for (let r = 0; r < 2 ** vars.length; r++) {
+    const env = Object.fromEntries(vars.map((v, j) => [v, !((r >> (vars.length - 1 - j)) & 1)])); // the first row is all true, as in textbooks
+    const pv = prem.map((p) => ttVal(p, env)), cv = ttVal(concl, env), all = pv.every(Boolean);
+    rows.push({ env, pv, cv, all, cx: all && !cv });
+  }
+  return { prem, concl, vars, rows, cx: rows.filter((x) => x.cx).length, live: rows.filter((x) => x.all).length };
+}
+function ttHTML() {
+  const res = ttCheck(TT.prem, TT.concl);
+  if (res.err !== undefined) return res.err ? `<p class="tt-err" role="status">${esc(res.err)}</p>` : `<p class="hint">Write a conclusion to see the table.</p>`;
+  const { prem, concl, vars, rows, cx, live } = res, n = rows.length;
+  const say = !prem.length
+    ? cx === 0 ? `<b>True in every row.</b> The conclusion is a tautology, so it follows from no premises at all.` : `<b>Not valid.</b> With no premises the conclusion would have to be true in every row, and ${n - rows.filter((x) => x.cv).length} of the ${n} rows make it false.`
+    : cx ? `<b class="bad">Not valid.</b> ${cx === 1 ? "One row makes" : `${cx} rows make`} every premise true and the conclusion false (marked ✗). Each is a counterexample: a way for the premises to hold while the conclusion fails.`
+    : live ? `<b>Valid.</b> In every row where all the premises are true (marked ✓), the conclusion is true too, so there is no counterexample.`
+    : `<b>Valid, but only because the premises can never all be true together.</b> They are inconsistent, so no row can be a counterexample. An argument like this is valid and can never be sound.`;
+  const tf = (x) => `<td class="${x ? "t" : "f"}">${x ? "T" : "F"}</td>`;
+  return `<p class="qz-say" role="status">${say}</p>
+    <div class="tt-wrap"><table class="tt"><thead><tr>${vars.map((v) => `<th class="tv">${esc(v)}</th>`).join("")}${prem.map((p) => `<th>${esc(ttShow(p))}</th>`).join("")}<th class="tc">∴ ${esc(ttShow(concl))}</th><th class="tm" aria-label="Row"></th></tr></thead>
+    <tbody>${rows.map((x) => `<tr class="${x.cx ? "cx" : x.all ? "ok" : ""}">${vars.map((v) => tf(x.env[v])).join("")}${x.pv.map(tf).join("")}${tf(x.cv)}<td class="tm">${x.cx ? "✗" : x.all && prem.length ? "✓" : ""}</td></tr>`).join("")}</tbody></table></div>
+    <p class="hint">${n} rows, one for each way of making ${vars.length === 1 ? "the sentence" : `the ${vars.length} sentences`} true or false. An argument is valid when no row makes every premise true and the conclusion false.</p>`;
+}
+function truthPanel(preset) {
+  if (preset) Object.assign(TT, preset);
+  const sym = ["¬", "∧", "∨", "→", "↔", "(", ")"].map((s) => `<button type="button" class="segb tt-sym" data-keep="1" data-ttsym="${s}" aria-label="Type ${s}">${s}</button>`).join("");
+  const ex = TT_EXAMPLES.map(([name], i) => `<button class="chip" data-keep="1" data-ttex="${i}">${esc(name)}</button>`).join("");
+  const inAttrs = `autocapitalize="characters" autocomplete="off" autocorrect="off" spellcheck="false"`;
+  openPanel(`<h2>Truth table</h2>
+    <p class="hint">Is an argument valid? Write each premise on its own line and the conclusion below, using capital letters for sentences: “If it rains, the street is wet” becomes P → Q.</p>
+    <div class="crow"><span class="clabel">Try one</span><div class="chips">${ex}</div></div>
+    <div class="field"><label for="tt-p">Premises, one per line</label><textarea id="tt-p" rows="3" ${inAttrs}>${esc(TT.prem)}</textarea></div>
+    <div class="field"><label for="tt-c">Conclusion</label><input id="tt-c" ${inAttrs} value="${esc(TT.concl)}"></div>
+    <div class="seg tt-syms">${sym}</div>
+    <p class="hint">You can also type <span class="tt-ascii">~ &amp; | -&gt; &lt;-&gt;</span> or the words not, and, or, implies, iff.</p>
+    <div id="ttout" style="display:grid;gap:10px">${ttHTML()}</div>`, (b) => {
+    if (b.dataset.ttex) { const [, p, c] = TT_EXAMPLES[+b.dataset.ttex]; Object.assign(TT, { prem: p, concl: c }); $("#tt-p").value = p; $("#tt-c").value = c; }
+    else if (b.dataset.ttsym) {
+      const f = $("#" + TT.field) || $("#tt-p");
+      const a = f.selectionStart ?? f.value.length, z = f.selectionEnd ?? a, s = b.dataset.ttsym, gap = (c) => !c || /\s/.test(c);
+      const two = TT_PREC[s] ? `${gap(f.value[a - 1]) ? "" : " "}${s}${f.value[z] === " " ? "" : " "}` : s; // a connective between two sentences gets spaces
+      f.setRangeText(two, a, z, "end"); f.focus();
+      TT[f.id === "tt-c" ? "concl" : "prem"] = f.value;
+    } else if (b.dataset.term) return openTerm(b.dataset.term);
+    $("#ttout").innerHTML = ttHTML();
+  });
+  const veil = $("#sheetroot .veil");
+  // the symbol keys type into the field you were in, without taking the keyboard away from it
+  veil.addEventListener("pointerdown", (e) => { if (e.target.closest(".tt-sym")) e.preventDefault(); });
+  veil.addEventListener("focusin", (e) => { if (e.target.id === "tt-p" || e.target.id === "tt-c") TT.field = e.target.id; });
+  veil.addEventListener("input", (e) => {
+    if (e.target.id === "tt-p") TT.prem = e.target.value; else if (e.target.id === "tt-c") TT.concl = e.target.value; else return;
+    $("#ttout").innerHTML = ttHTML();
+  });
+}
+const TT_TERMS = new Set(["validity", "soundness", "modus", "deduction"]); // glossary entries that offer the truth table
 function termSheet(id, preset) {
   const base = id ? allTerms().find((x) => x.id === id) : null;
   const g = base || { t: "", a: "mine", d: "", x: "", s: "", w: "", ...(preset || {}) };
@@ -4104,6 +4256,7 @@ function branchesView() {
         <p class="tdef">${esc(b.d)}</p>
         ${figHTML(b.img)}
         ${parasHTML(b.x)}${thinkerSources(b)}
+        ${b.id === "logic" ? `<div class="noteacts"><button class="btn" data-truth="1">Check an argument with a truth table</button></div>` : ""}
         <div class="label">Questions it asks</div>
         <ul class="bq-list">${b.q.map((q) => `<li>${esc(q)}</li>`).join("")}</ul>
         <div class="tconn">
@@ -6447,6 +6600,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "addterm") return termSheet(null);
   if (b.id === "quiz") return quizPanel(S.screen === "glossary" ? S.gArea : S.screen === "thinkers" || (S.screen === "reference" && S.rk === "thinkers") ? "thinkers" : "all");
   if (b.id === "mywords") return wordsPanel();
+  if (b.dataset.truth) return truthPanel();
   if (b.dataset.editterm) return termSheet(b.dataset.editterm);
   if (b.dataset.restoreterm) return del("terms", b.dataset.restoreterm).catch((e) => toast(failMsg(e)));
   if (b.dataset.delterm) return arm(b, () => del("terms", b.dataset.delterm).catch((e) => toast(failMsg(e))));

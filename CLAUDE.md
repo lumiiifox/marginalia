@@ -14,6 +14,7 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - After changes to storage or deleting, also run `python3 tests/trash.py` (Recently deleted, and the upgrade to version 8).
 - After any change to PDF import, also run `python3 tests/pdf_import.py` (generated books: headings, page order, broken words, a scan-like book). `python3 tests/pdf_import.py some.pdf` shows what the parser makes of a real book, for checking a bad import; real books stay out of the repo.
 - After any change to the reader, also run `python3 tests/paged_reader.py` (Swipe pages: gestures, alignment, flips, joined paragraphs, chapters) `python3 tests/structure.py` (marking chapters, headings, running heads and title pages with Edit) `python3 tests/comfort.py` (tap to turn, the hidden toolbar, the screen kept on, status-bar colours, Scroll mode on a long book) `python3 tests/navigate.py` (Find with marks and arrows, the slider and your notes marked above it, Go to page, pages left in the chapter, the Contents tabs) `python3 tests/highlights.py` (highlights on the exact words, across paragraphs and pages, after corrections; Continue on next page) `python3 tests/notes_lookup.py` (tapping note numbers for footnotes and endnotes; Wiktionary in Look up, with a stand-in for the API) `python3 tests/quotes_language.py` (Edit → A block quote; a book's language for hyphenation) `python3 tests/pin.py` (the pinned passage: Pin, collapse, gestures, Go to it and back, notes, changed or removed sources) `python3 tests/followups.py` (follow-ups on notes and earlier wordings: the card, the sheet, search, tags, export, restore keeping both copies' ones) `python3 tests/classics.py` (the classics that come with the app: added once, deleted stays deleted, each opens with its chapters and notes; also after rebuilding them) and `python3 tests/printed_page.py` (keeping a book's PDF and showing its printed pages; the storage upgrade to version 7).
+- After changes to the study tools around the reference sections (the truth table), run `python3 tests/study_tools.py`.
 - This session can't delete remote branches; the repo is set to delete merged PR branches automatically (if not, tell the owner).
 
 ## Rules
@@ -47,6 +48,9 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
   app's colours and offline. Give each marker id a per-figure suffix, since closed entries hide the SVG that defines it.
 - Quiz yourself (`quizPanel`, from the glossary and the home screen's glossary section): questions made from `allTerms()` definitions
   (the term blanked out by `maskTerm`) and `THINKERS` key works (`worksOf` leaves out works by other authors); nothing is stored.
+- Truth table (`truthPanel`, from the Logic branch and the glossary's `TT_TERMS`): `ttLex`/`ttParse` read premises and a conclusion
+  (¬ ∧ ∨ → ↔, ASCII or words; → groups right), `ttCheck` builds every row (up to `TT_MAX` letters) and finds counterexamples, `ttShow` writes a
+  formula back with only the brackets it needs. Nothing is stored. Tested by `tests/study_tools.py`.
 - Thinkers' timeline (Thinkers → Timeline, `S.tl`; a period on the home screen opens it there): `lifeSpan` reads a thinker's dates line (BCE, centuries, "b. 1929"),
   `timelineHTML` draws each period in `TL_ERAS` on its own scale; `contemporariesOf` (lives overlapping 20+ years) is on the thinker card.
 - A chapter's end (`chapterEndCheck`, from `updatePg`): reading on from within about a page of a chapter's end into the next asks
