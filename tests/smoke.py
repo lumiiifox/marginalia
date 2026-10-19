@@ -145,7 +145,7 @@ async def main():
               f"BCE dates, centuries and living thinkers are read right ({got[:3]})")
         await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(200)
         heads = await page.evaluate("[...document.querySelectorAll('.home-sec h2')].map((h) => h.textContent)")
-        cards = await page.evaluate("[...document.querySelectorAll('.refcard')].map((c) => [c.dataset.ref, c.querySelector('.rc-t').textContent])")
+        cards = await page.evaluate("[...document.querySelectorAll('.refcard[data-ref]')].map((c) => [c.dataset.ref, c.querySelector('.rc-t').textContent])")
         check(not any(h in heads for h in ("Glossary", "Branches", "Thinkers")) and cards == [["glossary", "Glossary"], ["branches", "Branches"], ["thinkers", "Thinkers"]],
               f"the home screen has three buttons: Glossary, Branches, Thinkers ({cards})")
         rows = "[document.querySelectorAll('.refrow[data-term]').length, document.querySelectorAll('.refrow[data-branch]').length, document.querySelectorAll('.refrow[data-thinker]').length]"
