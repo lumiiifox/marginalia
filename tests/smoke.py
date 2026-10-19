@@ -25,7 +25,7 @@ STORES = ["texts", "notes", "content", "drafts", "compares", "terms"]
 
 SEED = """async () => {
   const now = Date.now();
-  await put("texts", "t1", { title: "Test Book", author: "Author, Test", sections: [{ id: "s1", label: "Ch. 1" }], bookmarks: [{ at: 1 }], summaries: { s1: "summary" }, next: "Work out why the paragraph comes first", source: { name: "test.pdf", kind: "PDF", pages: 12 }, pos: 0, hasContent: true, conc: { label: "Minuit", pairs: [["2", "9"], ["12", "20"]] }, pair: "t2", createdAt: now, updatedAt: now, readAt: now });
+  await put("texts", "t1", { title: "Test Book", author: "Author, Test", sections: [{ id: "s1", label: "Ch. 1" }], bookmarks: [{ at: 1 }], summaries: { s1: "summary" }, next: "Work out why the paragraph comes first", source: { name: "test.pdf", kind: "PDF", pages: 12 }, pos: 0, hasContent: true, conc: { label: "Minuit", pairs: [["2", "9"], ["12", "20"]] }, pair: "t2", days: { "2026-10-01": [600, 2400], "2026-10-02": [90, 300] }, createdAt: now, updatedAt: now, readAt: now });
   await put("content", "t1", [{ k: "p", x: "First paragraph of the test text." }, { k: "p", x: "Second paragraph." },
     // structure marked in the reader (Edit): a hidden running head, a chapter title over two lines, a title glued to its paragraph
     { k: "pg", x: "2" }, { k: "p", x: "2 TEST BOOK", st: "hide" }, { k: "h", l: 2, x: "Chapter", st: "chapter", s: "s1" }, { k: "h", l: 2, x: "two", stj: true },

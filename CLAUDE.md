@@ -53,6 +53,12 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
   reader, `#rnav-pair` under the page number (`pairName`: "In the French") opens `pairPanel`, the matching passage by `pairSpot`: chapter by chapter
   when both have the same number of chapters (`chapterHeads`), else through `t.conc` pages, else in proportion (`textCum`), from the middle of
   your paragraph; Earlier and Later, then Open it there. A pair pointing at a missing book is simply ignored (`pairOf`).
+- Reading pace (`t.days = { "YYYY-MM-DD": [seconds, words] }`, up to `DAYS_MAX` days): `savePos` counts time between turns or scrolls (`paceTick`,
+  a pause over `PACE_GAP` counts as `PACE_GAP`, nothing while hidden) and words when your place moves on by up to `PACE_JUMP` (`paceRead`,
+  `wordCum`); visits and jumps add none. `withPace` writes from `PACE`, this run's copy per book, so overlapping writes lose nothing; `savePos(true)`
+  on leaving the reader or hiding the app writes the time even without a move. `days` is in `ACTIVITY`; a restore keeps the larger of each day's
+  figures (`withDays`, inside `withReading`). The book's page shows it (`paceHTML`, `paceOf`): the last `PACE_SHOWN` days, words a minute and
+  minutes a reading day over `PACE_RECENT` days, and the time to the end before the back matter.
 - Citations: `CITE_STYLES`, `citeAt`, `bibEntry`, `bibtex`.
 - Import/parsing: `linesOf` and `unmerge` (PDF lines; scans' merged words), `parsePDF` (per-page body size, page numbers, headings, lost hyphens; `GAP` marks words OCR left blank as "[…]"), `ocrRepair` (scans only, gated by `ocrSigns`: split and misread words corrected against the book's own vocabulary, dashes, note numbers, split numbers, "[illegible]"), `domToBlocks` / `parseHTML` (EPUB, DOCX), `parsePlain`.
 - Views: `render` dispatches to `libraryView`, `textView`, `tagView`, `questionsView`, `draftsView`/`draftView`, `comparesView`/`compareView`, `concordView`, glossary, branches and `thinkersView`. The home screen reaches them through three buttons (`referenceHome`) that open

@@ -7,6 +7,10 @@ Uses made-up books only. Checks that:
   2. a book and its original: pairing from the book's menu marks both books, and pairing one with a third unpairs its old partner; the
      reader offers In the French (the original's language) under the page number; the passage shown matches your place chapter by chapter,
      through the pairs of pages, or in proportion; Earlier and Later move it; Open it there reads on in the original; Unpair clears both.
+  3. reading pace: time between turns counts (a long pause as two minutes), words count when your place moves on, jumps and visits don't;
+     leaving the reader or hiding the app keeps the time; overlapping writes lose nothing; the book's page shows the last two weeks, words a
+     minute, minutes a reading day and the time to the end before the back matter; a restore keeps the larger of each day's figures; a
+     backup with malformed days is refused.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, json, subprocess, sys, time
@@ -125,11 +129,66 @@ async def original(browser):
     check(not errs, "no script errors with a paired original" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def pace(browser):
+    page, errs = await fresh(browser)
+    await page.evaluate(BOOK, ["en", "Anti-Oedipus", "en", "English"])
+    await page.evaluate("Object.assign(RS, { flow: 'pages', bars: 'hide', turn: 'none' }); saveRS()")
+    await page.evaluate("go({ screen: 'reader', textId: 'en' })"); await page.wait_for_timeout(800)
+    today = await page.evaluate("dayKey()")
+    day = lambda: page.evaluate(f"(S.texts.get('en').days || {{}})['{today}'] || [0, 0]")
+    await page.evaluate("R.beat = Date.now() - 50000; turnPage(1)"); await page.wait_for_timeout(1000)
+    d1 = await day()
+    check(48 <= d1[0] <= 53 and d1[1] > 50, f"time between turns and the words read on are kept by day ({d1})")
+    await page.evaluate("R.beat = Date.now() - 3600000; turnPage(1)"); await page.wait_for_timeout(1000)
+    d2 = await day()
+    check(d2[0] - d1[0] <= 122 and d2[0] - d1[0] >= 118 and d2[1] > d1[1], f"an hour's pause counts as two minutes ({d2[0] - d1[0]} s)")
+    await page.evaluate("jumpTo(200, false, true)"); await page.wait_for_timeout(300); await page.evaluate("settle()"); await page.wait_for_timeout(300)
+    await page.evaluate("readFromHere()"); await page.wait_for_timeout(300)
+    d3 = await day()
+    check(d3[1] == d2[1], f"a jump and reading from there add no words ({d2[1]} → {d3[1]})")
+    await page.evaluate("turnPage(1)"); await page.wait_for_timeout(1000)
+    d4 = await day()
+    check(0 < d4[1] - d3[1] < 600, f"reading on from the new place counts again ({d4[1] - d3[1]} words)")
+    # overlapping writes: two flushes before either is stored
+    await page.evaluate("R.paceMs = 20000; savePos(true); R.paceMs = 20000; savePos(true)"); await page.wait_for_timeout(400)
+    d5 = await day()
+    check(d5[0] - d4[0] >= 40, f"two writes at once lose no time ({d5[0] - d4[0]} s)")
+    await page.evaluate("Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'hidden' }); R.beat = Date.now() - 15000; document.dispatchEvent(new Event('visibilitychange'))")
+    await page.wait_for_timeout(400)
+    d6 = await day(); hidden_beat = await page.evaluate("R.beat")
+    check(d6[0] - d5[0] >= 15 and hidden_beat == 0, f"hiding the app keeps the time read and stops the clock ({d6[0] - d5[0]} s)")
+    await page.evaluate("Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'visible' }); document.dispatchEvent(new Event('visibilitychange'))")
+    check(await page.evaluate("R.beat > Date.now() - 2000"), "coming back starts the clock again")
+    await page.evaluate("R.beat = Date.now() - 30000"); pos_before = await page.evaluate("S.texts.get('en').pos")
+    await page.evaluate("go({ screen: 'text', textId: 'en' })"); await page.wait_for_timeout(500)
+    d7 = await day()
+    check(d7[0] - d6[0] >= 30 and await page.evaluate("S.texts.get('en').pos") == pos_before, f"leaving the reader keeps the time, and your place ({d7[0] - d6[0]} s)")
+    # the book's page
+    await page.evaluate("""(async () => { const t = S.texts.get('en'), days = {};
+      for (let k = 0; k < 5; k++) { const d = new Date(); d.setDate(d.getDate() - k * 2); days[dayKey(d)] = [1500, 6000]; }
+      const B = await loadContent('en'); B.push({ k: 'h', l: 2, x: 'Notes', s: 'en-notes', st: 'chapter' }); for (let k = 0; k < 30; k++) B.push({ k: 'p', x: 'note '.repeat(300) });
+      await put('content', 'en', B); S.content.set('en', B);
+      PACE.clear(); await put('texts', 'en', { ...t, pos: 0, total: B.length, days, sections: [...t.sections, { id: 'en-notes', label: 'Notes' }] }); })()""")
+    await page.wait_for_timeout(500)
+    txt = await page.inner_text(".pace")
+    check(await page.locator(".pace-bars i").count() == 14 and "Today" in txt, "the last two weeks, a bar a day")
+    check("2 h 5 min in this book, over 5 days" in txt and "about 240 words a minute, 25 min on a day you read it" in txt, f"time in the book, words a minute and minutes a reading day ({txt[:160]!r})")
+    want = await page.evaluate("(() => { const B = S.content.get('en'), i = B.findIndex((b) => b.s === 'en-notes'), w = wordCum(B)[i]; return [fmtDur(w / 4), Math.round(w / 240 / 25), fmtDur(wordCum(B)[B.length] / 4)]; })()")
+    check(f"about {want[0]} to the end of the text (before the back matter), some {want[1]} reading days" in txt and want[0] != want[2], f"the time to the end leaves out the notes ({want}; {txt[-120:]!r})")
+    # restore and backups
+    merged = await page.evaluate("[withReading({ title: 'a', days: { '2026-10-01': [10, 100] } }, { title: 'a', days: { '2026-10-01': [5, 200], '2026-10-02': [3, 3] } }).days, (() => { const b = { title: 'a', days: { '2026-10-01': [10, 100] } }; return withReading(b, { title: 'a', days: { '2026-10-01': [4, 50] } }) === b; })()]")
+    check(merged == [{"2026-10-01": [10, 200], "2026-10-02": [3, 3]}, True], f"a restore keeps the larger of each day's figures ({merged})")
+    bad = await page.evaluate("""[{ '2026-10-01': [10, 100] }, { '2026-1-01': [1, 1] }, { '2026-10-01': [1] }, { '2026-10-01': [-1, 2] }, { '2026-10-01': [1.5, 2] }, [[1, 2]]].map((days) => VALID.texts({ title: 'x', days }))""")
+    check(bad == [True, False, False, False, False, False], f"a backup's days must be dates with whole seconds and words ({bad})")
+    check(not errs, "no script errors while keeping a reading pace" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         await concordance(browser)
         await original(browser)
+        await pace(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

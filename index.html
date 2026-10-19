@@ -583,6 +583,9 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .sp-bin::after { content: ""; position: absolute; left: -4px; right: -4px; bottom: 0; top: -14px; } /* an easier target for a finger */
 .sp-ch { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px dashed color-mix(in srgb, var(--muted) 55%, transparent); }
 .sp-pos { position: absolute; bottom: -5px; width: 9px; height: 9px; margin-left: -4.5px; border-radius: 50%; background: var(--brass); box-shadow: 0 0 0 2px var(--paper); }
+.pace-bars { display: grid; grid-template-columns: repeat(14, 1fr); gap: 3px; align-items: end; height: 54px; border-bottom: 1px solid var(--rule); }
+.pace-bars i { display: block; background: var(--link); opacity: 0.85; border-radius: 2px 2px 0 0; }
+.pace-bars i.today { background: var(--brass); opacity: 1; }
 .sp-ends { display: flex; justify-content: space-between; font: 500 11.5px/1 var(--f-ui); color: var(--muted); margin-top: 4px; }
 .spread .hint { margin: 4px 0 0; }
 /* from your margins */
@@ -1273,11 +1276,15 @@ const isS = (x) => typeof x === "string";
 const optNum = (x) => x === undefined || x === null || Number.isFinite(x);
 const optInt = (x) => x === undefined || (Number.isInteger(x) && x >= 0);
 const CONC_MAX = 2000; // pairs of pages kept for another edition (t.conc)
+const DAYS_MAX = 3000; // days of reading time kept on a book (t.days), oldest dropped first
+const DAY_KEY = /^\d{4}-\d{2}-\d{2}$/;
 const VALID = {
   texts: (v) => isObj(v) && isS(v.title) && optStr(v.author) && optStr(v.edition) && optStr(v.lang) && optStr(v.next) && (v.rank === undefined || Number.isFinite(v.rank)) && optArr(v.pdfLabels, isS) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
     && optArr(v.bookmarks, (x) => isObj(x) && Number.isInteger(x.at)) && (v.summaries === undefined || isObj(v.summaries)) && (v.pos === undefined || Number.isInteger(v.pos))
     && (v.source === undefined || v.source === null || (isObj(v.source) && optStr(v.source.name) && optStr(v.source.kind) && optNum(v.source.pages)))
     && (v.pair === undefined || (typeof v.pair === "string" && v.pair.length > 0 && v.pair.length < 200))
+    && (v.days === undefined || (isObj(v.days) && Object.keys(v.days).length <= DAYS_MAX
+      && Object.entries(v.days).every(([k, d]) => DAY_KEY.test(k) && Array.isArray(d) && d.length === 2 && d.every((x) => Number.isInteger(x) && x >= 0))))
     && (v.conc === undefined || (isObj(v.conc) && isS(v.conc.label) && v.conc.label.length <= 60 && Array.isArray(v.conc.pairs) && v.conc.pairs.length <= CONC_MAX
       && v.conc.pairs.every((q) => Array.isArray(q) && q.length === 2 && q.every((x) => isS(x) && x.length > 0 && x.length <= 12)))),
   notes: (v) => isObj(v) && isS(v.textId) && optStr(v.kind) && ["passage", "gloss", "original", "conclusion", "sectionId"].every((k) => optStr(v[k]))
@@ -1294,13 +1301,23 @@ const VALID = {
   covers: (v) => typeof v === "string" && v.startsWith("data:image/"),
 };
 const goodId = (id) => typeof id === "string" && id.length > 0 && id.length < 200;
-// Reading position, activity and a book's place on its shelf (rank) are left out when deciding whether two versions differ;
-// the reading follows the later reading, and the place stays as it is on this device.
-const ACTIVITY = new Set(["updatedAt", "readAt", "activeAt", "pos", "posF", "total", "rank"]);
+// Reading position, activity, reading time (days) and a book's place on its shelf (rank) are left out when deciding whether two
+// versions differ; the reading follows the later reading, reading time joins both copies', and the place stays as it is on this device.
+const ACTIVITY = new Set(["updatedAt", "readAt", "activeAt", "pos", "posF", "total", "rank", "days"]);
 // The reading position follows whichever copy was read more recently, whichever copy's details win,
 // unless the two hold different versions of the book's text: then the position stays with its own text.
 const READING = ["pos", "posF", "total", "readAt"];
+// Reading time by day from both copies: the larger of each day's figures, so a backup restored twice never counts a day twice.
+function withDays(base, other) {
+  const a = base.days || {}; let out = null;
+  for (const [k, d] of Object.entries((other && other.days) || {})) {
+    const c = a[k] || [0, 0];
+    if (d[0] > c[0] || d[1] > c[1]) { out = out || { ...a }; out[k] = [Math.max(c[0], d[0]), Math.max(c[1], d[1])]; }
+  }
+  return out ? { ...base, days: out } : base;
+}
 function withReading(base, other) {
+  base = withDays(base, other);
   if (!other || (other.readAt || 0) <= (base.readAt || 0)) return base;
   if (base.total && other.total && base.total !== other.total) return base;
   const out = { ...base };
@@ -1427,6 +1444,7 @@ async function applyRestore(plan, theirs) {
   const pinBack = !!plan.pin && (!PIN || theirs);
   if (!ops.length && !pinBack) { toast("Nothing to restore."); return; }
   if (idb && ops.length) await idbTx([...new Set(ops.map((o) => o[0]))], (st) => ops.forEach(([store, id, v]) => st(store).put(v, id)));
+  PACE.clear(); // reading time is read again from the restored books
   if (pinBack) { PIN = { ...plan.pin, open: false }; savePin(); }
   ops.forEach(([store, id, v]) => (store === "content" ? S.content : mapFor(store)).set(id, v));
   render();
@@ -2910,6 +2928,7 @@ function textView() {
     ${briefHTML(id, t)}
     ${bookPlates(id, t).length ? `<section class="group"><div class="label">Bookplates</div><div class="plates">${bookPlates(id, t).map((x) => plateHTML({ ...x, tid: null, sub: "" })).join("")}</div></section>` : ""}
     ${spreadHTML(id, t)}
+    ${paceHTML(id, t)}
     ${secs.length ? `<section class="group"><div><div class="label">Sections</div><p class="hint">Tick a section once you have read it. Tap its name to see its notes.</p></div><div class="sections">
       ${secs.map((s) => `<div class="sec ${s.done ? "done" : ""} ${S.sec === s.id ? "sel" : ""}">
         <input type="checkbox" id="chk-${esc(s.id)}" data-tick="${esc(s.id)}" ${s.done ? "checked" : ""} aria-label="Mark ${esc(s.label)} as read">
@@ -2951,6 +2970,44 @@ function spreadHTML(id, t) {
     </div>
     <div class="sp-ends"><span>Start</span><span>End</span></div>
     <p class="hint">${at.length} notes; the most around ${from}% of the way through${at.length >= 6 ? `, ${firstHalf > at.length * 0.65 ? "most in the first half" : firstHalf < at.length * 0.35 ? "most in the second half" : "spread across both halves"}` : ""}. ${chapters.length ? "Lines mark chapters. " : ""}${Number.isInteger(t.pos) && t.pos > 0 ? "The dot is your place. " : ""}Tap a bar to go to its notes.</p>
+  </div></section>`;
+}
+
+/* ---------- your reading pace, on a book's page: from t.days (see savePos) ----------
+   The last PACE_SHOWN days' minutes as bars; time in the book; words a minute and minutes a reading day over the last PACE_RECENT days
+   (all of them when that's too little to go on); and, once the text is loaded, the time to the end of the text before the back matter. */
+const PACE_SHOWN = 14, PACE_RECENT = 30;
+const fmtDur = (sec) => { const m = Math.round(sec / 60); return m < 60 ? `${Math.max(1, m)} min` : `${Math.floor(m / 60)} h${m % 60 ? ` ${m % 60} min` : ""}`; };
+function paceOf(t, now = new Date()) {
+  const days = Object.entries(t.days || {}).filter(([k, d]) => DAY_KEY.test(k) && Array.isArray(d));
+  const total = days.reduce((a, [, d]) => a + d[0], 0);
+  if (total < 60) return null;
+  const since = new Date(now); since.setDate(since.getDate() - PACE_RECENT + 1);
+  const recent = days.filter(([k]) => k >= dayKey(since)), sum = (L, j) => L.reduce((a, [, d]) => a + d[j], 0);
+  const base = sum(recent, 0) >= 600 && sum(recent, 1) >= 1000 ? recent : days, secs = sum(base, 0), words = sum(base, 1);
+  const read = base.filter(([, d]) => d[0] >= 60);
+  return { total, on: days.filter(([, d]) => d[0] > 0).length, wpm: secs >= 600 && words >= 1000 ? (60 * words) / secs : 0, daily: read.length ? sum(read, 0) / read.length : 0, recentOnly: base === recent };
+}
+function paceHTML(id, t) {
+  const P = paceOf(t); if (!P) return "";
+  const today = new Date(), bars = Array.from({ length: PACE_SHOWN }, (_, k) => { const d = new Date(today); d.setDate(d.getDate() - (PACE_SHOWN - 1 - k)); return [d, ((t.days || {})[dayKey(d)] || [0])[0]]; });
+  const top = Math.max(60, ...bars.map(([, x]) => x)), shown = bars.reduce((a, [, x]) => a + x, 0);
+  let left = "";
+  const B = S.content.get(id), pos = Number.isInteger(t.pos) ? t.pos : 0;
+  if (B && P.wpm) {
+    const names = new Map((t.sections || []).map((x) => [x.id, x.label]));
+    let end = B.length; for (const i of chapterHeads(B)) if (i > pos && BACK_MATTER.test((names.get(B[i].s) || "").trim())) { end = i; break; }
+    const wc = wordCum(B), words = Math.max(0, wc[end] - wc[Math.min(pos, end)]), secs = (60 * words) / P.wpm;
+    left = words < 50 ? "You're at the end of the text." : `At that pace, about ${fmtDur(secs)} to the end of the text${end < B.length ? " (before the back matter)" : ""}${P.daily >= 60 ? (secs <= P.daily * 1.25 ? ", about a day's reading" : `, some ${Math.round(secs / P.daily)} reading days`) : ""}.`;
+  } else if (!B && t.hasContent && P.wpm && !BRIEF_LOADING.has(id)) { BRIEF_LOADING.add(id); loadContent(id).then((x) => { if (x && S.screen === "text" && S.textId === id) render(); }).catch(() => {}); }
+  const day = (d) => d.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
+  return `<section class="group"><div class="label">Your reading pace</div><div class="paperpanel pace">
+    <div class="pace-bars" role="img" aria-label="Minutes read on each of the last ${PACE_SHOWN} days: ${bars.map(([d, x]) => `${day(d)} ${Math.round(x / 60)}`).join(", ")}">
+      ${bars.map(([d, x], k) => `<i${k === PACE_SHOWN - 1 ? ' class="today"' : ""} style="height:${x ? Math.max(6, Math.round((100 * x) / top)) : 0}%" title="${esc(day(d))}: ${esc(x ? fmtDur(x) : "none")}"></i>`).join("")}
+    </div>
+    <div class="sp-ends"><span>Two weeks ago</span><span>Today</span></div>
+    <p class="hint"><b>${esc(fmtDur(P.total))}</b> in this book, over ${P.on} day${P.on === 1 ? "" : "s"}${shown && shown < P.total ? `; ${esc(fmtDur(shown))} in the last two weeks` : ""}.
+      ${P.wpm ? `${P.recentOnly ? "Lately" : "So far"} about ${Math.round(P.wpm / 10) * 10} words a minute${P.daily >= 60 ? `, ${esc(fmtDur(P.daily))} on a day you read it` : ""}.` : "Read a little longer for a pace."} ${esc(left)}</p>
   </div></section>`;
 }
 
@@ -5420,7 +5477,7 @@ function histBack() {
 }
 function showView(view, fresh) {
   if (view.screen === "reader") { openReader(view.textId, view.at, view); return; }
-  if (S.screen === "reader") { savePos(); resetReader(); }
+  if (S.screen === "reader") { savePos(true); resetReader(); }
   S.screen = view.screen;
   if (view.textId) S.textId = view.textId;
   if (view.screen === "tag") S.tag = view.tag || "";
@@ -6672,9 +6729,10 @@ function resetReader() {
   const tw = $("#flipbook"); if (tw) { tw.innerHTML = ""; tw.dataset.key = ""; }
   $("#rnav").hidden = true; R.dragging = false; R.selCarry = null; drawCarry();
   R.visiting = false; R.home = null; R.trail = []; R.pagedSpot = null; R.win = null; FIND.on = false; FIND.hits = []; FIND.k = -1; paintFind(); const tr = $("#rtrail"); if (tr) tr.hidden = true;
-  R.sumPrev = null; R.tid = null; R.blocks = null; R.els = []; R.tops = []; R.sig = new Map(); R.saved = -1; R.sel = null; $("#book").innerHTML = ""; $("#selbar").hidden = true; }
+  R.sumPrev = null; R.tid = null; R.blocks = null; R.els = []; R.tops = []; R.sig = new Map(); R.saved = -1; R.sel = null; R.beat = 0; R.paceMs = 0; R.paceW = 0; $("#book").innerHTML = ""; $("#selbar").hidden = true; }
 
 async function openReader(tid, at, opts) {
+  if (S.screen === "reader" && R.blocks) savePos(true); // from one book straight into another (a paired original)
   resetReader();
   S.screen = "reader"; S.textId = tid; render();
   window.scrollTo(0, 0);
@@ -6687,7 +6745,7 @@ async function openReader(tid, at, opts) {
   catch (e) { book.innerHTML = `<p class="rload">${esc(e instanceof UErr ? e.message : "Couldn't load this text. Check your connection and try again.")}</p>`; return; }
   if (S.screen !== "reader" || S.textId !== tid) return;
   if (!blocks) { book.innerHTML = `<p class="rload">This text isn't loaded yet. Go back and use Load file.</p>`; return; }
-  R.tid = tid; R.blocks = blocks; wakeOn();
+  R.tid = tid; R.blocks = blocks; wakeOn(); R.beat = Date.now(); R.paceMs = 0; R.paceW = 0;
   const lang = (t && t.lang) || guessLang(blocks); book.lang = lang; $("#flipbook").lang = lang;
   Object.assign(R, sectionIndex(blocks));
   const target = Number.isInteger(at) ? at : Number.isInteger(t?.pos) ? t.pos : 0;
@@ -6941,14 +6999,46 @@ function scrollToEl(el, f, off) {
   const go = () => window.scrollTo(0, Math.max(0, el.getBoundingClientRect().top + window.scrollY + f * el.offsetHeight - off));
   go(); requestAnimationFrame(() => { go(); top.style.contentVisibility = ""; });
 }
-function savePos() {
-  if (!R.blocks || !R.tid || R.visiting) return;
+/* ---------- reading pace: time in the reader and words read on, by day, kept on the book as t.days = { "2026-10-19": [seconds, words] } ----------
+   Time counts between one turn or scroll and the next, a pause longer than PACE_GAP as PACE_GAP (the phone left lying open isn't reading),
+   and stops while the app is hidden. Words count when your place moves on by up to PACE_JUMP words at once; jumps and visits don't count.
+   PACE holds each book's days for this run of the app, so writes that overlap never lose time; a restore clears it. */
+const PACE_GAP = 120000, PACE_JUMP = 3000, PACE = new Map();
+const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const paceDays = (tid) => { if (!PACE.has(tid)) PACE.set(tid, { ...((S.texts.get(tid) || {}).days || {}) }); return PACE.get(tid); };
+function wordCum(B) { const c = [0]; for (let i = 0; i < B.length; i++) c.push(c[i] + (B[i].k === "pg" || isHidden(B[i]) ? 0 : (plain(B[i].x || "").match(/\S+/g) || []).length)); return c; }
+function paceTick() {
+  const now = Date.now();
+  if (R.beat) R.paceMs = (R.paceMs || 0) + Math.min(Math.max(0, now - R.beat), PACE_GAP);
+  R.beat = document.visibilityState === "hidden" ? 0 : now;
+}
+function paceRead(from, to) {
+  if (!(from >= 0 && to > from)) return;
+  if (R.wcFor !== R.blocks) { R.wc = wordCum(R.blocks); R.wcFor = R.blocks; }
+  const w = R.wc[to] - R.wc[from]; if (w > 0 && w <= PACE_JUMP) R.paceW = (R.paceW || 0) + w;
+}
+function withPace(rec) {
+  const s = Math.floor((R.paceMs || 0) / 1000), w = R.paceW || 0;
+  if (!s && !w) return rec;
+  R.paceMs -= s * 1000; R.paceW = 0;
+  const days = paceDays(R.tid), k = dayKey(), d = days[k] || [0, 0];
+  days[k] = [d[0] + s, d[1] + w];
+  const keys = Object.keys(days); if (keys.length > DAYS_MAX) keys.sort().slice(0, keys.length - DAYS_MAX).forEach((x) => delete days[x]);
+  return { ...rec, days: { ...days } };
+}
+// force: leaving the reader or hiding the app, when time read since the last move is written even if your place hasn't moved.
+function savePos(force) {
+  if (!R.blocks || !R.tid) return;
+  paceTick();
+  const t = S.texts.get(R.tid);
+  const flush = () => { if (t && force && ((R.paceMs || 0) >= 1000 || R.paceW)) put("texts", R.tid, withPace(R.saved >= 0 ? { ...t, pos: R.saved, posF: R.savedF || 0 } : { ...t })).catch(() => {}); };
+  if (R.visiting) return flush();
   const atEnd = isPaged() ? R.win[1] >= R.blocks.length && currentPage() >= lastPage() : window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60;
   const sp = atEnd ? { i: R.blocks.length - 1, f: 0 } : currentSpot();
-  if (sp.i === R.saved && Math.abs(sp.f - (R.savedF || 0)) < 0.005) return;
+  if (sp.i === R.saved && Math.abs(sp.f - (R.savedF || 0)) < 0.005) return flush();
+  paceRead(R.saved, sp.i);
   R.saved = sp.i; R.savedF = sp.f;
-  const t = S.texts.get(R.tid);
-  if (t) put("texts", R.tid, { ...t, pos: sp.i, posF: sp.f, total: R.blocks.length, readAt: Date.now() }).catch(() => {});
+  if (t) put("texts", R.tid, withPace({ ...t, pos: sp.i, posF: sp.f, total: R.blocks.length, readAt: Date.now() })).catch(() => {});
 }
 /* jumps and the way back */
 const pgLabel = (i) => (R.pageAt[i] ? loc(R.pageAt[i]).replace(/^(pp?\.) /, "$1\u00a0") : ""); // "p. 45" stays on one line
@@ -6988,6 +7078,7 @@ function undoPlace(b) {
 // While looking around, reading on well past where you landed, for a while, makes it your place.
 function settle() {
   if (!R.visiting) { savePos(); return; }
+  paceTick();
   if (Date.now() - R.landedAt >= 120000 && readY() - R.landedY >= 3 * window.innerHeight) readFromHere(true);
 }
 function drawTrail() {
@@ -7862,7 +7953,7 @@ $("#book").addEventListener("touchend", (e) => endSwipe(e, false), { passive: tr
 $("#book").addEventListener("touchcancel", (e) => endSwipe(e, true), { passive: true });
 document.addEventListener("visibilitychange", () => {
   if (S.screen !== "reader") return;
-  if (document.visibilityState === "hidden") savePos(); else wakeOn(); // the phone lets go of the screen when the app is hidden
+  if (document.visibilityState === "hidden") savePos(true); else { paceTick(); wakeOn(); } // the phone lets go of the screen when the app is hidden
 });
 ["pointerdown", "keydown", "wheel"].forEach((ev) => document.addEventListener(ev, () => { if (S.screen === "reader") wakeOn(); }, { passive: true }));
 $("#rnav-r").addEventListener("input", (e) => { if (!R.blocks) return; R.dragging = true; const i = navBlock(+e.target.value); $("#rnav-where").textContent = navLabel(i); $("#rnav-pct").textContent = `${Math.round(e.target.value / 10)}%`; });
