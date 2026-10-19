@@ -22,6 +22,10 @@ Uses made-up records only. Checks that:
   7. the fallacies: every one in the glossary marked formal or informal, with a definition, a longer note and a source; the Logic
      branch lists them, formal then informal, each opening its entry; a formal fallacy's entry opens the truth table on its example,
      which links back to the entry, however the argument is typed.
+  8. reading paths: every step names a classic that comes with the app and chapters it has, in order, with glossary terms and
+     branches that exist; the home screen and a branch's entry open them; a step opens the reader at its first chapter, or at your
+     place when you're already inside its chapters; ticking its chapters as read marks it done; a classic you deleted can be
+     added back from its step.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -284,6 +288,57 @@ async def fallacies(browser):
     check(not errs, "no script errors with the fallacies" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def paths(browser):
+    page, errs = await fresh(browser)
+    bad = await page.evaluate("""(async () => { const bad = [], ids = new Set(GLOSSARY.map((g) => g.id));
+      for (const P of PATHS) {
+        for (const b of P.br) if (!BRANCH.has(b)) bad.push(P.id + ' branch ' + b);
+        for (const t of P.terms || []) if (!ids.has(t)) bad.push(P.id + ' term ' + t);
+        for (const st of P.steps) {
+          if (!CLASSICS.includes(st.book)) { bad.push(P.id + ' book ' + st.book); continue; }
+          const b = await (await fetch('data/books/' + st.book + '.json')).json(), order = b.text.sections.map((x) => x.id);
+          const at = st.secs.map((x) => order.indexOf(x));
+          if (at.some((k) => k < 0) || at.some((k, i) => i && k <= at[i - 1])) bad.push(P.id + ' chapters ' + st.book);
+          if (CLASSIC_TITLES[st.book] !== b.text.title) bad.push(P.id + ' title ' + st.book);
+          if (!st.why) bad.push(P.id + ' why');
+        } }
+      for (const id of CLASSICS) { const b = await (await fetch('data/books/' + id + '.json')).json(); if (CLASSIC_TITLES[id] !== b.text.title) bad.push('title ' + id); }
+      return bad; })()""")
+    check(bad == [], f"every step is a classic the app has, its chapters exist and are in order, and the terms, branches and titles match ({bad})")
+    await page.evaluate("addClassics(true)"); await page.wait_for_timeout(300)
+    await page.evaluate("go({ screen: 'library' })"); await page.click("#openpaths"); await page.wait_for_timeout(200)
+    shown = await page.evaluate("[S.screen, [...document.querySelectorAll('section.path')].map((x) => x.dataset.pathId), document.querySelectorAll('.pstep').length, PATHS.reduce((k, P) => k + P.steps.length, 0)]")
+    check(shown[0] == "paths" and shown[1] == await page.evaluate("PATHS.map((P) => P.id)") and shown[2] == shown[3], f"the home screen opens the paths, every step listed ({shown})")
+    await page.evaluate("go({ screen: 'branches', focus: 'ethics' })"); await page.wait_for_timeout(200)
+    await page.click("details[data-branch-id='ethics'] [data-path='how-to-live']"); await page.wait_for_timeout(300)
+    top = await page.evaluate("Math.round(document.querySelector('section.path[data-path-id=\"how-to-live\"]').getBoundingClientRect().top)")
+    check(await page.evaluate("S.screen") == "paths" and abs(top) < 40, f"a branch's entry offers its path and opens it there ({top})")
+    # reading a step
+    await page.click("[data-pathread^='classic-aristotle-ethics']"); await page.wait_for_timeout(900)
+    where = await page.evaluate("(() => { const B = S.content.get('classic-aristotle-ethics'), r = stepRange(B, ['classic-aristotle-ethics-s2', 'classic-aristotle-ethics-s3']); return [S.screen, R.tid, contentAt(currentBlock()), r, isPaged() ? pageForBlock(currentBlock()) === pageForBlock(r[0]) : (() => { const y = R.els[r[0]].getBoundingClientRect().top; return y >= 0 && y < innerHeight / 2; })()]; })()")
+    check(where[0] == "reader" and where[1] == "classic-aristotle-ethics" and where[3] and where[4], f"a step opens the reader at its first chapter, its heading in the top half of the screen ({where})")
+    await page.evaluate("go({ screen: 'paths' })"); await page.wait_for_timeout(300) # leaving the reader saves its place, so set the new one after
+    await page.evaluate("(() => { const B = S.content.get('classic-aristotle-ethics'), r = stepRange(B, ['classic-aristotle-ethics-s2', 'classic-aristotle-ethics-s3']); const t = S.texts.get('classic-aristotle-ethics'); return put('texts', 'classic-aristotle-ethics', { ...t, pos: r[0] + 120, posF: 0 }); })()")
+    await page.wait_for_timeout(300)
+    label = await page.evaluate("document.querySelector(\"[data-pathread^='classic-aristotle-ethics']\").textContent")
+    await page.click("[data-pathread^='classic-aristotle-ethics']"); await page.wait_for_timeout(900)
+    pos = await page.evaluate("[contentAt(currentBlock()), S.texts.get('classic-aristotle-ethics').pos]")
+    check(label == "Continue" and abs(pos[0] - pos[1]) <= 3, f"inside its chapters, it says Continue and carries on from your place ({label}, {pos})")
+    # done
+    await page.evaluate("(() => { const id = 'classic-kant-groundwork', t = S.texts.get(id); return put('texts', id, { ...t, sections: t.sections.map((x) => ['classic-kant-groundwork-s2', 'classic-kant-groundwork-s3'].includes(x.id) ? { ...x, done: true } : x) }); })()")
+    await page.evaluate("go({ screen: 'paths' })"); await page.wait_for_timeout(300)
+    d = await page.evaluate("(() => { const s = document.querySelector('section.path[data-path-id=\"how-to-live\"]'); return [s.querySelector('.sub').textContent, [...s.querySelectorAll('.pstep')].map((x) => x.classList.contains('done')), s.querySelectorAll('.pbar i.on').length]; })()")
+    check(d == ["4 books, 1 done", [False, False, True, False], 1], f"ticking a step's chapters as read marks it done ({d})")
+    # deleted, then added back
+    await page.evaluate("deleteText('classic-cooper-voice')"); await page.wait_for_timeout(300)
+    await page.evaluate("go({ screen: 'paths' })"); await page.wait_for_timeout(300)
+    check(await page.locator("[data-pathadd='classic-cooper-voice']").count() == 1 and "A Voice from the South" in await page.inner_text("section.path[data-path-id='who-counts']"), "a classic you deleted shows by its title, with Add it back")
+    await page.click("[data-pathadd='classic-cooper-voice']"); await page.wait_for_timeout(700)
+    back = await page.evaluate("[S.texts.has('classic-cooper-voice'), S.texts.get('classic-cooper-voice')?.status, document.querySelectorAll(\"[data-pathadd]\").length, !!S.content.get('classic-cooper-voice') || null]")
+    check(back[:3] == [True, "queued", 0], f"...and Add it back puts it on the Queued shelf ({back})")
+    check(not errs, "no script errors in reading paths" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
@@ -294,6 +349,7 @@ async def main():
         await lineage(browser)
         await spread(browser)
         await fallacies(browser)
+        await paths(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

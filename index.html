@@ -577,6 +577,25 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .sp-pos { position: absolute; bottom: -5px; width: 9px; height: 9px; margin-left: -4.5px; border-radius: 50%; background: var(--brass); box-shadow: 0 0 0 2px var(--paper); }
 .sp-ends { display: flex; justify-content: space-between; font: 500 11.5px/1 var(--f-ui); color: var(--muted); margin-top: 4px; }
 .spread .hint { margin: 4px 0 0; }
+/* reading paths */
+.path { margin-top: 18px; }
+.path .pd { margin: 0; font: 400 16.5px/1.5 var(--f-text); }
+.pbar { display: flex; gap: 4px; }
+.pbar i { flex: 1; height: 4px; border-radius: 2px; background: var(--rule); }
+.pbar i.on { background: var(--link); }
+.psteps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; background: var(--paper); border-radius: 6px; box-shadow: var(--paper-shadow); }
+.pstep { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; padding: 14px 14px 12px; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); }
+.pstep:first-child { border-top: 0; }
+.pstep .pn { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font: 700 14px/1 var(--f-ui); color: var(--ink); border: 1px solid var(--rule); background: var(--field); }
+.pstep.done .pn { background: var(--leather); color: var(--leather-ink); border-color: transparent; }
+.pbody { display: grid; gap: 4px; min-width: 0; }
+.pbody .pt { display: flex; flex-wrap: wrap; gap: 2px 10px; align-items: baseline; }
+.pbody .pt b { font: 700 17px/1.3 var(--f-text); }
+.pbody .pt span, .pbody .pch { font: 400 13.5px/1.35 var(--f-ui); color: var(--muted); }
+.pbody p { margin: 2px 0 4px; font: 400 15.5px/1.5 var(--f-text); }
+.pbody .noteacts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.pbody .noteacts .hint { margin: 0; }
+.refcard.pathcard { margin-top: 0; }
 /* truth tables */
 .tt-syms .segb { min-width: 44px; font: 500 18px/1 var(--f-text); padding: 9px 10px; }
 .tt-ascii { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; letter-spacing: 0.04em; }
@@ -2375,7 +2394,7 @@ function render() {
   if (reading) { refreshMarks(); return; }
   wakeOff();
   $("#selbar").hidden = true;
-  const views = { text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, concord: concordView, compares: comparesView, compare: compareView };
+  const views = { text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, paths: pathsView, concord: concordView, compares: comparesView, compare: compareView };
   $("#main").innerHTML = (views[S.screen] || libraryView)();
 }
 
@@ -3820,7 +3839,7 @@ function referenceHome() {
     ${card("glossary", "Glossary", `${allTerms().length} terms`)}
     ${card("branches", "Branches", `${BRANCHES.filter((b) => b.k === "branch").length} branches, ${BRANCHES.filter((b) => b.k === "tradition").length} traditions`)}
     ${card("thinkers", "Thinkers", `${THINKERS.length} philosophers and theorists`)}
-  </div></section>`;
+  </div>${typeof PATHS !== "undefined" && PATHS.length ? `<button class="refcard pathcard" id="openpaths"><span class="rc-t">Reading paths</span><span class="rc-s">${PATHS.length} routes through the classics on your shelf, chapter by chapter</span><span class="rc-go" aria-hidden="true">›</span></button>` : ""}</section>`;
 }
 // Everything in the three reference sections as one searchable list; each row opens its entry, and each group can open its
 // full screen (the glossary's areas and quiz, a branch's questions and reading, the thinkers' timeline).
@@ -4401,6 +4420,78 @@ const AREA_BRANCH = { meta: ["metaphysics"], know: ["epistemology"], logic: ["lo
 
 /* ---------- branches ---------- */
 function termBranches(g) { return (Array.isArray(g.br) ? g.br : AREA_BRANCH[g.a] || []).filter((b) => BRANCH.has(b)); }
+/* ---------- reading paths (PATHS, in data/branches.js): routes through the classics that come with the app ----------
+   Each step opens its book at its first chapter, or where you are if you're already inside those chapters; a step is done once
+   you've ticked all its chapters as read on the book's page. A classic you deleted can be added back. Nothing else is stored. */
+const pathsFor = (bid) => (typeof PATHS === "undefined" ? [] : PATHS.filter((x) => (x.br || []).includes(bid)));
+function stepState(st) {
+  const t = S.texts.get(st.book); if (!t) return { t: null, secs: [], done: false, started: false };
+  const by = new Map((t.sections || []).map((x) => [x.id, x])), secs = st.secs.map((id) => by.get(id)).filter(Boolean);
+  return { t, secs, done: secs.length > 0 && secs.every((x) => x.done), started: secs.some((x) => x.done) || (t.pos || 0) > 0 };
+}
+function pathsView() {
+  const list = typeof PATHS === "undefined" ? [] : PATHS;
+  const tmap = termMap();
+  const path = (P) => {
+    const states = P.steps.map(stepState), done = states.filter((x) => x.done).length;
+    const step = (st, k) => {
+      const s = states[k], t = s.t, title = t ? t.title : (CLASSIC_TITLES[st.book] || "A classic");
+      const ch = s.secs.length ? s.secs.map((x) => x.label).join(" · ") : "";
+      return `<li class="pstep${s.done ? " done" : ""}"><span class="pn" aria-hidden="true">${s.done ? "✓" : k + 1}</span><div class="pbody">
+        <div class="pt"><b>${esc(title)}</b>${t && t.author ? `<span>${esc(t.author)}</span>` : ""}</div>
+        ${ch ? `<div class="pch">${esc(ch)}</div>` : ""}
+        <p>${esc(st.why)}</p>
+        <div class="noteacts">${t ? `<button class="btn${s.done ? "" : " primary"}" data-pathread="${esc(st.book)}|${esc(st.secs.join(","))}">${s.done ? "Read again" : progressIn(st) ? "Continue" : "Read these chapters"}</button><button class="btn ghost" data-open="${esc(st.book)}">The book's page</button>`
+          : `<span class="hint">Not on your shelf: you deleted it.</span><button class="btn" data-pathadd="${esc(st.book)}">Add it back</button>`}</div>
+      </div></li>`;
+    };
+    return `<section class="path group" data-path-id="${esc(P.id)}">
+      <div class="sec-head"><div><h2>${esc(P.n)}</h2><div class="sub">${P.steps.length} books${done ? `, ${done} done` : ""}</div></div></div>
+      <p class="pd">${esc(P.d)}</p>
+      <div class="pbar" aria-hidden="true">${P.steps.map((_, k) => `<i class="${states[k].done ? "on" : ""}"></i>`).join("")}</div>
+      <ol class="psteps">${P.steps.map(step).join("")}</ol>
+      ${chipRow("Terms along the way", termChips(P.terms || [], tmap))}
+      ${P.next ? `<p class="hint">Then: ${esc(P.next)}</p>` : ""}
+    </section>`;
+  };
+  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
+    <header class="gl-head"><div><h1>Reading paths</h1><div class="sub">${list.length} routes through the classics that come with the app</div></div></header>
+    <p class="hint">Each path reads a few chapters from each book, in an order where each answers the one before. A step is done once you tick its chapters as read on the book's page.</p>
+    ${list.map(path).join("") || `<p class="empty">No paths yet.</p>`}`;
+}
+// Titles for steps whose book isn't in the library: the classics' own titles (tests/study_tools.py checks them against data/books/).
+const CLASSIC_TITLES = { "classic-plato-socrates": "Euthyphro, Apology, Crito, Phaedo", "classic-aristotle-ethics": "Nicomachean Ethics", "classic-descartes-meditations": "Discourse on the Method and Meditations on First Philosophy",
+  "classic-hobbes-leviathan": "Leviathan", "classic-hume-enquiry": "An Enquiry Concerning Human Understanding", "classic-rousseau-social-contract": "The Social Contract",
+  "classic-kant-groundwork": "Fundamental Principles of the Metaphysic of Morals", "classic-wollstonecraft-vindication": "A Vindication of the Rights of Woman",
+  "classic-marx-engels-manifesto": "The Communist Manifesto", "classic-nietzsche-genealogy": "The Genealogy of Morals", "classic-cooper-voice": "A Voice from the South", "classic-du-bois-souls": "The Souls of Black Folk" };
+// Whether your place in the book is inside a step's chapters (known once the book's text has been loaded).
+function progressIn(st) {
+  const t = S.texts.get(st.book), B = S.content.get(st.book); if (!t || !B || !(t.pos > 0)) return false;
+  const r = stepRange(B, st.secs); return !!r && t.pos >= r[0] && t.pos < r[1];
+}
+// The blocks a step covers: from its first chapter's heading to the start of the chapter after its last.
+function stepRange(B, secs) {
+  const heads = B.map((b, i) => [b, i]).filter(([b]) => b.s && !b.stj && roleOf(b) === "chapter");
+  const k0 = heads.findIndex(([b]) => b.s === secs[0]), k1 = heads.findIndex(([b]) => b.s === secs[secs.length - 1]);
+  if (k0 < 0 || k1 < 0) return null;
+  return [heads[k0][1], k1 + 1 < heads.length ? heads[k1 + 1][1] : B.length];
+}
+async function readStep(tid, secs) {
+  const t = S.texts.get(tid); if (!t) return;
+  const B = await loadContent(tid); if (!B) return go({ screen: "text", textId: tid });
+  const r = stepRange(B, secs);
+  if (!r) { toast("Those chapters aren't marked in this copy of the book, so it opens where you left off."); return go({ screen: "reader", textId: tid }); }
+  if (t.pos >= r[0] && t.pos < r[1]) return go({ screen: "reader", textId: tid }); // already inside them: carry on from your place
+  return go({ screen: "reader", textId: tid, at: r[0] });
+}
+async function readdClassic(id) {
+  if (S.texts.has(id)) return render();
+  try {
+    const rec = await putClassic(id, Date.now());
+    if (!rec) return toast("Couldn't fetch the book just now. Check your connection and try again.");
+    render(); toast(`“${rec.title}” is back on your Queued shelf.`);
+  } catch (e) { toast(failMsg(e)); }
+}
 // The fallacies in the glossary (fal), formal then informal, each opening its entry: shown in the Logic branch.
 function fallacyCatalogHTML(terms) {
   const cut = (x, n = 130) => (x.length > n ? x.slice(0, n - 1).replace(/\s+\S*$/, "") + "…" : x);
@@ -4433,6 +4524,7 @@ function branchesView() {
           ${chipRow("Thinkers", thinkerChips(b.p))}
           ${chipRow("Connected branches and traditions", branchChips([...rel.get(b.id)]))}
         </div>
+        ${pathsFor(b.id).length ? `<div class="crow"><span class="clabel">Reading path</span><div class="chips">${pathsFor(b.id).map((x) => `<button class="chip" data-path="${esc(x.id)}">${esc(x.n)}</button>`).join("")}</div></div>` : ""}
         <div class="label">Where to start</div>
         <ul class="bq-list">${b.st.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>
       </div></details>`; }).join("")}</div></section>`;
@@ -4470,6 +4562,7 @@ function showView(view, fresh) {
   render();
   window.scrollTo(0, fresh ? 0 : view.y || 0);
   if (fresh && view.focus) { const el = document.querySelector(`[data-branch-id="${CSS.escape(view.focus)}"]`); if (el) el.scrollIntoView({ block: "start" }); }
+  if (fresh && view.path) { const el = document.querySelector(`section.path[data-path-id="${CSS.escape(view.path)}"]`); if (el) el.scrollIntoView({ block: "start" }); }
   if (fresh && view.era) { const el = document.querySelector(`section.tl-era[data-era="${CSS.escape(view.era)}"]`); if (el) el.scrollIntoView({ block: "start" }); }
   if (fresh && view.scrollTo) { const el = document.querySelector(`[data-term-id="${CSS.escape(view.scrollTo)}"]`); if (el) el.scrollIntoView({ block: "start" }); }
   if (rerun) runConcord();
@@ -6769,6 +6862,10 @@ document.addEventListener("click", (e) => {
   if (b.id === "addterm") return termSheet(null);
   if (b.id === "quiz") return quizPanel(S.screen === "glossary" ? S.gArea : S.screen === "thinkers" || (S.screen === "reference" && S.rk === "thinkers") ? "thinkers" : "all");
   if (b.id === "mywords") return wordsPanel();
+  if (b.id === "openpaths") return go({ screen: "paths" });
+  if (b.dataset.path) return go({ screen: "paths", path: b.dataset.path });
+  if (b.dataset.pathread) { const [tid, sec] = b.dataset.pathread.split("|"); return readStep(tid, sec.split(",")); }
+  if (b.dataset.pathadd) return readdClassic(b.dataset.pathadd);
   if (b.dataset.truth) { const ex = TT_EXAMPLES[+b.dataset.truth]; return truthPanel(ex ? { prem: ex[1], concl: ex[2] } : undefined); }
   if (b.dataset.say) return sayIt(b.dataset.say);
   if (b.dataset.editterm) return termSheet(b.dataset.editterm);
@@ -6868,6 +6965,20 @@ const CLASSICS = ["classic-plato-socrates", "classic-aristotle-ethics", "classic
   "classic-rousseau-social-contract", "classic-kant-groundwork", "classic-wollstonecraft-vindication", "classic-marx-engels-manifesto", "classic-nietzsche-genealogy",
   "classic-cooper-voice", "classic-du-bois-souls"]; // in historical order, the shelf's order
 let classicsBusy = false;
+// One classic from data/books/ into the library, queued, with its text and cover: the record, "here" if it already is, or null if
+// the file couldn't be had or isn't what the app accepts. Throws if storage fails.
+async function putClassic(id, now) {
+  const r = await fetch(`data/books/${id}.json`); if (!r.ok) return null;
+  const book = await r.json();
+  if (!book || !VALID.texts(book.text) || !VALID.content(book.content)) return null;
+  if (S.texts.has(id)) return "here";
+  let cover = null;
+  try { const c = await fetch(`data/books/${id}.jpg`); if (c.ok && /^image\//.test(c.headers.get("content-type") || "")) cover = await c.blob(); } catch {}
+  const rec = { ...book.text, status: "queued", hasContent: true, pos: 0, total: book.content.length, createdAt: now, updatedAt: now };
+  await idbTx(cover ? ["content", "texts", "covers"] : ["content", "texts"], (st) => { st("content").put(book.content, id); st("texts").put(rec, id); if (cover) st("covers").put(cover, id); });
+  S.texts.set(id, rec); if (cover) S.covers.set(id, cover);
+  return rec;
+}
 async function addClassics(force) {
   if (classicsBusy || !idb || S.mode !== "ready" || (navigator.webdriver && !force)) return [];
   classicsBusy = true;
@@ -6879,15 +6990,9 @@ async function addClassics(force) {
       if (done.has(id)) continue;
       if (S.texts.has(id)) { mark(id); continue; } // already here, from a backup
       try {
-        const r = await fetch(`data/books/${id}.json`); if (!r.ok) continue;
-        const book = await r.json();
-        if (!book || !VALID.texts(book.text) || !VALID.content(book.content)) continue;
-        if (S.texts.has(id)) { mark(id); continue; }
-        let cover = null;
-        try { const c = await fetch(`data/books/${id}.jpg`); if (c.ok && /^image\//.test(c.headers.get("content-type") || "")) cover = await c.blob(); } catch {}
-        const now = t0 - CLASSICS.indexOf(id), rec = { ...book.text, status: "queued", hasContent: true, pos: 0, total: book.content.length, createdAt: now, updatedAt: now }; // the earliest first on the shelf
-        await idbTx(cover ? ["content", "texts", "covers"] : ["content", "texts"], (st) => { st("content").put(book.content, id); st("texts").put(rec, id); if (cover) st("covers").put(cover, id); });
-        S.texts.set(id, rec); if (cover) S.covers.set(id, cover);
+        const rec = await putClassic(id, t0 - CLASSICS.indexOf(id)); // the earliest first on the shelf
+        if (rec === "here") { mark(id); continue; }
+        if (!rec) continue;
         mark(id); added.push(rec.title);
       } catch {} // offline, or the file is missing: next time
     }
