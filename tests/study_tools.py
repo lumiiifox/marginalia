@@ -19,6 +19,9 @@ Uses made-up records only. Checks that:
      in order of birth, long rows folded after eight.
   6. a book's page shows where in the book your notes are: a bar per stretch with notes, as tall as its share, lines at chapters, a dot
      at your place, a line saying where they gather; a bar opens the reader at its first note; none for fewer than two placed notes.
+  7. the fallacies: every one in the glossary marked formal or informal, with a definition, a longer note and a source; the Logic
+     branch lists them, formal then informal, each opening its entry; a formal fallacy's entry opens the truth table on its example,
+     which links back to the entry, however the argument is typed.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -260,6 +263,27 @@ async def spread(browser):
     check(not errs, "no script errors in the strip" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def fallacies(browser):
+    page, errs = await fresh(browser)
+    data = await page.evaluate("GLOSSARY.filter((g) => g.fal).map((g) => [g.id, g.fal, !!(g.d && g.x && g.src && g.srcName && g.a === 'logic' && (g.br || []).includes('logic'))])")
+    check(len(data) >= 17 and all(x[1] in ("formal", "informal") and x[2] for x in data), f"every fallacy is marked formal or informal, with a definition, a note and a source ({[x for x in data if not x[2]]})")
+    await page.evaluate("go({ screen: 'branches', focus: 'logic' })"); await page.wait_for_timeout(200)
+    cat = await page.evaluate("[...document.querySelectorAll(\"details[data-branch-id='logic'] .falgroup\")].map((g) => [g.querySelector('.clabel').textContent, [...g.querySelectorAll('.refrow')].map((r) => r.dataset.term)])")
+    formal = sorted(x[0] for x in data if x[1] == "formal"); informal = [x[0] for x in data if x[1] == "informal"]
+    check(len(cat) == 2 and cat[0][0].startswith("Formal fallacies") and sorted(cat[0][1]) == formal and sorted(cat[1][1]) == sorted(informal), f"the Logic branch lists them, formal then informal ({[(c[0], len(c[1])) for c in cat]})")
+    await page.click("details[data-branch-id='logic'] .falgroup .refrow[data-term='straw-man']"); await page.wait_for_timeout(300)
+    check(await page.evaluate("[S.screen, document.querySelector(\"details[data-term-id='straw-man']\")?.open]") == ["glossary", True], "a fallacy in the list opens its entry")
+    await page.evaluate("openTerm('affirming-consequent')"); await page.wait_for_timeout(200)
+    await page.click("details[data-term-id='affirming-consequent'] [data-truth]"); await page.wait_for_selector("#tt-p")
+    t = [await page.input_value("#tt-p"), await page.input_value("#tt-c"), await page.inner_text("#ttout")]
+    check(t[0] == "P → Q\nQ" and t[1] == "P" and t[2].startswith("Not valid.") and "Affirming the consequent in the glossary" in t[2], f"its entry opens the truth table on its example, with a way back to the entry ({t[:2]})")
+    await page.fill("#tt-p", "if p then q".replace("if ", "").replace(" then ", " -> ") + "\n~p"); await page.fill("#tt-c", "not q"); await page.wait_for_timeout(100)
+    check("Denying the antecedent in the glossary" in await page.inner_text("#ttout"), "typed another way (p -> q, ~p, not q) it is still recognized")
+    await page.click("#ttout [data-term]"); await page.wait_for_timeout(300)
+    check(await page.evaluate("document.querySelector(\"details[data-term-id='denying-antecedent']\")?.open"), "the link opens the entry")
+    check(not errs, "no script errors with the fallacies" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
@@ -269,6 +293,7 @@ async def main():
         await anki(browser)
         await lineage(browser)
         await spread(browser)
+        await fallacies(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

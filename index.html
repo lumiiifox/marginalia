@@ -580,6 +580,9 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 /* truth tables */
 .tt-syms .segb { min-width: 44px; font: 500 18px/1 var(--f-text); padding: 9px 10px; }
 .tt-ascii { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; letter-spacing: 0.04em; }
+.falcat { display: grid; gap: 14px; }
+.falgroup { display: grid; gap: 6px; }
+.falgroup .hint { margin: 0; }
 .tt-err { margin: 0; font: 400 15px/1.45 var(--f-ui); color: var(--warn); }
 .tt-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--field); max-width: 100%; }
 .tt { border-collapse: collapse; width: 100%; font: 500 14px/1.2 var(--f-ui); font-variant-numeric: tabular-nums; }
@@ -3672,7 +3675,7 @@ function termHTML(g, tmap) {
       ${termHitsHTML(hits)}
       <div class="noteacts">
         ${sayBtn(g.t)}
-        ${TT_TERMS.has(g.id) ? `<button class="btn" data-truth="1">Try it in a truth table</button>` : ""}
+        ${TT_TERMS.has(g.id) ? `<button class="btn" data-truth="${TT_TERMS.get(g.id)}">Try it in a truth table</button>` : ""}
         <button class="btn ghost" data-editterm="${esc(g.id)}">Edit</button>
         ${g.edited ? `<button class="btn ghost" data-restoreterm="${esc(g.id)}">Restore original</button>` : ""}
         ${g.builtIn ? "" : `<button class="btn ghost danger" data-delterm="${esc(g.id)}">Delete</button>`}
@@ -4010,10 +4013,17 @@ function quizPanel(area) {
 const TT = { prem: "", concl: "", field: "tt-p" };
 const TT_MAX = 6; // 64 rows: about as many as a phone can show
 const TT_PREC = { "↔": 1, "→": 2, "∨": 3, "∧": 4 };
+// name, premises, conclusion, and the glossary entry about it, if there is one
 const TT_EXAMPLES = [
-  ["Modus ponens", "P → Q\nP", "Q"], ["Modus tollens", "P → Q\n¬Q", "¬P"], ["Disjunctive syllogism", "P ∨ Q\n¬P", "Q"],
-  ["Hypothetical syllogism", "P → Q\nQ → R", "P → R"], ["Affirming the consequent", "P → Q\nQ", "P"], ["Denying the antecedent", "P → Q\n¬P", "¬Q"],
+  ["Modus ponens", "P → Q\nP", "Q", "modus"], ["Modus tollens", "P → Q\n¬Q", "¬P", "modus"], ["Disjunctive syllogism", "P ∨ Q\n¬P", "Q"],
+  ["Hypothetical syllogism", "P → Q\nQ → R", "P → R"], ["Affirming the consequent", "P → Q\nQ", "P", "affirming-consequent"], ["Denying the antecedent", "P → Q\n¬P", "¬Q", "denying-antecedent"],
 ];
+// Which example an argument is, written any way (letters, symbols or words), so its glossary entry can be offered.
+function ttExampleOf(prem, concl) {
+  const shape = (p, c) => { try { return JSON.stringify([p.split(/\n|;/).map((x) => x.trim()).filter(Boolean).map((x) => ttShow(ttParse(x))), ttShow(ttParse(c))]).toUpperCase(); } catch { return null; } }; // p and P read alike here
+  const mine = shape(prem, concl);
+  return mine ? TT_EXAMPLES.find(([, p, c]) => shape(p, c) === mine) || null : null;
+}
 function ttLex(s) {
   const ops = [["<->", "↔"], ["<=>", "↔"], ["->", "→"], ["=>", "→"], ["↔", "↔"], ["≡", "↔"], ["→", "→"], ["⊃", "→"], ["∧", "∧"], ["&", "∧"], ["^", "∧"], ["·", "∧"],
     ["∨", "∨"], ["|", "∨"], ["¬", "¬"], ["~", "¬"], ["!", "¬"], ["-", "¬"], ["(", "("], [")", ")"], ["[", "("], ["]", ")"]];
@@ -4100,7 +4110,9 @@ function ttHTML() {
     : live ? `<b>Valid.</b> In every row where all the premises are true (marked ✓), the conclusion is true too, so there is no counterexample.`
     : `<b>Valid, but only because the premises can never all be true together.</b> They are inconsistent, so no row can be a counterexample. An argument like this is valid and can never be sound.`;
   const tf = (x) => `<td class="${x ? "t" : "f"}">${x ? "T" : "F"}</td>`;
+  const ex = ttExampleOf(TT.prem, TT.concl), term = ex && ex[3] && GLOSSARY.find((g) => g.id === ex[3]);
   return `<p class="qz-say" role="status">${say}</p>
+    ${term ? `<div class="noteacts"><button class="btn ghost" data-term="${esc(term.id)}" style="padding-left:0">${esc(ex[0])} in the glossary ›</button></div>` : ""}
     <div class="tt-wrap"><table class="tt"><thead><tr>${vars.map((v) => `<th class="tv">${esc(v)}</th>`).join("")}${prem.map((p) => `<th>${esc(ttShow(p))}</th>`).join("")}<th class="tc">∴ ${esc(ttShow(concl))}</th><th class="tm" aria-label="Row"></th></tr></thead>
     <tbody>${rows.map((x) => `<tr class="${x.cx ? "cx" : x.all ? "ok" : ""}">${vars.map((v) => tf(x.env[v])).join("")}${x.pv.map(tf).join("")}${tf(x.cv)}<td class="tm">${x.cx ? "✗" : x.all && prem.length ? "✓" : ""}</td></tr>`).join("")}</tbody></table></div>
     <p class="hint">${n} rows, one for each way of making ${vars.length === 1 ? "the sentence" : `the ${vars.length} sentences`} true or false. An argument is valid when no row makes every premise true and the conclusion false.</p>`;
@@ -4137,7 +4149,8 @@ function truthPanel(preset) {
     $("#ttout").innerHTML = ttHTML();
   });
 }
-const TT_TERMS = new Set(["validity", "soundness", "modus", "deduction"]); // glossary entries that offer the truth table
+// glossary entries that offer the truth table, opening it on one of TT_EXAMPLES where one fits
+const TT_TERMS = new Map([["validity", -1], ["soundness", -1], ["deduction", -1], ["modus", 0], ["affirming-consequent", 4], ["denying-antecedent", 5]]);
 // Hear a name or term said aloud by the phone's own voice (the Web Speech API); the button only shows where there is one.
 // Nothing leaves the device beyond what the phone's voice does itself. Names are read with an English voice.
 const CAN_SAY = typeof window !== "undefined" && "speechSynthesis" in window && typeof SpeechSynthesisUtterance === "function";
@@ -4388,6 +4401,18 @@ const AREA_BRANCH = { meta: ["metaphysics"], know: ["epistemology"], logic: ["lo
 
 /* ---------- branches ---------- */
 function termBranches(g) { return (Array.isArray(g.br) ? g.br : AREA_BRANCH[g.a] || []).filter((b) => BRANCH.has(b)); }
+// The fallacies in the glossary (fal), formal then informal, each opening its entry: shown in the Logic branch.
+function fallacyCatalogHTML(terms) {
+  const cut = (x, n = 130) => (x.length > n ? x.slice(0, n - 1).replace(/\s+\S*$/, "") + "…" : x);
+  const group = (kind, title, hint) => {
+    const list = terms.filter((g) => g.fal === kind).sort((a, b) => a.t.localeCompare(b.t));
+    return list.length ? `<div class="falgroup"><div class="crow"><span class="clabel">${title} <span class="cnt">${list.length}</span></span></div><p class="hint">${hint}</p>
+      <div class="reflist">${list.map((g) => `<button class="refrow" data-term="${esc(g.id)}"><span class="rr-n">${esc(g.t)}</span><span class="rr-d">${esc(cut(g.d))}</span></button>`).join("")}</div></div>` : "";
+  };
+  const body = group("formal", "Formal fallacies", "Wrong by their form alone, whatever the argument is about. A truth table shows the counterexample.")
+    + group("informal", "Informal fallacies", "Wrong because of what is said or how, which form alone can't show. Several name patterns that are sometimes good reasoning; each entry says when.");
+  return body ? `<div class="label">Fallacies</div><div class="falcat">${body}</div>` : "";
+}
 function branchesView() {
   const all = allTerms();
   const rel = new Map(BRANCHES.map((b) => [b.id, new Set(b.rel || [])]));
@@ -4400,7 +4425,7 @@ function branchesView() {
         <p class="tdef">${esc(b.d)}</p>
         ${figHTML(b.img)}
         ${parasHTML(b.x)}${thinkerSources(b)}
-        ${b.id === "logic" ? `<div class="noteacts"><button class="btn" data-truth="1">Check an argument with a truth table</button></div>` : ""}
+        ${b.id === "logic" ? `<div class="noteacts"><button class="btn" data-truth="-1">Check an argument with a truth table</button></div>${fallacyCatalogHTML(all)}` : ""}
         <div class="label">Questions it asks</div>
         <ul class="bq-list">${b.q.map((q) => `<li>${esc(q)}</li>`).join("")}</ul>
         <div class="tconn">
@@ -6744,7 +6769,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "addterm") return termSheet(null);
   if (b.id === "quiz") return quizPanel(S.screen === "glossary" ? S.gArea : S.screen === "thinkers" || (S.screen === "reference" && S.rk === "thinkers") ? "thinkers" : "all");
   if (b.id === "mywords") return wordsPanel();
-  if (b.dataset.truth) return truthPanel();
+  if (b.dataset.truth) { const ex = TT_EXAMPLES[+b.dataset.truth]; return truthPanel(ex ? { prem: ex[1], concl: ex[2] } : undefined); }
   if (b.dataset.say) return sayIt(b.dataset.say);
   if (b.dataset.editterm) return termSheet(b.dataset.editterm);
   if (b.dataset.restoreterm) return del("terms", b.dataset.restoreterm).catch((e) => toast(failMsg(e)));
