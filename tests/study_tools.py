@@ -10,6 +10,10 @@ Uses made-up records only. Checks that:
      your edit of it shown if you made one; tapping it opens it in the glossary; nothing is stored.
   3. Hear it: a glossary term and a thinker's card each have a button that has the phone's voice say the name (bracketed parts left
      out), without closing the card; with no voice on the device there is no button.
+  4. flashcards for Anki: from Export, a tab-separated file with Anki's headers (deck, note type, tags column); your notes with the
+     passage in front and your words, follow-ups and the place on the back; the terms you added or edited; the words you looked up;
+     tabs, line breaks, quotes and markup can't break a row or a field; the whole glossary as its own file; with nothing of your
+     own, a message instead of an empty file.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -148,12 +152,60 @@ async def hear_it(browser):
     check(await page.evaluate("[CAN_SAY, document.querySelectorAll('.saybtn').length]") == [False, 0], "with no voice on the device there is no Hear it button")
     await ctx.close()
 
+ANKISEED = r"""async () => { const now = Date.now();
+  await put('texts', 'b1', { title: 'A "Quoted" Book', author: 'Writer, Some', sections: [], createdAt: now, updatedAt: now, hasContent: false });
+  await put('notes', 'n1', { textId: 'b1', kind: 'passage', passage: 'Line one\tand a tab\nline two <b>not bold</b> & "quoted"', gloss: 'my gloss #ethics-2', page: '12', links: [], at: 0, createdAt: now, updatedAt: now,
+    followups: [{ id: 'f1', at: now, x: 'thought later' }] });
+  await put('notes', 'n2', { textId: 'b1', kind: 'question', passage: '', gloss: 'Why does he say so?', page: '14', links: [], createdAt: now, updatedAt: now });
+  await put('notes', 'n3', { textId: 'b1', kind: 'argument', passage: 'The argument text', gloss: '', premises: ['All A are B', 'x is A'], conclusion: 'x is B', page: '15', links: [], createdAt: now, updatedAt: now });
+  await put('terms', 'u1', { t: 'My term', a: 'mine', d: 'my definition', createdAt: now, updatedAt: now });
+  localStorage.setItem('mg-dict', JSON.stringify({ aporia: { title: 'aporia', defs: [{ lang: 'English', pos: 'Noun', senses: ['A puzzle or impasse.'] }], t: now } }));
+}"""
+
+async def anki(browser):
+    page, errs = await fresh(browser)
+    ctx2 = await browser.new_context(viewport={"width": 1000, "height": 800}, accept_downloads=True)  # no touch: the file downloads instead of the share sheet
+    await page.context.close()
+    page = await ctx2.new_page(); errs = []
+    page.on("pageerror", lambda e: errs.append(str(e)))
+    await page.goto(URL); await page.wait_for_function(READY)
+    await page.evaluate("go({ screen: 'library' })"); await page.click("#exportbtn"); await page.wait_for_selector("#x-anki")
+    await page.click("#x-anki"); await page.wait_for_timeout(300)
+    t = await page.inner_text("#toast") if await page.locator("#toast").count() else await page.evaluate("document.body.innerText")
+    check("no notes, terms of your own" in t, "with nothing of your own, the flashcards export says so instead of making an empty file")
+    await page.evaluate(ANKISEED); await page.wait_for_timeout(200)
+    await page.click("#exportbtn"); await page.wait_for_selector("#x-anki")
+    async with page.expect_download() as dl: await page.click("#x-anki")
+    d = await dl.value; name = d.suggested_filename; txt = Path(await d.path()).read_text(encoding="utf-8")
+    lines = txt.rstrip("\n").split("\n")
+    head = [l for l in lines if l.startswith("#")]; rows = [l.split("\t") for l in lines if not l.startswith("#")]
+    check(name.startswith("marginalia-flashcards-") and name.endswith(".txt"), f"the file is named for what it is ({name})")
+    check(head == ["#separator:tab", "#html:true", "#notetype:Basic", "#deck:Marginalia", "#tags column:3", "#columns:Front\tBack\tTags"], f"Anki's headers come first ({head})")
+    check(len(rows) == 5 and all(len(r) == 3 for r in rows), f"five cards (three notes, a term, a word), each exactly three fields ({[len(r) for r in rows]})")
+    n1 = rows[0]
+    check(n1[0] == "Line one and a tab<br>line two &lt;b&gt;not bold&lt;/b&gt; &amp; &quot;quoted&quot;", f"the passage is on the front, its tab, line break, markup and quotes made safe ({n1[0]})")
+    check(n1[1].startswith("my gloss #ethics-2<br><br><i>Later:</i> thought later<br><small>") and "12" in n1[1] and "<i>A &quot;Quoted&quot; Book</i>" in n1[1], f"the back has your words, the follow-up and where it is ({n1[1]})")
+    check(n1[2] == "marginalia::note marginalia::kind::passage marginalia::book::a_quoted_book ethics_2", f"tags: kind, book and your own tags, with no spaces ({n1[2]})")
+    q, a = rows[1], rows[2]
+    check(q[0] == "Why does he say so?" and "marginalia::kind::question" in q[2], f"a note without a passage puts your words in front ({q})")
+    check(a[0] == "The argument text" and a[1].startswith("<ol><li>All A are B</li><li>x is A</li></ol>Therefore: x is B"), f"an argument's premises and conclusion go on the back ({a[1][:80]})")
+    check(rows[3] == ["My term", "my definition", "marginalia::term"] and rows[4] == ["aporia", "<i>Noun</i><br>A puzzle or impasse.", "marginalia::word"], f"your term and your looked-up word ({rows[3:]})")
+    await page.click("#exportbtn"); await page.wait_for_selector("#x-ankigl")
+    async with page.expect_download() as dl: await page.click("#x-ankigl")
+    g = Path(await (await dl.value).path()).read_text(encoding="utf-8").rstrip("\n").split("\n")
+    gr = [l.split("\t") for l in g if not l.startswith("#")]
+    n = await page.evaluate("allTerms().filter((g) => g.d).length")
+    check(len(gr) == n and all(len(r) == 3 and r[2].startswith("marginalia::glossary marginalia::area::") for r in gr), f"the whole glossary is its own file, a card per entry with its area ({len(gr)} of {n})")
+    check(not errs, "no script errors exporting flashcards" + (f": {errs}" if errs else ""))
+    await ctx2.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         await truth_table(browser)
         await term_of_day(browser)
         await hear_it(browser)
+        await anki(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

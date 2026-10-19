@@ -3485,9 +3485,18 @@ function exportPanel() {
       <button class="menuitem" id="x-bib">Bibliography of every text (Markdown)</button>
       <button class="menuitem" id="x-bibtex">BibTeX file for Zotero or LaTeX (.bib)</button>
       <button class="menuitem" id="x-zip">Everything as Markdown files (.zip)</button>
+      <button class="menuitem" id="x-anki">Flashcards for Anki: your notes, terms and words (.txt)</button>
+      <button class="menuitem" id="x-ankigl">Flashcards for Anki: the whole glossary (.txt)</button>
     </div>
-    <p class="hint">The .zip holds one file of notes per text, one per draft and one per comparison, a bibliography and a .bib file, ready for Obsidian, Zotero or Pandoc. To move the app to another device, use Save backup instead.</p>`, async (b) => {
+    <p class="hint">The .zip holds one file of notes per text, one per draft and one per comparison, a bibliography and a .bib file, ready for Obsidian, Zotero or Pandoc. The flashcards open in Anki with File → Import, into a deck called Marginalia, tagged by kind and book. To move the app to another device, use Save backup instead.</p>`, async (b) => {
     if (b.dataset.cstyle) { setCiteStyle(b.dataset.cstyle); document.querySelectorAll("#sheetroot [data-cstyle]").forEach((x) => x.classList.toggle("on", x === b)); return; }
+    if (b.id === "x-anki" || b.id === "x-ankigl") {
+      const rows = ankiRows(b.id === "x-anki" ? "mine" : "glossary");
+      if (!rows.length) return toast("There are no notes, terms of your own or looked-up words to make cards from yet.");
+      try { await saveFile(`marginalia-${b.id === "x-anki" ? "flashcards" : "glossary-cards"}-${stamp()}.txt`, ankiFile(rows), "text/plain"); }
+      catch { toast("Couldn't export the flashcards."); }
+      return;
+    }
     const tids = [...S.texts.keys()];
     if (!tids.length) return toast("Add a text first.");
     try {
@@ -3510,6 +3519,36 @@ async function exportZip() {
   zip.file("marginalia.bib", bibtex(tids));
   const blob = await zip.generateAsync({ type: "blob" });
   await saveFile(`marginalia-markdown-${stamp()}.zip`, blob, "application/zip");
+}
+
+/* ---------- flashcards for Anki: tab-separated text with Anki's import headers (Anki 2.1.54 and later) ----------
+   Front, back and tags; fields are HTML (escaped, line breaks as <br>), so quotes and tabs inside them can't split a field. */
+const ankiCell = (html) => String(html).replace(/\t/g, " ").replace(/\r?\n/g, "<br>");
+const ankiTag = (x) => slug(x).replace(/-/g, "_");
+function ankiFile(rows) {
+  const head = ["#separator:tab", "#html:true", "#notetype:Basic", "#deck:Marginalia", "#tags column:3", "#columns:Front\tBack\tTags"];
+  return [...head, ...rows.map((r) => r.map(ankiCell).join("\t"))].join("\n") + "\n";
+}
+// "mine": your notes (a passage on the front when there is one, your words and its place on the back), the terms you added or
+// edited, and the words you looked up. "glossary": every entry in the app's glossary, with your edits.
+function ankiRows(which) {
+  const rows = [], small = (x) => `<br><small>${x}</small>`;
+  if (which === "glossary") {
+    for (const g of allTerms()) if (g.d) rows.push([esc(g.t), esc(g.d) + (g.s ? small(esc(g.s)) : ""), ["marginalia::glossary", `marginalia::area::${ankiTag(AREAS[g.a] || "mine")}`].join(" ")]);
+    return rows;
+  }
+  const books = [...S.texts.entries()].sort(([, a], [, b]) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
+  for (const [tid, t] of books) for (const [, n] of sortNotes(notesFor(tid), t)) {
+    const front = n.passage || n.gloss; if (!front) continue;
+    const back = [n.passage && n.gloss ? esc(n.gloss) : "",
+      n.premises && n.premises.length ? `<ol>${n.premises.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>Therefore: ${esc(n.conclusion || "")}` : "",
+      ...(n.followups || []).map((f) => `<i>Later:</i> ${esc(f.x)}`)].filter(Boolean).join("<br><br>");
+    const tags = ["marginalia::note", `marginalia::kind::${n.kind || "passage"}`, `marginalia::book::${ankiTag(t.title)}`, ...tagsOf(n).map(ankiTag)];
+    rows.push([esc(front), back + small(citeAt(t, n.page, "note", "html", true)), tags.join(" ")]);
+  }
+  for (const g of allTerms()) if ((!g.builtIn || g.edited) && g.d) rows.push([esc(g.t), esc(g.d), "marginalia::term"]);
+  for (const w of lookedUp()) rows.push([esc(w.word), `<i>${esc(w.pos)}${w.lang !== "English" ? `, ${esc(w.lang)}` : ""}</i><br>${esc(w.sense)}`, "marginalia::word"]);
+  return rows;
 }
 
 /* ---------- glossary ---------- */
