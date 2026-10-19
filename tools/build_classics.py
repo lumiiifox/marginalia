@@ -32,6 +32,8 @@ PORT = 8821
 
 # repo: github.com/standardebooks/<repo>. files: the XHTML files to take, in order (default: the whole spine but the
 # front and back matter). cover: a title for a cover drawn here, when the edition's own cover names the larger volume.
+# drop: CSS selectors for parts of those files left out (the Republic leaves out Jowett's book-length Introduction and Analysis,
+# and with it the heading that only told the dialogue from the introduction).
 BOOKS = [
     dict(id="classic-plato-socrates", repo="plato_dialogues_benjamin-jowett", files=["euthyphro", "apology", "crito", "phaedo"], cover=dict(title="Euthyphro, Apology, Crito, Phaedo", size=31),
          text=dict(title="Euthyphro, Apology, Crito, Phaedo", author="Plato", edition="trans. Benjamin Jowett", publisher="Standard Ebooks", year="2022", orig="")),
@@ -56,16 +58,23 @@ BOOKS = [
          text=dict(title="A Voice from the South", author="Anna Julia Cooper", edition="", publisher="Standard Ebooks", year="2024", orig="1892")),
     dict(id="classic-du-bois-souls", repo="w-e-b-du-bois_the-souls-of-black-folk", files=None,
          text=dict(title="The Souls of Black Folk", author="W. E. B. Du Bois", edition="", publisher="Standard Ebooks", year="2021", orig="1903")),
+    dict(id="classic-plato-republic", repo="plato_dialogues_benjamin-jowett", files=["republic"], drop=["[id='republic-introduction']", "[id='republic-text'] > h3"], cover=dict(title="The Republic", size=44),
+         text=dict(title="The Republic", author="Plato", edition="trans. Benjamin Jowett", publisher="Standard Ebooks", year="2022", orig="")),
+    dict(id="classic-mill-liberty", repo="john-stuart-mill_on-liberty", files=None,
+         text=dict(title="On Liberty", author="John Stuart Mill", edition="with an introduction by W. L. Courtney", publisher="Standard Ebooks", year="2017", orig="1859")),
+    dict(id="classic-russell-problems", repo="bertrand-russell_the-problems-of-philosophy", files=None,
+         text=dict(title="The Problems of Philosophy", author="Bertrand Russell", edition="", publisher="Standard Ebooks", year="2019", orig="1912")),
     dict(id="classic-nietzsche-genealogy", repo="friedrich-nietzsche_the-genealogy-of-morals_horace-b-samuel", files=None,
          text=dict(title="The Genealogy of Morals", author="Friedrich Nietzsche", edition="trans. Horace B. Samuel", publisher="Standard Ebooks", year="2023", orig="1887")),
 ]
 SKIP = {"titlepage", "imprint", "halftitlepage", "colophon", "uncopyright", "endnotes", "loi"}
 
-BUILD = r"""async ({ id, files, endnotes, flatten, parts }) => {
+BUILD = r"""async ({ id, files, endnotes, flatten, parts, drop }) => {
   const XH = "http://www.w3.org/1999/xhtml", P = new DOMParser();
   const parse = (s) => P.parseFromString(s.replace(/\u2060/g, ""), "application/xhtml+xml");
   const et = (el) => (el && el.getAttribute && el.getAttribute("epub:type")) || "";
   const docs = files.map(parse), EN = endnotes ? parse(endnotes) : null;
+  for (const d of docs) for (const sel of drop || []) d.querySelectorAll(sel).forEach((el) => el.remove()); // parts left out (an editor's long introduction)
   const notes = new Map(); if (EN) for (const li of EN.getElementsByTagName("li")) if (li.getAttribute("id")) notes.set(li.getAttribute("id"), li);
   const num = new Map();
   const isTitlePart = (el) => el.localName === "p" && /(^|\s)(title|subtitle|se:bridgehead)(\s|$)/.test(et(el));
@@ -295,7 +304,7 @@ async def main(only):
                     names = []
                     ts = bk["text_source"]
                     files, endnotes = [CONVERT[ts["convert"]]((TEXTS / bk["id"] / ts["file"]).read_text(encoding="latin-1"))], None
-                r = await page.evaluate(BUILD, {"id": bk["id"], "flatten": bool(bk.get("flatten")), "files": files, "endnotes": endnotes,
+                r = await page.evaluate(BUILD, {"id": bk["id"], "flatten": bool(bk.get("flatten")), "files": files, "endnotes": endnotes, "drop": bk.get("drop") or [],
                                                 "parts": [n.startswith("part-") for n in names] if bk.get("parts") else None})
                 for s in r["sections"]:
                     if bk.get("partOf") and re.fullmatch(r"Part [IVX]+", s["label"]): s["label"] = f'{bk["partOf"]}, {s["label"]}'
