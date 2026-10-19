@@ -564,6 +564,10 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .qz-say { font: 400 15px/1.45 var(--f-text); margin: 0; }
 .qz-say .bad { color: var(--warn); }
 .qz-missed { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.saybtn { display: inline-flex; align-items: center; gap: 6px; }
+.saybtn svg { width: 18px; height: 18px; flex: none; }
+.sayline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+.sayline .hint { margin: 0; }
 /* truth tables */
 .tt-syms .segb { min-width: 44px; font: 500 18px/1 var(--f-text); padding: 9px 10px; }
 .tt-ascii { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; letter-spacing: 0.04em; }
@@ -3583,6 +3587,7 @@ function termHTML(g, tmap) {
       ${conn ? `<div class="tconn">${conn}</div>` : ""}
       ${termHitsHTML(hits)}
       <div class="noteacts">
+        ${sayBtn(g.t)}
         ${TT_TERMS.has(g.id) ? `<button class="btn" data-truth="1">Try it in a truth table</button>` : ""}
         <button class="btn ghost" data-editterm="${esc(g.id)}">Edit</button>
         ${g.edited ? `<button class="btn ghost" data-restoreterm="${esc(g.id)}">Restore original</button>` : ""}
@@ -3779,7 +3784,7 @@ function thinkerPanel(id) {
   const took = THINKERS.filter((x) => x.i.includes(id)).map((x) => x.id);
   const shelf = [...S.texts.entries()].filter(([, t]) => authorThinkers(t.author).some((x) => x.id === id));
   openPanel(`<h2>${esc(p.n)}</h2>
-    ${p.y ? `<p class="hint">${esc(p.y)}</p>` : ""}
+    ${p.y || CAN_SAY ? `<div class="sayline">${p.y ? `<p class="hint">${esc(p.y)}</p>` : ""}${sayBtn(p.n, "linkbtn")}</div>` : ""}
     ${figHTML(p.img)}
     <p class="tdef">${esc(p.d)}</p>
     ${parasHTML(p.x)}
@@ -3793,6 +3798,7 @@ function thinkerPanel(id) {
       ${chipRow("Taken up by", thinkerChips(took))}
       ${chipRow("Lived at the same time", thinkerChips(contemporariesOf(p)))}
     </div>`, (b) => {
+    if (b.dataset.say) return sayIt(b.dataset.say);
     if (b.dataset.thinker) thinkerPanel(b.dataset.thinker);
     else if (b.dataset.term) openTerm(b.dataset.term);
     else if (b.dataset.branch) go({ screen: "branches", focus: b.dataset.branch });
@@ -4024,6 +4030,15 @@ function truthPanel(preset) {
   });
 }
 const TT_TERMS = new Set(["validity", "soundness", "modus", "deduction"]); // glossary entries that offer the truth table
+// Hear a name or term said aloud by the phone's own voice (the Web Speech API); the button only shows where there is one.
+// Nothing leaves the device beyond what the phone's voice does itself. Names are read with an English voice.
+const CAN_SAY = typeof window !== "undefined" && "speechSynthesis" in window && typeof SpeechSynthesisUtterance === "function";
+const sayText = (x) => String(x || "").replace(/\s*\([^)]*\)/g, " ").replace(/\s+/g, " ").trim();
+function sayBtn(x, cls = "btn ghost") { return CAN_SAY && sayText(x) ? `<button type="button" class="${cls} saybtn" data-keep="1" data-say="${esc(sayText(x))}" aria-label="Hear “${esc(sayText(x))}” said aloud"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 7.5h3l4-3.5v12l-4-3.5H3z" fill="currentColor"/><path d="M13 7a4 4 0 0 1 0 6M15.2 4.8a7 7 0 0 1 0 10.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Hear it</button>` : ""; }
+function sayIt(x) {
+  if (!CAN_SAY) return;
+  try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(x); u.lang = "en"; u.rate = 0.85; speechSynthesis.speak(u); } catch {}
+}
 function termSheet(id, preset) {
   const base = id ? allTerms().find((x) => x.id === id) : null;
   const g = base || { t: "", a: "mine", d: "", x: "", s: "", w: "", ...(preset || {}) };
@@ -6622,6 +6637,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "quiz") return quizPanel(S.screen === "glossary" ? S.gArea : S.screen === "thinkers" || (S.screen === "reference" && S.rk === "thinkers") ? "thinkers" : "all");
   if (b.id === "mywords") return wordsPanel();
   if (b.dataset.truth) return truthPanel();
+  if (b.dataset.say) return sayIt(b.dataset.say);
   if (b.dataset.editterm) return termSheet(b.dataset.editterm);
   if (b.dataset.restoreterm) return del("terms", b.dataset.restoreterm).catch((e) => toast(failMsg(e)));
   if (b.dataset.delterm) return arm(b, () => del("terms", b.dataset.delterm).catch((e) => toast(failMsg(e))));

@@ -8,6 +8,8 @@ Uses made-up records only. Checks that:
      the table scrolls inside its frame instead of the page at phone width.
   2. term of the day: one of the glossary's entries on the home screen, the same all day, every entry once before any repeats,
      your edit of it shown if you made one; tapping it opens it in the glossary; nothing is stored.
+  3. Hear it: a glossary term and a thinker's card each have a button that has the phone's voice say the name (bracketed parts left
+     out), without closing the card; with no voice on the device there is no button.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -115,11 +117,43 @@ async def term_of_day(browser):
     check(store == [] and not errs, f"nothing is stored, and no script errors ({store}{errs})")
     await page.context.close()
 
+SAYSTUB = """(() => { window.__said = []; const real = window.speechSynthesis;
+  if (real) { real.speak = (u) => window.__said.push([u.text, u.lang, Math.round(u.rate * 100) / 100]); real.cancel = () => {}; } })()"""
+
+async def hear_it(browser):
+    ctx = await browser.new_context(viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True)
+    await ctx.add_init_script(SAYSTUB)
+    page = await ctx.new_page(); errs = []
+    page.on("pageerror", lambda e: errs.append(str(e)))
+    await page.route("https://commons.wikimedia.org/**", lambda r: r.abort())
+    await page.goto(URL); await page.wait_for_function(READY)
+    check(await page.evaluate("CAN_SAY"), "this browser has a voice")
+    await page.evaluate("openTerm('dasein')"); await page.wait_for_timeout(200)
+    await page.click("details[data-term-id='dasein'] .saybtn"); await page.wait_for_timeout(100)
+    said = await page.evaluate("window.__said")
+    check(said == [["Dasein", "en", 0.85]], f"a term's Hear it says the term ({said})")
+    await page.evaluate("thinkerPanel('nietzsche')"); await page.wait_for_timeout(200)
+    await page.click(".sheet .saybtn"); await page.wait_for_timeout(100)
+    said = await page.evaluate("[window.__said.at(-1), !!document.querySelector('.sheet h2')]")
+    check(said == [["Friedrich Nietzsche", "en", 0.85], True], f"a thinker's Hear it says the name and leaves the card open ({said})")
+    paren = await page.evaluate("[sayText('Laozi (Lao Tzu)'), sayText('Śaṅkara')]")
+    check(paren == ["Laozi", "Śaṅkara"], f"bracketed parts are left out ({paren})")
+    check(not errs, "no script errors with Hear it" + (f": {errs}" if errs else ""))
+    await ctx.close()
+    ctx = await browser.new_context(viewport={"width": 390, "height": 844})
+    await ctx.add_init_script("delete window.speechSynthesis; delete window.SpeechSynthesisUtterance; Object.defineProperty(window, 'speechSynthesis', { value: undefined }); ")
+    page = await ctx.new_page()
+    await page.goto(URL); await page.wait_for_function(READY)
+    await page.evaluate("openTerm('dasein')"); await page.wait_for_timeout(200)
+    check(await page.evaluate("[CAN_SAY, document.querySelectorAll('.saybtn').length]") == [False, 0], "with no voice on the device there is no Hear it button")
+    await ctx.close()
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         await truth_table(browser)
         await term_of_day(browser)
+        await hear_it(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

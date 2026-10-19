@@ -14,7 +14,7 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
 - After changes to storage or deleting, also run `python3 tests/trash.py` (Recently deleted, and the upgrade to version 8).
 - After any change to PDF import, also run `python3 tests/pdf_import.py` (generated books: headings, page order, broken words, a scan-like book). `python3 tests/pdf_import.py some.pdf` shows what the parser makes of a real book, for checking a bad import; real books stay out of the repo.
 - After any change to the reader, also run `python3 tests/paged_reader.py` (Swipe pages: gestures, alignment, flips, joined paragraphs, chapters) `python3 tests/structure.py` (marking chapters, headings, running heads and title pages with Edit) `python3 tests/comfort.py` (tap to turn, the hidden toolbar, the screen kept on, status-bar colours, Scroll mode on a long book) `python3 tests/navigate.py` (Find with marks and arrows, the slider and your notes marked above it, Go to page, pages left in the chapter, the Contents tabs) `python3 tests/highlights.py` (highlights on the exact words, across paragraphs and pages, after corrections; Continue on next page) `python3 tests/notes_lookup.py` (tapping note numbers for footnotes and endnotes; Wiktionary in Look up, with a stand-in for the API) `python3 tests/quotes_language.py` (Edit → A block quote; a book's language for hyphenation) `python3 tests/pin.py` (the pinned passage: Pin, collapse, gestures, Go to it and back, notes, changed or removed sources) `python3 tests/followups.py` (follow-ups on notes and earlier wordings: the card, the sheet, search, tags, export, restore keeping both copies' ones) `python3 tests/classics.py` (the classics that come with the app: added once, deleted stays deleted, each opens with its chapters and notes; also after rebuilding them) and `python3 tests/printed_page.py` (keeping a book's PDF and showing its printed pages; the storage upgrade to version 7).
-- After changes to the study tools around the reference sections (the truth table, term of the day), run `python3 tests/study_tools.py`.
+- After changes to the study tools around the reference sections (the truth table, term of the day, Hear it), run `python3 tests/study_tools.py`.
 - This session can't delete remote branches; the repo is set to delete merged PR branches automatically (if not, tell the owner).
 
 ## Rules
@@ -50,6 +50,8 @@ Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`
   (the term blanked out by `maskTerm`) and `THINKERS` key works (`worksOf` leaves out works by other authors); nothing is stored.
 - Term of the day (`termOfDay`, `todHTML`, above the home screen's three buttons): one of `GLOSSARY` a day by `dayNumber`, in an order shuffled once per
   round so every entry comes up before any repeats; your edit of it if you made one. Nothing is stored.
+- Hear it (`sayBtn`, `sayIt`, `CAN_SAY`): on a glossary term and a thinker's card, the phone's own voice (Web Speech API, English) says the name;
+  no button where the device has no voice.
 - Truth table (`truthPanel`, from the Logic branch and the glossary's `TT_TERMS`): `ttLex`/`ttParse` read premises and a conclusion
   (¬ ∧ ∨ → ↔, ASCII or words; → groups right), `ttCheck` builds every row (up to `TT_MAX` letters) and finds counterexamples, `ttShow` writes a
   formula back with only the brackets it needs. Nothing is stored. Tested by `tests/study_tools.py`.
