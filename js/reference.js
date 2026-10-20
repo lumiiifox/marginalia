@@ -400,7 +400,7 @@ function fallacyCatalogHTML(terms) {
 // Safe inline cross-references for the Metaphysics article.
 function branchLinks(text, terms, thinkers) {
   const candidates = [
-    ...thinkers.filter((p) => p && p.n).flatMap((p) => [p.n, p.s].filter((name) => name && name.length >= 5).map((name) => ({ name, id: p.id, kind: "thinker" }))),
+    ...thinkers.filter((p) => p && p.n).flatMap((p) => [p.n, p.sn].filter((name) => name && name.length >= 5).map((name) => ({ name, id: p.id, kind: "thinker" }))),
     ...terms.filter((g) => g.t && g.t.length >= 7 && !/^(identity|reality|existence|substance|knowledge|causation)$/i.test(g.t)).map((g) => ({ name: g.t, id: g.id, kind: "term" }))
   ].sort((a, b) => b.name.length - a.name.length);
   const hits = [];
