@@ -400,7 +400,7 @@ function fallacyCatalogHTML(terms) {
 // Safe inline cross-references for the Metaphysics article.
 function branchLinks(text, terms, thinkers) {
   const candidates = [
-    ...thinkers.filter((p) => p && p.n && p.n.length >= 5).map((p) => ({ name: p.n, id: p.id, kind: "thinker" })),
+    ...thinkers.filter((p) => p && p.n).flatMap((p) => [p.n, p.s].filter((name) => name && name.length >= 5).map((name) => ({ name, id: p.id, kind: "thinker" }))),
     ...terms.filter((g) => g.t && g.t.length >= 7 && !/^(identity|reality|existence|substance|knowledge|causation)$/i.test(g.t)).map((g) => ({ name: g.t, id: g.id, kind: "term" }))
   ].sort((a, b) => b.name.length - a.name.length);
   const hits = [];
@@ -431,7 +431,7 @@ function branchesView() {
       <div class="tbody">
         <p class="tdef">${esc(b.d)}</p>
         ${figHTML(b.img)}
-        ${b.id === "metaphysics" ? b.x.split(/\n\n/).map((part) => { const at = part.indexOf("\n"); const link = (v) => branchLinks(v, terms, b.p.map((id) => THINKER.get(id)).filter(Boolean)); return at < 0 ? `<p>${link(part)}</p>` : `<section class="branch-article-section"><h3>${esc(part.slice(0, at))}</h3><p>${link(part.slice(at + 1))}</p></section>`; }).join("") : parasHTML(b.x)}${thinkerSources(b)}
+        ${b.id === "metaphysics" ? b.x.split(/\n\n/).map((part) => { const at = part.indexOf("\n"); const link = (v) => branchLinks(v, terms, [...THINKER.values()]); return at < 0 ? `<p>${link(part)}</p>` : `<section class="branch-article-section"><h3>${esc(part.slice(0, at))}</h3><p>${link(part.slice(at + 1))}</p></section>`; }).join("") : parasHTML(b.x)}${thinkerSources(b)}
         ${b.id === "logic" ? `<div class="noteacts"><button class="btn" data-truth="-1">Check an argument with a truth table</button><button class="btn" data-argquiz="fallacy">Name the fallacy</button><button class="btn" data-argquiz="valid">Valid or not?</button><button class="btn" data-argquiz="missing">Missing premise</button><button class="btn" data-steps="1">Put the steps in order</button><button class="btn" data-recon="1">How to reconstruct an argument</button></div>${fallacyCatalogHTML(all)}` : ""}
         <div class="label">Questions it asks</div>
         <ul class="bq-list">${b.q.map((q) => `<li>${esc(q)}</li>`).join("")}</ul>
