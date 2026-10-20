@@ -408,7 +408,7 @@ function branchesView() {
       <div class="tbody">
         <p class="tdef">${esc(b.d)}</p>
         ${figHTML(b.img)}
-        ${parasHTML(b.x)}${thinkerSources(b)}
+        ${b.id === "metaphysics" ? b.x.split(/\n\n/).map((part) => { const at = part.indexOf("\n"); return at < 0 ? `<p>${esc(part)}</p>` : `<section class="branch-article-section"><h3>${esc(part.slice(0, at))}</h3><p>${esc(part.slice(at + 1))}</p></section>`; }).join("") : parasHTML(b.x)}${thinkerSources(b)}
         ${b.id === "logic" ? `<div class="noteacts"><button class="btn" data-truth="-1">Check an argument with a truth table</button><button class="btn" data-argquiz="fallacy">Name the fallacy</button><button class="btn" data-argquiz="valid">Valid or not?</button><button class="btn" data-argquiz="missing">Missing premise</button><button class="btn" data-steps="1">Put the steps in order</button><button class="btn" data-recon="1">How to reconstruct an argument</button></div>${fallacyCatalogHTML(all)}` : ""}
         <div class="label">Questions it asks</div>
         <ul class="bq-list">${b.q.map((q) => `<li>${esc(q)}</li>`).join("")}</ul>
