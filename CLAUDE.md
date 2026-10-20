@@ -2,6 +2,24 @@
 
 Personal, single-user reading app (Lumiii's). Hosted on GitHub Pages from `main`: whatever lands on `main` is live on the owner's phone within about a minute.
 
+## What Marginalia is for
+
+A personal philosophical reading and research environment built around close reading, rigorous reference material and
+traceable conceptual relationships. It grows with the texts and questions its owner chooses to pursue (now: Aristotle →
+Spinoza → Deleuze → Land); it does not try to cover all of philosophy.
+
+- **Depth before breadth.** An entry is worth having because its claims are accurate, attributed and sourced. Add thinkers,
+  terms or texts when a reading needs them, never to fill out coverage.
+- **Connections need evidence.** A link between thinkers or concepts says what kind it is (influence, critique,
+  reinterpretation) and rests on a source or a passage. Shared vocabulary or chronology alone is not a connection.
+- **The library sets the horizon.** Features work on whatever the owner imports, with the bundled classics as a foundation;
+  new traditions should need new content, not new subsystems.
+- **Interpretation stays the owner's.** For Deleuze and Guattari, entries quote what they wrote, with edition and page;
+  no written synthesis of their ideas. Elsewhere, contested readings are credited to the scholar who holds them.
+
+The test for any addition: does it deepen the owner's ability to read, investigate, compare or substantiate philosophical
+ideas? If not, it waits.
+
 ## How changes ship
 
 - **Pull request** (branch + PR, owner merges) for anything touching stored data:
