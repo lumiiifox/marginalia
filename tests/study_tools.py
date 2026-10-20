@@ -63,6 +63,7 @@ Uses made-up records only. Checks that:
       the step's first chapter, once; a book's Where you left off shows a step's questions only while your place is inside its chapters.
   21. primers: every classic has one, with words to know that are in the glossary and a source; a classic's page shows it open until
       you start reading or take a note, folded after; it links to the reading paths that use the book.
+  22. sources: no glossary entry, thinker, branch, primer, disputation or reading path cites Wikipedia; every source link is https.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -761,7 +762,17 @@ async def primers(browser):
     check(not errs, "no script errors with primers" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+def sources():
+    import re
+    for f in ("glossary", "thinkers", "branches"):
+        text = (ROOT / "data" / f"{f}.js").read_text(encoding="utf-8")
+        wiki = re.findall(r"https?://[a-z.]*wikipedia\.org[^\"]*", text)
+        check(not wiki, f"data/{f}.js cites no Wikipedia ({wiki[:3]})")
+        plain = [u for u in re.findall(r'src: "([^"]*)"', text) if not u.startswith("https://")]
+        check(not plain, f"data/{f}.js: every source link is https ({plain[:3]})")
+
 async def main():
+    sources()
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         await truth_table(browser)
