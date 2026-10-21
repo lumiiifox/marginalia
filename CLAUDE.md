@@ -14,8 +14,8 @@ Spinoza → Deleuze → Land); it does not try to cover all of philosophy.
   reinterpretation) and rests on a source or a passage. Shared vocabulary or chronology alone is not a connection.
 - **The library sets the horizon.** Features work on whatever the owner imports, with the bundled classics as a foundation;
   new traditions should need new content, not new subsystems.
-- **Interpretation stays the owner's.** For Deleuze and Guattari, entries quote what they wrote, with edition and page;
-  no written synthesis of their ideas. Elsewhere, contested readings are credited to the scholar who holds them.
+- **Contested readings are credited.** Interpretation of any thinker, Deleuze and Guattari included, rests on named
+  academic scholarship (SEP, IEP, published scholars), never on forum posts or unsourced takes.
 
 The test for any addition: does it deepen the owner's ability to read, investigate, compare or substantiate philosophical
 ideas? If not, it waits.
@@ -126,6 +126,8 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   by the service worker; a picture that fails to load removes its figure, so offline the entry simply shows without it.
   A glossary term's optional `fig` names one of `FIGURES` (end of `data/glossary.js`): a diagram drawn as SVG, shown by `diaHTML` in the
   app's colours and offline. Give each marker id a per-figure suffix, since closed entries hide the SVG that defines it.
+- A branch written as an article: when any paragraph of its `x` starts with a heading line (heading, newline, text), `branchesView` draws
+  each such paragraph as a section, and `branchLinks` links the first mention of each thinker and of the branch's own glossary terms.
 - Quiz yourself (`quizPanel`, from the glossary and the home screen's glossary section): questions made from `allTerms()` definitions
   (the term blanked out by `maskTerm`) and `THINKERS` key works (`worksOf` leaves out works by other authors); nothing is stored.
   Argument puzzles (from the Logic branch, `argModes`): Name the fallacy uses each fallacy's `ex` examples, never offering a `FAL_NEAR` pair

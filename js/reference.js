@@ -397,7 +397,7 @@ function fallacyCatalogHTML(terms) {
     + group("informal", "Informal fallacies", "Wrong because of what is said or how, which form alone can't show. Several name patterns that are sometimes good reasoning; each entry says when.");
   return body ? `<div class="label">Fallacies</div><div class="falcat">${body}</div>` : "";
 }
-// Safe inline cross-references for the Metaphysics article.
+// Inline links to thinkers and terms in a branch written as an article (paragraphs whose first line is a heading).
 function branchLinks(text, terms, thinkers) {
   const candidates = [
     ...thinkers.filter((p) => p && p.n).flatMap((p) => [p.n, p.sn].filter((name) => name && name.length >= 5).map((name) => ({ name, id: p.id, kind: "thinker" }))),
@@ -408,7 +408,7 @@ function branchLinks(text, terms, thinkers) {
     const pos = text.toLocaleLowerCase().indexOf(c.name.toLocaleLowerCase());
     if (pos < 0) continue;
     const end = pos + c.name.length;
-    if ((pos && /[\\p{L}\\p{N}]/u.test(text[pos - 1])) || (end < text.length && /[\\p{L}\\p{N}]/u.test(text[end]))) continue;
+    if ((pos && /[\p{L}\p{N}]/u.test(text[pos - 1])) || (end < text.length && /[\p{L}\p{N}]/u.test(text[end]))) continue;
     if (hits.some((h) => pos < h.end && end > h.pos)) continue;
     hits.push({ pos, end, ...c });
   }
@@ -431,7 +431,7 @@ function branchesView() {
       <div class="tbody">
         <p class="tdef">${esc(b.d)}</p>
         ${figHTML(b.img)}
-        ${(b.id === "metaphysics" || b.id === "epistemology" || b.id === "logic" || b.id === "ethics" || b.id === "aesthetics" || b.id === "political" || b.id === "mind" || b.id === "language" || b.id === "science" || b.id === "religion" || b.id === "history" || b.id === "law" || b.id === "mathematics") ? b.x.split(/\n\n/).map((part) => { const at = part.indexOf("\n"); const link = (v) => branchLinks(v, terms, [...THINKER.values()]); return at < 0 ? `<p>${link(part)}</p>` : `<section class="branch-article-section"><h3>${esc(part.slice(0, at))}</h3><p>${link(part.slice(at + 1))}</p></section>`; }).join("") : parasHTML(b.x)}${thinkerSources(b)}
+        ${b.x.split(/\n\n/).some((part) => part.includes("\n")) ? b.x.split(/\n\n/).map((part) => { const at = part.indexOf("\n"); const link = (v) => branchLinks(v, terms, [...THINKER.values()]); return at < 0 ? `<p>${link(part)}</p>` : `<section class="branch-article-section"><h3>${esc(part.slice(0, at))}</h3><p>${link(part.slice(at + 1))}</p></section>`; }).join("") : parasHTML(b.x)}${thinkerSources(b)}
         ${b.id === "logic" ? `<div class="noteacts"><button class="btn" data-truth="-1">Check an argument with a truth table</button><button class="btn" data-argquiz="fallacy">Name the fallacy</button><button class="btn" data-argquiz="valid">Valid or not?</button><button class="btn" data-argquiz="missing">Missing premise</button><button class="btn" data-steps="1">Put the steps in order</button><button class="btn" data-recon="1">How to reconstruct an argument</button></div>${fallacyCatalogHTML(all)}` : ""}
         <div class="label">Questions it asks</div>
         <ul class="bq-list">${b.q.map((q) => `<li>${esc(q)}</li>`).join("")}</ul>
