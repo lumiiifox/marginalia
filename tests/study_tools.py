@@ -784,6 +784,8 @@ def section_sources():
         check(not stray, f"{b['id']}: every section source names one of its headings ({stray})")
         bad = [x for v in b["xs"].values() for x in v if not x.get("srcName") or (x.get("src") and not x["src"].startswith("https://"))]
         check(not bad, f"{b['id']}: every section source has a name and an https link ({bad[:2]})")
+        dup = [k for k, v in b["xs"].items() if len({x.get("src") or x.get("srcName") for x in v}) < len(v)]
+        check(not dup, f"{b['id']}: no source is listed twice under one section ({dup})")
 
 async def branch_sources(browser):
     page, errs = await fresh(browser)

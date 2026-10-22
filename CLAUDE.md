@@ -130,6 +130,10 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   app's colours and offline. Give each marker id a per-figure suffix, since closed entries hide the SVG that defines it.
 - A branch article's sources by section: `xs` on the entry, `{ "<heading>": [{ src, srcName }] }`, drawn by `sectionSources` as one line under
   that section (SEP and IEP shortened in the line, full name on hover). A heading key must match a heading in `x` (tested by `tests/study_tools.py`).
+- Citation design (owner's decision, 2026-10-21): sources sit under each section, never between sentences; compact SEP/IEP labels with the
+  full name behind the link; subdued but WCAG AA, 24px tap targets; a source may recur across sections it supports, never twice in one.
+  Sections get sources only as part of an article's audit, aiming at full traceability: every verified claim's deciding source listed
+  under its own section (unverified claims reported apart).
 - Audits of the articles: `tests/audit/<id>.json`, one record per sentence with each claim's verdict and source (see `tests/audit/README.md`).
   An audit's fixes ship only after an independent second review.
 - A branch written as an article: when any paragraph of its `x` starts with a heading line (heading, newline, text), `branchesView` draws
