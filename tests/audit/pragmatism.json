@@ -1,0 +1,534 @@
+{
+ "article": "pragmatism",
+ "audited": "2026-10-22",
+ "by": "Claude (lead dev); independent review of the findings and of the corrections, 2026-10-22",
+ "verdicts": "As in analytic.json: first_pass beside accuracy, and review once reviewed.",
+ "mechanical": [
+  {
+   "check": "structure",
+   "result": "fail",
+   "note": "Duplicate pairs: the maxim (Origins / Peirce), James and Dewey (James, Dewey, and democratic life / their own sections), social reform (twice), neopragmatism (Neopragmatism / The linguistic turn)."
+  },
+  {
+   "check": "sources name title and author",
+   "result": "fail",
+   "note": "The article's main source is named only 'Stanford Encyclopedia of Philosophy' (no title, no author: Hookway); Peirce and Dewey entries lack authors (Burch, Hildebrand)."
+  },
+  {
+   "check": "partisan source",
+   "result": "note",
+   "note": "The Concise REP 'Pragmatism' entry is by Richard Rorty, a neopragmatist discussed in the article: usable for Rorty's view, credited as his."
+  }
+ ],
+ "sentences": [
+  {
+   "s": 1,
+   "origin": "audited",
+   "text": "Pragmatism treats knowing the world as inseparable from acting in it.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "Concise REP 'Pragmatism' (Richard Rorty); SEP Pragmatism (Hookway, 2024)",
+     "note": "Rorty's own entry: inquiry enables us to act more effectively. A pragmatist's reading of pragmatism; credit it.",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "origin": "audited",
+   "text": "It began in the United States around 1870, in discussions at the Metaphysical Club in Cambridge, Massachusetts.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Pragmatism (Hookway, 2024) §1.1, §2; SEP Peirce (Burch) §1",
+     "excerpt": "Pragmatism originated in the United States around 1870",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "origin": "audited",
+   "text": "Charles Sanders Peirce gave it its method in 1878, the pragmatic maxim: to make a concept clear, trace the practical consequences of its applying.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Pragmatism (Hookway, 2024) §2, §2.1",
+     "excerpt": "How to Make our Ideas Clear",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "origin": "audited",
+   "text": "He held that inquiry is always fallible and that truth is what inquiry would arrive at if pursued far enough, and he later renamed his view “pragmaticism” to separate it from James's.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Peirce (Burch) §1, §4; SEP Pragmatism (Hookway, 2024) §3.1",
+     "excerpt": "truth is the end of inquiry",
+     "note": "Burch: after about 1905 Peirce called his view 'pragmaticism' to distinguish it from James's, Dewey's and others'.",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "origin": "audited",
+   "text": "Charles Sanders Peirce's pragmatic maxim clarifies concepts by tracing conceivable practical bearings, not merely immediate usefulness.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "first_pass": "editorial",
+     "by": "SEP Peirce §4",
+     "note": "Repeats sentence 3 in a second section. 'Conceivable practical bearings' is Peirce's 1878 phrase but no retrieved source quotes it. Contrastive construction.",
+     "fix": "merge with sentence 3",
+     "review": "supported",
+     "review_note": "Blackburn ODP \"pragmaticism\" quotes \"conceivably have practical bearings\"; contrastive tail."
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "origin": "audited",
+   "text": "His accounts of signs, inference, and the community of inquiry connect meaning to disciplined investigation.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Peirce §1, §10; Concise REP 'Peirce' (Christopher Hookway)",
+     "excerpt": "‘Inquiry’ is a cooperative activity",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "origin": "audited",
+   "text": "Fallibilism allows beliefs to be revised without implying that all opinions are equally warranted.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "first_pass": "editorial",
+     "note": "Contrastive construction. Hookway's 'contrite fallibilists' (§4.1) gives a sourced version.",
+     "fix": "cut or replace",
+     "review": "editorial"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "origin": "audited",
+   "text": "William James popularized pragmatism in 1907, using it to settle or dissolve disputes such as that between free will and determinism, and treated truth as what works in experience, a view critics found too permissive.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Pragmatism (Hookway, 2024) §1.1, §2.2, §3.2; SEP Pragmatic Theory of Truth (Capps) §5.1",
+     "excerpt": "we find no conflict",
+     "note": "The critics are chiefly Russell; Hookway calls his objection unfair.",
+     "fix": "name Russell",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "origin": "audited",
+   "text": "John Dewey understood inquiry as the response to a problematic situation, and connected it to education, democracy and art.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Pragmatism (Hookway, 2024) §4.2; SEP Dewey (Hildebrand) §4.3",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "origin": "audited",
+   "text": "Jane Addams, W. E. B. Du Bois, Alain Locke and George Herbert Mead carried pragmatist ideas into social reform, race, value and the social self.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Pragmatism (Hookway, 2024) §1.1, §5.2",
+     "excerpt": "invented the profession of social work",
+     "note": "Duplicated by the social-reform section.",
+     "fix": "merge",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "origin": "audited",
+   "text": "William James emphasized the practical significance of philosophical differences and defended a pluralistic understanding of experience.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP William James (Goodman) §6",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "origin": "audited",
+   "text": "His account of truth and argument concerning permissible belief remain controversial.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "Concise REP 'James' (Ruth Anna Putnam); Capps §5.1",
+     "excerpt": "his famous, often misunderstood paper",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "origin": "audited",
+   "text": "James's pragmatism should not be reduced to the slogan that whatever feels useful is true.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "first_pass": "editorial",
+     "note": "Contrastive construction.",
+     "fix": "cut",
+     "review": "editorial"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "origin": "audited",
+   "text": "John Dewey described inquiry as transforming an indeterminate situation through experimental problem-solving.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Dewey (Hildebrand) §4.3",
+     "excerpt": "converted an “indeterminate situation” into a “determinate one”",
+     "note": "Duplicates sentence 9.",
+     "fix": "merge",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "origin": "audited",
+   "text": "His philosophy connected knowing with education, democratic participation, art, and public institutions.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "overstated",
+     "first_pass": "overstated",
+     "by": "SEP Dewey §5, §7, §8",
+     "note": "Education, democracy and art are sourced; Hildebrand speaks of democratic 'publics', which the article turns into 'public institutions'.",
+     "fix": "say 'publics'",
+     "review": "overstated"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "origin": "audited",
+   "text": "Democracy was for Dewey more than a voting procedure: it was a mode of associated living and collective learning.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "first_pass": "overstated",
+     "by": "SEP Dewey §7",
+     "excerpt": "primarily a mode of associated living, of conjoint communicated experience",
+     "note": "'Collective learning' is not in the source. Contrastive construction.",
+     "fix": "quote Dewey's phrase as Hildebrand gives it",
+     "review": "supported",
+     "review_note": "Near source: Hildebrand §7, \"expressed through collaborative inquiry\"; contrastive."
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "origin": "audited",
+   "text": "From the 1970s neo-pragmatists such as Richard Rorty, Hilary Putnam, Robert Brandom and Jürgen Habermas revived the tradition, often through language and anti-representationalism, and new pragmatists such as Cheryl Misak sought to restore its classical concern for objectivity.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "contested",
+     "first_pass": "supported",
+     "by": "SEP Pragmatism (Hookway, 2024) §1.2",
+     "excerpt": "referred to as New Pragmatists",
+     "review": "contested",
+     "review_note": "Hookway does not call Habermas a neopragmatist and says Brandom owes more to Sellars and Quine; the objectivity aim belongs to Haack, Hookway and Misak as a group."
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "origin": "audited",
+   "text": "Common themes are fallibilism in place of skepticism, concepts and theories treated as tools judged by their results, and suspicion of sharp dichotomies such as fact and value or theory and practice.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "overstated",
+     "first_pass": "supported",
+     "by": "SEP Pragmatism (Hookway, 2024) §1.2, §2.2",
+     "excerpt": "instruments, not answers to enigmas",
+     "note": "The dichotomies list is Putnam's, in Hookway's account.",
+     "review": "overstated",
+     "review_note": "The list is Putnam's as Hookway reports it, presented as general; theory/practice is not among his dichotomies."
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "origin": "audited",
+   "text": "Jane Addams connected social ethics with settlement work and democratic reform.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Pragmatism (Hookway, 2024) §5.4; SEP Pragmatist Feminism (Lake and Whipps) §1",
+     "excerpt": "established Hull House in an impoverished immigrant neighborhood",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "origin": "audited",
+   "text": "W. E. B. Du Bois and Alain Locke developed distinctive approaches to race, culture, and value that intersect with pragmatist debates.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Pragmatism (Hookway, 2024) §1.1, §5.2",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "origin": "audited",
+   "text": "Feminist pragmatists challenge accounts that overlook care, exclusion, and unequal participation in inquiry.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "first_pass": "overstated",
+     "by": "SEP Pragmatist Feminism (Lake and Whipps) intro, §1",
+     "note": "Lake and Whipps describe women's exclusion from the academy and a critique of philosophy that devalues embodied experience; 'care' as an overlooked topic is not in the entry.",
+     "fix": "state what Lake and Whipps describe, with Seigfried's recovery of early women pragmatists",
+     "review": "supported",
+     "review_note": "Lake and Whipps §3.1 discusses care ethics; §1 exclusion from the academy."
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "origin": "audited",
+   "text": "Several texts define the tradition.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "first_pass": "editorial",
+     "fix": "cut",
+     "review": "editorial"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "origin": "audited",
+   "text": "Peirce's “The Fixation of Belief” (1877) treats doubt as an irritation that drives inquiry and compares four ways of settling belief, by tenacity, authority, a priori reasoning and the method of science, preferring the last.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Pragmatism (Hookway, 2024) §4.2; Concise REP 'Peirce' (Hookway)",
+     "excerpt": "only the ‘method of science’ can be self-consciously adopted",
+     "note": "'Doubt as an irritation' is Peirce's own image but no retrieved source has it.",
+     "fix": "drop 'irritation' or cite the essay",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "origin": "audited",
+   "text": "James's “The Will to Believe” (1896) argues that when a choice between hypotheses is live, forced and momentous and the evidence cannot decide it, we may let our passional nature decide.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Pragmatism (Hookway, 2024) §5.1; SEP Ethics of Belief (Chignell) §1.1",
+     "excerpt": "Our passional nature not only lawfully may, but must, decide",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "origin": "audited",
+   "text": "Dewey's Logic: The Theory of Inquiry (1938) replaces truth with “warranted assertibility”, and Rorty's Philosophy and the Mirror of Nature (1979) attacked the picture of the mind as a mirror that represents reality, a book that did much to revive interest in the classical pragmatists.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "overstated",
+     "first_pass": "supported",
+     "claim": "warranted assertibility; Rorty 1979",
+     "by": "SEP Pragmatic Theory of Truth (Capps) §1.3; SEP Pragmatism (Hookway, 2024) §1.2, §4.3",
+     "excerpt": "using this term in place of both “truth” and “knowledge”",
+     "note": "Capps: in place of truth and knowledge. Hookway credits Rorty's attack on representationalism with launching neopragmatism, not with reviving the classical pragmatists as such.",
+     "fix": "add 'and knowledge'; credit Hookway on Rorty's role",
+     "review": "overstated",
+     "review_note": "Hookway credits Rorty's attacks on representationalism with launching neopragmatism, not the 1979 book with reviving the classical pragmatists."
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "origin": "audited",
+   "text": "Richard Rorty challenged representationalist pictures of knowledge, while Hilary Putnam resisted sharp divisions between facts and values.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Pragmatism (Hookway, 2024) §1.2",
+     "note": "Duplicates sentence 17.",
+     "fix": "merge",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "origin": "audited",
+   "text": "Robert Brandom developed an inferentialist account of meaning and discursive commitments.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Pragmatism (Hookway, 2024) §1.2",
+     "excerpt": "develops a version of inferentialist semantics",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 28,
+   "origin": "audited",
+   "text": "Contemporary debates concern scientific practice, democratic deliberation, realism, truth, and whether inquiry needs standards independent of local practices.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "first_pass": "editorial",
+     "note": "Survey sentence.",
+     "fix": "cut, or keep Misak's objectivity debate, which is sourced",
+     "review": "editorial"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 28,
+  "claims": 28,
+  "supported": 20,
+  "editorial": 4,
+  "overstated": 3,
+  "contested": 1,
+  "supported_by_cited_sources_before": 13
+ },
+ "review_new_problems": [
+  "s17/s27: Brandom presented as reviving the classical tradition; Hookway sets his interests apart.",
+  "s4 mentions James's view before James is introduced.",
+  "s18 \"fallibilism in place of skepticism\" is a substitution contrast.",
+  "The entry had no xs section sources."
+ ],
+ "reversal": {
+  "checks": 31,
+  "verdicts_changed": 6,
+  "new_problems": 4,
+  "note": "Three changed toward supported (s5, s16, s21: sources existed); three toward overstated/contested (s17, s18, s25: wording outran sources)."
+ },
+ "applied": {
+  "branch": "audit/pragmatism",
+  "note": "Duplicate sections merged into six; reviewed fixes applied; the rename of pragmatism given with the accounts that differ (Burch, Blackburn, Kirkham, Hookway); sources for all sections in xs."
+ },
+ "correction_review": {
+  "verdict": "ship after these fixes",
+  "problems": 8,
+  "applied": [
+   "SEP Pragmatism (2024) is by Catherine Legg and Christopher Hookway: credited to both in text and sources.",
+   "The maxim quoted in its 1878 wording (\"which might conceivably\"), from SEP §2.1; \"that\" is the 1905 restatement Blackburn quotes.",
+   "\"Contrite fallibilists\", plural, as in §4.1.",
+   "\"Irritation of doubt\" is in no listed source: replaced with replacing doubt by settled belief (§4.2; Concise REP Peirce).",
+   "The rename tied to Peirce's arguments with James over realism (§2).",
+   "New Pragmatists: \"sometimes referred to as\"; Hookway named among them.",
+   "Brandom sentence reworded without the \"more than\" comparison.",
+   "Smaller: \"philosophies of race\" (§1.1); Putnam's \"key characteristics\"; Ruth Anna Putnam quoted; SEP Rorty by Ramberg and Dieleman; Kirkham's entry is \"Truth, pragmatic theory of\"; Dewey sentence reworded."
+  ],
+  "checked_by_lead": "Authorship, maxim wording, §4.1, §1.2 and §2 passages, Rorty authorship and Kirkham heading re-read against the sources before applying."
+ }
+}
