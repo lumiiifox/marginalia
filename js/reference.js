@@ -297,7 +297,7 @@ function primerHTML(id, t) {
 }
 // Titles for steps whose book isn't in the library: the classics' own titles (tests/study_tools.py checks them against data/books/).
 const CLASSIC_TITLES = { "classic-plato-socrates": "Euthyphro, Apology, Crito, Phaedo", "classic-aristotle-ethics": "Nicomachean Ethics", "classic-descartes-meditations": "Discourse on the Method and Meditations on First Philosophy",
-  "classic-hobbes-leviathan": "Leviathan", "classic-hume-enquiry": "An Enquiry Concerning Human Understanding", "classic-rousseau-social-contract": "The Social Contract",
+  "classic-hobbes-leviathan": "Leviathan", "classic-spinoza-ethics": "Ethics", "classic-hume-enquiry": "An Enquiry Concerning Human Understanding", "classic-rousseau-social-contract": "The Social Contract",
   "classic-kant-groundwork": "Fundamental Principles of the Metaphysic of Morals", "classic-wollstonecraft-vindication": "A Vindication of the Rights of Woman",
   "classic-marx-engels-manifesto": "The Communist Manifesto", "classic-nietzsche-genealogy": "The Genealogy of Morals", "classic-cooper-voice": "A Voice from the South", "classic-du-bois-souls": "The Souls of Black Folk",
   "classic-plato-republic": "The Republic", "classic-mill-liberty": "On Liberty", "classic-russell-problems": "The Problems of Philosophy" };
@@ -453,8 +453,52 @@ function articleHTML(b, terms) {
     else if (secs.length) secs[secs.length - 1].paras.push(part);
     else secs.push({ head: null, paras: [part] });
   }
-  return secs.map((s) => s.head === null ? s.paras.map((t) => `<p>${link(t)}</p>`).join("")
-    : `<section class="branch-article-section"><h3>${esc(s.head)}</h3>${s.paras.map((t) => `<p>${link(t)}</p>`).join("")}${sectionSources(b, s.head)}</section>`).join("");
+  const para = (t) => `<p>${passageLinks(link(t), b.xr)}</p>`;
+  return secs.map((s) => s.head === null ? s.paras.map(para).join("")
+    : `<section class="branch-article-section"><h3>${esc(s.head)}</h3>${s.paras.map(para).join("")}${sectionSources(b, s.head)}</section>`).join("");
+}
+// Citations to a classic that comes with the app, in an article whose entry names a style (`xr`): each reference in brackets,
+// "(I, Proposition 17, Corollary 2)" or "(II, Proposition 7, Note; II, Proposition 21, Note)", opens the book at that passage.
+// A bracket with anything that isn't a reference is left as text. The book's blocks are found by their own labels (passageBlock).
+const PASSAGE_STYLES = { "spinoza-ethics": { book: "classic-spinoza-ethics" } };
+const PASSAGE_ITEM = /^(?:Part )?(I|II|III|IV|V), (Definition|Axiom|Postulate|Proposition) (\d+)(?:, (Corollary|Note)(?: (\d+))?)?$/;
+function passageLinks(html, style) {
+  if (!PASSAGE_STYLES[style]) return html;
+  return html.replace(/\(((?:Part )?(?:I|II|III|IV|V), [^()<>]*?)\)/g, (all, inner) => {
+    const items = inner.split("; ");
+    if (!items.every((x) => PASSAGE_ITEM.test(x))) return all;
+    // Each bracket and semicolon stays on the line of the link it belongs to.
+    const btn = (x) => `<button type="button" class="branch-inline-link" data-passage="${esc(style)}" data-passage-at="${esc(x.match(PASSAGE_ITEM).slice(1).map((v) => v || "").join("|"))}">${x}</button>`;
+    return items.map((x, k) => `<span class="cite-nb">${k ? "" : "("}${btn(x)}${k === items.length - 1 ? ")" : ";"}</span>`).join(" ");
+  });
+}
+const toRoman = (n) => [[10, "X"], [9, "IX"], [5, "V"], [4, "IV"], [1, "I"]].reduce((out, [v, r]) => { while (n >= v) { out += r; n -= v; } return out; }, "");
+// The block for a citation in Elwes's Ethics: the part's chapter, then a definition, axiom or postulate under its heading
+// ("V. By mode…", "DEFINITION I. By body…"), or a proposition ("PROP. XVII.") and, after it, its corollary or note. -1 if not found.
+function passageBlock(B, at) {
+  const [part, kind, num, sub, subNum] = at.split("|"), txt = (b) => plain(b.x || "").trim(), R = toRoman(+num);
+  const start = B.findIndex((b) => b.k === "h" && b.l === 2 && txt(b).startsWith(`Part ${part}:`)); if (start < 0) return -1;
+  let end = B.findIndex((b, i) => i > start && b.k === "h" && b.l === 2); if (end < 0) end = B.length;
+  const find = (from, to, re) => { for (let i = from; i < to; i++) if (B[i].k !== "h" && B[i].k !== "fn" && re.test(txt(B[i]))) return i; return -1; };
+  if (kind !== "Proposition") {
+    const head = { Definition: /^Definitions$/, Axiom: /^Axioms?$/, Postulate: /^Postulates$/ }[kind];
+    for (let i = start; i < end; i++) if (B[i].k === "h" && head.test(txt(B[i]))) {
+      let stop = B.findIndex((b, j) => j > i && b.k === "h"); if (stop < 0 || stop > end) stop = end;
+      const hit = find(i + 1, stop, new RegExp(`^(?:${kind.toUpperCase()} )?${R}\\.\\s`, "i")); if (hit >= 0) return hit;
+    }
+    return -1;
+  }
+  const prop = find(start, end, new RegExp(`^PROP\\. ${R}\\.\\s`)); if (prop < 0 || !sub) return prop;
+  let next = find(prop + 1, end, /^PROP\. /); if (next < 0) next = end;
+  const hit = find(prop + 1, next, new RegExp(`^${sub}${subNum ? ` ${toRoman(+subNum)}\\.` : "\\b"}`));
+  return hit >= 0 ? hit : prop;
+}
+async function openPassage(style, at) {
+  const id = PASSAGE_STYLES[style] && PASSAGE_STYLES[style].book; if (!id) return;
+  if (!S.texts.has(id)) { await readdClassic(id); if (!S.texts.has(id)) return; }
+  const B = await loadContent(id), i = B ? passageBlock(B, at) : -1;
+  if (i < 0) toast("Couldn't find that passage in this copy, so the book opens where you left off.");
+  return go({ screen: "reader", textId: id, ...(i >= 0 ? { at: i, flash: true } : {}) });
 }
 // A branch article's sources for one section (`xs`, keyed by the section's heading): one quiet line under it.
 function sectionSources(b, head) {

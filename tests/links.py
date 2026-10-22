@@ -9,6 +9,9 @@ Checks that:
      Edward Said and Nick Land link.
   4. sentence-initial capitals, possessives, quotation marks, brackets and dashes around a name don't stop or misplace a link;
      a name inside a longer word never links; each entry links once per paragraph, and the text around links is unchanged.
+  6. citations to the Ethics in an article with xr "spinoza-ethics": every bracketed reference is a link, each finds the block that
+     starts with its own label (a definition's numeral, PROP. XVII., Corollary II., Note), and tapping one opens the Ethics there;
+     a bracket holding anything else stays text.
   5. across every article in data/branches.js: every link's words name the entry it opens (accents and case aside), Kant and Hume
      link somewhere, no link opens on "Said" or "Land" alone, and no paragraph's visible text changes.
 """
@@ -75,6 +78,33 @@ async def main():
         check(corpus["kant"] and corpus["hume"], "Kant and Hume link in the articles")
         check(not corpus["lone"], f"no link on Said or Land alone ({corpus['lone']})")
         check(not corpus["changed"], f"linking leaves every paragraph's text unchanged ({corpus['changed'][:3]})")
+
+        # citations to the Ethics
+        refs = await page.evaluate("""async () => {
+          const r = await fetch('data/books/classic-spinoza-ethics.json'); const B = (await r.json()).content;
+          const d = document.createElement('div'); d.innerHTML = articleHTML(BRANCH.get('metaphysics'), []);
+          const bad = [], seen = [];
+          for (const a of d.querySelectorAll('[data-passage]')) {
+            const at = a.dataset.passageAt, [part, kind, num, sub, subNum] = at.split('|'), i = passageBlock(B, at), t = i >= 0 ? plain(B[i].x) : '';
+            const R = toRoman(+num), want = sub === 'Corollary' ? new RegExp('^Corollary' + (subNum ? ' ' + toRoman(+subNum) + '\\\\.' : '\\\\b'))
+              : sub === 'Note' ? /^Note\\b/ : kind === 'Proposition' ? new RegExp('^PROP\\\\. ' + R + '\\\\. ') : new RegExp('^(' + kind.toUpperCase() + ' )?' + R + '\\\\. ', 'i');
+            seen.push(a.textContent);
+            if (!want.test(t)) bad.push(a.textContent + ' -> ' + t.slice(0, 40));
+            if (sub && i >= 0) { const prop = passageBlock(B, [part, kind, num, '', ''].join('|')); if (!(i > prop)) bad.push(a.textContent + ' not after its proposition'); }
+          }
+          const plainText = d.textContent.match(/\\((?:Part )?(?:I|II|III|IV|V), [^()]*\\)/g) || [];
+          return { n: seen.length, bad, brackets: plainText.length, kept: articleHTML(BRANCH.get('epistemology'), []).includes('data-passage') };
+        }""")
+        check(refs["n"] == 17 and not refs["bad"], f"each of the {refs['n']} Ethics citations in Metaphysics finds its own passage ({refs['bad'][:3]})")
+        check(not refs["kept"], "an article without xr gets no citation links")
+        got = await page.evaluate("passageLinks('(I, Proposition 5) and (I, and then some) and (see Kant, Proposition 5)', 'spinoza-ethics')")
+        check(got.count('data-passage="') == 1 and "(I, and then some)" in got and "(see Kant, Proposition 5)" in got, f"a bracket with anything that isn't a reference stays text ({got})")
+        await page.evaluate("go({ screen: 'branches', focus: 'metaphysics' })"); await page.wait_for_timeout(200)
+        await page.evaluate("document.querySelector(\"details[data-branch-id='metaphysics']\").open = true"); await page.wait_for_timeout(100)
+        await page.click("details[data-branch-id='metaphysics'] [data-passage-at='I|Proposition|17|Corollary|2']")
+        await page.wait_for_function("S.screen === 'reader' && R.tid === 'classic-spinoza-ethics'", timeout=20000); await page.wait_for_timeout(600)
+        opened = await page.evaluate("(async () => { const B = await loadContent('classic-spinoza-ethics'); const want = passageBlock(B, 'I|Proposition|17|Corollary|2'), at = currentBlock(); return { near: Math.abs(at - want) <= 3, text: plain(B[want].x).slice(0, 30) }; })()")
+        check(opened["near"] and opened["text"].startswith("Corollary II"), f"tapping (I, Proposition 17, Corollary 2) opens the Ethics at Corollary II ({opened})")
         check(not errs, "no script errors" + (f": {errs}" if errs else ""))
         await browser.close()
 
