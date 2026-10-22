@@ -1,7 +1,7 @@
 {
  "article": "pragmatism",
  "audited": "2026-10-22",
- "by": "Claude (lead dev); independent review of the findings, 2026-10-22; review of corrections pending",
+ "by": "Claude (lead dev); independent review of the findings and of the corrections, 2026-10-22",
  "verdicts": "As in analytic.json: first_pass beside accuracy, and review once reviewed.",
  "mechanical": [
   {
@@ -515,5 +515,20 @@
  "applied": {
   "branch": "audit/pragmatism",
   "note": "Duplicate sections merged into six; reviewed fixes applied; the rename of pragmatism given with the accounts that differ (Burch, Blackburn, Kirkham, Hookway); sources for all sections in xs."
+ },
+ "correction_review": {
+  "verdict": "ship after these fixes",
+  "problems": 8,
+  "applied": [
+   "SEP Pragmatism (2024) is by Catherine Legg and Christopher Hookway: credited to both in text and sources.",
+   "The maxim quoted in its 1878 wording (\"which might conceivably\"), from SEP §2.1; \"that\" is the 1905 restatement Blackburn quotes.",
+   "\"Contrite fallibilists\", plural, as in §4.1.",
+   "\"Irritation of doubt\" is in no listed source: replaced with replacing doubt by settled belief (§4.2; Concise REP Peirce).",
+   "The rename tied to Peirce's arguments with James over realism (§2).",
+   "New Pragmatists: \"sometimes referred to as\"; Hookway named among them.",
+   "Brandom sentence reworded without the \"more than\" comparison.",
+   "Smaller: \"philosophies of race\" (§1.1); Putnam's \"key characteristics\"; Ruth Anna Putnam quoted; SEP Rorty by Ramberg and Dieleman; Kirkham's entry is \"Truth, pragmatic theory of\"; Dewey sentence reworded."
+  ],
+  "checked_by_lead": "Authorship, maxim wording, §4.1, §1.2 and §2 passages, Rorty authorship and Kirkham heading re-read against the sources before applying."
  }
 }
