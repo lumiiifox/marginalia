@@ -787,6 +787,63 @@ def section_sources():
         dup = [k for k, v in b["xs"].items() if len({x.get("src") or x.get("srcName") for x in v}) < len(v)]
         check(not dup, f"{b['id']}: no source is listed twice under one section ({dup})")
 
+# The shared frame of a rebuilt article (owner's decision, 2026-10-22). An article is on the frame once its first section is
+# "Scope and central questions"; from then on all of this holds for it. Its text is exactly the sentences of its audit record,
+# so no sentence reaches the app without its sources.
+FRAME_FIRST = "Scope and central questions"
+FRAME_CLOSE = ["Criticisms and debates", "Connections and influence", "Open questions"]
+FRAME_ENCOUNTERS = {"indian", "chinese", "islamic", "african"}
+FRAME_WORDS = (5000, 8000)
+CONTRASTIVE = [r"\bnot\s+(merely|simply|just|only|so much)\b", r"\brather than\b", r"\binstead of\b", r"\bmore than\b",
+               r"\bgo(es|ing)? beyond\b|\bwent beyond\b", r"\bless\s+\w+\s+than\b", r"\bfar from\b", r"\bin place of\b",
+               r",\s+not\s+(a|an|the|as|to|by|in|on|for|from|with|of|its|his|her|their|merely)\b", r"\bnot\b[^.;:?!]{1,60}\bbut\b"]
+
+def article_frame():
+    import json, re, subprocess
+    js = ("global.window=global;eval(require('fs').readFileSync('data/branches.js','utf8')+';process.stdout.write(JSON.stringify(BRANCHES.map(b=>({id:b.id,x:b.x||\\'\\',xs:b.xs||null}))))')")
+    data = json.loads(subprocess.run(["node", "-e", js], cwd=ROOT, capture_output=True, text=True, check=True).stdout)
+    framed = []
+    for b in data:
+        heads = [part.split("\n")[0] for part in b["x"].split("\n\n") if "\n" in part]
+        if not heads or heads[0] != FRAME_FIRST: continue
+        bid = b["id"]; framed.append(bid)
+        slot = "Encounters and comparisons" if bid in FRAME_ENCOUNTERS else "Beyond the European canon"
+        check(heads[-4:] == [slot] + FRAME_CLOSE and len(heads) >= 10 and len(set(heads)) == len(heads),
+              f"{bid}: the shared frame, with at least five sections between the first and '{slot}'")
+        n = len(b["x"].split())
+        check(FRAME_WORDS[0] <= n <= FRAME_WORDS[1], f"{bid}: {n} words, within {FRAME_WORDS[0]:,}–{FRAME_WORDS[1]:,}")
+        check(b["xs"] is not None and sorted(b["xs"]) == sorted(heads) and all(b["xs"].values()), f"{bid}: every section has its sources")
+        plain = re.sub(r"“[^”]*”", "", b["x"])
+        hits = [m.group(0) for pat in CONTRASTIVE for m in re.finditer(pat, plain, flags=re.I)]
+        check(not hits, f"{bid}: no contrastive constructions ({hits[:3]})")
+        path = ROOT / "tests" / "audit" / f"{bid}.json"
+        if not path.exists():
+            check(False, f"{bid}: has its audit record"); continue
+        a = json.loads(path.read_text(encoding="utf-8"))
+        check(a.get("standard") == "frame-2026-10", f"{bid}: its audit record is on the frame standard")
+        parts = []
+        for para in a.get("paragraphs", []):
+            text = " ".join(s["text"] for s in para["sentences"])
+            parts.append(para["heading"] + "\n" + text if para.get("heading") else text)
+        check("\n\n".join(parts) == b["x"], f"{bid}: the article is exactly the sentences of its audit record")
+        sents = [s for p in a.get("paragraphs", []) for s in p["sentences"]]
+        claims = [c for s in sents for c in s.get("claims", [])]
+        unsourced = [s["text"][:50] for s in sents if not s.get("claims")]
+        bad = [c.get("review") or c.get("first_pass") for c in claims if (c.get("review") or c.get("first_pass")) not in ("supported", "editorial")]
+        nosrc = [c for c in claims if c.get("type") != "editorial" and not c.get("by")]
+        check(not unsourced and not bad and not nosrc, f"{bid}: every sentence's claims are supported by a cited source ({len(unsourced)} unrecorded, {len(bad)} not supported, {len(nosrc)} without a source)")
+        long = [c["excerpt"] for c in claims if len(c.get("excerpt", "").split()) >= 15] + \
+               [q["q"] for s in sents for q in s.get("quotes", []) if len(q.get("q", "").split()) >= 15 and not q.get("public_domain")]
+        check(not long, f"{bid}: quotations and excerpts from copyrighted sources stay under 15 words ({long[:1]})")
+        unrecorded = []
+        for s in sents:
+            listed = [q.get("q", "") for q in s.get("quotes", [])]
+            for m in re.finditer(r"“([^”]+)”", s["text"]):
+                inner = m.group(1).strip().rstrip(",.;:")
+                if len(inner.split()) >= 3 and not any(inner in l or l in inner for l in listed if l): unrecorded.append(inner[:40])
+        check(not unrecorded, f"{bid}: every quotation is recorded with its source ({unrecorded[:2]})")
+    print(f"  {len(framed)} of {len(data)} articles on the shared frame" + (f": {', '.join(framed)}" if framed else ""))
+
 async def branch_sources(browser):
     page, errs = await fresh(browser)
     await page.evaluate("go({ screen: 'branches', focus: 'epistemology' })"); await page.wait_for_timeout(200)
@@ -811,6 +868,7 @@ async def branch_sources(browser):
 async def main():
     sources()
     section_sources()
+    article_frame()
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         await truth_table(browser)
