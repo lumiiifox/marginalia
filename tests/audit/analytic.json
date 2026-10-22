@@ -1,0 +1,539 @@
+{
+ "article": "analytic",
+ "audited": "2026-10-22",
+ "by": "Claude (lead dev); independent review of the findings, 2026-10-22; review of corrections pending",
+ "verdicts": "As in epistemology.json. Each claim keeps first_pass (the lead's verdict) beside accuracy (the final one), so the reviewer's reversal rate can be counted.",
+ "mechanical": [
+  {
+   "check": "structure",
+   "result": "fail",
+   "note": "Two pairs of near-duplicate sections: 'Logical positivism and ordinary language' / 'Logical empiricism and ordinary language', and 'Quine and later developments' / 'Quine, reference, and the return of metaphysics'. An expansion was added beside the old text instead of replacing it."
+  },
+  {
+   "check": "description (d)",
+   "result": "supported",
+   "note": "Reviewer: Preston (\"most notably Great Britain and the United States\") and Blackburn (\"Anglo-American and Australian\") support where the tradition dominates; the description claims nothing about confinement."
+  },
+  {
+   "check": "coverage",
+   "result": "note",
+   "note": "The article never discusses the analytic–continental distinction; Blackburn's entry gives a sourced account."
+  }
+ ],
+ "sentences": [
+  {
+   "s": 1,
+   "origin": "audited",
+   "text": "Analytic philosophy originated around the turn of the twentieth century, when G. E. Moore and Bertrand Russell broke away from British absolute idealism; many also count Gottlob Frege as a founder, though some argue he was more an influence.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "IEP Analytic Philosophy (Preston), intro and §2c",
+     "excerpt": "It originated around the turn of the twentieth century",
+     "note": "Preston: Dummett and Kenny count Frege a founder; Hacker treats him as an influence. Preston sides with 'influence'. Baldwin (Concise REP) describes a 'retrospective re-evaluation' of Frege as founder.",
+     "fix": "name who argues each side",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "origin": "audited",
+   "text": "Moore defended common sense, and Russell's theory of descriptions was called a “paradigm of philosophy”.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "IEP Analytic Philosophy (Preston) §1, §2a",
+     "excerpt": "paradigm of philosophy",
+     "note": "The 'paradigm of philosophy' remark is F. P. Ramsey's; the article leaves the speaker unnamed.",
+     "fix": "credit Ramsey",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "origin": "audited",
+   "text": "Wittgenstein's Tractatus (1921) was the most influential work of logical atomism.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "IEP Analytic Philosophy (Preston) §2",
+     "excerpt": "the most influential piece written on logical atomism",
+     "review": "supported",
+     "review_note": "Supported by Preston alone; Oliver has no such wording."
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "origin": "audited",
+   "text": "Gottlob Frege transformed modern logic through quantification and an analysis of mathematical and linguistic structure.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Gottlob Frege (Zalta) intro",
+     "excerpt": "constituted the first ‘predicate calculus’",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "origin": "audited",
+   "text": "His distinction between sense and reference generated enduring questions about identity, thought, and the semantics of names.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Gottlob Frege §3.1–3.2",
+     "excerpt": "The sense of an expression accounts for its cognitive significance",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "origin": "audited",
+   "text": "Bertrand Russell's logical analyses and G. E. Moore's criticisms of idealism helped establish an argumentative style that later developed in many directions.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "IEP Analytic Philosophy (Preston); SEP Bertrand Russell (Irvine) §3",
+     "excerpt": "Moore and I rebelled against both Kant and Hegel",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "origin": "audited",
+   "text": "Russell's theory of descriptions analyzed apparently referring expressions without treating every such expression as a name.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Bertrand Russell §4",
+     "excerpt": "they are not to be viewed as referring terms",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "origin": "audited",
+   "text": "The early Ludwig Wittgenstein investigated the relation between propositions, logical form, and the world in the Tractatus.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Ludwig Wittgenstein (Matar) §2.1–2.2",
+     "excerpt": "The limit can … only be drawn in language",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "origin": "audited",
+   "text": "Their views differed on how philosophy should relate to logical symbolism and the limits of meaningful discourse.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "first_pass": "overstated",
+     "by": "Concise REP 'Logical atomism' (Alex Oliver)",
+     "excerpt": "The common theme masks considerable differences of doctrine",
+     "note": "Oliver locates the differences in the nature of logical atoms and the arguments for them; 'how philosophy should relate to logical symbolism and the limits of meaningful discourse' has no source.",
+     "fix": "state the difference as Oliver gives it, and credit the mutual influence at Cambridge",
+     "review": "unverified",
+     "review_note": "No source supports the stated difference at all; Oliver places it in the nature of the atoms."
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "origin": "audited",
+   "text": "The logical positivists of the Vienna Circle, among them Schlick, Neurath and Carnap, held a verification theory of meaning on which much traditional philosophy consisted of meaningless pseudo-problems; several emigrated to the United States, and Ayer's Language, Truth and Logic (1936) brought the view to English readers.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "IEP Analytic Philosophy (Preston) §3a; SEP Vienna Circle (Uebel) §1, §2.1",
+     "excerpt": "the bulk of traditional philosophy consisted in meaningless pseudo-problems",
+     "note": "Uebel calls Ayer's book a 'popular exposition'; 'brought the view to English readers' is a fair gloss.",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "origin": "audited",
+   "text": "At Oxford, Ryle, Austin, Strawson and Grice turned to ordinary language, and the later Wittgenstein held that meaning is use.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "claim": "Oxford ordinary-language philosophers",
+     "by": "IEP Analytic Philosophy (Preston) §4a–b",
+     "review": "supported"
+    },
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "first_pass": "overstated",
+     "claim": "the later Wittgenstein held that meaning is use",
+     "by": "SEP Ludwig Wittgenstein (Matar) §3.3, quoting PI §43",
+     "excerpt": "though not for all",
+     "note": "Preston's summary drops Wittgenstein's own qualification: for a large class of cases, though not for all.",
+     "fix": "add the qualification from PI §43",
+     "review": "overstated"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "origin": "audited",
+   "text": "The Vienna Circle combined empiricist commitments with formal logic and scientific inquiry, but its members disagreed about verification, physicalism, and the unity of science.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Vienna Circle (Uebel) §1, §3; Concise REP 'Vienna Circle' (Friedrich Stadler)",
+     "excerpt": "by no means of one mind in all important matters",
+     "note": "Duplicates sentence 10's section under a near-identical heading.",
+     "fix": "merge the two sections",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "origin": "audited",
+   "text": "Ordinary-language philosophers including J. L. Austin and Gilbert Ryle later examined how expressions function in everyday practices.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "Blackburn, Oxford Dictionary of Philosophy (2005), 'Austin' and 'Ryle'",
+     "excerpt": "the major figure of the movement known as linguistic philosophy",
+     "note": "Blackburn adds that Austin was unfairly charged with treating everyday usage as the whole of philosophy.",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "origin": "audited",
+   "text": "These movements were not simply successive unanimous schools.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "first_pass": "editorial",
+     "note": "Contrastive construction. Uebel's 'by no means of one mind' already makes the point with a source.",
+     "fix": "cut",
+     "review": "editorial"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "origin": "audited",
+   "text": "Quine's “Two Dogmas of Empiricism” attacked the analytic–synthetic distinction.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "IEP Analytic Philosophy (Preston) §3b; SEP Quine (Kemp) §3",
+     "excerpt": "famously casts doubt on analytic-synthetic distinction",
+     "note": "Duplicated by sentence 18 in the next section.",
+     "fix": "merge the two Quine sections",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "origin": "audited",
+   "text": "As the theories of meaning that had banned metaphysics collapsed, and with Kripke's and Ruth Barcan Marcus's work on direct reference, metaphysics returned to the center.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "IEP Analytic Philosophy (Preston) §5b; SEP Ruth Barcan Marcus (Ballarin) §4.3",
+     "excerpt": "The return of metaphysics is due mainly to the collapse",
+     "note": "Preston says Kripke and Marcus developed direct reference 'independently'; Ballarin says whether Marcus's 1961 'tag' view already proposed it is 'neither an unqualified yes nor a simple no'.",
+     "fix": "credit the nuance to Ballarin",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "origin": "audited",
+   "text": "Analytic philosophy cannot be defined by a common set of views; it is loosely characterized by its style.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "overstated",
+     "first_pass": "supported",
+     "by": "IEP Analytic Philosophy (Preston), intro; SEP Analysis (Raysmith and Beaney) §1",
+     "excerpt": "cannot be defined in terms of a common set of philosophical views",
+     "note": "Contrastive in form (cannot be defined…; is characterized by…) but it is Preston's own claim; reword positively.",
+     "fix": "limit to the period since the mid-1960s",
+     "review": "overstated",
+     "review_note": "Preston limits the claim to his fifth phase, from the mid-1960s on."
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "origin": "audited",
+   "text": "W. V. O. Quine questioned the analytic–synthetic distinction and defended a holistic picture of confirmation.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Quine (Kemp) §3, §3.1",
+     "excerpt": "not an individual sentence but a larger chunk of theory",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "origin": "audited",
+   "text": "Saul Kripke and Ruth Barcan Marcus helped reshape modal logic, reference, and metaphysical debate.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Ruth Barcan Marcus (Ballarin), abstract and §2.3; Blackburn ODP 'Kripke', 'Marcus'",
+     "excerpt": "the first published construction of formal systems of quantified modal logic",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "origin": "audited",
+   "text": "Discussions of necessity, identity, natural kinds, and possible worlds challenged the idea that analytic philosophy must exclude metaphysics.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "first_pass": "supported",
+     "by": "IEP Analytic Philosophy (Preston) §5b",
+     "review": "unverified",
+     "review_note": "Preston §5b has possible worlds and rigid designation; natural kinds and identity are absent there.",
+     "fix": "source identity to Ballarin §2.3, or cut natural kinds"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "origin": "audited",
+   "text": "Analytic methods now inform philosophy of mind, action, epistemology, ethics, social philosophy, and aesthetics.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "first_pass": "unverified",
+     "note": "No retrieved source lists these fields.",
+     "fix": "cut, or source",
+     "review": "supported",
+     "review_note": "Preston lists five of the six fields; Anscombe (Concise REP, Michael Thompson) covers action theory.",
+     "by": "IEP Analytic Philosophy (Preston); Concise REP \"Anscombe\" (Michael Thompson)"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "origin": "audited",
+   "text": "Debates about consciousness, knowledge, moral reasons, language, and political justice involve multiple competing approaches.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "first_pass": "editorial",
+     "note": "Survey sentence with nothing to check.",
+     "fix": "cut",
+     "review": "editorial"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "origin": "audited",
+   "text": "Analytic philosophy is neither confined to English-speaking institutions nor defined by agreement on a single doctrine.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "Blackburn ODP 'continental philosophy'; IEP Analytic Philosophy (Preston), intro",
+     "excerpt": "although a great many practitioners of that themselves originated in Europe",
+     "note": "Contrastive construction. Blackburn also calls 'continental philosophy' an 'inaccurate term used, often polemically': a sourced way into the analytic–continental question the article never discusses.",
+     "fix": "replace with Blackburn on the analytic–continental contrast",
+     "review": "supported"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "origin": "added",
+   "section": "Analytic and continental philosophy",
+   "text": "Michael Friedman traces a “fundamental split or gulf” in twentieth-century academic philosophy …",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Ernst Cassirer (Friedman), opening",
+     "excerpt": "gave rise to a fundamental split or gulf"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "origin": "added",
+   "section": "Analytic and continental philosophy",
+   "text": "In 1932 Carnap took Heidegger's sentence “The Nothing itself nothings” as his example …",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "SEP Rudolf Carnap suppl. H (Carus); SEP Nothingness (Sorensen) §11",
+     "excerpt": "used Heidegger's claim as an example"
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "origin": "added",
+   "section": "Analytic and continental philosophy",
+   "text": "Blackburn calls “continental philosophy” an “inaccurate term used, often polemically,” …",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "Blackburn ODP \"continental philosophy\"",
+     "excerpt": "inaccurate term used, often polemically"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "origin": "added",
+   "section": "Analytic and continental philosophy",
+   "text": "Simon Glendinning argues that the idea of a continental tradition has never been properly explained …",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "Glendinning, The Idea of Continental Philosophy (EUP 2006), publisher's abstract",
+     "excerpt": "has never been properly explained in philosophical terms"
+    }
+   ]
+  },
+  {
+   "s": 28,
+   "origin": "added",
+   "section": "Analytic and continental philosophy",
+   "text": "The traditions also meet: Dagfinn Føllesdal describes Husserl … and Friedman notes that Cassirer had fruitful relations …",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "first_pass": "supported",
+     "by": "Concise REP \"Husserl\" (Dagfinn Føllesdal); SEP Ernst Cassirer (Friedman), opening",
+     "excerpt": "He was decisive for most of contemporary continental philosophy"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "audited_sentences": 23,
+  "added_sentences": 5,
+  "claims": 29,
+  "supported": 23,
+  "unverified": 2,
+  "overstated": 2,
+  "editorial": 2,
+  "supported_by_cited_sources_before": 8
+ },
+ "review_new_problems": [
+  "s10: the three named members precede \"several emigrated to the United States\"; only Carnap did.",
+  "s11: the sentence can be read as placing Wittgenstein at Oxford; he was at Cambridge.",
+  "s1, s7: contrastive or negation constructions the first pass missed.",
+  "s6: \"an argumentative style that later developed in many directions\" is unsourced; only the rebellion against idealism is."
+ ],
+ "reversal": {
+  "checks": 27,
+  "verdicts_changed": 5,
+  "new_problems": 4,
+  "note": "Changed: s9, s17, s20, s21 and the description; s3 kept its verdict but lost a source that did not support it."
+ },
+ "added": {
+  "approved": "2026-10-22, by Lumiii",
+  "note": "A section on the analytic–continental divide, recommended by ChatGPT and approved by Lumiii."
+ },
+ "applied": {
+  "branch": "audit/analytic",
+  "note": "Duplicate sections merged (Vienna Circle and ordinary language; Quine); every reviewed fix applied; sources for all 7 sections in xs."
+ }
+}
