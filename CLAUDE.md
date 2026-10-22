@@ -36,6 +36,7 @@ ideas? If not, it waits.
 - After any change to the reader, also run `python3 tests/paged_reader.py` (Swipe pages: gestures, alignment, flips, joined paragraphs, chapters) `python3 tests/structure.py` (marking chapters, headings, running heads and title pages with Edit) `python3 tests/comfort.py` (tap to turn, the hidden toolbar, the screen kept on, status-bar colours, Scroll mode on a long book) `python3 tests/navigate.py` (Find with marks and arrows, the slider and your notes marked above it, Go to page, pages left in the chapter, the Contents tabs) `python3 tests/highlights.py` (highlights on the exact words, across paragraphs and pages, after corrections; Continue on next page) `python3 tests/notes_lookup.py` (tapping note numbers for footnotes and endnotes; Wiktionary in Look up, with a stand-in for the API) `python3 tests/quotes_language.py` (Edit → A block quote; a book's language for hyphenation) `python3 tests/pin.py` (the pinned passage: Pin, collapse, gestures, Go to it and back, notes, changed or removed sources) `python3 tests/followups.py` (follow-ups on notes and earlier wordings: the card, the sheet, search, tags, export, restore keeping both copies' ones) `python3 tests/classics.py` (the classics that come with the app: added once, deleted stays deleted, each opens with its chapters and notes; also after rebuilding them) and `python3 tests/printed_page.py` (keeping a book's PDF and showing its printed pages; the storage upgrade to version 7).
 - After changes to the Wikisource import or the HTML importer, run `python3 tests/wikisource.py` (a stand-in for Wikisource's API).
 - After changes to another edition's pages, a book paired with its original, or reading pace, run `python3 tests/editions.py`.
+- After changes to a branch or tradition article, run `python3 tests/study_tools.py` (section sources and the article frame) and `python3 tests/links.py`.
 - After changes to `branchLinks` or to thinkers' names, run `python3 tests/links.py` (four-letter names in exact case, accents in either Unicode form,
   word-like names only in full, punctuation around names, and every link across the articles naming the entry it opens).
 - After changes to colours or styles, run `python3 tests/contrast.py` (every screen and the main panels, light and dark, against WCAG AA).
@@ -140,6 +141,14 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   labels (a definition's numeral, "PROP. XVII.", "Corollary II.", "Note"). Tested by `tests/links.py`.
 - Audits of the articles: `tests/audit/<id>.json`, one record per sentence with each claim's verdict and source (see `tests/audit/README.md`).
   An audit's fixes ship only after an independent second review.
+- Article frame (owner's decision, 2026-10-22): every branch and tradition article opens with "Scope and central questions", then two to
+  five history sections and three to seven sections on its central problems or doctrines (titled for the subject), then "Beyond the
+  European canon" ("Encounters and comparisons" for the Indian, Chinese, Islamic and African articles), "Criticisms and debates",
+  "Connections and influence" and "Open questions"; 5,000–8,000 words, academic sources only, every contested reading credited. A rebuilt
+  article is exactly the sentences of its audit record (standard "frame-2026-10"), each claim with its source, and its `xs` are the
+  sources those sentences cite. `article_frame` in `tests/study_tools.py` checks all of this, and the banned contrastive constructions, for
+  every article on the frame. Entries in `BRANCHES` are separated by a blank line so that PRs rebuilding different articles merge cleanly;
+  keep it that way.
 - A branch written as an article: when any paragraph of its `x` starts with a heading line (heading, newline, text), `branchesView` draws
   each such paragraph as a section, and `branchLinks` links the first mention of each thinker and of the branch's own glossary terms (accents ignored; names under five
   letters in exact case; `LINK_FULL_ONLY` names, such as Said and Land, only in full; a name two entries share never links).

@@ -11,4 +11,20 @@ claim in it an assessment:
 - `fix`: what the correction does.
 
 Every audit gets an independent second review before its fixes ship; `by` at the top says who did each pass.
+
+## Rebuilt articles (standard `frame-2026-10`)
+
+An article rebuilt on the shared frame (see CLAUDE.md) is written and audited at once, and its record *is* the article: the text in
+`data/branches.js` is exactly these sentences, and the section sources (`xs`) are the sources they cite. `tests/study_tools.py`
+(`article_frame`) checks both.
+
+- `sources`: a table of every source consulted, `S1`, `S2`, …, each with `name` (in the forms the articles use; a Stanford
+  Encyclopedia entry names all its current authors), `src` where there is a link, `consulted` (how it was read) and `general` for
+  the reference entries on the subject as a whole.
+- `paragraphs`: in order; a paragraph with a `heading` opens a section, `heading: null` continues it. Each sentence has its `text`,
+  its `claims` (`type`, `by`: source ids with a locator such as `S3 §2.1`, `excerpt`, `first_pass` by the drafter, `review` by the
+  independent reviewer, `note`, `fix`) and its `quotes` (every quotation, with its source and how it was confirmed verbatim; titles
+  of essays are marked `kind: "title"`). Only `supported` and `editorial` claims ship.
+- `old_text`: the problems found in the article it replaces. `review`: the independent specialist review, its verdict and what it
+  changed.
 Print sources (the Concise Routledge Encyclopedia of Philosophy, 2000) are cited by entry and author; the book itself is never committed. Sentences an audit adds carry `origin: "added"`.
