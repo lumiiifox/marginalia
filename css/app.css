@@ -916,6 +916,7 @@ span.bhid { display: inline; }
 /* Each source link gets a 24px-tall tap area within its 26px line, so neighbouring lines' targets don't overlap. */
 .branch-article-section p.ssrc a { padding: 4.5px 0; }
 .branch-article-section + .branch-article-section { margin-top: 20px; }
+.branch-article-section p + p { margin-top: 0.8em; }
 
 .branch-inline-link { display: inline; padding: 0; margin: 0; border: 0; border-radius: 0; background: transparent; color: var(--link); font: inherit; line-height: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; cursor: pointer; text-align: inherit; }
 .branch-inline-link:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }

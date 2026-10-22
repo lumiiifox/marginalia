@@ -11,4 +11,4 @@ claim in it an assessment:
 - `fix`: what the correction does.
 
 Every audit gets an independent second review before its fixes ship; `by` at the top says who did each pass.
-Print sources (the Concise Routledge Encyclopedia of Philosophy, 2000) are cited by entry, author and page; the book itself is never committed.
+Print sources (the Concise Routledge Encyclopedia of Philosophy, 2000) are cited by entry and author; the book itself is never committed. Sentences an audit adds carry `origin: "added"`.
