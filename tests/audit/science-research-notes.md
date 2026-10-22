@@ -106,3 +106,45 @@ Drafting implication: distinguish value-freedom, reproducibility, methodological
 ## Evidence status
 
 The three SEP pages above were retrieved and inspected for these propositions. Historical sections, non-European traditions, Bayesian confirmation, causal explanation, models, and specialist feminist positions **still need dedicated sources**. Do not mark those topics verified on the strength of this note.
+
+
+## Research pass: confirmation, explanation and models (2026-10-22)
+
+The following are source-grounded editorial notes, **not** the final sentence audit or an independent review.
+
+### Confirmation and the logic of evidence
+
+Source: [SEP, Confirmation](https://plato.stanford.edu/entries/confirmation/), §§1–3.
+
+- Organize the section around three approaches the entry distinguishes: confirmation by instances, hypothetico-deductivism, and probabilistic/Bayesian approaches.
+- A successful prediction does not by itself settle which of several competing hypotheses is best supported; auxiliary assumptions and the choice of comparison hypotheses matter.
+- Bayesian confirmation asks how evidence changes rational degrees of belief. Bayes's theorem connects prior credence, likelihood and posterior credence; it does not independently dictate a unique prior.
+- Present confirmation as a disputed philosophical problem, not as a single universally accepted algorithm.
+
+### Scientific explanation and its rivals
+
+Sources: [SEP, 20th Century Theories of Scientific Explanation](https://plato.stanford.edu/entries/scientific-explanation-20th/); [SEP, Causal Approaches to Scientific Explanation](https://plato.stanford.edu/entries/causal-explanation-science/); [SEP, Mathematical Explanation](https://plato.stanford.edu/entries/mathematics-explanation/).
+
+- Hempel's deductive-nomological account seeks to show how an event follows from laws and appropriate conditions. Distinguish deductive derivation from a causal account of *why* an event occurs.
+- Subsequent alternatives include statistical relevance, causal-mechanical explanations, and unificationist approaches associated with Friedman and Kitcher.
+- Causal accounts are influential, but putative non-causal explanations involving mathematical or structural facts remain live philosophical debates. Do not announce that all scientific explanation is causal or that the non-causal cases are settled.
+- A useful cross-link to Philosophy of Mathematics is the debate about mathematical explanation of empirical phenomena.
+
+### Models, idealization and representation
+
+Sources: [SEP, Models in Science](https://plato.stanford.edu/entries/models-science/), §§1–4 (substantive revision 2025); [SEP, Scientific Representation](https://plato.stanford.edu/entries/scientific-representation/).
+
+- Separate a model's **representational** role (standing for some aspect of a target) from its **epistemic** role (allowing investigation, prediction or explanation). Their relationship is itself disputed.
+- A model can be physical, mathematical, computational, idealized or exploratory; these categories overlap.
+- A frictionless surface and a point mass are deliberate idealizations. They can clarify dependencies while failing to describe every feature of an actual system.
+- Do not equate idealization with approximation. An approximation may quantify closeness, while an idealization deliberately introduces a simplified or distorted system; philosophers dispute the precise boundary.
+- Some models can explain despite deliberate distortions; philosophers disagree about whether the distortions contribute to explanatory power or must be irrelevant to it.
+- Include a discussion of the autonomy of models from theories, especially the difference between a syntactic view of theories and semantic/model-based approaches.
+
+### Source hygiene
+
+The old SEP URL `https://plato.stanford.edu/entries/scientific-explanation/` now points to a retirement notice. Cite the replacement `scientific-explanation-20th/` for historical twentieth-century debates, and `causal-explanation-science/` for causal and non-causal discussions. Verify each final source's current author credits and the precise section used when constructing the article's `xs` and audit record.
+
+### Unfinished
+
+Research remains outstanding for non-European historical examples, nineteenth-century method, social values and feminist perspectives, and more recent scientific practices. These must be independently checked before full article drafting.
