@@ -61,3 +61,48 @@ These are starting sources, not complete evidence for the whole article. Record 
 4. Generate the article and section sources from the audit record.
 5. Run `python3 tests/study_tools.py`, `python3 tests/links.py`, and `python3 tests/smoke.py`.
 6. Open a PR for owner review. Do not merge automatically.
+
+
+## Verified conceptual source notes (2026-10-22)
+
+These notes record specific claims supported by accessible SEP entries, not an independent second review. Use them as leads for sentence-level audit records; recheck section locators and the full entry's named authors at publication.
+
+### Realism: three distinct commitments
+
+Source: [SEP, Scientific Realism](https://plato.stanford.edu/entries/scientific-realism/), §§1.1–1.3, 2.1.
+
+- **Metaphysical:** a world exists independently of inquiry; this is different from a commitment to any particular taxonomy of kinds.
+- **Semantic:** theoretical claims about unobservables can be read literally as true or false; not all antirealists deny this.
+- **Epistemic:** well-supported scientific theories can yield knowledge of unobservable aspects of the world. The epistemic dimension is especially disputed.
+- Realism about the *aim* of science (truth) does not by itself imply that contemporary theories have achieved that aim.
+- Selective realism can concern explanatory components, manipulable entities or preserved structures, rather than endorsing every element of a successful theory.
+- The no-miracles argument treats approximate truth as an explanation of predictive and explanatory success. Antirealist responses include van Fraassen's selection analogy; the strength of the inference is contested.
+
+Drafting implication: distinguish constructive empiricism, instrumentalism, entity realism and structural realism rather than treating realism and antirealism as two uniform camps.
+
+### Kuhn: normal science, exemplars and revolution
+
+Source: [SEP, Thomas Kuhn](https://plato.stanford.edu/entries/thomas-kuhn/), §§2–3.
+
+- Kuhn's **normal science** consists largely of puzzle-solving within a shared disciplinary matrix of theories, instruments, values and assumptions.
+- **Paradigm** can mean the wider disciplinary matrix or, more narrowly, exemplary solved problems that guide scientific training and further work.
+- Accumulated anomalies need not immediately overthrow a theory. A crisis can develop when anomalies seriously disrupt normal research.
+- Revolutionary changes can produce an overall gain in puzzle-solving power while losing some prior explanations (the phenomenon called *Kuhn-loss*).
+- Kuhn's criticism of fixed algorithms for theory choice should not automatically be presented as a claim that scientific judgment is irrational.
+- His account of progress through puzzle-solving differs from realist narratives of straightforward convergence to truth.
+
+Drafting implication: compare Kuhn's actual account with Popper's criticism-driven account, and separately identify subsequent relativist interpretations.
+
+### Objectivity: distinguish ideals and mechanisms
+
+Source: [SEP, Scientific Objectivity](https://plato.stanford.edu/entries/scientific-objectivity/), introduction.
+
+- Objectivity is attributed to scientific claims, methods, results, institutions and investigators, not only to the psychology of an individual scientist.
+- Debates about objectivity intersect with confirmation, theory choice, explanation, reproducibility, measurement, and the role of social and ethical values.
+- The idea of scientific objectivity as freedom from personal perspective is one ideal among several; the article must explain what a social account of objectivity is supposed to achieve before assessing objections.
+
+Drafting implication: distinguish value-freedom, reproducibility, methodological transparency, and opportunities for transformative criticism; consult more specialized literature before attributing detailed theses to Longino, Harding or Haraway.
+
+## Evidence status
+
+The three SEP pages above were retrieved and inspected for these propositions. Historical sections, non-European traditions, Bayesian confirmation, causal explanation, models, and specialist feminist positions **still need dedicated sources**. Do not mark those topics verified on the strength of this note.
