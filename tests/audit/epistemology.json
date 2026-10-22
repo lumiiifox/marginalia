@@ -1,0 +1,686 @@
+{
+ "article": "epistemology",
+ "audited": "2026-10-21",
+ "by": "Claude (lead dev); independent review of the findings, 2026-10-21; independent review of the corrected text, 2026-10-21 (six fixes applied: knowledge in general in recent work, \"breast\" as the IEP quotes, Rošker's \"genuine knowledge\", Nietzsche tied to GM III.12, the Deleuze postulates as SEP gives them, Wiredu and Osha as stated)",
+ "cited_source": {
+  "url": "https://plato.stanford.edu/entries/epistemology/",
+  "title": "Epistemology",
+  "author": "Ram Neta",
+  "revised": "2024-10-26"
+ },
+ "verdicts": "evidence: does the cited source support it (yes|partly|no|not-retrieved). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source given in 'by'. Excerpts are under 15 words; they come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "mechanical": [
+  {
+   "check": "cited source resolves",
+   "result": "pass"
+  },
+  {
+   "check": "every name in p has a thinker entry",
+   "result": "pass"
+  },
+  {
+   "check": "inline links point at the right entry",
+   "result": "pass for the 16 thinkers linked"
+  },
+  {
+   "check": "named thinkers that have entries get linked",
+   "result": "fail",
+   "note": "Hume and Kant never link: branchLinks skips names under 5 letters. Ibn Sina and al-Ghazali never link: the article drops the entries' diacritics (Ibn Sīnā, al-Ghazālī)."
+  },
+  {
+   "check": "named thinkers have entries",
+   "result": "note",
+   "note": "No entry for Dignāga, Dharmakīrti or Wang Yangming."
+  },
+  {
+   "check": "linking prototype (not shipped)",
+   "result": "pass",
+   "note": "Diacritics folded; 4-letter names match exact case only; names shared by two thinkers never link. Across all 28 articles: 40 links gained, 0 lost, no ambiguous names. 'Said' and 'Land' are also English words, so they should link only by full name."
+  }
+ ],
+ "sentences": [
+  {
+   "s": 1,
+   "text": "Epistemology studies cognitive success and failure: knowing, understanding, believing with good reason, and their opposites.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Epistemology, Introduction",
+     "excerpt": "seeks to understand one or another kind of cognitive success"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "text": "Its central concept has long been knowledge that something is the case, which differs from knowing a person or knowing how to do something.",
+   "claims": [
+    {
+     "type": "historical",
+     "claim": "knowledge has long been central",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "SEP Epistemology §2",
+     "excerpt": "attracted vastly more attention in recent epistemology",
+     "note": "The source says knowledge dominates recent epistemology and frames the field around cognitive success generally."
+    },
+    {
+     "type": "conceptual",
+     "claim": "knowing-that vs acquaintance vs knowing-how",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Epistemology §2.1–2.2",
+     "excerpt": "Knowing a person is a matter of being acquainted"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "text": "Plato's Theaetetus examines knowledge as perception, true judgment, and true judgment with an account, but ends without a settled definition.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Plato on Knowledge in the Theaetetus (Verde, 2025)",
+     "excerpt": "The day's discussion, and the dialogue, end in aporia",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "text": "Aristotle's Posterior Analytics connects scientific understanding to demonstration and grasping why something is so.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Aristotle §4.2",
+     "excerpt": "the currency of science is demonstration",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "text": "Questions about reliable cognition have long been investigated outside the European canon.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Epistemology in Classical Indian Philosophy (Vaidya, 2024)",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "text": "In classical Indian philosophy, Nyāya authors distinguished means of valid cognition (pramāṇas), commonly including perception, inference, comparison, and testimony.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Epistemology in Classical Indian Philosophy",
+     "excerpt": "the four knowledge sources according to Nyāya",
+     "note": "Vaidya glosses pramāṇa as 'knowledge sources' and calls comparison 'analogy' (upamāna). 'Commonly including' undersells it: these four are Nyāya's list.",
+     "fix": "add citation; say 'Nyāya accepts four'"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "text": "Buddhist philosophers Dignāga and Dharmakīrti developed influential accounts of perception and inference, disagreeing with Nyāya on important questions about cognition and its objects.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Dharmakīrti (Tillemans, 2026); SEP Indian epistemology",
+     "excerpt": "there are only two types of knowledge",
+     "note": "Stronger and more precise in the source: they accept only perception and inference, and reject testimony as independent.",
+     "fix": "add citation; state the two-pramāṇa view"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "text": "These are distinct traditions with their own debates, not merely anticipations of modern Western theories.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "note": "Reviewer: sourceable. Keep the point, cite Vaidya, drop the contrastive construction.",
+     "by": "SEP Epistemology in Classical Indian Philosophy (Vaidya), intro and §1.1",
+     "fix": "cite Vaidya; reword"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "text": "Descartes sought a secure starting point through methodical doubt; Locke investigated ideas arising from sensation and reflection; Hume questioned how inductive expectations and causal inferences can be rationally established.",
+   "claims": [
+    {
+     "type": "historical",
+     "claim": "Descartes",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Descartes §3.1",
+     "excerpt": "should attain absolute certainty",
+     "fix": "add citation"
+    },
+    {
+     "type": "historical",
+     "claim": "Locke",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Locke §2",
+     "excerpt": "Experience is of two kinds, sensation and reflection",
+     "fix": "add citation"
+    },
+    {
+     "type": "historical",
+     "claim": "Hume",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP The Problem of Induction (Henderson, 2022) §1",
+     "excerpt": "not underpinned by reason",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "text": "Kant's Critique of Pure Reason asks what makes experience and objective judgment possible, emphasizing forms of intuition and categories of understanding.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "SEP Kant §2–4",
+     "excerpt": "the categories are necessary conditions of experience",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "text": "Islamic philosophical traditions offer further investigations of intellect and certainty: Ibn Sina (Avicenna) examines self-awareness and intellect, while al-Ghazali recounts a crisis of doubt and his search for certainty in Deliverance from Error.",
+   "claims": [
+    {
+     "type": "historical",
+     "claim": "Ibn Sina",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Self-Consciousness §1.1 (Flying Man); SEP Ibn Sina §3–4 (Gutas, 2025) on intellect",
+     "fix": "add citations; spell Ibn Sīnā so it links"
+    },
+    {
+     "type": "historical",
+     "claim": "al-Ghazali",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "IEP al-Ghazālī (Paravizian) §2",
+     "excerpt": "Sure and certain knowledge is that in which the thing known",
+     "note": "The SEP al-Ghazali entry (Griffel, 2026) does not cover the crisis; IEP does.",
+     "fix": "add citation; spell al-Ghazālī so it links"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "text": "Comparisons with Descartes illuminate different aims and contexts, not a claim that their arguments are identical.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "IEP al-Ghazālī §2d",
+     "excerpt": "requires supernatural assistance through the divine light",
+     "note": "The source gives the actual difference: both centre certainty, but al-Ghazālī escapes doubt through divine light, Descartes through reason. Contrastive construction.",
+     "fix": "replace with the specific difference, credited to the IEP article"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "text": "The traditional analysis treated knowledge as justified true belief.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "contested",
+     "by": "SEP The Analysis of Knowledge (Steup, 2026) §1",
+     "excerpt": "a bit of a convenient fiction",
+     "note": "Steup says the 'traditional' JTB analysis was articulated mainly by its 20th-century attackers.",
+     "fix": "call it the so-called traditional analysis and credit Steup's doubt"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "text": "Edmund Gettier's three-page paper of 1963 described cases in which someone has a justified true belief that is true only by luck, and so does not seem to know.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP The Analysis of Knowledge §3 and bibliography (Analysis 23(6): 121–123)",
+     "excerpt": "epistemically lucky in a way inconsistent with knowledge",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "text": "Responses include adding a fourth condition, accounts built on intellectual virtues, and treating knowledge as basic and unanalysable.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP The Analysis of Knowledge (no false lemmas; Sosa; Williamson)",
+     "excerpt": "we should put 'knowledge first'",
+     "fix": "add citation; name Sosa and Williamson"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "text": "Debates about justification divide evidentialists, who tie it to the evidence a person has, from reliabilists, who tie it to reliable belief-forming processes; internalists hold that justification depends only on what is within the believer's own perspective, and externalists deny this.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "claim": "evidentialism/reliabilism",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Epistemology §3.2",
+     "excerpt": "Evidentialism is often contrasted with reliabilism"
+    },
+    {
+     "type": "conceptual",
+     "claim": "internalism/externalism",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Epistemology §3.3",
+     "excerpt": "Externalism is simply the denial of internalism"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "text": "On the structure of justification, foundationalists hold that some beliefs are basic and support the rest, while coherentists hold that beliefs support one another as a web.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Epistemology §4.1–4.2",
+     "excerpt": "structured like a web"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "text": "The regress problem asks how chains of reasons can justify beliefs without circularity or an arbitrary stopping point.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "SEP Epistemology §4.3",
+     "excerpt": "The main argument for foundationalism is called the regress argument",
+     "note": "Reviewer: SEP §4.3 gives the options as looping back or continuing ad infinitum. The article omits infinite regress and adds \"arbitrary stopping point\".",
+     "fix": "reword to the source's three options"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "text": "The traditional sources of knowledge are perception, introspection, memory, reason and testimony, the last raising the question of when we may rely on what others tell us.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Epistemology §5",
+     "excerpt": "perception, introspection, memory, reason, and testimony"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "text": "Skeptical arguments, such as the possibility of being a brain in a vat, ask whether any of these sources can deliver knowledge at all.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Epistemology §3.3",
+     "excerpt": "kept alive in a vat of nutrient fluid"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "text": "Fallibilists hold that knowledge need not require the elimination of every possibility of error.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "IEP Fallibilism (Hetherington)",
+     "excerpt": "rationally supported or justified in a conclusive way",
+     "note": "The SEP entry never uses the term. Hetherington defines it for justification and then for fallible knowledge.",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "text": "In Chinese philosophy, Wang Yangming's account of the unity of knowledge and action brings practical conduct into the discussion: knowing is not exhausted by detached assent to propositions.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "overstated",
+     "by": "SEP Wang Yangming §3 (Van Norden, 2024); SEP Chinese Epistemology §1.3 (Rošker, 2025)",
+     "excerpt": "There never have been people who know but do not act",
+     "note": "Reviewer: Van Norden supports the assent framing. The overstatement is scope: Rošker says the doctrine applies only to a higher, moral form of knowledge.",
+     "fix": "limit the claim to moral knowledge, credited to Rošker"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "text": "His view belongs to the particular concerns of Neo-Confucian moral cultivation and should not be collapsed into contemporary theories of knowing-how.",
+   "claims": [
+    {
+     "type": "historical",
+     "claim": "Neo-Confucian",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Wang Yangming §6",
+     "excerpt": "the Lu–Wang School of Neo–Confucianism"
+    },
+    {
+     "type": "interpretive",
+     "claim": "not knowing-how",
+     "evidence": "no",
+     "accuracy": "supported",
+     "note": "Reviewer: a source does draw the knowing-how comparison.",
+     "fix": "recast with Rošker's \"knowing to\", credited",
+     "by": "SEP Chinese Epistemology §1.1 (Rošker, 2025)",
+     "excerpt": "often discussed in terms of knowing how and knowing to"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "text": "Husserl examines intentionality and the ways objects are given in experience.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Husserl §2",
+     "excerpt": "the how of its givenness",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "text": "Heidegger challenges the picture of human beings as primarily detached observers, emphasizing practical involvement in a meaningful world.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Heidegger §2.1, §2.6 (Dreyfus's reading)",
+     "excerpt": "there must first be a deficiency in the concernful dealings",
+     "note": "The SEP section leans on Dreyfus; a credit to him is optional.",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "text": "Gadamer considers the historical and linguistic conditions of understanding.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Gadamer §3.2–3.3",
+     "excerpt": "understanding as always linguistically mediated",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "text": "Nietzsche's perspectivism questions the ideal of an entirely disinterested knower without implying that every interpretation is equally defensible.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "claim": "questions disinterested knower",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Nietzsche §3.2.6, quoting GM III.12",
+     "excerpt": "There is only a perspectival seeing",
+     "fix": "add citation"
+    },
+    {
+     "type": "interpretive",
+     "claim": "not every interpretation equally defensible",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Nietzsche, GM III.12, as quoted in SEP Nietzsche §3.2.6; IEP Nietzsche §3",
+     "note": "Nietzsche's own text says more perspectives give more complete objectivity, so perspectives are not on a par. SEP §6.2 and the IEP's later sections remain past the fetch limit. This is an interpretation: credit GM III.12.",
+     "excerpt": "the more eyes, different eyes",
+     "fix": "cite GM III.12"
+    }
+   ]
+  },
+  {
+   "s": 28,
+   "text": "Foucault studies how historically specific institutions, classifications, and practices help constitute domains of knowledge, connecting epistemological questions to power and social history.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Foucault §3.3–3.4",
+     "excerpt": "in knowing we control and in controlling we know",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 29,
+   "text": "In chapter three of Difference and Repetition, 'The Image of Thought,' Gilles Deleuze criticizes philosophical presuppositions that model thinking on recognition and common sense.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Deleuze §3.1",
+     "excerpt": "8 postulates of the 'dogmatic image of thought'",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 30,
+   "text": "This opens a question alongside the conventional inquiry into justified belief: how are problems constituted, and what compels thought?",
+   "claims": [
+    {
+     "type": "interpretive",
+     "claim": "what compels thought (chapter three)",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Deleuze §3.1",
+     "excerpt": "forces the 'transcendent exercise' of the faculty"
+    },
+    {
+     "type": "interpretive",
+     "claim": "how problems are constituted (chapter three)",
+     "evidence": "no",
+     "accuracy": "overstated",
+     "by": "SEP Deleuze §3.1",
+     "note": "Reviewer: chapter three sets out the seventh postulate, on problems and solutions, and SEP says chapter four develops the theory of Ideas. \"Opens\" is defensible.",
+     "fix": "add \"a question Deleuze develops in chapter four\""
+    }
+   ]
+  },
+  {
+   "s": 31,
+   "text": "His argument is not equivalent to saying that truth is merely subjective; the text's account of thought requires interpretation in its own terms.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "note": "A hedge left over from the old quote-only rule. It makes no checkable claim and uses a contrastive construction.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 32,
+   "text": "Quine's naturalized epistemology investigates knowing in relation to empirical science; formal epistemology uses probability and other models to study rational belief.",
+   "claims": [
+    {
+     "type": "historical",
+     "claim": "Quine",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Quine §2.1 (Kemp, 2023)",
+     "excerpt": "contained in natural science, as a chapter of psychology",
+     "fix": "add citation"
+    },
+    {
+     "type": "conceptual",
+     "claim": "formal epistemology uses probability",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Formal Epistemology (Weisberg, 2021), Introduction",
+     "note": "Probability theory is named as a core tool.",
+     "excerpt": "using \"formal\" tools, tools from math and logic",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 33,
+   "text": "Social epistemology examines testimony, disagreement, institutions, and the distribution of epistemic labor.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Social Epistemology (Goldman, 2024) §3.1, 3.2, 4.2, 5.1",
+     "excerpt": "testimony is paradigmatic",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 34,
+   "text": "Sandra Harding's standpoint approaches and Donna Haraway's situated knowledges ask how social location and practices of inquiry shape claims to objectivity.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Feminist Social Epistemology (Grasswick, 2018)",
+     "excerpt": "epistemically privileged 'standpoint' on social reality",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 35,
+   "text": "Miranda Fricker distinguishes testimonial injustice, when prejudice deflates someone's credibility, from hermeneutical injustice, when shared interpretive resources leave someone disadvantaged.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Feminist Social Epistemology",
+     "excerpt": "given less credibility than deserved",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 36,
+   "text": "Kwasi Wiredu's work on conceptual decolonization asks whether philosophical problems framed in European languages and categories can simply be assumed universal.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "overstated",
+     "by": "IEP Kwasi Wiredu (Osha) §2–4",
+     "excerpt": "uncritical assimilation of Western ways of thinking",
+     "note": "Reviewer: Osha §4 says Wiredu holds that universal concepts can be disentangled from culture. The question framing implies he rejects universality.",
+     "fix": "say Wiredu tests European categories against Akan before treating them as universal"
+    }
+   ]
+  },
+  {
+   "s": 37,
+   "text": "Distinct Indigenous knowledge traditions likewise deserve treatment in their own historical, linguistic, and community contexts, rather than being presented as a single unified epistemology.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "note": "Prescription about how to write, with no source and no content. Contrastive construction.",
+     "fix": "cut, or replace with a sourced claim"
+    }
+   ]
+  },
+  {
+   "s": 38,
+   "text": "What distinguishes knowledge from lucky true belief? What can perception, inference, and testimony justify? Can objectivity coexist with situated perspectives? How do learning, action, institutions, and power shape the conditions of inquiry?",
+   "claims": [
+    {
+     "type": "question",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "s": 39,
+   "text": "These questions connect epistemology to metaphysics, logic, ethics, philosophy of science, and political philosophy.",
+   "claims": [
+    {
+     "type": "editorial",
+     "accuracy": "non-assertive"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 39,
+  "claims": 48,
+  "supported": 38,
+  "overstated": 5,
+  "contested": 1,
+  "editorial": 2,
+  "non-assertive": 2,
+  "assertive_claims": 46,
+  "cited_source_supports_before": 7
+ },
+ "applied": {
+  "date": "2026-10-21",
+  "branch": "audit/epistemology",
+  "note": "Every fix above is applied in the article text; each section now carries its own sources (xs). The two editorial asides (s31, s37) are cut. Sentence numbers refer to the audited text, before the fixes."
+ }
+}

@@ -128,6 +128,10 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   by the service worker; a picture that fails to load removes its figure, so offline the entry simply shows without it.
   A glossary term's optional `fig` names one of `FIGURES` (end of `data/glossary.js`): a diagram drawn as SVG, shown by `diaHTML` in the
   app's colours and offline. Give each marker id a per-figure suffix, since closed entries hide the SVG that defines it.
+- A branch article's sources by section: `xs` on the entry, `{ "<heading>": [{ src, srcName }] }`, drawn by `sectionSources` as one line under
+  that section (SEP and IEP shortened in the line, full name on hover). A heading key must match a heading in `x` (tested by `tests/study_tools.py`).
+- Audits of the articles: `tests/audit/<id>.json`, one record per sentence with each claim's verdict and source (see `tests/audit/README.md`).
+  An audit's fixes ship only after an independent second review.
 - A branch written as an article: when any paragraph of its `x` starts with a heading line (heading, newline, text), `branchesView` draws
   each such paragraph as a section, and `branchLinks` links the first mention of each thinker and of the branch's own glossary terms (accents ignored; names under five
   letters in exact case; `LINK_FULL_ONLY` names, such as Said and Land, only in full; a name two entries share never links).

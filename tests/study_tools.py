@@ -64,6 +64,8 @@ Uses made-up records only. Checks that:
   21. primers: every classic has one, with words to know that are in the glossary and a source; a classic's page shows it open until
       you start reading or take a note, folded after; it links to the reading paths that use the book.
   22. sources: no glossary entry, thinker, branch, primer, disputation or reading path cites Wikipedia; every source link is https.
+  23. a branch article's section sources (xs): each names a heading the article has, each source has a name, links are https;
+      Epistemology shows one quiet sources line under each of its sourced sections, links opening in a new tab.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -771,8 +773,36 @@ def sources():
         plain = [u for u in re.findall(r'src: "([^"]*)"', text) if not u.startswith("https://")]
         check(not plain, f"data/{f}.js: every source link is https ({plain[:3]})")
 
+def section_sources():
+    import json, subprocess
+    js = ("global.window=global;eval(require('fs').readFileSync('data/branches.js','utf8')+';process.stdout.write(JSON.stringify(BRANCHES.map(b=>({id:b.id,x:b.x||\\'\\',xs:b.xs||null}))))')")
+    data = json.loads(subprocess.run(["node", "-e", js], cwd=ROOT, capture_output=True, text=True, check=True).stdout)
+    for b in data:
+        if not b["xs"]: continue
+        heads = [part.split("\n")[0] for part in b["x"].split("\n\n") if "\n" in part]
+        stray = [k for k in b["xs"] if k not in heads]
+        check(not stray, f"{b['id']}: every section source names one of its headings ({stray})")
+        bad = [x for v in b["xs"].values() for x in v if not x.get("srcName") or (x.get("src") and not x["src"].startswith("https://"))]
+        check(not bad, f"{b['id']}: every section source has a name and an https link ({bad[:2]})")
+
+async def branch_sources(browser):
+    page, errs = await fresh(browser)
+    await page.evaluate("go({ screen: 'branches', focus: 'epistemology' })"); await page.wait_for_timeout(200)
+    await page.evaluate("document.querySelector(\"details[data-branch-id='epistemology']\").open = true"); await page.wait_for_timeout(100)
+    got = await page.evaluate("""(() => { const d = document.querySelector("details[data-branch-id='epistemology']");
+      const secs = [...d.querySelectorAll('.branch-article-section')];
+      return { secs: secs.length, src: secs.filter((s) => s.querySelector('p.ssrc')).length,
+               last: secs.length ? !!secs[secs.length - 1].querySelector('p.ssrc') : null,
+               blank: [...d.querySelectorAll('p.ssrc a')].filter((a) => a.target !== '_blank').length }; })()""")
+    want = await page.evaluate("Object.keys(BRANCH.get('epistemology').xs).length")
+    check(got["src"] == want and got["secs"] == want + 1 and got["last"] is False, f"Epistemology: a sources line under each of its {want} sourced sections, none under the questions ({got})")
+    check(got["blank"] == 0, "section source links open in a new tab")
+    check(not errs, "no script errors with section sources" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     sources()
+    section_sources()
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         await truth_table(browser)
@@ -796,6 +826,7 @@ async def main():
         await disputes(browser)
         await readqs(browser)
         await primers(browser)
+        await branch_sources(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
