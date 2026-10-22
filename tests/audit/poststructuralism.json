@@ -1,7 +1,7 @@
 {
  "article": "poststructuralism",
  "audited": "2026-10-22",
- "by": "Claude (lead dev); independent review of the findings, 2026-10-22 (verdicts changed: s5, s12, s15, s23, s31, s32; sources added for the description, s15, s23); review of corrections pending",
+ "by": "Claude (lead dev); independent review of the findings, 2026-10-22; independent review of the corrected text, 2026-10-22; re-check of six sentences revised after it, 2026-10-22. Derrida checked against the essay itself (Writing and Difference, trans. Bass, Routledge 2001, p. 357); Barthes and Kristeva against Blackburn, Oxford Dictionary of Philosophy, 2nd edn (2005).",
  "verdicts": "As in epistemology.json.",
  "mechanical": [
   {
@@ -160,8 +160,9 @@
      "evidence": "no",
      "accuracy": "supported",
      "claim": "Barthes",
-     "by": "Encyclopaedia Britannica, 'Roland Barthes' (Britannica Editors)",
-     "note": "Mythologies covers advertising, fashion, the Eiffel Tower and wrestling. An unsigned reference work: acceptable for a bibliographic fact, replace if a signed source turns up."
+     "by": "Blackburn, Oxford Dictionary of Philosophy, 2nd edn (2005), \"Barthes, Roland\"",
+     "note": "Replaces an unsigned Britannica page.",
+     "excerpt": "symbols of mass-culture, media, advertising and fashion"
     }
    ]
   },
@@ -227,11 +228,12 @@
     {
      "type": "historical",
      "evidence": "no",
-     "accuracy": "overstated",
+     "accuracy": "supported",
      "claim": "Structure, Sign, and Play took Lévi-Strauss as its main subject",
-     "note": "Reviewer: the essay is about structure, centre and the free play of signs; Lévi-Strauss is its worked example, mainly in its second half.",
-     "fix": "say it uses Lévi-Strauss as its example",
-     "by": "SEP Hermeneutics (George) §6.2; Smith-Laing, An Analysis of … Structure, Sign, and Play (Routledge/Macat, 2018)"
+     "note": "The essay discusses the history of structure (pp. 351–56), then Lévi-Strauss from p. 357 to the end, about 71% of its body. \"Main subject\" was overstated; \"main example\" is Derrida's own framing.",
+     "fix": "quote Derrida and cite p. 357",
+     "by": "Derrida, Writing and Difference, trans. Bass (Routledge, 2001), p. 357; SEP Hermeneutics §6.2",
+     "excerpt": "as an example, the texts of Claude Lévi-Strauss"
     }
    ]
   },
