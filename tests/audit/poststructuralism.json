@@ -1,0 +1,581 @@
+{
+ "article": "poststructuralism",
+ "audited": "2026-10-22",
+ "by": "Claude (lead dev); independent review of the findings, 2026-10-22; independent review of the corrected text, 2026-10-22; re-check of six sentences revised after it, 2026-10-22. Derrida checked against the essay itself (Writing and Difference, trans. Bass, Routledge 2001, p. 357); Barthes and Kristeva against Blackburn, Oxford Dictionary of Philosophy, 2nd edn (2005).",
+ "verdicts": "As in epistemology.json.",
+ "mechanical": [
+  {
+   "check": "cited sources resolve",
+   "result": "fail",
+   "note": "The article cites SEP 'Structuralism' (plato.stanford.edu/entries/structuralism/); SEP has no such entry (structuralism in mathematics and in physics only). The encyclopedia.com page could not be fetched from here."
+  },
+  {
+   "check": "description (d)",
+   "result": "pass",
+   "note": "Reviewer: Angermuller, Why There Is No Poststructuralism in France (Bloomsbury, 2015): the label belongs to the Anglophone world; in France there is no such category."
+  },
+  {
+   "check": "sources name their authors",
+   "result": "fail",
+   "note": "SEP Derrida (Lawlor) and SEP Foucault (Oksala) are cited without authors."
+  }
+ ],
+ "sentences": [
+  {
+   "s": 1,
+   "origin": "audited",
+   "text": "Structuralism explained meaning through systems of relations.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Concise REP (2000) 'Structuralism' (Culler)",
+     "excerpt": "our world consists not of things but of relations"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "origin": "audited",
+   "text": "Saussure's Course in General Linguistics (1916), compiled from students' notes of his lectures, treated language as a system of signs whose elements have value only through their differences, and Lévi-Strauss in anthropology, Barthes in cultural criticism and Lacan in psychoanalysis, who held that the unconscious is structured like a language, carried the model into their fields.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "claim": "Course compiled from students' notes",
+     "by": "Saussure, Writings in General Linguistics (OUP 2006), abstract",
+     "excerpt": "posthumously composed by his students from the notes"
+    },
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "claim": "the model carried into anthropology, psychoanalysis, literary theory",
+     "by": "Concise REP (2000) 'Post-structuralism in the social sciences' (Gutting)",
+     "excerpt": "later adapted in anthropology (by Lévi-Strauss), in psychoanalysis (by Lacan)"
+    },
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "claim": "Lacan",
+     "by": "SEP Jacques Lacan (Johnston, 2026) §1",
+     "excerpt": "the unconscious is structured like a language"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "origin": "audited",
+   "text": "Ferdinand de Saussure distinguished the signifier and signified and emphasized that linguistic values arise from relations within a system rather than from simple labels attached to independently fixed concepts.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Concise REP (2000) 'Structuralism' (Culler); IEP Literary Theory (Brewton)",
+     "excerpt": "what counts are the relations, the contrasts, that differentiate signs",
+     "note": "Contrastive construction.",
+     "fix": "reword positively"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "origin": "audited",
+   "text": "The posthumously assembled Course in General Linguistics has a complex editorial history, and later scholars debate how faithfully it represents his lectures and manuscripts.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Zhou, 'Saussure: Langue as an Autonomous System' (Springer, 2020), abstract",
+     "excerpt": "taken to be the best collection of Saussurean thought",
+     "note": "Saussure's own manuscripts, found in 1996, were compared with the 1916 Course by Bouquet and Engler (2002). 'Debate' is a fair summary but the abstract stops before their findings.",
+     "fix": "cite Zhou; say the 1996 manuscripts reopened the question"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "origin": "audited",
+   "text": "Structural approaches also differ in how they understand historical change and the role of speakers.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "by": "Concise REP (2000) 'Saussure' (Holdcroft); SEP Philosophy of Linguistics §2",
+     "note": "Reviewer: Holdcroft gives only the priority of the synchronic system; nothing says structural approaches differ on change or speakers.",
+     "fix": "cut, or keep only Saussure's priority of the system at a time"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "origin": "audited",
+   "text": "Claude Lévi-Strauss examined kinship, classification, and myth through patterned relations and transformations, seeking structures that were not necessarily available to participants' conscious awareness.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Concise REP (2000) 'Lévi-Strauss' (Olivia Harris); 'Post-structuralism in the social sciences' (Gutting)",
+     "excerpt": "meanings were constituted not by conscious subjects but by relations",
+     "note": "Kinship, classification and myth are standard but neither short entry lists them."
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "origin": "audited",
+   "text": "His work transformed anthropology while prompting disputes about historical specificity, colonial research settings, and the danger of reducing lived practices to formal oppositions.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "note": "Reviewer agrees: no scholarly source lists those criticisms; Harkin (Cambridge Companion to Lévi-Strauss, 2009) notes only problems in imagining a structuralist history.",
+     "fix": "cut the list of criticisms, or replace with what Harris says structuralism set aside: the subject, metaphysics, continuity"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "origin": "audited",
+   "text": "Jacques Lacan reinterpreted Freud through linguistics and theories of the symbolic, imaginary, and real, while Roland Barthes analyzed the cultural work of signs in advertising, fashion, and everyday myths.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "claim": "Lacan",
+     "by": "SEP Jacques Lacan §1, §2.1",
+     "excerpt": "the three fundamental dimensions of psychical subjectivity"
+    },
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "claim": "Barthes",
+     "by": "Blackburn, Oxford Dictionary of Philosophy, 2nd edn (2005), \"Barthes, Roland\"",
+     "note": "Replaces an unsigned Britannica page.",
+     "excerpt": "symbols of mass-culture, media, advertising and fashion"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "origin": "audited",
+   "text": "Louis Althusser developed a structural reading of Marx that challenged some humanist accounts of historical agency.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Louis Althusser (Lewis, 2022) §3.5",
+     "excerpt": "History, for Althusser, is a process without a subject",
+     "fix": "cite Lewis"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "origin": "audited",
+   "text": "These projects shared intellectual contexts but did not use a single common method.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "note": "Reviewer: Culler defines structuralism as a school that applies the methods of structural linguistics, which pulls against \"no single common method\". Contrastive construction.",
+     "fix": "cut, or replace with Culler's definition"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "origin": "audited",
+   "text": "The French thinkers who came after, Derrida, Foucault, Deleuze and Lyotard among them, are often called post-structuralists because they worked with concepts developed in the structuralist revolution in Paris in the 1950s and early 1960s while questioning fixed structures, origins and the unified subject; many cite May 1968 as a turning point.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Postmodernism (Aylesworth, 2015), introduction",
+     "excerpt": "the structuralist revolution in Paris in the 1950s and early 1960s",
+     "note": "Reviewer: nearly the whole phrase is Aylesworth's (\"concepts developed during the structuralist revolution in Paris in the 1950s and early 1960s\"; May 1968 \"a watershed moment\").",
+     "fix": "credit Aylesworth and quote his phrase"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "origin": "audited",
+   "text": "Derrida's différance names a play of differences in which no meaning is ever simply present, and his “Structure, Sign, and Play” (1966) took Lévi-Strauss as its main subject.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "claim": "différance",
+     "by": "SEP Postmodernism (Aylesworth) §5",
+     "excerpt": "a wandering play of differences",
+     "note": "Reviewer: Lawlor's passage concerns experience, not meaning; Aylesworth §5 supports \"play of differences\"."
+    },
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "claim": "Structure, Sign, and Play took Lévi-Strauss as its main subject",
+     "note": "The essay discusses the history of structure (pp. 351–56), then Lévi-Strauss from p. 357 to the end, about 71% of its body. \"Main subject\" was overstated; \"main example\" is Derrida's own framing.",
+     "fix": "quote Derrida and cite p. 357",
+     "by": "Derrida, Writing and Difference, trans. Bass (Routledge, 2001), p. 357; SEP Hermeneutics §6.2",
+     "excerpt": "as an example, the texts of Claude Lévi-Strauss"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "origin": "audited",
+   "text": "Foucault's genealogy opposes the search for origins and treats knowledge and power together.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Postmodernism (Aylesworth, 2015) §3; SEP Michel Foucault (Oksala, 2026) §3.4",
+     "excerpt": "opposes itself to the search for ‘origins’"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "origin": "audited",
+   "text": "For Deleuze difference is the principle of genesis.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Postmodernism (Aylesworth, 2015) §4",
+     "excerpt": "the only principle of genesis or production"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "origin": "audited",
+   "text": "Lyotard's The Postmodern Condition (1979) defined the postmodern as incredulity toward metanarratives, and Barthes's “The Death of the Author” (1967) located a text's meaning in its reading.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "claim": "Lyotard",
+     "by": "SEP Postmodernism (Aylesworth, 2015) §2; SEP Jean François Lyotard (Gratton, 2018) §3.2",
+     "excerpt": "I define postmodern as incredulity toward metanarratives"
+    },
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "claim": "Barthes, 'The Death of the Author' (1967)",
+     "by": "Iverson, Performing Early Christian Literature (Cambridge University Press), Introduction and note",
+     "note": "First published in English in Aspen 5–6 (1967); in French in Manteia 5 (1968).",
+     "fix": "keep 1967; say \"first published in English\"",
+     "excerpt": "In 1967 Roland Barthes famously declared the ‘Death of the Author.’"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "origin": "audited",
+   "text": "Jacques Derrida investigated how philosophical and literary texts depend on distinctions they cannot fully stabilize.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "SEP Jacques Derrida §5; Concise REP (2000) 'Derrida' (Cutrofello)",
+     "excerpt": "one side of the opposition being more valuable than the other"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "origin": "audited",
+   "text": "Deconstruction attends to tensions within concepts, hierarchies, and claims to presence; it is not simply the assertion that texts can mean anything whatsoever.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "IEP Jacques Derrida (Reynolds) §2",
+     "excerpt": "committed to the rigorous analysis of the literal meaning of a text",
+     "note": "Contrastive construction.",
+     "fix": "state it positively, credited to Reynolds"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "origin": "audited",
+   "text": "His engagements with phenomenology, structural linguistics, and metaphysics make the relation between structuralism and its critique particularly complex.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "IEP Jacques Derrida §3a, §4; SEP Jacques Derrida §3"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "origin": "audited",
+   "text": "Michel Foucault's archaeological studies examined historically specific rules governing discourse, while genealogical investigations traced practices of discipline, normalization, and power.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Michel Foucault §3.3–3.4",
+     "excerpt": "are governed by rules, beyond those of grammar and logic"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "origin": "audited",
+   "text": "His later work explored ethical self-formation and practices of freedom.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Michel Foucault §3.6",
+     "excerpt": "modify themselves through practices of the self",
+     "note": "Reviewer: \"practices of freedom\" is Foucault's own phrase, from the 1984 interview \"The Ethics of the Concern for Self as a Practice of Freedom\".",
+     "fix": "keep \"practices of freedom\" with the interview named, or say \"practices of the self\""
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "origin": "audited",
+   "text": "Foucault's shifting methods resist reduction to a single thesis that power merely represses or that individual agency disappears.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Michel Foucault §3.5–3.6",
+     "excerpt": "power is not essentially repressive but productive",
+     "note": "Contrastive construction.",
+     "fix": "state it positively"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "origin": "audited",
+   "text": "Barthes moved from semiological analysis toward accounts of textual plurality and reading.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Concise REP (2000) 'Barthes' (Risser)",
+     "excerpt": "Barthes wrote more as a post-structuralist than as a structuralist"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "origin": "audited",
+   "text": "Julia Kristeva developed theories of intertextuality, signification, and subjectivity in dialogue with linguistics, psychoanalysis, and literary avant-gardes.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "claim": "signification, subjectivity, linguistics, psychoanalysis, avant-garde",
+     "by": "Concise REP (2000) 'Kristeva' (Chanter)",
+     "excerpt": "fuses linguistic insights with psychoanalytic inquiry",
+     "note": "Reviewer: \"literary avant-gardes\" rests only on Chanter's \"Parisian scene of avant-garde intellectuals\"."
+    },
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "claim": "intertextuality",
+     "note": "The article says she developed theories of intertextuality, a narrower claim than coining the term; both are supported.",
+     "by": "Hagglund, \"Intertextuality\", Keywords for Travel Writing Studies (Anthem, 2019)",
+     "excerpt": "coined by Julia Kristeva in 1967"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "origin": "audited",
+   "text": "Their work raises different questions about authorship, interpretation, embodiment, and the relation between language and social life.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "note": "General remark with nothing to check.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "origin": "audited",
+   "text": "Jean-François Lyotard investigated knowledge, legitimation, and the status of large explanatory narratives in advanced societies.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Lyotard (Gratton) intro, §3.2",
+     "excerpt": "takes up the crisis of legitimation in the sciences",
+     "note": "'Advanced societies' is Lyotard's own framing but not in the retrieved sources.",
+     "fix": "say 'the contemporary world', as Gratton does"
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "origin": "audited",
+   "text": "His account of the differend asks how wrongs can occur when the available rules of judgment cannot adequately express them.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Lyotard (Gratton) §3.3",
+     "excerpt": "a damage accompanied by the lose of the means to prove the damage"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "origin": "audited",
+   "text": "Postmodernism and post-structuralism overlap in some reception histories but are not interchangeable labels.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Postmodernism (Aylesworth, 2015), introduction",
+     "note": "Contrastive construction.",
+     "fix": "state the relation: Aylesworth uses 'poststructuralist' for the French strand of postmodern thought"
+    }
+   ]
+  },
+  {
+   "s": 28,
+   "origin": "audited",
+   "text": "Feminist theorists have challenged claims about the universal subject while questioning whether some theories of language neglect material bodies and institutions.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Feminist Perspectives on the Body (Fischer and Lennon, 2024) §4, §5.3, §6",
+     "excerpt": "What about the materiality of the body, Judy?",
+     "note": "Reviewer: Irigaray on \"man\" as the universal norm (§3.2); materiality (§5.3, §6). \"Institutions\" has no source.",
+     "fix": "drop \"and institutions\""
+    }
+   ]
+  },
+  {
+   "s": 29,
+   "origin": "audited",
+   "text": "Postcolonial scholars have investigated the relation between representation, colonial knowledge, and political power.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Colonialism (Kohn and Reddy, 2023) §5; Concise REP (2000) 'Postcolonialism' (Quayson)",
+     "excerpt": "postcolonial theory tends to reflect the influence of poststructuralist thought"
+    }
+   ]
+  },
+  {
+   "s": 30,
+   "origin": "audited",
+   "text": "These exchanges are not merely applications of a European canon: they often expose limits in its assumptions and methods.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "note": "Unsourced as worded. Contrastive construction.",
+     "fix": "replace with Quayson: postcolonialism analyses responses to the discourses of imperial Europe, history, philosophy, anthropology and linguistics"
+    }
+   ]
+  },
+  {
+   "s": 31,
+   "origin": "audited",
+   "text": "The tradition's reception spans literary criticism, anthropology, political theory, historiography, psychoanalysis, and studies of science and technology.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Concise REP (2000) 'Post-structuralism in the social sciences' (Gutting)",
+     "note": "Reviewer: Gutting's entries name anthropology, psychoanalysis, literary theory and the social sciences; political theory, historiography and science studies have no source.",
+     "fix": "name only the sourced fields"
+    }
+   ]
+  },
+  {
+   "s": 32,
+   "origin": "audited",
+   "text": "Debates continue over relativism, historical evidence, ethical responsibility, materiality, and the relation between structures and change.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "note": "Reviewer: two of its debates are sourced: ethical responsibility (Cutrofello) and materiality (Fischer and Lennon §6).",
+     "fix": "keep those two, cut the rest"
+    }
+   ]
+  },
+  {
+   "s": 33,
+   "origin": "audited",
+   "text": "Treating these thinkers as interlocutors rather than members of a single doctrine better preserves their substantive disagreements.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "note": "Contrastive construction.",
+     "fix": "cut"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 33,
+  "claims": 39,
+  "supported": 30,
+  "unverified": 2,
+  "editorial": 5,
+  "overstated": 2,
+  "supported_by_cited_sources": 12
+ },
+ "applied": {
+  "branch": "audit/poststructuralism",
+  "note": "Fixes from the reviewed audit applied; the nonexistent SEP \"Structuralism\" source removed; Aylesworth quoted and credited; s5, s7, s10, s24, s33 replaced or cut; sources for all 11 sections in xs. Sentence numbers refer to the audited text, before the fixes."
+ }
+}
