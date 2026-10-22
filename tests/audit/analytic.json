@@ -1,7 +1,7 @@
 {
  "article": "analytic",
  "audited": "2026-10-22",
- "by": "Claude (lead dev); independent review of the findings, 2026-10-22; review of corrections pending",
+ "by": "Claude (lead dev); independent review of the findings, 2026-10-22; independent review of the corrected and expanded text, 2026-10-22 (five fixes applied: Hacker's actual point and Preston's own conclusion on Frege; Carnap from Prague in 1935; Marcus's necessity of identity in 1947; Glendinning on the idea of Continental Philosophy; Carnap's sentence as one example among several; Leitgeb and Carus credited)",
  "verdicts": "As in epistemology.json. Each claim keeps first_pass (the lead's verdict) beside accuracy (the final one), so the reviewer's reversal rate can be counted.",
  "mechanical": [
   {
@@ -526,7 +526,8 @@
   "checks": 27,
   "verdicts_changed": 5,
   "new_problems": 4,
-  "note": "Changed: s9, s17, s20, s21 and the description; s3 kept its verdict but lost a source that did not support it."
+  "note": "Changed: s9, s17, s20, s21 and the description; s3 kept its verdict but lost a source that did not support it.",
+  "second_review_fixes": 5
  },
  "added": {
   "approved": "2026-10-22, by Lumiii",
