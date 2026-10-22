@@ -1,7 +1,7 @@
 {
  "article": "metaphysics",
  "audited": "2026-10-21",
- "by": "Claude (lead dev); independent review of the findings, 2026-10-21 (six diagnoses corrected, five problems added); review of corrections pending",
+ "by": "Claude (lead dev); independent review of the findings, 2026-10-21; independent review of the corrected and expanded text, 2026-10-21 (fixes applied: the I P11 premise, Elwes's \"modifications\", II P7 Note and II P21 Note for mind and body, Voss on univocity and on Simondon as her own suggestion, the title ta meta ta phusika, Bernstein quoted, a repeated Barad clause cut, the last contrastive clause cut, author names on four sources)",
  "cited_sources_before": [
   "SEP Metaphysics",
   "SEP Gilles Deleuze",
@@ -1554,7 +1554,7 @@
      "accuracy": "supported",
      "by": "Spinoza, Ethics, trans. Elwes I P5, I D6, I P14; SEP Baruch Spinoza (Nadler) §2",
      "excerpt": "Besides God no substance can be granted or conceived",
-     "note": "The argument is compressed: the proof of I P14 also relies on I P11 (God exists necessarily)."
+     "note": "Fixed after review: the argument now includes I P11, which the proof of I P14 uses."
     }
    ]
   },
