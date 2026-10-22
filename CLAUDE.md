@@ -134,6 +134,10 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   full name behind the link; subdued but WCAG AA, 24px tap targets; a source may recur across sections it supports, never twice in one.
   Sections get sources only as part of an article's audit, aiming at full traceability: every verified claim's deciding source listed
   under its own section (unverified claims reported apart).
+- Citations into a classic (`xr` on a branch entry names a style in `PASSAGE_STYLES`; now "spinoza-ethics", Metaphysics): `passageLinks`
+  turns each bracketed reference, "(I, Proposition 17, Corollary 2)" or several joined by "; ", into a link (a bracket holding anything
+  else stays text); `openPassage` opens the classic there, adding it back if deleted, and `passageBlock` finds the block by the book's own
+  labels (a definition's numeral, "PROP. XVII.", "Corollary II.", "Note"). Tested by `tests/links.py`.
 - Audits of the articles: `tests/audit/<id>.json`, one record per sentence with each claim's verdict and source (see `tests/audit/README.md`).
   An audit's fixes ship only after an independent second review.
 - A branch written as an article: when any paragraph of its `x` starts with a heading line (heading, newline, text), `branchesView` draws
@@ -206,7 +210,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - Classics (`CLASSICS`, `addClassics`, at start): public-domain books that come with the app, each added to the library once, queued,
   from `data/books/<id>.json` (`{ text, content }`, the shapes a backup holds) and its cover `<id>.jpg`. `mg-classics` lists those added,
   so a deleted classic stays deleted; one that can't be fetched is tried next time. Skipped in automated browsers unless a test passes
-  `true`. `tools/build_classics.py` builds them from Standard Ebooks sources (Kant from a plain-text transcription, through its converter) with
+  `true`. `tools/build_classics.py` builds them from Standard Ebooks sources (Kant and Spinoza's Ethics from plain-text transcriptions, through their converters) with
   the app's own parser; add a new id to `CLASSICS`.
 - A glossary term's "In your notes" (`termHitsHTML`, from `termNotes`): your notes using the term, grouped by author and then book, each book in
   reading order with your glosses, four shown and the rest folded. Only your own notes; nothing is written about the term for you.

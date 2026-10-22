@@ -43,6 +43,9 @@ BOOKS = [
          text=dict(title="Leviathan", author="Thomas Hobbes", edition="", publisher="Standard Ebooks", year="2024", orig="1651")),
     dict(id="classic-descartes-meditations", repo="rene-descartes_philosophical-works_john-veitch", files=["discourse-on-the-method", "meditations-on-the-first-philosophy"], flatten=True, partOf="Discourse", cover=dict(title="Discourse on the Method and Meditations on First Philosophy", size=25),
          text=dict(title="Discourse on the Method and Meditations on First Philosophy", author="René Descartes", edition="trans. John Veitch", publisher="Standard Ebooks", year="2025", orig="1637–41")),
+    dict(id="classic-spinoza-ethics", text_source=dict(repo="https://github.com/GITenberg/Ethics_3800", file="3800.txt", convert="spinoza_ethics"),
+         cover=dict(title="Ethics", size=40, art="stars"),
+         text=dict(title="Ethics", author="Benedict de Spinoza", edition="trans. R. H. M. Elwes", orig="1677")),
     dict(id="classic-hume-enquiry", repo="david-hume_an-enquiry-concerning-human-understanding", files=None,
          text=dict(title="An Enquiry Concerning Human Understanding", author="David Hume", edition="", publisher="Standard Ebooks", year="2024", orig="1748")),
     dict(id="classic-kant-groundwork", text_source=dict(repo="https://github.com/GITenberg/Fundamental-Principles-of-the-Metaphysic-of-Morals_5682", file="5682.txt", convert="kant_groundwork"),
@@ -242,7 +245,55 @@ def kant_groundwork(raw):
     assert refs == notes, (refs, notes)
     return f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Groundwork</title></head><body>{"".join(out)}</body></html>'
 
-CONVERT = {"kant_groundwork": kant_groundwork}
+HYPHEN_PREFIX = {"self", "non", "high", "first", "last", "over", "fellow", "house", "hunting", "well", "ill", "half", "long", "ever", "all", "free"}
+HYPHEN_PAIRS = {("full", "flavored"), ("two", "footed"), ("not", "being"), ("above", "named"), ("weak", "minded"), ("grown", "up"), ("fault", "finding")}
+ETHICS_PARTS = {"I": "Concerning God", "II": "On the Nature and Origin of the Mind", "III": "On the Origin and Nature of the Emotions",
+                "IV": "Of Human Bondage, or the Strength of the Emotions", "V": "Of the Power of the Understanding, or of Human Freedom"}
+ETHICS_HEADS = {"DEFINITIONS": "Definitions", "AXIOMS": "Axioms", "AXIOM": "Axiom", "PROPOSITIONS": "Propositions", "POSTULATES": "Postulates",
+                "PREFACE": "Preface", "APPENDIX": "Appendix", "DEFINITIONS OF THE EMOTIONS": "Definitions of the Emotions",
+                "GENERAL DEFINITION OF THE EMOTIONS": "General Definition of the Emotions"}
+def spinoza_ethics(raw):
+    """Elwes's translation of the Ethics (1883), from a plain-text transcription: one XHTML document. Each part is a chapter, its
+    definitions, axioms, propositions, postulates, preface and appendix headings within it; every definition, axiom, proposition,
+    proof, corollary and note stays its own paragraph, opening with its label (PROP. V., Corollary II., Note.), which is how the
+    reference articles find it. The transcription's "--" is a dash, or the hyphen of a compound (self--evident); its bracketed
+    endnotes become footnotes after the paragraph that cites them."""
+    t = raw.replace("\r\n", "\n")
+    t = t[t.index("\n", t.index("*** START")) + 1:t.index("*** END")]
+    t = t[:t.rindex("End of the Project Gutenberg")] if "End of the Project Gutenberg" in t else t
+    blocks = [" ".join(b.split()) for b in re.split(r"\n\s*\n", t) if b.strip()]
+    start = next(k for k, b in enumerate(blocks) if b.startswith("PART I."))
+    blocks = blocks[:next(k for k, b in enumerate(blocks) if b == "End of the Ethics by Benedict de Spinoza")]  # the endnotes repeat after it
+    def dash(m):
+        a, b = m.group(1), m.group(2)
+        return f"{a}-{b}" if a.lower() in HYPHEN_PREFIX or (a.lower(), b) in HYPHEN_PAIRS else f"{a}—{b}"
+    def fix(x):
+        x = re.sub(r"(\w+)--(\w+)", dash, x)
+        x = x.replace("----", "—").replace("--", "—")
+        return typo(x)
+    out, k, refs, notes = [], start, [], []
+    while k < len(blocks):
+        b = blocks[k]; k += 1
+        m = re.fullmatch(r"PART ([IV]+)[.:] ?(CONCERNING GOD\.)?", b, re.I)
+        if m:
+            roman = m.group(1).upper()
+            if not m.group(2) and k < len(blocks) and blocks[k].upper().rstrip(".") == ETHICS_PARTS[roman].upper().rstrip("."): k += 1
+            out.append(f"<h2>Part {roman}: {esc(ETHICS_PARTS[roman])}</h2>"); continue
+        h = ETHICS_HEADS.get(b.rstrip(".:"))
+        if h: out.append(f"<h3>{h}</h3>"); continue
+        m = re.match(r"\[(\d+)\] (.*)", b)
+        if m:  # an endnote, printed after the paragraph citing it
+            x = m.group(2)
+            while k < len(blocks) and re.match(r'"?(Speremus|Ferreus) ', blocks[k]):  # note 9's two lines of Ovid
+                x += " / " + blocks[k]; k += 1
+            notes.append(int(m.group(1)))
+            out.append(f'<aside epub:type="footnote"><p>{m.group(1)}. {esc(fix(x))}</p></aside>'); continue
+        refs += [int(n) for n in re.findall(r"\[(\d+)\]", b)]
+        out.append("<p>" + re.sub(r"\[(\d+)\]", lambda m: f"<sup>{m.group(1)}</sup>", esc(fix(b))) + "</p>")
+    assert refs == notes == list(range(1, 18)), (refs, notes)
+    return f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Ethics</title></head><body>{"".join(out)}</body></html>'
+
+CONVERT = {"kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics}
 
 def clone(url, dest):
     if not dest.exists():
