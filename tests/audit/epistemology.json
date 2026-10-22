@@ -682,5 +682,13 @@
   "date": "2026-10-21",
   "branch": "audit/epistemology",
   "note": "Every fix above is applied in the article text; each section now carries its own sources (xs). The two editorial asides (s31, s37) are cut. Sentence numbers refer to the audited text, before the fixes."
- }
+ },
+ "later_fixes": [
+  {
+   "date": "2026-10-22",
+   "kind": "author credits",
+   "note": "SEP “Epistemology” is by Steup and Neta, “The Analysis of Knowledge” by Ichikawa and Steup (the Gettier sentence now credits both), “Plato on Knowledge in the Theaetetus” by Chappell and Verde: credits corrected.",
+   "checked_against": "SEP entry footers, SEP table of contents, PhilPapers SEP bibliographies"
+  }
+ ]
 }
