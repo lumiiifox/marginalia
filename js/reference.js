@@ -398,25 +398,47 @@ function fallacyCatalogHTML(terms) {
   return body ? `<div class="label">Fallacies</div><div class="falcat">${body}</div>` : "";
 }
 // Inline links to thinkers and terms in a branch written as an article (paragraphs whose first line is a heading).
+// Matching ignores accents (Ibn Sina finds Ibn Sīnā, in either Unicode form); a name under five letters must match its case exactly
+// (Kant, Hume), so "kantian" or a lowercase word never links; a short name that is also an English word links only by the full name
+// (LINK_FULL_ONLY); a name two entries share never links. Each entry links once per paragraph, at its first clean match.
+const LINK_FULL_ONLY = new Set(["said", "land"]);
+function linkFold(s) {
+  let cased = "", low = ""; const map = [];
+  for (let i = 0; i < s.length;) {
+    const ch = String.fromCodePoint(s.codePointAt(i));
+    const base = ch.normalize("NFD").replace(/\p{M}/gu, "");
+    const lo = base.toLowerCase();
+    cased += base; low += lo.length === base.length ? lo : base;
+    for (let k = 0; k < base.length; k++) map.push(i);
+    i += ch.length;
+  }
+  map.push(s.length);
+  return { cased, low, map };
+}
 function branchLinks(text, terms, thinkers) {
   const candidates = [
-    ...thinkers.filter((p) => p && p.n).flatMap((p) => [p.n, p.sn].filter((name) => name && name.length >= 5).map((name) => ({ name, id: p.id, kind: "thinker" }))),
+    ...thinkers.filter((p) => p && p.n).flatMap((p) => [p.n, p.sn].filter((name) => name && name.length >= 4 && !LINK_FULL_ONLY.has(name.toLowerCase())).map((name) => ({ name, id: p.id, kind: "thinker" }))),
     ...terms.filter((g) => g.t && g.t.length >= 7 && !/^(identity|reality|existence|substance|knowledge|causation)$/i.test(g.t)).map((g) => ({ name: g.t, id: g.id, kind: "term" }))
-  ].sort((a, b) => b.name.length - a.name.length);
-  const hits = [];
+  ].map((c) => ({ ...c, key: linkFold(c.name) })).sort((a, b) => b.key.cased.length - a.key.cased.length);
+  const owners = new Map();
+  for (const c of candidates) { const k = c.key.low; if (!owners.has(k)) owners.set(k, new Set()); owners.get(k).add(c.kind + ":" + c.id); }
+  const T = linkFold(text), word = /[\p{L}\p{N}]/u, hits = [];
   for (const c of candidates) {
-    const pos = text.toLocaleLowerCase().indexOf(c.name.toLocaleLowerCase());
-    if (pos < 0) continue;
-    const end = pos + c.name.length;
-    if ((pos && /[\p{L}\p{N}]/u.test(text[pos - 1])) || (end < text.length && /[\p{L}\p{N}]/u.test(text[end]))) continue;
-    if (hits.some((h) => pos < h.end && end > h.pos)) continue;
-    hits.push({ pos, end, ...c });
+    if (owners.get(c.key.low).size > 1) continue;
+    const exact = c.name.length < 5, hay = exact ? T.cased : T.low, needle = exact ? c.key.cased : c.key.low;
+    for (let from = 0, pos; (pos = hay.indexOf(needle, from)) >= 0; from = pos + 1) {
+      const end = pos + needle.length;
+      if ((pos && word.test(T.cased[pos - 1])) || (end < T.cased.length && word.test(T.cased[end]))) continue;
+      if (hits.some((h) => pos < h.end && end > h.pos)) continue;
+      hits.push({ pos, end, ...c }); break;
+    }
   }
   hits.sort((a, b) => a.pos - b.pos);
   let html = "", cursor = 0;
   for (const h of hits) {
-    html += esc(text.slice(cursor, h.pos)) + '<button type="button" class="branch-inline-link" data-' + h.kind + '="' + esc(h.id) + '">' + esc(text.slice(h.pos, h.end)) + '</button>';
-    cursor = h.end;
+    const a = T.map[h.pos], b = T.map[h.end];
+    html += esc(text.slice(cursor, a)) + '<button type="button" class="branch-inline-link" data-' + h.kind + '="' + esc(h.id) + '">' + esc(text.slice(a, b)) + '</button>';
+    cursor = b;
   }
   return html + esc(text.slice(cursor));
 }
