@@ -442,6 +442,20 @@ function branchLinks(text, terms, thinkers) {
   }
   return html + esc(text.slice(cursor));
 }
+// A branch written as an article: a paragraph whose first line is a heading opens a section, and the paragraphs after it,
+// up to the next heading, belong to it; the section's sources (xs) go under its last paragraph.
+function articleHTML(b, terms) {
+  const link = (v) => branchLinks(v, terms, [...THINKER.values()]);
+  const secs = [];
+  for (const part of b.x.split(/\n\n/)) {
+    const at = part.indexOf("\n");
+    if (at >= 0) secs.push({ head: part.slice(0, at), paras: [part.slice(at + 1)] });
+    else if (secs.length) secs[secs.length - 1].paras.push(part);
+    else secs.push({ head: null, paras: [part] });
+  }
+  return secs.map((s) => s.head === null ? s.paras.map((t) => `<p>${link(t)}</p>`).join("")
+    : `<section class="branch-article-section"><h3>${esc(s.head)}</h3>${s.paras.map((t) => `<p>${link(t)}</p>`).join("")}${sectionSources(b, s.head)}</section>`).join("");
+}
 // A branch article's sources for one section (`xs`, keyed by the section's heading): one quiet line under it.
 function sectionSources(b, head) {
   const list = (b.xs && b.xs[head]) || [];
@@ -461,7 +475,7 @@ function branchesView() {
       <div class="tbody">
         <p class="tdef">${esc(b.d)}</p>
         ${figHTML(b.img)}
-        ${b.x.split(/\n\n/).some((part) => part.includes("\n")) ? b.x.split(/\n\n/).map((part) => { const at = part.indexOf("\n"); const link = (v) => branchLinks(v, terms, [...THINKER.values()]); return at < 0 ? `<p>${link(part)}</p>` : `<section class="branch-article-section"><h3>${esc(part.slice(0, at))}</h3><p>${link(part.slice(at + 1))}</p>${sectionSources(b, part.slice(0, at))}</section>`; }).join("") : parasHTML(b.x)}${thinkerSources(b)}
+        ${b.x.split(/\n\n/).some((part) => part.includes("\n")) ? articleHTML(b, terms) : parasHTML(b.x)}${thinkerSources(b)}
         ${b.id === "logic" ? `<div class="noteacts"><button class="btn" data-truth="-1">Check an argument with a truth table</button><button class="btn" data-argquiz="fallacy">Name the fallacy</button><button class="btn" data-argquiz="valid">Valid or not?</button><button class="btn" data-argquiz="missing">Missing premise</button><button class="btn" data-steps="1">Put the steps in order</button><button class="btn" data-recon="1">How to reconstruct an argument</button></div>${fallacyCatalogHTML(all)}` : ""}
         <div class="label">Questions it asks</div>
         <ul class="bq-list">${b.q.map((q) => `<li>${esc(q)}</li>`).join("")}</ul>

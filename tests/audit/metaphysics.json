@@ -1,0 +1,1748 @@
+{
+ "article": "metaphysics",
+ "audited": "2026-10-21",
+ "by": "Claude (lead dev); independent review of the findings, 2026-10-21 (six diagnoses corrected, five problems added); review of corrections pending",
+ "cited_sources_before": [
+  "SEP Metaphysics",
+  "SEP Gilles Deleuze",
+  "SEP Metaphysical Grounding",
+  "Barad (OUP chapter)",
+  "REP Metaphysics (Craig)",
+  "REP Meta-metaphysics (Tahko)",
+  "IEP Properties",
+  "SEP Mereology",
+  "SEP Possible Worlds",
+  "SEP Time",
+  "SEP Social Ontology"
+ ],
+ "verdicts": "As in epistemology.json. evidence: does one of the article's cited sources support it.",
+ "mechanical": [
+  {
+   "check": "Kant and Hume link (after #64)",
+   "result": "pass"
+  },
+  {
+   "check": "REP sources",
+   "result": "note",
+   "note": "Both REP links are subscription-only. The Concise REP covers 'Metaphysics' in a short entry; Tahko's 'Meta-metaphysics' is post-2000 and not in it."
+  }
+ ],
+ "sentences": [
+  {
+   "s": 1,
+   "text": "Metaphysics is the branch of philosophy concerned with the most general features of reality.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "SEP Metaphysics (Bernstein, 2023) §1",
+     "note": "SEP declines a one-line definition and starts from the topics traditionally assigned to it; the Concise REP 'Metaphysics' describes the most general investigation into the nature of reality."
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 2,
+   "text": "It asks what exists, what kinds of things exist, and how they relate to one another.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Metaphysics (Bernstein, 2023) §1"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 3,
+   "text": "Questions about identity, causation, time, possibility, and the relationship between mind and matter all belong to metaphysics.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Metaphysics (Bernstein, 2023) §1",
+     "excerpt": "the relation of mind and body, for example"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 4,
+   "text": "The ancient Greek philosopher Aristotle described a related inquiry as “first philosophy.”",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Metaphysics (Bernstein, 2023) §1; SEP Aristotle's Metaphysics (Reeve, 2025) §1",
+     "excerpt": "as 'first philosophy', or 'the study of being qua being'"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 5,
+   "text": "He investigated being insofar as it is being, as well as first principles and causes.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Aristotle's Metaphysics §1",
+     "excerpt": "it is these causes and principles that he proposes to study"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 6,
+   "text": "These are connected but distinct tasks: describing what all existing things have in common does not automatically reveal why they exist.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "contested",
+     "by": "SEP Metaphysics (Bernstein) §1",
+     "excerpt": "a nice—and vexed—question",
+     "note": "Reviewer: Bernstein names the problem of how the two definitions connect. The article's explanation has no source.",
+     "fix": "credit Bernstein; drop the unsourced explanation"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 7,
+   "text": "The name “metaphysics” arose from the placement of Aristotle's writings after his Physics in an ancient arrangement of his works.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "overstated",
+     "by": "SEP Metaphysics (Bernstein, 2023) §1; SEP Aristotle's Metaphysics, intro",
+     "excerpt": "evidently coined by the first century C.E. editor",
+     "note": "Reviewer: all three sources hedge the origin (Bernstein: in all probability Andronicus; Reeve: very likely; Concise REP).",
+     "fix": "add \"probably\""
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 8,
+   "text": "Later philosophers extended the subject to questions about the soul, God, freedom, and the natural world.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "SEP Metaphysics (Bernstein, 2023) §1",
+     "excerpt": "metaphysics began to be a catch-all category",
+     "note": "SEP names mind and body and freedom of the will; soul and God are standard but not quoted."
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 9,
+   "text": "Modern metaphysics continues to ask both what exists and how reality is structured.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "SEP Metaphysics (Bernstein, 2023) §4",
+     "note": "Sider's 'fundamental structure' framing."
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 10,
+   "text": "Metaphysical inquiry also has rich histories beyond European philosophy: Indian Buddhist, Hindu, and Jain traditions developed competing accounts of what ultimately exists and how apparently stable things relate to change.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Abhidharma (Ronkin, 2026) §1.2, §3; SEP Jaina Philosophy (Gorisse, 2023) §3.4",
+     "excerpt": "Ultimately, dharmas are all that there is",
+     "note": "Both entries describe rival accounts of what ultimately exists and of change; the Jaina entry sets its view against Buddhist and Brahmanical ones.",
+     "fix": "add citations; name the Abhidharma and Jaina positions"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 11,
+   "text": "These traditions deserve attention on their own terms rather than being treated as footnotes to Greek philosophy.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "note": "Reviewer: Craig (Concise REP \"Metaphysics\") supplies a positive version: metaphysics is not a uniquely Western phenomenon. Contrastive construction.",
+     "fix": "reword positively, credited to Craig"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 12,
+   "text": "Ontology is the part of metaphysics that asks what exists.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Metaphysics (Bernstein, 2023) §2"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 13,
+   "text": "Are only physical objects real, or do numbers, properties, events, and institutions also exist?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": null,
+     "accuracy": "non-assertive"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 14,
+   "text": "An answer often depends on what a philosophical or scientific theory requires us to accept.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "SEP Metaphysics (Bernstein, 2023) §4",
+     "excerpt": "carry ontological commitment"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 15,
+   "text": "W. V. O. Quine proposed examining the entities over which a theory quantifies: roughly, what things must exist for its claims to be true.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "SEP Ontological Commitment (Bricker) §1.1, quoting Quine"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 16,
+   "text": "Existence is different from being fundamental.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Metaphysical Grounding (Bliss & Trogdon, 2021)",
+     "note": "Contrastive construction. (\"Existence is different from\")",
+     "fix": "reword"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 17,
+   "text": "A table may be real while depending for its existence on wood, atoms, and their arrangement.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Metaphysical Grounding §1.4",
+     "excerpt": "[The grains of sand exist] grounds [The heap of sand exists]"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 18,
+   "text": "Philosophers use the terms “ontological dependence” and “grounding” to investigate such relationships.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "SEP Metaphysical Grounding, intro and Related Entries",
+     "note": "The entry does not compare the two notions; ontological dependence has its own SEP entry."
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 19,
+   "text": "Grounding concerns what explains a fact at a more basic level; for example, the arrangement of certain parts may explain why a composite object exists.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Metaphysical Grounding, intro",
+     "excerpt": "a form of constitutive (as opposed to causal or probabilistic) determination"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 20,
+   "text": "A major question is whether these explanations ultimately reach something fundamental.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Metaphysical Grounding §2.4",
+     "excerpt": "ultimately grounded by ungrounded facts"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 21,
+   "text": "Contemporary philosopher Kit Fine develops the idea of metaphysical grounding: asking not merely whether a fact is true, but what makes it true or explains it at a more basic level.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Metaphysical Grounding §1.2, §2.3",
+     "note": "Repeats sentence 22's definition. Contrastive construction.",
+     "fix": "merge with 22; credit Fine without the contrast"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 22,
+   "text": "For example, a set's existence may be explained in terms of its members, even though the members do not cause the set to exist in the ordinary physical sense.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Metaphysical Grounding §1.4",
+     "excerpt": "Beijing stands in the set formation relation to {Beijing}"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 23,
+   "text": "The problem of universals begins with a deceptively ordinary observation: two different apples can both be red.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "IEP Properties §1.b",
+     "excerpt": "the predicate ‘is red’ applies to the particulars"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 24,
+   "text": "Do they share literally the same property, or are they merely similar particulars?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": null,
+     "accuracy": "non-assertive"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 25,
+   "text": "Realists accept universals of some sort; nominalists seek explanations without them.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "IEP Properties §1.b",
+     "excerpt": "usually described as one between nominalism and realism"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 26,
+   "text": "Some realists regard universals as independent of their instances, others as immanent in things.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "IEP Properties §1.a",
+     "excerpt": "wholly present in each of its instances"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 27,
+   "text": "Trope theories instead posit particularized properties, such as this apple's redness.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "IEP Properties §1.a",
+     "excerpt": "Tropes are particular, unrepeatable entities"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 28,
+   "text": "The debate matters for scientific classification, predication and laws of nature, not just color words.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "IEP Properties, intro (causation and laws), §1.b (predication)",
+     "note": "Contrastive construction.",
+     "fix": "reword"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 29,
+   "text": "For example, a trope theorist regards the redness of each apple as its own particular quality, whereas a realist about universals may hold that both apples instantiate one repeatable property.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "IEP Properties §1.a"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 30,
+   "text": "This raises a further question: what makes those two particular shades sufficiently alike to count as red?",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "IEP Properties §1.a",
+     "excerpt": "trope similarity is primitive, a matter of unanalysable fact"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 31,
+   "text": "Questions of substance and composition ask what individual things are.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "SEP Material Constitution (Wasserman, 2026)"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 32,
+   "text": "Is a thing a bearer of properties, a bundle of them or a unity of matter and form?",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "SEP Substance (Weir) §3.2.1–3.2.2; SEP Material Constitution §2",
+     "excerpt": "objects are compounds of matter and form",
+     "note": "Bundle and substratum theories are standard, but neither cited entry discusses them.",
+     "fix": "cite Weir for bundle and substratum views"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 33,
+   "text": "Mereology investigates parts and wholes.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Mereology (Varzi, 2026), intro",
+     "excerpt": "devoted to the study of parthood relations"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 34,
+   "text": "A statue and its clay seem to occupy the same region, yet the clay can survive being flattened when the statue cannot.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "SEP Material Constitution §1",
+     "excerpt": "the lump could survive being squashed tomorrow, whereas the statue could not",
+     "fix": "cite Material Constitution"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 35,
+   "text": "The Ship of Theseus asks whether gradual replacement of every plank preserves numerical identity.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Material Constitution §1",
+     "excerpt": "whose parts were all gradually replaced over time",
+     "fix": "cite Material Constitution"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 36,
+   "text": "Alfred North Whitehead's process metaphysics instead emphasizes events and becoming rather than enduring substances as the basic units of reality.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Process Philosophy (Seibt, 2022) §1",
+     "excerpt": "The basic unit of reality in Whitehead's system is an event-like entity",
+     "note": "Contrastive construction.",
+     "fix": "cite Seibt; reword"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 37,
+   "text": "Philosophers disagree about when parts compose an object, ranging from unrestricted composition to views denying composite material objects in the strict sense.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Ordinary Objects (Barker, 2025) §1.2–1.3",
+     "excerpt": "no objects ever compose anything",
+     "fix": "cite Barker; name nihilism, organicism and universalism"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 38,
+   "text": "How can something change and still remain the same thing?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": null,
+     "accuracy": "non-assertive"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 39,
+   "text": "A tree grows, loses leaves, and replaces cells, yet we ordinarily call it the same tree.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Identity Over Time (Kurtsal, 2026) §1"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 40,
+   "text": "Philosophers distinguish numerical identity, meaning being one and the very same individual, from qualitative similarity, meaning sharing characteristics.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Identity Over Time §1",
+     "excerpt": "a well-known distinction between numerical and qualitative identity",
+     "fix": "cite Kurtsal"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 41,
+   "text": "Two identical-looking trees may be qualitatively similar without being numerically identical.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Identity Over Time §1"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 42,
+   "text": "Theories of persistence attempt to explain identity through time.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Temporal Parts (Hawley, 2020)"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 43,
+   "text": "According to endurantism, an object is wholly present at each time at which it exists.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Temporal Parts §2",
+     "excerpt": "things are wholly present whenever they exist",
+     "fix": "cite Hawley"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 44,
+   "text": "According to perdurantism, an object persists by having different temporal parts, rather as a road has different spatial stretches.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Temporal Parts §2",
+     "note": "The road analogy is the article's own; Hawley uses an earthworm stretching through space. A fair illustration.",
+     "fix": "cite Hawley"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 45,
+   "text": "Stage theory instead treats momentary stages as basic and explains ordinary talk of persistence through relations between stages.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Temporal Parts §2–3",
+     "excerpt": "the banana just is a momentary stage",
+     "fix": "cite Hawley"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 46,
+   "text": "These disagreements become especially important in personal identity: is a person the same person because of bodily continuity, memory, or some combination of the two?",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Personal Identity (Olson, 2023) §3",
+     "excerpt": "Some try to combine these views",
+     "fix": "cite Olson"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 47,
+   "text": "Gilles Deleuze challenges the tendency to make identity the starting point of metaphysics.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Gilles Deleuze (Voss, 2022) §2",
+     "excerpt": "a deep-seated privilege of identity over difference"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 48,
+   "text": "In Difference and Repetition (1968), he treats difference as productive rather than merely a comparison between already formed things.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Gilles Deleuze §3.1",
+     "excerpt": "account of the genesis of real experience",
+     "note": "Reviewer: the earlier excerpt described Maimon (§2). §3.1 supports the sentence. Contrastive construction.",
+     "fix": "reword"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 49,
+   "text": "On this account, an individual is not simply a fixed identity that undergoes change; its formation calls for an explanation in terms of processes of differentiation.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "overstated",
+     "by": "SEP Gilles Deleuze §3.1",
+     "excerpt": "actualization of the virtual proceeds by way of intensive processes",
+     "note": "Reviewer: \"processes of differentiation\" clashes with Deleuze's differentiation/differenciation distinction (Voss §3.1, §4.3). Contrastive construction.",
+     "fix": "say \"intensive processes of individuation\""
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 50,
+   "text": "Metaphysicians also ask what could have happened differently.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP The Epistemology of Modality (Wallner, 2023) §1"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 51,
+   "text": "A book lying on a desk might instead have been on a shelf: its location is contingent, meaning it could have been otherwise.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Concise REP 'Contingency' (Walker)",
+     "excerpt": "it might not have happened"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 52,
+   "text": "A necessary truth, by contrast, could not have been false in the relevant sense of necessity.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP The Epistemology of Modality §1",
+     "note": "Contrastive construction. (\"by contrast\")",
+     "fix": "reword"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 53,
+   "text": "The philosophical study of possibility and necessity is called modality.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP The Epistemology of Modality §1"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 54,
+   "text": "Ibn Sīnā (Avicenna) distinguished things that depend on a cause for their existence from a necessarily existent first principle.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Ibn Sina's Metaphysics (Lizzini, 2026) §3.3, §4.1",
+     "excerpt": "'necessary in itself' and what is 'necessary by virtue of another'",
+     "fix": "cite Lizzini"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 55,
+   "text": "One way to clarify modal claims is to speak of “possible worlds,” meaning complete ways reality might have been.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Possible Worlds (Menzel, 2016) §2.2",
+     "excerpt": "total way things could be"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 56,
+   "text": "Philosophers disagree about whether these worlds are concrete realities or abstract descriptions.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Possible Worlds §2.1–2.2"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 57,
+   "text": "David Lewis defended modal realism, the view that other possible worlds are concrete realities, separate from ours.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Possible Worlds §2.1.1",
+     "excerpt": "objects in distinct worlds bear no causal relations to one another"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 58,
+   "text": "Essentialism asks which features a thing must retain to remain that very thing.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Concise REP 'Essentialism'",
+     "excerpt": "some are ‘essential’ to it and the rest only ‘accidental’",
+     "fix": "cite"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 59,
+   "text": "It is also important to distinguish logical possibility, consistency with logic, from physical possibility, consistency with the laws of nature, and metaphysical possibility, consistency with the nature of things.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP The Epistemology of Modality §1",
+     "excerpt": "what is physically possible is also metaphysically possible",
+     "fix": "cite Wallner"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 60,
+   "text": "Being able to imagine something does not by itself prove that it is possible.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP The Epistemology of Modality §4.1",
+     "excerpt": "conceivability provides defeasible evidence for possibility",
+     "note": "Yablo's view, as Wallner reports it.",
+     "fix": "cite Wallner"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 61,
+   "text": "Deleuze also distinguishes the virtual from the merely possible.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Gilles Deleuze §2"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 62,
+   "text": "For him, the virtual is real, even though it is not actual: it names differential relations and potentials that become actual through processes of individuation.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "overstated",
+     "by": "SEP Gilles Deleuze §2–3.1",
+     "excerpt": "the virtual is fully real",
+     "note": "Reviewer: Voss lists differential elements, differential relations and singularities; \"potentials\" is not hers.",
+     "fix": "say \"singularities\""
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 63,
+   "text": "A crystal forming in a solution helps illustrate the question of how a definite individual emerges from a field of conditions, although no simple physical example exhausts his account.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Gilles Deleuze §3.1",
+     "excerpt": "crystallization is a paradigm of individuation",
+     "note": "Reviewer: accurate, but uncredited; Voss calls Simondon's crystallization a very simple model for actualization, which also fits the hedge.",
+     "fix": "credit Simondon via Voss"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 64,
+   "text": "One of the central questions in the philosophy of time is whether the distinction between past, present, and future is an objective feature of reality.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Time (Emery, Markosian & Sullivan, 2025)"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 65,
+   "text": "Philosophers often distinguish two broad approaches.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Time §5, §8"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 66,
+   "text": "The A-theory holds that temporal properties such as being past, present, or future are objective, and that temporal becoming matters to the nature of time.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "overstated",
+     "by": "SEP Time §8",
+     "excerpt": "objective and metaphysically significant properties of times",
+     "note": "Reviewer: SEP Time §8 treats temporal becoming as the dynamic thesis, an extra commitment some A-theorists add.",
+     "fix": "move becoming out of the A-theory definition"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 67,
+   "text": "The B-theory describes time through relations such as “earlier than” and “later than,” without requiring an objectively privileged moving present.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Time §5",
+     "excerpt": "all change can be described in before-after terms"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 68,
+   "text": "Consider a birthday.",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": null,
+     "accuracy": "non-assertive",
+     "note": "Introduces an example."
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 69,
+   "text": "On an A-theoretic account, the birthday changes from future to present to past.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Time §8"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 70,
+   "text": "On a B-theoretic account, its relations to other dated events remain fixed; it is earlier than some events and later than others.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Time §5"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 71,
+   "text": "This example illustrates the distinction, although philosophers disagree about exactly how to formulate each theory.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "SEP Time §5, §8",
+     "excerpt": "possible to mix and match from among the tenets",
+     "note": "Reviewer: SEP supports disagreement over how to formulate the theories."
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 72,
+   "text": "A related debate concerns which times and things exist.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Time §6"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 73,
+   "text": "Presentism says that only present things exist.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Time §6",
+     "excerpt": "only present objects exist"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 74,
+   "text": "Eternalism says that past, present, and future things are equally real.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Time §6"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 75,
+   "text": "The growing-block theory says that the past and present exist but the future does not yet exist.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Time §6"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 76,
+   "text": "Einstein's special relativity complicates the idea of a universal present shared by all observers, and philosophers dispute what this implies for these theories.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Time §11",
+     "excerpt": "there is no fact of the matter as to what is present"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 77,
+   "text": "Causation concerns how and why one event brings about another.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP The Metaphysics of Causation (Gallow, 2022)"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 78,
+   "text": "When a ball strikes a window and the glass breaks, we ordinarily say that the impact caused the break.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "note": "Illustration."
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 79,
+   "text": "But what makes this a causal connection rather than merely two events occurring in sequence?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": null,
+     "accuracy": "non-assertive",
+     "note": "Contrastive construction.",
+     "fix": "reword"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 80,
+   "text": "David Hume questioned whether we perceive a necessary connection itself, or instead observe regular patterns and form expectations.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP David Hume §2.2",
+     "excerpt": "never give us an experience of genuine connection between cause and effect",
+     "fix": "cite SEP Hume"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 81,
+   "text": "Contemporary theories explain causation in different ways.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP The Metaphysics of Causation §1.2.1"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 82,
+   "text": "Regularity theories emphasize recurring patterns; counterfactual theories ask whether the effect would have occurred without the cause; other approaches examine physical processes or causal powers.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP The Metaphysics of Causation §1.2.1 and intro",
+     "note": "Gallow names regularity, counterfactual, probabilistic, agential and process theories, and dispositions as a reductive base; 'causal powers' is not named as a family.",
+     "fix": "cite Gallow; say dispositions"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 83,
+   "text": "Difficult cases arise when two potential causes are present but one acts first, a problem called preemption.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "overstated",
+     "by": "SEP The Metaphysics of Causation §1.2.1",
+     "note": "Reviewer: in late preemption the preempting cause still reaches the effect first; the fault is defining preemption by timing. It is defined by a backup would-be cause.",
+     "fix": "define preemption by the backup cause"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 84,
+   "text": "Determinism is the view that a complete state of the world together with its laws fixes what happens next.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Causal Determinism (Hoefer, 2023) §1",
+     "excerpt": "the way things go thereafter is fixed as a matter of natural law",
+     "fix": "cite Hoefer"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 85,
+   "text": "This differs from fatalism, the view that an outcome will occur regardless of what anyone does.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Causal Determinism §1",
+     "excerpt": "destined to occur no matter what we do",
+     "fix": "reword",
+     "note": "Contrastive construction. (\"This differs from\")"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 86,
+   "text": "Debates about free will ask whether our actions can be meaningfully free if determinism is true.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Causal Determinism §6"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 87,
+   "text": "Metaphysical questions are not limited to physical objects.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "supported",
+     "note": "Transition."
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 88,
+   "text": "Philosophy of mind asks how consciousness and thought relate to the body.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Physicalism (Stoljar, 2026)"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 89,
+   "text": "Physicalists hold, in different ways, that mental reality is ultimately physical; dualists hold that mind and matter are fundamentally distinct in some respect.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Physicalism, intro and §2.1",
+     "excerpt": "the thesis that everything is physical",
+     "fix": "cite Stoljar; SEP Dualism"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 90,
+   "text": "Other views emphasize dependence without straightforward reduction.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "SEP Physicalism §3.1",
+     "fix": "cite Stoljar"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 91,
+   "text": "Karen Barad's agential realism, developed through engagement with quantum physics and feminist philosophy, offers a relational approach: rather than assuming that separate entities first exist and then interact, Barad argues that determinate entities emerge through what they call intra-actions.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "claim": "relational ontology from quantum physics",
+     "by": "Barad, Oxford Handbook chapter (2022), abstract",
+     "excerpt": "based on a reconstruction and further elaboration of Niels Bohr's philosophy-physics"
+    },
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "claim": "intra-action",
+     "note": "Checked in the primary text (p. 33; again at p. 197: intra-action set against interaction, which assumes the prior existence of distinct entities).",
+     "fix": "cite Barad 2007, p. 33",
+     "by": "Barad, Meeting the Universe Halfway (Duke University Press, 2007), p. 33 and p. 197; SEP Process Philosophy (Seibt) §4",
+     "excerpt": "distinct agencies do not precede, but rather emerge through, their intra-action"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 92,
+   "text": "This is a contested philosophical interpretation, not an established result of physics, and it raises a fundamental question about whether relations or independently existing things come first.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Barad chapter title",
+     "note": "Reviewer: the chapter title supports \"interpretation\"; \"contested\" has no source. Contrastive construction.",
+     "fix": "say Barad offers it as an interpretation of quantum physics"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 93,
+   "text": "Social ontology studies things that exist through human practices, such as money, laws, offices, and institutions.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Social Ontology (Epstein, 2024), intro",
+     "excerpt": "the study of the nature and properties of the social world"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 94,
+   "text": "A banknote has physical properties, but its status as money depends on social arrangements.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Social Ontology §4.2.3 (Searle)",
+     "excerpt": "collective acceptance or recognition that they have those statuses"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 95,
+   "text": "Such dependence does not make it imaginary: debts and legal statuses have real effects.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Social Ontology §2.4",
+     "excerpt": "But social entities are nonetheless real",
+     "note": "Epstein attributes this to critical realists. Contrastive construction.",
+     "fix": "reword and attribute"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 96,
+   "text": "Philosophers also examine how categories such as race and gender relate to biology, history, and social practices, and whether particular classifications illuminate or distort the world.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "SEP Social Ontology, intro and §5.4",
+     "note": "§5.4 lies past the fetch limit; the intro poses the gender question."
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 97,
+   "text": "How can we investigate reality at its most general level?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": null,
+     "accuracy": "non-assertive"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 98,
+   "text": "Metaphysicians use conceptual analysis, logical arguments, thought experiments, and findings from the sciences.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Metaphysics (Bernstein, 2023) §4"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 99,
+   "text": "Yet philosophers disagree about how much these methods can establish.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Metaphysics (Bernstein, 2023) §4–5"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 100,
+   "text": "Immanuel Kant argued that theoretical knowledge has limits tied to possible experience; he questioned claims to knowledge of certain things beyond those limits without simply abandoning every metaphysical question.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "SEP Immanuel Kant §5.1–5.2",
+     "excerpt": "Theoretical philosophy deals with appearances, to which our knowledge is strictly limited",
+     "note": "Contrastive construction. (\"without simply abandoning\")",
+     "fix": "reword"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 101,
+   "text": "In the twentieth century, Rudolf Carnap and other logical empiricists challenged traditional metaphysical disputes by asking whether their claims had clear meaning or empirical significance.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "SEP Rudolf Carnap §1.4",
+     "excerpt": "a kind of failed art form masquerading as knowledge",
+     "note": "SEP Metaphysics §5 covers the logical positivists without naming Carnap.",
+     "fix": "cite SEP Carnap"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 102,
+   "text": "More recent metaphysicians defend the field by appealing to explanatory power, coherence, and connections with science.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Metaphysics (Bernstein, 2023) §4",
+     "excerpt": "continuity of metaphysics with science"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 103,
+   "text": "The study of these methods is sometimes called meta-metaphysics: it asks what metaphysical questions mean, what could count as evidence for an answer, and how philosophical inquiry differs from scientific investigation.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "SEP Metaphysics (Bernstein, 2023) §4; SEP Carnap supplement H (meta-ontology)"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 104,
+   "text": "Critics respond that rival accounts can sometimes fit the same evidence.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "by": "SEP Material Constitution §7; SEP Metaphysics §4",
+     "note": "Reviewer: no source on underdetermination in metaphysics; the nearest is the deflationist worry (Carnap, Putnam, Hirsch) in Material Constitution §7.",
+     "fix": "rewrite as the deflationist worry, cited to §7 and Bernstein §4",
+     "excerpt": "Both parties agree on all of the relevant non-linguistic facts"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 105,
+   "text": "The field therefore contains different methods and traditions, from Aristotle and Spinoza to Kant, Heidegger, and contemporary analytic metaphysics; their questions overlap without always being identical.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "note": "A closing aside. Spinoza appears only here, in a list, though the owner's reading runs Aristotle → Spinoza → Deleuze. Contrastive construction.",
+     "fix": "cut the hedge; consider a sourced sentence on Spinoza's substance monism"
+    }
+   ],
+   "origin": "audited"
+  },
+  {
+   "s": 106,
+   "origin": "added",
+   "section": "Spinoza (new)",
+   "text": "In the Ethics (1677), Spinoza defines substance as what is in itself and is conceived through itself (Part I, Definition 3).",
+   "claims": [
+    {
+     "type": "primary",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Spinoza, Ethics, trans. Elwes I D3",
+     "excerpt": "that which is in itself, and is conceived through itself"
+    }
+   ]
+  },
+  {
+   "s": 107,
+   "origin": "added",
+   "section": "Spinoza (new)",
+   "text": "Since no two substances can share an attribute (I, Proposition 5) and God is a substance of infinite attributes (I, Definition 6), he concludes that besides God no substance can be granted or conceived (I, Proposition 14).",
+   "claims": [
+    {
+     "type": "primary",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Spinoza, Ethics, trans. Elwes I P5, I D6, I P14; SEP Baruch Spinoza (Nadler) §2",
+     "excerpt": "Besides God no substance can be granted or conceived",
+     "note": "The argument is compressed: the proof of I P14 also relies on I P11 (God exists necessarily)."
+    }
+   ]
+  },
+  {
+   "s": 108,
+   "origin": "added",
+   "section": "Spinoza (new)",
+   "text": "An attribute is what the intellect perceives of a substance as constituting its essence (I, Definition 4), and human minds know only two, thought and extension.",
+   "claims": [
+    {
+     "type": "primary",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Spinoza, Ethics, trans. Elwes I D4; SEP Spinoza's Theory of Attributes (Shein) §1.7",
+     "excerpt": "we, human minds, only know two attributes"
+    }
+   ]
+  },
+  {
+   "s": 109,
+   "origin": "added",
+   "section": "Spinoza (new)",
+   "text": "Shein reports a long dispute over that definition: a subjectivist reading, following Hegel and expounded by Harry Wolfson, takes attributes to be what the finite intellect projects onto substance, while the standard objectivist reading takes them to constitute its essence.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Spinoza's Theory of Attributes (Shein) §1.8",
+     "excerpt": "the “subjective” interpretation which follows Hegel"
+    }
+   ]
+  },
+  {
+   "s": 110,
+   "origin": "added",
+   "section": "Spinoza (new)",
+   "text": "Modes are the affections of substance, existing in and conceived through something else (I, Definition 5); finite things, minds and bodies included, are modes of the one substance.",
+   "claims": [
+    {
+     "type": "primary",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Spinoza, Ethics, trans. Elwes I D5; SEP Baruch Spinoza (Nadler)",
+     "excerpt": "the modifications (\"affectiones\") of substance"
+    }
+   ]
+  },
+  {
+   "s": 111,
+   "origin": "added",
+   "section": "Spinoza (new)",
+   "text": "Whatever is, is in God (I, Proposition 15), and God is the indwelling cause of all things (I, Proposition 18); Nadler describes Spinoza's God as the immanent and sustaining cause of everything.",
+   "claims": [
+    {
+     "type": "primary",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Spinoza, Ethics, trans. Elwes I P15, I P18; SEP Baruch Spinoza (Nadler)",
+     "excerpt": "God is the indwelling and not the transient cause"
+    }
+   ]
+  },
+  {
+   "s": 112,
+   "origin": "added",
+   "section": "Spinoza (new)",
+   "text": "The order and connection of ideas is the same as the order and connection of things (II, Proposition 7): a mind and its body are one and the same thing, expressed under two attributes.",
+   "claims": [
+    {
+     "type": "primary",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Spinoza, Ethics, trans. Elwes II P7 and note; SEP Baruch Spinoza (Nadler) on the human being",
+     "excerpt": "one and the same substance, comprehended now through one attribute"
+    }
+   ]
+  },
+  {
+   "s": 113,
+   "origin": "added",
+   "section": "Spinoza (new)",
+   "text": "In nature nothing is contingent: all things are determined by the necessity of the divine nature to exist and act in a certain way (I, Proposition 29), and things could have been produced by God in no other way or order (I, Proposition 33).",
+   "claims": [
+    {
+     "type": "primary",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Spinoza, Ethics, trans. Elwes I P29, I P33",
+     "excerpt": "Nothing in the universe is contingent"
+    }
+   ]
+  },
+  {
+   "s": 114,
+   "origin": "added",
+   "section": "Spinoza (new)",
+   "text": "Whether this makes Spinoza a strict necessitarian is disputed: Newlands sets Edwin Curley's reading, on which finite things are only partly fixed by God's nature, against Don Garrett's, on which every finite thing exists necessarily.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Spinoza's Modal Metaphysics (Newlands) §1.2.4, §2.1"
+    }
+   ]
+  },
+  {
+   "s": 115,
+   "origin": "added",
+   "section": "Spinoza (new)",
+   "text": "A thing is free when it exists from the necessity of its own nature alone and is determined to act by itself alone (I, Definition 7).",
+   "claims": [
+    {
+     "type": "primary",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Spinoza, Ethics, trans. Elwes I D7",
+     "excerpt": "exists solely by the necessity of its own nature"
+    }
+   ]
+  },
+  {
+   "s": 116,
+   "origin": "added",
+   "section": "Spinoza (new)",
+   "text": "On that definition God is the sole free cause (I, Proposition 17, Corollary 2), and the will can only be called a necessary cause (I, Proposition 32).",
+   "claims": [
+    {
+     "type": "primary",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Spinoza, Ethics, trans. Elwes I P17 Cor. 2, I P32",
+     "excerpt": "Will cannot be called a free cause, but only a necessary cause"
+    }
+   ]
+  },
+  {
+   "s": 117,
+   "origin": "added",
+   "section": "Spinoza (new)",
+   "text": "For human beings, Nadler explains, freedom lies in what happens to us following from our own nature.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Baruch Spinoza (Nadler), Virtue and Happiness",
+     "excerpt": "what happens to us follows from our nature"
+    }
+   ]
+  },
+  {
+   "s": 118,
+   "origin": "added",
+   "section": "Spinoza (new)",
+   "text": "Deleuze wrote his 1968 secondary thesis on expression in Spinoza; Voss presents univocity of being, as Deleuze reads Spinoza, as one of the most important inheritances in his work, and as Deleuze's own development of it.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "SEP Gilles Deleuze (Voss) §1, §2",
+     "excerpt": "one of the most important",
+     "note": "Credited to Voss as Deleuze's reading; no claim about Spinoza himself."
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "audited_sentences": 105,
+  "added_sentences": 13,
+  "claims": 119,
+  "supported": 104,
+  "contested": 1,
+  "overstated": 5,
+  "editorial": 2,
+  "non-assertive": 6,
+  "unverified": 1,
+  "audited_assertive": 100,
+  "cited_source_supported_before": 50
+ },
+ "added": {
+  "approved": "2026-10-21, by Lumiii",
+  "note": "Two new sections, \"Spinoza: substance, attributes and modes\" and \"Spinoza: necessity and freedom\". The absence was a coverage decision, not an audit finding. Spinoza's own claims cite the Ethics by part and proposition; readings are credited to Nadler, Shein, Newlands and Voss."
+ },
+ "applied": {
+  "branch": "audit/metaphysics",
+  "note": "Fixes for every audited finding applied; 14 contrastive constructions reworded; two asides cut; sources for all 12 sections in xs. Sentence numbers refer to the audited text, before the fixes."
+ }
+}

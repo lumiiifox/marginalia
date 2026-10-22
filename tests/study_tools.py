@@ -799,6 +799,12 @@ async def branch_sources(browser):
     want = await page.evaluate("Object.keys(BRANCH.get('epistemology').xs).length")
     check(got["src"] == want and got["secs"] == want + 1 and got["last"] is False, f"Epistemology: a sources line under each of its {want} sourced sections, none under the questions ({got})")
     check(got["blank"] == 0, "section source links open in a new tab")
+    for bid in await page.evaluate("BRANCHES.filter((b) => b.xs).map((b) => b.id)"):
+        await page.evaluate(f"go({{ screen: 'branches', focus: '{bid}' }})"); await page.wait_for_timeout(150)
+        last = await page.evaluate(f"""(() => {{ const d = document.querySelector("details[data-branch-id='{bid}']"); d.open = true;
+          const secs = [...d.querySelectorAll('.branch-article-section')];
+          return secs.filter((s) => s.querySelector('p.ssrc')).map((s) => s.lastElementChild.classList.contains('ssrc') && s.querySelectorAll('p.ssrc').length === 1); }})()""")
+        check(last and all(last), f"{bid}: each sources line sits once, at the end of its section, after all its paragraphs ({last.count(False)} misplaced)")
     check(not errs, "no script errors with section sources" + (f": {errs}" if errs else ""))
     await page.context.close()
 
