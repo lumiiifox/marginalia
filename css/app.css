@@ -912,7 +912,9 @@ span.bhid { display: inline; }
 .branch-article-section { margin: 12px 0 4px; }
 .branch-article-section h3 { margin: 0 0 9px; font: 700 19px/1.3 var(--f-text); color: var(--ink); }
 .branch-article-section p { margin: 0; line-height: 1.6; }
-.branch-article-section p.ssrc { margin-top: 6px; font-size: 13px; line-height: 1.45; }
+.branch-article-section p.ssrc { margin-top: 6px; font-size: 13px; line-height: 26px; }
+/* Each source link gets a 24px-tall tap area within its 26px line, so neighbouring lines' targets don't overlap. */
+.branch-article-section p.ssrc a { padding: 4.5px 0; }
 .branch-article-section + .branch-article-section { margin-top: 20px; }
 
 .branch-inline-link { display: inline; padding: 0; margin: 0; border: 0; border-radius: 0; background: transparent; color: var(--link); font: inherit; line-height: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; cursor: pointer; text-align: inherit; }
