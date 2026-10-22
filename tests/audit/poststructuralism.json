@@ -577,5 +577,13 @@
  "applied": {
   "branch": "audit/poststructuralism",
   "note": "Fixes from the reviewed audit applied; the nonexistent SEP \"Structuralism\" source removed; Aylesworth quoted and credited; s5, s7, s10, s24, s33 replaced or cut; sources for all 11 sections in xs. Sentence numbers refer to the audited text, before the fixes."
- }
+ },
+ "later_fixes": [
+  {
+   "date": "2026-10-22",
+   "kind": "author credits",
+   "note": "SEP “Michel Foucault” is by Gutting and Oksala: credit and the sentence on power as productive corrected.",
+   "checked_against": "SEP entry footers, SEP table of contents, PhilPapers SEP bibliographies"
+  }
+ ]
 }

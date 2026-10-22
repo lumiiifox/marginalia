@@ -570,5 +570,13 @@
  "applied": {
   "branch": "audit/analytic",
   "note": "Duplicate sections merged (Vienna Circle and ordinary language; Quine); every reviewed fix applied; sources for all 7 sections in xs."
- }
+ },
+ "later_fixes": [
+  {
+   "date": "2026-10-22",
+   "kind": "author credits",
+   "note": "SEP “Willard Van Orman Quine” is by Hylton and Kemp: credit and the “larger chunk of theory” sentence corrected. SEP “Ludwig Wittgenstein” is by Biletzki and Matar.",
+   "checked_against": "SEP entry footers, SEP table of contents, PhilPapers SEP bibliographies"
+  }
+ ]
 }

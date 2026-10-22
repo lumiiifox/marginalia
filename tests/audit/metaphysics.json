@@ -1744,5 +1744,25 @@
  "applied": {
   "branch": "audit/metaphysics",
   "note": "Fixes for every audited finding applied; 14 contrastive constructions reworded; two asides cut; sources for all 12 sections in xs. Sentence numbers refer to the audited text, before the fixes."
- }
+ },
+ "later_fixes": [
+  {
+   "date": "2026-10-22",
+   "kind": "author credits",
+   "note": "SEP “Metaphysics” is by van Inwagen, Sullivan and Bernstein: credit and the “nice—and vexed—question” sentence corrected.",
+   "checked_against": "SEP entry footers, SEP table of contents, PhilPapers SEP bibliographies"
+  },
+  {
+   "date": "2026-10-22",
+   "kind": "author credits",
+   "note": "SEP “Gilles Deleuze” is by Smith, Protevi and Voss: the two univocity and Simondon sentences now credit all three.",
+   "checked_against": "SEP entry footers, SEP table of contents, PhilPapers SEP bibliographies"
+  },
+  {
+   "date": "2026-10-22",
+   "kind": "author credits",
+   "note": "SEP “Aristotle's Metaphysics” (Cohen and Reeve), “Identity Over Time” (Gallois and Kurtsal), “The Epistemology of Modality” (Mallozzi, Vaidya and Wallner): credits corrected.",
+   "checked_against": "SEP entry footers, SEP table of contents, PhilPapers SEP bibliographies"
+  }
+ ]
 }
