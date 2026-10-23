@@ -1,0 +1,1114 @@
+{
+ "article": "aesthetics",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited SEP section, 2026-10-23 (34 fixes applied, among them Dharmakīrti's restricted conditions, Russell's 1908 type theory, the scheme definition of formal validity, Longino's objective method, and source wording quoted or reworded)",
+ "cited_sources_before": 6,
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "The scope of aesthetics",
+   "text": "The word “aesthetic” entered European philosophy in the eighteenth century, and it now names an object, a judgment, an attitude, an experience and a kind of value.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Concept of the Aesthetic (Shelley) intro",
+     "excerpt": "Introduced into the Western European philosophical lexicon during the 18th century",
+     "fix": "keep, merged with 2"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "The scope of aesthetics",
+   "text": "It grew out of the concept of taste, developed partly against rationalist accounts of beauty.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Concept of the Aesthetic (Shelley) §1",
+     "excerpt": "That concept descends from the Western European concept of taste.",
+     "note": "Not confirmed.",
+     "fix": "keep; 'against rationalist accounts' cut"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "The scope of aesthetics",
+   "text": "Dubos, Hume and Reid held that judgments of beauty are immediate, like judgments of the senses: reasoning may be needed to take in a complex work, but the verdict itself is not inferred.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Concept of the Aesthetic (Shelley) §1.1",
+     "excerpt": "judgments of beauty are not (or at least not canonically) mediated by inferences",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "The scope of aesthetics",
+   "text": "Aesthetics is not identical with the philosophy of art.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "The scope of aesthetics",
+   "text": "It also examines experiences of nature, built environments, bodies, ordinary objects, and practices that are not conventionally called artworks.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "The scope of aesthetics",
+   "text": "The questions of what art is and what beauty is overlap, but neither can simply be substituted for the other.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "Taste, beauty, and the sublime",
+   "text": "Hutcheson and Hume held that pleasure in beauty is disinterested, and Kant made the idea central: a judgment of taste is contemplative and indifferent to whether its object serves any desire, yet it claims everyone's agreement.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Concept of the Aesthetic (Shelley) §1.2; Kant (Ginsborg) §2.1",
+     "excerpt": "Judgments of beauty have, or make a claim to, “universality”",
+     "note": "'Everyone's agreement' is not Shelley's wording.",
+     "fix": "reword: universality as Ginsborg gives it"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "Taste, beauty, and the sublime",
+   "text": "Formalists such as Hanslick, Clive Bell and Clement Greenberg held that only a work's formal properties matter to its value as art.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Concept of the Aesthetic (Shelley) §2.1",
+     "excerpt": "as a theorist he urged that music has no content but",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "Taste, beauty, and the sublime",
+   "text": "Arthur Danto challenged this with objects that look identical to ordinary things, such as Warhol's Brillo Boxes, and Kendall Walton argued that the category under which we perceive a work changes which aesthetic properties it has.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Concept of the Aesthetic (Shelley) §2.1",
+     "excerpt": "depends on which category we perceive the work as belonging to",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "Taste, beauty, and the sublime",
+   "text": "Edmund Burke distinguished experiences of the beautiful from those of the sublime, the latter associated with vastness, obscurity, and terror encountered at a distance from actual danger.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "by": "Kant (Ginsborg) §2.7",
+     "note": "Burke's own account is not in a source consulted.",
+     "fix": "cut; Burke kept as Kant's influence"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "Taste, beauty, and the sublime",
+   "text": "Kant also distinguishes beauty from sublimity: in his account, the beautiful involves a felt harmony of imagination and understanding, whereas the sublime arises when sensible presentation proves inadequate to ideas of reason.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Kant (Ginsborg) §§2.2, 2.7",
+     "excerpt": "pleasure in the beautiful depends on the “free play” or “free harmony”",
+     "fix": "reword: two sublimes; imagination's failure only in the mathematical"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "Taste, beauty, and the sublime",
+   "text": "These accounts helped shape later debates about aesthetic judgment, nature, and the limits of representation.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Art, experience, and interpretation",
+   "text": "Twentieth-century debates asked whether aesthetic judgments follow general principles (Beardsley) or respond to particulars (Sibley, Isenberg); whether a special aesthetic attitude of disinterested attention exists (Schopenhauer, Bullough, Stolnitz), which George Dickie's critique did much to undermine; and whether aesthetic experience is defined by its inner character (Dewey, early Beardsley) or by the features of what is experienced.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Concept of the Aesthetic (Shelley) §§2.2–2.4",
+     "excerpt": "George Dickie is widely regarded as having delivered the decisive blow",
+     "note": "Shelley classes Sibley as a particularist on one distinction and a generalist on another.",
+     "fix": "split; Sibley's position corrected"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Art, experience, and interpretation",
+   "text": "A parallel tradition, running from Benjamin to Adorno, asks what art does in social and political life.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "note": "Benjamin and Adorno are not in Shelley.",
+     "fix": "replaced by sourced Benjamin and Adorno claims"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Art, experience, and interpretation",
+   "text": "Plato questioned poetry's relation to knowledge and its effects on the soul and city, while Aristotle analyzed tragedy in terms of plot, action, and its distinctive effects on spectators.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Plato's Aesthetics (Pappas) §2.3; Aristotle's Aesthetics (Destrée) §3.2",
+     "excerpt": "the plot is to be considered the most important means",
+     "fix": "split, sourced"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Art, experience, and interpretation",
+   "text": "Hegel later understood art historically, in relation to religion, philosophy, and changing forms of spirit.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Hegel's Aesthetics (Houlgate) §§3, 6.2",
+     "excerpt": "Art, for Hegel, also gives expression to spirit's understanding of itself.",
+     "fix": "keep, sourced"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "Art, experience, and interpretation",
+   "text": "In the twentieth century, John Dewey resisted separating artworks from the rhythms and activities of ordinary experience.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Dewey's Aesthetics (Puolakka) §2.2",
+     "excerpt": "a textbook example of the kind of compartmentalizing attitude toward art",
+     "fix": "keep, sourced"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Art, experience, and interpretation",
+   "text": "Arthur Danto's discussion of visually indiscernible objects asks why one object can count as art when its perceptually similar counterpart does not; interpretation and art-historical context become essential.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Definition of Art (Adajian) §4.2",
+     "excerpt": "Danto coined the term “artworld”, by which he meant “an atmosphere of art theory.”",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Indian theories of aesthetic experience",
+   "text": "Classical South Asian discussions of drama and poetry developed sophisticated accounts of aesthetic response.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Indian theories of aesthetic experience",
+   "text": "The Nāṭyaśāstra's theory of rasa concerns the distinctive savoring or experience of emotions in performance.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "note": "The Nāṭyaśāstra is not discussed in the entries consulted.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Indian theories of aesthetic experience",
+   "text": "Later thinkers, including Ānandavardhana and Abhinavagupta, explored suggestion, expression, and the conditions under which an audience can experience rasa.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Literal-Nonliteral (Keating) §§1.1, 3.1, 5.3",
+     "excerpt": "defend the existence of a new linguistic capacity, suggestion",
+     "fix": "make specific"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "section": "Indian theories of aesthetic experience",
+   "text": "Theories of rasa cannot simply be mapped onto European accounts of disinterested pleasure: they arise from different discussions of performance, language, affect, and spectatorship.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "section": "Indian theories of aesthetic experience",
+   "text": "Buddhist and other South Asian traditions also offer distinct resources for examining artistic experience.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "section": "Chinese art, cultivation, and expression",
+   "text": "Chinese philosophical and artistic traditions reflect on music, poetry, calligraphy, and painting in relation to cultivation, skill, social life, and responsiveness to the world.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "partly",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "section": "Chinese art, cultivation, and expression",
+   "text": "Confucius treats music and ritual as important to ethical formation.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Chinese Painting and Calligraphy (Escande) intro",
+     "excerpt": "take pleasure in the arts",
+     "note": "Escande does not mention music or ritual.",
+     "fix": "reword to the Analects line Escande cites"
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "section": "Chinese art, cultivation, and expression",
+   "text": "Daoist texts associated with Zhuangzi explore skillful activity and the limits of rigid distinctions; these passages have inspired interpretations of artistic spontaneity, though they are not systematic modern theories of art.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Chinese Painting and Calligraphy (Escande) §1.2",
+     "excerpt": "we must, like Lunbian, who carved wheels, neither hurry nor delay",
+     "fix": "replace with the wheelwright passage Escande uses"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "section": "Chinese art, cultivation, and expression",
+   "text": "Later theories of painting and calligraphy investigate brushwork, vitality, and the relation between disciplined technique and expressive achievement.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Chinese Painting and Calligraphy (Escande) §4.2",
+     "excerpt": "Formal resemblance means obtaining the apparent form (xing) but leaving out its breath (qi).",
+     "fix": "keep, made specific"
+    }
+   ]
+  },
+  {
+   "s": 28,
+   "section": "Chinese art, cultivation, and expression",
+   "text": "Calling this material 'aesthetics' is a useful comparative choice, not evidence that its historical categories were identical to modern European ones.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Chinese Painting and Calligraphy (Escande) intro",
+     "excerpt": "Although there is no word such as “aesthetics” in Chinese philosophy",
+     "fix": "reword (contrastive)"
+    }
+   ]
+  },
+  {
+   "s": 29,
+   "section": "Japanese aesthetic concepts",
+   "text": "Japanese philosophical and artistic discussions include mono no aware, an attunement to the poignancy of transience; wabi, often associated with understated or austere beauty; sabi, the evocative quality of age and patina; and yūgen, a mysterious or suggestive profundity.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Japanese Aesthetics (Parkes and Loughnane) §§2–6",
+     "excerpt": "the idea of wabi, understated beauty",
+     "fix": "keep, reworded to the entry's glosses"
+    }
+   ]
+  },
+  {
+   "s": 30,
+   "section": "Japanese aesthetic concepts",
+   "text": "These terms have distinct histories in poetry, theater, tea practice, and other arts.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Japanese Aesthetics (Parkes and Loughnane) §§3–6",
+     "fix": "merged"
+    }
+   ]
+  },
+  {
+   "s": 31,
+   "section": "Japanese aesthetic concepts",
+   "text": "They do not form a single timeless Japanese aesthetic doctrine.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 32,
+   "section": "Japanese aesthetic concepts",
+   "text": "Reflection on impermanence and disciplined practice also complicates the assumption that aesthetic value belongs only to finished objects rather than to activities and forms of attention.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Japanese Aesthetics (Parkes and Loughnane) §§1, 7",
+     "excerpt": "key aesthetic value also lies in the bodily performance the work attests to",
+     "fix": "reword (contrastive)"
+    }
+   ]
+  },
+  {
+   "s": 33,
+   "section": "African and diasporic perspectives",
+   "text": "African and African diasporic aesthetic practices and theories encompass diverse traditions of performance, music, visual culture, and communal expression.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 34,
+   "section": "African and diasporic perspectives",
+   "text": "Philosophers and critics have asked how art relates to collective life, cultural identity, colonial power, and historical representation.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 35,
+   "section": "African and diasporic perspectives",
+   "text": "Léopold Sédar Senghor's writing on Négritude assigns a prominent role to rhythm and expressive experience, but his generalizations about African identity have also been contested.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Négritude (Diagne) §§4, 6",
+     "excerpt": "Plastic forms are life forces, they are rhythms.",
+     "fix": "keep, sourced"
+    }
+   ]
+  },
+  {
+   "s": 36,
+   "section": "African and diasporic perspectives",
+   "text": "Frantz Fanon's analyses of colonial culture and national consciousness invite questions about artistic production under domination and during political transformation.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 37,
+   "section": "African and diasporic perspectives",
+   "text": "No single formula can stand for the aesthetics of a continent or diaspora.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 38,
+   "section": "Art, politics, and technological reproduction",
+   "text": "Walter Benjamin examined how mechanical and technological reproduction changes the conditions under which artworks circulate and are experienced.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Benjamin (Charles) §7",
+     "excerpt": "precisely 'useful for fascism'",
+     "fix": "reword to Charles's account"
+    }
+   ]
+  },
+  {
+   "s": 39,
+   "section": "Art, politics, and technological reproduction",
+   "text": "Theodor Adorno's aesthetic theory explores art's autonomy, formal difficulty, and relation to social contradiction.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Adorno (Zuidervaart) §6",
+     "excerpt": "the social antithesis of society",
+     "fix": "reword"
+    }
+   ]
+  },
+  {
+   "s": 40,
+   "section": "Art, politics, and technological reproduction",
+   "text": "These accounts differ over mass culture and emancipatory possibilities.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 41,
+   "section": "Art, politics, and technological reproduction",
+   "text": "Feminist and postcolonial approaches ask whose work enters the canon, whose perspectives are treated as universal, and how institutions shape visibility and value.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Definition of Art (Adajian) §3.1",
+     "excerpt": "almost all the artists the canon recognizes as great are men",
+     "fix": "keep the feminist point; postcolonial clause cut"
+    }
+   ]
+  },
+  {
+   "s": 42,
+   "section": "Art, politics, and technological reproduction",
+   "text": "Such questions concern both the interpretation of works and the social arrangements in which they are produced and received.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 43,
+   "section": "Everyday, environmental, and digital aesthetics",
+   "text": "Everyday aesthetics studies the qualities of ordinary life: meals, clothing, public spaces, weathered surfaces, household routines, and the designed environments people inhabit.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Aesthetics of the Everyday (Saito) intro, §§2, 6",
+     "excerpt": "quotidian activities such as eating, walking, and bathing",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 44,
+   "section": "Everyday, environmental, and digital aesthetics",
+   "text": "Yuriko Saito and other contemporary philosophers ask how aesthetic attention affects habits, consumption, and environmental responsibility.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Aesthetics of the Everyday (Saito) §9",
+     "excerpt": "everyday aesthetic responses often directly guide people's actions",
+     "fix": "reword"
+    }
+   ]
+  },
+  {
+   "s": 45,
+   "section": "Everyday, environmental, and digital aesthetics",
+   "text": "Environmental aesthetics considers landscapes and ecosystems without assuming that they should be appreciated as framed pictures.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Environmental Aesthetics (Carlson) §1.3",
+     "excerpt": "treating the environment as if it were a series of two-dimensional scenes",
+     "fix": "keep, sourced (contrastive reworded)"
+    }
+   ]
+  },
+  {
+   "s": 46,
+   "section": "Everyday, environmental, and digital aesthetics",
+   "text": "Digital media, games, algorithmic images, and interactive works reopen questions about authorship, originality, participation, and the relation between a work and its changing technical conditions.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 47,
+   "section": "Open problems",
+   "text": "Can judgments of taste be justified without reducing them to objective measurements?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 48,
+   "section": "Open problems",
+   "text": "Is beauty necessary for artistic value?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 49,
+   "section": "Open problems",
+   "text": "How should interpretation weigh an artist's intentions, the form of a work, and the histories of its audiences?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 50,
+   "section": "Open problems",
+   "text": "What is gained and lost when theories from distinct traditions are compared?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 51,
+   "section": "Open problems",
+   "text": "Aesthetics remains a field where perceptual experience, artistic practice, cultural history, and philosophical argument meet.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 51,
+  "claims": 51,
+  "supported": 22,
+  "editorial": 12,
+  "unverified": 8,
+  "overstated": 5,
+  "non-assertive": 4,
+  "assertive_claims": 47,
+  "cited_source_supports_before": 23,
+  "shipped_sentences": 32
+ },
+ "new_text": [
+  {
+   "text": "The word “aesthetic” entered Western European philosophy in the eighteenth century, and its concept descends from the concept of taste.",
+   "section": "The scope of aesthetics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Concept of the Aesthetic” (Shelley) intro, §1",
+     "excerpt": "That concept descends from the Western European concept of taste.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Dubos, Hume and Reid held that judgments of beauty are immediate, unmediated by inference, though grasping a complex work before judging it may take reasoning.",
+   "section": "The scope of aesthetics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Concept of the Aesthetic” (Shelley) §§1.1, 2.5.1",
+     "excerpt": "judgments of beauty are not (or at least not canonically) mediated by inferences",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Hutcheson argued that pleasure in the beautiful is not self-interested, and Kant reworked the idea, setting the aesthetic against the moral: a judgment of taste is disinterested and makes a claim to universality.",
+   "section": "Taste, beauty, and the sublime",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Concept of the Aesthetic” (Shelley) §1.2",
+     "excerpt": "But pleasure in the beautiful is not self-interested.",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Kant’s Aesthetics and Teleology” (Ginsborg) §§2.1.1–2.1.2",
+     "excerpt": "Judgments of beauty have, or make a claim to, “universality”",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "For Kant, pleasure in the beautiful depends on a free play or harmony of imagination and understanding.",
+   "section": "Taste, beauty, and the sublime",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Kant’s Aesthetics and Teleology” (Ginsborg) §2.2",
+     "excerpt": "pleasure in the beautiful depends on the “free play” or “free harmony”",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "He distinguishes a mathematical sublime, in which imagination fails to comprehend something vast, from a dynamical sublime of nature's might, and his account shows the influence of Burke.",
+   "section": "Taste, beauty, and the sublime",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Kant’s Aesthetics and Teleology” (Ginsborg) §2.7",
+     "excerpt": "showing in particular the influence of Burke",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Formalists such as Eduard Hanslick, Clive Bell and Clement Greenberg held that only a work's formal properties matter to its value as art.",
+   "section": "Form, perception, and twentieth-century debate",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Concept of the Aesthetic” (Shelley) §2.1",
+     "excerpt": "as a theorist he urged that music has no content but",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Arthur Danto challenged them with Warhol's Brillo Boxes, and Kendall Walton argued that which aesthetic properties we perceive in a work depends on the category we perceive it as belonging to.",
+   "section": "Form, perception, and twentieth-century debate",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Concept of the Aesthetic” (Shelley) §2.1",
+     "excerpt": "depends on which category we perceive the work as belonging to",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Danto coined the term artworld, an atmosphere of art theory, and held that artworks and their interpretation require an art-historical context.",
+   "section": "Form, perception, and twentieth-century debate",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Definition of Art” (Adajian) §4.2",
+     "excerpt": "Danto coined the term “artworld”, by which he meant “an atmosphere of art theory.”",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Later debates set Monroe Beardsley's generalism about aesthetic judgment against Arnold Isenberg's particularism, with Frank Sibley on different sides of different distinctions.",
+   "section": "Form, perception, and twentieth-century debate",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Concept of the Aesthetic” (Shelley) §2.2",
+     "excerpt": "the side of generalism",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "George Dickie's critique is widely regarded as decisive against theories of a special aesthetic attitude, such as those of Schopenhauer, Edward Bullough and Jerome Stolnitz.",
+   "section": "Form, perception, and twentieth-century debate",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Concept of the Aesthetic” (Shelley) §2.3",
+     "excerpt": "George Dickie is widely regarded as having delivered the decisive blow",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Internalist accounts of aesthetic experience, such as Dewey's and the early Beardsley's, appeal to features internal to the experience, and externalists to what is experienced.",
+   "section": "Form, perception, and twentieth-century debate",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Concept of the Aesthetic” (Shelley) §2.4",
+     "excerpt": "internalist theories appeal to features internal to experience",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In Republic 10 Plato argues that Homer was ignorant and taught nothing useful, and concludes that imitative poetry should be banned from the good city.",
+   "section": "Art in history and society",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Plato’s Aesthetics” (Pappas) §2.3",
+     "excerpt": "It should therefore be banned from the good city.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Aristotle's Poetics treats tragedy as the imitation of a momentous action, with plot its most important element, arousing pity and fear and so producing a katharsis of them.",
+   "section": "Art in history and society",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Aristotle’s Aesthetics” (Destrée) §3.2",
+     "excerpt": "the plot is to be considered the most important means",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Hegel placed art beside religion and philosophy as a way spirit understands itself, and traced its history through symbolic, classical and romantic forms.",
+   "section": "Art in history and society",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Hegel’s Aesthetics” (Houlgate) §§3, 6.2",
+     "excerpt": "Art, for Hegel, also gives expression to spirit's understanding of itself.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "John Dewey's Art as Experience attacked the museum conception of art as a compartmentalizing attitude.",
+   "section": "Art in history and society",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Dewey’s Aesthetics” (Puolakka) §2.2",
+     "excerpt": "a textbook example of the kind of compartmentalizing attitude toward art",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Walter Benjamin held that aura was useful for fascism, and Adorno's Aesthetic Theory treats modern art as, in his phrase, “the social antithesis of society.”",
+   "section": "Art in history and society",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Walter Benjamin” (Charles) §7",
+     "excerpt": "precisely 'useful for fascism'",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Theodor W. Adorno” (Zuidervaart) §6",
+     "excerpt": "the social antithesis of society",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Feminist philosophers of art note that the artists the Western canon ranks as great are overwhelmingly men.",
+   "section": "Art in history and society",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Definition of Art” (Adajian) §3.1",
+     "excerpt": "almost all the artists the canon recognizes as great are men",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Ānandavardhana defended a new linguistic capacity, suggestion (dhvani), which works even when the literal meaning fits; secondary meaning (lakṣaṇā) arises only when it fails.",
+   "section": "Indian theories of suggestion and rasa",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Literal-Nonliteral Distinction in Classical Indian Philosophy” (Keating) §§1.1, 3.1",
+     "excerpt": "defend the existence of a new linguistic capacity, suggestion",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "After Abhinavagupta's commentary on Ānandavardhana, discussion of rasa, poetry's aesthetic mood, turned to the reader's emotive experience, and for Abhinavagupta rasa also has a transcendent dimension.",
+   "section": "Indian theories of suggestion and rasa",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Literal-Nonliteral Distinction in Classical Indian Philosophy” (Keating) §§3.1, 5.3",
+     "excerpt": "the emphasis shifts onto the reader’s emotive experience",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Classical Chinese philosophy has no word for aesthetics, and its concerns differ from European ones.",
+   "section": "Chinese painting and calligraphy",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Aesthetics in Chinese Philosophy: Painting and Calligraphy” (Escande) intro",
+     "excerpt": "Although there is no word such as “aesthetics” in Chinese philosophy",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Confucius urged concentrating on the Way and taking pleasure in the arts.",
+   "section": "Chinese painting and calligraphy",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Aesthetics in Chinese Philosophy: Painting and Calligraphy” (Escande) intro",
+     "excerpt": "take pleasure in the arts",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Theories of painting set formal resemblance, which captures a thing's apparent form, against capturing its breath (qi), and the calligrapher Yu Shinan invoked Zhuangzi's wheelwright Lunbian, who neither hurried nor delayed, to describe the brush at work.",
+   "section": "Chinese painting and calligraphy",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Aesthetics in Chinese Philosophy: Painting and Calligraphy” (Escande) §§1.2, 4.2",
+     "excerpt": "Formal resemblance means obtaining the apparent form (xing) but leaving out its breath (qi).",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Mono no aware is a profound sensitivity to the emotional dimensions of existence, wabi an understated beauty, sabi the patina that lends old things their beauty, and yūgen, at first “dark” or “mysterious”, the depth of the world we live in.",
+   "section": "Japanese aesthetic concepts",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Japanese Aesthetics” (Parkes and Loughnane) §§2–6",
+     "excerpt": "the idea of wabi, understated beauty",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "These ideals run through poetry, the tea ceremony and Nō drama, and the arts are often called “ways” of living; in ink painting and calligraphy, much of a work's value lies in the bodily act it records.",
+   "section": "Japanese aesthetic concepts",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Japanese Aesthetics” (Parkes and Loughnane) §§1, 3–7",
+     "excerpt": "key aesthetic value also lies in the bodily performance the work attests to",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In Léopold Sédar Senghor's Négritude rhythm is central: plastic forms are life forces and rhythms.",
+   "section": "African and diasporic aesthetics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Négritude” (Diagne) §6",
+     "excerpt": "Plastic forms are life forces, they are rhythms.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Critics, foreshadowed by Sartre's preface, charged Négritude's notion of a shared black identity with unfounded essentialism.",
+   "section": "African and diasporic aesthetics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Négritude” (Diagne) §4",
+     "excerpt": "Sartre's 'preface' also foreshadowed the accusation of being an unfounded essentialism",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Everyday aesthetics studies quotidian activities such as eating, walking and bathing, along with ordinary objects such as clothing and furniture, and Yuriko Saito stresses that everyday aesthetic judgments steer what people do, from what they buy to how they tend a lawn.",
+   "section": "Everyday and environmental aesthetics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Aesthetics of the Everyday” (Saito) intro, §§2, 4–6, 9",
+     "excerpt": "everyday aesthetic responses often directly guide people's actions",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Environmental aesthetics arose partly in reaction to aesthetics' focus on art, and Allen Carlson criticized the landscape model for treating the environment as a sequence of flat scenes.",
+   "section": "Everyday and environmental aesthetics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Environmental Aesthetics” (Carlson) §1.3",
+     "excerpt": "treating the environment as if it were a series of two-dimensional scenes",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Can judgments of taste be justified without reducing them to objective measurements?",
+   "section": "Open problems",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "Is beauty necessary for artistic value?",
+   "section": "Open problems",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "How should interpretation weigh an artist's intentions, the form of a work, and the histories of its audiences?",
+   "section": "Open problems",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "What is gained and lost when theories from distinct traditions are compared?",
+   "section": "Open problems",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}

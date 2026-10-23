@@ -1,0 +1,645 @@
+{
+ "article": "science",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited SEP section, 2026-10-23 (34 fixes applied, among them Dharmakīrti's restricted conditions, Russell's 1908 type theory, the scheme definition of formal validity, Longino's objective method, and source wording quoted or reworded)",
+ "cited_sources_before": 8,
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "Methods, demarcation, and inquiry",
+   "text": "Philosophy of science studies the aims, methods, evidence, and authority of scientific inquiry.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "keep as the opening"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "Methods, demarcation, and inquiry",
+   "text": "Francis Bacon advocated systematic investigation of nature; Karl Popper later emphasized risky predictions and attempts at falsification.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Scientific Method (Andersen) §2; Popper (Thornton) §§2–3",
+     "excerpt": "would be grounded in methodical collection of observations",
+     "fix": "split"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "Methods, demarcation, and inquiry",
+   "text": "The difficulty of drawing a universal boundary between science and non-science is itself an enduring philosophical problem.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Scientific Method (Andersen) §6",
+     "excerpt": "closely related to the philosophy of science’s classical problem of demarcation",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "Induction, confirmation, and explanation",
+   "text": "David Hume's problem of induction asks how past observations justify expectations about unobserved cases.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Problem of Induction (Henderson) §1",
+     "fix": "merged with 24"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "Induction, confirmation, and explanation",
+   "text": "Bayesian accounts model confirmation through changes in degrees of belief; inference to the best explanation compares rival hypotheses.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Problem of Induction (Henderson) §§3.2–3.3",
+     "fix": "merged with 24"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "Induction, confirmation, and explanation",
+   "text": "Carl Hempel's covering-law model prompted debate about whether genuine explanations require causal, statistical, or unifying relations.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Scientific Explanation (Ross) §§1, 3–5",
+     "fix": "merged with 25"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "Theory change and scientific revolutions",
+   "text": "Thomas Kuhn described periods of normal science and episodes of revolutionary change in which standards, exemplars, and research problems can shift.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Thomas Kuhn (Bird) §§2–4",
+     "fix": "merged with 27"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "Theory change and scientific revolutions",
+   "text": "Imre Lakatos proposed evaluating research programmes over time, while Paul Feyerabend criticized universal methodological rules.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Lakatos (Pigden) §2.2; Feyerabend (Preston) §5.1",
+     "excerpt": "Lakatos's basic idea is that a research programme constitutes good science",
+     "fix": "keep, made specific"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "Theory change and scientific revolutions",
+   "text": "These views disagree about the rationality and continuity of scientific change.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "Realism, models, and underdetermination",
+   "text": "Scientific realists take successful theories to provide reason for believing in unobservable entities; antirealists question how far empirical success warrants such commitments.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Scientific Realism (Chakravartty) §§2.1, 4.1",
+     "excerpt": "recommends belief in our best theories only insofar as they describe observable phenomena",
+     "fix": "keep, with constructive empiricism"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "Realism, models, and underdetermination",
+   "text": "Models idealize and simplify, often describing systems in deliberately false ways.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Models in Science (Frigg and Hartmann) §1",
+     "excerpt": "Idealized models are models that involve a deliberate simplification or distortion",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "Realism, models, and underdetermination",
+   "text": "Underdetermination raises the possibility that different theories fit available evidence.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Underdetermination (Stanford) §3.1",
+     "excerpt": "more than one theory may be well-supported by that evidence",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Values, objectivity, and situated knowledge",
+   "text": "Scientific decisions can involve ethical and social values, particularly when uncertainty carries unequal risks.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Scientific Objectivity (Reiss and Sprenger) §3.2",
+     "excerpt": "Contextual values influence scientific methods by determining the acceptable amount of inductive risk",
+     "fix": "make specific: inductive risk"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Values, objectivity, and situated knowledge",
+   "text": "Donna Haraway's account of situated knowledges criticizes a view from nowhere without abandoning responsible inquiry.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Feminist Epistemology (Anderson) §3",
+     "note": "'Without abandoning responsible inquiry' is not her wording; contrastive.",
+     "fix": "reword to what Anderson gives"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Values, objectivity, and situated knowledge",
+   "text": "Feminist philosophy of science examines background assumptions, research communities, and the conditions under which criticism can strengthen objectivity.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Scientific Objectivity (Reiss and Sprenger) §5.2",
+     "excerpt": "objective to the degree that it permits transformative criticism",
+     "fix": "make specific: Longino"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Scientific traditions and global histories",
+   "text": "Scientific inquiry has never belonged to one civilization.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "Scientific traditions and global histories",
+   "text": "Indian astronomical and mathematical traditions, Chinese investigations of nature, and scientific work in the Islamic world shaped methods, instruments, and theories in diverse settings.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Scientific traditions and global histories",
+   "text": "Historians caution against projecting modern disciplinary boundaries backward or treating these traditions merely as precursors to European science.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Experiment, technology, and contemporary challenges",
+   "text": "Experiment depends on instruments, measurement, replication, and sometimes intervention.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Scientific Method (Andersen) §3.4",
+     "fix": "replaced by the replication finding"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Experiment, technology, and contemporary challenges",
+   "text": "Contemporary debates address simulations, machine learning, reproducibility, climate models, and the role of scientific expertise in public decisions.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Experiment, technology, and contemporary challenges",
+   "text": "The philosophical task is not to replace science but to clarify its assumptions, strengths, and limits.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "section": "Earlier overview",
+   "text": "Philosophy of science asks what distinguishes science from other inquiry, how evidence supports theories, and what science achieves.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "merged into the opening"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "section": "Earlier overview",
+   "text": "Karl Popper accepted Hume's critique of induction and held that induction is never actually used in science: science proceeds by conjectures and attempted refutations, and falsifiability marks a theory as scientific.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Popper (Thornton) §§2–3, 6",
+     "excerpt": "accepts the validity of the Humean critique of induction",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "section": "Earlier overview",
+   "text": "Hume's problem of induction, what justifies beliefs about the unobserved, remains open; Bayesians treat evidence as updating degrees of belief, and others stress inference to the best explanation.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Problem of Induction (Henderson) intro, §§1, 3.2–3.3, 6",
+     "excerpt": "a significant number have embraced his conclusion that it is insoluble",
+     "fix": "reword: 'remains open' replaced by Henderson's report"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "section": "Earlier overview",
+   "text": "Hempel's deductive-nomological model, the most influential twentieth-century account of explanation, treated an explanation as a derivation from laws; asymmetries such as the flagpole and its shadow showed that it misses something, and later accounts stress causal processes or unification.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Scientific Explanation (Ross) §§1, 2.5, 4–5",
+     "excerpt": "unquestionably the most detailed and influential statement is due to Carl Hempel",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "section": "Earlier overview",
+   "text": "Holism about testing, the Duhem–Quine thesis, holds that hypotheses are tested only in groups: when Uranus's orbit failed to fit Newton's mechanics, astronomers revised a background assumption and found Neptune, though the same move failed for Mercury.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Underdetermination (Stanford) §2.1",
+     "excerpt": "by calculating the location of a hypothetical eighth planet influencing the orbit of Uranus",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "section": "Earlier overview",
+   "text": "Thomas Kuhn's Structure of Scientific Revolutions (1962) described normal science as puzzle-solving within a paradigm, broken by revolutions in which a rival paradigm supersedes it, and argued that theory choice is not governed by rules alone and that rival paradigms lack a common measure.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Thomas Kuhn (Bird) §§2–4.1",
+     "excerpt": "decision making is not rule-governed or algorithmic",
+     "fix": "keep, reworded (contrastive)"
+    }
+   ]
+  },
+  {
+   "s": 28,
+   "section": "Earlier overview",
+   "text": "Paul Feyerabend's Against Method (1975) denied that any universal method exists.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Feyerabend (Preston) §5.1",
+     "excerpt": "there is no such thing as the scientific method",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 29,
+   "section": "Earlier overview",
+   "text": "Realists hold that successful theories are approximately true; their critics point to the well-confirmed theories later displaced by rivals no one had yet conceived.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Scientific Realism (Chakravartty) §§2.1, 3.1, 3.3",
+     "excerpt": "most past theories must be considered false",
+     "fix": "make specific: pessimistic induction and unconceived alternatives"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 29,
+  "claims": 29,
+  "editorial": 5,
+  "supported": 20,
+  "unverified": 3,
+  "overstated": 1,
+  "assertive_claims": 29,
+  "cited_source_supports_before": 20,
+  "shipped_sentences": 18
+ },
+ "new_text": [
+  {
+   "text": "Philosophy of science asks what distinguishes science from other inquiry, how evidence supports theories, and what science achieves.",
+   "section": "Method and demarcation",
+   "claims": [
+    {
+     "type": "editorial",
+     "accuracy": "editorial"
+    }
+   ]
+  },
+  {
+   "text": "Francis Bacon's Novum Organum (1620) grounded his method in the methodical collection of observations.",
+   "section": "Method and demarcation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Scientific Method” (Hepburn and Andersen) §2",
+     "excerpt": "would be grounded in methodical collection of observations",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Karl Popper accepted Hume's critique of induction and held that science proceeds by conjectures and attempted refutations, with falsifiability the criterion that sets science apart from non-science.",
+   "section": "Method and demarcation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Karl Popper” (Thornton) §§2–3, 6",
+     "excerpt": "accepts the validity of the Humean critique of induction",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Discussion of scientific method remains tied to this classical problem of demarcation.",
+   "section": "Method and demarcation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Scientific Method” (Hepburn and Andersen) §6",
+     "excerpt": "closely related to the philosophy of science’s classical problem of demarcation",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Hume argued that we cannot infer the unobserved from the observed by purely a priori means, and a significant number of philosophers have accepted his conclusion that the problem is insoluble.",
+   "section": "Induction, confirmation, and explanation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Problem of Induction” (Henderson) intro, §1",
+     "excerpt": "a significant number have embraced his conclusion that it is insoluble",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Responses appeal to inference to the best explanation, or model confirmation in Bayesian terms, though critics argue that the first may itself depend on induction and the second on empirical assumptions.",
+   "section": "Induction, confirmation, and explanation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Problem of Induction” (Henderson) §§3.2–3.3",
+     "excerpt": "appeals to the principle of Inference to the Best Explanation (IBE)",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Carl Hempel gave the most detailed and influential twentieth-century account of explanation, on which an explanation is a sound deductive argument from laws; cases such as a flagpole and its shadow showed that it misses something, and Wesley Salmon's causal and Philip Kitcher's unificationist accounts followed.",
+   "section": "Induction, confirmation, and explanation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “20th Century Theories of Scientific Explanation” (Ross) §§1, 2.1, 2.5, 4–5",
+     "excerpt": "unquestionably the most detailed and influential statement is due to Carl Hempel",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Pierre Duhem argued that a physicist can test hypotheses only in groups; Kyle Stanford illustrates the point with Uranus, whose misbehaving orbit led astronomers to calculate the position of an eighth planet and find Neptune, while the same move failed for Mercury.",
+   "section": "Induction, confirmation, and explanation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Underdetermination of Scientific Theory” (Stanford) §2.1",
+     "excerpt": "by calculating the location of a hypothetical eighth planet influencing the orbit of Uranus",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Thomas Kuhn's Structure of Scientific Revolutions (1962) describes normal science as puzzle-solving within a paradigm, broken by revolutions in which the paradigm is replaced; theory choice, on his view, is not rule-governed or algorithmic, and rival paradigms can share no common measure.",
+   "section": "Theory change and scientific revolutions",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Thomas Kuhn” (Bird) §§2–4.1",
+     "excerpt": "decision making is not rule-governed or algorithmic",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Imre Lakatos judged research programmes over time, as progressive while they yield novel predictions and degenerating when they stop.",
+   "section": "Theory change and scientific revolutions",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Imre Lakatos” (Pigden) §2.2",
+     "excerpt": "Lakatos's basic idea is that a research programme constitutes good science",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Paul Feyerabend's Against Method (1975) argued that “there is no such thing as the scientific method.”",
+   "section": "Theory change and scientific revolutions",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Paul Feyerabend” (Preston) §5.1",
+     "excerpt": "there is no such thing as the scientific method",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Realists argue that the approximate truth of our best theories is the best explanation of their extraordinary success, and constructive empiricists such as Bas van Fraassen recommend belief in them only as far as they describe what is observable.",
+   "section": "Realism, models, and underdetermination",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Scientific Realism” (Chakravartty) §§2.1, 4.1",
+     "excerpt": "recommends belief in our best theories only insofar as they describe observable phenomena",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Critics point to past theories now taken to be false, and Kyle Stanford to the alternatives scientists had not yet conceived that the evidence would have supported as well.",
+   "section": "Realism, models, and underdetermination",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Scientific Realism” (Chakravartty) §§3.1, 3.3",
+     "excerpt": "most past theories must be considered false",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Idealized models involve a deliberate simplification or distortion of their targets, such as frictionless planes and point masses.",
+   "section": "Realism, models, and underdetermination",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Models in Science” (Frigg and Hartmann) §1",
+     "excerpt": "Idealized models are models that involve a deliberate simplification or distortion",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "On contrastive underdetermination, a single body of evidence may support several rival theories equally well.",
+   "section": "Realism, models, and underdetermination",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Underdetermination of Scientific Theory” (Stanford) §3.1",
+     "excerpt": "more than one theory may be well-supported by that evidence",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Since accepting a hypothesis under uncertainty risks error, Richard Rudner argued that ethical judgments about the cost of mistakes help fix how much inductive risk is acceptable, a line later developed by Heather Douglas.",
+   "section": "Values and objectivity",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Scientific Objectivity” (Reiss and Sprenger) §3.2",
+     "excerpt": "Contextual values influence scientific methods by determining the acceptable amount of inductive risk",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Helen Longino regards a method of inquiry as “objective to the degree that it permits transformative criticism,” and Donna Haraway's situated knowledges reject both objectivism and relativism.",
+   "section": "Values and objectivity",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Scientific Objectivity” (Reiss and Sprenger) §5.2",
+     "excerpt": "objective to the degree that it permits transformative criticism",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Epistemology and Philosophy of Science” (Anderson) §3",
+     "excerpt": "rejects both objectivism and relativism",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "From the early 2000s a number of scientists found they could not replicate published experimental results, which made reproducibility a question for philosophy of science.",
+   "section": "Experiment and reproducibility",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Scientific Method” (Hepburn and Andersen) §3.4",
+     "excerpt": "attempting to replicate the results of published experiments could not do so",
+     "accuracy": "supported"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}

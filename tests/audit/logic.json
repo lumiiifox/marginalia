@@ -1,0 +1,1109 @@
+{
+ "article": "logic",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited SEP section, 2026-10-23 (34 fixes applied, among them Dharmakīrti's restricted conditions, Russell's 1908 type theory, the scheme definition of formal validity, Longino's objective method, and source wording quoted or reworded)",
+ "cited_sources_before": 13,
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "Arguments, validity, and consequence",
+   "text": "Logic studies correct reasoning, usually in the form of arguments: premises offered in support of a conclusion.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Logical Consequence (Sagi, Beall and Restall) intro",
+     "excerpt": "A good argument is one whose conclusions follow from its premises.",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "Arguments, validity, and consequence",
+   "text": "Logical consequence is characterized as necessary truth preservation in virtue of form: an argument is valid when it falls under a general scheme every instance of which is valid.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Logical Consequence (Sagi, Beall and Restall) §§2, 3.1",
+     "excerpt": "We have characterized logical consequence as necessary truth preservation in virtue of form.",
+     "fix": "keep; the scheme view marked as tentative"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "Arguments, validity, and consequence",
+   "text": "Model-theoretic accounts treat validity as the absence of a counterexample, a model in which the premises are true and the conclusion false; proof-theoretic accounts treat it as the existence of a proof.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Logical Consequence (Sagi, Beall and Restall) §§3.1–3.2",
+     "excerpt": "takes the validity of an argument to be absence of counterexample",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "Arguments, validity, and consequence",
+   "text": "A proof system is sound when everything it proves is valid, and complete when it proves everything valid.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Logical Consequence (Sagi, Beall and Restall) §3.3",
+     "excerpt": "every model-theoretically valid argument has a proof in the system",
+     "fix": "keep, made relative to a semantics"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "Arguments, validity, and consequence",
+   "text": "For example, 'All mammals are animals; all whales are mammals; therefore all whales are animals' is valid because its conclusion follows from the premises.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "keep as an example"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "Arguments, validity, and consequence",
+   "text": "A valid argument can nevertheless have false premises.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "Arguments, validity, and consequence",
+   "text": "Soundness, in the ordinary sense of an argument, requires both validity and true premises; this differs from soundness as a technical property of a proof system.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "keep, contrastive reworded"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "Arguments, validity, and consequence",
+   "text": "An invalid pattern is 'If it rains, the street is wet; the street is wet; therefore it rains': another cause could explain the wet street.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Fallacies (Hansen) §§1, 2.10",
+     "fix": "keep as an example"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "Deduction, induction, and fallacies",
+   "text": "Ampliative inferences go beyond their premises: induction generalizes from observed cases, and abduction, often called inference to the best explanation, infers what would best explain the evidence.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Abduction (Douven) intro, §1.1",
+     "excerpt": "abduction is also often called “Inference to the Best Explanation.”",
+     "note": "Douven characterizes induction by statistical data, and calls some generalizations abductive.",
+     "fix": "reword: induction as Douven characterizes it"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "Deduction, induction, and fallacies",
+   "text": "Fallacies are bad arguments; the study of them begins with Aristotle's Sophistical Refutations, and formal fallacies, such as affirming the consequent, are distinguished from those that turn on language or context.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Fallacies (Hansen) intro, §§1, 2.1",
+     "excerpt": "The history of the study of fallacies begins with Aristotle's",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "Deduction, induction, and fallacies",
+   "text": "Deductive validity and the strength of an inductive inference therefore answer different questions.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "Deduction, induction, and fallacies",
+   "text": "A deductive counterexample establishes invalidity, while evaluating an inductive argument requires attention to evidence, sampling, background assumptions, and possible alternative explanations.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Greek and Stoic traditions",
+   "text": "Aristotle's syllogistic presented valid forms as schemes, and the Stoics, above all Chrysippus, built a logic of propositions on five indemonstrable argument forms.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Ancient Logic (Bobzien) §§2.4, 5.4",
+     "excerpt": "five kinds of axiomatic arguments (the indemonstrables)",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Greek and Stoic traditions",
+   "text": "Aristotelian term logic examines relations among categories; Stoic accounts place special emphasis on connectives such as 'if' and 'either ... or.' Both traditions have their own technical vocabularies and histories, and neither should be equated without qualification with modern symbolic logic.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Ancient Logic (Bobzien) §5.2",
+     "excerpt": "Conditionals are non-simple assertibles formed with the connective",
+     "fix": "keep the connectives; contrastive caution cut"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Indian traditions of inference and debate",
+   "text": "Classical Indian philosophers developed sophisticated accounts of inference (anumāna), often within broader theories of reliable cognition and public debate.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Indian Logic (Gillon) §§3.1.2, 4.1",
+     "excerpt": "identify inference (anumāna), as distinguished from argument (sādhana)",
+     "fix": "reword to Gillon's distinction"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Indian traditions of inference and debate",
+   "text": "Nyāya's familiar five-membered argument presents a thesis, reason, example, application, and conclusion.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Indian Logic (Gillon) §3.2",
+     "excerpt": "takes the syllogism to have five parts",
+     "note": "Gillon does not set out the five members with these labels.",
+     "fix": "reword; the member labels cut"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "Indian traditions of inference and debate",
+   "text": "The canonical smoke-and-fire illustration moves from smoke observed on a hill to the conclusion that the hill has fire, relying on an established relation between the reason and what is to be proved.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "by": "Indian Logic (Gillon) §3.1.3",
+     "note": "Gillon's canonical example is different; smoke and fire appear in a Buddhist text.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Indian traditions of inference and debate",
+   "text": "This is not simply an Aristotelian syllogism written with extra steps: the epistemic status of the inferential sign and the circumstances of debate matter.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Indian traditions of inference and debate",
+   "text": "Buddhist logicians Dignāga and Dharmakīrti refined conditions under which a reason supports a thesis.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Indian Logic (Gillon) §4.2",
+     "fix": "merged"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Indian traditions of inference and debate",
+   "text": "Dignāga's three characteristics of a good reason concern its presence in the subject, occurrence in relevant similar cases, and absence in dissimilar cases; Dharmakīrti further investigates the grounds of such inferential connections.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Indian Logic (Gillon) §4.2",
+     "excerpt": "the causation relation (tadutpatti) and the identity relation",
+     "note": "Gillon notes the version he presents is Dharmakīrti's.",
+     "fix": "keep, with Dharmakīrti's formulation"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Indian traditions of inference and debate",
+   "text": "Disagreements among Buddhist and Nyāya thinkers are part of the history of logic, not peripheral commentary on a European story.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "section": "Chinese accounts of names and disputation",
+   "text": "The later Mohist Canons and associated explanations investigate distinctions, names, analogies, and standards for acceptable reasoning.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Mohist Canons (Fraser) §§1, 4, 7",
+     "excerpt": "The later Mohists develop a sophisticated naturalistic semantic theory",
+     "fix": "keep, made specific"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "section": "Chinese accounts of names and disputation",
+   "text": "Their discussions arose in debates about language, classification, and practical judgment.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "section": "Chinese accounts of names and disputation",
+   "text": "Calling these texts 'Chinese logic' can help identify a field of comparison, but their categories should not be forced into the structure of Aristotelian syllogistic or contemporary predicate calculus.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Mohist Canons (Fraser) §§6.1, 7",
+     "excerpt": "They do not investigate formal logic or deductive inference",
+     "fix": "reword to Fraser's finding (contrastive cut)"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "section": "Chinese accounts of names and disputation",
+   "text": "Their attention to how names and distinctions guide disputation makes them especially relevant to the philosophy of language.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "section": "Arabic and medieval developments",
+   "text": "In the Arabic philosophical tradition, al-Fārābī and Ibn Sīnā (Avicenna) transformed the study of Aristotelian logic.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Ibn Sina's Logic (Strobino) intro, §1",
+     "excerpt": "Every later logician in this tradition confronts him",
+     "fix": "reword: Avicenna as the new canonical figure; al-Fārābī as a source"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "section": "Arabic and medieval developments",
+   "text": "Avicenna distinguished forming a conception from assenting to a proposition and developed influential analyses of conditional arguments, demonstration, and temporal and modal propositions.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Ibn Sina's Logic (Strobino) §§2, 3.1.1, 5.1.2",
+     "excerpt": "every categorical proposition is modalized, either implicitly or explicitly",
+     "fix": "reword: assertion; al-Fārābī's distinction"
+    }
+   ]
+  },
+  {
+   "s": 28,
+   "section": "Arabic and medieval developments",
+   "text": "His work was a major point of departure for later logicians, not merely a conduit for transmitting Greek texts.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 29,
+   "section": "Arabic and medieval developments",
+   "text": "Medieval Latin philosophers, including William of Ockham, also elaborated theories of terms, supposition, consequence, and obligationes, connecting formal reasoning to language and disputation.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Properties of Terms (Read) §§1, 3",
+     "excerpt": "William of Ockham appears to characterize simple supposition quite differently",
+     "note": "Read's entry does not treat consequences or obligationes.",
+     "fix": "keep supposition and Ockham; consequence and obligationes cut"
+    }
+   ]
+  },
+  {
+   "s": 30,
+   "section": "Mathematical logic and its limits",
+   "text": "Modern logic transformed the subject.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 31,
+   "section": "Mathematical logic and its limits",
+   "text": "Frege's Begriffsschrift (1879) introduced a powerful notation for quantification and inference.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Frege (Zalta) §1",
+     "excerpt": "a major advance in logic",
+     "note": "Zalta says the notation of quantification comes from the later Grundgesetze.",
+     "fix": "reword"
+    }
+   ]
+  },
+  {
+   "s": 32,
+   "section": "Mathematical logic and its limits",
+   "text": "Russell's paradox, discovered around 1901, showed that the naive principle that any condition defines a set leads to contradiction, a blow to Frege's system, and Russell and Whitehead's Principia Mathematica (1910–13) answered it with a theory of types.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Russell's Paradox (Irvine and Deutsch) intro, §§1, 2.1, 3.3",
+     "excerpt": "Russell appears to have made his discovery in the late spring of 1901.",
+     "fix": "keep; types first introduced in 1903"
+    }
+   ]
+  },
+  {
+   "s": 33,
+   "section": "Mathematical logic and its limits",
+   "text": "Gödel established the completeness of first-order logic in 1929: every logically valid first-order formula is derivable in an appropriate sound proof calculus.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Gödel (Kennedy) §§1, 2.1.2",
+     "excerpt": "The main theorem of his dissertation was the completeness theorem for first order logic.",
+     "fix": "keep, sourced"
+    }
+   ]
+  },
+  {
+   "s": 34,
+   "section": "Mathematical logic and its limits",
+   "text": "His incompleteness theorems (1931) concern effectively axiomatized, consistent formal theories sufficiently strong to represent elementary arithmetic: such a theory cannot prove every sentence or its negation, and under the standard further conditions cannot prove its own consistency.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Incompleteness (Raatikainen) §1.1",
+     "excerpt": "the consistency of F cannot be proved in F itself",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 35,
+   "section": "Mathematical logic and its limits",
+   "text": "This does not mean first-order logic itself is semantically incomplete.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Incompleteness (Raatikainen) §1.1",
+     "excerpt": "the incompleteness theorem does not deal with provability in any absolute sense",
+     "fix": "reword (contrastive)"
+    }
+   ]
+  },
+  {
+   "s": 36,
+   "section": "Mathematical logic and its limits",
+   "text": "In 1936 Church and Turing independently established the undecidability of first-order validity; Turing's abstract machines helped establish the foundations of computability theory and modern computer science.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "overstated",
+     "by": "Church-Turing Thesis (Copeland) §§1.6–1.7",
+     "excerpt": "The two discovered this result independently of one another, both publishing it in 1936.",
+     "note": "Copeland presents several equivalent accounts of computability.",
+     "fix": "keep; 'founded computability theory' replaced"
+    }
+   ]
+  },
+  {
+   "s": 37,
+   "section": "Modal and nonclassical logics",
+   "text": "Extended logics apply formal tools to necessity and possibility: possible-worlds semantics, with its accessibility relation, yields a family of modal systems.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Modal Logic (Garson) §§7–8",
+     "excerpt": "frames for modal logic should be reflexive",
+     "fix": "make specific"
+    }
+   ]
+  },
+  {
+   "s": 38,
+   "section": "Modal and nonclassical logics",
+   "text": "Intuitionistic logic, connected to constructive mathematics, does not accept the unrestricted classical law of excluded middle or double-negation elimination.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Intuitionistic Logic (Moschovakis) intro, §1",
+     "excerpt": "Intuitionistic logic may be considered the logical basis of constructive mathematics.",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 39,
+   "section": "Modal and nonclassical logics",
+   "text": "Many-valued logics investigate systems with more than the classical two truth values.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Paraconsistent Logic (Priest, Tanaka and Weber) §3.6",
+     "fix": "merged"
+    }
+   ]
+  },
+  {
+   "s": 40,
+   "section": "Modal and nonclassical logics",
+   "text": "Paraconsistent logics reject explosion, the rule by which a contradiction entails any conclusion: from 'P' and 'not P' they do not automatically license an unrelated claim 'Q.' Relevance logics require an appropriate connection between premises and conclusion.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Paraconsistent Logic (Priest, Tanaka and Weber) intro, §3.7",
+     "excerpt": "A logical consequence relation is said to be paraconsistent if it is not explosive.",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 41,
+   "section": "Modal and nonclassical logics",
+   "text": "Nonmonotonic logics model defeasible reasoning in which new information can overturn a previous inference.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Non-monotonic Logic (Antonelli) intro",
+     "excerpt": "designed to model and better understand defeasible reasoning",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 42,
+   "section": "Modal and nonclassical logics",
+   "text": "These families address different problems and need not share a single philosophical motivation.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 43,
+   "section": "Logic, language, and computation",
+   "text": "Logical form helps reveal distinctions that ordinary grammar can obscure, including the scope of quantifiers, negation, and modal operators.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 44,
+   "section": "Logic, language, and computation",
+   "text": "Logic also informs the semantics of natural languages, mathematical proof, programming-language design, automated theorem proving, and the study of artificial intelligence.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 45,
+   "section": "Logic, language, and computation",
+   "text": "Yet formalization involves choices: deciding which features of an argument to represent can itself be philosophically contentious.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 46,
+   "section": "Continuing questions",
+   "text": "Does validity depend on form, models, proofs, or some combination of these?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 47,
+   "section": "Continuing questions",
+   "text": "Which inferential standards should govern reasoning with incomplete or inconsistent information?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 48,
+   "section": "Continuing questions",
+   "text": "How do arguments relate to evidence and practical judgment?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 49,
+   "section": "Continuing questions",
+   "text": "And can distinct traditions of disputation be compared without treating one system's categories as the universal measure of all others?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive",
+     "fix": "keep"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 49,
+  "claims": 49,
+  "supported": 23,
+  "editorial": 12,
+  "overstated": 6,
+  "unverified": 4,
+  "non-assertive": 4,
+  "assertive_claims": 45,
+  "cited_source_supports_before": 30,
+  "shipped_sentences": 35
+ },
+ "new_text": [
+  {
+   "text": "Logic studies good arguments, those whose conclusions follow from their premises.",
+   "section": "Arguments, validity, and soundness",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Logical Consequence” (Sagi, Beall and Restall) intro",
+     "excerpt": "A good argument is one whose conclusions follow from its premises.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Logical consequence has been characterized as necessary truth preservation in virtue of form, and, on one tentative proposal, an argument is formally valid when it falls under a general scheme all of whose instances are valid.",
+   "section": "Arguments, validity, and soundness",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Logical Consequence” (Sagi, Beall and Restall) §§2, 3.1",
+     "excerpt": "We have characterized logical consequence as necessary truth preservation in virtue of form.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Model-theoretic accounts take validity to be the absence of a counterexample, a case in which the premises are true and the conclusion false; proof-theoretic accounts take it to be the existence of a proof.",
+   "section": "Arguments, validity, and soundness",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Logical Consequence” (Sagi, Beall and Restall) §§3.1–3.2",
+     "excerpt": "takes the validity of an argument to be absence of counterexample",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Relative to such a semantics, a proof system is sound when every argument it proves is valid, and complete when every valid argument has a proof in it.",
+   "section": "Arguments, validity, and soundness",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Logical Consequence” (Sagi, Beall and Restall) §3.3",
+     "excerpt": "every model-theoretically valid argument has a proof in the system",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "For example, “All mammals are animals; all whales are mammals; therefore all whales are animals” is valid.",
+   "section": "Arguments, validity, and soundness",
+   "claims": [
+    {
+     "type": "editorial",
+     "accuracy": "editorial"
+    }
+   ]
+  },
+  {
+   "text": "A valid argument can nevertheless have false premises.",
+   "section": "Arguments, validity, and soundness",
+   "claims": [
+    {
+     "type": "editorial",
+     "accuracy": "editorial"
+    }
+   ]
+  },
+  {
+   "text": "An argument is sound, in the ordinary sense, when it is valid and its premises are true; soundness of a proof system is a separate, technical notion.",
+   "section": "Arguments, validity, and soundness",
+   "claims": [
+    {
+     "type": "editorial",
+     "accuracy": "editorial"
+    }
+   ]
+  },
+  {
+   "text": "“If it rains, the street is wet; the street is wet; therefore it rains” is invalid, since something else could have wet the street: it affirms the consequent.",
+   "section": "Arguments, validity, and soundness",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Fallacies” (Hansen) §§1, 2.10",
+     "excerpt": "They include affirming the consequent, denying the antecedent",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Induction and abduction are ampliative, non-necessary inferences: induction, on one characterization, rests on statistical data such as observed frequencies, and abduction is often called inference to the best explanation.",
+   "section": "Deduction, induction, and fallacies",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Abduction” (Douven) intro, §1.1",
+     "excerpt": "abduction is also often called “Inference to the Best Explanation.”",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Fallacies are commonly understood as arguments that seem better than they really are, and their study begins with Aristotle's Sophistical Refutations, which separates fallacies that depend on language from those that do not; formal fallacies, such as affirming the consequent, are instances of identifiable invalid forms.",
+   "section": "Deduction, induction, and fallacies",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Fallacies” (Hansen) intro, §§1, 2.1",
+     "excerpt": "The history of the study of fallacies begins with Aristotle's",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Aristotle sorted the premise combinations of his term logic into three figures, and the Stoics, much of whose surviving logic goes back to Chrysippus, developed a propositional logic built on five kinds of indemonstrable argument.",
+   "section": "Greek and Stoic traditions",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Ancient Logic” (Bobzien) §§2.4, 5.4",
+     "excerpt": "five kinds of axiomatic arguments (the indemonstrables)",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Stoic complex propositions are formed with connectives such as “if” and “or”.",
+   "section": "Greek and Stoic traditions",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Ancient Logic” (Bobzien) §5.2",
+     "excerpt": "Conditionals are non-simple assertibles formed with the connective",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Several early Indian texts identify inference (anumāna), as distinct from argument (sādhana), as a means of knowledge.",
+   "section": "Indian traditions of inference",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Logic in Classical Indian Philosophy” (Gillon) §§3.1.2, 4.1",
+     "excerpt": "identify inference (anumāna), as distinguished from argument (sādhana)",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The Nyāya-sūtra takes the syllogism to have five parts, and later logicians analysed the pervasion (vyāpti) that ties a reason to what it proves.",
+   "section": "Indian traditions of inference",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Logic in Classical Indian Philosophy” (Gillon) §§3.2, 4.2",
+     "excerpt": "takes the syllogism to have five parts",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Dignāga's three conditions require a good reason to be present in the subject, present in similar cases and absent from dissimilar ones; Dharmakīrti sharpened each clause with a restricting particle (eva) and grounded the connection in causation and identity.",
+   "section": "Indian traditions of inference",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Logic in Classical Indian Philosophy” (Gillon) §4.2",
+     "excerpt": "the causation relation (tadutpatti) and the identity relation",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The later Mohist Canons develop a sophisticated naturalistic semantic theory and seek objective standards for distinguishing what is so from what is not.",
+   "section": "Chinese accounts of disputation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Mohist Canons” (Fraser) §§1, 4",
+     "excerpt": "The later Mohists develop a sophisticated naturalistic semantic theory",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "They never take up formal logic or deductive inference as topics, and they tend to treat all argument as fundamentally analogical.",
+   "section": "Chinese accounts of disputation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Mohist Canons” (Fraser) §§6.1, 7",
+     "excerpt": "They do not investigate formal logic or deductive inference",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Ibn Sīnā's innovations made him a new canonical figure in Arabic logic, and every later logician in that tradition confronts him.",
+   "section": "Arabic and medieval logic",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Ibn Sina’s Logic” (Strobino) intro, §1",
+     "excerpt": "Every later logician in this tradition confronts him",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "He drew on al-Fārābī's distinction between conception (taṣawwur) and assertion (taṣdīq), treated every categorical proposition as modalized, and analysed hypothetical syllogisms in detail.",
+   "section": "Arabic and medieval logic",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Ibn Sina’s Logic” (Strobino) §§2, 3.1.1, 5.1.2",
+     "excerpt": "every categorical proposition is modalized, either implicitly or explicitly",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Medieval Latin logicians developed theories of the properties of terms, above all supposition, and William of Ockham was the leading figure among these terminists.",
+   "section": "Arabic and medieval logic",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Medieval Theories: Properties of Terms” (Read) §§1, 3",
+     "excerpt": "he was the leading figure among the terminists",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Frege's Begriffsschrift (1879), a major advance in logic, first outlined his formal notation, which was at first neither widely understood nor well received.",
+   "section": "Mathematical logic and its limits",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Gottlob Frege” (Zalta) §§1, 2.1",
+     "excerpt": "a major advance in logic",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Russell found his paradox in 1901: the naive comprehension principle, that any condition defines a set, yields a contradiction, and Frege never recovered from the blow to his life's work.",
+   "section": "Mathematical logic and its limits",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Russell’s Paradox” (Deutsch, Marshall and Irvine) intro, §§1, 2.1",
+     "excerpt": "Russell appears to have made his discovery in the late spring of 1901.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Russell first introduced a theory of types in 1903, gave it a more mature form in 1908, and developed it in Principia Mathematica (1910–13), written with Whitehead.",
+   "section": "Mathematical logic and its limits",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Russell’s Paradox” (Deutsch, Marshall and Irvine) §3.3",
+     "excerpt": "more mature expression",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Gödel's 1929 dissertation proved the completeness theorem for first-order logic: every valid first-order formula is provable.",
+   "section": "Mathematical logic and its limits",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Kurt Gödel” (Kennedy) §§1, 2.1.2",
+     "excerpt": "The main theorem of his dissertation was the completeness theorem for first order logic.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "His first incompleteness theorem (1931) shows that a consistent, effectively axiomatized formal system F containing enough arithmetic has sentences that can be neither proved nor disproved in F, and the second that such an F cannot prove its own consistency.",
+   "section": "Mathematical logic and its limits",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Gödel’s Incompleteness Theorems” (Raatikainen) §1.1",
+     "excerpt": "the consistency of F cannot be proved in F itself",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The theorems concern derivability in one formal system or another, and make no claim about provability in an absolute sense.",
+   "section": "Mathematical logic and its limits",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Gödel’s Incompleteness Theorems” (Raatikainen) §1.1",
+     "excerpt": "the incompleteness theorem does not deal with provability in any absolute sense",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In 1936 Church and Turing independently showed that no decision method exists for first-order logic, and Turing's universal machine is a bare-bones logical model of almost every modern digital computer.",
+   "section": "Mathematical logic and its limits",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Church-Turing Thesis” (Copeland) §§1.6–1.7",
+     "excerpt": "The two discovered this result independently of one another, both publishing it in 1936.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Possible-worlds semantics ties modal axioms to conditions on an accessibility relation between worlds: reflexive frames give the system M (called T by some), adding transitivity gives S4, and adding the Euclidean condition gives S5.",
+   "section": "Modal and nonclassical logics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Modal Logic” (Garson) §§7–8",
+     "excerpt": "frames for modal logic should be reflexive",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Intuitionistic logic, which may be considered the logical basis of constructive mathematics, can be described succinctly as classical logic without the law of excluded middle.",
+   "section": "Modal and nonclassical logics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Intuitionistic Logic” (Moschovakis) intro, §1",
+     "excerpt": "Intuitionistic logic may be considered the logical basis of constructive mathematics.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "A consequence relation is paraconsistent when it is not explosive, when a contradiction does not entail every conclusion; many-valued semantics is perhaps the simplest route to one, and relevant logics require the conclusion to be relevant to the premises.",
+   "section": "Modal and nonclassical logics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Paraconsistent Logic” (Priest, Tanaka and Weber) intro, §§3.6–3.7",
+     "excerpt": "A logical consequence relation is said to be paraconsistent if it is not explosive.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Non-monotonic logics are designed to model defeasible reasoning, in which further information can lead us to retract an inference.",
+   "section": "Modal and nonclassical logics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Non-monotonic Logic” (Strasser and Antonelli) intro",
+     "excerpt": "designed to model and better understand defeasible reasoning",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Does validity depend on form, models, proofs, or some combination of these?",
+   "section": "Continuing questions",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "Which inferential standards should govern reasoning with incomplete or inconsistent information?",
+   "section": "Continuing questions",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "How do arguments relate to evidence and practical judgment?",
+   "section": "Continuing questions",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "And can distinct traditions of disputation be compared without treating one system's categories as the universal measure of all others?",
+   "section": "Continuing questions",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}
