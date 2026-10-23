@@ -1,0 +1,568 @@
+{
+ "article": "postcolonial",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited SEP section, 2026-10-23 (30 fixes applied, among them Tanney's rejection of the behaviourist label for Ryle, Las Casas and Vitoria as fellow critics, Davidson's charity by the interpreter's lights, and source wording quoted or reworded)",
+ "cited_sources_before": 2,
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "Historical foundations and central questions",
+   "text": "Colonialism is a practice of domination in which one people is subjected to another.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Colonialism (Kohn and Reddy) intro",
+     "excerpt": "a practice of domination, which involves the subjugation of one people to another",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "Historical foundations and central questions",
+   "text": "The term is often used for European settlement, dispossession and rule, and imperialism for domination without large-scale settlement, though the two are often interchanged.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Colonialism (Kohn and Reddy) §1",
+     "excerpt": "the term is often used as a synonym for imperialism",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "Historical foundations and central questions",
+   "text": "Spanish conquest in the Americas was justified by religious mission and papal authority, and challenged on natural-law grounds by Bartolomé de las Casas and Francisco de Vitoria, though Vitoria still allowed force under some conditions.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Colonialism (Kohn and Reddy) §2",
+     "excerpt": "the use of force in the New World was legitimate",
+     "note": "Reddy and Kohn give no natural-law analysis of Las Casas.",
+     "fix": "reword: Las Casas's condemnation, Vitoria on force; natural-law gloss cut"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "Historical foundations and central questions",
+   "text": "Liberal thinkers such as John Stuart Mill defended despotic rule over peoples they ranked lower on a scale of civilization, and Tocqueville supported French rule in Algeria.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Colonialism (Kohn and Reddy) §3",
+     "excerpt": "Despotic government (and Mill doesn't hesitate to use this term)",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "Empire, conquest, and contested justifications",
+   "text": "Philosophical debates about colonial rule have included claims of civilizing mission, property, sovereignty, religion, and economic development.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "Empire, conquest, and contested justifications",
+   "text": "Anticolonial responses exposed the violence and exclusions within purportedly universal principles.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "Empire, conquest, and contested justifications",
+   "text": "Colonialism took different forms, including settlement, extraction, indirect rule, and slavery, that should not be flattened into one history.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "Anticolonial political thought and liberation",
+   "text": "Aimé Césaire criticized the moral and political foundations of European colonialism, while Frantz Fanon examined violence, national consciousness, and the dangers of post-independence elites.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Colonialism (Kohn and Reddy) §5",
+     "excerpt": "the economic exploitation typical of colonialism can be secured in a new way",
+     "note": "Césaire is only named in the entry.",
+     "fix": "Fanon kept, 'comprador bourgeoisie' as the entry gives it; Césaire cut"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "Anticolonial political thought and liberation",
+   "text": "Mohandas Gandhi's satyagraha proposed a distinctive politics of resistance and self-rule.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Colonialism (Kohn and Reddy) §5",
+     "excerpt": "is often used to describe non-violent resistance or civil disobedience",
+     "fix": "keep, with Hind Swaraj"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "Anticolonial political thought and liberation",
+   "text": "These figures differed sharply on violence, modernity, and the institutions of liberation.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "Core debates and approaches",
+   "text": "Marx saw British rule in India as destructive but historically progressive; Lenin treated imperialism as a stage of capitalism driven by competition for markets, a line of analysis extended by Luxemburg and later by Wallerstein's world-systems theory.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Colonialism (Kohn and Reddy) §4",
+     "excerpt": "he felt it was still the agent of progress",
+     "note": "Luxemburg is only listed.",
+     "fix": "keep Marx, Lenin, Wallerstein; Luxemburg cut"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "Core debates and approaches",
+   "text": "Anti-colonial thinkers wrote from within the struggle.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Core debates and approaches",
+   "text": "Frantz Fanon analyzed colonial violence, its psychological effects, and the national bourgeoisie that inherits power; Gandhi developed satyagraha and a critique of Western civilization.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Colonialism (Kohn and Reddy) §5",
+     "fix": "merged into the Fanon and Gandhi sentences (duplicate)"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Orientalism, subaltern studies, and representation",
+   "text": "Edward Said analyzed how scholarly and cultural representations of the East participated in relations of power.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Colonialism (Kohn and Reddy) §5",
+     "excerpt": "“knowing the Orient” was part of the project of dominating it",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Orientalism, subaltern studies, and representation",
+   "text": "Ranajit Guha and Subaltern Studies historians challenged elite-centered accounts of colonial history.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "by": "Colonialism (Kohn and Reddy) §5",
+     "note": "Subaltern Studies appears mainly through a critic.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Orientalism, subaltern studies, and representation",
+   "text": "Gayatri Chakravorty Spivak examined how the most marginalized can be excluded even within projects claiming to represent them.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "overstated",
+     "by": "Colonialism (Kohn and Reddy) §5",
+     "excerpt": "representation has not withered away",
+     "fix": "reword to Spivak's argument as the entry gives it"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "Decoloniality and the coloniality of knowledge",
+   "text": "Latin American decolonial thinkers such as Aníbal Quijano and Walter Mignolo investigated how colonial hierarchies outlast formal political independence.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "by": "Philosophy of Liberation (Mendieta) §3.2",
+     "note": "Quijano's coloniality of power is not discussed in the entries consulted.",
+     "fix": "replaced: Dussel and the decolonial turn"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Decoloniality and the coloniality of knowledge",
+   "text": "Debates over epistemic justice ask whose concepts, archives, languages, and methods count as authoritative.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Decoloniality and the coloniality of knowledge",
+   "text": "Decolonial thought is not interchangeable with postcolonial literary theory, despite important intersections.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Colonialism (Kohn and Reddy) §5",
+     "excerpt": "theories of decolonization focus on social history, economics, and political institutions",
+     "fix": "reword (contrastive) to the entry's distinction"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Later developments and disagreements",
+   "text": "Postcolonial theory, especially in literary and cultural studies, grew from Edward Said's Orientalism, which examined how Western knowledge about “the Orient” served power, and from Gayatri Spivak's “Can the Subaltern Speak?”, which asked whether the most marginalized can be represented without being spoken for.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Colonialism (Kohn and Reddy) §5",
+     "fix": "merged (duplicate of 14 and 16)"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Later developments and disagreements",
+   "text": "Scholars of settler colonialism, many of them Indigenous, such as Glen Coulthard and Leanne Simpson, argue that the language of the postcolonial obscures colonial rule that continues, criticize politics of recognition and reconciliation, and emphasize Indigenous self-determination.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Colonialism (Kohn and Reddy) §6",
+     "excerpt": "For Coulthard, settler colonialism is an ongoing process",
+     "fix": "split and sourced"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "section": "Indigenous sovereignty and settler colonialism",
+   "text": "Indigenous theorists challenge frameworks that treat colonialism as a completed historical episode.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Colonialism (Kohn and Reddy) §6",
+     "fix": "merged into the Coulthard sentence"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "section": "Indigenous sovereignty and settler colonialism",
+   "text": "Glen Coulthard and Leanne Betasamosake Simpson, among others, emphasize land, resurgence, political authority, and the limits of state recognition.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Colonialism (Kohn and Reddy) §6",
+     "excerpt": "rebuilding needs to start from within",
+     "fix": "keep Simpson as the entry gives her"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "section": "Indigenous sovereignty and settler colonialism",
+   "text": "Distinct Indigenous traditions must not be reduced to examples of a single imported theory.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "section": "Gender, ecology, and the afterlives of empire",
+   "text": "Postcolonial feminists analyze how gendered violence, labor, development, and representation intersect with colonial histories.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "note": "The colonialism entry does not discuss postcolonial feminism.",
+     "fix": "replaced by the care-chains finding"
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "section": "Gender, ecology, and the afterlives of empire",
+   "text": "Environmental struggles raise questions about extraction, dispossession, and ecological repair.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "section": "Gender, ecology, and the afterlives of empire",
+   "text": "Debates continue about solidarity, nationalism, global institutions, and what meaningful decolonization requires.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 27,
+  "claims": 27,
+  "supported": 10,
+  "overstated": 5,
+  "unverified": 7,
+  "editorial": 5,
+  "assertive_claims": 27,
+  "cited_source_supports_before": 17,
+  "shipped_sentences": 14
+ },
+ "new_text": [
+  {
+   "text": "Margaret Kohn and Kavita Reddy define colonialism as “a practice of domination, which involves the subjugation of one people to another.”",
+   "section": "Colonialism and empire",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Colonialism” (Kohn and Reddy) intro",
+     "excerpt": "a practice of domination, which involves the subjugation of one people to another",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Colonialism is often tied to settlement and imperialism to rule without significant settlement, though the two terms are often used as synonyms.",
+   "section": "Colonialism and empire",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Colonialism” (Kohn and Reddy) §1",
+     "excerpt": "the term is often used as a synonym for imperialism",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The Spanish conquest was justified as a religious mission; Bartolomé de Las Casas and Francisco de Vitoria were among its most influential critics, yet Vitoria held that force in the New World was legitimate when Indigenous communities violated the Law of Nations.",
+   "section": "Colonialism and empire",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Colonialism” (Kohn and Reddy) §2",
+     "excerpt": "the use of force in the New World was legitimate",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "John Stuart Mill defended despotic government over societies he judged barbarous, and Tocqueville supported French rule in Algeria.",
+   "section": "Colonialism and empire",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Colonialism” (Kohn and Reddy) §3",
+     "excerpt": "Despotic government (and Mill doesn't hesitate to use this term)",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Marx found British rule in India cruel and greedy and still an agent of progress; Lenin, in Imperialism: The Highest Stage of Capitalism, treated imperialism as a stage of capitalism, and Immanuel Wallerstein's world-systems theory describes a division of labour that transfers resources from periphery to core.",
+   "section": "Colonialism and empire",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Colonialism” (Kohn and Reddy) §4",
+     "excerpt": "he felt it was still the agent of progress",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Frantz Fanon analysed colonial violence and its psychological effects, and warned that after independence a comprador bourgeoisie could secure colonial exploitation in a new way.",
+   "section": "Anticolonial thought",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Colonialism” (Kohn and Reddy) §5",
+     "excerpt": "the economic exploitation typical of colonialism can be secured in a new way",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Gandhi's Hind Swaraj includes a critique of Western civilization and its materialism, and his satyagraha, literally holding on to truth, names non-violent resistance.",
+   "section": "Anticolonial thought",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Colonialism” (Kohn and Reddy) §5",
+     "excerpt": "is often used to describe non-violent resistance or civil disobedience",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Edward Said's Orientalism argued that “‘knowing the Orient’ was part of the project of dominating it.”",
+   "section": "Postcolonial and decolonial theory",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Colonialism” (Kohn and Reddy) §5",
+     "excerpt": "“knowing the Orient” was part of the project of dominating it",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Gayatri Spivak's “Can the Subaltern Speak?” (1988) questions the hope of transparent subaltern speech, holding that experience is itself shaped by representation.",
+   "section": "Postcolonial and decolonial theory",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Colonialism” (Kohn and Reddy) §5",
+     "excerpt": "representation has not withered away",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In the humanities, postcolonial theory tends to show the influence of poststructuralism, while theorists of decolonization concentrate on social history, economics and political institutions.",
+   "section": "Postcolonial and decolonial theory",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Colonialism” (Kohn and Reddy) §5",
+     "excerpt": "theorists of decolonization focus on social history, economics, and political institutions",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Enrique Dussel counts the philosophy of liberation as part of the decolonial turn in Latin American philosophy.",
+   "section": "Postcolonial and decolonial theory",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of Liberation” (Mendieta) §3.2",
+     "excerpt": "is part of the “decolonial turn” in Latin American philosophy",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "For Glen Coulthard, settler colonialism is an ongoing process, the present reconciliation framework tends to dehistoricize dispossession, and cultural recognition by the colonial state is no solution.",
+   "section": "Settler colonialism and Indigenous resurgence",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Colonialism” (Kohn and Reddy) §6",
+     "excerpt": "For Coulthard, settler colonialism is an ongoing process",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Leanne Betasamosake Simpson argues that Indigenous rebuilding needs to start from within, through Indigenous custom and governance.",
+   "section": "Settler colonialism and Indigenous resurgence",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Colonialism” (Kohn and Reddy) §6",
+     "excerpt": "rebuilding needs to start from within",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The authors of The Care Manifesto criticize transnational care chains in which wealthy women of the Global North depend on the exploited care work of women and girls from the Global South.",
+   "section": "Gender and global labor",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Perspectives on Class and Work” (Nagel, Ferguson and Hennessy) §7",
+     "excerpt": "transnational care chains where Global North upper class women exploit",
+     "accuracy": "supported"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}

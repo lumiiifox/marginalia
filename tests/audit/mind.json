@@ -1,0 +1,707 @@
+{
+ "article": "mind",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited SEP section, 2026-10-23 (30 fixes applied, among them Tanney's rejection of the behaviourist label for Ryle, Las Casas and Vitoria as fellow critics, Davidson's charity by the interpreter's lights, and source wording quoted or reworded)",
+ "cited_sources_before": 8,
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "The mind-body problem",
+   "text": "Philosophy of mind asks what mental states are and how they relate to physical bodies.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "merged into the opening"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "The mind-body problem",
+   "text": "Substance dualism, property dualism, physicalism, and alternative monist theories offer different answers.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Dualism (Weir) §3",
+     "fix": "merged into the dualism and physicalism sentences"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "The mind-body problem",
+   "text": "The interaction objection raised by Elisabeth of Bohemia remains a central challenge to Cartesian substance dualism.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Dualism (Weir) §2.4",
+     "excerpt": "questioned whether Descartes can explain how mind and body interact",
+     "fix": "merged (duplicate of 27)"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "Consciousness and subjective experience",
+   "text": "Consciousness includes questions about wakefulness, awareness, and the felt character of experience.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Consciousness (Van Gulick) §§2.1–2.2",
+     "excerpt": "there is 'something that it is like' to be that creature",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "Consciousness and subjective experience",
+   "text": "Thomas Nagel's bat argument stresses the subjective point of view.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Consciousness (Van Gulick) §4.4",
+     "fix": "merged"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "Consciousness and subjective experience",
+   "text": "Debates about qualia, explanatory gaps, and the so-called hard problem ask whether objective descriptions fully account for experience.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Consciousness (Van Gulick) §§4.2, 5.2, 5.4",
+     "excerpt": "especially the so-called 'hard problem'",
+     "fix": "make specific: Levine and Chalmers"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "Intentionality and mental content",
+   "text": "Thoughts and perceptions are often about something: this directedness is called intentionality.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Intentionality (Jacob) intro",
+     "excerpt": "intentionality is the power of minds and mental states to be about",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "Intentionality and mental content",
+   "text": "Franz Brentano made intentionality central to modern discussions of the mental.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Intentionality (Jacob) §1",
+     "excerpt": "Brentano held that intentionality is the hallmark of the mental",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "Intentionality and mental content",
+   "text": "Philosophers disagree about whether mental content depends on internal representations, environmental relations, social practices, or embodied activity.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Intentionality (Jacob) §§6, 9",
+     "excerpt": "the externalist view of intentional mental states",
+     "note": "Social practice and embodied activity as sources of content are not in Jacob.",
+     "fix": "reword to externalism and naturalizing"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "Behaviorism, identity theory, and functionalism",
+   "text": "Gilbert Ryle criticized Cartesian pictures of a ghostly inner mind.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Ryle (Tanney) §6",
+     "excerpt": "category mistakes",
+     "note": "'Ghostly inner mind' is not Tanney's phrasing.",
+     "fix": "reword: Official Doctrine, category mistakes"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "Behaviorism, identity theory, and functionalism",
+   "text": "Philosophical behaviorism connected mental descriptions with patterns of behavior, while mind-brain identity theories identified types of mental states with physical states.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Functionalism (Levin) §§1, 2.3",
+     "excerpt": "each type of mental state is identical with a particular type of neural state",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "Behaviorism, identity theory, and functionalism",
+   "text": "Functionalism instead characterizes mental states partly through their causal roles, raising questions about multiple realizability and conscious experience.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Functionalism (Levin) §§1, 5.5.1",
+     "excerpt": "functionalism, with its claim that mental states can be multiply realized",
+     "fix": "split"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Embodiment and phenomenology",
+   "text": "Phenomenological thinkers examine lived experience rather than treating the body merely as an external object.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Embodiment and phenomenology",
+   "text": "Edmund Husserl investigated intentional consciousness; Maurice Merleau-Ponty emphasized embodied perception and skilled engagement with the world.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Embodied Cognition (Spaulding) §1.3",
+     "fix": "merged into the embodiment sentence"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Embodiment and phenomenology",
+   "text": "Enactivist and embodied approaches explore how cognition arises through active relations among brain, body, and environment.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Embodied Cognition (Spaulding) intro, §2.4",
+     "excerpt": "cognition emerges from or is constituted by sensorimotor activity",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Selfhood and personal identity",
+   "text": "Questions about memory, continuity, agency, and first-person awareness connect philosophy of mind with metaphysics.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "Selfhood and personal identity",
+   "text": "David Hume questioned whether introspection reveals a persisting substantial self.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Mind in Indian Buddhist Philosophy (Coseru) §1.1",
+     "excerpt": "a self is never apprehended in the series of perceptions",
+     "fix": "merged into the Buddhist sentence"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Selfhood and personal identity",
+   "text": "Buddhist traditions, including discussions associated with Nāgārjuna, challenge assumptions of an independent enduring self, though their arguments and aims differ from modern analytic identity debates.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "overstated",
+     "by": "Mind in Indian Buddhist Philosophy (Coseru) §§2.1, 6.1",
+     "excerpt": "There is no self or substantive mind",
+     "fix": "reword; the comparison with analytic debates cut"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Other minds, animals, and artificial intelligence",
+   "text": "How can one know that another being is conscious?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive",
+     "fix": "merged into the other-minds sentence"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Other minds, animals, and artificial intelligence",
+   "text": "Philosophers examine behavioral evidence, analogy, and the role of shared forms of life.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Other Minds (Avramides) §1",
+     "excerpt": "Standard responses to this problem—arguments from analogy and best explanation",
+     "fix": "keep, sourced"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Other minds, animals, and artificial intelligence",
+   "text": "Animal consciousness and machine intelligence complicate the assumption that human language or familiar physiology is the only route to mindedness.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "by": "Other Minds (Avramides) §3.1",
+     "fix": "replaced by the animal studies Avramides reports"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "section": "Other minds, animals, and artificial intelligence",
+   "text": "AI systems also raise questions about understanding, representation, and the standards used to attribute mental states.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "section": "Cognitive science and unresolved questions",
+   "text": "Neuroscience, psychology, and cognitive science inform contemporary philosophy of mind, but empirical findings do not by themselves settle every conceptual issue.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "section": "Cognitive science and unresolved questions",
+   "text": "Disputes continue over reduction, mental causation, free will, the unity of consciousness, and how subjective and objective methods should be integrated.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "section": "Foundational overview",
+   "text": "Philosophy of mind centers on the relation between mind and body.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "keep as the opening"
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "section": "Foundational overview",
+   "text": "Descartes argued that because he could clearly and distinctly conceive his mind existing without his body, the two are distinct substances.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Dualism (Weir) §§2.4, 4.2",
+     "excerpt": "anything one can clearly and distinctly conceive is possible",
+     "note": "Weir does not say conceivability alone establishes distinct substances.",
+     "fix": "reword: the principle, and the distinct substances separately"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "section": "Foundational overview",
+   "text": "The leading objection is interaction: mind and body seem to lack what they would need in common to act on each other, an objection Princess Elisabeth of Bohemia pressed in her letters to Descartes.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Dualism (Weir) §2.4",
+     "excerpt": "questioned whether Descartes can explain how mind and body interact",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 28,
+   "section": "Foundational overview",
+   "text": "Property dualists hold that there are two essentially different kinds of property, mental and physical, without immaterial substances.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Dualism (Weir) §3.2",
+     "excerpt": "they refrain from positing immaterial substances",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 29,
+   "section": "Foundational overview",
+   "text": "Physicalism holds that everything is physical, or supervenes on the physical; ancient atomists such as Democritus are usually read as its forerunners.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Physicalism (Stoljar) intro, §§1.2, 2.1",
+     "excerpt": "the thesis that everything is physical",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 30,
+   "section": "Foundational overview",
+   "text": "Thomas Nagel argued that physicalism leaves out the subjective character of experience, what it is like to be a creature, and the hardest problems of the field concern this consciousness and the way thoughts are about things.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Consciousness (Van Gulick) §4.4",
+     "fix": "split: Nagel with the what-it-is-like criterion; 'hardest problems' cut"
+    }
+   ]
+  },
+  {
+   "s": 31,
+   "section": "Foundational overview",
+   "text": "Kripke appealed to rigid designation in arguing against the identity of pain with any brain state, and Gilbert Ryle, in The Concept of Mind (1949), attacked Cartesian dualism as the “official doctrine” of philosophers and theologians.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Rigid Designators (LaPorte) §3.4; Ryle (Tanney) §6",
+     "excerpt": "Kripke appeals to rigid designation in arguing against the identity theory of mind",
+     "fix": "split"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 31,
+  "claims": 31,
+  "editorial": 5,
+  "supported": 18,
+  "overstated": 4,
+  "non-assertive": 1,
+  "unverified": 3,
+  "assertive_claims": 30,
+  "cited_source_supports_before": 19,
+  "shipped_sentences": 21
+ },
+ "new_text": [
+  {
+   "text": "Philosophy of mind centres on the relation between mind and body.",
+   "section": "The mind–body problem",
+   "claims": [
+    {
+     "type": "editorial",
+     "accuracy": "editorial"
+    }
+   ]
+  },
+  {
+   "text": "Descartes's argument for the mind's distinctness rests on the principle that whatever one can clearly and distinctly conceive is possible, and he held mind and body to be distinct substances.",
+   "section": "The mind–body problem",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Dualism” (Robinson and Weir) §§2.4, 4.2",
+     "excerpt": "anything one can clearly and distinctly conceive is possible",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In her letters, Elisabeth of Bohemia pressed Descartes to explain how mind and body could interact, and the interaction problem became the leading objection to dualism.",
+   "section": "The mind–body problem",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Dualism” (Robinson and Weir) §2.4",
+     "excerpt": "questioned whether Descartes can explain how mind and body interact",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Property dualists hold that there are two essentially different kinds of property, mental and physical, and refrain from positing immaterial substances.",
+   "section": "The mind–body problem",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Dualism” (Robinson and Weir) §3.2",
+     "excerpt": "they refrain from positing immaterial substances",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Physicalism is the thesis that everything is physical, or that everything supervenes on the physical, and Democritus's claim that all is atoms and the void is among its forerunners.",
+   "section": "The mind–body problem",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Physicalism” (Stoljar) intro, §§1.2, 2.1",
+     "excerpt": "the thesis that everything is physical",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "A creature may count as conscious when it is awake and alert, when it is aware of its own mental states, or when there is something it is like to be it, the criterion Thomas Nagel made famous with his question about bats.",
+   "section": "Consciousness",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Consciousness” (Van Gulick) §§2.1–2.2, 4.4",
+     "excerpt": "there is 'something that it is like' to be that creature",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Debates over qualia, the explanatory gap named by Joseph Levine (1983) and David Chalmers's hard problem (1995) ask whether physical explanation can account for experience.",
+   "section": "Consciousness",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Consciousness” (Van Gulick) §§4.2, 5.2, 5.4",
+     "excerpt": "especially the so-called 'hard problem'",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Frank Jackson's knowledge argument presses a related challenge against physicalism.",
+   "section": "Consciousness",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Physicalism” (Stoljar) §5.1",
+     "excerpt": "Jackson's knowledge argument",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Intentionality is the power of minds and mental states to be about, or represent, things, and Brentano held it to be the hallmark of the mental.",
+   "section": "Intentionality and mental content",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Intentionality” (Jacob) intro, §1",
+     "excerpt": "Brentano held that intentionality is the hallmark of the mental",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Philosophers dispute whether content is fixed inside the head or partly by the environment, and how intentionality can be naturalized.",
+   "section": "Intentionality and mental content",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Intentionality” (Jacob) §§6, 9",
+     "excerpt": "the externalist view of intentional mental states",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Gilbert Ryle's The Concept of Mind (1949) took as its target the Cartesian view he called the Official Doctrine and diagnosed the category mistakes philosophers of mind are prone to.",
+   "section": "Behaviorism, identity theory, and functionalism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Gilbert Ryle” (Tanney) §6",
+     "excerpt": "category mistakes",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Ryle stressed that many mental concepts are dispositional, and Julia Tanney argues that the common label “softer behaviourism” misdescribes his programme.",
+   "section": "Behaviorism, identity theory, and functionalism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Gilbert Ryle” (Tanney) §8",
+     "excerpt": "this characterisation of Ryle's programme is wrong",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Logical behaviourism held statements about mental states equivalent in meaning to statements about behavioural dispositions, and the identity theory held that every type of mental state is a particular type of neural state.",
+   "section": "Behaviorism, identity theory, and functionalism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Functionalism” (Levin) §§1, 2.3",
+     "excerpt": "each type of mental state is identical with a particular type of neural state",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Functionalism identifies a mental state by its function, and its claim that mental states can be multiply realized has been regarded as making it more inclusive than the identity theory.",
+   "section": "Behaviorism, identity theory, and functionalism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Functionalism” (Levin) §1",
+     "excerpt": "has been regarded as providing a more inclusive",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Inverted and absent qualia, and Ned Block's Chinese nation thought experiment, are standard objections to it.",
+   "section": "Behaviorism, identity theory, and functionalism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Functionalism” (Levin) §5.5.1",
+     "excerpt": "“Chinese nation” thought-experiment",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Saul Kripke used the notion of rigid designation to argue against the mind–brain identity theory.",
+   "section": "Behaviorism, identity theory, and functionalism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Rigid Designators” (LaPorte) §3.4",
+     "excerpt": "Kripke appeals to rigid designation in arguing against the identity theory of mind",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Embodied cognition holds that “the body or the body's interactions with the environment constitute or contribute to cognition,” and some versions draw on Husserl, Heidegger and Merleau-Ponty.",
+   "section": "Embodiment",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Embodied Cognition” (Spaulding) intro, §1.3",
+     "excerpt": "the body or the body's interactions with the environment constitute or contribute to cognition",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Enactivism holds that cognition “emerges from or is constituted by sensorimotor activity.”",
+   "section": "Embodiment",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Embodied Cognition” (Spaulding) §2.4",
+     "excerpt": "cognition emerges from or is constituted by sensorimotor activity",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Most Indian Buddhist schools deny a self or substantive mind, a position Giles, Tillemans and Kapstein have compared with Hume's report that he never finds a self among his perceptions; the Pudgalavādins dissented, and Nāgārjuna applied the lack of intrinsic existence (svabhāva) to the self as well.",
+   "section": "Selves and other minds",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Mind in Indian Buddhist Philosophy” (Coseru) §§1.1, 2.1, 6.1",
+     "excerpt": "There is no self or substantive mind",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The problem of other minds asks how I can justify the belief that others have minds; standard responses argue from analogy or to the best explanation, while a Wittgensteinian alternative treats behaviour as a criterion of mind.",
+   "section": "Selves and other minds",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Other Minds” (Avramides) §§1–1.3",
+     "excerpt": "Standard responses to this problem—arguments from analogy and best explanation",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Premack and Woodruff (1978) asked whether chimpanzees have a theory of mind, extending research on mental-state attribution beyond human beings.",
+   "section": "Selves and other minds",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Other Minds” (Avramides) §3.1",
+     "excerpt": "certain problem-solving behavior observed in chimpanzees",
+     "accuracy": "supported"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}
