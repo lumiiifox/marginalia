@@ -1,0 +1,747 @@
+{
+ "article": "political",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited source, 2026-10-23 (36 fixes applied, among them Mills's non-ideal contract, the Mills view Alcoff reports, Mill's burden of proof, and unquoted source wording quoted or reworded)",
+ "cited_sources_before": 7,
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "Authority, justice, and liberty",
+   "text": "Political philosophy examines the justification of authority, the distribution of benefits and burdens, and the conditions of freedom.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Political Obligation (Lefkowitz) intro",
+     "fix": "merged with sentence 26 into the opening"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "Authority, justice, and liberty",
+   "text": "Debates distinguish legitimacy, the right to rule, from justice, the standards by which institutions and social relations should be assessed.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Political Legitimacy (Peter) §1",
+     "excerpt": "Political institutions may be legitimate but unjust",
+     "fix": "keep, credited to Rawls and sourced"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "Classical accounts and social contracts",
+   "text": "Plato and Aristotle connected political order with virtue and forms of collective life.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "overstated",
+     "by": "Aristotle's Political Theory (Miller) §§2–4",
+     "excerpt": "exists for the sake of the good life",
+     "note": "Plato's own view is not checked.",
+     "fix": "reword to Aristotle; Plato kept only as Aristotle's target"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "Classical accounts and social contracts",
+   "text": "Hobbes, Locke, and Rousseau developed contrasting accounts of consent, obligation, sovereignty, and freedom; these arguments do not amount to one uniform social contract theory.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Social Contract (Thrasher) intro, §3",
+     "excerpt": "Social contract theories fundamentally differ in whether the parties reason differently or the same.",
+     "fix": "reword (contrastive)"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "Liberalism, socialism, and republicanism",
+   "text": "John Stuart Mill defended extensive individual liberty, while Marx examined how material production and class relations shape institutions.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Liberalism (Courtland, Gaus and Schmidtz) §1.1",
+     "excerpt": "The a priori assumption is in favour of freedom",
+     "note": "The liberalism entry does not cover Marx on institutions.",
+     "fix": "Mill kept; Marx cut"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "Liberalism, socialism, and republicanism",
+   "text": "Republican traditions emphasize freedom from domination, which differs from merely being free from actual interference.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Republicanism (Lovett) §§1.2–1.3",
+     "fix": "reword (contrastive), with Pettit and Skinner"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "Liberalism, socialism, and republicanism",
+   "text": "Liberal, socialist, and republican theories continue to disagree about property, political power, and the role of the state.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "Justice and distribution",
+   "text": "John Rawls argued that principles of justice should be chosen under fair conditions, while Robert Nozick defended an entitlement-based account of holdings.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Liberalism §2.3; Social Contract (Thrasher) §4",
+     "excerpt": "liberty upsets patterns",
+     "fix": "split and sourced"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "Justice and distribution",
+   "text": "Egalitarian, sufficientarian, and capability approaches ask whether justice requires equality, enough for everyone, or genuine opportunities to act and flourish.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "overstated",
+     "by": "Capability Approach (Byskov) §§1.1, 3.5",
+     "excerpt": "one may develop sufficientarian, strict egalitarian, or prioritarian theories",
+     "note": "Byskov treats egalitarian and sufficientarian rules as options within the approach.",
+     "fix": "reword: capabilities as the metric, distributive rules apart"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "Power, ideology, and social reproduction",
+   "text": "Antonio Gramsci examined hegemony and consent, while Hannah Arendt distinguished power from violence and analyzed political action.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Gramsci (Martin) §3.2; Arendt (d'Entrèves) §4",
+     "excerpt": "Power springs up whenever people get together and act in concert.",
+     "fix": "split"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "Power, ideology, and social reproduction",
+   "text": "Michel Foucault studied disciplinary power and the production of subjects through institutions and practices.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Foucault (Oksala) §§3.4–3.5",
+     "excerpt": "three primary techniques of control: hierarchical observation, normalizing judgment, and the examination",
+     "fix": "keep, sourced"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "Power, ideology, and social reproduction",
+   "text": "These approaches expand inquiry beyond formal constitutions and laws.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Feminist and critical theories of race",
+   "text": "Carole Pateman and Charles Mills challenged the exclusions embedded in familiar contract narratives.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Feminist Political Philosophy (Howard) §2.1",
+     "excerpt": "Their jointly authored book, Contract & Domination, levels a devastating critique",
+     "fix": "keep, sourced"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Feminist and critical theories of race",
+   "text": "Feminist political theory investigates care, dependency, embodiment, and the public/private distinction.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Feminist Political Philosophy (Howard) intro, §§2.1, 2.5",
+     "excerpt": "the feminist refrain that “the personal is political”",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Feminist and critical theories of race",
+   "text": "Critical philosophy of race examines racialization, structural injustice, and how apparently neutral institutions can sustain unequal power.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "note": "Not confirmed against the critical philosophy of race entry.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Colonialism, decolonization, and global justice",
+   "text": "Frantz Fanon analyzed colonial domination and the struggles of decolonization.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Fanon (Drabinski) §4",
+     "excerpt": "Violence is important for Fanon as a precondition to liberation.",
+     "fix": "make specific"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "Colonialism, decolonization, and global justice",
+   "text": "Anticolonial and postcolonial thinkers question the universal reach of concepts developed under empire.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Colonialism, decolonization, and global justice",
+   "text": "Contemporary debates consider migration, borders, climate obligations, reparations, and the distribution of power across states.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Political thought beyond European genealogies",
+   "text": "Confucian political thought considers moral cultivation, exemplary government, and obligations within relationships.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Political thought beyond European genealogies",
+   "text": "Mohist traditions evaluate political order in terms of impartial concern and public benefit.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Mohism (Fraser) §§1, 6–7",
+     "excerpt": "Appointments are to be made on the basis of competence and moral merit",
+     "fix": "keep, made specific"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Political thought beyond European genealogies",
+   "text": "Islamic political philosophy has debated law, virtue, community, and authority; African political traditions and modern thinkers explore consensus, personhood, and the aftermath of colonial rule.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "section": "Political thought beyond European genealogies",
+   "text": "Each encompasses internal disagreements and historical change.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "section": "Democracy, resistance, and contemporary problems",
+   "text": "Democratic theory asks who should participate, how collective decisions are justified, and what protects minorities against domination.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Democracy (Bajaj) intro, §§2, 2.2.3",
+     "excerpt": "the twin dangers of majority tyranny and of persistent minorities",
+     "fix": "keep, sourced"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "section": "Democracy, resistance, and contemporary problems",
+   "text": "Civil disobedience, protest, and resistance pose questions about the limits of legal obligation.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Civil Disobedience (Brownlee) intro, §3",
+     "excerpt": "a public, non-violent and conscientious breach of law",
+     "fix": "make specific"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "section": "Democracy, resistance, and contemporary problems",
+   "text": "Surveillance, artificial intelligence, ecological crisis, and concentrated economic power give these older problems new institutional forms.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "section": "Foundational overview",
+   "text": "Political philosophy asks on what grounds citizens owe allegiance to political authority, what justice requires, and what freedom is.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Political Obligation (Lefkowitz) intro",
+     "excerpt": "equating political obligation with a moral duty to obey the law",
+     "fix": "merged into the opening; 'allegiance' reworded"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "section": "Foundational overview",
+   "text": "Isaiah Berlin distinguished negative liberty, freedom from deliberate interference by others, from positive liberty, the power to act and govern oneself.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Positive and Negative Liberty (Huseynli and Carter) §1",
+     "excerpt": "called these two concepts of liberty negative and positive respectively",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 28,
+   "section": "Foundational overview",
+   "text": "Plato's Republic asked what justice is in the soul and the city, and Aristotle's Politics what the best constitution would be.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "overstated",
+     "by": "Aristotle's Political Theory (Miller) §4",
+     "excerpt": "the constitution which is best without qualification",
+     "fix": "merged into the Aristotle sentence"
+    }
+   ]
+  },
+  {
+   "s": 29,
+   "section": "Foundational overview",
+   "text": "Hobbes was one of the first and greatest social contract thinkers; Locke began from a state of perfect freedom; Rousseau's Social Contract made the general will the source of legitimate law; and Mill's On Liberty set a presumption in favor of freedom.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Liberalism §§1.1, 1.3",
+     "excerpt": "one of the first and greatest social contract thinkers",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 30,
+   "section": "Foundational overview",
+   "text": "Marx made the economic structure of society the basis of its legal and political institutions.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "note": "Not in the cited liberalism entry.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 31,
+   "section": "Foundational overview",
+   "text": "In the twentieth century liberalism turned to theories of social justice, above all John Rawls's A Theory of Justice (1971), and Robert Nozick's Anarchy, State, and Utopia (1974) answered that liberty upsets patterns of distribution.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Liberalism §§2.2–2.3",
+     "excerpt": "liberty upsets patterns",
+     "fix": "merged (duplicate of 8)"
+    }
+   ]
+  },
+  {
+   "s": 32,
+   "section": "Foundational overview",
+   "text": "Gramsci's concept of hegemony, rule through consent organized across civil society as well as through coercion, became a basic tool of critical theory, and critics of the contract tradition, Carole Pateman and Charles Mills among them, argued that it rested on sexual and racial exclusions.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Gramsci (Martin) §3.2; Feminist Political Philosophy (Howard) §2.1",
+     "fix": "merged (duplicates of 10 and 13)"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 32,
+  "claims": 32,
+  "supported": 18,
+  "overstated": 4,
+  "unverified": 7,
+  "editorial": 3,
+  "assertive_claims": 32,
+  "cited_source_supports_before": 14,
+  "shipped_sentences": 23
+ },
+ "new_text": [
+  {
+   "text": "Political philosophy asks whether, and why, citizens have a moral duty to obey the law, what justifies political authority, and what justice and freedom require.",
+   "section": "Authority, legitimacy, and obligation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Political Obligation” (Lefkowitz) intro",
+     "excerpt": "equating political obligation with a moral duty to obey the law",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Authority is a right to rule, and legitimacy is often tied to its justification; Rawls separates legitimacy from justice, since institutions may be legitimate and still unjust.",
+   "section": "Authority, legitimacy, and obligation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Political Legitimacy” (Peter) intro, §1",
+     "excerpt": "Political institutions may be legitimate but unjust",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Answers to the problem of obligation appeal to consent, as Locke did, to fair play, to a natural duty of justice, or to membership in an association, while philosophical anarchists hold that there is no general obligation to obey the law.",
+   "section": "Authority, legitimacy, and obligation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Political Obligation” (Lefkowitz) §§1.3, 3, 4.2–4.4",
+     "excerpt": "there is no general obligation to obey the law",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Aristotle's Politics holds that human beings are by nature political animals and that the city exists for the sake of the good life, and asks which constitution is best without qualification.",
+   "section": "Classical and early modern accounts",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Aristotle’s Political Theory” (Miller) §§2–4",
+     "excerpt": "exists for the sake of the good life",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Aristotle criticized the ideal constitution of Plato's Republic, including its proposal that property be held in common.",
+   "section": "Classical and early modern accounts",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Aristotle’s Political Theory” (Miller) §§2, 4",
+     "excerpt": "the ideal constitution set forth in Plato's Republic",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Hobbes is generally treated as one of the first and greatest social contract thinkers; Locke held that people are naturally in a state of perfect freedom; and Rousseau seemed to hold that one is free in acting on one's true will, the general will.",
+   "section": "Classical and early modern accounts",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Liberalism” (Courtland, Gaus and Schmidtz) §§1.1, 1.3",
+     "excerpt": "one of the first and greatest social contract thinkers",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Revived by Hobbes and developed in different ways by Locke, Rousseau and Kant, the social contract idea now takes forms that differ fundamentally over whether the contracting parties reason the same way or differently.",
+   "section": "Classical and early modern accounts",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Contemporary Approaches to the Social Contract” (Thrasher) intro, §3",
+     "excerpt": "Social contract theories fundamentally differ in whether the parties reason differently or the same.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Mill held that the burden of proof lies with those who would restrict liberty.",
+   "section": "Liberty and liberalism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Liberalism” (Courtland, Gaus and Schmidtz) §1.1",
+     "excerpt": "The a priori assumption is in favour of freedom",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Isaiah Berlin called two concepts of liberty negative and positive: the absence of obstacles, and the presence of control by the agent, or self-mastery.",
+   "section": "Liberty and liberalism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Positive and Negative Liberty” (Huseynli and Carter) §1",
+     "excerpt": "called these two concepts of liberty negative and positive respectively",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Republicans, following Quentin Skinner and Philip Pettit, define freedom as non-domination: a slave whose master mostly leaves him alone is still unfree, because he remains vulnerable to his master's arbitrary power.",
+   "section": "Liberty and liberalism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Republicanism” (Lovett) intro, §§1.2–1.3",
+     "excerpt": "whether his master happens to exercise that power is neither here nor there",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In the twentieth century liberalism turned toward social justice, above all in John Rawls's A Theory of Justice (1971), whose principles of justice, chosen in an original position, govern society's basic institutions.",
+   "section": "Justice and distribution",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Liberalism” (Courtland, Gaus and Schmidtz) §§2.2–2.3",
+     "excerpt": "A Theory of Justice",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Contemporary Approaches to the Social Contract” (Thrasher) §§1.2, 4",
+     "excerpt": "the principles of justice that regulate the basic institutions of society",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Robert Nozick's Anarchy, State, and Utopia (1974) answered with his Wilt Chamberlain example, arguing that liberty upsets patterns of distribution.",
+   "section": "Justice and distribution",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Liberalism” (Courtland, Gaus and Schmidtz) §2.3",
+     "excerpt": "liberty upsets patterns",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The capability approach of Amartya Sen and Martha Nussbaum measures what people are actually able to do and be, and can ground sufficientarian, strictly egalitarian or prioritarian theories.",
+   "section": "Justice and distribution",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Capability Approach” (Byskov) §§1.1, 3.5",
+     "excerpt": "one may develop sufficientarian, strict egalitarian, or prioritarian theories",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Antonio Gramsci held that rule rests on consent as well as coercion, organized through civil society.",
+   "section": "Power and its forms",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Antonio Gramsci” (Martin) §3.2",
+     "excerpt": "not solely on the deployment of coercion via the army",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "For Hannah Arendt, power “springs up” whenever people act in concert and rests on consent, and The Human Condition (1958) distinguishes labor, work and action, rooting action in natality and plurality.",
+   "section": "Power and its forms",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Hannah Arendt” (d’Entrèves) §§4.2–4.6",
+     "excerpt": "Power springs up whenever people get together and act in concert.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Michel Foucault's Discipline and Punish (1975) traced disciplinary power through hierarchical observation, normalizing judgment and the examination, and his later work found power producing, among other things, the ways we experience sexuality.",
+   "section": "Power and its forms",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Michel Foucault” (Oksala) §§3.4–3.5",
+     "excerpt": "three primary techniques of control: hierarchical observation, normalizing judgment, and the examination",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Carole Pateman and Charles Mills, in their joint book Contract & Domination, criticized social contract theory for its treatment of women and people of colour.",
+   "section": "Feminism, race, and the contract",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Political Philosophy” (Howard) §2.1",
+     "excerpt": "Their jointly authored book, Contract & Domination, levels a devastating critique",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Feminist political philosophers press the refrain that the personal is political, arguing that the liberal split between public and private shields domination in the household from political scrutiny.",
+   "section": "Feminism, race, and the contract",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Political Philosophy” (Howard) intro, §2.1",
+     "excerpt": "the feminist refrain that “the personal is political”",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Theorists in the care-ethics tradition treat political subjects as fundamentally interdependent, and Alison Jaggar, Elizabeth Spelman, Genevieve Lloyd and Elizabeth Grosz argued that reason is embodied and emotion-laden.",
+   "section": "Feminism, race, and the contract",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Political Philosophy” (Howard) §§2.1, 2.5",
+     "excerpt": "reason is both embodied and emotion-laden",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Frantz Fanon treated violence as a precondition of colonial liberation.",
+   "section": "Feminism, race, and the contract",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Frantz Fanon” (Drabinski) §4",
+     "excerpt": "Violence is important for Fanon as a precondition to liberation.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The Mohists of ancient China judged practices by whether they benefit all the world, through wealth, population and order, made impartiality the heart of their ethics of inclusive care, and wanted officials appointed for competence and moral merit.",
+   "section": "Beyond the European canon",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Mohism” (Fraser) §§1–2, 7",
+     "excerpt": "Appointments are to be made on the basis of competence and moral merit",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Democratic theory weighs instrumental and intrinsic justifications of democracy, asks who should be included among those who decide, and confronts two dangers: tyranny of the majority, and minorities that always lose.",
+   "section": "Democracy and disobedience",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Democracy” (Bajaj) intro, §§2, 2.2.3",
+     "excerpt": "the twin dangers of majority tyranny and of persistent minorities",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "On the most widely accepted account, after Rawls, civil disobedience is “a public, non-violent and conscientious breach of law,” and it needs justification if there is a general moral duty to follow the law.",
+   "section": "Democracy and disobedience",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Civil Disobedience” (Brownlee) intro, §3",
+     "excerpt": "a public, non-violent and conscientious breach of law",
+     "accuracy": "supported"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}

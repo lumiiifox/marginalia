@@ -2,7 +2,7 @@
  "article": "marxism",
  "audited": "2026-10-23",
  "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
- "by": "Claude (lead dev); independent review of every shipped sentence against its cited SEP section, 2026-10-23 (29 fixes applied, among them bad faith as facticity and transcendence, fetishism kept apart from alienation, Habermas's public sphere and its critics, Honneth's and Allen's claims attributed as the sources give them)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited SEP section, 2026-10-23 (29 fixes applied, among them bad faith as facticity and transcendence, fetishism kept apart from alienation, Habermas's public sphere and its critics, Honneth's and Allen's claims attributed as the sources give them); class-struggle sentence restored after a coverage check, 2026-10-23",
  "cited_sources_before": 6,
  "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
  "sentences": [
@@ -496,18 +496,34 @@
      "fix": "cut"
     }
    ]
+  },
+  {
+   "s": 35,
+   "section": "Origins, historical materialism, and class conflict",
+   "text": "Class conflict is central to Marx's theory of history, and the Manifesto opens: “The history of all hitherto existing society is the history of class struggles.”",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Marx (Leopold) §2.1",
+     "excerpt": "which is often felt to be central to Marx's theory of history",
+     "note": "Missed in the first pass of this audit; added 2026-10-23.",
+     "fix": "reword: often felt central; Cohen gives it a small role; quotation paraphrased"
+    }
+   ]
   }
  ],
  "summary": {
-  "sentences": 34,
-  "claims": 34,
+  "sentences": 35,
+  "claims": 35,
   "supported": 13,
-  "overstated": 7,
+  "overstated": 8,
   "unverified": 6,
   "editorial": 8,
-  "assertive_claims": 34,
-  "cited_source_supports_before": 22,
-  "shipped_sentences": 25
+  "assertive_claims": 35,
+  "cited_source_supports_before": 23,
+  "shipped_sentences": 26
  },
  "new_text": [
   {
@@ -533,7 +549,18 @@
    ]
   },
   {
-   "text": "G. A. Cohen reconstructs the theory as a functional explanation, and Jon Elster has pressed hard against that reconstruction; Richard Miller finds Marx's own statements of the theory flexible and less determinate.",
+   "text": "Class struggle is often felt to be central to the theory, and the Manifesto opens by declaring all previous history a history of class struggles.",
+   "section": "Origins and historical materialism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Karl Marx” (Leopold) §2.1",
+     "excerpt": "which is often felt to be central to Marx's theory of history",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "G. A. Cohen reconstructs the theory as a functional explanation, and Jon Elster has pressed hard against that reconstruction, which gives class struggle a surprisingly small role; Richard Miller finds Marx's own statements of the theory flexible and less determinate.",
    "section": "Origins and historical materialism",
    "claims": [
     {

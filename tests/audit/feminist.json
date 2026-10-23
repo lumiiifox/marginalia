@@ -1,0 +1,593 @@
+{
+ "article": "feminist",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited source, 2026-10-23 (36 fixes applied, among them Mills's non-ideal contract, the Mills view Alcoff reports, Mill's burden of proof, and unquoted source wording quoted or reworded)",
+ "cited_sources_before": 3,
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "Historical foundations and central questions",
+   "text": "Feminism is at once a political movement to end gender-based oppression and a body of concepts and theories for analyzing that oppression.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Feminist Philosophy (McAfee et al.) §1",
+     "excerpt": "feminism is both an intellectual commitment and a political movement",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "Historical foundations and central questions",
+   "text": "Feminist philosophy brings this commitment to philosophy.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "yes",
+     "accuracy": "editorial",
+     "fix": "merged"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "Historical foundations and central questions",
+   "text": "Concern for justice for women is much older than any organized movement, and the field's history runs through Mary Astell and Mary Wollstonecraft to Simone de Beauvoir's The Second Sex (1949).",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Feminist Philosophy (McAfee et al.) §1",
+     "excerpt": "individuals have been concerned with and theorized about justice for women",
+     "note": "The entry's example is Plato; Astell and Wollstonecraft are not discussed there.",
+     "fix": "reword; Beauvoir sourced"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "Historical foundations and central questions",
+   "text": "Contemporary feminist philosophy emerged in the 1970s, as more women entered universities, and built its own institutions when mainstream journals were slow to accept its work: the Society for Women in Philosophy (1972) and the journal Hypatia (1982) among them.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Feminist Philosophy (McAfee et al.) §2",
+     "excerpt": "emerged in the 1970s as more women began careers in higher education",
+     "note": "The journals clause was not confirmed.",
+     "fix": "keep; 'slow to accept' clause cut"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "Standpoint, situated knowledge, and epistemic injustice",
+   "text": "Feminist epistemologists have investigated how social location shapes inquiry without implying that every perspective is equally reliable.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Feminist Epistemology (Anderson) §§2, 5",
+     "excerpt": "contingent epistemic advantage in solving particular problems",
+     "fix": "reword to the shift Anderson reports"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "Standpoint, situated knowledge, and epistemic injustice",
+   "text": "Sandra Harding's strong objectivity and Donna Haraway's situated knowledges question claims to a view from nowhere.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Feminist Epistemology (Anderson) §§3, 8",
+     "excerpt": "“strong objectivity” includes both reflexivity and democratic inclusion",
+     "fix": "make specific"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "Standpoint, situated knowledge, and epistemic injustice",
+   "text": "Miranda Fricker's account of epistemic injustice describes harms involving credibility and interpretive resources, while feminist philosophers of science examine how institutions and research practices influence knowledge.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Feminist Epistemology (Anderson) §§4, 9",
+     "excerpt": "Fricker (2007) calls this “testimonial injustice.”",
+     "fix": "split"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "Care, dependency, and political economy",
+   "text": "Care ethics, associated with Carol Gilligan, Nel Noddings, and others, challenges moral theories that marginalize relationships and dependency.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Feminist Ethics (Pascoe) §2.2",
+     "excerpt": "we are necessarily interdependent beings with responsibilities to one another",
+     "note": "Pascoe does not frame care ethics as a critique of every theory.",
+     "fix": "reword to Gilligan's critique of Kohlberg"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "Care, dependency, and political economy",
+   "text": "Socialist and materialist feminists analyze domestic labor, reproduction, and the organization of care.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Class and Work (Nagel) §4",
+     "excerpt": "women's housework is part of the social reproduction of capitalism",
+     "fix": "keep, sourced"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "Care, dependency, and political economy",
+   "text": "These approaches disagree about the place of universal principles, affect, institutions, and economic transformation.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Feminist Ethics (Pascoe) §2.2",
+     "excerpt": "Some feminist ethicists critique the emphasis on care",
+     "fix": "reword to the disputes Pascoe names"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "Core debates and approaches",
+   "text": "Feminist philosophers generally treat people as embodied and socially situated, distrust claims to neutrality or universality that may reflect a particular, usually male, standpoint, and study how gender shapes norms and has been used to exclude or subordinate.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Feminist Philosophy (McAfee et al.) §§3–4",
+     "excerpt": "feminist philosophers always start by seeing people as embodied",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "Core debates and approaches",
+   "text": "They work across the discipline: in epistemology and philosophy of science, ethics, political philosophy, metaphysics, aesthetics, philosophy of law, religion and language, and the history of philosophy.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Feminist Philosophy (McAfee et al.) §4",
+     "note": "The entry lists fifteen areas without claiming the whole discipline.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Core debates and approaches",
+   "text": "Analytic, continental, pragmatist, psychoanalytic and Latin American approaches differ in style and method.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Feminist Philosophy (McAfee et al.) §3",
+     "excerpt": "analytic philosophy, continental philosophy, and American pragmatist philosophy",
+     "note": "Psychoanalytic approaches not confirmed; dropped.",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Intersectionality and Black feminist thought",
+   "text": "Black feminist thinkers including bell hooks, Patricia Hill Collins, and the Combahee River Collective analyzed interlocking forms of domination.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Feminist Ethics (Pascoe) §1.3",
+     "excerpt": "The Combahee River Collective coined the term 'identity politics'",
+     "note": "Not in the cited Feminist Philosophy text.",
+     "fix": "reword to what Pascoe gives; source added"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Intersectionality and Black feminist thought",
+   "text": "Kimberlé Crenshaw developed intersectionality in legal analysis to explain harms missed by single-axis accounts of discrimination.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Feminist Ethics (Pascoe) §§1.3, 2.3",
+     "excerpt": "In 1989, Kimberlé Crenshaw conceptualized Black women as located at the",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Intersectionality and Black feminist thought",
+   "text": "Intersectionality is not merely a checklist of identities: it examines how institutions and power relations interact.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "Gender, sexuality, and contested categories",
+   "text": "Judith Butler's work on performativity examines how gender norms are reiterated and contested; this differs from the claim that gender is freely chosen at will.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Sex and Gender (Mikkola) §3.1.2",
+     "excerpt": "Gender is not something one is, it is something one does",
+     "note": "Mikkola does not address voluntariness.",
+     "fix": "reword; the 'freely chosen' contrast cut"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Gender, sexuality, and contested categories",
+   "text": "Feminist debates about embodiment, sexual difference, trans experience, disability, and reproductive autonomy involve substantive disagreements about categories, rights, and material conditions.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Later developments and disagreements",
+   "text": "The distinction between sex and gender has been central to much analytic feminism.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Feminist Philosophy (McAfee et al.) §3",
+     "excerpt": "holds the sex/gender distinction practically as an article of faith",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Later developments and disagreements",
+   "text": "Continental feminists have questioned it from two directions: Judith Butler by asking whether sex is itself socially constituted, Luce Irigaray and Hélène Cixous by theorizing sexual difference.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Feminist Philosophy (McAfee et al.) §3; Sex and Gender (Mikkola) §3.3",
+     "excerpt": "was always already gender",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Later developments and disagreements",
+   "text": "Feminist philosophers have also stressed that gender interacts with race, class, disability and sexuality, a point Kimberlé Crenshaw named intersectionality, and debates over defining “woman” now extend to trans and nonbinary people.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Sex and Gender (Mikkola) §§3.1.1, 4.2.1",
+     "excerpt": "Both Bettcher (2013) and Jenkins (2016) consider the importance of gender self-identification.",
+     "fix": "split; Crenshaw moved to her own sentence"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "section": "Global feminisms and philosophical self-critique",
+   "text": "Postcolonial, Indigenous, and transnational feminists have challenged assumptions that one Western history represents all women's experiences.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "by": "Feminist Philosophy (McAfee et al.) §1",
+     "note": "Indigenous and postcolonial feminists appear mainly in the bibliography.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "section": "Global feminisms and philosophical self-critique",
+   "text": "Debates about development, religion, migration, violence, and solidarity demand attention to specific histories and unequal relations of power.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "section": "Global feminisms and philosophical self-critique",
+   "text": "Feminist philosophy remains plural in method and political commitments.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 24,
+  "claims": 24,
+  "supported": 11,
+  "editorial": 4,
+  "overstated": 7,
+  "unverified": 2,
+  "assertive_claims": 24,
+  "cited_source_supports_before": 19,
+  "shipped_sentences": 19
+ },
+ "new_text": [
+  {
+   "text": "Feminism is both an intellectual commitment and a political movement, and feminist philosophy brings that commitment into philosophy.",
+   "section": "Historical foundations",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Philosophy” (McAfee, Garry, Superson, Grasswick and Khader) §1",
+     "excerpt": "feminism is both an intellectual commitment and a political movement",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "People concerned themselves with justice for women long before organized feminism, and Plato argued in Republic V that women could be trained to rule.",
+   "section": "Historical foundations",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Philosophy” (McAfee, Garry, Superson, Grasswick and Khader) §1",
+     "excerpt": "individuals have been concerned with and theorized about justice for women",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Simone de Beauvoir's The Second Sex (1949) holds that one becomes a woman.",
+   "section": "Historical foundations",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Simone de Beauvoir” (Burke) §7",
+     "excerpt": "One is not born but becomes a woman",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Contemporary feminist philosophy took shape in the 1970s, as more women entered academic careers, and the Society for Women in Philosophy (1972) and the journal Hypatia (1982) followed.",
+   "section": "Historical foundations",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Philosophy” (McAfee, Garry, Superson, Grasswick and Khader) §2",
+     "excerpt": "emerged in the 1970s as more women began careers in higher education",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Feminist philosophers start from people as embodied, and uncover male biases in work that claims a neutral, universal standpoint.",
+   "section": "Commitments and approaches",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Philosophy” (McAfee, Garry, Superson, Grasswick and Khader) §§3–4",
+     "excerpt": "feminist philosophers always start by seeing people as embodied",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "They work in analytic, continental and American pragmatist styles, among others, Latin American thought included.",
+   "section": "Commitments and approaches",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Philosophy” (McAfee, Garry, Superson, Grasswick and Khader) §3",
+     "excerpt": "analytic philosophy, continental philosophy, and American pragmatist philosophy",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Standpoint theorists first claimed an epistemic advantage for the subordinated, and later versions claim a contingent advantage in solving particular problems.",
+   "section": "Standpoint, objectivity, and epistemic injustice",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Epistemology and Philosophy of Science” (Anderson) §§2, 5",
+     "excerpt": "contingent epistemic advantage in solving particular problems",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Sandra Harding's strong objectivity includes both reflexivity and democratic inclusion, and Donna Haraway's situated knowledges reject both objectivism and relativism.",
+   "section": "Standpoint, objectivity, and epistemic injustice",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Epistemology and Philosophy of Science” (Anderson) §§3, 8",
+     "excerpt": "“strong objectivity” includes both reflexivity and democratic inclusion",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Miranda Fricker (2007) named testimonial injustice, and hermeneutical injustice, in which a community's interpretive resources leave a person's experience unintelligible.",
+   "section": "Standpoint, objectivity, and epistemic injustice",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Epistemology and Philosophy of Science” (Anderson) §9",
+     "excerpt": "Fricker (2007) calls this “testimonial injustice.”",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Helen Longino located objectivity in a social organization of inquiry that makes people with differing biases answerable to one another.",
+   "section": "Standpoint, objectivity, and epistemic injustice",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Epistemology and Philosophy of Science” (Anderson) §4",
+     "excerpt": "A social organization that holds people with different biases accountable to one another",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Carol Gilligan argued that Kohlberg wrongly ranked a morality of rights above one of responsibility, and later care ethicists describe us as interdependent beings whose obligations follow from our vulnerability.",
+   "section": "Care, dependency, and labor",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Ethics” (Pascoe) §2.2",
+     "excerpt": "we are necessarily interdependent beings with responsibilities to one another",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Care ethicists disagree over whether care should stand as a framework of its own, and some feminist ethicists worry that the emphasis on care valorizes a femininity burdened by caring.",
+   "section": "Care, dependency, and labor",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Ethics” (Pascoe) §2.2",
+     "excerpt": "valorizes a conception of femininity burdened by caring",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Some Marxist feminists, among them Silvia Federici, argued that housework helps reproduce capitalism's workforce.",
+   "section": "Care, dependency, and labor",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Perspectives on Class and Work” (Nagel, Ferguson and Hennessy) §4",
+     "excerpt": "women's housework is part of the social reproduction of capitalism",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The Combahee River Collective coined the term identity politics.",
+   "section": "Black feminism and intersectionality",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Ethics” (Pascoe) §1.3",
+     "excerpt": "The Combahee River Collective coined the term 'identity politics'",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In 1989 Kimberlé Crenshaw described Black women as standing at the “intersection” of race and gender discrimination.",
+   "section": "Black feminism and intersectionality",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Ethics” (Pascoe) §§1.3, 2.3",
+     "excerpt": "In 1989, Kimberlé Crenshaw conceptualized Black women as located at the",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Elizabeth Spelman argued that gender realists wrongly assume gender is constructed independently of race and class.",
+   "section": "Black feminism and intersectionality",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Perspectives on Sex and Gender” (Mikkola) §3.1.1",
+     "excerpt": "gender realists mistakenly assume that gender is constructed independently of race",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Analytic feminism has treated the sex/gender distinction as close to an article of faith, while continental feminists such as Luce Irigaray and Hélène Cixous theorize sexual difference.",
+   "section": "Sex, gender, and performativity",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Philosophy” (McAfee, Garry, Superson, Grasswick and Khader) §3",
+     "excerpt": "holds the sex/gender distinction practically as an article of faith",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "For Judith Butler, gender is something one does, built up through repeated acts, and she questions the distinction itself, suggesting that sex “was always already gender.”",
+   "section": "Sex, gender, and performativity",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Perspectives on Sex and Gender” (Mikkola) §§3.1.2, 3.3",
+     "excerpt": "was always already gender",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Talia Mae Bettcher and Katharine Jenkins both weigh gender self-identification: Bettcher defends a resistant trans conception of womanhood, and Jenkins revises Haslanger's account so that it does not exclude trans women.",
+   "section": "Sex, gender, and performativity",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Feminist Perspectives on Sex and Gender” (Mikkola) §4.2.1",
+     "excerpt": "Both Bettcher (2013) and Jenkins (2016) consider the importance of gender self-identification.",
+     "accuracy": "supported"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}

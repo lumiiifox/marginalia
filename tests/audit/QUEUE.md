@@ -8,26 +8,23 @@ ships, its `<id>.json` lands here and its line comes off this list in the same c
 
 ## Audited
 
-metaphysics, epistemology, poststructuralism, pragmatism, analytic, ancient, ethics, german-idealism, phenomenology, marxism, critical-theory
+metaphysics, epistemology, poststructuralism, pragmatism, analytic, ancient, ethics, german-idealism, phenomenology, marxism, critical-theory, political, feminist, race
 
 ## To audit
 
-1. `political`: Political and social philosophy
-2. `feminist`: Feminist philosophy
-3. `race`: Philosophy of race and critical race theory
-4. `postcolonial`: Postcolonial and decolonial thought
-5. `mind`: Philosophy of mind
-6. `language`: Philosophy of language
-7. `aesthetics`: Aesthetics
-8. `logic`: Logic
-9. `science`: Philosophy of science
-10. `religion`: Philosophy of religion
-11. `history`: Philosophy of history
-12. `law`: Philosophy of law
-13. `mathematics`: Philosophy of mathematics
-14. `african`: African philosophy
-15. `chinese`: Chinese philosophy
-16. `indian`: Indian philosophy
-17. `islamic`: Philosophy in the Islamic world
+1. `postcolonial`: Postcolonial and decolonial thought
+2. `mind`: Philosophy of mind
+3. `language`: Philosophy of language
+4. `aesthetics`: Aesthetics
+5. `logic`: Logic
+6. `science`: Philosophy of science
+7. `religion`: Philosophy of religion
+8. `history`: Philosophy of history
+9. `law`: Philosophy of law
+10. `mathematics`: Philosophy of mathematics
+11. `african`: African philosophy
+12. `chinese`: Chinese philosophy
+13. `indian`: Indian philosophy
+14. `islamic`: Philosophy in the Islamic world
 
 The owner may reorder this list; follow the list as it stands.
