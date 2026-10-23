@@ -515,9 +515,10 @@ function branchesView() {
   const sec = (k, title, intro) => `<section class="group"><div class="label">${title}</div><p class="hint">${intro}</p><div class="gl-list">${BRANCHES.filter((b) => b.k === k).map((b) => {
     const terms = all.filter((g) => termBranches(g).includes(b.id));
     return `<details class="term branch" data-branch-id="${esc(b.id)}"${S.bOpen.has(b.id) ? " open" : ""}>
-      <summary><span class="tm">${esc(b.n)}</span><span class="ta">${terms.length} glossary term${terms.length === 1 ? "" : "s"}, ${b.p.length} thinker${b.p.length === 1 ? "" : "s"}</span></summary>
+      <summary><span class="tm">${esc(b.n)}</span><span class="ta">${b.xs ? "" : "Unchecked · "}${terms.length} glossary term${terms.length === 1 ? "" : "s"}, ${b.p.length} thinker${b.p.length === 1 ? "" : "s"}</span></summary>
       <div class="tbody">
         <p class="tdef">${esc(b.d)}</p>
+        ${b.xs ? "" : `<p class="hint unchecked">Unchecked: this article hasn't been audited against its sources yet, so treat its claims as unverified.</p>`}
         ${figHTML(b.img)}
         ${b.x.split(/\n\n/).some((part) => part.includes("\n")) ? articleHTML(b, terms) : parasHTML(b.x)}${thinkerSources(b)}
         ${b.id === "logic" ? `<div class="noteacts"><button class="btn" data-truth="-1">Check an argument with a truth table</button><button class="btn" data-argquiz="fallacy">Name the fallacy</button><button class="btn" data-argquiz="valid">Valid or not?</button><button class="btn" data-argquiz="missing">Missing premise</button><button class="btn" data-steps="1">Put the steps in order</button><button class="btn" data-recon="1">How to reconstruct an argument</button></div>${fallacyCatalogHTML(all)}` : ""}

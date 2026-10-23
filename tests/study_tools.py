@@ -65,6 +65,7 @@ Uses made-up records only. Checks that:
       you start reading or take a note, folded after; it links to the reading paths that use the book.
   22. sources: no glossary entry, thinker, branch, primer, disputation or reading path cites Wikipedia; every source link is https.
   23. a branch article's section sources (xs): each names a heading the article has, each source has a name, links are https;
+      an article has them exactly when its audit record is in tests/audit, and every other article is marked Unchecked;
       Epistemology shows one quiet sources line under each of its sourced sections, links opening in a new tab.
 Needs: pip install playwright && playwright install chromium
 """
@@ -777,7 +778,9 @@ def section_sources():
     import json, subprocess
     js = ("global.window=global;eval(require('fs').readFileSync('data/branches.js','utf8')+';process.stdout.write(JSON.stringify(BRANCHES.map(b=>({id:b.id,x:b.x||\\'\\',xs:b.xs||null}))))')")
     data = json.loads(subprocess.run(["node", "-e", js], cwd=ROOT, capture_output=True, text=True, check=True).stdout)
+    audited = {f.stem for f in (ROOT / "tests" / "audit").glob("*.json")}
     for b in data:
+        check(bool(b["xs"]) == (b["id"] in audited), f"{b['id']}: has section sources exactly when its audit record is in tests/audit")
         if not b["xs"]: continue
         heads = [part.split("\n")[0] for part in b["x"].split("\n\n") if "\n" in part]
         stray = [k for k in b["xs"] if k not in heads]
@@ -862,6 +865,9 @@ async def branch_sources(browser):
           const secs = [...d.querySelectorAll('.branch-article-section')];
           return secs.filter((s) => s.querySelector('p.ssrc')).map((s) => s.lastElementChild.classList.contains('ssrc') && s.querySelectorAll('p.ssrc').length === 1); }})()""")
         check(last and all(last), f"{bid}: each sources line sits once, at the end of its section, after all its paragraphs ({last.count(False)} misplaced)")
+    marks = await page.evaluate("""(() => { go({ screen: 'branches' }); return BRANCHES.map((b) => { const d = document.querySelector(`details[data-branch-id='${b.id}']`);
+      return [!!b.xs, !!d.querySelector('p.unchecked'), d.querySelector('summary .ta').textContent.startsWith('Unchecked')]; }); })()""")
+    check(all(m[0] != m[1] and m[0] != m[2] for m in marks), f"every unaudited article, and only those, is marked Unchecked ({sum(1 for m in marks if not m[0])} unaudited)")
     check(not errs, "no script errors with section sources" + (f": {errs}" if errs else ""))
     await page.context.close()
 
