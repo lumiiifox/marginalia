@@ -28,6 +28,11 @@ ideas? If not, it waits.
   A mistake there can stop the app from opening the owner's library.
 - **Direct push to `main`** for everything else: interface, styling, reader behaviour, glossary and branches content, exports.
 - One logical change per commit, with a plain message saying what changed for the reader.
+- A pull request carries a finished change to the app: a working feature, a fix, or an audited article. No PRs for plans, research
+  briefs, outlines or unaudited drafts; keep those in the chat until they are done. Work on several articles goes in one PR per finished
+  article, never one per step.
+- Articles still to audit, and their order, are in `tests/audit/QUEUE.md`. Take the next one from there; take its line off in the PR that
+  ships its audit.
 - Test before pushing: run `python3 tests/smoke.py` (every screen at phone and desktop width, the reader, and a full backup → wipe → restore round trip). Add a check to it when a change adds a screen or a stored field.
 - After changes to storage or deleting, also run `python3 tests/trash.py` (Recently deleted, and the upgrade to version 8).
 - After changes to PDF import or to highlights from a PDF, also run `python3 tests/pdf_highlights.py` (needs `pip install pypdf`; it marks up a
