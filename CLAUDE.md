@@ -146,7 +146,12 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   labels (a definition's numeral, "PROP. XVII.", "Corollary II.", "Note"). Tested by `tests/links.py`.
 - Audits of the articles: `tests/audit/<id>.json`, one record per sentence with each claim's verdict and source (see `tests/audit/README.md`).
   An audit's fixes ship only after an independent second review.
-- Article frame (owner's decision, 2026-10-22): every branch and tradition article opens with "Scope and central questions", then two to
+- Audits in place (owner's decision, 2026-10-23): an audit corrects the article as it stands: it fixes what the sources contradict,
+  cuts what no source supports (and empty or contrastive hedges), merges duplicate sections and adds section sources (`xs`). The
+  record keeps a verdict on every old sentence (`sentences`) and the shipped text sentence by sentence (`new_text`). Fixes ship once
+  the independent review passes, without waiting for the owner. Work in batches of about three articles, taking them from
+  `tests/audit/QUEUE.md`. An article is rebuilt on the frame below only when a reading of the owner's needs it.
+- Article frame (owner's decision, 2026-10-22; applies to rebuilt articles only): a rebuilt article opens with "Scope and central questions", then two to
   five history sections and three to seven sections on its central problems or doctrines (titled for the subject), then "Beyond the
   European canon" ("Encounters and comparisons" for the Indian, Chinese, Islamic and African articles), "Criticisms and debates",
   "Connections and influence" and "Open questions"; 5,000–8,000 words, academic sources only, every contested reading credited. A rebuilt
