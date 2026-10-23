@@ -1,0 +1,943 @@
+{
+ "article": "phenomenology",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited SEP section, 2026-10-23 (29 fixes applied, among them bad faith as facticity and transcendence, fetishism kept apart from alienation, Habermas's public sphere and its critics, Honneth's and Allen's claims attributed as the sources give them)",
+ "cited_sources_before": 8,
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "Phenomenology: the structures of lived experience",
+   "text": "Phenomenology is the study of the structures of conscious experience as lived from the first-person point of view.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Phenomenology (Smith) intro",
+     "excerpt": "the study of structures of consciousness",
+     "fix": "reword to the entry's definition"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "Phenomenology: the structures of lived experience",
+   "text": "Its central concept is intentionality: experience is always of or about something, presented through a meaning.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Phenomenology (Smith) §2",
+     "excerpt": "The central structure of an experience is its intentionality.",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "Phenomenology: the structures of lived experience",
+   "text": "Brentano called the study of mental phenomena descriptive psychology, and Husserl made it a discipline of its own in the Logical Investigations (1900-01) and Ideas I (1913).",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Phenomenology (Smith) §3",
+     "excerpt": "what he called “descriptive psychology”",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "Phenomenology: the structures of lived experience",
+   "text": "His method of epoché, or bracketing, sets aside the question whether the world exists in order to describe how things show up in experience.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Phenomenology (Smith) §4",
+     "excerpt": "“bracketing” the question of the existence of the natural world",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "Phenomenology: the structures of lived experience",
+   "text": "Heidegger's Being and Time (1927) shifted attention to practical involvement in a world and to the question of the meaning of being; Sartre developed an account of consciousness and freedom, and Merleau-Ponty one of the lived body and perception.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Phenomenology (Smith) §4",
+     "excerpt": "we and our activities are always “in the world”",
+     "fix": "split into the Heidegger and Sartre/Merleau-Ponty sentences"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "Intentionality, epoché, and the lifeworld",
+   "text": "Edmund Husserl distinguished the intentional directedness of experience from the existence of its objects and developed phenomenological reduction as a method of clarifying how things appear.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "by": "Husserl (Zahavi) §2",
+     "note": "Zahavi describes experiences with their objects 'as such'; the stated distinction from existence is not given; the reduction repeats sentence 4.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "Intentionality, epoché, and the lifeworld",
+   "text": "His later analyses of temporality, intersubjectivity, and the lifeworld examined the conditions under which objectivity and shared meaning arise.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Husserl (Zahavi) §§4–6",
+     "excerpt": "Husserl brings up the importance of the lifeworld.",
+     "note": "No source says these analyses establish the conditions of objectivity.",
+     "fix": "reword: time, empathy, lifeworld as the taken-for-granted world"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "Intentionality, epoché, and the lifeworld",
+   "text": "Phenomenologists disagree about whether a fully presuppositionless description is possible.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "note": "Neither Smith nor Zahavi addresses presuppositionless description.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "Being-in-the-world and existential phenomenology",
+   "text": "Martin Heidegger criticized accounts that begin with a detached subject confronting objects.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Phenomenology (Smith) §4",
+     "excerpt": "Heidegger resisted Husserl’s neo-Cartesian emphasis on consciousness and subjectivity",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "Being-in-the-world and existential phenomenology",
+   "text": "His analysis of Dasein emphasizes practical involvement, care, temporality, and being-with-others.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Phenomenology (Smith) §§4–5",
+     "fix": "merged into the Heidegger sentences"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "Being-in-the-world and existential phenomenology",
+   "text": "Jean-Paul Sartre examined the for-itself, negation, freedom, and relations with others, while Maurice Merleau-Ponty made bodily perception and embodied agency central.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Phenomenology (Smith) §4",
+     "excerpt": "emphasizing the role of the body in human experience",
+     "note": "For-itself and negation are not checked against a cited source.",
+     "fix": "reword to what the entry gives"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "Being-in-the-world and existential phenomenology",
+   "text": "Their approaches should not be collapsed into one method.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Empty hedge, contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Hermeneutics and the problem of understanding",
+   "text": "Hermeneutics is the theory of interpretation.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Hermeneutics (George) intro",
+     "excerpt": "Hermeneutics is the study of interpretation.",
+     "note": "George calls it a philosophy of interpretation, not a theory or method.",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Hermeneutics and the problem of understanding",
+   "text": "Schleiermacher proposed a general art of interpreting any text, and Dilthey grounded the human sciences in understanding.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Hermeneutics (George) §§2.1–2.2",
+     "excerpt": "He proposes a universal hermeneutics that pertains to all linguistic experience",
+     "fix": "split and reworded"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Hermeneutics and the problem of understanding",
+   "text": "Heidegger made interpretation a basic feature of human existence.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Hermeneutics (George) §3",
+     "excerpt": "human beings are, in their very being, interpretive",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Hermeneutics and the problem of understanding",
+   "text": "Gadamer's Truth and Method (1960) argued that prejudices, in the sense of prior judgments handed down by tradition, make understanding possible, that we are shaped by an effective history we can never fully survey, and that understanding happens as a fusion of horizons.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Hermeneutics (George) §§4.2–4.3",
+     "excerpt": "conditioned by tradition, is thus a matter of prejudice",
+     "fix": "split into two sentences"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "Hermeneutics and the problem of understanding",
+   "text": "Habermas objected that this leaves too little ground for criticizing ideology; Ricoeur took a long route to self-understanding through symbol, metaphor and narrative.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Hermeneutics (George) §§5, 6.1",
+     "excerpt": "offers too little basis for such critique",
+     "fix": "split"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Interpretation, language, and historical situatedness",
+   "text": "Friedrich Schleiermacher connected grammatical and psychological interpretation; Wilhelm Dilthey explored understanding in the human sciences.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Hermeneutics (George) §2.1",
+     "excerpt": "the interpretation of two sides of a discourse",
+     "fix": "merged with sentence 14 (duplicate section)"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Interpretation, language, and historical situatedness",
+   "text": "Hans-Georg Gadamer argued that inherited horizons and historically effected consciousness are conditions of understanding rather than simply obstacles.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Hermeneutics (George) §4.2",
+     "fix": "cut (duplicate, contrastive)"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Interpretation, language, and historical situatedness",
+   "text": "Paul Ricoeur connected textual interpretation with symbol, narrative, memory, and the interpretation of action.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Hermeneutics (George) §§5, 8.2",
+     "note": "Memory is not in George; action only indirectly.",
+     "fix": "cut (duplicate)"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Interpretation, language, and historical situatedness",
+   "text": "Debates with Jürgen Habermas concern ideology critique and the possibility of critically examining tradition.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Hermeneutics (George) §6.1",
+     "fix": "cut (duplicate)"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "section": "Existentialism, freedom, and situated life",
+   "text": "Existentialism, a loose movement that flourished in postwar France with roots in Kierkegaard and Nietzsche, starts from concrete individual existence.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Existentialism (Aho) intro",
+     "excerpt": "mid-twentieth-century France",
+     "note": "'Loose movement' and 'starts from concrete individual existence' are not in Aho.",
+     "fix": "reword: no unifying doctrine; nineteenth-century pioneers"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "section": "Existentialism, freedom, and situated life",
+   "text": "Only Sartre and Beauvoir accepted the label.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Existentialism (Aho) intro",
+     "excerpt": "only Sartre and Beauvoir explicitly self-identified as",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "section": "Existentialism, freedom, and situated life",
+   "text": "Its themes include Sartre's slogan that existence precedes essence, so that people make themselves by their choices; freedom limited by facticity, the conditions one is born into; anxiety; authenticity against conformity to the crowd; and bad faith, the self-deception by which we flee our freedom.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Existentialism (Aho) §§3–5",
+     "excerpt": "constrained by our facticity but simultaneously endowed with the freedom",
+     "fix": "split; 'the crowd' becomes 'the They'"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "section": "Kierkegaard, Nietzsche, and the existential inheritance",
+   "text": "Søren Kierkegaard investigated anxiety, despair, faith, and the difficulties of becoming a self.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Existentialism (Aho) §§3, 5.2",
+     "excerpt": "a relation that relates to itself",
+     "fix": "merged"
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "section": "Kierkegaard, Nietzsche, and the existential inheritance",
+   "text": "Friedrich Nietzsche challenged inherited moral ideals and examined how values are historically formed.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Existentialism (Aho) §§2.2, 5.3",
+     "excerpt": "Nietzsche's genealogy is one that shows how",
+     "fix": "merged"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "section": "Kierkegaard, Nietzsche, and the existential inheritance",
+   "text": "Both influenced later existential thought, although neither belongs neatly to a single twentieth-century movement.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 28,
+   "section": "Kierkegaard, Nietzsche, and the existential inheritance",
+   "text": "Existentialism is best understood as a family of questions about agency, finitude, meaning, and responsibility.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Existentialism (Aho) intro",
+     "excerpt": "there is no unifying doctrine",
+     "fix": "merged into the opening sentence"
+    }
+   ]
+  },
+  {
+   "s": 29,
+   "section": "Simone de Beauvoir and situated freedom",
+   "text": "Simone de Beauvoir argued that freedom is lived through material, social, and historical conditions rather than exercised by an isolated will.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Beauvoir (Burke) §§4, 13",
+     "excerpt": "constrained but not determined by social and historical context",
+     "fix": "reword (contrastive)"
+    }
+   ]
+  },
+  {
+   "s": 30,
+   "section": "Simone de Beauvoir and situated freedom",
+   "text": "The Ethics of Ambiguity and The Second Sex explore ethical reciprocity, oppression, embodiment, and the social formation of gender.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Beauvoir (Burke) §§5, 7",
+     "excerpt": "evil resides in the denial of freedom",
+     "fix": "reword"
+    }
+   ]
+  },
+  {
+   "s": 31,
+   "section": "Simone de Beauvoir and situated freedom",
+   "text": "Her philosophy is not merely an application of Sartre's: it offers distinctive analyses of ambiguity, dependency, and political liberation.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "contested",
+     "by": "Beauvoir (Burke) §2",
+     "excerpt": "identifying her philosophical originality and unique contributions",
+     "note": "Stated as settled; Burke reports Beauvoir called her work an elaboration of Sartre's.",
+     "fix": "credit the debate: her own view, then the scholars'"
+    }
+   ]
+  },
+  {
+   "s": 32,
+   "section": "Ethics, alterity, and responsibility",
+   "text": "Emmanuel Levinas placed ethical responsibility to the other at the center of philosophy, challenging approaches that assimilate alterity to a totality.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Levinas (Bergo) intro, §2.3",
+     "excerpt": "Levinas' most sustained criticisms target fundamental ontology",
+     "fix": "reword"
+    }
+   ]
+  },
+  {
+   "s": 33,
+   "section": "Ethics, alterity, and responsibility",
+   "text": "Phenomenological ethics also considers vulnerability, intersubjectivity, and the experience of others.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 34,
+   "section": "Ethics, alterity, and responsibility",
+   "text": "These debates intersect with, but do not settle, disputes about whether ethical obligations arise from experience, rational argument, or social relations.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive hedge.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 35,
+   "section": "Race, colonialism, and the limits of European universality",
+   "text": "Frantz Fanon's analyses of racialized embodiment, colonial violence, and lived experience exposed limits in accounts that treat the subject as socially unmarked.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "overstated",
+     "by": "Fanon (Drabinski) §§1, 4",
+     "excerpt": "There is no escape from the epidermal skin.",
+     "note": "'Exposed limits in accounts that treat the subject as socially unmarked' is not in the source.",
+     "fix": "reword to what Drabinski gives; add source"
+    }
+   ]
+  },
+  {
+   "s": 36,
+   "section": "Race, colonialism, and the limits of European universality",
+   "text": "Phenomenological work on race, gender, disability, and coloniality examines how bodies encounter spaces, institutions, and other people differently.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 37,
+   "section": "Race, colonialism, and the limits of European universality",
+   "text": "Such contributions transform the field's questions rather than merely add examples to a fixed canon.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 38,
+   "section": "Critiques, continuations, and contemporary inquiry",
+   "text": "Later philosophers questioned whether phenomenological description can avoid interpretation, whether consciousness has privileged access to itself, and how language and power shape experience.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 39,
+   "section": "Critiques, continuations, and contemporary inquiry",
+   "text": "Contemporary work engages cognitive science, psychiatry, technology, ecology, and affect.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Phenomenology (Smith) §7",
+     "excerpt": "combine phenomenological issues with issues of neuroscience",
+     "note": "Psychiatry, technology, ecology and affect are not in Smith.",
+     "fix": "reword: cognitive science and neuroscience only"
+    }
+   ]
+  },
+  {
+   "s": 40,
+   "section": "Critiques, continuations, and contemporary inquiry",
+   "text": "The relation among phenomenology, hermeneutics, and existentialism remains productive precisely because their methods and commitments are not identical.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 40,
+  "claims": 40,
+  "supported": 22,
+  "unverified": 5,
+  "overstated": 7,
+  "editorial": 5,
+  "contested": 1,
+  "assertive_claims": 40,
+  "cited_source_supports_before": 30,
+  "shipped_sentences": 29
+ },
+ "new_text": [
+  {
+   "text": "Phenomenology is the study of the structures of consciousness as experienced from the first-person point of view.",
+   "section": "Phenomenology: the structures of lived experience",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Phenomenology” (Smith) intro",
+     "excerpt": "the study of structures of consciousness",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The central structure of an experience is its intentionality: its being directed toward something, through its content or meaning.",
+   "section": "Phenomenology: the structures of lived experience",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Phenomenology” (Smith) §2",
+     "excerpt": "The central structure of an experience is its intentionality.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Brentano used the word for what he called descriptive psychology, and phenomenology as a discipline was launched by Edmund Husserl, whose Ideas I (1913) presented it as a new science.",
+   "section": "Phenomenology: the structures of lived experience",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Phenomenology” (Smith) §3",
+     "excerpt": "Phenomenology as we know it was launched by Edmund Husserl.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Husserl's method of bracketing (epoché) sets aside the question whether the natural world exists and turns attention to the structure of one's own experience.",
+   "section": "Phenomenology: the structures of lived experience",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Phenomenology” (Smith) §4",
+     "excerpt": "“bracketing” the question of the existence of the natural world",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Husserl went on to analyse the experience of time, empathy with others, and, in his late work, the lifeworld, the taken-for-granted and historically shaped world of everyday experience.",
+   "section": "Phenomenology: the structures of lived experience",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Edmund Husserl” (Zahavi) §§4–6",
+     "excerpt": "Husserl brings up the importance of the lifeworld.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Heidegger resisted Husserl's emphasis on consciousness and subjectivity, and in Being and Time (1927) his phenomenology turns into fundamental ontology, the question of the meaning of being.",
+   "section": "Being-in-the-world and existential phenomenology",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Phenomenology” (Smith) §4",
+     "excerpt": "Heidegger resisted Husserl’s neo-Cartesian emphasis on consciousness and subjectivity",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "For Heidegger we and our activities are always in a world, practically engaged and with others.",
+   "section": "Being-in-the-world and existential phenomenology",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Phenomenology” (Smith) §4",
+     "excerpt": "we and our activities are always “in the world”",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Sartre's Being and Nothingness (1943) made consciousness and freedom its themes, and Merleau-Ponty's Phenomenology of Perception (1945) emphasized the role of the body in human experience.",
+   "section": "Being-in-the-world and existential phenomenology",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Phenomenology” (Smith) §4",
+     "excerpt": "emphasizing the role of the body in human experience",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Hermeneutics is the study of interpretation.",
+   "section": "Hermeneutics and the problem of understanding",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Hermeneutics” (George) intro",
+     "excerpt": "Hermeneutics is the study of interpretation.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Schleiermacher proposed a universal hermeneutics for all linguistic experience, interpreting both the grammatical and the psychological side of a discourse.",
+   "section": "Hermeneutics and the problem of understanding",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Hermeneutics” (George) §2.1",
+     "excerpt": "He proposes a universal hermeneutics that pertains to all linguistic experience",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Dilthey sought foundations for the human sciences in the understanding of lived experience (Erlebnis).",
+   "section": "Hermeneutics and the problem of understanding",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Hermeneutics” (George) §2.2",
+     "excerpt": "the understanding of ‘lived experience’ (Erlebnis)",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Heidegger held that human beings are interpretive in their very being.",
+   "section": "Hermeneutics and the problem of understanding",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Hermeneutics” (George) §3",
+     "excerpt": "human beings are, in their very being, interpretive",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In Gadamer's Truth and Method (1960), the experience of truth is conditioned by tradition and is therefore a matter of prejudice, the inherited pre-structures of understanding.",
+   "section": "Hermeneutics and the problem of understanding",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Hermeneutics” (George) §4.2",
+     "excerpt": "conditioned by tradition, is thus a matter of prejudice",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Because we stand within the history of effect, our knowledge of ourselves can never be complete, and Gadamer describes the expansion of our horizons as a fusion of horizons.",
+   "section": "Hermeneutics and the problem of understanding",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Hermeneutics” (George) §4.3",
+     "excerpt": "to be historically means that knowledge of oneself can never be complete",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Habermas argued that Gadamer's account offers too little basis for criticizing ideology and entrenched tradition.",
+   "section": "Hermeneutics and the problem of understanding",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Hermeneutics” (George) §6.1",
+     "excerpt": "offers too little basis for such critique",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Ricoeur took a long route to self-interpretation through symbol, metaphor and narrative.",
+   "section": "Hermeneutics and the problem of understanding",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Hermeneutics” (George) §5",
+     "excerpt": "“long route” of self-interpretation",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Existentialism emerged in mid-twentieth-century France and has no unifying doctrine; its groundwork was laid in the nineteenth century by Kierkegaard and Nietzsche, among others.",
+   "section": "Existentialism, freedom, and situated life",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Existentialism” (Aho) intro",
+     "excerpt": "there is no unifying doctrine",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Only Sartre and Beauvoir explicitly called themselves existentialists.",
+   "section": "Existentialism, freedom, and situated life",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Existentialism” (Aho) intro",
+     "excerpt": "only Sartre and Beauvoir explicitly self-identified as",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Sartre's adage that existence precedes essence means that we make ourselves through situated choices, constrained by our facticity, the given conditions we find ourselves in.",
+   "section": "Existentialism, freedom, and situated life",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Existentialism” (Aho) §3",
+     "excerpt": "constrained by our facticity but simultaneously endowed with the freedom",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Its themes include anxiety, authenticity set against conformity to “the They”, and bad faith, in which we deny or over-identify with either our facticity or our transcendence.",
+   "section": "Existentialism, freedom, and situated life",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Existentialism” (Aho) §§4.1, 5",
+     "excerpt": "where we either deny or over-identify with one of the two aspects",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Kierkegaard described existence as a relation that relates to itself and wrote on despair and faith; Nietzsche's genealogy shows how truths are invented and then forgotten, and he attacked Christian slave morality.",
+   "section": "Existentialism, freedom, and situated life",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Existentialism” (Aho) §§2.2, 3, 5.2–5.3",
+     "excerpt": "Nietzsche's genealogy is one that shows how",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "For Beauvoir, social and historical context constrains existence while leaving it undetermined; situated freedom is one of her core concepts.",
+   "section": "Simone de Beauvoir and situated freedom",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Simone de Beauvoir” (Burke) §§4, 13",
+     "excerpt": "constrained but not determined by social and historical context",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The Ethics of Ambiguity (1947) locates evil in the denial of freedom, one's own or another's, and The Second Sex (1949) treats the body as lived and situated, and womanhood as something one becomes.",
+   "section": "Simone de Beauvoir and situated freedom",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Simone de Beauvoir” (Burke) §§5, 7",
+     "excerpt": "evil resides in the denial of freedom",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Beauvoir described her philosophy as an elaboration of Sartre's; scholars have since argued for her philosophical originality.",
+   "section": "Simone de Beauvoir and situated freedom",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Simone de Beauvoir” (Burke) §2",
+     "excerpt": "merely an elaboration of Sartre's",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Simone de Beauvoir” (Burke) §2",
+     "excerpt": "identifying her philosophical originality and unique contributions",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Levinas, who studied with Husserl and Heidegger, argued that ethics should be conceived as first philosophy, and his most sustained criticisms target Heidegger's fundamental ontology.",
+   "section": "Ethics and the Other",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Emmanuel Levinas” (Bergo) intro, §§1, 2.3",
+     "excerpt": "Levinas' most sustained criticisms target fundamental ontology",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Frantz Fanon's Black Skin, White Masks (1952), in its chapter “The Lived-Experience of the Black Man”, describes in existential-phenomenological terms how race operates on the body.",
+   "section": "Race and colonialism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Frantz Fanon” (Drabinski) §1",
+     "excerpt": "The primary approach in the text is existential-phenomenological",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Fanon drew on Sartre and Merleau-Ponty, and found Sartre's account of antisemitism inadequate to anti-Blackness as a form of racism.",
+   "section": "Race and colonialism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Frantz Fanon” (Drabinski) §1",
+     "excerpt": "inadequate to the phenomenon of anti-Blackness as a form of racism",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The Wretched of the Earth (1961) treats violence as a precondition of colonial liberation.",
+   "section": "Race and colonialism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Frantz Fanon” (Drabinski) §4",
+     "excerpt": "Violence is important for Fanon as a precondition to liberation.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Some researchers have begun to combine phenomenological questions with neuroscience, behavioural studies and mathematical modelling.",
+   "section": "Later work",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Phenomenology” (Smith) §4",
+     "excerpt": "combine phenomenological issues with issues of neuroscience",
+     "accuracy": "supported"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}

@@ -8,29 +8,26 @@ ships, its `<id>.json` lands here and its line comes off this list in the same c
 
 ## Audited
 
-metaphysics, epistemology, poststructuralism, pragmatism, analytic, ancient, ethics, german-idealism
+metaphysics, epistemology, poststructuralism, pragmatism, analytic, ancient, ethics, german-idealism, phenomenology, marxism, critical-theory
 
 ## To audit
 
-1. `phenomenology`: Phenomenology, hermeneutics and existentialism
-2. `marxism`: Marxism
-3. `critical-theory`: Frankfurt School critical theory
-4. `political`: Political and social philosophy
-5. `feminist`: Feminist philosophy
-6. `race`: Philosophy of race and critical race theory
-7. `postcolonial`: Postcolonial and decolonial thought
-8. `mind`: Philosophy of mind
-9. `language`: Philosophy of language
-10. `aesthetics`: Aesthetics
-11. `logic`: Logic
-12. `science`: Philosophy of science
-13. `religion`: Philosophy of religion
-14. `history`: Philosophy of history
-15. `law`: Philosophy of law
-16. `mathematics`: Philosophy of mathematics
-17. `african`: African philosophy
-18. `chinese`: Chinese philosophy
-19. `indian`: Indian philosophy
-20. `islamic`: Philosophy in the Islamic world
+1. `political`: Political and social philosophy
+2. `feminist`: Feminist philosophy
+3. `race`: Philosophy of race and critical race theory
+4. `postcolonial`: Postcolonial and decolonial thought
+5. `mind`: Philosophy of mind
+6. `language`: Philosophy of language
+7. `aesthetics`: Aesthetics
+8. `logic`: Logic
+9. `science`: Philosophy of science
+10. `religion`: Philosophy of religion
+11. `history`: Philosophy of history
+12. `law`: Philosophy of law
+13. `mathematics`: Philosophy of mathematics
+14. `african`: African philosophy
+15. `chinese`: Chinese philosophy
+16. `indian`: Indian philosophy
+17. `islamic`: Philosophy in the Islamic world
 
 The owner may reorder this list; follow the list as it stands.

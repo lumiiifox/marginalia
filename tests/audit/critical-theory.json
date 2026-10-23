@@ -1,0 +1,831 @@
+{
+ "article": "critical-theory",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited SEP section, 2026-10-23 (29 fixes applied, among them bad faith as facticity and transcendence, fetishism kept apart from alienation, Habermas's public sphere and its critics, Honneth's and Allen's claims attributed as the sources give them)",
+ "cited_sources_before": 5,
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "Origins and emancipatory social inquiry",
+   "text": "In its narrow sense, critical theory is the work of the Frankfurt School, the circle around the Institute for Social Research founded in Frankfurt in 1923.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Critical Theory (Flynn) intro, §1.1",
+     "excerpt": "founded in 1923",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "Origins and emancipatory social inquiry",
+   "text": "In a broader sense the name covers emancipatory theories tied to social movements, such as feminist, critical race, queer and postcolonial theory.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Critical Theory (Flynn) intro",
+     "excerpt": "such as feminist theory, critical race theory, queer theory",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "Origins and emancipatory social inquiry",
+   "text": "Horkheimer's inaugural lecture of 1931 set out an interdisciplinary program joining philosophy with social theory, psychology, political economy and cultural analysis, and his essay “Traditional and Critical Theory” (1937) defined critical theory as theory that questions the existing social order and aims at human emancipation.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Critical Theory (Flynn) §§1.1, 1.3",
+     "excerpt": "an interdisciplinary research program combining philosophy and social theory",
+     "note": "Flynn frames the aim as eliminating domination.",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "Origins and emancipatory social inquiry",
+   "text": "The school drew on Marx, Freud, Weber, Lukács, Kant, Hegel and Nietzsche.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Critical Theory (Flynn) §1.2",
+     "excerpt": "from Immanuel Kant and German Idealism to Nietzsche",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "The Institute for Social Research and interdisciplinary critique",
+   "text": "The Institute for Social Research developed an interdisciplinary project combining philosophical reflection with empirical investigation of capitalism, family, authority, and social psychology.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Critical Theory (Flynn) §§1.1, 1.4",
+     "fix": "merged (duplicate)"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "The Institute for Social Research and interdisciplinary critique",
+   "text": "The rise of Nazism and the Institute's exile profoundly shaped its analyses of modernity.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Critical Theory (Flynn) §1.1",
+     "excerpt": "re-established it at Columbia University in 1934",
+     "note": "'Profoundly shaped its analyses of modernity' is not in Flynn.",
+     "fix": "reword to the exile itself"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "The Institute for Social Research and interdisciplinary critique",
+   "text": "Critical theory differed from approaches that treated social institutions as neutral facts, asking how forms of knowledge can reproduce or challenge domination.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "note": "Contrastive; not in a source.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "First-generation critique of enlightenment and culture",
+   "text": "The first generation included Horkheimer, Adorno, Marcuse and Benjamin.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Critical Theory (Flynn) §1.1",
+     "excerpt": "Erich Fromm, Friedrich Pollock, Leo Löwenthal",
+     "fix": "keep, with the other members"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "First-generation critique of enlightenment and culture",
+   "text": "They studied the psychological roots of authoritarianism, culminating in The Authoritarian Personality (1950).",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Critical Theory (Flynn) §1.4",
+     "excerpt": "came with the publication of The Authoritarian Personality (1950)",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "First-generation critique of enlightenment and culture",
+   "text": "Horkheimer and Adorno's Dialectic of Enlightenment (1947) argued that instrumental reason turns enlightenment into new forms of domination and that the culture industry standardizes culture into commodities; Benjamin was more hopeful about mass-reproduced art.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "overstated",
+     "by": "Adorno (Zuidervaart) §§3, 4.2; Benjamin (Charles) §7",
+     "excerpt": "myth is already enlightenment, and enlightenment reverts to mythology",
+     "note": "Charles does not compare the two men's hopes.",
+     "fix": "split; 'Benjamin was more hopeful' replaced by what Charles reports"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "First-generation critique of enlightenment and culture",
+   "text": "Marcuse's One-Dimensional Man (1964) argued that advanced capitalism absorbs dissent.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Marcuse (Farr) §5",
+     "excerpt": "The system must provide the citizens with enough goods to keep them pacified.",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "First-generation critique of enlightenment and culture",
+   "text": "Adorno developed a negative dialectics attentive to what escapes concepts, and defended autonomous art as a form of resistance.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Adorno (Zuidervaart) §§5, 6",
+     "excerpt": "the consistent consciousness of nonidentity",
+     "note": "Zuidervaart does not frame art mainly as resistance.",
+     "fix": "reword; 'resistance' replaced"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Instrumental reason, domination, and the culture industry",
+   "text": "Max Horkheimer and Theodor W. Adorno investigated how reason oriented toward calculation and control can become entangled with domination.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Adorno (Zuidervaart) §3",
+     "fix": "merged (duplicate)"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Instrumental reason, domination, and the culture industry",
+   "text": "Their account of the culture industry criticized standardization and commercialized entertainment, but its scope and treatment of audiences remain debated.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Adorno (Zuidervaart) §§4.2, 7.2",
+     "excerpt": "Adorno's notoriously dismissive analyses of jazz",
+     "fix": "reword to the criticism reported"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Instrumental reason, domination, and the culture industry",
+   "text": "Walter Benjamin's analysis of technological reproducibility explored both emancipatory possibilities and political dangers in modern media.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Benjamin (Charles) §7",
+     "excerpt": "precisely 'useful for fascism'",
+     "fix": "merged"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Adorno, negative dialectics, and aesthetic experience",
+   "text": "Adorno's negative dialectics resists treating conceptual identity as an exhaustive account of objects and experiences.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Adorno (Zuidervaart) §5",
+     "fix": "merged (duplicate)"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "Adorno, negative dialectics, and aesthetic experience",
+   "text": "His aesthetic theory examines the tension between artistic autonomy and social mediation.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Adorno (Zuidervaart) §6",
+     "excerpt": "the social antithesis of society",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Adorno, negative dialectics, and aesthetic experience",
+   "text": "This is not a simple rejection of rational thought; it is a demand that reason attend to what its classifications obscure.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Marcuse, needs, and political opposition",
+   "text": "Herbert Marcuse analyzed technological rationality, manufactured needs, and the integration of opposition within affluent industrial societies.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Marcuse (Farr) §§5, 7",
+     "note": "Farr does not name technological rationality or false needs.",
+     "fix": "merged"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Marcuse, needs, and political opposition",
+   "text": "Eros and Civilization and One-Dimensional Man linked psychoanalysis and Marxian social critique in different ways.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Marcuse (Farr) §4.1",
+     "excerpt": "it is as Marxian as it is Freudian",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Marcuse, needs, and political opposition",
+   "text": "His engagement with student movements also prompted debates about liberation, tolerance, and the risks of paternalism.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Marcuse (Farr) §§5, 7",
+     "excerpt": "The student protests of the 1960s were a form of Great Refusal",
+     "note": "Farr calls Repressive Tolerance controversial but reports no specific criticism of paternalism.",
+     "fix": "reword"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "section": "Habermas and the transformation of critical theory",
+   "text": "Habermas, leading the second generation, grounded critique in communicative reason: the lifeworld of shared meanings is distorted when money and administrative power colonize it, and in his discourse ethics valid norms are those all affected could accept in rational discussion.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Critical Theory (Flynn) §§1.6, 2.2; Habermas (Rees) §§2.3, 3.3",
+     "excerpt": "steering mechanisms of money and power",
+     "fix": "split"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "section": "Habermas and the transformation of critical theory",
+   "text": "Honneth's theory of recognition, building on Hegel, and the work of Benhabib, Fraser and others mark the third generation, which has taken the tradition toward feminist and anti-colonial concerns.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Critical Theory (Flynn) §§1.1, 2.2",
+     "excerpt": "along with Seyla Benhabib, Nancy Fraser, and Christoph Menke",
+     "note": "Flynn names a turn to feminism and globalization; 'anti-colonial concerns' is not the third generation's own turn.",
+     "fix": "reword: feminism and globalization"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "section": "Communication, democracy, and public justification",
+   "text": "Jürgen Habermas argued that communicative action and practices of giving reasons provide resources for criticizing domination.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "by": "Habermas (Rees) §2.4.3",
+     "note": "Rees questions whether communicative reconstruction supplies such grounds.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "section": "Communication, democracy, and public justification",
+   "text": "His accounts of the public sphere, discourse ethics, and deliberative democracy ask how legitimacy can arise through inclusive participation.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Habermas (Rees) §§1.1, 4.1",
+     "excerpt": "open and inclusive network",
+     "fix": "split"
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "section": "Communication, democracy, and public justification",
+   "text": "Critics challenge idealizations of consensus and the exclusion of voices from historically unequal public spheres.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Habermas (Rees) §1.2",
+     "excerpt": "excluding propertyless workers",
+     "fix": "make specific"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "section": "Recognition, redistribution, and feminist criticism",
+   "text": "Axel Honneth developed recognition theory to examine disrespect, social freedom, and struggles over status.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Recognition (Iser) intro, §2",
+     "excerpt": "the affected are supposed to be particularly motivated to stand up against such violations",
+     "fix": "reword"
+    }
+   ]
+  },
+  {
+   "s": 28,
+   "section": "Recognition, redistribution, and feminist criticism",
+   "text": "Nancy Fraser challenged accounts that prioritize recognition at the expense of political economy, emphasizing redistribution, representation, and participatory parity.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Recognition (Iser) §3",
+     "excerpt": "only recognition and redistribution taken together would allow for the right kind of justice",
+     "note": "Iser does not discuss representation as a third dimension.",
+     "fix": "reword; representation cut"
+    }
+   ]
+  },
+  {
+   "s": 29,
+   "section": "Recognition, redistribution, and feminist criticism",
+   "text": "Seyla Benhabib explored democratic iteration, difference, and the relation between universal principles and situated perspectives.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 30,
+   "section": "Race, coloniality, and the limits of the Frankfurt canon",
+   "text": "Critical theorists have been criticized for insufficient attention to colonialism, racial capitalism, and the experiences of non-European populations.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Critical Theory (Flynn) §§1.6, 2.4",
+     "excerpt": "lack of explicit and sustained engagement with European colonialism",
+     "fix": "keep, credited to Allen"
+    }
+   ]
+  },
+  {
+   "s": 31,
+   "section": "Race, coloniality, and the limits of the Frankfurt canon",
+   "text": "Black critical thought, decolonial philosophy, and feminist scholarship challenge the assumption that one European intellectual lineage exhausts emancipatory critique.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 32,
+   "section": "Race, coloniality, and the limits of the Frankfurt canon",
+   "text": "Productive dialogue requires confronting exclusions rather than merely appending new subjects to an unchanged theory.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 33,
+   "section": "Contemporary critical theory and digital capitalism",
+   "text": "Contemporary debates address surveillance, algorithmic governance, ecological crisis, labor, authoritarian politics, and changing media systems.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 34,
+   "section": "Contemporary critical theory and digital capitalism",
+   "text": "Philosophers disagree about the best normative grounds for critique: social suffering, recognition, democratic participation, immanent contradictions, or other resources.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Critical Theory (Flynn) §2",
+     "excerpt": "the normative foundations, content, or force of their critical theorizing",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 35,
+   "section": "Contemporary critical theory and digital capitalism",
+   "text": "The tradition remains defined partly by this self-critical disagreement.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 35,
+  "claims": 35,
+  "supported": 21,
+  "overstated": 6,
+  "unverified": 4,
+  "editorial": 4,
+  "assertive_claims": 35,
+  "cited_source_supports_before": 28,
+  "shipped_sentences": 26
+ },
+ "new_text": [
+  {
+   "text": "In its narrow sense, critical theory is the work of several generations of philosophers and social theorists of the Frankfurt School, centred on the Institute for Social Research, founded in 1923.",
+   "section": "Origins and emancipatory aims",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Critical Theory (Frankfurt School)” (Flynn) intro, §1.1",
+     "excerpt": "founded in 1923",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In a broader sense the name covers theories tied to emancipatory social movements, such as feminist, critical race, queer and postcolonial or decolonial theory.",
+   "section": "Origins and emancipatory aims",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Critical Theory (Frankfurt School)” (Flynn) intro",
+     "excerpt": "such as feminist theory, critical race theory, queer theory",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Horkheimer's inaugural lecture of 1931 set out an interdisciplinary research program combining philosophy and social theory, and his essay “Traditional and Critical Theory” (1937) took its aim to be emancipation, the elimination of domination.",
+   "section": "Origins and emancipatory aims",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Critical Theory (Frankfurt School)” (Flynn) §§1.1, 1.3",
+     "excerpt": "an interdisciplinary research program combining philosophy and social theory",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The school drew on sources from Kant and German Idealism to Marx, Weber, Lukács, Freud and Nietzsche.",
+   "section": "Origins and emancipatory aims",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Critical Theory (Frankfurt School)” (Flynn) §1.2",
+     "excerpt": "from Immanuel Kant and German Idealism to Nietzsche",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Under Nazism the Institute went into exile and was re-established at Columbia University in 1934.",
+   "section": "Origins and emancipatory aims",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Critical Theory (Frankfurt School)” (Flynn) §1.1",
+     "excerpt": "re-established it at Columbia University in 1934",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Its first generation included Horkheimer, Adorno, Marcuse and Benjamin, with Erich Fromm, Friedrich Pollock and Leo Löwenthal.",
+   "section": "The first generation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Critical Theory (Frankfurt School)” (Flynn) §1.1",
+     "excerpt": "Erich Fromm, Friedrich Pollock, Leo Löwenthal",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Its research on authority began with Studies in Authority and the Family, and its best-known product is The Authoritarian Personality (1950).",
+   "section": "The first generation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Critical Theory (Frankfurt School)” (Flynn) §1.4",
+     "excerpt": "came with the publication of The Authoritarian Personality (1950)",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In Dialectic of Enlightenment (1944, revised 1947), Horkheimer and Adorno argued that myth is already enlightenment and that enlightenment reverts to mythology, enthroning means as ends.",
+   "section": "The first generation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Theodor W. Adorno” (Zuidervaart) §3",
+     "excerpt": "myth is already enlightenment, and enlightenment reverts to mythology",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Their culture industry is mass culture planned and standardized at every stage, from production through distribution to consumption.",
+   "section": "The first generation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Theodor W. Adorno” (Zuidervaart) §4.2",
+     "excerpt": "rationalized and standardized in production, distribution, and consumption",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Later commentators have elaborated the cognitive and psychological complexities of Adorno's account of reception, and Fumi Okiji calls his analyses of jazz notoriously dismissive.",
+   "section": "The first generation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Theodor W. Adorno” (Zuidervaart) §§4.2, 7.2",
+     "excerpt": "Adorno's notoriously dismissive analyses of jazz",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Benjamin's essay on the work of art in the age of its technical reproducibility holds that aura was “useful for fascism”; Adorno objected that Benjamin had transferred the magical aura to the autonomous work of art and given it a counter-revolutionary function.",
+   "section": "The first generation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Walter Benjamin” (Charles) §7",
+     "excerpt": "precisely 'useful for fascism'",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Adorno's Negative Dialectics presents dialectics as a steady awareness of nonidentity, of what identity-thinking leaves out.",
+   "section": "Adorno and Marcuse",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Theodor W. Adorno” (Zuidervaart) §5",
+     "excerpt": "the consistent consciousness of nonidentity",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "His Aesthetic Theory treats modern art's autonomy as necessary and illusory, and such art as, in his phrase, “the social antithesis of society.”",
+   "section": "Adorno and Marcuse",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Theodor W. Adorno” (Zuidervaart) §6",
+     "excerpt": "the social antithesis of society",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Marcuse's Eros and Civilization (1955) is as Marxian as it is Freudian.",
+   "section": "Adorno and Marcuse",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Herbert Marcuse” (Farr) §4.1",
+     "excerpt": "it is as Marxian as it is Freudian",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "His One-Dimensional Man (1964) describes advanced industrial civilization as a comfortable, democratic unfreedom that keeps its citizens pacified with goods.",
+   "section": "Adorno and Marcuse",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Herbert Marcuse” (Farr) §5",
+     "excerpt": "The system must provide the citizens with enough goods to keep them pacified.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "His essay “Repressive Tolerance” (1965) was controversial, and he linked the student protests of the 1960s to the Great Refusal while rejecting the title of their guru.",
+   "section": "Adorno and Marcuse",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Herbert Marcuse” (Farr) §§5, 7",
+     "excerpt": "The student protests of the 1960s were a form of Great Refusal",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Jürgen Habermas, leading the second generation, reconstructed the history and idea of the public sphere in The Structural Transformation of the Public Sphere (1962), and in later work holds that a robust, independent public sphere is crucial to democracy.",
+   "section": "Habermas and the second generation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Critical Theory (Frankfurt School)” (Flynn) §1.6",
+     "excerpt": "a robust and independent public sphere is crucial to a healthy democracy",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "On his account, the system's steering mechanisms of money and power colonize the lifeworld of shared meanings.",
+   "section": "Habermas and the second generation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Jürgen Habermas” (Rees) §§2.3.2, 2.4.1",
+     "excerpt": "steering mechanisms of money and power",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "His discourse ethics counts as valid just those norms that all affected could agree to as participants in rational discourse.",
+   "section": "Habermas and the second generation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Critical Theory (Frankfurt School)” (Flynn) §2.2",
+     "excerpt": "if all persons affected could agree as participants in rational discourse",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In Between Facts and Norms (1992), legitimate law comes from discourse in an open and inclusive network that feeds into parliament and the administrative and judicial bodies around it.",
+   "section": "Habermas and the second generation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Jürgen Habermas” (Rees) §4.1",
+     "excerpt": "open and inclusive network",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Critics charged that he paid too little attention to how the bourgeois public sphere was constituted by excluding propertyless workers, and Nancy Fraser's work on subaltern counterpublics led him to accept that there may be several public spheres.",
+   "section": "Habermas and the second generation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Jürgen Habermas” (Rees) §1.2",
+     "excerpt": "excluding propertyless workers",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Axel Honneth, Seyla Benhabib, Nancy Fraser and Christoph Menke are counted as a third generation.",
+   "section": "Recognition and the third generation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Critical Theory (Frankfurt School)” (Flynn) §1.1",
+     "excerpt": "along with Seyla Benhabib, Nancy Fraser, and Christoph Menke",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Recognition theorists, many following Hegel, hold that people who suffer violations of recognition are particularly motivated to stand up against them, and Honneth proposed recognition as a new paradigm for critical theory.",
+   "section": "Recognition and the third generation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Recognition” (Iser) intro, §4",
+     "excerpt": "the affected are supposed to be particularly motivated to stand up against such violations",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Fraser argued that only recognition and redistribution together make for justice, measured by the ideal of participatory parity, and the two debated it in Redistribution or Recognition? (2003).",
+   "section": "Recognition and the third generation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Recognition” (Iser) §3",
+     "excerpt": "only recognition and redistribution taken together would allow for the right kind of justice",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Amy Allen and others charge Habermas with a Eurocentric theory of modernization and progress, and postcolonial critics fault the school for lacking sustained engagement with European colonialism.",
+   "section": "Critiques of the tradition",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Critical Theory (Frankfurt School)” (Flynn) §§1.6, 2.4",
+     "excerpt": "lack of explicit and sustained engagement with European colonialism",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Critical theorists continue to dispute the normative foundations, content and force of their critique.",
+   "section": "Critiques of the tradition",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Critical Theory (Frankfurt School)” (Flynn) §2",
+     "excerpt": "the normative foundations, content, or force of their critical theorizing",
+     "accuracy": "supported"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}
