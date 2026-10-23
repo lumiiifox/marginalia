@@ -2,7 +2,7 @@
  "article": "political",
  "audited": "2026-10-23",
  "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
- "by": "Claude (lead dev); independent review of every shipped sentence against its cited source, 2026-10-23 (36 fixes applied, among them Mills's non-ideal contract, the Mills view Alcoff reports, Mill's burden of proof, and unquoted source wording quoted or reworded)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited source, 2026-10-23 (36 fixes applied, among them Mills's non-ideal contract, the Mills view Alcoff reports, Mill's burden of proof, and unquoted source wording quoted or reworded); Foucault entry credited to Gutting and Oksala, 2026-10-23",
  "cited_sources_before": 7,
  "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
  "sentences": [
@@ -656,7 +656,7 @@
    "section": "Power and its forms",
    "claims": [
     {
-     "by": "Stanford Encyclopedia of Philosophy, “Michel Foucault” (Oksala) §§3.4–3.5",
+     "by": "Stanford Encyclopedia of Philosophy, “Michel Foucault” (Gutting and Oksala) §§3.4–3.5",
      "excerpt": "three primary techniques of control: hierarchical observation, normalizing judgment, and the examination",
      "accuracy": "supported"
     }

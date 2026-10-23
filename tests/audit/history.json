@@ -1,0 +1,581 @@
+{
+ "article": "history",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited SEP section, 2026-10-23 (16 fixes applied, among them Grube's view of exclusivists, Koselleck's tasks for conceptual history, the natural-law dictum from Cicero to Aquinas, and the Legal Positivism and Foucault credit lines)",
+ "cited_sources_before": 4,
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "The scope of historical reflection",
+   "text": "Philosophy of history distinguishes speculative questions about the direction or meaning of historical change from critical questions about historical evidence, explanation, narrative, and interpretation.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §3",
+     "excerpt": "Speculative philosophy of history asks about the meaning and purpose of the historical process.",
+     "fix": "keep, credited to Walsh's distinction"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "The scope of historical reflection",
+   "text": "These inquiries overlap but need not yield a single theory of history.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "Progress, freedom, and historical change",
+   "text": "Giambattista Vico, Johann Gottfried Herder, G. W. F. Hegel, and Karl Marx developed contrasting accounts of historical development.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §§2.1–2.2",
+     "fix": "merged with 24"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "Progress, freedom, and historical change",
+   "text": "Hegel associated world history with developing consciousness of freedom; Marx emphasized material production and class struggle.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §§2.1–2.2",
+     "fix": "merged with 24"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "Progress, freedom, and historical change",
+   "text": "Critics challenge teleological assumptions and the exclusion of histories that do not fit a single sequence.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §2.2",
+     "fix": "merged with 25"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "Understanding, explanation, and agency",
+   "text": "Wilhelm Dilthey and R. G. Collingwood examined how historians understand meaningful human actions.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §2.4",
+     "fix": "merged with 27"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "Understanding, explanation, and agency",
+   "text": "Carl Hempel proposed explanations using general laws, while critics argued that historical accounts often require interpretation of particular intentions, institutions, and contexts.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §3.1",
+     "fix": "merged with 28"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "Understanding, explanation, and agency",
+   "text": "The debate concerns the relation between causes, reasons, and historical understanding.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "Narrative, evidence, and historical truth",
+   "text": "Historical narratives select beginnings, endings, agents, and scales.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §1.2",
+     "fix": "merged with 31"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "Narrative, evidence, and historical truth",
+   "text": "Hayden White examined narrative forms, while Paul Ricoeur connected narrative with temporality and memory.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §§1.3, 3.4",
+     "fix": "merged with 29"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "Narrative, evidence, and historical truth",
+   "text": "Recognition that accounts are constructed does not entail that all accounts are equally well supported: archives, testimony, material traces, and criticism constrain historical claims.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §1.3",
+     "note": "Contrastive.",
+     "fix": "merged with 31"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "Genealogy, memory, and historical violence",
+   "text": "Friedrich Nietzsche and Michel Foucault used genealogy to investigate the contingent formation of values, practices, and institutions.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "by": "Philosophy of History (Little) §§2.1, 6",
+     "note": "Little names Nietzsche and Foucault in other roles; genealogy is not discussed.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Genealogy, memory, and historical violence",
+   "text": "Walter Benjamin questioned triumphalist accounts of progress and emphasized histories of suffering.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "note": "Benjamin is not in Little.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Genealogy, memory, and historical violence",
+   "text": "Debates about testimony, public memory, and responsibility ask how the past should be represented and acknowledged.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Colonial histories and competing temporalities",
+   "text": "Postcolonial and decolonial historians and philosophers challenge the presentation of European modernity as the universal timeline of human development.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §4",
+     "fix": "merged with 31"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Colonial histories and competing temporalities",
+   "text": "African, Indian, Chinese, and Indigenous historical traditions have developed distinctive approaches to chronology, collective memory, political legitimacy, and transmission.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "Colonial histories and competing temporalities",
+   "text": "Comparative work must avoid treating any one as internally uniform.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Global history and unresolved questions",
+   "text": "Contemporary philosophy of history considers global connections, environmental change, historical injustice, and the politics of archives.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Global history and unresolved questions",
+   "text": "Can multiple narratives of the same events be true?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Global history and unresolved questions",
+   "text": "What counts as progress, and for whom?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Global history and unresolved questions",
+   "text": "How do present concerns shape historical inquiry without making it arbitrary?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "section": "Earlier overview",
+   "text": "Philosophy of history asks what history consists of, whether it has a meaning or direction, how historians know and explain the past, and what moral responsibilities the past creates.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §3",
+     "fix": "merged into the opening"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "section": "Earlier overview",
+   "text": "Its speculative strand looked for large patterns.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §3",
+     "fix": "merged into the opening"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "section": "Earlier overview",
+   "text": "Vico held that a universal human nature shapes the course of nations, Herder that human nature is itself formed by history, Hegel that history is the unfolding of freedom, and Marx that it is driven by developments in production and class conflict.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Philosophy of History (Little) §§2.1–2.2",
+     "excerpt": "human nature is itself a historical product",
+     "fix": "reword: Vico's constant human nature and stages; Marx through modes of production"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "section": "Earlier overview",
+   "text": "Critics object to the single causes these accounts propose and to finding purpose where no agent directs events.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §2.2",
+     "excerpt": "there is no super-agent lying behind historical events",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "section": "Earlier overview",
+   "text": "The hermeneutic tradition separated the human sciences from the natural sciences.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §2.4",
+     "fix": "merged with 27"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "section": "Earlier overview",
+   "text": "Dilthey held that the former rest on understanding meaningful action, the latter on causal explanation, and Collingwood proposed that historians know the past by re-enacting the thought of historical agents.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §2.4",
+     "excerpt": "the human sciences were inherently distinct from the natural sciences",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 28,
+   "section": "Earlier overview",
+   "text": "Analytic philosophers debated Hempel's covering-law model of 1942, on which historical explanation derives events from general laws; Dray and others argued that history rarely works this way.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Philosophy of History (Little) §3.1",
+     "excerpt": "there are virtually no good examples of universal laws in history",
+     "fix": "reword to the critics' argument as Little gives it; Dray not named there"
+    }
+   ]
+  },
+  {
+   "s": 29,
+   "section": "Earlier overview",
+   "text": "From the 1970s Hayden White and Louis Mink turned attention to narrative and to the rhetorical form of historical writing, and Ricoeur linked memory, narrative, identity and history.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §§1.3, 3.4",
+     "excerpt": "beginning with the publication of Hayden White's Metahistory (1973)",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 30,
+   "section": "Earlier overview",
+   "text": "Reinhart Koselleck's conceptual history studies how the concepts historians use change over time.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §2.5",
+     "excerpt": "Koselleck",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 31,
+   "section": "Earlier overview",
+   "text": "Recent work emphasizes that the historian's choice of theme, place and scale shapes what can be known, that evidence underdetermines narrative so that several truthful accounts can coexist, and that Eurocentric frameworks distort the histories of other parts of the world.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of History (Little) §§1.2–1.3, 4",
+     "excerpt": "narratives are underdetermined by the facts",
+     "fix": "keep, reworded"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 31,
+  "claims": 31,
+  "supported": 18,
+  "editorial": 5,
+  "unverified": 3,
+  "non-assertive": 3,
+  "overstated": 2,
+  "assertive_claims": 28,
+  "cited_source_supports_before": 20,
+  "shipped_sentences": 11
+ },
+ "new_text": [
+  {
+   "text": "Following W. H. Walsh, philosophers distinguish a speculative philosophy of history, which asks about the meaning and purpose of the historical process, from a critical philosophy of history, which studies historical knowledge, evidence and explanation.",
+   "section": "Speculative and critical philosophy of history",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of History” (Little) §3",
+     "excerpt": "Speculative philosophy of history asks about the meaning and purpose of the historical process.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Vico held that civilizations pass through the same stages because human nature is constant, Herder that human nature is itself a historical product, and Hegel that history is the unfolding of freedom, while Marx traced history through the development of economic modes of production.",
+   "section": "Patterns in history",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of History” (Little) §§2.1–2.3",
+     "excerpt": "human nature is itself a historical product",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Critics find mono-causal interpretations of history vulnerable, and some deny that any super-agent lies behind historical events.",
+   "section": "Patterns in history",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of History” (Little) §2.2",
+     "excerpt": "there is no super-agent lying behind historical events",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Dilthey held the human sciences to be inherently distinct from the natural sciences, with the understanding of meaning as their method, and Collingwood presented re-enacting the thought of historical agents as the way historians know the past.",
+   "section": "Understanding and explanation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of History” (Little) §2.4",
+     "excerpt": "the human sciences were inherently distinct from the natural sciences",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Carl Hempel's 1942 essay modelled historical explanation on covering laws; critics replied that historical explanations resemble explanations of individual behaviour, and that history offers virtually no good examples of universal laws.",
+   "section": "Understanding and explanation",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of History” (Little) §3.1",
+     "excerpt": "there are virtually no good examples of universal laws in history",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "From the publication of Hayden White's Metahistory (1973), and in the work of Louis Mink, philosophers turned to narrative and the rhetorical form of historical writing, and Paul Ricœur traced the relations among memory, identity, narrative and history.",
+   "section": "Narrative and concepts",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of History” (Little) §§1.3, 3.4",
+     "excerpt": "beginning with the publication of Hayden White's Metahistory (1973)",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Reinhart Koselleck asked philosophers of history to identify the concepts needed to characterize history, such as the space of experience and the horizon of expectation, to place them in their political and social discourses, and to assess how useful they are.",
+   "section": "Narrative and concepts",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of History” (Little) §2.5",
+     "excerpt": "possible or necessary in characterizing history",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Recent work stresses that the scale a historian chooses changes what is found, that the facts underdetermine narratives, so that several truthful accounts can coexist, and that the field's choice of topics has tended to be Eurocentric.",
+   "section": "Recent directions",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of History” (Little) §§1.2–1.3, 4",
+     "excerpt": "narratives are underdetermined by the facts",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Can multiple narratives of the same events be true?",
+   "section": "Open questions",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "What counts as progress, and for whom?",
+   "section": "Open questions",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "How do present concerns shape historical inquiry without making it arbitrary?",
+   "section": "Open questions",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}

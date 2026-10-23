@@ -1,0 +1,626 @@
+{
+ "article": "religion",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited SEP section, 2026-10-23 (16 fixes applied, among them Grube's view of exclusivists, Koselleck's tasks for conceptual history, the natural-law dictum from Cicero to Aquinas, and the Legal Positivism and Foucault credit lines)",
+ "cited_sources_before": 4,
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "Scope and religious diversity",
+   "text": "Philosophy of religion examines religious beliefs, practices, experiences, and forms of life using philosophical argument.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Religion (Taliaferro) intro",
+     "fix": "merged with 23"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "Scope and religious diversity",
+   "text": "The field includes questions about gods, ultimate reality, liberation, ritual, revelation, and religious language.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "Scope and religious diversity",
+   "text": "It should not assume that every tradition centers on belief in a single creator God.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "Arguments about divine existence",
+   "text": "Ontological arguments associated with Anselm reason from the concept of God; cosmological arguments appeal to dependence or causation; and design arguments appeal to features of order or apparent purpose.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Ontological Arguments (Schmid); Cosmological Argument (Reichenbach) §5; Teleological Arguments (Koperski and Ratzsch) §1",
+     "fix": "merged with 29"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "Arguments about divine existence",
+   "text": "Aquinas and thinkers in Islamic philosophy developed different forms of these arguments.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Cosmological Argument (Reichenbach) §§1, 5",
+     "fix": "made specific: al-Ghazālī, Aquinas's Third Way, Udayana"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "Arguments about divine existence",
+   "text": "Hume and Kant offered influential objections, and their success remains disputed.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Cosmological Argument (Reichenbach) §1",
+     "fix": "merged with 30"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "Evil, suffering, and divine attributes",
+   "text": "The problem of evil asks whether suffering is compatible with an omnipotent, omniscient, perfectly good deity.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Problem of Evil (Tooley) §1.1",
+     "excerpt": "Why, then, do such undesirable states of affairs exist",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "Evil, suffering, and divine attributes",
+   "text": "Responses distinguish logical and evidential versions of the problem, and free-will defenses from broader theodicies.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "overstated",
+     "by": "Problem of Evil (Tooley) §§1.2, 4",
+     "excerpt": "a defense need merely show that it is likely that there are reasons",
+     "fix": "reword: defenses and theodicies as Tooley distinguishes them"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "Evil, suffering, and divine attributes",
+   "text": "Questions about divine foreknowledge, eternity, providence, and human freedom introduce further tensions.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Philosophy of Religion (Taliaferro) §5.1.1",
+     "fix": "merged with 31"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "Faith, reason, and religious knowledge",
+   "text": "Augustine, al-Ghazālī, Thomas Aquinas, and Søren Kierkegaard represent contrasting approaches to faith and philosophical reasoning.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "Faith, reason, and religious knowledge",
+   "text": "Contemporary religious epistemology debates evidence, testimony, experience, and whether belief can be warranted without argument.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Religion (Taliaferro) §3.1",
+     "fix": "merged with 27"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "Faith, reason, and religious knowledge",
+   "text": "Religious disagreement and diversity raise questions about intellectual humility and exclusivist claims.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Religious Diversity (Basinger) §§2–4",
+     "excerpt": "such exclusivists are often guilty of being epistemically overconfident",
+     "fix": "reword"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Indian and Buddhist philosophical perspectives",
+   "text": "Indian traditions have developed sustained arguments about self, ultimate reality, causation, testimony, and liberation.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Indian and Buddhist philosophical perspectives",
+   "text": "Nyāya thinkers defend philosophical arguments concerning a supreme being, while Buddhist traditions generally reject a permanent creator and examine suffering and dependent origination.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Cosmological Argument (Reichenbach) §1; Philosophy of Religion (Taliaferro) §1",
+     "note": "Taliaferro says Buddhism involves no belief in God; a Buddhist critique of a creator is not checked.",
+     "fix": "Nyāya kept in the cosmological sentence; Buddhist clause cut"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Indian and Buddhist philosophical perspectives",
+   "text": "These are not simply alternative answers to questions posed in Christian theology.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Chinese and other non-theistic perspectives",
+   "text": "Confucian reflections on Heaven, ritual, and cultivation and Daoist discussions of the Dao raise philosophical questions that do not always fit the category of a personal deity.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "Chinese and other non-theistic perspectives",
+   "text": "Philosophical analysis of religious traditions also considers sacred practices, cosmology, and community, rather than reducing religion to propositions about supernatural beings.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Religious language, experience, and pluralism",
+   "text": "Religious statements may function as metaphysical assertions, moral commitments, symbolic narratives, or expressions within practices.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Religious language, experience, and pluralism",
+   "text": "Wittgenstein-inspired approaches explore the place of such language in forms of life.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Religion (Taliaferro) §2.2",
+     "fix": "merged with 26"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Religious language, experience, and pluralism",
+   "text": "Philosophers disagree over mystical experience, pluralism, and whether divergent traditions can make compatible truth claims.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Religion, ethics, and public life",
+   "text": "Questions about religious authority, conscience, secular institutions, freedom of religion, and interreligious justice connect philosophy of religion with ethics and politics.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "section": "Religion, ethics, and public life",
+   "text": "Contemporary inquiry also considers gender, colonial histories, ecology, and how religious communities interpret and revise their traditions.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "section": "Earlier overview",
+   "text": "Philosophy of religion examines religious traditions and wider questions of religious meaning: what religion is, what God might be, and what significance the cosmos and history might have.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Religion (Taliaferro) intro",
+     "excerpt": "the philosophical examination of the themes and concepts involved in religious traditions",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "section": "Earlier overview",
+   "text": "It draws on every major area of philosophy, and it has increasingly turned to non-theistic and non-Abrahamic traditions such as Buddhism, Hinduism and Daoism.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Philosophy of Religion (Taliaferro) intro, §1",
+     "excerpt": "involves all the main areas of philosophy",
+     "fix": "reword: traditions outside the Abrahamic faiths"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "section": "Earlier overview",
+   "text": "In the mid-twentieth century logical positivists such as A. J. Ayer judged religious claims meaningless because they cannot be verified by experience.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Religion (Taliaferro) §2.1",
+     "excerpt": "Ayer argued that religious claims as well as their denial were without cognitive content",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "section": "Earlier overview",
+   "text": "Critics replied that the criterion of verification undermines itself and is too narrow, and philosophers influenced by Wittgenstein turned to how religious language functions within religious life.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Philosophy of Religion (Taliaferro) §§2.1–2.2",
+     "note": "Taliaferro covers self-refutation objections; 'too narrow' not confirmed.",
+     "fix": "merged"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "section": "Earlier overview",
+   "text": "In religious epistemology, evidentialists require that belief in God be supported by evidence, while Alvin Plantinga's reformed epistemology holds that such belief can be warranted without argument.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Religion (Taliaferro) §3.1",
+     "excerpt": "belief in God may be as properly basic",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 28,
+   "section": "Earlier overview",
+   "text": "Further debates concern disagreement among equally reasonable people, and how science and religion relate.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Religion (Taliaferro) §§3.2, 4",
+     "excerpt": "Some philosophers propose that in the case of disagreements among epistemic peers",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 29,
+   "section": "Earlier overview",
+   "text": "The classic arguments for God's existence are the ontological argument, which Anselm drew from the concept of a being than which none greater can be conceived; cosmological arguments from the existence of the world to a first cause; teleological or design arguments from order in nature; and arguments from religious experience.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Ontological Arguments (Schmid) intro, §6; Teleological Arguments (Koperski and Ratzsch) §1",
+     "excerpt": "Anselm claims to derive the existence of that than which no greater",
+     "note": "The argument from religious experience was not checked.",
+     "fix": "split by argument; religious experience cut"
+    }
+   ]
+  },
+  {
+   "s": 30,
+   "section": "Earlier overview",
+   "text": "Hume's Dialogues and Kant's first Critique contain the most famous criticisms.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Cosmological Argument (Reichenbach) §1; Teleological Arguments (Koperski and Ratzsch) §2.1.1",
+     "excerpt": "This general argument form was criticized quite vigorously by Hume",
+     "fix": "reword: neither source calls them the most famous"
+    }
+   ]
+  },
+  {
+   "s": 31,
+   "section": "Earlier overview",
+   "text": "Other central topics are the divine attributes, such as omniscience and how it fits with human freedom, and the problem of evil: how a good and all-powerful God could permit suffering.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Religion (Taliaferro) §§5.1.1, 5.1.3",
+     "excerpt": "Various replies to the freedom-foreknowledge debate have been given.",
+     "fix": "split"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 31,
+  "claims": 31,
+  "supported": 14,
+  "editorial": 9,
+  "overstated": 6,
+  "unverified": 2,
+  "assertive_claims": 31,
+  "cited_source_supports_before": 20,
+  "shipped_sentences": 14
+ },
+ "new_text": [
+  {
+   "text": "Philosophy of religion is the philosophical examination of the themes and concepts involved in religious traditions, and it draws on all the main areas of philosophy.",
+   "section": "Scope and approach",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of Religion” (Taliaferro) intro",
+     "excerpt": "involves all the main areas of philosophy",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "It has increasingly turned to traditions outside the Abrahamic faiths, and Buddhism in its main forms involves no belief in God or gods.",
+   "section": "Scope and approach",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of Religion” (Taliaferro) intro, §1",
+     "excerpt": "more traditions outside the Abrahamic faiths",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The ontological argument goes back to Anselm, who claims to derive the existence of that than which no greater can be conceived; Gaunilo answered with a perfect island, and Kant charged that such arguments assume that existence is a real predicate.",
+   "section": "Arguments about God",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Ontological Arguments” (Schmid) intro, §11",
+     "excerpt": "Anselm claims to derive the existence of that than which no greater",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Cosmological arguments hold that whatever is dependent or contingent requires grounding for its existence; versions include al-Ghazālī's kalām argument, Aquinas's Third Way and Leibniz's appeal to sufficient reason, and for the Naiyāyikas, as Udayana briefly argued, God must exist as the non-dependent cause.",
+   "section": "Arguments about God",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Cosmological Argument” (Reichenbach) §§1, 5",
+     "excerpt": "everything that is dependent or contingent requires explanation or grounding for its existence",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In the eighteenth century Hume attacked the argument's causal principle, and Kant argued that it depends on the ontological argument.",
+   "section": "Arguments about God",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Cosmological Argument” (Reichenbach) §§1, 5.2–5.5",
+     "excerpt": "the cosmological argument came under serious assault in the 18th century",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Design arguments usually start from order of some significant type in nature, and Hume criticized them vigorously in his Dialogues Concerning Natural Religion.",
+   "section": "Arguments about God",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Teleological Arguments for God’s Existence” (Koperski and Ratzsch) §§1, 2.1.1",
+     "excerpt": "Order of some significant type is usually the starting point of design arguments.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The problem of evil asks why, if there is an omnipotent, omniscient and perfectly good God, undesirable states of affairs exist; incompatibility versions argue that God and evil cannot coexist, and evidential versions argue for the more modest claim that evil makes God's existence unlikely.",
+   "section": "Evil and the divine attributes",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Problem of Evil” (Tooley) §§1.1–1.2",
+     "excerpt": "as an evidential (or inductive/probabilistic) argument for the more modest claim",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "A theodicy must specify God's reasons for permitting evil, while a defense need only show that such reasons are likely to exist; one line of reply holds that the good of libertarian free will requires the possibility of moral evil.",
+   "section": "Evil and the divine attributes",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Problem of Evil” (Tooley) §4",
+     "excerpt": "a defense need merely show that it is likely that there are reasons",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The Problem of Evil” (Tooley) §1.3",
+     "excerpt": "The good of libertarian free will requires, in short, the possibility of moral evil.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Philosophers also debate how divine omniscience and foreknowledge fit with human freedom.",
+   "section": "Evil and the divine attributes",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of Religion” (Taliaferro) §5.1.1",
+     "excerpt": "Various replies to the freedom-foreknowledge debate have been given.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "A. J. Ayer argued that religious claims and their denials lack cognitive content, critics charged the positivists' criterion with refuting itself, and philosophers drawing on Wittgenstein turned to religious language within forms of life.",
+   "section": "Faith, evidence, and religious language",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of Religion” (Taliaferro) §§2.1–2.2",
+     "excerpt": "Ayer argued that religious claims as well as their denial were without cognitive content",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Evidentialists require that belief in God be supported by evidence, while reformed epistemologists such as Alvin Plantinga hold that belief in God may be properly basic.",
+   "section": "Faith, evidence, and religious language",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of Religion” (Taliaferro) §3.1",
+     "excerpt": "belief in God may be as properly basic",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Further debates concern disagreement among epistemic peers and how science and religion relate.",
+   "section": "Faith, evidence, and religious language",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of Religion” (Taliaferro) §§3.2, 4",
+     "excerpt": "Some philosophers propose that in the case of disagreements among epistemic peers",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Responses to religious diversity divide into exclusivism, inclusivism and pluralism, and John Hick is the leading defender of the view often labelled unitary salvific pluralism.",
+   "section": "Religious diversity",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Religious Diversity (Pluralism)” (Basinger) §§2, 6",
+     "excerpt": "John Hick is the most influential proponent of unitary salvific pluralism.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Dirk-Martin Grube grants that exclusivists may be justified in holding their beliefs but argues that they are often epistemically overconfident.",
+   "section": "Religious diversity",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Religious Diversity (Pluralism)” (Basinger) §3",
+     "excerpt": "such exclusivists are often guilty of being epistemically overconfident",
+     "accuracy": "supported"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}

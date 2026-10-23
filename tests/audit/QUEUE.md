@@ -8,17 +8,14 @@ ships, its `<id>.json` lands here and its line comes off this list in the same c
 
 ## Audited
 
-metaphysics, epistemology, poststructuralism, pragmatism, analytic, ancient, ethics, german-idealism, phenomenology, marxism, critical-theory, political, feminist, race, postcolonial, mind, language, aesthetics, logic, science
+metaphysics, epistemology, poststructuralism, pragmatism, analytic, ancient, ethics, german-idealism, phenomenology, marxism, critical-theory, political, feminist, race, postcolonial, mind, language, aesthetics, logic, science, religion, history, law
 
 ## To audit
 
-1. `religion`: Philosophy of religion
-2. `history`: Philosophy of history
-3. `law`: Philosophy of law
-4. `mathematics`: Philosophy of mathematics
-5. `african`: African philosophy
-6. `chinese`: Chinese philosophy
-7. `indian`: Indian philosophy
-8. `islamic`: Philosophy in the Islamic world
+1. `mathematics`: Philosophy of mathematics
+2. `african`: African philosophy
+3. `chinese`: Chinese philosophy
+4. `indian`: Indian philosophy
+5. `islamic`: Philosophy in the Islamic world
 
 The owner may reorder this list; follow the list as it stands.
