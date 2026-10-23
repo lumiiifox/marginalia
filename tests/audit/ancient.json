@@ -1,0 +1,977 @@
+{
+ "article": "ancient",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited source, 2026-10-23 (6 fixes applied: Plato's indirectness and readers' thinking given as two claims; forms 'called forms or ideas' and the Republic's ideal city; Stoic complete works from Imperial-period writers (Epictetus was no Roman author); Cicero's place in the passage to early modern skepticism; Iamblichus's ritual over ascesis; Augustine familiar with the writings)",
+ "cited_sources_before": [
+  "https://plato.stanford.edu/entries/aristotle/",
+  "https://plato.stanford.edu/entries/epicurus/",
+  "https://plato.stanford.edu/entries/logic-ancient/",
+  "https://plato.stanford.edu/entries/paradox-zeno/",
+  "https://plato.stanford.edu/entries/plato/",
+  "https://plato.stanford.edu/entries/plotinus/",
+  "https://plato.stanford.edu/entries/presocratics/",
+  "https://plato.stanford.edu/entries/skepticism-ancient/",
+  "https://plato.stanford.edu/entries/stoicism/"
+ ],
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "Origins and the Presocratic inquiry",
+   "text": "Greek philosophy began early in the sixth century BCE, when Thales, whom Aristotle credits with declaring water the first cause, sought reasoned explanations of nature.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "presoc §2",
+     "excerpt": "the first to engage in such inquiry",
+     "note": "Curd reports Aristotle's claim that Thales was first; the article states it as when Greek philosophy began.",
+     "fix": "attribute the claim of priority to Aristotle"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "Origins and the Presocratic inquiry",
+   "text": "Anaximander posited an indefinite originating stuff, the apeiron, and Anaximenes replaced it with air.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "presoc §2",
+     "excerpt": "replaces Anaximander's apeiron with air",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "Origins and the Presocratic inquiry",
+   "text": "Heraclitus wrote of a logos that holds forever, Parmenides argued that what is cannot come to be or perish, and Zeno's paradoxes, extending Parmenides' arguments, purported to show that ordinary motion is impossible.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "presoc §§3, 4, 6",
+     "excerpt": "logos which holds forever",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "Origins and the Presocratic inquiry",
+   "text": "Empedocles posited four roots, earth, water, air and fire, Anaxagoras a mixture set in rotation by Mind, and Leucippus and Democritus uncuttable atoms in the void.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "presoc §§7–8",
+     "excerpt": "an infinite number of solid, uncuttable",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "Origins and the Presocratic inquiry",
+   "text": "The Sophists raised ethical and political questions, and Protagoras declared that man is the measure of all things.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "presoc §9; protag §2.1",
+     "excerpt": "Of all things the measure is man",
+     "note": "Curd's entry does not give the man-measure fragment; Bonazzi does, and calls Protagoras the most famous sophist.",
+     "fix": "add Bonazzi"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "Early Greek debates about nature and knowledge",
+   "text": "The surviving evidence for early Greek thought is fragmentary, often preserved in quotations by later writers whose agendas shaped what they reported.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "presoc §1",
+     "excerpt": "made selective use of the material available to them",
+     "fix": "keep; move after the thinkers it qualifies"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "Early Greek debates about nature and knowledge",
+   "text": "Milesian accounts of nature, Parmenides' challenge to becoming, and atomist explanations were not one unified movement toward modern science.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "note": "No source makes this claim; Curd says the Presocratics share an outlook while building distinct systems. Contrastive construction.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "Early Greek debates about nature and knowledge",
+   "text": "They offered competing accounts of explanation, perception, reason, and the order of the cosmos.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "note": "Generic summary with nothing to check.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "Early Greek debates about nature and knowledge",
+   "text": "The Pythagorean traditions also connected number, harmony, and ways of life, though details about Pythagoras himself remain uncertain.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "presoc §5",
+     "excerpt": "The details of Pythagoras' views are unclear",
+     "fix": "add citation; merge into the Presocratics section"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "Socrates, Plato, and Aristotle",
+   "text": "Socrates turned philosophy toward ethics and the conduct of life, and Athens executed him for impiety in 399 BCE.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "overstated",
+     "by": "socr §1",
+     "excerpt": "the unexamined life is not worth living",
+     "note": "Monoson gives Socrates' examination of lives; the claim that he turned philosophy as a whole toward ethics is a contested story she reports only as some scholars' view.",
+     "fix": "state what the source gives"
+    },
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "socr §3",
+     "excerpt": "the capital crime of irreverence (asebeia)",
+     "note": "Charge was irreverence, with corruption of the young; the record is the jury's conviction.",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "Socrates, Plato, and Aristotle",
+   "text": "Plato's dialogues, most of them led by Socrates, set out the theory of Forms and, in the Republic, a city ruled by philosophers.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "socr intro; plato §§1, 10",
+     "excerpt": "the dominant figure in most of Plato's dialogues",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "Socrates, Plato, and Aristotle",
+   "text": "Aristotle studied in Plato's Academy, founded the Lyceum, criticized the Forms and wrote on logic, physics, biology, ethics, politics and rhetoric.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "arist §§1, 9",
+     "excerpt": "set up his own school in a public exercise area",
+     "fix": "add citation; add dates"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Socratic dialogue, forms, and philosophical education",
+   "text": "Plato's dialogues do not all speak in one straightforward authorial voice.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "plato §5",
+     "excerpt": "Plato never speaks to his audience directly",
+     "note": "Contrastive phrasing.",
+     "fix": "restate positively; merge with s11"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Socratic dialogue, forms, and philosophical education",
+   "text": "Their arguments about knowledge, justice, love, education, and the soul invite readers to test positions rather than memorize a single doctrine.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "plato §2",
+     "excerpt": "drawn into thinking for themselves",
+     "note": "Contrastive phrasing ('rather than').",
+     "fix": "merge with s11"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Socratic dialogue, forms, and philosophical education",
+   "text": "Aristotle developed systematic accounts of demonstration, substance, causation, and virtue; his ethical inquiry treats flourishing as an activity involving practical wisdom, character, and social life.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "arist §§4.2, 6, 7; aeth §§2, 4",
+     "excerpt": "the currency of science is demonstration",
+     "note": "The 'social life' clause is supported by Kraut §10.",
+     "fix": "add citations; state the doctrines"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Socratic dialogue, forms, and philosophical education",
+   "text": "The Academy and Lyceum were also institutions of teaching, debate, and investigation.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "note": "Neither Kraut's nor Shields' entry discusses the institutions as such (Kraut mentions the Academy only in his bibliography).",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "The Hellenistic schools",
+   "text": "After Alexander the Hellenistic schools offered ways of life: Epicureans joined atomism to the pursuit of tranquility, Stoics taught living in agreement with nature and built a logic of propositions, and Pyrrhonists suspended judgment.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "epic §4; stoa §§3.4, 4.1; skep §4",
+     "note": "A summary sentence the three sections below repeat; 'after Alexander' is not in any source consulted.",
+     "fix": "cut as duplicate"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Epicureanism and the good life",
+   "text": "Epicurus argued that pleasure, properly understood, includes freedom from bodily pain and mental disturbance.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "epic §4",
+     "excerpt": "freedom from bodily pain and mental disturbance",
+     "note": "Konstan: Epicurus describes the goal by negation; 'properly understood, includes' is looser than the source.",
+     "fix": "state the goal as Konstan gives it"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Epicureanism and the good life",
+   "text": "His school linked ethics to a materialist physics, criticism of superstitious fear, friendship, and disciplined assessment of desires.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "epic §§4–6",
+     "excerpt": "Epicurus placed an extremely high value on friendship",
+     "fix": "add citation; give the doctrines"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Epicureanism and the good life",
+   "text": "Lucretius' Latin poem On the Nature of Things later presented Epicurean atomism and its ethical consequences to Roman readers.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "epic §1",
+     "excerpt": "composed in Latin De rerum natura",
+     "note": "Konstan does not say who the poem addressed.",
+     "fix": "drop 'to Roman readers'"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Stoicism from Athens to Rome",
+   "text": "Early Stoics such as Zeno of Citium and Chrysippus developed interconnected accounts of logic, physics, and ethics.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "stoa §§1.1–1.2",
+     "excerpt": "an interconnected and coherent system",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "section": "Stoicism from Athens to Rome",
+   "text": "They held that virtue is sufficient for happiness and emphasized the distinction between what depends on our rational agency and what does not.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "stoa §§2.9, 3.7",
+     "excerpt": "Virtue is necessary and sufficient for happiness",
+     "note": "Baltzly frames the up-to-us distinction as assent versus impressions.",
+     "fix": "add citation; state it as the source does"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "section": "Stoicism from Athens to Rome",
+   "text": "Roman Stoics including Seneca, Epictetus, and Marcus Aurelius explored these commitments through letters, teaching, and personal reflections, with differences of emphasis among them.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "stoa §1.3; sen §1; marcus intro",
+     "excerpt": "written to and for himself",
+     "note": "Reviewer: Baltzly calls these writers of Imperial times, never Romans, and Epictetus was a Greek-speaking former slave who wrote nothing himself. 'With differences of emphasis among them' has no source.",
+     "fix": "add citations; call them Imperial-period writers; cut the unsourced clause"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "section": "Skepticism and philosophical suspension",
+   "text": "Academic skeptics questioned claims to secure knowledge, while Pyrrhonian skeptics, especially as presented by Sextus Empiricus, developed practices of setting opposing arguments against one another and suspending judgment.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "skep §§3.1, 4.2",
+     "excerpt": "generates equipollence",
+     "note": "Sextus is not named in the parts of Vogt's entry retrieved; the method is given for Aenesidemus.",
+     "fix": "add citation; drop Sextus"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "section": "Skepticism and philosophical suspension",
+   "text": "These traditions differed in their aims and arguments.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "editorial",
+     "by": "skep §4.1",
+     "note": "True but empty; Vogt gives the actual difference (tranquility).",
+     "fix": "replace with the difference"
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "section": "Skepticism and philosophical suspension",
+   "text": "Their questions about justification, appearance, and dogmatism continue to inform epistemology.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "skep §3.3",
+     "excerpt": "a step toward modern skepticism",
+     "note": "Vogt traces the transition to early modern skepticism through Cicero; 'continue to inform epistemology' is unsourced.",
+     "fix": "state the transition Vogt gives"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "section": "Roman philosophy and public life",
+   "text": "Roman authors adapted and disputed Greek philosophical ideas within distinctive literary and political contexts.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "note": "Generic.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 28,
+   "section": "Roman philosophy and public life",
+   "text": "Cicero wrote dialogues comparing rival schools; Seneca examined moral progress and power; Musonius Rufus taught philosophy as practical training.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "cic §§2–3; sen §2.1; muson §3",
+     "excerpt": "practice is more important than theory",
+     "fix": "add citations"
+    }
+   ]
+  },
+  {
+   "s": 29,
+   "section": "Roman philosophy and public life",
+   "text": "Questions of civic obligation, slavery, empire, and the relation between philosophy and political authority complicate any simple picture of philosophy as private tranquility.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "note": "No source consulted makes this claim.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 30,
+   "section": "Late antiquity and Neoplatonism",
+   "text": "Plotinus developed an influential account of reality proceeding from the One through Intellect and Soul, drawing on but transforming Platonic arguments.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "plot §§1, 5",
+     "excerpt": "the three supra-sensible so-called “hypostases”",
+     "note": "Kalligas: Plotinus took Plato to have furnished the fundamentals; 'transforming' Platonic arguments is a modern judgment.",
+     "fix": "state Plotinus' self-understanding"
+    }
+   ]
+  },
+  {
+   "s": 31,
+   "section": "Late antiquity and Neoplatonism",
+   "text": "Porphyry, Iamblichus, and Proclus developed different metaphysical, religious, and pedagogical projects.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "by": "neopl §§1, 5; iamb §6.3",
+     "note": "Too vague to check; the sources give specific differences.",
+     "fix": "replace with the specifics"
+    }
+   ]
+  },
+  {
+   "s": 32,
+   "section": "Late antiquity and Neoplatonism",
+   "text": "Late antique philosophy also interacted with emerging Christian intellectual traditions, and ancient philosophical texts were later interpreted and transformed in Syriac, Arabic, Byzantine, and Latin contexts.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "neopl §§1, 8; greekar §§1–3",
+     "excerpt": "the Christians of Syria who took part in the translation movement",
+     "note": "'Byzantine' is not used by the sources.",
+     "fix": "split into specific claims with citations"
+    }
+   ]
+  },
+  {
+   "s": 33,
+   "section": "Transmission, exclusions, and continuing influence",
+   "text": "Much ancient philosophy survives through incomplete manuscripts, translations, commentaries, and polemical reports.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "editorial",
+     "by": "presoc §1",
+     "note": "Covered by the Presocratic sentence on selective preservation.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 34,
+   "section": "Transmission, exclusions, and continuing influence",
+   "text": "The surviving canon disproportionately represents elite male authors, although figures such as Hipparchia and later women associated with philosophical schools complicate that record.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "overstated",
+     "by": "hipp",
+     "excerpt": "one of the few women philosophers of Ancient Greece",
+     "note": "Grams supports Hipparchia's rarity; the claim about the canon as a whole has no source consulted, and 'later women associated with schools' is unspecified.",
+     "fix": "keep the Hipparchia claim as Grams gives it"
+    }
+   ]
+  },
+  {
+   "s": 35,
+   "section": "Transmission, exclusions, and continuing influence",
+   "text": "Ancient arguments about logic, virtue, causation, politics, and the nature of reality influenced subsequent philosophy across the Mediterranean and beyond; their later reception was neither uniform nor uncritical.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "editorial",
+     "note": "Generic, with a contrastive tail ('neither uniform nor uncritical').",
+     "fix": "cut"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 35,
+  "claims": 36,
+  "overstated": 4,
+  "supported": 23,
+  "editorial": 6,
+  "unverified": 3,
+  "assertive_claims": 36,
+  "cited_source_supports_before": 20
+ },
+ "new_text": [
+  {
+   "text": "Aristotle names Thales, who lived around the beginning of the sixth century BCE, as the first to engage in inquiry into the principles of nature, and credits him with declaring water the first cause.",
+   "section": "The Presocratics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Presocratic Philosophy” (Curd) §2",
+     "excerpt": "credits Thales with declaring water to be the first cause",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Anaximander made the indefinite (to apeiron) the principle of things, and Anaximenes replaced the apeiron with air.",
+   "section": "The Presocratics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Presocratic Philosophy” (Curd) §2",
+     "excerpt": "replaces Anaximander's apeiron with air",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Heraclitus opened his book with a logos which holds forever, Parmenides argued that what is cannot come to be or pass away, and Zeno, extending Parmenides' arguments, offered paradoxes purporting to show that ordinary motion is impossible.",
+   "section": "The Presocratics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Presocratic Philosophy” (Curd) §§3, 4, 6",
+     "excerpt": "the ordinary motion of everyday experience is impossible",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Empedocles posited four roots, earth, water, air and fire; Anaxagoras a mixture set into rotation by Mind; and Leucippus and Democritus uncuttable atoms and the void.",
+   "section": "The Presocratics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Presocratic Philosophy” (Curd) §§7–8",
+     "excerpt": "This mixture is set into rotary motion by the operation of Mind",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The Sophists raised ethical and political questions, and Protagoras, the most famous of them, held that of all things the measure is man.",
+   "section": "The Presocratics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Presocratic Philosophy” (Curd) §9",
+     "excerpt": "The Sophists raised ethical and political questions",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Protagoras” (Bonazzi) §1.1, §2.1",
+     "excerpt": "Of all things the measure is man",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The early Pythagoreans conceived of nature as a system ordered by number and kept precepts for a way of life, though the details of Pythagoras' own views are unclear.",
+   "section": "The Presocratics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Presocratic Philosophy” (Curd) §5",
+     "excerpt": "The details of Pythagoras' views are unclear",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "What survives of all these thinkers is fragmentary, and the later authors who preserve it made selective use of it according to their own interests.",
+   "section": "The Presocratics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Presocratic Philosophy” (Curd) §1",
+     "excerpt": "made selective use of the material available to them",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Socrates made the examination of how people live his life's work, and in 399 BCE an Athenian jury convicted him of irreverence (asebeia), which his accuser tied to the corruption of the city's young men, and sentenced him to death.",
+   "section": "Socrates, Plato, and Aristotle",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Socrates” (Monoson) §1, §3",
+     "excerpt": "the capital crime of irreverence (asebeia)",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Socrates is the dominant figure in most of Plato's dialogues; Plato never speaks to his readers directly, and the dialogues draw readers into thinking the issues through for themselves.",
+   "section": "Socrates, Plato, and Aristotle",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Socrates” (Monoson) introduction",
+     "excerpt": "the dominant figure in most of Plato's dialogues",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Plato” (Kraut) §2, §5",
+     "excerpt": "Plato never speaks to his audience directly",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Plato's writings advocate a more real and perfect realm of eternal, changeless entities, called forms or ideas, and the ideal city of the Republic is ruled by philosophers who would greatly prefer contemplating divine reality to governing.",
+   "section": "Socrates, Plato, and Aristotle",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Plato” (Kraut) §1, §10",
+     "excerpt": "the best sort of rulers greatly prefer the contemplation of divine reality",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Aristotle came to Athens at about seventeen to study in Plato's Academy, stayed until Plato's death in 347 BCE, and later set up his own school, the Lyceum, whose research ran from logic, biology and physics to ethics, rhetoric and political theory.",
+   "section": "Socrates, Plato, and Aristotle",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Aristotle” (Shields) §1",
+     "excerpt": "sent to Athens at about the age of seventeen",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "He found Plato's theory of Forms inadequate to explain change and generation, took demonstration to be the currency of science, and sought four causes in explaining anything: material, formal, efficient and final.",
+   "section": "Socrates, Plato, and Aristotle",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Aristotle” (Shields) §§4.2, 7, 9",
+     "excerpt": "Plato's theory of Forms, which he regards as inadequate",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In his ethics, happiness is activity of the rational part of the soul in accordance with virtue; ethical virtue grows from upbringing in good habits and is fully developed only together with practical wisdom.",
+   "section": "Socrates, Plato, and Aristotle",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Aristotle’s Ethics” (Kraut) §§2, 3.1, 4",
+     "excerpt": "Ethical virtue is fully developed only when it is combined with practical wisdom",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Epicurus described the goal of life as freedom from bodily pain and mental disturbance (ataraxia).",
+   "section": "Epicureanism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Epicurus” (Konstan) §4",
+     "excerpt": "freedom from bodily pain and mental disturbance",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "His atomist physics made the soul corporeal, so that death is nothing to us, and his gods take no interest in human affairs.",
+   "section": "Epicureanism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Epicurus” (Konstan) §§4–5",
+     "excerpt": "Death, Epicurus insists, is nothing to us",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "He sorted desires into three kinds, natural ones among them and empty ones, and placed an extremely high value on friendship.",
+   "section": "Epicureanism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Epicurus” (Konstan) §§4, 6",
+     "excerpt": "Epicurus placed an extremely high value on friendship",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Lucretius composed the six-book Latin poem De rerum natura (On the Nature of Things) as an exposition of Epicurean philosophy.",
+   "section": "Epicureanism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Epicurus” (Konstan) §1",
+     "excerpt": "composed in Latin De rerum natura",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Zeno of Citium founded the Stoic school around 300 BCE, and Chrysippus became its foremost theorist and systematizer.",
+   "section": "Stoicism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Stoicism” (Baltzly) §1.1",
+     "excerpt": "founded around 300 BCE by Zeno of Citium",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The Stoics treated logic, physics and ethics as one interconnected system, and their logic is what would now be called a propositional logic.",
+   "section": "Stoicism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Stoicism” (Baltzly) §§1.2, 3.4",
+     "excerpt": "an interconnected and coherent system",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Their end was living in agreement with nature; virtue, they held, is necessary and sufficient for happiness; and assent to an impression is up to us, while receiving the impression is not.",
+   "section": "Stoicism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Stoicism” (Baltzly) §§2.9, 3.7, 4.1",
+     "excerpt": "Virtue is necessary and sufficient for happiness",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The only complete Stoic works that survive come from writers of the Imperial period: Seneca, whose Moral Letters date from his last years; Epictetus, whose teaching his student Arrian recorded; and the emperor Marcus Aurelius, who wrote his Meditations to and for himself.",
+   "section": "Stoicism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Stoicism” (Baltzly) §1.1, §1.3",
+     "excerpt": "writers of Imperial times",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Seneca” (Vogt) §1",
+     "excerpt": "the product of the last years of Seneca's life",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Marcus Aurelius” (Kamtekar) introduction",
+     "excerpt": "written to and for himself",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Arcesilaus, in Plato's Academy, argued that absent a criterion of truth the skeptic suspends judgment about everything.",
+   "section": "Skepticism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Ancient Skepticism” (Vogt) §3.1",
+     "excerpt": "Absent a criterion of truth, Arcesilaus' skeptic suspends judgment",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The Pyrrhonists set appearances and thoughts against one another until they are of equal weight (isostheneia); suspension of judgment follows, and tranquility comes with it.",
+   "section": "Skepticism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Ancient Skepticism” (Vogt) §§4.2, 4.4",
+     "excerpt": "suspension of judgment follows; with it comes tranquility",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Tranquility as an ideal belongs to Pyrrhonism and is no part of Academic skepticism, and Cicero is of the greatest importance for the passage from ancient to early modern skepticism.",
+   "section": "Skepticism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Ancient Skepticism” (Vogt) §§3.3, 4.1",
+     "excerpt": "is not part of Academic skepticism",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Cicero, out of his allegiance to Academic skepticism, set out all sides of an argument in his dialogues so that readers could judge for themselves, and aimed to bring the best of Greek philosophy to wider Roman attention.",
+   "section": "Roman philosophy",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Cicero” (Woolf) §§2–3",
+     "excerpt": "Cicero's allegiance to Academic scepticism",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Seneca, among Nero's advisers from 54 CE, centres his ethics on the person seriously trying to move forward toward the Stoic ideal.",
+   "section": "Roman philosophy",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Seneca” (Vogt) §1, §2.1",
+     "excerpt": "the person who is seriously trying their best to move forward",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Musonius Rufus, the teacher of Epictetus, held practice more important than theory and argued that women ought to receive the same education in philosophy as men.",
+   "section": "Roman philosophy",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “Musonius Rufus” (Stephens) §§3, 5, 7",
+     "excerpt": "practice is more important than theory",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Plotinus' system rests on three hypostases, the One, Intellect and Soul, and he regarded his philosophy as complete from the outset, its fundamentals already furnished by Plato.",
+   "section": "Neoplatonism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Plotinus” (Kalligas) §1, §5",
+     "excerpt": "regarded his philosophy as something complete and given from the outset",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "His student Porphyry arranged and edited the Enneads; Iamblichus gave ritual (theurgy) precedence over philosophical ascesis and discursive thought, in stark contrast with Plotinus and Porphyry; and Proclus devoted a whole treatise to repudiating Plotinus on evil.",
+   "section": "Neoplatonism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Plotinus” (Kalligas) §1",
+     "excerpt": "Porphyry was a student of Plotinus",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Iamblichus” (Lecerf) §6.3",
+     "excerpt": "stark contrast with the teachings of Plotinus and Porphyry",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Neoplatonism” (Wildberg) §5",
+     "excerpt": "dedicated an entire treatise to repudiating Plotinus on this point",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Augustine was intimately familiar with the writings of Plotinus and Porphyry, and Neoplatonism may have helped educated people accept Christianity.",
+   "section": "Neoplatonism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Neoplatonism” (Wildberg) §1",
+     "excerpt": "contributed to the acceptance of Christianity among the educated",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Christians of Syria took part in the Abbasid translation movement that brought Greek philosophy into Arabic, and some Arabic translations were made from earlier Syriac ones.",
+   "section": "Transmission and the record",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Greek Sources in Arabic and Islamic Philosophy” (D’Ancona) §§1, 2, 5",
+     "excerpt": "the Christians of Syria who took part in the translation movement",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Through the pseudo-epigraphic Theology of Aristotle, Neoplatonism reached al-Kindi, al-Farabi and Avicenna, and an Arabic Book on the Pure Good became famous in Latin as the Liber de Causis.",
+   "section": "Transmission and the record",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Neoplatonism” (Wildberg) §8",
+     "excerpt": "facilitated the integration of ancient philosophy and science into both Islam",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Greek Sources in Arabic and Islamic Philosophy” (D’Ancona) §3",
+     "excerpt": "immensely famous in the Latin world, under the title Liber de Causis",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Hipparchia, a Cynic active around 300 BCE who shared the philosophical life of Crates, is one of the few women philosophers of ancient Greece whose life is recorded, though only in anecdotes repeated by later authors, and none of her writings survive.",
+   "section": "Transmission and the record",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “Hipparchia” (Grams) §§1–2",
+     "excerpt": "one of the few women philosophers of Ancient Greece",
+     "accuracy": "supported"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}

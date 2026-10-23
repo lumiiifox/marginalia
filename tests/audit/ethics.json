@@ -1,0 +1,1238 @@
+{
+ "article": "ethics",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited source, 2026-10-23 (7 fixes applied: Anscombe 'heralded' the revival; Hansen's Zhuangzi on intuition and the utility standard; the Mill dispute credited to Driver; the three poisons as Schultz and Goodman §1 give them; Jaina self-control without an invented reason; ubuntu's relational view credited to Battle via Mangena; Hume and Moore listed among the debates; 3 section citations corrected)",
+ "cited_sources_before": [
+  "https://iep.utm.edu/care-ethics/",
+  "https://plato.stanford.edu/entries/african-ethics/",
+  "https://plato.stanford.edu/entries/ethics-chinese/",
+  "https://plato.stanford.edu/entries/ethics-indian-buddhism/",
+  "https://plato.stanford.edu/entries/ethics-virtue/",
+  "https://plato.stanford.edu/entries/feminism-ethics/",
+  "https://plato.stanford.edu/entries/metaethics/",
+  "https://plato.stanford.edu/entries/moral-anti-realism/",
+  "https://plato.stanford.edu/entries/moral-cognitivism/",
+  "https://plato.stanford.edu/entries/moral-luck/"
+ ],
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "Scope and principal questions",
+   "text": "Ethics asks how to live and what we owe one another.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Opening definition; appears twice (also opening the next section).",
+     "fix": "keep once"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "Scope and principal questions",
+   "text": "Philosophers investigate good character, right action, obligations, flourishing, justice, and the value of relationships.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "List with nothing to check.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "Scope and principal questions",
+   "text": "The familiar division into normative ethics, metaethics, and applied ethics is useful, but does not exhaust the ways ethical inquiry is organized across philosophical traditions.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive hedge.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "Virtue, character, and flourishing",
+   "text": "Ethics asks how to live and what we owe one another.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Opening definition; appears twice (also opening the next section).",
+     "fix": "keep once"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "Virtue, character, and flourishing",
+   "text": "Virtue ethics is one of the three major approaches in normative ethics, alongside deontology and consequentialism: consequentialists judge acts by their outcomes, deontologists hold that some acts are required or forbidden whatever the consequences, and virtue ethicists center on character, following Aristotle.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "virt introduction",
+     "excerpt": "Each of the above-mentioned approaches can make room for virtues, consequences, and rules",
+     "note": "The source names the three approaches; its characterizations are broader than 'whatever the consequences', and it adds that each makes room for the others' concepts.",
+     "fix": "state as the source does; move to Scope"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "Virtue, character, and flourishing",
+   "text": "Aristotle's Nicomachean Ethics connects virtues to habituation, practical wisdom (phronēsis), and flourishing (eudaimonia).",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "aeth §§2, 3.1, 4",
+     "excerpt": "Ethical virtue is fully developed only when it is combined with practical wisdom",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "Virtue, character, and flourishing",
+   "text": "His account asks not only which actions to perform but what kind of person one should become.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "by": "aeth §5.2",
+     "note": "Kraut does not draw this contrast; contrastive construction.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "Virtue, character, and flourishing",
+   "text": "Elizabeth Anscombe's 'Modern Moral Philosophy' (1958) helped renew attention to virtue and the limitations of moral theories focused exclusively on obligation.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "virt §1",
+     "excerpt": "crystallized an increasing dissatisfaction",
+     "fix": "add citation; say what she criticized"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "Chinese ethical traditions",
+   "text": "Confucius links ethical cultivation to humane concern (ren), ritual propriety (li), and the formation of exemplary character.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "chin §§2.1–2.2",
+     "excerpt": "a means of cultivating and expressing a ren that is already there",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "Chinese ethical traditions",
+   "text": "Mencius argues that human beings possess beginnings or sprouts of moral responsiveness that require cultivation.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "menc §§2–3",
+     "excerpt": "innate but incipient tendencies",
+     "fix": "add citation; state the four"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "Chinese ethical traditions",
+   "text": "Xunzi, by contrast, emphasizes the transformative role of education, ritual, and deliberate effort.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "chin §2.6",
+     "excerpt": "human nature is bad because it includes a love of profit",
+     "note": "'Deliberate effort' not in the passage retrieved; the source gives models, teaching and ritual.",
+     "fix": "state as the source does"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "Chinese ethical traditions",
+   "text": "Confucian approaches are sometimes compared with virtue ethics, but scholars dispute whether that modern classification adequately captures their accounts of family relationships, social roles, and moral development.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "chin §2.1",
+     "excerpt": "alternative role-ethic characterization",
+     "note": "Credit the disputants (Ames; Wong).",
+     "fix": "name them"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Chinese ethical traditions",
+   "text": "Chinese ethical debate extends beyond Confucianism.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Transition.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Chinese ethical traditions",
+   "text": "Mohist arguments for impartial concern and benefit, and Daoist challenges to rigid conventions and artificial distinctions, pose different questions about how one ought to live.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "chin §2.4",
+     "excerpt": "Mozi advocated the doctrine of jian ai",
+     "note": "Mohist part supported; the Daoist part was checked against Hansen's Zhuangzi entry (Wong §4 lies past the fetch limit).",
+     "fix": "add citations; specify the Zhuangzi"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Chinese ethical traditions",
+   "text": "These perspectives should not be treated as variants of a single Chinese moral theory.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive hedge.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Duty, consequences, and impartiality",
+   "text": "Kant's deontological ethics places moral obligation in relation to rational agency and principles one can will as universal laws.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "kantm §§1, 3, 10",
+     "excerpt": "could also will that my maxim should become a universal law",
+     "fix": "add citation; sharpen"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "Duty, consequences, and impartiality",
+   "text": "Bentham and Mill develop utilitarian accounts that assess actions and institutions by their consequences for well-being, although their accounts of value and moral deliberation differ.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "util §§2.2–2.3",
+     "excerpt": "Intellectual pleasures are of a higher, better, sort",
+     "fix": "add citation; state the difference"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Duty, consequences, and impartiality",
+   "text": "A consequentialist can recognize character and rules, just as a deontologist can consider consequences; these families of theories differ principally in what ultimately explains rightness.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "virt introduction",
+     "excerpt": "What distinguishes virtue ethics from consequentialism or deontology is the centrality of virtue",
+     "note": "Source puts the distinction in the centrality of virtue, not in 'what explains rightness'.",
+     "fix": "move to Scope and state it as the source does"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Buddhist and South Asian ethical thought",
+   "text": "Buddhist traditions connect ethical discipline with the reduction of suffering, cultivation of compassion, and transformation of craving and ignorance.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "budd §§1–2",
+     "excerpt": "The main goal of Buddhist practice is to reach freedom from suffering",
+     "note": "Reviewer: 'craving and ignorance' appears only in §8, summarizing Bryce Goodman on surveillance capitalism; §1 gives the three poisons as attraction, aversion and indifference.",
+     "fix": "state the three poisons as §1 gives them"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Buddhist and South Asian ethical thought",
+   "text": "The Noble Eightfold Path includes right speech, action, and livelihood alongside practices of attention and understanding.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "by": "budd §§5, 8; SEP Buddha §2",
+     "note": "Neither Schultz nor Siderits lists the path's factors in the parts retrieved.",
+     "fix": "cut until sourced"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Buddhist and South Asian ethical thought",
+   "text": "Nāgārjuna's philosophical investigations of dependent arising and emptiness have been influential in Buddhist reflection on the relation between wisdom and compassion, though distinct schools interpret these connections differently.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "by": "budd §§3, 6",
+     "note": "Schultz does not connect emptiness or dependent arising to compassion.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "section": "Buddhist and South Asian ethical thought",
+   "text": "Jain ethics gives particular prominence to nonviolence (ahiṃsā), restraint, and responsibility toward living beings.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "jain §§1.1–1.2",
+     "excerpt": "the imperative of non-violence",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "section": "Buddhist and South Asian ethical thought",
+   "text": "South Asian ethical traditions should not be reduced to either utilitarianism or virtue ethics: their accounts of action, liberation, intention, and the consequences of conduct emerge within different philosophical and religious frameworks.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "budd §3",
+     "excerpt": "it is futile and misleading",
+     "note": "For Buddhism, Schultz reports the classification dispute. Contrastive construction.",
+     "fix": "replace with the dispute as Schultz reports it"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "section": "African ethics and moral community",
+   "text": "African philosophical traditions encompass distinct languages, histories, and accounts of moral life.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "supported",
+     "by": "afr §1",
+     "excerpt": "the indisputable cultural diversity",
+     "fix": "fold into the Gyekye sentence"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "section": "African ethics and moral community",
+   "text": "Kwame Gyekye's work on Akan moral thought emphasizes character, community, and the moral standing of persons while defending space for individual autonomy.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "afr §§3, 7; akan §3",
+     "excerpt": "the person cannot be absorbed by the communal",
+     "fix": "add citations"
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "section": "African ethics and moral community",
+   "text": "Kwasi Wiredu investigates conceptual frameworks and the significance of cultural and linguistic context.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "by": "akan §§1, 4",
+     "note": "Too vague to check; Wingo gives a specific view of Wiredu's on personhood.",
+     "fix": "replace with that view"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "section": "African ethics and moral community",
+   "text": "Discussions of ubuntu in several southern African traditions emphasize relations of humanity and community, but there is no single account accepted across African philosophies.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "ubuntu",
+     "excerpt": "each individual's humanity is ideally expressed in relationship",
+     "note": "Contrastive construction.",
+     "fix": "add citation; give Mangena's account"
+    }
+   ]
+  },
+  {
+   "s": 28,
+   "section": "African ethics and moral community",
+   "text": "Comparing relational approaches with care ethics can be illuminating without treating them as identical.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "by": "care",
+     "note": "Sander-Staudt notes affinities with African ethics but nothing on ubuntu; contrastive hedge.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 29,
+   "section": "Care, dependency, and feminist ethics",
+   "text": "Feminist ethics examines how gender, power, social institutions, and lived relationships affect moral theory and practice.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "note": "The SEP Feminist Ethics entry was not retrieved.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 30,
+   "section": "Care, dependency, and feminist ethics",
+   "text": "Care ethics, associated especially with Carol Gilligan, Nel Noddings, Virginia Held, and Joan Tronto, emphasizes dependence, responsiveness, and the moral significance of caring relationships.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "care §§1–2",
+     "excerpt": "psychologist Carol Gilligan and philosopher Nel Noddings in the mid-1980s",
+     "fix": "add citation; dates"
+    }
+   ]
+  },
+  {
+   "s": 31,
+   "section": "Care, dependency, and feminist ethics",
+   "text": "Some versions develop care as a political concern, asking how labor and vulnerability are distributed.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "care §4",
+     "excerpt": "The earliest substantial account of care as a political philosophy",
+     "fix": "credit Tronto"
+    }
+   ]
+  },
+  {
+   "s": 32,
+   "section": "Care, dependency, and feminist ethics",
+   "text": "Critics question whether appeals to care can reinforce unequal expectations or neglect justice for those beyond immediate relationships.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "care §5",
+     "excerpt": "valorizing the oppression of women",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 33,
+   "section": "Care, dependency, and feminist ethics",
+   "text": "Care ethics and feminist ethics overlap but are not interchangeable.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "care §1",
+     "excerpt": "although they overlap, these are discrete fields",
+     "note": "Contrastive construction.",
+     "fix": "restate"
+    }
+   ]
+  },
+  {
+   "s": 34,
+   "section": "Existence, critique, and responsibility",
+   "text": "Nietzsche's On the Genealogy of Morality investigates the historical formation of moral valuations, including the relations among resentment, guilt, and ideals of self-denial.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "nietz (Anderson)",
+     "excerpt": "slave revolt in morality",
+     "fix": "add citation; name the three treatises' themes"
+    }
+   ]
+  },
+  {
+   "s": 35,
+   "section": "Existence, critique, and responsibility",
+   "text": "His genealogical method questions the assumption that inherited moral categories require no explanation.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "by": "nietz",
+     "note": "Anderson speaks of a critique of the value of truthfulness; this phrasing has no source retrieved.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 36,
+   "section": "Existence, critique, and responsibility",
+   "text": "Simone de Beauvoir's The Ethics of Ambiguity explores freedom, responsibility, and the ethical significance of other people's freedom.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "beauv §5",
+     "excerpt": "I can neither affirm nor live my freedom without also affirming",
+     "fix": "add citation; state the thesis"
+    }
+   ]
+  },
+  {
+   "s": 37,
+   "section": "Existence, critique, and responsibility",
+   "text": "Emmanuel Levinas places responsibility to the Other at the center of his philosophical ethics, challenging approaches that begin primarily with autonomous choice or universal rules.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "levin introduction, §2.4.1",
+     "fix": "add citation; state it as Bergo does"
+    }
+   ]
+  },
+  {
+   "s": 38,
+   "section": "Existence, critique, and responsibility",
+   "text": "These projects are not a single school, but each reconsiders the assumptions from which moral questions begin.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive hedge.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 39,
+   "section": "Metaethics: meaning, truth, and moral knowledge",
+   "text": "Metaethics studies the presuppositions of moral thought and talk: what moral words mean, whether moral facts exist, how we could know them, and how moral judgment bears on motivation.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "meta introduction",
+     "excerpt": "the attempt to understand the metaphysical",
+     "fix": "state the source's four kinds of presupposition"
+    }
+   ]
+  },
+  {
+   "s": 40,
+   "section": "Metaethics: meaning, truth, and moral knowledge",
+   "text": "Hume's point that an “ought” cannot be derived from an “is”, and Moore's open-question argument, set much of its modern agenda.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "meta §4",
+     "excerpt": "an 'ought' cannot be derived from an 'is'",
+     "note": "'Set much of its modern agenda' is stronger than the source; Sayre-McCord discusses both and notes the meaning of Hume's point is debated.",
+     "fix": "list them among its debates"
+    }
+   ]
+  },
+  {
+   "s": 41,
+   "section": "Metaethics: meaning, truth, and moral knowledge",
+   "text": "Non-cognitivists deny that moral judgments state facts: emotivists take them to express emotion, R. M. Hare took them to express prescriptions of a universal sort, and Simon Blackburn's quasi-realism tries to explain why we may nonetheless treat them as true or false.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "cogn §§1.1, 2.1–2.3",
+     "excerpt": "express prescriptions of a special universal sort",
+     "note": "'Tries to explain' undersells quasi-realism's aim as van Roojen gives it.",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 42,
+   "section": "Metaethics: meaning, truth, and moral knowledge",
+   "text": "J. L. Mackie, who coined the term “error theory” in 1977, held that moral judgments aim at objective facts but are never true.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "anti §§1, 3.2",
+     "excerpt": "although our moral judgments aim at the truth, they systematically fail to secure it",
+     "note": "Coinage supported; 'aim at objective facts' and 'never true' sharpen the definition beyond Joyce's.",
+     "fix": "use Joyce's formulation"
+    }
+   ]
+  },
+  {
+   "s": 43,
+   "section": "Metaethics: meaning, truth, and moral knowledge",
+   "text": "Moral realists defend the existence of moral truths or facts, while anti-realist positions take different forms and must not be conflated.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "anti §1",
+     "excerpt": "moral anti-realism is the disjunction of three theses",
+     "note": "'Must not be conflated' is a hedge; Joyce gives the three forms.",
+     "fix": "name the three"
+    }
+   ]
+  },
+  {
+   "s": 44,
+   "section": "Metaethics: meaning, truth, and moral knowledge",
+   "text": "Debates about moral reasons, motivation, and disagreement ask whether moral judgments describe reality, express commitments, prescribe conduct, or perform several functions at once.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "by": "meta §6",
+     "note": "Generic; the motivation debate is folded into the Hume–Moore sentence.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 45,
+   "section": "Applied ethics and moral uncertainty",
+   "text": "Applied ethics takes up particular questions, such as war, punishment, the treatment of animals or the ending of life, and the debate over moral luck asks how far we can be judged for what lies beyond our control.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "luck introduction",
+     "excerpt": "the problem of moral luck arises",
+     "note": "Moral luck supported by Nelkin; the list of applied topics has no source.",
+     "fix": "keep moral luck as its own section"
+    }
+   ]
+  },
+  {
+   "s": 46,
+   "section": "Applied ethics and moral uncertainty",
+   "text": "Environmental ethics examines duties to ecosystems, species, future generations, and nonhuman nature.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "unverified",
+     "note": "No source consulted.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 47,
+   "section": "Applied ethics and moral uncertainty",
+   "text": "Animal ethics questions the grounds on which moral consideration is extended beyond human beings.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "unverified",
+     "note": "No source consulted.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 48,
+   "section": "Applied ethics and moral uncertainty",
+   "text": "Bioethics addresses consent, care, public health, and the allocation of scarce resources.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "unverified",
+     "note": "No source consulted.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 49,
+   "section": "Applied ethics and moral uncertainty",
+   "text": "Technology ethics examines surveillance, algorithmic discrimination, and responsibility for automated decisions.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "unverified",
+     "note": "No source consulted.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 50,
+   "section": "Applied ethics and moral uncertainty",
+   "text": "Ethical reflection often requires bringing competing values into view rather than applying a single principle mechanically.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive hedge ('rather than').",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 51,
+   "section": "Continuing questions",
+   "text": "What makes a life good, and what do people owe one another?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "s": 52,
+   "section": "Continuing questions",
+   "text": "How should duties to family, community, strangers, other animals, and future generations be balanced?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "s": 53,
+   "section": "Continuing questions",
+   "text": "What is the relation between moral judgment and moral cultivation?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive",
+     "note": "Kept to three questions.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 54,
+   "section": "Continuing questions",
+   "text": "Are moral standards universal, historically situated, or both in different respects?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "s": 55,
+   "section": "Continuing questions",
+   "text": "Ethics remains a field of argument about action, character, relationships, and the conditions of living well together.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Closing flourish.",
+     "fix": "cut"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 55,
+  "claims": 55,
+  "editorial": 11,
+  "overstated": 4,
+  "supported": 26,
+  "unverified": 10,
+  "non-assertive": 4,
+  "assertive_claims": 51,
+  "cited_source_supports_before": 16
+ },
+ "new_text": [
+  {
+   "text": "Ethics asks how to live and what we owe one another.",
+   "section": "Scope and principal questions",
+   "claims": [
+    {
+     "type": "editorial",
+     "accuracy": "editorial"
+    }
+   ]
+  },
+  {
+   "text": "Virtue ethics is one of three major approaches in normative ethics, alongside the approach that emphasizes duties or rules (deontology) and the one that stresses outcomes (consequentialism).",
+   "section": "Scope and principal questions",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Virtue Ethics” (Hursthouse and Pettigrove) introduction",
+     "excerpt": "Virtue ethics is currently one of three major approaches in normative ethics",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Each of the three can make room for virtues, consequences and rules; what sets virtue ethics apart is the centrality it gives to virtue.",
+   "section": "Scope and principal questions",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Virtue Ethics” (Hursthouse and Pettigrove) introduction",
+     "excerpt": "Each of the above-mentioned approaches can make room for virtues, consequences, and rules",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "For Aristotle, happiness (eudaimonia) is activity of the rational part of the soul in accordance with virtue; ethical virtue grows from upbringing in good habits and is fully developed only together with practical wisdom (phronēsis).",
+   "section": "Virtue, character, and flourishing",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Aristotle’s Ethics” (Kraut) §§2, 3.1, 4",
+     "excerpt": "activity of the rational part of the soul in accordance with virtue",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Virtue ethics re-emerged in Anglo-American philosophy in the late 1950s, heralded by Elizabeth Anscombe's “Modern Moral Philosophy” (1958), which crystallized a growing dissatisfaction with the deontology and utilitarianism then prevailing.",
+   "section": "Virtue, character, and flourishing",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Virtue Ethics” (Hursthouse and Pettigrove) §1",
+     "excerpt": "crystallized an increasing dissatisfaction with the forms of deontology and utilitarianism",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "For Confucius, ren is a moral excellence anyone has the potential to achieve, ritual propriety (li) cultivates and expresses it, and the junzi is the ethical exemplar.",
+   "section": "Chinese ethical traditions",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Chinese Ethics” (Wong) §§2.1–2.2",
+     "excerpt": "a moral excellence that anyone has the potential to achieve",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Mencius held that human nature is good: everyone has incipient tendencies, the sprouts, toward benevolence, righteousness, wisdom and propriety, which must be nurtured to become virtues.",
+   "section": "Chinese ethical traditions",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Mencius” (Van Norden) §§2–3",
+     "excerpt": "innate but incipient tendencies",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Xunzi held that human nature is bad, since it includes a love of profit, and looked to models, teaching and ritual to transform it.",
+   "section": "Chinese ethical traditions",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Chinese Ethics” (Wong) §2.6",
+     "excerpt": "human nature is bad because it includes a love of profit",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Mozi advocated impartial caring (jian ai) as a remedy for destructive conflict, and the Zhuangzi, on Chad Hansen's reading, denies that either the Confucian appeal to cultivated intuition or the Mohist utility standard is a naturally authoritative way of settling right and wrong.",
+   "section": "Chinese ethical traditions",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Chinese Ethics” (Wong) §2.4",
+     "excerpt": "Mozi advocated the doctrine of jian ai as a remedy",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Zhuangzi” (Hansen) §4.4",
+     "excerpt": "explicitly rejects intuition",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Whether Confucianism is a virtue ethics is disputed: Roger Ames proposes a role ethics instead, and David Wong argues that virtue language can be kept with qualifications that honour the critics' points about relationships.",
+   "section": "Chinese ethical traditions",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Chinese Ethics” (Wong) §2.1",
+     "excerpt": "alternative role-ethic characterization",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Kant took moral requirements to be rational principles, held that we should act only on a maxim we could will to become a universal law, and located the moral law's authority in its being an expression of one's own rational will.",
+   "section": "Duty and consequences",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Kant’s Moral Philosophy” (Cureton) §§1, 3, 10",
+     "excerpt": "could also will that my maxim should become a universal law",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Bentham held actions wrong simply in virtue of their effects on happiness and allowed pleasures only quantitative differences, whereas Mill ranked intellectual pleasures as higher in kind.",
+   "section": "Duty and consequences",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The History of Utilitarianism” (Driver) §§2.2–2.3",
+     "excerpt": "no qualitative differences between pleasures, only quantitative ones",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Julia Driver notes disagreement over whether Mill is an act-utilitarian: many of his statements support that reading, while elsewhere he seems to set an indirect standard on which the right act accords with a rule or policy.",
+   "section": "Duty and consequences",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “The History of Utilitarianism” (Driver) §2.3",
+     "excerpt": "the rules and precepts for human conduct",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In Indian Buddhism the main goal of practice is freedom from suffering; the three poisons, attraction, aversion and indifference, are among the most fundamental psychological causes of the cycle of existence; and compassion is the wish for others to be free from suffering.",
+   "section": "Buddhist and Jain ethics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Ethics in Indian Buddhism” (Schultz and Goodman) §§1–2",
+     "excerpt": "The main goal of Buddhist practice is to reach freedom from suffering",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Scholars disagree on how to classify Buddhist ethics: some read it as a virtue ethics, others as a form of consequentialism, and others think any single Western label misleading.",
+   "section": "Buddhist and Jain ethics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Ethics in Indian Buddhism” (Schultz and Goodman) §3",
+     "excerpt": "it is futile and misleading to try to interpret Buddhist ethics",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Jaina philosophy ties its renunciatory practices to the imperative of non-violence (ahiṃsā), holds that each living being is the transitory embodiment of a permanent self, and takes right conduct to consist in extreme self-control.",
+   "section": "Buddhist and Jain ethics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Jaina Philosophy” (Gorisse) §§1.1–1.2",
+     "excerpt": "associate these renunciatory liberating practices with the imperative of non-violence",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Kwame Gyekye describes African ethics as character-based and committed to the common good, while acknowledging the cultural diversity of Africa's many peoples.",
+   "section": "African ethics and moral community",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “African Ethics” (Gyekye) §§1, 3, 7",
+     "excerpt": "Good character is the essence of the African moral system",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "On Ajume Wingo's account, Gyekye holds that a person can assess, amend or reject communal values, and Kwasi Wiredu treats personhood as something achieved, for which being human is necessary but not sufficient.",
+   "section": "African ethics and moral community",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Akan Philosophy of the Person” (Wingo) §§1, 3",
+     "excerpt": "the person cannot be absorbed by the communal or cultural apparatuses",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Hunhu or ubuntu, a term found across many Bantu languages, names the moral attribute of a person; on Battle's account, as Fainos Mangena reports it, each person's humanity is ideally expressed in relationship with others, and Mangena records disagreement over how far the community's interests outweigh the individual's.",
+   "section": "African ethics and moral community",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “Hunhu/Ubuntu in Traditional Southern African Thought” (Mangena) §§1–3",
+     "excerpt": "the moral attribute of a person",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Care ethics began with the psychologist Carol Gilligan and the philosopher Nel Noddings in the mid-1980s and builds on the motivation to care for those who are dependent and vulnerable.",
+   "section": "Care and feminist ethics",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “Care Ethics” (Sander-Staudt) §§1–2",
+     "excerpt": "psychologist Carol Gilligan and philosopher Nel Noddings in the mid-1980s",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Virginia Held and Joan Tronto are among its most influential contributors, and Tronto gave the earliest substantial account of care as a political philosophy.",
+   "section": "Care and feminist ethics",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “Care Ethics” (Sander-Staudt) §§1, 8",
+     "excerpt": "The earliest substantial account of care as a political philosophy",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Critics charge that it valorizes the oppression of women, and that Noddings' priority of proximate over distant others excuses inattention to inequality between nations.",
+   "section": "Care and feminist ethics",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “Care Ethics” (Sander-Staudt) §§3.a, 3.d",
+     "excerpt": "valorizing the oppression of women",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Care ethics overlaps with feminist ethics, and Maureen Sander-Staudt treats them as discrete fields.",
+   "section": "Care and feminist ethics",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “Care Ethics” (Sander-Staudt) §4",
+     "excerpt": "although they overlap, these are discrete fields",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Nietzsche's On the Genealogy of Morality traces a slave revolt in morality driven by ressentiment, ties guilt to debt, and finds in the ascetic ideal a will that would sooner will nothingness than not will at all.",
+   "section": "Genealogy, ambiguity, and the Other",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Friedrich Nietzsche” (Anderson) GM I, II, III as discussed",
+     "excerpt": "would rather will nothingness than not will",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Simone de Beauvoir's The Ethics of Ambiguity locates evil in the denial of freedom, one's own or another's, and holds that I cannot affirm my own freedom without affirming the freedom of others.",
+   "section": "Genealogy, ambiguity, and the Other",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Simone de Beauvoir” (Burke) §5",
+     "excerpt": "evil resides in the denial of freedom",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Emmanuel Levinas argued that ethics is first philosophy and located the source of ethical motivation in the other person, whose face signifies, with or without words, “Do not kill me.”",
+   "section": "Genealogy, ambiguity, and the Other",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Emmanuel Levinas” (Bergo) introduction, §§2.3.2, 2.4.1",
+     "excerpt": "the face signifies, with or without words",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Metaethics studies the metaphysical, epistemological, semantic and psychological presuppositions of moral thought, talk and practice.",
+   "section": "Metaethics: meaning, truth, and moral knowledge",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Metaethics” (Sayre-McCord) introduction",
+     "excerpt": "the attempt to understand the metaphysical",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Its debates include Hume's point that an “ought” cannot be derived from an “is”, Moore's open question argument, and the contested link between sincere moral judgment and motivation.",
+   "section": "Metaethics: meaning, truth, and moral knowledge",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Metaethics” (Sayre-McCord) §§4, 6",
+     "excerpt": "The question is, as Moore put it, a genuinely open one",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Non-cognitivists hold that moral judgments are not apt for robust truth or falsity: emotivists take moral terms to express emotion, R. M. Hare took moral judgments to express prescriptions of a special universal sort, and Simon Blackburn's quasi-realism explains why we are entitled to treat them as truth-apt.",
+   "section": "Metaethics: meaning, truth, and moral knowledge",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Moral Cognitivism vs. Non-Cognitivism” (van Roojen) §§1.1, 2.1–2.3",
+     "excerpt": "express prescriptions of a special universal sort",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "J. L. Mackie coined the term “error theory” in 1977 for the view that moral judgments aim at the truth but systematically fail to secure it.",
+   "section": "Metaethics: meaning, truth, and moral knowledge",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Moral Anti-Realism” (Joyce) §§1, 3.2",
+     "excerpt": "coined the term “error theory” in 1977",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Richard Joyce treats moral anti-realism as the disjunction of three theses: noncognitivism, error theory and non-objectivism.",
+   "section": "Metaethics: meaning, truth, and moral knowledge",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Moral Anti-Realism” (Joyce) §1",
+     "excerpt": "moral anti-realism is the disjunction of three theses",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The problem of moral luck arises because we seem committed to the Control Principle, that we are morally assessable only for what is under our control, while much of what we are judged for depends on factors beyond it.",
+   "section": "Moral luck",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Moral Luck” (Nelkin) introduction",
+     "excerpt": "the problem of moral luck arises because we seem to be committed",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "What makes a life good, and what do people owe one another?",
+   "section": "Continuing questions",
+   "claims": [
+    {
+     "type": "question",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "How should duties to family, community, strangers, other animals and future generations be balanced?",
+   "section": "Continuing questions",
+   "claims": [
+    {
+     "type": "question",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "Are moral standards universal, historically situated, or both in different respects?",
+   "section": "Continuing questions",
+   "claims": [
+    {
+     "type": "question",
+     "accuracy": "non-assertive"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}

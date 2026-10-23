@@ -1,0 +1,852 @@
+{
+ "article": "german-idealism",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited source, 2026-10-23 (3 fixes applied: Schulze's target named as the Elementary Philosophy and the gap Fichte took up; the thesis-antithesis-synthesis point credited to Maybee; neo-Kantianism and positivism 'helped bring about' the eclipse; Reinhold entry credited to Breazeale and Walsh)",
+ "cited_sources_before": [
+  "https://iep.utm.edu/germidea/",
+  "https://plato.stanford.edu/entries/hegel/",
+  "https://plato.stanford.edu/entries/johann-fichte/",
+  "https://plato.stanford.edu/entries/kant/",
+  "https://plato.stanford.edu/entries/schelling/",
+  "https://plato.stanford.edu/entries/schlegel/"
+ ],
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "Kant and the critical turning point",
+   "text": "German idealism ran from about the 1780s to the 1840s, and its main figures were Kant, Fichte, Schelling and Hegel.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "gi introduction",
+     "excerpt": "began in the 1780s and lasted until the 1840s",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "Kant and the critical turning point",
+   "text": "Kant held that we know objects only as they appear to us, under the forms of our sensibility and understanding, never as they are in themselves.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "kti §1",
+     "excerpt": "We cannot cognize things in themselves",
+     "note": "Contrastive tail ('never as they are').",
+     "fix": "state positively"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "Kant and the critical turning point",
+   "text": "Early critics read this as a version of Berkeley's idealism, a reading Kant rejected.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "kti §§2.1, 2.3",
+     "excerpt": "idealism of a familiar Berkeleyan or phenomenalist variety",
+     "fix": "name the Feder–Garve review; give Kant's reply"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "Transcendental idealism and its difficulties",
+   "text": "Immanuel Kant argued that experience depends on a priori forms of intuition and categories of understanding, while distinguishing appearances from things considered independently of our mode of cognition.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "kti §1",
+     "note": "Duplicates s2 (the second of two overlapping Kant sections).",
+     "fix": "cut as duplicate"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "Transcendental idealism and its difficulties",
+   "text": "His account provoked disputes about affection by things in themselves, the unity of self-consciousness, and the possibility of metaphysics after critique.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "kti §3.4.3",
+     "excerpt": "appearances or things in themselves?",
+     "note": "Affection supported (Jacobi); 'unity of self-consciousness' and 'metaphysics after critique' not checked.",
+     "fix": "keep Jacobi's objection only"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "Transcendental idealism and its difficulties",
+   "text": "Kant's practical philosophy also placed autonomy and moral freedom at the center of philosophical inquiry.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "gi §4; kantm §10",
+     "excerpt": "the emphasis Kant placed on freedom and autonomy",
+     "fix": "add citations"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "Reinhold, skepticism, and the search for foundations",
+   "text": "Karl Leonhard Reinhold sought a single foundational principle for critical philosophy.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "rein §2",
+     "excerpt": "a philosophical system must begin with a single first principle",
+     "note": "Repeated in s10.",
+     "fix": "merge with s10"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "Reinhold, skepticism, and the search for foundations",
+   "text": "Gottlob Ernst Schulze's skeptical objections and Salomon Maimon's challenges exposed difficulties in the relation between concepts and intuitions.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "gi §1; rein §§1, 3",
+     "excerpt": "Aenesidemus (1792)",
+     "note": "'Relation between concepts and intuitions' is not in the sources retrieved; Schulze's target was Reinhold's representationalism.",
+     "fix": "state the targets as sourced"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "Reinhold, skepticism, and the search for foundations",
+   "text": "These debates helped motivate post-Kantian attempts to derive a system from the activity of reason itself rather than accept Kant's distinctions as final.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "rein §2",
+     "excerpt": "provoked his most brilliant and critical reader",
+     "note": "Contrastive construction ('rather than').",
+     "fix": "credit the provocation of Fichte"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "Fichte, Schelling, and Hegel",
+   "text": "Reinhold tried to derive Kant's philosophy from a single principle of consciousness.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "gi §1",
+     "excerpt": "could be derived from a single foundational principle",
+     "note": "Duplicate of s7.",
+     "fix": "merge"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "Fichte, Schelling, and Hegel",
+   "text": "Fichte recast that first principle as an act in which the I posits itself and, in doing so, a not-I opposed to it, and he argued that the idea of a thing in itself is incoherent.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "fichte §§2, 4.1",
+     "excerpt": "the I posits itself as an I",
+     "note": "'Incoherent' is stronger than Breazeale's 'indefensible on Critical grounds'.",
+     "fix": "use the source's word"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "Fichte, Schelling, and Hegel",
+   "text": "Schelling began as Fichte's follower, developed a philosophy of nature, and came to hold that subject and object are identical in an absolute that can be approached from either side.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "schell §§2–3",
+     "excerpt": "where he drops the Fichtean terminology",
+     "note": "Bowie does not call him a follower; he began in Fichtean terms.",
+     "fix": "state as Bowie does"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Fichte, Schelling, and Hegel",
+   "text": "Hegel called Fichte's idealism subjective and Schelling's objective, and sought a position beyond both; his Phenomenology of Spirit (1807) traces consciousness through a series of shapes toward absolute knowing, and his dialectical logic underlies his whole system.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "gi §3; hegel §3.1.1; hdial",
+     "excerpt": "ends in the attainment of what Hegel refers to as Absolute Knowing",
+     "note": "'A series of shapes' and 'dialectical logic underlies his whole system' — the second is a broad gloss.",
+     "fix": "split; cite"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Fichte and the activity of the I",
+   "text": "Johann Gottlieb Fichte's Wissenschaftslehre begins from the self-positing activity of the I, not an empirical individual creating the world at will.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "contested",
+     "by": "fichte §4.1",
+     "excerpt": "a finite, empirical, embodied, individual self",
+     "note": "Breazeale says the only I that can act is an individual self; denying the I is an empirical individual is a contested reading stated as settled. Contrastive construction.",
+     "fix": "give Breazeale's reading, credited"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Fichte and the activity of the I",
+   "text": "His account investigates the reciprocal limitation of I and not-I, practical striving, recognition, and the conditions of agency.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "fichte §§4.1, 4.4",
+     "excerpt": "a finite free self must constantly strive to transform",
+     "fix": "add citation; merge"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Fichte and the activity of the I",
+   "text": "Interpretations differ on whether his position is best understood as subjective idealism or a transcendental theory of self-consciousness.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "fichte §5",
+     "excerpt": "continues to be vigorously debated",
+     "fix": "add citation; name the critics"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "Schelling: nature, identity, and freedom",
+   "text": "Friedrich Wilhelm Joseph Schelling resisted treating nature merely as an object for an already constituted subject.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "schell §2",
+     "excerpt": "Nature in itself is thought of by Schelling as a 'productivity.'",
+     "note": "Contrastive phrasing ('merely').",
+     "fix": "state positively"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Schelling: nature, identity, and freedom",
+   "text": "His philosophy of nature explored productivity and organization, while his identity philosophy sought a more fundamental relation of subject and object.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "schell §§2–3",
+     "excerpt": "'Absolute identity' is, then, the link of the two aspects of being",
+     "fix": "add citation"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Schelling: nature, identity, and freedom",
+   "text": "Later writings on freedom, mythology, and revelation complicated the image of German idealism as one continuously unfolding system.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "schell §§4–5",
+     "excerpt": "fails to do justice to Schelling's real philosophical ambitions",
+     "fix": "credit Bowie; add the 1809 essay"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Hegel: dialectic, spirit, and recognition",
+   "text": "G. W. F. Hegel's Phenomenology of Spirit examines successive configurations of consciousness, self-consciousness, reason, and social life.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "hegel §3.1.1",
+     "note": "Duplicates part of s13.",
+     "fix": "merge"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Hegel: dialectic, spirit, and recognition",
+   "text": "The Science of Logic investigates categories through their immanent tensions and transformations.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "hdial §1",
+     "excerpt": "the determination that was fixed in the first moment passes into its opposite",
+     "fix": "merge into the dialectic sentence"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "section": "Hegel: dialectic, spirit, and recognition",
+   "text": "His accounts of recognition, ethical life, civil society, and the state have generated enduring debates about freedom, historical development, and political authority.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "hegel §§3.1.1, 3.2.2",
+     "excerpt": "the social determinacies of Sittlichkeit or Ethical Life",
+     "note": "'Enduring debates' clause has no specific source.",
+     "fix": "state the doctrines"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "section": "Hegel: dialectic, spirit, and recognition",
+   "text": "Dialectic is not adequately captured by a universal mechanical formula of thesis, antithesis, and synthesis.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "hdial §3",
+     "excerpt": "never adopted Fichte's triadic",
+     "note": "Contrastive construction.",
+     "fix": "state Maybee's point positively"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "section": "System, freedom, and the arts",
+   "text": "German idealists connected logic and metaphysics with aesthetics, religion, and practical philosophy.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "supported",
+     "by": "gi introduction",
+     "excerpt": "derive all the different parts of philosophy",
+     "fix": "replace with the sourced aim of a system"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "section": "System, freedom, and the arts",
+   "text": "Friedrich Schiller's Letters on the Aesthetic Education of Man linked aesthetic experience with human freedom, while the early Romantics explored fragmentary writing, criticism, and the limits of philosophical system.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "schil §2.4; gi §1; schleg §§3–4",
+     "excerpt": "gives rise to freedom",
+     "fix": "add citations; specify Schlegel"
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "section": "System, freedom, and the arts",
+   "text": "These thinkers often disagreed about whether art reveals what conceptual philosophy cannot.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "gi §5; haes",
+     "excerpt": "is and remains for us a thing of the past",
+     "note": "Vague; the sources give the specific disagreement (Schelling vs Hegel).",
+     "fix": "replace with it"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "section": "After Hegel and later receptions",
+   "text": "The movement aimed at a system covering logic, metaphysics, nature, ethics, politics, art and religion, and it gave freedom and self-consciousness a central place.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "gi introduction",
+     "note": "Duplicates s27.",
+     "fix": "merge"
+    }
+   ]
+  },
+  {
+   "s": 28,
+   "section": "After Hegel and later receptions",
+   "text": "It also gave art a high role in grasping the absolute, though Hegel later held that art had lost its highest vocation.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "gi §5; haes",
+     "note": "Hegel's claim is that art in its highest vocation is a thing of the past.",
+     "fix": "quote it accurately"
+    }
+   ]
+  },
+  {
+   "s": 29,
+   "section": "After Hegel and later receptions",
+   "text": "After Hegel's death his followers split into Left and Right Hegelians over the politics of his system, and Schopenhauer, Kierkegaard and Marx attacked it.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "hegel §1; gi §6",
+     "excerpt": "factions broadly groupable as those of the left, right and centre",
+     "note": "Redding adds a centre; McQuillan says the three 'witnessed the decline' — 'attacked it' is stronger for Schopenhauer and Kierkegaard than the source states.",
+     "fix": "use the sources' terms"
+    }
+   ]
+  },
+  {
+   "s": 30,
+   "section": "After Hegel and later receptions",
+   "text": "Its influence faded with the rise of positivism and neo-Kantianism, then revived in the twentieth and twenty-first centuries, in analytic as well as continental philosophy.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "gi §6; hegel §1",
+     "excerpt": "the eclipse of German idealism",
+     "fix": "add citations; name Brandom and McDowell"
+    }
+   ]
+  },
+  {
+   "s": 31,
+   "section": "Criticism, transformation, and contemporary relevance",
+   "text": "Ludwig Feuerbach, Karl Marx, Søren Kierkegaard, and Arthur Schopenhauer responded differently to idealist accounts of spirit, religion, agency, and history.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "feuer §§4–5",
+     "excerpt": "Thought comes from being",
+     "note": "Vague; give Feuerbach's position.",
+     "fix": "replace with Feuerbach's critique"
+    }
+   ]
+  },
+  {
+   "s": 32,
+   "section": "Criticism, transformation, and contemporary relevance",
+   "text": "Later neo-Kantian, phenomenological, critical-theoretical, and analytic philosophers reinterpreted the legacy.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Generic.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 33,
+   "section": "Criticism, transformation, and contemporary relevance",
+   "text": "Current debates examine normativity, social recognition, embodiment, nature, and whether the ambition of systematic reason can survive its own criticisms.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Generic.",
+     "fix": "cut"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 33,
+  "claims": 33,
+  "supported": 28,
+  "overstated": 2,
+  "contested": 1,
+  "editorial": 2,
+  "assertive_claims": 33,
+  "cited_source_supports_before": 18
+ },
+ "new_text": [
+  {
+   "text": "German idealism began in the 1780s and lasted until the 1840s, and its most famous representatives are Kant, Fichte, Schelling and Hegel.",
+   "section": "Kant and the critical turning point",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “German Idealism” (McQuillan) introduction",
+     "excerpt": "began in the 1780s and lasted until the 1840s",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Kant held that we cannot cognize things in themselves, only objects that can be intuited in space and time, which are appearances.",
+   "section": "Kant and the critical turning point",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Kant’s Transcendental Idealism” (Stang) §1",
+     "excerpt": "We cannot cognize things in themselves",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The Feder–Garve review read his transcendental idealism as an idealism of the familiar Berkeleyan kind, and Kant replied that the Critique maintains that bodies exist in space.",
+   "section": "Kant and the critical turning point",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Kant’s Transcendental Idealism” (Stang) §§2.1, 2.3",
+     "excerpt": "idealism of a familiar Berkeleyan or phenomenalist variety",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Jacobi asked whether the objects that affect our sensibility are appearances or things in themselves, and argued that either answer makes trouble for Kant's theory of experience.",
+   "section": "Kant and the critical turning point",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Kant’s Transcendental Idealism” (Stang) §3.4.3",
+     "excerpt": "appearances or things in themselves?",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Kant's practical philosophy placed freedom and autonomy at the centre, grounding the moral law's authority in its being an expression of one's own rational will.",
+   "section": "Kant and the critical turning point",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “German Idealism” (McQuillan) §4",
+     "excerpt": "the emphasis Kant placed on freedom and autonomy",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Kant’s Moral Philosophy” (Cureton) §10",
+     "excerpt": "its being an expression of one's own rational will",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Karl Leonhard Reinhold held that a philosophical system must begin with a single first principle, and proposed his Principle of Consciousness to show that Kant's philosophy could be derived from one.",
+   "section": "Reinhold and the search for a first principle",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Karl Leonhard Reinhold” (Breazeale and Walsh) §2",
+     "excerpt": "a philosophical system must begin with a single first principle",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Internet Encyclopedia of Philosophy, “German Idealism” (McQuillan) §1",
+     "excerpt": "could be derived from a single foundational principle",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Gottlob Ernst Schulze attacked Reinhold's Elementary Philosophy in Aenesidemus (1792), Salomon Maimon raised criticisms of his own, and Reinhold's failure to show how that philosophy could embrace will and practical reason provoked Fichte, his most brilliant and critical reader, to attempt a version of his own.",
+   "section": "Reinhold and the search for a first principle",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “German Idealism” (McQuillan) §1",
+     "excerpt": "Aenesidemus (1792)",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Karl Leonhard Reinhold” (Breazeale and Walsh) §§1–3",
+     "excerpt": "provoked his most brilliant and critical reader, J. G. Fichte",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Fichte's Wissenschaftslehre begins from a fact/act (Tathandlung) in which the I posits itself as an I, and the Not-I is posited by the I to account for a check (Anstoß) on its free practical activity.",
+   "section": "Fichte and the activity of the I",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Johann Gottlieb Fichte” (Breazeale) §4.1",
+     "excerpt": "the I posits itself as an I",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "He held the very concept of a thing in itself indefensible on critical grounds, and argued that dogmatism unavoidably implies a strict determinism.",
+   "section": "Fichte and the activity of the I",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Johann Gottlieb Fichte” (Breazeale) §§2–3",
+     "excerpt": "dogmatism, as understood by Fichte, unavoidably implies a strict form of determinism",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "On Dan Breazeale's reading, the only I that can exist or act is a finite, embodied, individual self, which must constantly strive and is summoned by another to limit its freedom out of respect for theirs.",
+   "section": "Fichte and the activity of the I",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Johann Gottlieb Fichte” (Breazeale) §§4.1, 4.4",
+     "excerpt": "a finite, empirical, embodied, individual self",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Schelling and Hegel criticized his position as a one-sided subjective idealism, and the unity of his thought is still vigorously debated.",
+   "section": "Fichte and the activity of the I",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Johann Gottlieb Fichte” (Breazeale) §5",
+     "excerpt": "continues to be vigorously debated by experts in the field",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Schelling first put Kant's question in Fichtean terms and later dropped the Fichtean terminology.",
+   "section": "Schelling: nature, identity, and freedom",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Friedrich Wilhelm Joseph von Schelling” (Bowie) §2",
+     "excerpt": "where he drops the Fichtean terminology",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "His philosophy of nature thinks of nature in itself as a productivity that appears only in its products, and his identity philosophy takes absolute identity to be the link of the two aspects of being.",
+   "section": "Schelling: nature, identity, and freedom",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Friedrich Wilhelm Joseph von Schelling” (Bowie) §§2–3",
+     "excerpt": "Nature in itself is thought of by Schelling as a 'productivity.'",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "His essay on freedom of 1809 sought to avoid Spinoza's fatalism, and his late philosophies of mythology and of revelation were never published in his lifetime.",
+   "section": "Schelling: nature, identity, and freedom",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Friedrich Wilhelm Joseph von Schelling” (Bowie) §§4–5",
+     "excerpt": "to avoid Spinoza's fatalism",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Andrew Bowie argues that the familiar picture of Schelling as the objective-idealist link between Fichte and Hegel fails to do justice to his ambitions, and points to his influence on Kierkegaard, Nietzsche and Heidegger.",
+   "section": "Schelling: nature, identity, and freedom",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Friedrich Wilhelm Joseph von Schelling” (Bowie) §5",
+     "excerpt": "fails to do justice to Schelling's real philosophical ambitions",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Hegel called Fichte's idealism subjective and Schelling's objective.",
+   "section": "Hegel: dialectic, spirit, and recognition",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “German Idealism” (McQuillan) §§1, 3",
+     "excerpt": "“subjective” idealism",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "His Phenomenology of Spirit (1807) follows a progression of shapes of consciousness, including the struggle for recognition, that ends in absolute knowing, and his social philosophy moves on to ethical life (Sittlichkeit) and market-based civil society.",
+   "section": "Hegel: dialectic, spirit, and recognition",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Georg Wilhelm Friedrich Hegel” (Redding) §§3.1.1, 3.2.2",
+     "excerpt": "ends in the attainment of what Hegel refers to as Absolute Knowing",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In his dialectic a determination passes into its opposite through its own one-sidedness; on Julie Maybee's account, Hegel never used Fichte's language of thesis, antithesis and synthesis to describe his own philosophy, and he called formalistic uses of triadic form a lifeless schema.",
+   "section": "Hegel: dialectic, spirit, and recognition",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Hegel’s Dialectics” (Maybee) §§1, 3",
+     "excerpt": "never adopted Fichte's triadic",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Fichte, Schelling and Hegel each attempted to derive all the different parts of philosophy from a single first principle.",
+   "section": "System, freedom, and the arts",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “German Idealism” (McQuillan) introduction",
+     "excerpt": "attempted to derive all the different parts of philosophy from a single, first principle",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Schelling called art the only true and eternal organ and document of philosophy, while Hegel held that art, in its highest vocation, is and remains for us a thing of the past.",
+   "section": "System, freedom, and the arts",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “German Idealism” (McQuillan) §5",
+     "excerpt": "the only true and eternal organ and document of philosophy",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Hegel’s Aesthetics” (Houlgate) quoting Aesthetics 1: 11",
+     "excerpt": "is and remains for us a thing of the past",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Schiller's Letters on the Aesthetic Education of Man argue that contemplating beauty balances our sensuous and rational drives, and so leaves the will free.",
+   "section": "System, freedom, and the arts",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Friedrich Schiller” (Moland) §2.4",
+     "excerpt": "gives rise to freedom",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The Jena romantics were more skeptical of philosophy than the idealists: Friedrich Schlegel denied that any first principles are universally suitable, and wrote fragments, each complete in itself like a hedgehog.",
+   "section": "System, freedom, and the arts",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “German Idealism” (McQuillan) §1",
+     "excerpt": "maintained a more skeptical attitude towards philosophy than the German idealists",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Friedrich Schlegel” (Speight) §§3–4",
+     "excerpt": "there are no first principles that are universally suitable",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "After Hegel's death his followers split into factions of the left, right and centre, and Schopenhauer, Kierkegaard and Marx witnessed the movement's decline; Marx came to deride idealism as the “German ideology.”",
+   "section": "After Hegel",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Georg Wilhelm Friedrich Hegel” (Redding) §1",
+     "excerpt": "factions broadly groupable as those of the left, right and centre",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Internet Encyclopedia of Philosophy, “German Idealism” (McQuillan) §6",
+     "excerpt": "witnessed the decline of German idealism in Berlin",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Ludwig Feuerbach, for whom thought comes from being and being does not come from thought, read Hegel's philosophy as a last attempt to restore Christianity through philosophy, and read religion as man's projection of his own essence.",
+   "section": "After Hegel",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Ludwig Andreas Feuerbach” (Gooch) §§4–5",
+     "excerpt": "Thought comes from being, but being does not come from thought",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The growth of neo-Kantianism and positivism helped bring about the eclipse of German idealism, and by the end of the twentieth century analytic philosophers such as Robert Brandom and John McDowell had started to take Hegel seriously.",
+   "section": "After Hegel",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “German Idealism” (McQuillan) §6",
+     "excerpt": "the eclipse of German idealism",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Georg Wilhelm Friedrich Hegel” (Redding) §1",
+     "excerpt": "had started to take Hegel seriously as a significant modern philosopher",
+     "accuracy": "supported"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}
