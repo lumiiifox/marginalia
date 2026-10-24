@@ -934,3 +934,4 @@ span.bhid { display: inline; }
 .branch-inline-link { display: inline; padding: 0; margin: 0; border: 0; border-radius: 0; background: transparent; color: var(--link); font: inherit; line-height: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; cursor: pointer; text-align: inherit; }
 .cite-nb { white-space: nowrap; }
 .branch-inline-link:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+[data-gx] { display: grid; gap: 10px; }

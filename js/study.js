@@ -158,6 +158,12 @@ function mentionsHTML(m) {
   return html ? `<div class="mentions"><div class="label">Mentioned in</div>${html}</div>` : "";
 }
 // A glossary entry's mentions, drawn when it opens (and for entries drawn open).
+// An entry's text with its links, drawn when it opens (working them out for every closed entry would slow the glossary).
+function fillLinks(d) {
+  const box = d.querySelector(":scope > .tbody > [data-gx]"); if (!box || box.dataset.done) return;
+  const g = allTerms().find((x) => x.id === box.dataset.gx); if (!g) return;
+  box.dataset.done = "1"; box.innerHTML = refParas(g.x, { kind: "term", id: g.id });
+}
 function fillMentions(d) {
   const box = d.querySelector(":scope > .tbody > [data-mentions]"); if (!box || box.dataset.done) return;
   const g = allTerms().find((x) => x.id === box.dataset.mentions); if (!g) return;
@@ -182,7 +188,7 @@ function termHTML(g, tmap) {
     <div class="tbody">
       <p class="tdef">${esc(g.d)}</p>
       ${figHTML(g.img)}${diaHTML(g.fig)}
-      ${classicParas(g.x)}
+      <div data-gx="${esc(g.id)}">${S.gOpen.has(g.id) ? refParas(g.x, { kind: "term", id: g.id }) : classicParas(g.x)}</div>
       ${g.s ? `<p class="tsrc">${classicLinks(g.s)}</p>` : ""}
       ${thinkerSources(g)}
       ${g.w ?`<p class="tsrc">Associated with ${esc(g.w)}</p>` : ""}
@@ -415,7 +421,7 @@ function thinkerPanel(id) {
     ${p.y || CAN_SAY ? `<div class="sayline">${p.y ? `<p class="hint">${esc(p.y)}</p>` : ""}${sayBtn(p.n, "linkbtn")}</div>` : ""}
     ${figHTML(p.img)}
     <p class="tdef">${esc(p.d)}</p>
-    ${classicParas(p.x, id)}
+    ${refParas(p.x, { kind: "thinker", id })}
     ${thinkerSources(p)}
     ${p.w.length ? `<div class="crow"><span class="clabel">Key works</span><ul class="bq-list">${p.w.map((w) => `<li>${classicLinks(w, id)}</li>`).join("")}</ul></div>` : ""}
     <div class="tconn">

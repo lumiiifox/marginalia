@@ -168,7 +168,9 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   every article on the frame. Entries in `BRANCHES` are separated by a blank line so that PRs rebuilding different articles merge cleanly;
   keep it that way.
 - A branch written as an article: when any paragraph of its `x` starts with a heading line (heading, newline, text), `branchesView` draws
-  each such paragraph as a section, and `branchLinks` links the first mention of each thinker and of the branch's own glossary terms (accents ignored; names under five
+  each such paragraph as a section, and `branchLinks` links the first mention of each thinker, glossary term and classic (its candidates built
+  once per array of terms and thinkers, `linkSet`). Glossary entries and thinker cards link the same way, never to themselves (`refParas`;
+  an entry's text when it opens, `fillLinks`) (accents ignored; names under five
   letters in exact case; `LINK_FULL_ONLY` names, such as Said and Land, only in full; a name two entries share never links).
 - Quiz yourself (`quizPanel`, from the glossary and the home screen's glossary section): questions made from `allTerms()` definitions
   (the term blanked out by `maskTerm`) and `THINKERS` key works (`worksOf` leaves out works by other authors); nothing is stored.
@@ -257,7 +259,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   mark (`LEAF_SVG`) is the same leaf path; change both together.
 - Glossary terms in the text (Reading settings → Glossary terms in this book, or a book's More menu; `termsOn`, `setTermsOn`, the books
   listed in `localStorage` as `mg-terms`, not backed up): `termHits` finds each paragraph run's first mention of each term name of more
-  than one word (`readerTermNames`, from `termNeedles`; shared names never link) over `findRuns`, `paintTerms` underlines them with the
+  than one word, and a one-word name's first in each chapter (`readerTermNames`, from `termNeedles`; shared names and `READER_SKIP` words never link) over `findRuns`, `paintTerms` underlines them with the
   CSS Highlight API (`::highlight(term)`, after each render), so the text's markup never changes; a tap is matched by `termAt` before
   tap-to-turn and opens `termPanel`, whose Open in the glossary leaves the reader with Back returning to your place.
 - Terms you link yourself (Look up → Link to a glossary term, `linkTermPanel`, `addTermMark`; Unlink in `termPanel`, `removeTermMark`): kept on the

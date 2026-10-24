@@ -11,7 +11,8 @@ Made-up book only; Wiktionary is stood in for by a local reply shaped like its A
   3. the words looked up are listed in the glossary (Your words), one usable definition each, and quizzed on (the word
      blanked out of its definition); Remove takes one off.
   4. glossary terms in the text (Reading settings, or a book's More menu): off until turned on for that book, kept outside the library;
-     each paragraph's first mention of a term of more than one word is underlined, ignoring capitals and accents, across a printed-page
+     each paragraph's first mention of a term of more than one word is underlined, and a one-word term's first mention in each chapter
+     (a few everyday words, such as mode, never by themselves), ignoring capitals and accents, across a printed-page
      break, never inside another word; a tap on one shows its definition without turning the page, Open in the glossary opens
      the entry, and Back returns to the same page; a tap on a highlight still opens its note; turning it off removes the underlines.
   5. linking words to a glossary entry yourself (Look up → Link to a glossary term): the entries offered closest first and searchable;
@@ -109,6 +110,16 @@ async def term_links(browser):
     check(await page.evaluate("localStorage.getItem('mg-terms')") == "[]", "the book's More menu turns it off too")
     await page.go_back(); await page.wait_for_timeout(800)
     check(await page.evaluate("[(R.termRanges || []).length, CSS.highlights.has('term')]") == [0, False], "turning it off removes the underlines")
+    # one-word terms: once a chapter
+    await page.evaluate("""(async () => { const f = ' And so on, at some length, through the rest of the paragraph.';
+      const B = [{ k: 'h', l: 1, x: 'First', s: 'a' }, { k: 'p', x: 'A genealogy of morals, and genealogy again.' + f }, { k: 'p', x: 'Genealogy once more, in this mode.' + f },
+        { k: 'h', l: 1, x: 'Second', s: 'b' }, { k: 'p', x: 'The genealogies and genealogy here.' + f }];
+      await put('content', 'tg', B); await put('texts', 'tg', { title: 'One word', hasContent: true, total: B.length, pos: 0, status: 'reading', createdAt: 1, updatedAt: 1, sections: [{ id: 'a', label: 'First' }, { id: 'b', label: 'Second' }] });
+      setTermsOn('tg', true); })()""")
+    await page.evaluate("go({ screen: 'reader', textId: 'tg' })"); await page.wait_for_timeout(800)
+    one = await page.evaluate("termHits().map((h) => [h.pieces[0].i, h.id])")
+    check(one == [[1, "genealogy"], [4, "genealogy"]], f"a one-word term is linked at its first mention in each chapter, and an everyday word like mode isn't ({one})")
+    await page.evaluate("go({ screen: 'reader', textId: 'tb' })"); await page.wait_for_timeout(800)
     # your own link: select words, Look up, Link to a glossary term
     sel = await page.evaluate("""(() => { const el = R.els[4], t = el.firstChild, i = t.data.indexOf('Somebody without organs'); const r = document.createRange(); r.setStart(t, i); r.setEnd(t, i + 23);
       const s = getSelection(); s.removeAllRanges(); s.addRange(r); return t.data.slice(i, i + 23); })()""")

@@ -351,6 +351,12 @@ function classicLinks(text, ctx) {
   for (const h of hits) { html += esc(text.slice(at, h.a)) + `<button type="button" class="branch-inline-link" data-classic="${esc(h.id)}">${esc(text.slice(h.a, h.b))}</button>`; at = h.b; }
   return html + esc(String(text || "").slice(at));
 }
+// A glossary entry's or thinker card's text with the terms, thinkers and classics it mentions linked, itself left out.
+function refParas(x, self) {
+  if (!x) return "";
+  const terms = allTerms().filter((g) => !(self.kind === "term" && g.id === self.id)), thinkers = ALL_THINKERS().filter((p) => !(self.kind === "thinker" && p.id === self.id));
+  return String(x).split(/\n\s*\n/).map((para) => para.trim()).filter(Boolean).map((para) => `<p class="tmore">${branchLinks(para, terms, thinkers, self.kind === "thinker" ? self.id : undefined)}</p>`).join("");
+}
 const classicParas = (x, ctx) => (x ? String(x).split(/\n\s*\n/).map((para) => para.trim()).filter(Boolean).map((para) => `<p class="tmore">${classicLinks(para, ctx)}</p>`).join("") : "");
 async function openClassic(id) {
   if (!S.texts.has(id)) { await readdClassic(id); if (!S.texts.has(id)) return; }
@@ -495,17 +501,31 @@ function linkFold(s) {
   map.push(s.length);
   return { cased, low, map };
 }
-function branchLinks(text, terms, thinkers) {
+const LINK_FOLDS = new Map();
+let THINKER_LIST = null; const ALL_THINKERS = () => THINKER_LIST || (THINKER_LIST = [...THINKER.values()]);
+const linkKey = (name) => { let k = LINK_FOLDS.get(name); if (!k) { k = linkFold(name); LINK_FOLDS.set(name, k); } return k; };
+// ctx: the thinker whose card the text is on, for the short titles of their own books (classicHits).
+const LINK_SETS = new WeakMap(); // the candidates and their owners, for the arrays of terms and thinkers they were built from
+function branchLinks(text, terms, thinkers, ctx) {
+  let byThinkers = LINK_SETS.get(terms); if (!byThinkers) { byThinkers = new WeakMap(); LINK_SETS.set(terms, byThinkers); }
+  let set = byThinkers.get(thinkers); if (!set) { set = linkSet(terms, thinkers); byThinkers.set(thinkers, set); }
+  const { candidates, owners } = set;
+  return linkWith(text, candidates, owners, ctx);
+}
+function linkSet(terms, thinkers) {
   const candidates = [
     ...thinkers.filter((p) => p && p.n).flatMap((p) => [p.n, p.sn].filter((name) => name && name.length >= 4 && !LINK_FULL_ONLY.has(name.toLowerCase())).map((name) => ({ name, id: p.id, kind: "thinker" }))),
-    ...terms.filter((g) => g.t && g.t.length >= 7 && !/^(identity|reality|existence|substance|knowledge|causation)$/i.test(g.t)).map((g) => ({ name: g.t, id: g.id, kind: "term" }))
-  ].map((c) => ({ ...c, key: linkFold(c.name) })).sort((a, b) => b.key.cased.length - a.key.cased.length);
+    ...terms.filter((g) => g.t && g.t.length >= 7 && !/^(identity|reality|existence|substance|knowledge|causation)$/i.test(g.t)).map((g) => ({ name: g.t.replace(/\s*\(.*?\)\s*/g, " ").trim(), id: g.id, kind: "term" }))
+  ].map((c) => ({ ...c, key: linkKey(c.name) })).sort((a, b) => b.key.cased.length - a.key.cased.length);
   const owners = new Map();
   for (const c of candidates) { const k = c.key.low; if (!owners.has(k)) owners.set(k, new Set()); owners.get(k).add(c.kind + ":" + c.id); }
+  return { candidates: candidates.filter((c) => owners.get(c.key.low).size === 1), owners };
+}
+function linkWith(text, candidates, owners, ctx) {
   const T = linkFold(text), word = /[\p{L}\p{N}]/u, hits = [];
   // a classic's title links to the book, each once per paragraph (positions moved into the folded text's)
   const seenBook = new Set();
-  for (const h of classicHits(text)) {
+  for (const h of classicHits(text, ctx)) {
     const pos = T.map.indexOf(h.a), end = T.map.indexOf(h.b);
     if (seenBook.has(h.id) || pos < 0 || end < 0) continue;
     seenBook.add(h.id); hits.push({ pos, end, id: h.id, kind: "classic" });
@@ -532,7 +552,7 @@ function branchLinks(text, terms, thinkers) {
 // A branch written as an article: a paragraph whose first line is a heading opens a section, and the paragraphs after it,
 // up to the next heading, belong to it; the section's sources (xs) go under its last paragraph.
 function articleHTML(b, terms) {
-  const link = (v) => branchLinks(v, terms, [...THINKER.values()]);
+  const link = (v) => branchLinks(v, terms, ALL_THINKERS());
   const secs = [];
   for (const part of b.x.split(/\n\n/)) {
     const at = part.indexOf("\n");
@@ -641,7 +661,7 @@ function branchesView() {
         <p class="tdef">${esc(b.d)}</p>
         ${b.xs ? "" : `<p class="hint unchecked">Unchecked: this article hasn't been audited against its sources yet, so treat its claims as unverified.</p>`}
         ${figHTML(b.img)}
-        ${b.x.split(/\n\n/).some((part) => part.includes("\n")) ? articleHTML(b, terms) : parasHTML(b.x)}${thinkerSources(b)}
+        ${b.x.split(/\n\n/).some((part) => part.includes("\n")) ? articleHTML(b, all) : parasHTML(b.x)}${thinkerSources(b)}
         ${b.id === "logic" ? `<div class="noteacts"><button class="btn" data-truth="-1">Check an argument with a truth table</button><button class="btn" data-argquiz="fallacy">Name the fallacy</button><button class="btn" data-argquiz="valid">Valid or not?</button><button class="btn" data-argquiz="missing">Missing premise</button><button class="btn" data-steps="1">Put the steps in order</button><button class="btn" data-recon="1">How to reconstruct an argument</button></div>${fallacyCatalogHTML(all)}` : ""}
         <div class="label">Questions it asks</div>
         <ul class="bq-list">${b.q.map((q) => `<li>${esc(q)}</li>`).join("")}</ul>

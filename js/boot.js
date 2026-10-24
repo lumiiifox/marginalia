@@ -162,7 +162,7 @@ document.addEventListener("change", (e) => {
 document.addEventListener("toggle", (e) => {
   const d = e.target;
   if (d && d.matches && d.matches("details.branch")) { if (d.open) S.bOpen.add(d.dataset.branchId); else S.bOpen.delete(d.dataset.branchId); return; }
-  if (d && d.matches && d.matches("details.term")) { if (d.open) { S.gOpen.add(d.dataset.termId); fillMentions(d); } else S.gOpen.delete(d.dataset.termId); }
+  if (d && d.matches && d.matches("details.term")) { if (d.open) { S.gOpen.add(d.dataset.termId); fillLinks(d); fillMentions(d); } else S.gOpen.delete(d.dataset.termId); }
 }, true);
 let qTimer;
 document.addEventListener("input", (e) => {

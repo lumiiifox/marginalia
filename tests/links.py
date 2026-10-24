@@ -17,6 +17,8 @@ Checks that:
      names (the Dutch Republic, the second Enquiry, The Metaphysics of Morals, Cartesian Meditations, Discourse on Metaphysics,
      The Ethics of Ambiguity) never link; every classic's title in the articles names the book it opens; a tap opens the book's
      page, adding a deleted classic back first; the book's page lists where it is named or cited, citations included.
+  8. glossary entries and thinker cards link the terms, thinkers and classics they mention, never themselves; articles link any glossary
+     term, not only their own branch's.
   5. across every article in data/branches.js: every link's words name the entry it opens (accents and case aside), Kant and Hume
      link somewhere, no link opens on "Said" or "Land" alone, and no paragraph's visible text changes.
 """
@@ -172,6 +174,16 @@ async def main():
         check("ethics" in rows[0] and "epistemology" in rows[0] and "nietzsche" in rows[1] and "ressentiment" in rows[2], f"a classic's page lists the articles, cards and entries that name or cite it ({rows[:3]})")
         await page.evaluate("go({ screen: 'text', textId: 'classic-plato-republic' })"); await page.wait_for_timeout(300)
         check("In the reference pages" in await page.inner_text("#main") and await page.locator("#main .mentions [data-branch='political']").count() == 1, "the book's page shows them")
+        refs = await page.evaluate("""(() => {
+          const d = document.createElement('div'), ids = (html) => { d.innerHTML = html; return [...d.querySelectorAll('button')].map((b) => b.dataset.term || b.dataset.thinker || b.dataset.classic); };
+          const g = GLOSSARY.find((x) => x.id === 'genealogy');
+          return [ids(refParas(g.x, { kind: 'term', id: 'genealogy' })), ids(refParas(THINKER.get('foucault').x, { kind: 'thinker', id: 'foucault' })),
+            ids(branchLinks('A genealogy of the rhizome, after Hobbes.', allTerms(), [...THINKER.values()]))]; })()""")
+        check("nietzsche" in refs[0] and "genealogy" not in refs[0], f"a glossary entry links the thinkers it names, never itself ({refs[0]})")
+        check("genealogy" in refs[1] and "foucault" not in refs[1], f"a thinker card links the terms it uses, never its own name ({refs[1]})")
+        check(refs[2] == ["genealogy", "rhizome", "hobbes"], f"an article links any glossary term ({refs[2]})")
+        await page.evaluate("openTerm('genealogy')"); await page.wait_for_timeout(300)
+        check(await page.locator("details[data-term-id='genealogy'] [data-gx] [data-thinker='nietzsche']").count() == 1, "an open entry shows its links")
         check(not errs, "no script errors" + (f": {errs}" if errs else ""))
         await browser.close()
 

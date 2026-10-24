@@ -1038,27 +1038,35 @@ function setTermsOn(tid, on) {
   try { localStorage.setItem(TERMS_KEY, JSON.stringify([...l])); } catch {}
   if (R.tid === tid) { R.termHits = null; paintTerms(); }
 }
-// The names the reader links: each term's own names (termNeedles) that are more than one word, longest first.
+// The names the reader links: each term's own names (termNeedles), longest first. A one-word name (Genealogy, Conatus) links once
+// a chapter, so a word the book uses throughout isn't underlined in every paragraph; a few that are also everyday words in another
+// sense (READER_SKIP) never link by themselves.
+const READER_SKIP = new Set(["accident", "aura", "expenditure", "abduction", "mode", "field", "sense", "reference", "understanding"]);
 function readerTermNames() {
   const out = [];
-  for (const g of allTerms()) for (const nd of termNeedles(g)) { const s = fold(nd.s).trim(); if (/[\s-]/.test(s)) out.push({ s, id: g.id }); }
+  for (const g of allTerms()) for (const nd of termNeedles(g)) {
+    const s = fold(nd.s).trim(), single = !/[\s-]/.test(s);
+    if (s.length < 4 || (single && READER_SKIP.has(s))) continue;
+    out.push({ s, id: g.id, single });
+  }
   const owners = new Map(); for (const n of out) { if (!owners.has(n.s)) owners.set(n.s, new Set()); owners.get(n.s).add(n.id); }
   return out.filter((n) => owners.get(n.s).size === 1).sort((a, b) => b.s.length - a.s.length);
 }
-// Each paragraph's first mention of each term: { id, pieces: [{ i, from, to }] }, in the blocks' own characters.
+// Each paragraph's first mention of each term, or a chapter's for a one-word name: { id, pieces: [{ i, from, to }] }, in the blocks' own characters.
 function termHits() {
   if (R.termHits && R.termHitsOf === R.blocks) return R.termHits;
   const names = readerTermNames(), word = /[\p{L}\p{N}]/u, hits = [];
+  const inChapter = new Set();
   for (const run of findRuns()) {
-    const taken = [], seen = new Set(), ft = run.ft;
+    const taken = [], seen = new Set(), ft = run.ft, ch = (R.secAt && R.secAt[run.segs[0].i]) || "";
     for (const nm of names) {
-      if (seen.has(nm.id)) continue;
+      if (seen.has(nm.id) || (nm.single && inChapter.has(ch + "\u0006" + nm.id))) continue;
       for (let at = ft.indexOf(nm.s); at >= 0; at = ft.indexOf(nm.s, at + 1)) {
         let end = at + nm.s.length;
         if (ft.startsWith("es", end) && !word.test(ft[end + 2] || "")) end += 2; else if (ft[end] === "s" && !word.test(ft[end + 1] || "")) end += 1;
         if (word.test(ft[at - 1] || "") || word.test(ft[end] || "")) continue;
         if (taken.some(([a, z]) => at < z && end > a)) continue;
-        taken.push([at, end]); seen.add(nm.id);
+        taken.push([at, end]); seen.add(nm.id); inChapter.add(ch + "\u0006" + nm.id);
         const s0 = run.fm[at], e0 = run.fm[end - 1] + 1, pieces = [];
         for (const sg of run.segs) { const a = Math.max(s0, sg.at), z = Math.min(e0, sg.at + sg.len); if (a < z) pieces.push({ i: sg.i, from: a - sg.at + sg.base, to: z - sg.at + sg.base }); }
         if (pieces.length) hits.push({ id: nm.id, pieces });
