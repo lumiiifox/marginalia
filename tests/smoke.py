@@ -103,7 +103,7 @@ async def main():
             await page.close()
 
         page, errs = await fresh_page(browser, 390, 844)
-        await page.evaluate("put('texts', 't1', { ...S.texts.get('t1'), rank: 2 })") # a book's place on its arranged shelf travels with the backup
+        await page.evaluate("put('texts', 't1', { ...S.texts.get('t1'), rank: 2, termMarks: [{ id: 'rhizome', at: 1, passage: 'First', createdAt: 1 }] })") # a book's place on its arranged shelf, and the terms you linked in it, travel with the backup
         before = await page.evaluate(DUMP, STORES)
         async with page.expect_download() as dl: await page.evaluate("exportBackup()")
         backup = await (await dl.value).path()

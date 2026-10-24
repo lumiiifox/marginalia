@@ -254,6 +254,9 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   than one word (`readerTermNames`, from `termNeedles`; shared names never link) over `findRuns`, `paintTerms` underlines them with the
   CSS Highlight API (`::highlight(term)`, after each render), so the text's markup never changes; a tap is matched by `termAt` before
   tap-to-turn and opens `termPanel`, whose Open in the glossary leaves the reader with Back returning to your place.
+- Terms you link yourself (Look up → Link to a glossary term, `linkTermPanel`, `addTermMark`; Unlink in `termPanel`, `removeTermMark`): kept on the
+  book as `t.termMarks = [{ id, at, passage, anchor, createdAt }]`, placed like a note's passage (`placeNote`, in `markHits`) and underlined
+  whether or not the book links terms by itself. Checked by `VALID.texts`; a restore keeps both copies' links (`withTermMarks`, in `withReading`).
 - Reader settings live in `localStorage` under `mg-reader`; other small preferences use `mg-*` keys (`mg-dict`: Wiktionary definitions kept for offline).
 - A text's `lang` (optional, e.g. "fr") sets the reader's `lang` for hyphenation; without it the language is guessed from the text (`guessLang`).
 - Book structure the owner marks in the reader (Edit → chapter title, heading, running head, title page, block quote, plain text) is stored on
