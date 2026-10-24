@@ -549,7 +549,7 @@
    ]
   },
   {
-   "text": "Class struggle is often felt to be central to the theory, and the Manifesto opens by declaring all previous history a history of class struggles.",
+   "text": "Class struggle is often felt to be central to the theory, and the Manifesto's first section opens by declaring all previous history a history of class struggles (CM I).",
    "section": "Origins and historical materialism",
    "claims": [
     {
@@ -626,7 +626,7 @@
    ]
   },
   {
-   "text": "Marx and Engels held that the ruling ideas of an age are those of its ruling class.",
+   "text": "Marx and Engels held that the ruling ideas of an age are those of its ruling class (CM II).",
    "section": "Ideology and reification",
    "claims": [
     {
@@ -816,5 +816,14 @@
  "applied": {
   "date": "2026-10-23",
   "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
- }
+ },
+ "later_fixes": [
+  {
+   "date": "2026-10-24",
+   "kind": "primary-text references",
+   "note": "Bracketed references to the bundled classics added and linked: CM I (“The history of all hitherto existing society is the history of class struggles”); CM II (“The ruling ideas of each age have ever been the ideas of its ruling class”). The sentence now says the Manifesto's first section opens with it, since in this edition the Preface and introduction come first.",
+   "checked_against": "the editions bundled with the app (data/books/)",
+   "review": "Independent check against the bundled texts (Claude subagent, fresh context): references confirmed; EHU IV.2 in Science widened to EHU IV, since the a priori argument is in Part I; Med. II added for the first principles; OL I placed after Mill's clause; the Manifesto wording made exact."
+  }
+ ]
 }

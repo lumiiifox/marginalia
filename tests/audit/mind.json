@@ -480,7 +480,7 @@
    ]
   },
   {
-   "text": "Descartes's argument for the mind's distinctness rests on the principle that whatever one can clearly and distinctly conceive is possible, and he held mind and body to be distinct substances.",
+   "text": "Descartes's argument for the mind's distinctness rests on the principle that whatever one can clearly and distinctly conceive is possible, and he held mind and body to be distinct substances (Med. VI).",
    "section": "The mind–body problem",
    "claims": [
     {
@@ -703,5 +703,14 @@
  "applied": {
   "date": "2026-10-23",
   "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
- }
+ },
+ "later_fixes": [
+  {
+   "date": "2026-10-24",
+   "kind": "primary-text references",
+   "note": "Bracketed references to the bundled classics added and linked: Med. VI (“entirely and truly distinct from my body, and may exist without it”).",
+   "checked_against": "the editions bundled with the app (data/books/)",
+   "review": "Independent check against the bundled texts (Claude subagent, fresh context): reference and excerpt confirmed."
+  }
+ ]
 }

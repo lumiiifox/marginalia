@@ -388,7 +388,7 @@
    ]
   },
   {
-   "text": "People concerned themselves with justice for women long before organized feminism, and Plato argued in Republic V that women could be trained to rule.",
+   "text": "People concerned themselves with justice for women long before organized feminism, and Plato argued in Republic V that women could be trained to rule (Rep. V).",
    "section": "Historical foundations",
    "claims": [
     {
@@ -589,5 +589,14 @@
  "applied": {
   "date": "2026-10-23",
   "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
- }
+ },
+ "later_fixes": [
+  {
+   "date": "2026-10-24",
+   "kind": "primary-text references",
+   "note": "Bracketed references to the bundled classics added and linked: Rep. V (“the same education which makes a man a good guardian will make a woman a good guardian”).",
+   "checked_against": "the editions bundled with the app (data/books/)",
+   "review": "Independent check against the bundled texts (Claude subagent, fresh context): reference and excerpt confirmed."
+  }
+ ]
 }

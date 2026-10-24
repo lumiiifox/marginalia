@@ -695,6 +695,13 @@
    "kind": "primary-text references",
    "note": "Bracketed references to the bundled classics added and linked: GM III §12 (“the more eyes, different eyes, we train on the same thing”).",
    "checked_against": "the editions bundled with the app (data/books/)"
+  },
+  {
+   "date": "2026-10-24",
+   "kind": "primary-text references",
+   "note": "Bracketed references to the bundled classics added and linked: Med. I and Med. II (““the mind may withdraw itself from the senses” (the Synopsis, on Meditation I)”); EHU IV.2 (“our conclusions from that experience are not founded on reasoning”).",
+   "checked_against": "the editions bundled with the app (data/books/)",
+   "review": "Independent check against the bundled texts (Claude subagent, fresh context): references confirmed; EHU IV.2 in Science widened to EHU IV, since the a priori argument is in Part I; Med. II added for the first principles; OL I placed after Mill's clause; the Manifesto wording made exact."
   }
  ]
 }

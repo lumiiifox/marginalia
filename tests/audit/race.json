@@ -501,7 +501,7 @@
    ]
   },
   {
-   "text": "W. E. B. Du Bois described double consciousness, first in “Strivings of the Negro People” (1897) and then in The Souls of Black Folk (1903), as “this sense of always looking at one's self through the eyes of others.”",
+   "text": "W. E. B. Du Bois described double consciousness, first in “Strivings of the Negro People” (1897) and then in The Souls of Black Folk (1903), as “this sense of always looking at one's self through the eyes of others” (Souls I).",
    "section": "Du Bois and Fanon",
    "claims": [
     {
@@ -614,5 +614,14 @@
  "applied": {
   "date": "2026-10-23",
   "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
- }
+ },
+ "later_fixes": [
+  {
+   "date": "2026-10-24",
+   "kind": "primary-text references",
+   "note": "Bracketed references to the bundled classics added and linked: Souls I (“this sense of always looking at one’s self through the eyes of others”).",
+   "checked_against": "the editions bundled with the app (data/books/)",
+   "review": "Independent check against the bundled texts (Claude subagent, fresh context): reference and excerpt confirmed."
+  }
+ ]
 }

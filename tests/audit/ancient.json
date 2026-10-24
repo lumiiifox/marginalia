@@ -654,7 +654,7 @@
    ]
   },
   {
-   "text": "Socrates made the examination of how people live his life's work, and in 399 BCE an Athenian jury convicted him of irreverence (asebeia), which his accuser tied to the corruption of the city's young men, and sentenced him to death.",
+   "text": "Socrates made the examination of how people live his life's work, and in 399 BCE an Athenian jury convicted him of irreverence (asebeia), which his accuser tied to the corruption of the city's young men, and sentenced him to death (Apology).",
    "section": "Socrates, Plato, and Aristotle",
    "claims": [
     {
@@ -681,7 +681,7 @@
    ]
   },
   {
-   "text": "Plato's writings advocate a more real and perfect realm of eternal, changeless entities, called forms or ideas, and the ideal city of the Republic is ruled by philosophers who would greatly prefer contemplating divine reality to governing.",
+   "text": "Plato's writings advocate a more real and perfect realm of eternal, changeless entities, called forms or ideas, and the ideal city of the Republic is ruled by philosophers who would greatly prefer contemplating divine reality to governing (Rep. VII).",
    "section": "Socrates, Plato, and Aristotle",
    "claims": [
     {
@@ -998,6 +998,13 @@
    "kind": "primary-text references",
    "note": "Bracketed references to the bundled classics added and linked: NE I.7 (“in accordance with excellence or virtue”), NE II.1 (“moral excellence is the result of habit or custom”), NE VI.13 (“the latter is impossible without prudence”).",
    "checked_against": "the editions bundled with the app (data/books/)"
+  },
+  {
+   "date": "2026-10-24",
+   "kind": "primary-text references",
+   "note": "Bracketed references to the bundled classics added and linked: Apology (“Socrates is a doer of evil, who corrupts the youth; and who does not believe in the gods of the state”); Rep. VII (“each of you, when his turn comes, must go down to the general underground abode”).",
+   "checked_against": "the editions bundled with the app (data/books/)",
+   "review": "Independent check against the bundled texts (Claude subagent, fresh context): reference and excerpt confirmed."
   }
  ]
 }

@@ -977,7 +977,7 @@
    ]
   },
   {
-   "text": "Kant took moral requirements to be rational principles, held that we should act only on a maxim we could will to become a universal law, and located the moral law's authority in its being an expression of one's own rational will.",
+   "text": "Kant took moral requirements to be rational principles, held that we should act only on a maxim we could will to become a universal law, and located the moral law's authority in its being an expression of one's own rational will (G II).",
    "section": "Duty and consequences",
    "claims": [
     {
@@ -1277,6 +1277,13 @@
    "kind": "primary-text references",
    "note": "Bracketed references to the bundled classics added and linked: NE I.7 (“in accordance with excellence or virtue”), NE II.1 (“moral excellence is the result of habit or custom”), NE VI.13 (“the latter is impossible without prudence”), GM I §10 (“The revolt of the slaves in morals begins”), GM II §4 (“the cardinal moral idea of “ought” originates from”), GM III §28 (“man will wish Nothingness rather than not wish at all”).",
    "checked_against": "the editions bundled with the app (data/books/)"
+  },
+  {
+   "date": "2026-10-24",
+   "kind": "primary-text references",
+   "note": "Bracketed references to the bundled classics added and linked: G II (“Act only on that maxim whereby thou canst at the same time will that it should become a universal law”).",
+   "checked_against": "the editions bundled with the app (data/books/)",
+   "review": "Independent check against the bundled texts (Claude subagent, fresh context): reference and excerpt confirmed."
   }
  ]
 }

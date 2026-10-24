@@ -581,6 +581,26 @@ const PASSAGE_STYLES = {
   "rousseau-social-contract": { book: "classic-rousseau-social-contract", item: /^SC (I|II|III|IV)\.(\d+)$/,
     find: (B, [book, ch]) => headPath(B, [[2, (t) => t === `Book ${book}`], [3, (t) => t.startsWith(`${toRoman(+ch)}. `)]]) },
   // Hobbes, Leviathan: chapter, "Lev. XIII".
+  // Hume, Enquiry concerning Human Understanding: section and part, "EHU IV.2" ("EHU VII").
+  "hume-enquiry": { book: "classic-hume-enquiry", item: /^EHU ([IVX]+)(?:\.(\d))?$/,
+    find: (B, [sec, part]) => headPath(B, [[2, (t) => t.startsWith(`${sec}. `)], ...(part ? [[3, (t) => t === `Part ${toRoman(+part)}`]] : [])]) },
+  // Descartes: a Meditation or a part of the Discourse, "Med. II", "Disc. IV".
+  "descartes-meditations": { book: "classic-descartes-meditations", item: /^(Med|Disc)\. ([IVX]+)$/,
+    find: (B, [w, n]) => w === "Med" ? headPath(B, [[1, (t) => t.startsWith("Meditations")], [2, (t) => t.startsWith(`Meditation ${n}:`)]])
+      : headPath(B, [[1, (t) => t.startsWith("Discourse")], [2, (t) => t === `Part ${n}`]]) },
+  // Plato, Republic: book, "Rep. V".
+  "plato-republic": { book: "classic-plato-republic", item: /^Rep\. ([IVX]+)$/, find: (B, [n]) => headPath(B, [[4, (t) => t === `Book ${n}`]]) },
+  // Plato, the trial and death of Socrates: a dialogue by name, "Apology".
+  "plato-socrates": { book: "classic-plato-socrates", item: /^(Euthyphro|Apology|Crito|Phaedo)$/, find: (B, [n]) => headPath(B, [[2, (t) => t === n], [3, (t) => t === n]]) },
+  // Kant, Groundwork: preface or section, "G II".
+  "kant-groundwork": { book: "classic-kant-groundwork", item: /^G (Preface|I|II|III)$/,
+    find: (B, [n]) => headPath(B, [[2, (t) => t.startsWith({ Preface: "Preface", I: "First Section", II: "Second Section", III: "Third Section" }[n])]]) },
+  // Marx and Engels, Manifesto: section, "CM II".
+  "marx-engels-manifesto": { book: "classic-marx-engels-manifesto", item: /^CM (I|II|III|IV)$/, find: (B, [n]) => headPath(B, [[2, (t) => t.startsWith(`${n}. `)]]) },
+  // Du Bois, The Souls of Black Folk: chapter, "Souls I".
+  "du-bois-souls": { book: "classic-du-bois-souls", item: /^Souls ([IVX]+)$/, find: (B, [n]) => headPath(B, [[2, (t) => t.startsWith(`${n}. `)]]) },
+  // Mill, On Liberty: chapter, "OL I".
+  "mill-liberty": { book: "classic-mill-liberty", item: /^OL (I|II|III|IV|V)$/, find: (B, [n]) => headPath(B, [[2, (t) => t.startsWith(`${n}. `)]]) },
   "hobbes-leviathan": { book: "classic-hobbes-leviathan", item: /^Lev\. ([IVXL]+)$/,
     find: (B, [ch]) => headPath(B, [[2, (t) => t.startsWith(`${ch}. `)]]) },
 };

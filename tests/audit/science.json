@@ -479,7 +479,7 @@
    ]
   },
   {
-   "text": "Hume argued that we cannot infer the unobserved from the observed by purely a priori means, and a significant number of philosophers have accepted his conclusion that the problem is insoluble.",
+   "text": "Hume argued that we cannot infer the unobserved from the observed by purely a priori means, and a significant number of philosophers have accepted his conclusion that the problem is insoluble (EHU IV).",
    "section": "Induction, confirmation, and explanation",
    "claims": [
     {
@@ -641,5 +641,14 @@
  "applied": {
   "date": "2026-10-23",
   "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
- }
+ },
+ "later_fixes": [
+  {
+   "date": "2026-10-24",
+   "kind": "primary-text references",
+   "note": "Bracketed references to the bundled classics added and linked: EHU IV (“not founded on reasoning, or any process of the understanding”).",
+   "checked_against": "the editions bundled with the app (data/books/)",
+   "review": "Independent check against the bundled texts (Claude subagent, fresh context): references confirmed; EHU IV.2 in Science widened to EHU IV, since the a priori argument is in Part I; Med. II added for the first principles; OL I placed after Mill's clause; the Manifesto wording made exact."
+  }
+ ]
 }

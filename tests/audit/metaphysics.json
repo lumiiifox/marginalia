@@ -1763,6 +1763,13 @@
    "kind": "author credits",
    "note": "SEP “Aristotle's Metaphysics” (Cohen and Reeve), “Identity Over Time” (Gallois and Kurtsal), “The Epistemology of Modality” (Mallozzi, Vaidya and Wallner): credits corrected.",
    "checked_against": "SEP entry footers, SEP table of contents, PhilPapers SEP bibliographies"
+  },
+  {
+   "date": "2026-10-24",
+   "kind": "primary-text references",
+   "note": "Bracketed references to the bundled classics added and linked: EHU VII (“the power of force … never discovers itself in any of the sensible qualities of body”).",
+   "checked_against": "the editions bundled with the app (data/books/)",
+   "review": "Independent check against the bundled texts (Claude subagent, fresh context): reference and excerpt confirmed."
   }
  ]
 }
