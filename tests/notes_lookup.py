@@ -10,6 +10,10 @@ Made-up book only; Wiktionary is stood in for by a local reply shaped like its A
      there's no entry or Wiktionary can't be reached;
   3. the words looked up are listed in the glossary (Your words), one usable definition each, and quizzed on (the word
      blanked out of its definition); Remove takes one off.
+  4. glossary terms in the text (Reading settings, or a book's More menu): off until turned on for that book, kept outside the library;
+     each paragraph's first mention of a term of more than one word is underlined, ignoring capitals and accents, across a printed-page
+     break, never inside another word; a tap on one shows its definition without turning the page, Open in the glossary opens
+     the entry, and Back returns to the same page; a tap on a highlight still opens its note; turning it off removes the underlines.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, json, subprocess, sys, time
@@ -53,6 +57,57 @@ failures = []
 def check(ok, what):
     print(("ok   " if ok else "FAIL ") + what)
     if not ok: failures.append(what)
+
+TERMBOOK = """(async () => {
+  const f = ' Everywhere it is machines, real ones, with all the necessary couplings and connections, working away in the night.';
+  const B = [{ k: 'pg', x: '1' }, { k: 'h', l: 1, x: 'Machines', s: 'c1' },
+    { k: 'p', x: 'The Body without Organs is the unproductive, and the body without organs again.' + f },
+    { k: 'p', x: 'DESIRING-PRODUCTION is everywhere, and nobody without organs here.' + f },
+    { k: 'p', x: 'Somebody without organs and antidesiring-productions do not count.' + f },
+    { k: 'p', x: 'This sentence runs on to the next page and names the body without' }, { k: 'pg', x: '2' },
+    { k: 'c', x: 'organs on it.' + f }, { k: 'p', x: 'A passage on the will to power, highlighted.' + f }];
+  for (let n = 0; n < 12; n++) B.push({ k: 'p', x: 'Filler ' + n + '.' + f.repeat(3) });
+  await put('content', 'tb', B);
+  await put('texts', 'tb', { title: 'Terms', author: 'Test', hasContent: true, total: B.length, pos: 0, status: 'reading', createdAt: 1, updatedAt: 1, sections: [{ id: 'c1', label: 'Machines' }] });
+  const text = B[8].x, at = text.indexOf('will to power');
+  await put('notes', 'hl', { textId: 'tb', kind: 'passage', passage: 'will to power', at: 8, anchor: { a: 8, ao: at, b: 8, bo: at + 13, pre: 'on the ', suf: ', highl' }, links: [], createdAt: 1, updatedAt: 1 });
+  localStorage.setItem('mg-reader', JSON.stringify({ fs: 18, flow: 'pages', turn: 'slide' }));
+})()"""
+async def term_links(browser):
+    ctx = await browser.new_context(viewport={"width": 412, "height": 915}, device_scale_factor=2.625, is_mobile=True, has_touch=True)
+    page = await ctx.new_page(); errs = []
+    page.on("pageerror", lambda e: errs.append(str(e)))
+    await page.goto(URL); await page.wait_for_function(READY)
+    await page.evaluate(TERMBOOK); await page.reload(); await page.wait_for_function(READY)
+    await page.evaluate("go({ screen: 'reader', textId: 'tb' })"); await page.wait_for_selector(".book .bp"); await page.wait_for_timeout(600)
+    check(await page.evaluate("(R.termRanges || []).length") == 0, "glossary terms aren't linked until you turn them on for the book")
+    await page.evaluate("readerSettings()"); await page.wait_for_selector("[data-terms=on]"); await page.click("[data-terms=on]"); await page.evaluate("closeOverlay()"); await page.wait_for_timeout(400)
+    got = await page.evaluate("(R.termRanges || []).map(([r, id]) => [r.startContainer.parentElement.closest('[data-i]').dataset.i, id, r.toString()])")
+    want = [["2", "body-without-organs", "Body without Organs"], ["3", "desiring-production", "DESIRING-PRODUCTION"], ["5", "body-without-organs", "body without"], ["7", "body-without-organs", "organs"], ["8", "will-to-power", "will to power"]]
+    check(sorted(got) == sorted(want), f"each paragraph's first mention is linked, in any capitals, across a printed-page break, never inside another word ({got})")
+    stored = await page.evaluate("[localStorage.getItem('mg-terms'), 'terms' in S.texts.get('tb')]")
+    check(stored == ['["tb"]', False], f"which books have it on is kept outside the library ({stored})")
+    check(await page.evaluate("CSS.highlights.has('term') && CSS.highlights.get('term').size") == 5, "the terms are underlined")
+    box = await page.evaluate("(() => { const q = R.termRanges.find(([, id]) => id === 'desiring-production')[0].getClientRects()[0]; return [q.left + q.width / 2, q.top + q.height / 2]; })()")
+    pg0 = await page.evaluate("currentPage()")
+    await page.touchscreen.tap(box[0], box[1]); await page.wait_for_timeout(400)
+    panel = await page.evaluate("[document.querySelector('.sheet h2')?.textContent, document.querySelector('.sheet .tdef')?.textContent || '', currentPage()]")
+    check(panel[0] == "Desiring-production" and panel[1].startswith("Deleuze and Guattari") and panel[2] == pg0, f"a tap on a term shows its definition and doesn't turn the page ({panel[:1]}, page {panel[2]})")
+    await page.click(".sheet [data-term]"); await page.wait_for_timeout(500)
+    check(await page.evaluate("[S.screen, S.gOpen.has('desiring-production')]") == ["glossary", True], "Open in the glossary opens the entry")
+    await page.go_back(); await page.wait_for_timeout(800)
+    check(await page.evaluate("[S.screen, currentPage()]") == ["reader", pg0], "Back returns to the same page of the book")
+    box = await page.evaluate("(() => { const q = document.querySelector('mark[data-note=\"hl\"]').getBoundingClientRect(); return [q.left + 4, q.top + q.height / 2]; })()")
+    await page.touchscreen.tap(box[0], box[1]); await page.wait_for_timeout(400)
+    check(await page.locator(".sheet .tdef").count() == 0 and await page.locator("#sheetroot form, #sheetroot .sheet").count() == 1, "a tap on a highlight still opens its note")
+    await page.evaluate("closeOverlay()"); await page.wait_for_timeout(300)
+    await page.evaluate("go({ screen: 'text', textId: 'tb' })"); await page.wait_for_timeout(300)
+    await page.click("#more"); await page.wait_for_selector("#m-terms"); await page.click("#m-terms"); await page.wait_for_timeout(300)
+    check(await page.evaluate("localStorage.getItem('mg-terms')") == "[]", "the book's More menu turns it off too")
+    await page.go_back(); await page.wait_for_timeout(800)
+    check(await page.evaluate("[(R.termRanges || []).length, CSS.highlights.has('term')]") == [0, False], "turning it off removes the underlines")
+    check(not errs, "no script errors with linked terms" + (f": {errs[:3]}" if errs else ""))
+    await ctx.close()
 
 async def main():
     async with async_playwright() as p:
@@ -138,7 +193,9 @@ async def main():
         check("aporia" not in await page.inner_text("#wbox") and "aporia" not in await page.evaluate("Object.keys(dictCache())"), "Remove takes a word off the list")
         check(await page.locator("[data-wquiz]").count() == 0, "with fewer than four words there's no quiz on them")
         check(not errs, "no script errors" + (f": {errs[:3]}" if errs else ""))
-        await ctx.close(); await browser.close()
+        await ctx.close()
+        await term_links(browser)
+        await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 try:

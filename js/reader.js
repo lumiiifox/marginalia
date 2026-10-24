@@ -248,6 +248,7 @@ function rerenderBlock(i, marks) {
   el.querySelectorAll("[data-i]").forEach((x) => { R.els[+x.dataset.i] = x; });
   R.dirty = true; R.ver = (R.ver || 0) + 1;
   if (FIND.on) paintFind();
+  paintTerms();
 }
 // One section of the book as Swipe pages draws it.
 function pagedHTML(a, b, marks) {
@@ -275,6 +276,7 @@ function renderBook(center) {
   book.scrollLeft = 0; R.dirty = true; R.ver = (R.ver || 0) + 1;
   if (RS.flow === "pages") setTimeout(() => { if (flipMode() && R.win && !R.flip) fillTwin(R.win[0]); }, 400); // ready before the first turn
   if (FIND.on) paintFind();
+  paintTerms();
 }
 // Make sure the section holding paragraph i is the one on screen.
 function ensureWindow(i) { if (R.blocks && (!R.win || i < R.win[0] || i >= R.win[1])) renderBook(i); }
@@ -438,7 +440,7 @@ function resetReader() {
   if (R.flip) { cancelAnimationFrame(R.flip.raf); R.flip = null; for (const el of [$("#flip"), $("#undershade")]) el.classList.remove("on"); }
   const tw = $("#flipbook"); if (tw) { tw.innerHTML = ""; tw.dataset.key = ""; }
   $("#rnav").hidden = true; R.dragging = false; R.selCarry = null; drawCarry();
-  R.visiting = false; R.home = null; R.trail = []; R.pagedSpot = null; R.win = null; FIND.on = false; FIND.hits = []; FIND.k = -1; paintFind(); const tr = $("#rtrail"); if (tr) tr.hidden = true;
+  R.visiting = false; R.home = null; R.trail = []; R.pagedSpot = null; R.win = null; FIND.on = false; FIND.hits = []; FIND.k = -1; paintFind(); R.termHits = null; R.termRanges = []; if (window.CSS && CSS.highlights) CSS.highlights.delete("term"); const tr = $("#rtrail"); if (tr) tr.hidden = true;
   R.sumPrev = null; R.tid = null; R.blocks = null; R.els = []; R.tops = []; R.sig = new Map(); R.saved = -1; R.sel = null; R.beat = 0; R.paceMs = 0; R.paceW = 0; $("#book").innerHTML = ""; $("#selbar").hidden = true; }
 
 async function openReader(tid, at, opts) {
@@ -823,7 +825,9 @@ function readerSettings() {
       <div class="rs-row"><span>Your notes</span>${seg("mn", [["show", "Show in the text"], ["hide", "Hide"]])}</div>
       <div class="rs-row"><span>Screen</span>${seg("awake", [["on", "Stays on while reading"], ["off", "Phone's setting"]])}</div>
       <div class="rs-row"><span>A chapter's end</span>${seg("sum", [["ask", "Ask for a summary"], ["off", "Don't ask"]])}</div>
+      ${R.tid ? `<div class="rs-row"><span>Glossary terms in this book</span><div class="seg">${[["on", "Linked"], ["off", "Off"]].map(([v, label]) => `<button class="segb${(termsOn(R.tid) ? "on" : "off") === v ? " on" : ""}" data-keep="1" data-terms="${v}">${label}</button>`).join("")}</div></div>` : ""}
     </div>`, (b) => {
+    if (b.dataset.terms) { setTermsOn(R.tid, b.dataset.terms === "on"); $("#sheetroot").querySelectorAll("[data-terms]").forEach((x) => x.classList.toggle("on", x === b)); return; }
     if (!b.dataset.rs) return;
     if (b.dataset.rs === "fs") setRS({ fs: RS.fs + +b.dataset.v });
     else setRS({ [b.dataset.rs]: b.dataset.v });
@@ -1019,6 +1023,77 @@ function notePanel(i, n) {
 }
 
 /* find in this book: matches marked in the text and stepped through one at a time */
+/* ---------- Glossary terms in the text (Reading settings → Glossary terms in this book, or a book's More menu) ----------
+   In a book that has it on, each paragraph's first mention of a glossary term whose name is more than one word (Body
+   without organs, Will to power, Desiring-production) is underlined through the CSS Highlight API, so the page's text and
+   markup stay exactly as they are and highlights, selections and pages are untouched. A tap on one opens the term's
+   definition; Open in the glossary leaves the reader, and Back returns to your place. Matching ignores accents and
+   capitals, takes whole words (a plural counts), and runs across a paragraph's printed-page breaks, as Find does; a name
+   two entries share links to neither. Which books have it on is kept in localStorage (mg-terms), outside the library. */
+const TERMS_KEY = "mg-terms";
+const termsList = () => { try { const l = JSON.parse(localStorage.getItem(TERMS_KEY) || "[]"); return Array.isArray(l) ? l : []; } catch { return []; } };
+const termsOn = (tid) => !!tid && termsList().includes(tid);
+function setTermsOn(tid, on) {
+  const l = new Set(termsList()); if (on) l.add(tid); else l.delete(tid);
+  try { localStorage.setItem(TERMS_KEY, JSON.stringify([...l])); } catch {}
+  if (R.tid === tid) { R.termHits = null; paintTerms(); }
+}
+// The names the reader links: each term's own names (termNeedles) that are more than one word, longest first.
+function readerTermNames() {
+  const out = [];
+  for (const g of allTerms()) for (const nd of termNeedles(g)) { const s = fold(nd.s).trim(); if (/[\s-]/.test(s)) out.push({ s, id: g.id }); }
+  const owners = new Map(); for (const n of out) { if (!owners.has(n.s)) owners.set(n.s, new Set()); owners.get(n.s).add(n.id); }
+  return out.filter((n) => owners.get(n.s).size === 1).sort((a, b) => b.s.length - a.s.length);
+}
+// Each paragraph's first mention of each term: { id, pieces: [{ i, from, to }] }, in the blocks' own characters.
+function termHits() {
+  if (R.termHits && R.termHitsOf === R.blocks) return R.termHits;
+  const names = readerTermNames(), word = /[\p{L}\p{N}]/u, hits = [];
+  for (const run of findRuns()) {
+    const taken = [], seen = new Set(), ft = run.ft;
+    for (const nm of names) {
+      if (seen.has(nm.id)) continue;
+      for (let at = ft.indexOf(nm.s); at >= 0; at = ft.indexOf(nm.s, at + 1)) {
+        let end = at + nm.s.length;
+        if (ft.startsWith("es", end) && !word.test(ft[end + 2] || "")) end += 2; else if (ft[end] === "s" && !word.test(ft[end + 1] || "")) end += 1;
+        if (word.test(ft[at - 1] || "") || word.test(ft[end] || "")) continue;
+        if (taken.some(([a, z]) => at < z && end > a)) continue;
+        taken.push([at, end]); seen.add(nm.id);
+        const s0 = run.fm[at], e0 = run.fm[end - 1] + 1, pieces = [];
+        for (const sg of run.segs) { const a = Math.max(s0, sg.at), z = Math.min(e0, sg.at + sg.len); if (a < z) pieces.push({ i: sg.i, from: a - sg.at + sg.base, to: z - sg.at + sg.base }); }
+        if (pieces.length) hits.push({ id: nm.id, pieces });
+        break;
+      }
+    }
+  }
+  R.termHits = hits; R.termHitsOf = R.blocks;
+  return hits;
+}
+// Underline the terms in the paragraphs on screen, and remember where each is for taps.
+function paintTerms() {
+  R.termRanges = [];
+  const can = window.Highlight && window.CSS && CSS.highlights;
+  if (!R.blocks || !termsOn(R.tid)) { if (can) CSS.highlights.delete("term"); return; }
+  for (const h of termHits()) for (const p of h.pieces) { const r = rangeFor(p.i, p.from, p.to); if (r) R.termRanges.push([r, h.id]); }
+  if (can) { const hl = new Highlight(...R.termRanges.map(([r]) => r)); hl.priority = -1; CSS.highlights.set("term", hl); }
+}
+// The term under a tap, if any.
+function termAt(x, y) {
+  for (const [r, id] of R.termRanges || []) for (const q of r.getClientRects()) if (x >= q.left - 2 && x <= q.right + 2 && y >= q.top - 2 && y <= q.bottom + 2) return id;
+  return null;
+}
+function termPanel(id) {
+  const g = allTerms().find((x) => x.id === id); if (!g) return;
+  openPanel(`<h2>${esc(g.t)}</h2>${AREAS[g.a] ? `<p class="hint">${esc(AREAS[g.a])}</p>` : ""}<p class="tdef">${esc(g.d)}</p>
+    <div class="noteacts"><button class="btn primary" data-term="${esc(g.id)}">Open in the glossary</button></div>`, (b) => { if (b.dataset.term) openTerm(b.dataset.term); });
+}
+$("#book").addEventListener("click", (e) => {
+  if (!R.termRanges || !R.termRanges.length || selecting()) return;
+  if (e.target.closest && e.target.closest("mark[data-note], .mnote, a, button, [data-fn]")) return;
+  const id = termAt(e.clientX, e.clientY); if (!id) return;
+  e.stopImmediatePropagation(); e.stopPropagation(); e.preventDefault();
+  termPanel(id);
+}, true);
 let findQ = "";
 const FIND = { q: "", hits: [], k: -1, on: false };
 // A paragraph's text as shown: after a glued running head that's hidden.

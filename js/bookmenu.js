@@ -115,6 +115,7 @@ function moreMenu() {
       ${t.hasContent ? `<button class="menuitem" id="m-marks">Bring in highlights from a PDF</button>` : ""}
       ${t.hasContent ? `<button class="menuitem" id="m-pair">${pairOf(t) ? `Paired with “${esc(pairOf(t).title)}”` : "Pair with the original or a translation"}</button>` : ""}
       ${t.hasContent ? `<button class="menuitem" id="m-conc">${t.conc ? `${esc(t.conc.label)} pages` : "Another edition's pages"}</button>` : ""}
+      ${t.hasContent ? `<button class="menuitem" id="m-terms">${termsOn(S.textId) ? "Glossary terms are linked in the text: turn off" : "Link glossary terms in the text"}</button>` : ""}
       <button class="menuitem" id="m-cite">Cite this text</button>
       <button class="menuitem" id="m-export">Export notes as Markdown</button>
       <button class="menuitem danger" id="m-delete">Delete this text</button>
@@ -127,6 +128,7 @@ function moreMenu() {
     else if (b.id === "m-pair") pairSheet(S.textId);
     else if (b.id === "m-export") exportNotes();
     else if (b.id === "m-cite") citeTextPanel(S.textId);
+    else if (b.id === "m-terms") { const on = !termsOn(S.textId); setTermsOn(S.textId, on); toast(on ? (window.CSS && CSS.highlights ? "Glossary terms are linked: tap one for its definition." : "Glossary terms are linked, though this browser can't underline them.") : "Glossary terms are no longer linked."); }
     else if (b.id === "m-delete") confirmDelete();
   });
 }

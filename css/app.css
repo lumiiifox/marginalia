@@ -355,6 +355,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 #cres .group { gap: 8px; }
 .findhit .fs { font: 16px/1.45 var(--f-text); overflow-wrap: anywhere; }
 .findhit b { background: var(--mark); font-weight: 400; padding: 0 1px; }
+::highlight(term) { text-decoration: underline dotted; text-decoration-color: var(--brass); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
 ::highlight(find) { background-color: rgba(156, 117, 51, 0.24); }
 ::highlight(find-now) { background-color: rgba(156, 117, 51, 0.55); }
 .findbar { pointer-events: auto; display: flex; align-items: center; gap: 4px; background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 3px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22); }
