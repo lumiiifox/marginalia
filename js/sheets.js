@@ -27,7 +27,12 @@ function showView(view, fresh) {
   if (fresh && view.screen === "text") { S.sec = "all"; S.kind = "all"; S.tq = ""; }
   render();
   window.scrollTo(0, fresh ? 0 : view.y || 0);
-  if (fresh && view.focus) { const el = document.querySelector(`[data-branch-id="${CSS.escape(view.focus)}"]`); if (el) el.scrollIntoView({ block: "start" }); }
+  if (fresh && view.focus) {
+    const el = document.querySelector(`[data-branch-id="${CSS.escape(view.focus)}"]`);
+    const sec = el && view.sec && [...el.querySelectorAll("section[data-bsec]")].find((x) => x.dataset.bsec === view.sec);
+    if (sec) { sec.scrollIntoView({ block: "start" }); sec.classList.add("flash"); setTimeout(() => sec.classList.remove("flash"), 2400); }
+    else if (el) el.scrollIntoView({ block: "start" });
+  }
   if (fresh && view.path) { const el = document.querySelector(`section.path[data-path-id="${CSS.escape(view.path)}"]`); if (el) el.scrollIntoView({ block: "start" }); }
   if (fresh && view.era) { const el = document.querySelector(`section.tl-era[data-era="${CSS.escape(view.era)}"]`); if (el) el.scrollIntoView({ block: "start" }); }
   if (fresh && view.scrollTo) { const el = document.querySelector(`[data-term-id="${CSS.escape(view.scrollTo)}"]`); if (el) el.scrollIntoView({ block: "start" }); }

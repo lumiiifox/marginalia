@@ -45,7 +45,7 @@ ideas? If not, it waits.
 - After changes to `branchLinks` or to thinkers' names, run `python3 tests/links.py` (four-letter names in exact case, accents in either Unicode form,
   word-like names only in full, punctuation around names, and every link across the articles naming the entry it opens).
 - After changes to colours or styles, run `python3 tests/contrast.py` (every screen and the main panels, light and dark, against WCAG AA).
-- After changes to the study tools around the reference sections (the truth table, term of the day, Hear it, the Anki export, a term's thinkers in time, two-step lineage, your notes through the book, the fallacies, reading paths, from your margins, essay templates, argument puzzles, guess the thinker, connect two thinkers, order of birth, bookplates, missing premise, steps in order, the reconstruction guide, quiz sets, disputations, questions to read with, primers), run `python3 tests/study_tools.py`.
+- After changes to the study tools around the reference sections (Mentioned in, the truth table, term of the day, Hear it, the Anki export, a term's thinkers in time, two-step lineage, your notes through the book, the fallacies, reading paths, from your margins, essay templates, argument puzzles, guess the thinker, connect two thinkers, order of birth, bookplates, missing premise, steps in order, the reconstruction guide, quiz sets, disputations, questions to read with, primers), run `python3 tests/study_tools.py`.
 - This session can't delete remote branches; the repo is set to delete merged PR branches automatically (if not, tell the owner).
 
 ## Save points
@@ -233,6 +233,11 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   so a deleted classic stays deleted; one that can't be fetched is tried next time. Skipped in automated browsers unless a test passes
   `true`. `tools/build_classics.py` builds them from Standard Ebooks sources (Kant and Spinoza's Ethics from plain-text transcriptions, through their converters) with
   the app's own parser; add a new id to `CLASSICS`.
+- Mentioned in (`mentionsOf`, `mentionsHTML`, in study.js): the article sections, thinker cards and glossary entries whose text uses a term's
+  name (`termNeedles`: its name, the name in its brackets, a pair's halves listed in `k`) or a thinker's (`thinkerNeedles`: as `branchLinks`
+  links them), each once with the sentence of its first mention marked (`mentionSnip`). A glossary entry fills it when it opens (`fillMentions`,
+  from the toggle event); a thinker's card shows it with your notes that name them (`thinkerNotes`). An article row opens the article at its
+  section (`go({ screen: "branches", focus, sec })`, sections carry `data-bsec`). `mentionSources` folds the built-in texts once. Nothing stored.
 - A glossary term's "In your notes" (`termHitsHTML`, from `termNotes`): your notes using the term, grouped by author and then book, each book in
   reading order with your glosses, four shown and the rest folded. Only your own notes; nothing is written about the term for you.
 - Where you left off (`briefHTML`, `placeIn`, on a book's page under Continue reading): page and chapter at `t.pos`, your summary of that

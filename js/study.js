@@ -57,6 +57,118 @@ function termHitsHTML(hits) {
   };
   return `<div class="thits"><div class="label">In your notes</div>${books.length > 1 ? `<p class="hint">In ${books.length} books${authors.size > 1 ? ` by ${authors.size} authors` : ""}, grouped by author, to compare how each uses it.</p>` : ""}${books.map(group).join("")}</div>`;
 }
+/* ---------- Mentioned in: where the articles, thinker cards and glossary entries use a term or a thinker's name ----------
+   Matching follows the articles' own links (branchLinks): accents ignored in either Unicode form, whole words only, a name under five
+   letters in exact case, LINK_FULL_ONLY names only in full, a name two thinkers share never matched. A term matches by its name and the
+   name in its brackets ("Assemblage (agencement)" finds both), and for a pair ("Signifier and signified") by each half its entry lists
+   as a key. Each place is listed once, with the sentence of its first mention. Worked out when an entry opens; nothing is stored. */
+let MENTION_SRC = null;
+function mentionSources() {
+  if (MENTION_SRC) return MENTION_SRC;
+  const out = [];
+  for (const b of BRANCHES) {
+    if (!b.x) continue;
+    let head = null, paras = [];
+    const flush = () => { if (paras.length) out.push({ kind: "branch", id: b.id, name: b.n, sec: head, text: paras.join("\n\n") }); paras = []; };
+    for (const part of b.x.split(/\n\n/)) {
+      const at = part.indexOf("\n");
+      if (at >= 0) { flush(); head = part.slice(0, at); paras.push(part.slice(at + 1)); }
+      else paras.push(part);
+    }
+    flush();
+  }
+  for (const p of THINKERS) out.push({ kind: "thinker", id: p.id, name: p.n, text: [p.d, p.x].filter(Boolean).join("\n\n") });
+  for (const s of out) s.f = linkFold(s.text);
+  return (MENTION_SRC = out);
+}
+const MENTION_PAIR_SKIP = new Set(["analytic", "synthetic", "sense", "reference", "contradiction", "community", "normative", "li"]);
+function termNeedles(g) {
+  const name = g.t.replace(/\s*\(.*?\)\s*/g, " ").trim(), par = (g.t.match(/\(([^()]+)\)/) || [])[1];
+  const keys = new Set([name]);
+  if (par && !/^(the|of|a|an)\b|^understanding$/i.test(par)) keys.add(par);
+  const k = new Set((g.k || []).map((x) => x.toLowerCase()));
+  const halves = name.split(/,\s*|\s+and\s+/);
+  if (halves.length > 1) for (const h of halves) if (k.has(h.toLowerCase()) && !MENTION_PAIR_SKIP.has(h.toLowerCase())) keys.add(h);
+  return [...keys].filter((x) => x.length >= 3).map((x) => ({ s: linkFold(x).low, exact: false, plural: true }));
+}
+// Each thinker's names as the articles link them; shared names left out.
+let NAME_OWNERS = null;
+function thinkerNeedles(p) {
+  if (!NAME_OWNERS) {
+    NAME_OWNERS = new Map();
+    for (const x of THINKERS) for (const n of new Set([x.n, x.sn])) { const k = linkFold(n).low; if (!NAME_OWNERS.has(k)) NAME_OWNERS.set(k, new Set()); NAME_OWNERS.get(k).add(x.id); }
+  }
+  return [...new Set([p.n, p.sn])].filter((n) => n && n.length >= 4 && !LINK_FULL_ONLY.has(n.toLowerCase()) && NAME_OWNERS.get(linkFold(n).low).size === 1)
+    .map((n) => { const f = linkFold(n); return n.length < 5 ? { s: f.cased, exact: true } : { s: f.low, exact: false }; });
+}
+// Every whole-word match of the needles in a folded text: [{ pos, end }], in order, never overlapping.
+function findNeedles(F, needles) {
+  const word = /[\p{L}\p{N}]/u, isW = (i) => i >= 0 && i < F.cased.length && word.test(F.cased[i]), hits = [];
+  for (const nd of needles) {
+    const hay = nd.exact ? F.cased : F.low;
+    for (let from = 0, pos; (pos = hay.indexOf(nd.s, from)) >= 0; from = pos + 1) {
+      let end = pos + nd.s.length;
+      if (nd.plural) { if (hay.startsWith("es", end) && !isW(end + 2)) end += 2; else if (hay[end] === "s" && !isW(end + 1)) end += 1; }
+      if (isW(pos - 1) || isW(end)) continue;
+      if (hits.some((h) => pos < h.end && end > h.pos)) continue;
+      hits.push({ pos, end });
+    }
+  }
+  return hits.sort((a, b) => a.pos - b.pos);
+}
+// The sentence around a match, as HTML with the words marked; long sentences cut around them.
+function mentionSnip(text, F, h) {
+  const a = F.map[h.pos], b = F.map[h.end];
+  // a sentence ends at white space after . ! or ? (and any closing quote), unless the word before is an initial or an abbreviation
+  const ends = (j) => /\s/.test(text[j]) && /[.!?][”’")\]]*$/.test(text.slice(Math.max(0, j - 14), j))
+    && !/(?:^|[\s(“])(?:\p{Lu}|c|ca|cf|e\.g|i\.e|vol|ch|pp?|St|Dr|Mr|Mrs|Ms|no|ed|eds|trans|vs)\.[”’")\]]*$/u.test(text.slice(Math.max(0, j - 14), j));
+  let s = a, e = b;
+  while (s > 0 && text[s - 1] !== "\n" && !ends(s - 1)) s--;
+  while (e < text.length && text[e] !== "\n" && !ends(e)) e++;
+  let pre = text.slice(s, a), post = text.slice(b, e);
+  if (pre.length > 110) pre = "…" + pre.slice(pre.length - 100).replace(/^\S*\s/, "");
+  if (post.length > 160) post = post.slice(0, 150).replace(/\s\S*$/, "") + "…";
+  return `${esc(pre)}<mark>${esc(text.slice(a, b))}</mark>${esc(post)}`;
+}
+// Where the needles occur: { branch: [...], thinker: [...], term: [...] }, each { id, name, sec, count, snip }.
+function mentionsOf(needles, self) {
+  const out = { branch: [], thinker: [], term: [] };
+  if (!needles.length) return out;
+  const look = (src) => {
+    if (self && src.kind === self.kind && src.id === self.id) return;
+    const hits = findNeedles(src.f, needles); if (!hits.length) return;
+    out[src.kind].push({ id: src.id, name: src.name, sec: src.sec, count: hits.length, snip: mentionSnip(src.text, src.f, hits[0]) });
+  };
+  mentionSources().forEach(look);
+  for (const g of allTerms()) { const text = [g.d, g.x].filter(Boolean).join("\n\n"); look({ kind: "term", id: g.id, name: g.t, text, f: linkFold(text) }); }
+  out.thinker.sort((a, b) => b.count - a.count); out.term.sort((a, b) => b.count - a.count);
+  return out;
+}
+function mentionsHTML(m) {
+  const row = (attrs, title, x) => `<button class="mention" ${attrs}><span class="mn">${title}</span><span class="ms">${x.snip}</span></button>`;
+  // articles: each article once, with its sections under it
+  const arts = new Map(); for (const x of m.branch) { if (!arts.has(x.id)) arts.set(x.id, []); arts.get(x.id).push(x); }
+  const artRows = [...arts.values()].sort((a, b) => b.reduce((n, x) => n + x.count, 0) - a.reduce((n, x) => n + x.count, 0))
+    .flatMap((list) => list.map((x, k) => row(`data-branch="${esc(x.id)}"${x.sec ? ` data-bsec="${esc(x.sec)}"` : ""}`, `${k ? "" : `<b>${esc(x.name)}</b>`}${x.sec ? `<span>${esc(x.sec)}</span>` : ""}`, x)));
+  const fold = (label, rows, k = 4) => !rows.length ? "" : `<div class="mgroup"><div class="clabel">${label}</div>${rows.slice(0, k).join("")}${rows.length > k ? `<details class="cfold"><summary>${rows.length - k} more</summary>${rows.slice(k).join("")}</details>` : ""}</div>`;
+  const html = fold(`In ${arts.size} article${arts.size === 1 ? "" : "s"}`, artRows)
+    + fold(`On ${m.thinker.length} thinker card${m.thinker.length === 1 ? "" : "s"}`, m.thinker.map((x) => row(`data-thinker="${esc(x.id)}"`, `<b>${esc(x.name)}</b>`, x)))
+    + fold(`In ${m.term.length} other entr${m.term.length === 1 ? "y" : "ies"}`, m.term.map((x) => row(`data-term="${esc(x.id)}"`, `<b>${esc(x.name)}</b>`, x)));
+  return html ? `<div class="mentions"><div class="label">Mentioned in</div>${html}</div>` : "";
+}
+// A glossary entry's mentions, drawn when it opens (and for entries drawn open).
+function fillMentions(d) {
+  const box = d.querySelector(":scope > .tbody > [data-mentions]"); if (!box || box.dataset.done) return;
+  const g = allTerms().find((x) => x.id === box.dataset.mentions); if (!g) return;
+  box.dataset.done = "1";
+  box.innerHTML = mentionsHTML(mentionsOf(termNeedles(g), { kind: "term", id: g.id }));
+}
+// Your notes whose passage or gloss names a thinker, newest first (the same form as a term's "In your notes").
+function thinkerNotes(needles) {
+  if (!needles.length) return [];
+  return [...S.notes.entries()].filter(([, n]) => findNeedles(linkFold([n.passage, n.gloss].filter(Boolean).join("\n")), needles).length)
+    .sort(([, a], [, b]) => (b.createdAt || 0) - (a.createdAt || 0));
+}
 function termHTML(g, tmap) {
   const hits = termNotes(g);
   const see = [...(LINKS.see.get(g.id) || [])], vs = [...(LINKS.vs.get(g.id) || [])];
@@ -76,6 +188,7 @@ function termHTML(g, tmap) {
       ${aliasesOf(g.id).length ? `<p class="tsrc">Look up also finds: ${esc(aliasesOf(g.id).join(", "))}</p>` : ""}
       ${conn ? `<div class="tconn">${conn}</div>` : ""}
       ${termTimeHTML(g.p)}
+      <div data-mentions="${esc(g.id)}"></div>
       ${termHitsHTML(hits)}
       <div class="noteacts">
         ${sayBtn(g.t)}
@@ -296,6 +409,7 @@ function thinkerPanel(id) {
   const trad = BRANCHES.filter((b) => b.p.includes(id)).map((b) => b.id);
   const took = THINKERS.filter((x) => x.i.includes(id)).map((x) => x.id), steps = lineageSteps(id);
   const shelf = [...S.texts.entries()].filter(([, t]) => authorThinkers(t.author).some((x) => x.id === id));
+  const needles = thinkerNeedles(p);
   openPanel(`<h2>${esc(p.n)}</h2>
     ${p.y || CAN_SAY ? `<div class="sayline">${p.y ? `<p class="hint">${esc(p.y)}</p>` : ""}${sayBtn(p.n, "linkbtn")}</div>` : ""}
     ${figHTML(p.img)}
@@ -312,11 +426,14 @@ function thinkerPanel(id) {
       ${chipRow("Taken up by", thinkerChips(took))}
       ${foldChips("Further on", steps.on)}
       ${chipRow("Lived at the same time", thinkerChips(contemporariesOf(p)))}
-    </div>`, (b) => {
+    </div>
+    ${mentionsHTML(mentionsOf(needles, { kind: "thinker", id }))}
+    ${termHitsHTML(thinkerNotes(needles))}`, (b) => {
     if (b.dataset.say) return sayIt(b.dataset.say);
     if (b.dataset.thinker) thinkerPanel(b.dataset.thinker);
     else if (b.dataset.term) openTerm(b.dataset.term);
-    else if (b.dataset.branch) go({ screen: "branches", focus: b.dataset.branch });
+    else if (b.dataset.branch) go({ screen: "branches", focus: b.dataset.branch, sec: b.dataset.bsec });
+    else if (b.dataset.gotoNote) go({ screen: "reader", textId: b.dataset.tid, at: +b.dataset.gotoNote, flash: true });
     else if (b.dataset.open) go({ screen: "text", textId: b.dataset.open });
   });
 }

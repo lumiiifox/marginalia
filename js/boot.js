@@ -48,7 +48,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "selcarryx") return endCarry();
   if (b.id === "seledit") return structurePanel();
   if (b.id === "more") return moreMenu();
-  if (b.dataset.branch) return go({ screen: "branches", focus: b.dataset.branch });
+  if (b.dataset.branch) return go({ screen: "branches", focus: b.dataset.branch, sec: b.dataset.bsec });
   if (b.id === "openbranches") return go({ screen: "branches" });
   if (b.id === "openthinkers") { if (S.screen === "reference") S.tl = true; return go({ screen: "thinkers" }); }
   if (b.dataset.ref) { S.rq = ""; return go({ screen: "reference", rk: b.dataset.ref }); }
@@ -161,7 +161,7 @@ document.addEventListener("change", (e) => {
 document.addEventListener("toggle", (e) => {
   const d = e.target;
   if (d && d.matches && d.matches("details.branch")) { if (d.open) S.bOpen.add(d.dataset.branchId); else S.bOpen.delete(d.dataset.branchId); return; }
-  if (d && d.matches && d.matches("details.term")) { if (d.open) S.gOpen.add(d.dataset.termId); else S.gOpen.delete(d.dataset.termId); }
+  if (d && d.matches && d.matches("details.term")) { if (d.open) { S.gOpen.add(d.dataset.termId); fillMentions(d); } else S.gOpen.delete(d.dataset.termId); }
 }, true);
 let qTimer;
 document.addEventListener("input", (e) => {

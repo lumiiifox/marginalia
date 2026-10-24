@@ -67,6 +67,10 @@ Uses made-up records only. Checks that:
   23. a branch article's section sources (xs): each names a heading the article has, each source has a name, links are https;
       an article has them exactly when its audit record is in tests/audit, and every other article is marked Unchecked;
       Epistemology shows one quiet sources line under each of its sourced sections, links opening in a new tab.
+  24. Mentioned in: a glossary entry lists the articles (by section), thinker cards and other entries that use its name, each with the
+      sentence and the words marked, never itself; plurals count, other words built on it don't; tapping an article's row opens the
+      article at that section; a thinker's card lists the same, by the names the articles link (accents ignored, short names in exact
+      case, Said and Land only in full), and your notes that name them.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -871,6 +875,47 @@ async def branch_sources(browser):
     check(not errs, "no script errors with section sources" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def mentions(browser):
+    page, errs = await fresh(browser)
+    await page.evaluate("openTerm('substance')"); await page.wait_for_timeout(300)
+    box = "details[data-term-id='substance'] .mentions"
+    got = await page.evaluate(f"""(() => {{ const b = document.querySelector("{box}"); if (!b) return null;
+      return {{ marks: [...b.querySelectorAll('mark')].map((m) => m.textContent.toLowerCase()), arts: [...b.querySelectorAll('.mention[data-branch]')].map((x) => [x.dataset.branch, x.dataset.bsec]),
+        self: b.querySelectorAll('.mention[data-term="substance"]').length, terms: b.querySelectorAll('.mention[data-term]').length, thinkers: b.querySelectorAll('.mention[data-thinker]').length }}; }})()""")
+    check(got is not None, "an open glossary entry shows Mentioned in")
+    if got:
+        check(set(got["marks"]) <= {"substance", "substances"} and got["marks"], f"each mention marks the term's own words, plurals included ({set(got['marks'])})")
+        check(["metaphysics", "Substance and composition"] in got["arts"], f"the articles are listed by section ({got['arts'][:3]})")
+        check(got["self"] == 0 and got["terms"] >= 4 and got["thinkers"] >= 4, f"other entries and thinker cards are listed, never the entry itself ({got})")
+    fold = await page.evaluate("[findNeedles(linkFold('the substantial and the substances'), termNeedles(allTerms().find((g) => g.id === 'substance'))).length]")
+    check(fold == [1], f"a word built on the term doesn't count, its plural does ({fold})")
+    pair = await page.evaluate("termNeedles(allTerms().find((g) => g.id === 'assemblage')).map((n) => n.s)")
+    check(pair == ["assemblage", "agencement"], f"a term matches by the name in its brackets too ({pair})")
+    await page.click(f"{box} .mention[data-branch='metaphysics'][data-bsec='Substance and composition']"); await page.wait_for_timeout(300)
+    sec = await page.evaluate("""(() => { const s = [...document.querySelectorAll("details[data-branch-id='metaphysics'] section[data-bsec]")].find((x) => x.dataset.bsec === 'Substance and composition');
+      return s ? [S.screen, s.classList.contains('flash'), Math.round(s.getBoundingClientRect().top)] : null; })()""")
+    check(sec and sec[0] == "branches" and sec[1] and -2 <= sec[2] < 120, f"tapping an article's row opens the article at that section ({sec})")
+    await page.go_back(); await page.wait_for_timeout(300)
+    check(await page.evaluate("S.screen") == "glossary", "Back returns to the glossary")
+    names = await page.evaluate("""[
+      findNeedles(linkFold('Nagarjuna argued'), thinkerNeedles(THINKER.get('nagarjuna'))).length,
+      findNeedles(linkFold('kantian ethics and Kantian ones'), thinkerNeedles(THINKER.get('kant'))).length,
+      findNeedles(linkFold('as Kant said'), thinkerNeedles(THINKER.get('kant'))).length,
+      findNeedles(linkFold('as he said, and as Said said'), thinkerNeedles(THINKER.get('said'))).length,
+      findNeedles(linkFold('Edward Said wrote'), thinkerNeedles(THINKER.get('said'))).length,
+      findNeedles(linkFold('on land and Land'), thinkerNeedles(THINKER.get('land'))).length]""")
+    check(names == [1, 0, 1, 0, 1, 0], f"thinkers match as the articles link them: accents ignored, short names whole and in exact case, Said and Land only in full ({names})")
+    await page.evaluate("put('texts', 'mb', { title: 'Mine', sections: [], createdAt: Date.now(), updatedAt: Date.now() }).then(() => put('notes', 'mn1', { textId: 'mb', kind: 'gloss', passage: 'Nature, or God', gloss: 'Compare Spinoza on substance', links: [], createdAt: Date.now(), updatedAt: Date.now() }))")
+    await page.evaluate("thinkerPanel('spinoza')"); await page.wait_for_timeout(300)
+    card = await page.evaluate("""(() => { const m = document.querySelector('.sheet .mentions'); return m && { deleuze: !!m.querySelector('.mention[data-thinker="deleuze"]'), self: m.querySelectorAll('.mention[data-thinker="spinoza"]').length,
+      arts: m.querySelectorAll('.mention[data-branch]').length, terms: m.querySelectorAll('.mention[data-term]').length, notes: document.querySelectorAll('.sheet .thits .thit').length }; })()""")
+    check(card and card["deleuze"] and card["self"] == 0 and card["arts"] >= 2 and card["terms"] >= 4, f"a thinker's card lists the articles, cards and entries that name them, never their own ({card})")
+    check(card and card["notes"] == 1, f"and your notes that name them ({card and card['notes']})")
+    await page.click(".sheet .mention[data-thinker='deleuze']"); await page.wait_for_timeout(300)
+    check(await page.evaluate("document.querySelector('.sheet h2')?.textContent") == "Gilles Deleuze", "tapping a card's row opens that card")
+    check(not errs, "no script errors in Mentioned in" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     sources()
     section_sources()
@@ -899,6 +944,7 @@ async def main():
         await readqs(browser)
         await primers(browser)
         await branch_sources(browser)
+        await mentions(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

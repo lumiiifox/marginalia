@@ -455,7 +455,7 @@ function articleHTML(b, terms) {
   }
   const para = (t) => `<p>${passageLinks(link(t), b.xr)}</p>`;
   return secs.map((s) => s.head === null ? s.paras.map(para).join("")
-    : `<section class="branch-article-section"><h3>${esc(s.head)}</h3>${s.paras.map(para).join("")}${sectionSources(b, s.head)}</section>`).join("");
+    : `<section class="branch-article-section" data-bsec="${esc(s.head)}"><h3>${esc(s.head)}</h3>${s.paras.map(para).join("")}${sectionSources(b, s.head)}</section>`).join("");
 }
 // Citations to a classic that comes with the app, in an article whose entry names a style (`xr`): each reference in brackets,
 // "(I, Proposition 17, Corollary 2)" or "(II, Proposition 7, Note; II, Proposition 21, Note)", opens the book at that passage.
