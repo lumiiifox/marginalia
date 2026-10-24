@@ -714,13 +714,31 @@
    ]
   },
   {
-   "text": "In his ethics, happiness is activity of the rational part of the soul in accordance with virtue; ethical virtue grows from upbringing in good habits and is fully developed only together with practical wisdom.",
+   "text": "In his ethics, happiness is activity of the rational part of the soul in accordance with virtue (NE I.7); ethical virtue grows from upbringing in good habits (NE II.1) and is fully developed only together with practical wisdom (NE VI.13).",
    "section": "Socrates, Plato, and Aristotle",
    "claims": [
     {
      "by": "Stanford Encyclopedia of Philosophy, “Aristotle’s Ethics” (Kraut) §§2, 3.1, 4",
      "excerpt": "Ethical virtue is fully developed only when it is combined with practical wisdom",
      "accuracy": "supported"
+    },
+    {
+     "by": "Aristotle, Nicomachean Ethics (the edition bundled with the app), NE I.7",
+     "excerpt": "in accordance with excellence or virtue",
+     "accuracy": "supported",
+     "ref": "NE I.7"
+    },
+    {
+     "by": "Aristotle, Nicomachean Ethics (the edition bundled with the app), NE II.1",
+     "excerpt": "moral excellence is the result of habit or custom",
+     "accuracy": "supported",
+     "ref": "NE II.1"
+    },
+    {
+     "by": "Aristotle, Nicomachean Ethics (the edition bundled with the app), NE VI.13",
+     "excerpt": "the latter is impossible without prudence",
+     "accuracy": "supported",
+     "ref": "NE VI.13"
     }
    ]
   },
@@ -973,5 +991,13 @@
  "applied": {
   "date": "2026-10-23",
   "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
- }
+ },
+ "later_fixes": [
+  {
+   "date": "2026-10-24",
+   "kind": "primary-text references",
+   "note": "Bracketed references to the bundled classics added and linked: NE I.7 (“in accordance with excellence or virtue”), NE II.1 (“moral excellence is the result of habit or custom”), NE VI.13 (“the latter is impossible without prudence”).",
+   "checked_against": "the editions bundled with the app (data/books/)"
+  }
+ ]
 }

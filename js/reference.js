@@ -460,23 +460,57 @@ function articleHTML(b, terms) {
 // Citations to a classic that comes with the app, in an article whose entry names a style (`xr`): each reference in brackets,
 // "(I, Proposition 17, Corollary 2)" or "(II, Proposition 7, Note; II, Proposition 21, Note)", opens the book at that passage.
 // A bracket with anything that isn't a reference is left as text. The book's blocks are found by their own labels (passageBlock).
-const PASSAGE_STYLES = { "spinoza-ethics": { book: "classic-spinoza-ethics" } };
-const PASSAGE_ITEM = /^(?:Part )?(I|II|III|IV|V), (Definition|Axiom|Postulate|Proposition) (\d+)(?:, (Corollary|Note)(?: (\d+))?)?$/;
-function passageLinks(html, style) {
-  if (!PASSAGE_STYLES[style]) return html;
-  return html.replace(/\(((?:Part )?(?:I|II|III|IV|V), [^()<>]*?)\)/g, (all, inner) => {
+// Citation styles: each names a bundled classic, the form of one reference to it, and how to find that reference's block.
+// An article's `xr` names the styles it uses (one, or a list). Several references in one bracket are joined by "; ".
+const PASSAGE_STYLES = {
+  "spinoza-ethics": { book: "classic-spinoza-ethics", item: /^(?:Part )?(I|II|III|IV|V), (Definition|Axiom|Postulate|Proposition) (\d+)(?:, (Corollary|Note)(?: (\d+))?)?$/, find: spinozaBlock },
+  // Nietzsche, Genealogy of Morality: essay and section, "GM II §12" ("GM Preface §3").
+  "nietzsche-genealogy": { book: "classic-nietzsche-genealogy", item: /^GM (Preface|I|II|III) §(\d+)$/,
+    find: (B, [part, sec]) => headPath(B, [[2, (t) => t.startsWith({ Preface: "Preface", I: "First Essay", II: "Second Essay", III: "Third Essay" }[part])], [3, (t) => t === sec]]) },
+  // Aristotle, Nicomachean Ethics: book and chapter, "NE I.7".
+  "aristotle-ethics": { book: "classic-aristotle-ethics", item: /^NE (I|II|III|IV|V|VI|VII|VIII|IX|X)\.(\d+)$/,
+    find: (B, [book, ch]) => headPath(B, [[2, (t) => t === `Book ${book}`], [4, (t) => t === toRoman(+ch)]]) },
+  // Rousseau, The Social Contract: book and chapter, "SC I.6".
+  "rousseau-social-contract": { book: "classic-rousseau-social-contract", item: /^SC (I|II|III|IV)\.(\d+)$/,
+    find: (B, [book, ch]) => headPath(B, [[2, (t) => t === `Book ${book}`], [3, (t) => t.startsWith(`${toRoman(+ch)}. `)]]) },
+  // Hobbes, Leviathan: chapter, "Lev. XIII".
+  "hobbes-leviathan": { book: "classic-hobbes-leviathan", item: /^Lev\. ([IVXL]+)$/,
+    find: (B, [ch]) => headPath(B, [[2, (t) => t.startsWith(`${ch}. `)]]) },
+};
+// The heading reached by following [level, test] steps, each looked for inside the section found by the one before. -1 if not found.
+function headPath(B, steps) {
+  const txt = (b) => plain(b.x || "").trim();
+  let lo = 0, hi = B.length, at = -1;
+  for (const [l, ok] of steps) {
+    at = -1;
+    for (let i = lo; i < hi; i++) if (B[i].k === "h" && B[i].l === l && ok(txt(B[i]))) { at = i; break; }
+    if (at < 0) return -1;
+    lo = at + 1; hi = B.findIndex((b, i) => i > at && b.k === "h" && b.l <= l); if (hi < 0) hi = B.length;
+  }
+  return at;
+}
+const xrStyles = (xr) => (Array.isArray(xr) ? xr : xr ? [xr] : []).filter((s) => PASSAGE_STYLES[s]);
+function passageLinks(html, xr) {
+  const styles = xrStyles(xr); if (!styles.length) return html;
+  return html.replace(/\(([^()<>]+)\)/g, (all, inner) => {
     const items = inner.split("; ");
-    if (!items.every((x) => PASSAGE_ITEM.test(x))) return all;
+    const style = styles.find((st) => items.every((x) => PASSAGE_STYLES[st].item.test(x)));
+    if (!style) return all;
+    const re = PASSAGE_STYLES[style].item;
     // Each bracket and semicolon stays on the line of the link it belongs to.
-    const btn = (x) => `<button type="button" class="branch-inline-link" data-passage="${esc(style)}" data-passage-at="${esc(x.match(PASSAGE_ITEM).slice(1).map((v) => v || "").join("|"))}">${x}</button>`;
+    const btn = (x) => `<button type="button" class="branch-inline-link" data-passage="${esc(style)}" data-passage-at="${esc(x.match(re).slice(1).map((v) => v || "").join("|"))}">${x}</button>`;
     return items.map((x, k) => `<span class="cite-nb">${k ? "" : "("}${btn(x)}${k === items.length - 1 ? ")" : ";"}</span>`).join(" ");
   });
 }
-const toRoman = (n) => [[10, "X"], [9, "IX"], [5, "V"], [4, "IV"], [1, "I"]].reduce((out, [v, r]) => { while (n >= v) { out += r; n -= v; } return out; }, "");
+const toRoman = (n) => [[50, "L"], [40, "XL"], [10, "X"], [9, "IX"], [5, "V"], [4, "IV"], [1, "I"]].reduce((out, [v, r]) => { while (n >= v) { out += r; n -= v; } return out; }, "");
+// The block for a reference in the given style (Spinoza's by default). -1 if not found.
+function passageBlock(B, at, style = "spinoza-ethics") {
+  const st = PASSAGE_STYLES[style]; return st ? st.find(B, at.split("|")) : -1;
+}
 // The block for a citation in Elwes's Ethics: the part's chapter, then a definition, axiom or postulate under its heading
 // ("V. By mode…", "DEFINITION I. By body…"), or a proposition ("PROP. XVII.") and, after it, its corollary or note. -1 if not found.
-function passageBlock(B, at) {
-  const [part, kind, num, sub, subNum] = at.split("|"), txt = (b) => plain(b.x || "").trim(), R = toRoman(+num);
+function spinozaBlock(B, [part, kind, num, sub, subNum]) {
+  const txt = (b) => plain(b.x || "").trim(), R = toRoman(+num);
   const start = B.findIndex((b) => b.k === "h" && b.l === 2 && txt(b).startsWith(`Part ${part}:`)); if (start < 0) return -1;
   let end = B.findIndex((b, i) => i > start && b.k === "h" && b.l === 2); if (end < 0) end = B.length;
   const find = (from, to, re) => { for (let i = from; i < to; i++) if (B[i].k !== "h" && B[i].k !== "fn" && re.test(txt(B[i]))) return i; return -1; };
@@ -496,7 +530,7 @@ function passageBlock(B, at) {
 async function openPassage(style, at) {
   const id = PASSAGE_STYLES[style] && PASSAGE_STYLES[style].book; if (!id) return;
   if (!S.texts.has(id)) { await readdClassic(id); if (!S.texts.has(id)) return; }
-  const B = await loadContent(id), i = B ? passageBlock(B, at) : -1;
+  const B = await loadContent(id), i = B ? passageBlock(B, at, style) : -1;
   if (i < 0) toast("Couldn't find that passage in this copy, so the book opens where you left off.");
   return go({ screen: "reader", textId: id, ...(i >= 0 ? { at: i, flash: true } : {}) });
 }

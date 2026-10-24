@@ -140,10 +140,12 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   full name behind the link; subdued but WCAG AA, 24px tap targets; a source may recur across sections it supports, never twice in one.
   Sections get sources only as part of an article's audit, aiming at full traceability: every verified claim's deciding source listed
   under its own section (unverified claims reported apart).
-- Citations into a classic (`xr` on a branch entry names a style in `PASSAGE_STYLES`; now "spinoza-ethics", Metaphysics): `passageLinks`
-  turns each bracketed reference, "(I, Proposition 17, Corollary 2)" or several joined by "; ", into a link (a bracket holding anything
-  else stays text); `openPassage` opens the classic there, adding it back if deleted, and `passageBlock` finds the block by the book's own
-  labels (a definition's numeral, "PROP. XVII.", "Corollary II.", "Note"). Tested by `tests/links.py`.
+- Citations into a classic (`xr` on a branch entry names one style in `PASSAGE_STYLES`, or a list): each style has the classic's `book`, an
+  `item` pattern for one reference and a `find(B, groups)` for its block. Now "spinoza-ethics" ("(I, Proposition 17, Corollary 2)", found by the
+  book's own labels in `spinozaBlock`), "nietzsche-genealogy" ("(GM II §12)"), "aristotle-ethics" ("(NE I.7)"), "rousseau-social-contract"
+  ("(SC I.6)") and "hobbes-leviathan" ("(Lev. XIII)"), the last four found by headings (`headPath`). `passageLinks` turns a bracket into links
+  when every "; "-joined item matches one style; anything else stays text. `openPassage` opens the classic there, adding it back if deleted.
+  A reference added to an audited article is checked against the bundled edition and logged in its audit record. Tested by `tests/links.py`.
 - Audits of the articles: `tests/audit/<id>.json`, one record per sentence with each claim's verdict and source (see `tests/audit/README.md`).
   An audit's fixes ship only after an independent second review.
 - Audits in place (owner's decision, 2026-10-23): an audit corrects the article as it stands: it fixes what the sources contradict,

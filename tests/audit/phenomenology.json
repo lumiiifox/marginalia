@@ -832,13 +832,19 @@
    ]
   },
   {
-   "text": "Kierkegaard described existence as a relation that relates to itself and wrote on despair and faith; Nietzsche's genealogy shows how truths are invented and then forgotten, and he attacked Christian slave morality.",
+   "text": "Kierkegaard described existence as a relation that relates to itself and wrote on despair and faith; Nietzsche's genealogy shows how truths are invented and then forgotten, and he attacked Christian slave morality (GM I §10).",
    "section": "Existentialism, freedom, and situated life",
    "claims": [
     {
      "by": "Stanford Encyclopedia of Philosophy, “Existentialism” (Aho) §§2.2, 3, 5.2–5.3",
      "excerpt": "Nietzsche's genealogy is one that shows how",
      "accuracy": "supported"
+    },
+    {
+     "by": "Nietzsche, On the Genealogy of Morality (the edition bundled with the app), GM I §10",
+     "excerpt": "The revolt of the slaves in morals begins",
+     "accuracy": "supported",
+     "ref": "GM I §10"
     }
    ]
   },
@@ -939,5 +945,13 @@
  "applied": {
   "date": "2026-10-23",
   "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
- }
+ },
+ "later_fixes": [
+  {
+   "date": "2026-10-24",
+   "kind": "primary-text references",
+   "note": "Bracketed references to the bundled classics added and linked: GM I §10 (“The revolt of the slaves in morals begins”).",
+   "checked_against": "the editions bundled with the app (data/books/)"
+  }
+ ]
 }

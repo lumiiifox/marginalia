@@ -537,13 +537,25 @@
    ]
   },
   {
-   "text": "Hobbes is generally treated as one of the first and greatest social contract thinkers; Locke held that people are naturally in a state of perfect freedom; and Rousseau seemed to hold that one is free in acting on one's true will, the general will.",
+   "text": "Hobbes is generally treated as one of the first and greatest social contract thinkers; Locke held that people are naturally in a state of perfect freedom; and Rousseau seemed to hold that one is free in acting on one's true will, the general will (SC I.7; SC I.8).",
    "section": "Classical and early modern accounts",
    "claims": [
     {
      "by": "Stanford Encyclopedia of Philosophy, “Liberalism” (Courtland, Gaus and Schmidtz) §§1.1, 1.3",
      "excerpt": "one of the first and greatest social contract thinkers",
      "accuracy": "supported"
+    },
+    {
+     "by": "Rousseau, The Social Contract (the edition bundled with the app), SC I.7",
+     "excerpt": "he will be forced to be free",
+     "accuracy": "supported",
+     "ref": "SC I.7"
+    },
+    {
+     "by": "Rousseau, The Social Contract (the edition bundled with the app), SC I.8",
+     "excerpt": "obedience to a law which we prescribe to ourselves is liberty",
+     "accuracy": "supported",
+     "ref": "SC I.8"
     }
    ]
   },
@@ -743,5 +755,13 @@
  "applied": {
   "date": "2026-10-23",
   "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
- }
+ },
+ "later_fixes": [
+  {
+   "date": "2026-10-24",
+   "kind": "primary-text references",
+   "note": "Bracketed references to the bundled classics added and linked: SC I.7 (“he will be forced to be free”), SC I.8 (“obedience to a law which we prescribe to ourselves is liberty”).",
+   "checked_against": "the editions bundled with the app (data/books/)"
+  }
+ ]
 }

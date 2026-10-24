@@ -689,6 +689,12 @@
    "kind": "author credits",
    "note": "SEP “Epistemology” is by Steup and Neta, “The Analysis of Knowledge” by Ichikawa and Steup (the Gettier sentence now credits both), “Plato on Knowledge in the Theaetetus” by Chappell and Verde: credits corrected.",
    "checked_against": "SEP entry footers, SEP table of contents, PhilPapers SEP bibliographies"
+  },
+  {
+   "date": "2026-10-24",
+   "kind": "primary-text references",
+   "note": "Bracketed references to the bundled classics added and linked: GM III §12 (“the more eyes, different eyes, we train on the same thing”).",
+   "checked_against": "the editions bundled with the app (data/books/)"
   }
  ]
 }

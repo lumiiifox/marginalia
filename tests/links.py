@@ -93,7 +93,7 @@ async def main():
             if (sub && i >= 0) { const prop = passageBlock(B, [part, kind, num, '', ''].join('|')); if (!(i > prop)) bad.push(a.textContent + ' not after its proposition'); }
           }
           const plainText = d.textContent.match(/\\((?:Part )?(?:I|II|III|IV|V), [^()]*\\)/g) || [];
-          return { n: seen.length, bad, brackets: plainText.length, kept: articleHTML(BRANCH.get('epistemology'), []).includes('data-passage') };
+          return { n: seen.length, bad, brackets: plainText.length, kept: articleHTML(BRANCH.get('logic'), []).includes('data-passage') };
         }""")
         check(refs["n"] == 17 and not refs["bad"], f"each of the {refs['n']} Ethics citations in Metaphysics finds its own passage ({refs['bad'][:3]})")
         check(not refs["kept"], "an article without xr gets no citation links")
@@ -105,6 +105,38 @@ async def main():
         await page.wait_for_function("S.screen === 'reader' && R.tid === 'classic-spinoza-ethics'", timeout=20000); await page.wait_for_timeout(600)
         opened = await page.evaluate("(async () => { const B = await loadContent('classic-spinoza-ethics'); const want = passageBlock(B, 'I|Proposition|17|Corollary|2'), at = currentBlock(); return { near: Math.abs(at - want) <= 3, text: plain(B[want].x).slice(0, 30) }; })()")
         check(opened["near"] and opened["text"].startswith("Corollary II"), f"tapping (I, Proposition 17, Corollary 2) opens the Ethics at Corollary II ({opened})")
+        # citations to the other classics: every reference in every article resolves to its own heading
+        other = await page.evaluate("""async () => {
+          const label = { 'nietzsche-genealogy': (p) => p[1], 'aristotle-ethics': (p) => toRoman(+p[1]), 'rousseau-social-contract': (p) => toRoman(+p[1]) + '. ', 'hobbes-leviathan': (p) => p[0] + '. ' };
+          const out = { n: {}, bad: [] }, books = {};
+          for (const b of BRANCHES.filter((b) => b.xr)) {
+            const d = document.createElement('div'); d.innerHTML = articleHTML(b, []);
+            for (const a of d.querySelectorAll('[data-passage]')) {
+              const st = a.dataset.passage; if (st === 'spinoza-ethics') continue;
+              if (!books[st]) books[st] = (await (await fetch('data/books/' + PASSAGE_STYLES[st].book + '.json')).json()).content;
+              const B = books[st], at = a.dataset.passageAt, i = passageBlock(B, at, st), t = i >= 0 ? plain(B[i].x).trim() : '';
+              out.n[st] = (out.n[st] || 0) + 1;
+              if (i < 0 || B[i].k !== 'h' || !t.startsWith(label[st](at.split('|')))) out.bad.push(b.id + ': ' + a.textContent + ' -> ' + t.slice(0, 30));
+            }
+            d.querySelectorAll('.cite-nb').forEach((x) => x.remove()); const left = (d.textContent.match(/\\((?:NE|GM|SC|Lev\\.) [^()]*\\)/g) || []); if (left.length) out.bad.push(b.id + ' unlinked: ' + left.join(' '));
+          }
+          return out; }""")
+        check(not other["bad"] and other["n"].get("nietzsche-genealogy", 0) >= 5 and other["n"].get("aristotle-ethics", 0) >= 6 and other["n"].get("rousseau-social-contract", 0) >= 2,
+              f"every reference to the Genealogy, the Nicomachean Ethics and the Social Contract finds its own section ({other['n']}, {other['bad'][:3]})")
+        styles = await page.evaluate("""async () => {
+          const one = async (st, at) => { const B = (await (await fetch('data/books/' + PASSAGE_STYLES[st].book + '.json')).json()).content; const i = passageBlock(B, at, st); return i >= 0 ? plain(B[i].x).trim().slice(0, 24) : null; };
+          return [await one('hobbes-leviathan', 'XIII'), await one('hobbes-leviathan', 'XLVI'), await one('nietzsche-genealogy', 'Preface|3'), await one('aristotle-ethics', 'X|7'), await one('rousseau-social-contract', 'IV|8'), await one('aristotle-ethics', 'I|99')]; }""")
+        check(styles[0].startswith("XIII. ") and styles[1].startswith("XLVI. ") and styles[2] == "3" and styles[3] == "VII" and styles[4].startswith("VIII. ") and styles[5] is None,
+              f"each style finds chapters across its book, and a chapter that doesn't exist finds nothing ({styles})")
+        mixed = await page.evaluate("passageLinks('(NE I.7) and (GM II §4; GM III §28) and (NE I.7; GM I §10) and (eudaimonia)', ['aristotle-ethics', 'nietzsche-genealogy'])")
+        check(mixed.count('data-passage="') == 3 and "(NE I.7; GM I §10)" in mixed and "(eudaimonia)" in mixed,
+              f"an article can use several styles; a bracket mixing two books, or holding a word, stays text ({mixed})")
+        await page.evaluate("go({ screen: 'branches', focus: 'ethics' })"); await page.wait_for_timeout(200)
+        await page.evaluate("document.querySelector(\"details[data-branch-id='ethics']\").open = true"); await page.wait_for_timeout(100)
+        await page.click("details[data-branch-id='ethics'] [data-passage='nietzsche-genealogy'][data-passage-at='II|4']")
+        await page.wait_for_function("S.screen === 'reader' && R.tid === 'classic-nietzsche-genealogy'", timeout=20000); await page.wait_for_timeout(600)
+        gm = await page.evaluate("(async () => { const B = await loadContent('classic-nietzsche-genealogy'); const want = passageBlock(B, 'II|4', 'nietzsche-genealogy'), at = currentBlock(); return { near: Math.abs(at - want) <= 3, essay: plain(B.slice(0, want).reverse().find((b) => b.k === 'h' && b.l === 2).x).slice(0, 12) }; })()")
+        check(gm["near"] and gm["essay"].startswith("Second Essay"), f"tapping (GM II §4) in Ethics opens the Genealogy at the Second Essay, section 4 ({gm})")
         check(not errs, "no script errors" + (f": {errs}" if errs else ""))
         await browser.close()
 
