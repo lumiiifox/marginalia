@@ -300,6 +300,7 @@ function textView() {
     </header>
     ${primerHTML(id, t)}
     ${briefHTML(id, t)}
+    ${classicMentionsHTML(id)}
     ${bookPlates(id, t).length ? `<section class="group"><div class="label">Bookplates</div><div class="plates">${bookPlates(id, t).map((x) => plateHTML({ ...x, tid: null, sub: "" })).join("")}</div></section>` : ""}
     ${spreadHTML(id, t)}
     ${paceHTML(id, t)}

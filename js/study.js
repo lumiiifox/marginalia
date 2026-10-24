@@ -117,8 +117,9 @@ function findNeedles(F, needles) {
   return hits.sort((a, b) => a.pos - b.pos);
 }
 // The sentence around a match, as HTML with the words marked; long sentences cut around them.
-function mentionSnip(text, F, h) {
-  const a = F.map[h.pos], b = F.map[h.end];
+function mentionSnip(text, F, h) { return rawSnip(text, F.map[h.pos], F.map[h.end]); }
+// The sentence around characters a to b of a text, as HTML with them marked.
+function rawSnip(text, a, b) {
   // a sentence ends at white space after . ! or ? (and any closing quote), unless the word before is an initial or an abbreviation
   const ends = (j) => /\s/.test(text[j]) && /[.!?][”’")\]]*$/.test(text.slice(Math.max(0, j - 14), j))
     && !/(?:^|[\s(“])(?:\p{Lu}|c|ca|cf|e\.g|i\.e|vol|ch|pp?|St|Dr|Mr|Mrs|Ms|no|ed|eds|trans|vs)\.[”’")\]]*$/u.test(text.slice(Math.max(0, j - 14), j));
@@ -181,8 +182,8 @@ function termHTML(g, tmap) {
     <div class="tbody">
       <p class="tdef">${esc(g.d)}</p>
       ${figHTML(g.img)}${diaHTML(g.fig)}
-      ${parasHTML(g.x)}
-      ${g.s ? `<p class="tsrc">${esc(g.s)}</p>` : ""}
+      ${classicParas(g.x)}
+      ${g.s ? `<p class="tsrc">${classicLinks(g.s)}</p>` : ""}
       ${thinkerSources(g)}
       ${g.w ?`<p class="tsrc">Associated with ${esc(g.w)}</p>` : ""}
       ${aliasesOf(g.id).length ? `<p class="tsrc">Look up also finds: ${esc(aliasesOf(g.id).join(", "))}</p>` : ""}
@@ -414,9 +415,9 @@ function thinkerPanel(id) {
     ${p.y || CAN_SAY ? `<div class="sayline">${p.y ? `<p class="hint">${esc(p.y)}</p>` : ""}${sayBtn(p.n, "linkbtn")}</div>` : ""}
     ${figHTML(p.img)}
     <p class="tdef">${esc(p.d)}</p>
-    ${parasHTML(p.x)}
+    ${classicParas(p.x, id)}
     ${thinkerSources(p)}
-    ${p.w.length ? `<div class="crow"><span class="clabel">Key works</span><ul class="bq-list">${p.w.map((w) => `<li>${esc(w)}</li>`).join("")}</ul></div>` : ""}
+    ${p.w.length ? `<div class="crow"><span class="clabel">Key works</span><ul class="bq-list">${p.w.map((w) => `<li>${classicLinks(w, id)}</li>`).join("")}</ul></div>` : ""}
     <div class="tconn">
       ${chipRow("On your shelf", shelf.map(([tid, t]) => `<button class="chip" data-open="${esc(tid)}">${esc(t.title)}</button>`).join(""))}
       ${chipRow("Glossary terms", termChips(terms, tmap))}
@@ -433,6 +434,7 @@ function thinkerPanel(id) {
     if (b.dataset.thinker) thinkerPanel(b.dataset.thinker);
     else if (b.dataset.term) openTerm(b.dataset.term);
     else if (b.dataset.branch) go({ screen: "branches", focus: b.dataset.branch, sec: b.dataset.bsec });
+    else if (b.dataset.classic) openClassic(b.dataset.classic);
     else if (b.dataset.gotoNote) go({ screen: "reader", textId: b.dataset.tid, at: +b.dataset.gotoNote, flash: true });
     else if (b.dataset.open) go({ screen: "text", textId: b.dataset.open });
   });

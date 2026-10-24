@@ -12,6 +12,11 @@ Checks that:
   6. citations to the Ethics in an article with xr "spinoza-ethics": every bracketed reference is a link, each finds the block that
      starts with its own label (a definition's numeral, PROP. XVII., Corollary II., Note), and tapping one opens the Ethics there;
      a bracket holding anything else stays text.
+  7. a bundled classic's title links to the book in articles, thinker cards and glossary entries, once per paragraph: full titles
+     anywhere, short ones ("the Ethics", "Meditations", "Groundwork") only on the author's own card; other books with similar
+     names (the Dutch Republic, the second Enquiry, The Metaphysics of Morals, Cartesian Meditations, Discourse on Metaphysics,
+     The Ethics of Ambiguity) never link; every classic's title in the articles names the book it opens; a tap opens the book's
+     page, adding a deleted classic back first; the book's page lists where it is named or cited, citations included.
   5. across every article in data/branches.js: every link's words name the entry it opens (accents and case aside), Kant and Hume
      link somewhere, no link opens on "Said" or "Land" alone, and no paragraph's visible text changes.
 """
@@ -137,6 +142,36 @@ async def main():
         await page.wait_for_function("S.screen === 'reader' && R.tid === 'classic-nietzsche-genealogy'", timeout=20000); await page.wait_for_timeout(600)
         gm = await page.evaluate("(async () => { const B = await loadContent('classic-nietzsche-genealogy'); const want = passageBlock(B, 'II|4', 'nietzsche-genealogy'), at = currentBlock(); return { near: Math.abs(at - want) <= 3, essay: plain(B.slice(0, want).reverse().find((b) => b.k === 'h' && b.l === 2).x).slice(0, 12) }; })()")
         check(gm["near"] and gm["essay"].startswith("Second Essay"), f"tapping (GM II §4) in Ethics opens the Genealogy at the Second Essay, section 4 ({gm})")
+        # the classics' titles
+        hits = await page.evaluate("""() => [
+          'Hobbes wrote Leviathan (1651) and Leviathan again.', "Plato's Republic and the Republic of Letters and the Dutch Republic and Republic V.",
+          'the Enquiry concerning the Principles of Morals; The Metaphysics of Morals (1797); Cartesian Meditations; Discourse on Metaphysics; The Ethics of Ambiguity; The Care Manifesto',
+          'the Ethics, the Meditations, the Groundwork, the Manifesto', "Enquiry concerning Human Understanding; Spinoza's Ethics; On the Genealogy of Morality (1887)"
+        ].map((t) => classicHits(t).map((h) => [t.slice(h.a, h.b), h.id.replace('classic-', '')]))""")
+        check(hits[0] == [["Leviathan", "hobbes-leviathan"], ["Leviathan", "hobbes-leviathan"]] and [h[0] for h in hits[1]] == ["Plato's Republic", "Republic"]
+              and hits[2] == [] and hits[3] == [] and [h[1] for h in hits[4]] == ["hume-enquiry", "spinoza-ethics", "nietzsche-genealogy"],
+              f"classic titles are found in their own capitals, and books with similar names aren't ({hits})")
+        check(await page.evaluate("CLASSICS.every((id) => CLASSIC_NAMES[id]) && Object.keys(CLASSIC_NAMES).every((id) => CLASSICS.includes(id))"), "every classic that comes with the app has its titles listed")
+        own = await page.evaluate("[classicHits('the Ethics was published', 'spinoza').length, classicHits('the Groundwork opens', 'kant').length, classicHits('the Groundwork opens', 'mill').length]")
+        check(own == [1, 1, 0], f"a short title counts only on its author's card ({own})")
+        once = await page.evaluate("(() => { const d = document.createElement('div'); d.innerHTML = branchLinks('Leviathan, then Leviathan; Hobbes.', [], [...THINKER.values()]); return [[...d.querySelectorAll('[data-classic]')].map((a) => a.textContent), d.textContent]; })()")
+        check(once == [["Leviathan"], "Leviathan, then Leviathan; Hobbes."], f"a classic links once per paragraph and the text stays as it was ({once})")
+        names = await page.evaluate("""() => { const bad = []; let n = 0;
+          for (const b of BRANCHES) for (const part of (b.x || '').split(/\\n\\n/)) { const d = document.createElement('div'); d.innerHTML = branchLinks(part.includes('\\n') ? part.slice(part.indexOf('\\n') + 1) : part, [], [...THINKER.values()]);
+            for (const a of d.querySelectorAll('[data-classic]')) { n++; const ok = CLASSIC_NAMES[a.dataset.classic].full.concat(CLASSIC_NAMES[a.dataset.classic].own || []).some((x) => (typeof x === 'string' ? x : x.s) === a.textContent); if (!ok) bad.push(a.textContent); } }
+          return [n, bad]; }""")
+        check(names[0] >= 5 and names[1] == [], f"every classic's title in the articles links to that book ({names})")
+        await page.evaluate("(async () => { await addClassics(true); })()"); await page.wait_for_function("S.texts.has('classic-hobbes-leviathan')", timeout=60000)
+        await page.evaluate("deleteText('classic-hobbes-leviathan')"); await page.wait_for_timeout(300)
+        await page.evaluate("thinkerPanel('hobbes')"); await page.wait_for_selector(".sheet [data-classic='classic-hobbes-leviathan']")
+        await page.click(".sheet [data-classic='classic-hobbes-leviathan']")
+        await page.wait_for_function("S.screen === 'text' && S.textId === 'classic-hobbes-leviathan'", timeout=20000)
+        check(True, "a title on a thinker card opens the book's page, adding a deleted classic back first")
+        rows = await page.evaluate("""(() => { const m = classicMentions('classic-nietzsche-genealogy'); return [m.branch.map((x) => x.id), m.thinker.map((x) => x.id), m.term.map((x) => x.id),
+          !!document.querySelector('.group .mentions') || null]; })()""")
+        check("ethics" in rows[0] and "epistemology" in rows[0] and "nietzsche" in rows[1] and "ressentiment" in rows[2], f"a classic's page lists the articles, cards and entries that name or cite it ({rows[:3]})")
+        await page.evaluate("go({ screen: 'text', textId: 'classic-plato-republic' })"); await page.wait_for_timeout(300)
+        check("In the reference pages" in await page.inner_text("#main") and await page.locator("#main .mentions [data-branch='political']").count() == 1, "the book's page shows them")
         check(not errs, "no script errors" + (f": {errs}" if errs else ""))
         await browser.close()
 

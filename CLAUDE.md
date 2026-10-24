@@ -42,7 +42,7 @@ ideas? If not, it waits.
 - After changes to the Wikisource import or the HTML importer, run `python3 tests/wikisource.py` (a stand-in for Wikisource's API).
 - After changes to another edition's pages, a book paired with its original, or reading pace, run `python3 tests/editions.py`.
 - After changes to a branch or tradition article, run `python3 tests/study_tools.py` (section sources and the article frame) and `python3 tests/links.py`.
-- After changes to `branchLinks` or to thinkers' names, run `python3 tests/links.py` (four-letter names in exact case, accents in either Unicode form,
+- After changes to `branchLinks`, to thinkers' names or to `CLASSIC_NAMES`, run `python3 tests/links.py` (four-letter names in exact case, accents in either Unicode form,
   word-like names only in full, punctuation around names, and every link across the articles naming the entry it opens).
 - After changes to colours or styles, run `python3 tests/contrast.py` (every screen and the main panels, light and dark, against WCAG AA).
 - After changes to the study tools around the reference sections (Mentioned in, the truth table, term of the day, Hear it, the Anki export, a term's thinkers in time, two-step lineage, your notes through the book, the fallacies, reading paths, from your margins, essay templates, argument puzzles, guess the thinker, connect two thinkers, order of birth, bookplates, missing premise, steps in order, the reconstruction guide, quiz sets, disputations, questions to read with, primers), run `python3 tests/study_tools.py`.
@@ -146,6 +146,12 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   ("(SC I.6)") and "hobbes-leviathan" ("(Lev. XIII)"), the last four found by headings (`headPath`). `passageLinks` turns a bracket into links
   when every "; "-joined item matches one style; anything else stays text. `openPassage` opens the classic there, adding it back if deleted.
   A reference added to an audited article is checked against the bundled edition and logged in its audit record. Tested by `tests/links.py`.
+- The classics named in the reference pages (`CLASSIC_NAMES`, `classicHits`, in reference.js): a bundled classic's title in an article
+  (through `branchLinks`), a thinker card (`classicParas`, key works) or a glossary entry (its note and source line) links to the book
+  (`data-classic`, `openClassic`, which adds a deleted classic back first). Full titles match anywhere in their own capitals; short ones
+  (`own`: "the Ethics", "Meditations", "Groundwork") only on the author's card; `pre`/`post`/`notPost` guard look-alikes such as the Dutch
+  Republic. A classic's page lists where it is named or cited (`classicMentions`, `classicMentionsHTML`, drawn by `mentionsHTML`). Tested by
+  `tests/links.py`. A new classic needs its entry in `CLASSIC_NAMES`.
 - Audits of the articles: `tests/audit/<id>.json`, one record per sentence with each claim's verdict and source (see `tests/audit/README.md`).
   An audit's fixes ship only after an independent second review.
 - Audits in place (owner's decision, 2026-10-23): an audit corrects the article as it stands: it fixes what the sources contradict,

@@ -92,7 +92,7 @@ function lookupPanel(s) {
       <summary><span class="tm">${esc(g.t)}</span><span class="lk-why${why === "Match" ? "" : " soft"}">${esc(why)}</span></summary>
       <div class="tbody">
         <p class="tdef">${esc(g.d)}</p>
-        ${parasHTML(g.x)}
+        ${classicParas(g.x)}
         ${g.s ? `<p class="tsrc">${esc(g.s)}</p>` : ""}
         ${thinkerSources(g)}
         ${why === "Match" ? "" : `<button class="linkbtn" data-keep="1" data-lkalias="${esc(g.id)}">Always look up “${esc(s.text)}” here</button>`}
@@ -301,6 +301,84 @@ const CLASSIC_TITLES = { "classic-plato-socrates": "Euthyphro, Apology, Crito, P
   "classic-kant-groundwork": "Fundamental Principles of the Metaphysic of Morals", "classic-wollstonecraft-vindication": "A Vindication of the Rights of Woman",
   "classic-marx-engels-manifesto": "The Communist Manifesto", "classic-nietzsche-genealogy": "The Genealogy of Morals", "classic-cooper-voice": "A Voice from the South", "classic-du-bois-souls": "The Souls of Black Folk",
   "classic-plato-republic": "The Republic", "classic-mill-liberty": "On Liberty", "classic-russell-problems": "The Problems of Philosophy" };
+/* ---------- the classics where the reference pages name them ----------
+   A classic's title in an article, a thinker card or a glossary entry opens the book (added back first if you deleted it), and
+   the book's page lists where it is named or cited. Titles match in their own capitals, as whole words. A bare short title
+   ("the Ethics", "Meditations", "the Manifesto") counts only on its author's own card (own), since elsewhere it may name another
+   book; "Republic" counts after "Plato's" or "the", or before a book number. Nothing is stored. */
+const CLASSIC_NAMES = {
+  "classic-plato-socrates": { by: ["plato", "socrates"], full: ["Euthyphro", "Crito", "Phaedo", "Plato's Apology"], own: ["Apology"] },
+  "classic-plato-republic": { by: ["plato"], full: ["Plato's Republic", { s: "Republic", pre: ["the", "The"], notPost: /^ of\b/ }, { s: "Republic", post: /^ (\d|[IVX]+\b)/ }], own: ["Republic"] },
+  "classic-aristotle-ethics": { by: ["aristotle"], full: ["Nicomachean Ethics"] },
+  "classic-descartes-meditations": { by: ["descartes"], full: ["Discourse on the Method", "Discourse on Method", "Meditations on First Philosophy"], own: ["Meditations"] },
+  "classic-hobbes-leviathan": { by: ["hobbes"], full: ["Leviathan"] },
+  "classic-spinoza-ethics": { by: ["spinoza"], full: ["Spinoza's Ethics", { s: "Ethics", post: /^ \(1677\)/ }], own: ["Ethics"] },
+  "classic-hume-enquiry": { by: ["hume"], full: ["Enquiry concerning Human Understanding", "Enquiry Concerning Human Understanding", "first Enquiry"] },
+  "classic-rousseau-social-contract": { by: ["rousseau"], full: ["The Social Contract", "Of the Social Contract", { s: "Social Contract", post: /^ \(1762\)/ }] },
+  "classic-kant-groundwork": { by: ["kant"], full: ["Groundwork of the Metaphysics of Morals", "Groundwork of the Metaphysic of Morals", "Fundamental Principles of the Metaphysic of Morals"], own: ["Groundwork"] },
+  "classic-wollstonecraft-vindication": { by: ["wollstonecraft"], full: ["A Vindication of the Rights of Woman", "Vindication of the Rights of Woman"] },
+  "classic-marx-engels-manifesto": { by: ["marx", "engels"], full: ["The Communist Manifesto", "Communist Manifesto", "Manifesto of the Communist Party"], own: [{ s: "Manifesto", pre: ["the", "The"] }] },
+  "classic-mill-liberty": { by: ["mill"], full: ["On Liberty"] },
+  "classic-nietzsche-genealogy": { by: ["nietzsche"], full: ["On the Genealogy of Morality", "On the Genealogy of Morals", "Genealogy of Morality", "Genealogy of Morals"], own: [{ s: "Genealogy", pre: ["the", "The"] }] },
+  "classic-cooper-voice": { by: ["cooper"], full: ["A Voice from the South", "Voice from the South"] },
+  "classic-du-bois-souls": { by: ["dubois"], full: ["The Souls of Black Folk", "Souls of Black Folk"] },
+  "classic-russell-problems": { by: ["russell"], full: ["The Problems of Philosophy", "Problems of Philosophy"] },
+};
+// Every classic named in a text: [{ a, b, id }], in order, without overlaps; ctx is the thinker whose card it is, if any.
+function classicHits(text, ctx) {
+  const word = /[\p{L}\p{N}]/u, found = [];
+  for (const [id, c] of Object.entries(CLASSIC_NAMES)) {
+    const names = [...c.full, ...(ctx && c.by.includes(ctx) ? c.own || [] : [])].map((n) => (typeof n === "string" ? { s: n } : n));
+    for (const n of names) for (let at = text.indexOf(n.s); at >= 0; at = text.indexOf(n.s, at + 1)) {
+      const end = at + n.s.length, after = text.slice(end, end + 12);
+      if (word.test(text[at - 1] || "") || word.test(text[end] || "")) continue;
+      if (n.pre && !n.pre.includes((text.slice(Math.max(0, at - 20), at).match(/(\S+)\s$/) || [])[1])) continue;
+      if (n.post && !n.post.test(after)) continue;
+      if (n.notPost && n.notPost.test(after)) continue;
+      found.push({ a: at, b: end, id });
+    }
+  }
+  found.sort((x, y) => x.a - y.a || y.b - x.b);
+  const out = []; for (const h of found) if (!out.length || h.a >= out[out.length - 1].b) out.push(h);
+  return out;
+}
+// A text with each classic's first mention made a link to the book; the rest escaped.
+function classicLinks(text, ctx) {
+  const seen = new Set(), hits = classicHits(String(text || ""), ctx).filter((h) => !seen.has(h.id) && seen.add(h.id));
+  let html = "", at = 0;
+  for (const h of hits) { html += esc(text.slice(at, h.a)) + `<button type="button" class="branch-inline-link" data-classic="${esc(h.id)}">${esc(text.slice(h.a, h.b))}</button>`; at = h.b; }
+  return html + esc(String(text || "").slice(at));
+}
+const classicParas = (x, ctx) => (x ? String(x).split(/\n\s*\n/).map((para) => para.trim()).filter(Boolean).map((para) => `<p class="tmore">${classicLinks(para, ctx)}</p>`).join("") : "");
+async function openClassic(id) {
+  if (!S.texts.has(id)) { await readdClassic(id); if (!S.texts.has(id)) return; }
+  go({ screen: "text", textId: id });
+}
+// Where the reference pages name or cite a classic: rows as Mentioned in draws them (mentionsHTML).
+function classicMentions(id) {
+  const out = { branch: [], thinker: [], term: [] };
+  const styles = Object.entries(PASSAGE_STYLES).filter(([, st]) => st.book === id).map(([k]) => k);
+  for (const src of mentionSources()) {
+    const hits = classicHits(src.text, src.kind === "thinker" ? src.id : null).filter((h) => h.id === id);
+    // citations into the book, in an article that cites it
+    const b = src.kind === "branch" && BRANCH.get(src.id), cites = [];
+    if (b && styles.some((st) => xrStyles(b.xr).includes(st)))
+      for (const m of src.text.matchAll(/\(([^()]+)\)/g)) if (m[1].split("; ").every((it) => styles.some((st) => PASSAGE_STYLES[st].item.test(it)))) cites.push({ a: m.index, b: m.index + m[0].length });
+    const all = [...hits, ...cites].sort((x, y) => x.a - y.a); if (!all.length) continue;
+    out[src.kind].push({ id: src.id, name: src.name, sec: src.sec, count: all.length, snip: rawSnip(src.text, all[0].a, all[0].b) });
+  }
+  for (const g of allTerms()) {
+    const text = [g.d, g.x, g.s].filter(Boolean).join("\n\n"), hits = classicHits(text).filter((h) => h.id === id);
+    if (hits.length) out.term.push({ id: g.id, name: g.t, count: hits.length, snip: rawSnip(text, hits[0].a, hits[0].b) });
+  }
+  out.thinker.sort((a, b) => b.count - a.count); out.term.sort((a, b) => b.count - a.count);
+  return out;
+}
+function classicMentionsHTML(id) {
+  if (!CLASSIC_NAMES[id]) return "";
+  const html = mentionsHTML(classicMentions(id)); if (!html) return "";
+  return `<section class="group">${html.replace('<div class="label">Mentioned in</div>', '<div class="label">In the reference pages</div><p class="hint">Where the articles, thinker cards and glossary name this book or cite its passages.</p>')}</section>`;
+}
 // Whether your place in the book is inside a step's chapters (known once the book's text has been loaded).
 function progressIn(st) {
   const t = S.texts.get(st.book), B = S.content.get(st.book); if (!t || !B || !(t.pos > 0)) return false;
@@ -423,6 +501,13 @@ function branchLinks(text, terms, thinkers) {
   const owners = new Map();
   for (const c of candidates) { const k = c.key.low; if (!owners.has(k)) owners.set(k, new Set()); owners.get(k).add(c.kind + ":" + c.id); }
   const T = linkFold(text), word = /[\p{L}\p{N}]/u, hits = [];
+  // a classic's title links to the book, each once per paragraph (positions moved into the folded text's)
+  const seenBook = new Set();
+  for (const h of classicHits(text)) {
+    const pos = T.map.indexOf(h.a), end = T.map.indexOf(h.b);
+    if (seenBook.has(h.id) || pos < 0 || end < 0) continue;
+    seenBook.add(h.id); hits.push({ pos, end, id: h.id, kind: "classic" });
+  }
   for (const c of candidates) {
     if (owners.get(c.key.low).size > 1) continue;
     const exact = c.name.length < 5, hay = exact ? T.cased : T.low, needle = exact ? c.key.cased : c.key.low;

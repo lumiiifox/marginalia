@@ -49,6 +49,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "seledit") return structurePanel();
   if (b.id === "more") return moreMenu();
   if (b.dataset.branch) return go({ screen: "branches", focus: b.dataset.branch, sec: b.dataset.bsec });
+  if (b.dataset.classic) return openClassic(b.dataset.classic);
   if (b.id === "openbranches") return go({ screen: "branches" });
   if (b.id === "openthinkers") { if (S.screen === "reference") S.tl = true; return go({ screen: "thinkers" }); }
   if (b.dataset.ref) { S.rq = ""; return go({ screen: "reference", rk: b.dataset.ref }); }
