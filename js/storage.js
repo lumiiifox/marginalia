@@ -269,6 +269,8 @@ const VALID = {
     && optArr(v.bookmarks, (x) => isObj(x) && Number.isInteger(x.at)) && (v.summaries === undefined || isObj(v.summaries)) && (v.pos === undefined || Number.isInteger(v.pos))
     && (v.source === undefined || v.source === null || (isObj(v.source) && optStr(v.source.name) && optStr(v.source.kind) && optNum(v.source.pages)))
     && (v.pair === undefined || (typeof v.pair === "string" && v.pair.length > 0 && v.pair.length < 200))
+    && optArr(v.termMarks, (x) => isObj(x) && isS(x.id) && goodId(x.id) && isS(x.passage) && x.passage.length > 0 && x.passage.length <= 2000 && Number.isInteger(x.at) && x.at >= 0 && optNum(x.createdAt)
+      && (x.anchor === undefined || (isObj(x.anchor) && ["a", "ao", "b", "bo"].every((k) => Number.isInteger(x.anchor[k])) && optStr(x.anchor.pre) && optStr(x.anchor.suf))))
     && (v.days === undefined || (isObj(v.days) && Object.keys(v.days).length <= DAYS_MAX
       && Object.entries(v.days).every(([k, d]) => DAY_KEY.test(k) && Array.isArray(d) && d.length === 2 && d.every((x) => Number.isInteger(x) && x >= 0))))
     && (v.conc === undefined || (isObj(v.conc) && isS(v.conc.label) && v.conc.label.length <= 60 && Array.isArray(v.conc.pairs) && v.conc.pairs.length <= CONC_MAX
@@ -302,8 +304,14 @@ function withDays(base, other) {
   }
   return out ? { ...base, days: out } : base;
 }
+// The glossary terms you linked in a book, from both copies: one link per entry, place and words.
+function withTermMarks(base, other) {
+  const a = Array.isArray(base.termMarks) ? base.termMarks : [], b = other && Array.isArray(other.termMarks) ? other.termMarks : [];
+  const key = (m) => [m.id, m.at, m.passage].join("\u0006"), seen = new Set(a.map(key)), add = b.filter((m) => !seen.has(key(m)));
+  return add.length ? { ...base, termMarks: [...a, ...add] } : base;
+}
 function withReading(base, other) {
-  base = withDays(base, other);
+  base = withTermMarks(withDays(base, other), other);
   if (!other || (other.readAt || 0) <= (base.readAt || 0)) return base;
   if (base.total && other.total && base.total !== other.total) return base;
   const out = { ...base };

@@ -14,6 +14,9 @@ Made-up book only; Wiktionary is stood in for by a local reply shaped like its A
      each paragraph's first mention of a term of more than one word is underlined, ignoring capitals and accents, across a printed-page
      break, never inside another word; a tap on one shows its definition without turning the page, Open in the glossary opens
      the entry, and Back returns to the same page; a tap on a highlight still opens its note; turning it off removes the underlines.
+  5. linking words to a glossary entry yourself (Look up → Link to a glossary term): the entries offered closest first and searchable;
+     the link is kept on the book, underlined whether or not the book links terms, opens that entry, and can be unlinked (with Undo);
+     a backup checks it, and a restore keeps both copies' links.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, json, subprocess, sys, time
@@ -106,6 +109,30 @@ async def term_links(browser):
     check(await page.evaluate("localStorage.getItem('mg-terms')") == "[]", "the book's More menu turns it off too")
     await page.go_back(); await page.wait_for_timeout(800)
     check(await page.evaluate("[(R.termRanges || []).length, CSS.highlights.has('term')]") == [0, False], "turning it off removes the underlines")
+    # your own link: select words, Look up, Link to a glossary term
+    sel = await page.evaluate("""(() => { const el = R.els[4], t = el.firstChild, i = t.data.indexOf('Somebody without organs'); const r = document.createRange(); r.setStart(t, i); r.setEnd(t, i + 23);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); return t.data.slice(i, i + 23); })()""")
+    await page.wait_for_timeout(400)
+    await page.evaluate("lookupSel()"); await page.wait_for_selector("#lk-link"); await page.click("#lk-link"); await page.wait_for_selector("#lt-list .lrow")
+    await page.fill("#lt-q", "body without"); await page.wait_for_timeout(200)
+    await page.click("#lt-list [data-ltterm=body-without-organs]"); await page.wait_for_timeout(500)
+    marks = await page.evaluate("S.texts.get('tb').termMarks")
+    check(sel == "Somebody without organs" and len(marks) == 1 and marks[0]["id"] == "body-without-organs" and marks[0]["passage"] == sel and marks[0]["anchor"]["a"] == 4, f"Link to a glossary term keeps the link on the book, with its place ({marks})")
+    mine = await page.evaluate("(R.termRanges || []).filter(([, , k]) => k === 0).map(([r, id]) => [id, r.toString()])")
+    check(mine == [["body-without-organs", "Somebody without organs"]] and await page.evaluate("termsOn('tb')") is False, f"your link is underlined though the book doesn't link terms by itself ({mine})")
+    box = await page.evaluate("(() => { const q = R.termRanges.find(([, , k]) => k === 0)[0].getClientRects()[0]; return [q.left + q.width / 2, q.top + q.height / 2]; })()")
+    await page.touchscreen.tap(box[0], box[1]); await page.wait_for_timeout(400)
+    check(await page.evaluate("[document.querySelector('.sheet h2')?.textContent, !!document.querySelector('.sheet [data-unmark]')]") == ["Body without organs", True], "a tap on it opens that entry, with Unlink")
+    await page.click(".sheet [data-unmark]"); await page.wait_for_timeout(400)
+    check(await page.evaluate("[S.texts.get('tb').termMarks.length, (R.termRanges || []).length]") == [0, 0], "Unlink takes it off the book and the page")
+    await page.click("#toast button"); await page.wait_for_timeout(400)
+    check(await page.evaluate("S.texts.get('tb').termMarks.length") == 1, "Undo puts it back")
+    valid = await page.evaluate("""[VALID.texts({ title: 'x', termMarks: [{ id: 'rhizome', at: 3, passage: 'root' }] }), VALID.texts({ title: 'x', termMarks: [{ id: 'rhizome', passage: 'root' }] }),
+      VALID.texts({ title: 'x', termMarks: [{ id: 'rhizome', at: 3, passage: 'root', anchor: { a: 3, ao: 'x' } }] }), VALID.texts({ title: 'x', termMarks: 'rhizome' })]""")
+    check(valid == [True, False, False, False], f"a backup's links are checked before a restore takes them ({valid})")
+    merged = await page.evaluate("""(() => { const a = { title: 'x', termMarks: [{ id: 'rhizome', at: 1, passage: 'root' }] }, b = { title: 'x', termMarks: [{ id: 'rhizome', at: 1, passage: 'root' }, { id: 'assemblage', at: 2, passage: 'agencement' }] };
+      return [withReading(a, b).termMarks.length, withReading(b, a).termMarks.length, withReading(a, { title: 'x' }) === a]; })()""")
+    check(merged == [2, 2, True], f"a restore keeps the links of both copies, once each ({merged})")
     check(not errs, "no script errors with linked terms" + (f": {errs[:3]}" if errs else ""))
     await ctx.close()
 

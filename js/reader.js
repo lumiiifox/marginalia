@@ -1023,7 +1023,7 @@ function notePanel(i, n) {
 }
 
 /* find in this book: matches marked in the text and stepped through one at a time */
-/* ---------- Glossary terms in the text (Reading settings → Glossary terms in this book, or a book's More menu) ----------
+/* ---------- Glossary terms in the text (Reading settings → Glossary terms in this book, or a book's More menu; your own links from Look up) ----------
    In a book that has it on, each paragraph's first mention of a glossary term whose name is more than one word (Body
    without organs, Will to power, Desiring-production) is underlined through the CSS Highlight API, so the page's text and
    markup stay exactly as they are and highlights, selections and pages are untouched. A tap on one opens the term's
@@ -1069,30 +1069,82 @@ function termHits() {
   R.termHits = hits; R.termHitsOf = R.blocks;
   return hits;
 }
+// Terms you linked yourself (Look up → Link to a glossary term), kept on the book as t.termMarks = [{ id, at, passage, anchor }]:
+// placed as a note's passage is (placeNote), and shown whether or not the book links terms by itself.
+const termMarksOf = (t) => (t && Array.isArray(t.termMarks) ? t.termMarks : []);
+function markHits() {
+  const B = R.blocks, have = new Set(allTerms().map((g) => g.id)), out = [];
+  termMarksOf(S.texts.get(R.tid)).forEach((m, k) => {
+    if (!have.has(m.id)) return; // its entry was deleted
+    const A = placeNote(m, B); if (!A) return;
+    const pieces = [];
+    for (let i = A.a; i <= A.b; i++) if (markable(B[i])) pieces.push({ i, from: i === A.a ? A.ao : 0, to: i === A.b ? A.bo : plain(B[i].x || "").length });
+    if (pieces.length) out.push({ id: m.id, mark: k, pieces });
+  });
+  return out;
+}
 // Underline the terms in the paragraphs on screen, and remember where each is for taps.
 function paintTerms() {
   R.termRanges = [];
   const can = window.Highlight && window.CSS && CSS.highlights;
-  if (!R.blocks || !termsOn(R.tid)) { if (can) CSS.highlights.delete("term"); return; }
-  for (const h of termHits()) for (const p of h.pieces) { const r = rangeFor(p.i, p.from, p.to); if (r) R.termRanges.push([r, h.id]); }
+  const hits = R.blocks ? [...markHits(), ...(termsOn(R.tid) ? termHits() : [])] : [];
+  if (!hits.length) { if (can) CSS.highlights.delete("term"); return; }
+  for (const h of hits) for (const p of h.pieces) { const r = rangeFor(p.i, p.from, p.to); if (r) R.termRanges.push([r, h.id, h.mark]); }
   if (can) { const hl = new Highlight(...R.termRanges.map(([r]) => r)); hl.priority = -1; CSS.highlights.set("term", hl); }
 }
-// The term under a tap, if any.
+// The term under a tap, if any: [term id, the index of your link or undefined].
 function termAt(x, y) {
-  for (const [r, id] of R.termRanges || []) for (const q of r.getClientRects()) if (x >= q.left - 2 && x <= q.right + 2 && y >= q.top - 2 && y <= q.bottom + 2) return id;
+  for (const [r, id, mark] of R.termRanges || []) for (const q of r.getClientRects()) if (x >= q.left - 2 && x <= q.right + 2 && y >= q.top - 2 && y <= q.bottom + 2) return [id, mark];
   return null;
 }
-function termPanel(id) {
+function termPanel(id, mark) {
   const g = allTerms().find((x) => x.id === id); if (!g) return;
+  const m = Number.isInteger(mark) ? termMarksOf(S.texts.get(R.tid))[mark] : null;
   openPanel(`<h2>${esc(g.t)}</h2>${AREAS[g.a] ? `<p class="hint">${esc(AREAS[g.a])}</p>` : ""}<p class="tdef">${esc(g.d)}</p>
-    <div class="noteacts"><button class="btn primary" data-term="${esc(g.id)}">Open in the glossary</button></div>`, (b) => { if (b.dataset.term) openTerm(b.dataset.term); });
+    ${m ? `<p class="hint">You linked “${esc(m.passage)}” to this entry.</p>` : ""}
+    <div class="noteacts"><button class="btn primary" data-term="${esc(g.id)}">Open in the glossary</button>${m ? `<button class="btn ghost" data-unmark="${mark}">Unlink</button>` : ""}</div>`, (b) => {
+    if (b.dataset.term) openTerm(b.dataset.term);
+    else if (b.dataset.unmark) removeTermMark(+b.dataset.unmark);
+  });
+}
+// Link the words of a selection to a glossary entry: choose the entry, searched by name or definition, the closest first.
+function linkTermPanel(s) {
+  if (!R.tid || !s) return;
+  const all = allTerms(), first = lookupTerms(lkNorm(s.text)).map((r) => r.g.id);
+  openPanel(`<h2>Link “${esc(s.text)}”</h2>
+    <p class="hint">Choose the glossary entry these words stand for here. They are underlined in this book, and a tap opens the entry.</p>
+    <input class="search" id="lt-q" type="search" placeholder="Search the glossary" aria-label="Search the glossary">
+    <div class="links" id="lt-list"></div>`, (b) => { if (b.dataset.ltterm) addTermMark(s, b.dataset.ltterm); });
+  const draw = () => {
+    const q = fold($("#lt-q").value.trim());
+    const list = q ? all.filter((g) => fold(g.t).includes(q) || fold(g.d).includes(q)) : [...first.map((id) => all.find((g) => g.id === id)).filter(Boolean), ...all.filter((g) => !first.includes(g.id))];
+    $("#lt-list").innerHTML = list.slice(0, 40).map((g) => `<button class="lrow" data-ltterm="${esc(g.id)}"><b>${esc(g.t)}</b><span>${esc(g.d.length > 110 ? g.d.slice(0, 109) + "…" : g.d)}</span></button>`).join("") || `<p class="hint">No entry matches.</p>`;
+  };
+  $("#lt-q").addEventListener("input", draw); draw();
+}
+async function addTermMark(s, id) {
+  const t = S.texts.get(R.tid); if (!t) return;
+  const anchor = s.anchor && unspace(quoteOf(R.blocks, s.anchor)) === unspace(s.text) ? s.anchor : undefined;
+  const m = { id, at: s.i, passage: s.text, ...(anchor ? { anchor } : {}), createdAt: Date.now() };
+  try { await put("texts", R.tid, { ...t, termMarks: [...termMarksOf(t), m], updatedAt: Date.now() }); }
+  catch (e) { toast(failMsg(e)); return; }
+  paintTerms();
+  const g = allTerms().find((x) => x.id === id);
+  toast(`Linked to ${g ? g.t : "the glossary"}.`);
+}
+async function removeTermMark(k) {
+  const t = S.texts.get(R.tid), list = termMarksOf(t); if (!t || !list[k]) return;
+  const gone = list[k];
+  const save = async (marks) => { const now = S.texts.get(R.tid); if (!now) return; await put("texts", R.tid, { ...now, termMarks: marks, updatedAt: Date.now() }); paintTerms(); };
+  try { await save(list.filter((_, j) => j !== k)); } catch (e) { toast(failMsg(e)); return; }
+  toast("Unlinked.", { label: "Undo", run: () => save([...termMarksOf(S.texts.get(R.tid)), gone]).catch((e) => toast(failMsg(e))) });
 }
 $("#book").addEventListener("click", (e) => {
   if (!R.termRanges || !R.termRanges.length || selecting()) return;
   if (e.target.closest && e.target.closest("mark[data-note], .mnote, a, button, [data-fn]")) return;
-  const id = termAt(e.clientX, e.clientY); if (!id) return;
+  const hit = termAt(e.clientX, e.clientY); if (!hit) return;
   e.stopImmediatePropagation(); e.stopPropagation(); e.preventDefault();
-  termPanel(id);
+  termPanel(hit[0], hit[1]);
 }, true);
 let findQ = "";
 const FIND = { q: "", hits: [], k: -1, on: false };

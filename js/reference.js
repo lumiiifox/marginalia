@@ -115,6 +115,7 @@ function lookupPanel(s) {
     <div class="lk-acts">
       <button class="btn primary" id="lk-note">Add a note</button>
       ${loaded ? `<button class="btn" id="lk-all">Search all books</button>` : ""}
+      ${tid && Number.isInteger(s.i) ? `<button class="btn ghost" id="lk-link">Link to a glossary term</button>` : ""}
       ${hasExact ? "" : `<button class="btn ghost" id="lk-add">Add to your glossary</button>`}
     </div>`, async (b) => {
     if (b.dataset.lkalias) {
@@ -128,6 +129,7 @@ function lookupPanel(s) {
     else if (b.dataset.jump) jumpToNote(b.dataset.jump);
     else if (b.id === "lk-all") go({ screen: "concord", q: s.text });
     else if (b.id === "lk-add") termSheet(null, { t: s.text });
+    else if (b.id === "lk-link") linkTermPanel(s);
   });
   if (s.text.split(/\s+/).length <= 3) dictInto($("#lk-dict"), s.text);
 }
