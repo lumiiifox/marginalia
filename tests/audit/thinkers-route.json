@@ -1,0 +1,133 @@
+{
+ "audit": "thinkers-route",
+ "audited": "2026-10-24",
+ "mode": "in place",
+ "scope": "The thinker cards on the reading route: Aristotle, Spinoza, Nietzsche, Deleuze, Guattari, Land",
+ "by": {
+  "first_pass": "Claude (Opus 5.5)",
+  "review": "Independent reviewer (Claude subagent, fresh context), 2026-10-24, 25 searches and fetches: Aristotle and Spinoza pass; Nietzsche, Deleuze, Guattari and Land pass after fixes now made (the archived Wicks entry added as a source; a repeated sentence on Deleuze's illness; the Guattari source credited to Adam Shatz; Land's move to Shanghai dated loosely, his essay named, and an unquoted run from Burrows reworded). Guattari's analysis with Lacan is left undated, as sources disagree (Britannica: the 1950s; Universalis: until 1960; other accounts 1962–69)."
+ },
+ "note": "Biographical claims were checked against the sources below; claims marked not-retrieved are the card's standard doctrine, which the cited Stanford entry covers but which was not re-read in this pass. Unsupported details were cut and errors corrected.",
+ "cards": {
+  "aristotle": {
+   "sources": [
+    "SEP “Aristotle” (Shields), §§1–5, read through a course's outline of the entry (uvm.edu)"
+   ],
+   "checked": [
+    "born 384 in Stagira; to Athens c. 367; Academy twenty years until Plato's death (347)",
+    "Assos and Lesbos; biological research is 'probably' (the card now says so)",
+    "tutor to Alexander; Lyceum 335; Chalcis 323, death 322",
+    "about 200 treatises, 31 survive; surviving texts are lecture notes and drafts, the published works, some dialogues, lost",
+    "method from appearances, received opinion and puzzles (aporiai); first formal logic; the Organon"
+   ],
+   "fixed": [
+    "'doing much of his biological research' made probable and placed at Assos",
+    "Alexander's death kept as the occasion, with anti-Macedonian feeling in Athens (reviewer)"
+   ],
+   "not_retrieved": [
+    "four causes, hylomorphism, soul as form, unmoved mover, ethics and politics paragraphs, reception as First Teacher and the Philosopher"
+   ]
+  },
+  "spinoza": {
+   "sources": [
+    "SEP “Baruch Spinoza” (Nadler), Summer 2006 archive",
+    "the bundled Ethics (II, Proposition 40, Note 2)"
+   ],
+   "checked": [
+    "studies cut short at seventeen for the family importing business",
+    "herem of 27 July 1656, the harshest the community pronounced",
+    "Theological-Political Treatise anonymous, 1670",
+    "friends published his writings after his death in 1677; still at work on the Political Treatise",
+    "mind as the idea of the body; three kinds of knowledge, the first called 'opinion, or imagination' in the Ethics; conatus; no final causes; intellectual love of God"
+   ],
+   "fixed": [],
+   "not_retrieved": [
+    "reception and interpretive disputes in the last paragraph"
+   ]
+  },
+  "nietzsche": {
+   "sources": [
+    "SEP “Friedrich Nietzsche” (Wicks), Spring 2006 archive",
+    "the bundled Genealogy of Morals (I §§2, 7; II)"
+   ],
+   "checked": [
+    "born 1844 in Röcken; father, a minister, died when he was four",
+    "Bonn and Leipzig; teaching at Basel from 1869 at twenty-four",
+    "friendship with Wagner broke down in 1878 with Human, All Too Human",
+    "resigned in June 1879; wandering life 1880–1889; collapse in Turin, January 1889, an invalid thereafter",
+    "died 25 August 1900; sister collected the notebooks as The Will to Power; parts espoused by the Nazis partly through her contacts",
+    "Birth of Tragedy's Apollonian and Dionysian; God is dead in The Gay Science (1882); Zarathustra; master and slave morality, the revolt of the slaves (GM I §7); creditor and debtor (GM II); ascetic ideals; perspectivism; will to power"
+   ],
+   "fixed": [
+    "'before finishing his doctorate' and 'so brilliant' cut (not in the source)",
+    "'ended bitterly in the late 1870s' dated to 1878",
+    "'boarding houses in Switzerland, Italy and the south of France, writing a book a year' replaced by the wandering years 1880–1889",
+    "Elisabeth as 'a nationalist and antisemite whom Nietzsche had opposed', 'a misleading edition' and 'postwar scholarship freed his work' cut as unsourced"
+   ],
+   "not_retrieved": [
+    "amor fati and the list of values; the influence on existentialism, psychoanalysis, post-structuralism and literature"
+   ]
+  },
+  "deleuze": {
+   "sources": [
+    "SEP “Gilles Deleuze” (Smith, Protevi and Voss), §1 and introduction"
+   ],
+   "checked": [
+    "born in Paris, 18 January 1925; a year of school in Normandy; Pierre Halbwachs at Deauville; brother arrested for resistance, died on the train to Auschwitz",
+    "khâgne at Lycée Henri IV; taught by Hyppolite (SEP spells it Hippolyte), Alquié, Canguilhem, de Gandillac",
+    "1953–1962 posts, 'a hole in my life'; the respiratory ailment from that period for the rest of his life",
+    "first books and dates; married Fanny (Denise Paul) Grandjouan, translator of D. H. Lawrence; two children",
+    "doctorat d'État 1968 with Difference and Repetition and the Spinoza thesis; Vincennes/Paris VIII from 1969 to retirement in 1987; met Guattari 1969 (SEP's introduction says 1968); trip to the United States in 1975; 'Immanence: A Life' 1995; took his own life on 4 November 1995"
+   ],
+   "fixed": [
+    "the Sacher-Masoch date, the 1981 edition of Spinoza: Practical Philosophy and Desert Islands (2002) cut as not found in the source",
+    "'His last essay' made 'His essay'",
+    "'severe respiratory illness that made even writing laborious' replaced by the ailment staying with him for life, as SEP has it"
+   ],
+   "not_retrieved": [
+    "the list of later books and their dates"
+   ]
+  },
+  "guattari": {
+   "sources": [
+    "SEP “Gilles Deleuze” (introduction and §1)"
+   ],
+   "checked": [
+    "a radical psychoanalyst and political activist; met Deleuze in 1969 (SEP §1)"
+   ],
+   "fixed": [
+    "'in the early 1950s' removed from his analysis with Lacan: not confirmed, and the analysis is usually dated later"
+   ],
+   "not_retrieved": [
+    "birth date and place; La Borde from 1955 and its institutional psychotherapy; the dissident Communist paper and CERFI; his books; death in 1992. The cited London Review of Books review of Dosse could not be opened here; a fuller check needs it or Dosse's biography."
+   ]
+  },
+  "land": {
+   "sources": [
+    "Simon O'Sullivan, “Accelerationism, Hyperstition and Myth-Science” (Goldsmiths)",
+    "Roger Burrows, ANU seminar (2017)",
+    "Alex Williams, “Escape Velocities” (2013)",
+    "Encyclopaedia Britannica, “Accelerationism”",
+    "Nick Land, “A Quick-and-Dirty Introduction to Accelerationism”"
+   ],
+   "checked": [
+    "Warwick in the 1990s; the CCRU set up by Sadie Plant and led by Land after she left academia",
+    "quit the academy in 1998 and moved to China",
+    "first monograph on Bataille; Fanged Noumena (2011, Mackay and Brassier); 'Circuitries' and 'Meat'; positive feedback against negative feedback's stabilizing effect, another name for hyperstition; hyperstition as a fiction that makes itself real",
+    "Williams: the term coined by Noys; Land answered Anti-Oedipus's question in the affirmative",
+    "Land credits the 2013 manifesto with 're-animating the accelerationist question'; the quotation on capitalism's self-awareness, verbatim",
+    "Burrows: The Dark Enlightenment; neoreaction rejects democracy, embraces autocratic rule and is anti-egalitarian"
+   ],
+   "fixed": [
+    "'in 1995 he and Sadie Plant founded' replaced by Plant setting it up (O'Sullivan); the founding year not confirmed",
+    "'settling in Shanghai' cut",
+    "Noys 'coined' the name: Britannica traces the word to Zelazny's Lord of Light (1967) and credits Noys with its later sense; both now stated",
+    "'reawakening the idea' replaced by Land's own words; 'In 2017' dropped (the essay's date not confirmed); the quotation now verbatim",
+    "'moved to China' in 1998 made 'later settled in Shanghai', since only Burrows joins the two"
+   ],
+   "not_retrieved": [
+    "the 2012 date of The Dark Enlightenment"
+   ]
+  }
+ }
+}
