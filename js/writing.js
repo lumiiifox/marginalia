@@ -249,6 +249,102 @@ function exportDraft(id) {
   if (!(d.items || []).length) return toast("This draft is empty.");
   saveFile(`${slug(d.title)}-draft.md`, draftMarkdown(id, citeStyle), "text/markdown").catch(() => toast("Couldn't export the draft."));
 }
+/* ---------- a draft for critique (Export → For critique): the draft, the evidence it rests on, the glossary terms it uses ----------
+   One Markdown file for Claude, ChatGPT or a person to critique outside the app. Each quoted passage is checked against the book's
+   text where the text is here: whether it is still there word for word, and the page and chapter at the place it was found, with any
+   page you typed that disagrees. Terms are matched in your own writing only; the file says that a definition is no evidence that a
+   passage uses the word in that sense. Nothing is stored. */
+async function critiqueMarkdown(id) {
+  const d = S.drafts.get(id); if (!d) return "";
+  const items = (d.items || []).filter((it) => !(it.t === "p" && String(it.x || "").startsWith(GUIDE)));
+  const books = new Map(); // tid -> { t, B, pageAt, secAt } (B null when the text isn't here)
+  const bookOf = async (tid) => {
+    if (books.has(tid)) return books.get(tid);
+    const t = S.texts.get(tid); let B = null;
+    if (t && t.hasContent) { try { B = await loadContent(tid); } catch {} }
+    const ix = B ? sectionIndex(B) : null;
+    const v = { t, B, pageAt: ix ? ix.pageAt : [], secAt: ix ? ix.secAt : [] }; books.set(tid, v); return v;
+  };
+  const quote = (x) => String(x || "").split(/\n+/).map((l) => `> ${l}`).join("\n");
+  const draft = [], evidence = [], own = [];
+  let k = 0;
+  for (const it of items) {
+    if (it.t === "h") { draft.push(`### ${it.x}`, ""); own.push(it.x); continue; }
+    if (it.t === "p") { draft.push(it.x, ""); own.push(it.x); continue; }
+    const n = S.notes.get(it.id); if (!n) continue;
+    const { t, B, pageAt, secAt } = await bookOf(n.textId);
+    const who = t ? [t.author, t.title].filter(Boolean).join(", ") : "a text no longer in the library";
+    if (n.gloss) own.push(n.gloss);
+    if (n.kind === "argument" && n.premises) own.push(...n.premises, n.conclusion || "");
+    if (!n.passage) { // a note of your own with no passage
+      draft.push(...[n.gloss, ...(n.kind === "argument" && n.premises ? [...n.premises.map((x, j) => `${j + 1}. ${x}`), `Therefore: ${n.conclusion || ""}`] : [])].filter(Boolean), "");
+      continue;
+    }
+    const e = `E${++k}`;
+    draft.push(`${quote(n.passage)} [${e}]`, "");
+    if (n.gloss) draft.push(n.gloss, "");
+    if (n.kind === "argument" && n.premises && n.premises.length) draft.push(...n.premises.map((x, j) => `${j + 1}. ${x}`), `Therefore: ${n.conclusion || ""}`, "");
+    // where the passage is, checked against the text when it is here
+    let status, place = "", context = "";
+    const typed = n.page ? loc(n.page) : "";
+    if (!B) status = t ? "Not checked: the book's text isn't loaded in the app, so the wording and place are as the note records them." : "Not checked: the book was deleted.";
+    else {
+      const A = placeNote(n, B);
+      if (!A) status = "Not found: these words could not be found in the book's text near where the note points. Treat the wording as unverified.";
+      else {
+        const anchored = n.anchor && n.anchor.a === A.a && n.anchor.ao === A.ao;
+        status = anchored ? "Verbatim: selected in the book and still reads the same at its saved place." : "Verbatim: found word for word in the book's text" + (n.anchor ? ", a little away from its saved place." : ".");
+        const pg = pageAt[A.a] || "", sec = (t.sections || []).find((x) => x.id === secAt[A.a]);
+        place = [pg ? loc(pg) : "", sec ? `chapter “${sec.label}”` : ""].filter(Boolean).join(", ");
+        if (typed && pg && String(n.page) !== String(pg)) place += ` (the note gives ${typed})`;
+        const para = plain(B[A.a].x || ""), a0 = A.ao, a1 = A.a === A.b ? A.bo : para.length;
+        const before = para.slice(Math.max(0, a0 - 320), a0), after = para.slice(a1, a1 + 320);
+        if (before.trim() || after.trim()) context = `${a0 > 320 ? "…" : ""}${before}**${para.slice(a0, a1)}${A.a === A.b ? "" : " …"}**${after}${a1 + 320 < para.length ? "…" : ""}`;
+      }
+    }
+    evidence.push(`### ${e}. ${who}${place ? `, ${place}` : typed ? `, ${typed} (as the note gives it)` : ""}`, "",
+      `- Status: ${status}`, `- Kind of note: ${KINDS[n.kind] || "Passage"}`, "", quote(n.passage), "");
+    if (n.original) evidence.push("In the original:", "", quote(n.original), "");
+    if (context) evidence.push("Context in the book (the passage in bold):", "", quote(context), "");
+    if (n.gloss) evidence.push(`The writer's gloss: ${n.gloss}`, "");
+    for (const f of n.followups || []) evidence.push(`Later (${fmtDate(f.at)}): ${f.x}`, "");
+  }
+  // glossary terms named in the writer's own words
+  const F = linkFold(own.join("\n")), terms = allTerms().filter((g) => findNeedles(F, termNeedles(g)).length);
+  const out = [`# For critique: ${d.title || "Untitled draft"}`, "",
+    `Exported from Marginalia on ${fmtDate(Date.now())}. Please critique the draft in section 1 against the evidence in section 2.`, "",
+    "## How to read this", "",
+    "- Quoted passages in the draft are marked [E1], [E2] and so on, and given in full in section 2 with their book, page and chapter.",
+    "- Each passage has a status. *Verbatim* means the app found these exact words in the book's text. *Not checked* or *Not found* means the wording or the place could not be confirmed, so treat it with care.",
+    "- Pages and chapters come from the book's own structure at the place the passage was found. Where the note's own page differs, both are given.",
+    "- Section 3 gives the app's glossary definitions of terms the writer uses. A definition says what a term usually means. It is no evidence that a quoted passage uses the word in that sense: judge that from the passage and its context.",
+    "- Questions for the critic: Does each claim follow from the passages cited for it? Are the passages read accurately, in their context? Where is the argument weakest, and what objection does it miss? Which claims need evidence they don't have?", "",
+    "## 1. The draft", "", ...draft,
+    "## 2. The evidence", "", ...(evidence.length ? evidence : ["The draft quotes no passages.", ""]),
+    "## 3. Glossary terms the writer uses", "",
+    ...(terms.length ? terms.flatMap((g) => [`- **${g.t}**${g.builtIn ? "" : " (the writer's own entry)"}: ${g.d}${g.srcName ? ` Source: ${g.srcName}${g.src ? ` (${g.src})` : ""}.` : ""}`]) : ["None of the glossary's terms appear in the writer's own words."]), ""];
+  const tids = [...books.keys()].filter((tid) => S.texts.has(tid));
+  if (tids.length) out.push("## 4. Works cited", "", ...bibliography(tids, "ad", "md").flatMap((x) => [x, ""]));
+  return out.join("\n").replace(/\n{3,}/g, "\n\n");
+}
+async function exportCritique(id, copy) {
+  const d = S.drafts.get(id); if (!d) return;
+  if (!(d.items || []).length) return toast("This draft is empty.");
+  const md = await critiqueMarkdown(id);
+  if (copy) { const ok = await copyText(md); toast(ok ? "Copied for critique. Paste it into a chat with Claude or ChatGPT." : "Couldn't copy. Your browser blocked the clipboard."); return; }
+  saveFile(`${slug(d.title)}-for-critique.md`, md, "text/markdown").catch(() => toast("Couldn't export the draft."));
+}
+function exportMenu(id) {
+  openPanel(`<h2>Export the draft</h2><div class="menu">
+    <button class="menuitem" id="dx-essay">As an essay (Markdown, with citations)</button>
+    <button class="menuitem" id="dx-crit">For critique, with its evidence (Markdown)</button>
+    <button class="menuitem" id="dx-critcopy">Copy for critique</button>
+  </div><p class="hint">For critique adds every quoted passage in full, checked against the book where its text is here, with its page, chapter and context, and the glossary terms you use.</p>`, (b) => {
+    if (b.id === "dx-essay") exportDraft(id);
+    else if (b.id === "dx-crit") exportCritique(id, false);
+    else if (b.id === "dx-critcopy") exportCritique(id, true);
+  });
+}
 async function copyDraft(id) {
   const d = S.drafts.get(id); if (!d) return;
   const ok = await copyRich(draftHTMLDoc(id, citeStyle), draftMarkdown(id, citeStyle));

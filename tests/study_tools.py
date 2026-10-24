@@ -71,6 +71,10 @@ Uses made-up records only. Checks that:
       sentence and the words marked, never itself; plurals count, other words built on it don't; tapping an article's row opens the
       article at that section; a thinker's card lists the same, by the names the articles link (accents ignored, short names in exact
       case, Said and Land only in full), and your notes that name them.
+  25. a draft exported for critique: the draft with each quoted passage marked [E1], [E2]; the evidence with each passage's status
+      (verbatim at its saved place, found word for word elsewhere, not found, or not checked when the text isn't here), its page and
+      chapter from the book, a page the note gives that disagrees, and the paragraph around it; the glossary terms used in the writer's
+      own words only, with the warning that a definition is no evidence; works cited; guide lines left out; offered from Export.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, subprocess, sys, time
@@ -916,6 +920,42 @@ async def mentions(browser):
     check(not errs, "no script errors in Mentioned in" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def critique(browser):
+    page, errs = await fresh(browser)
+    await page.evaluate("""(async () => {
+      const B = [{ k: 'pg', x: '10' }, { k: 'h', l: 1, x: 'On Roots', s: 'c1' }, { k: 'p', x: 'The tree is filiation, but the rhizome is alliance, uniquely alliance, and nothing else.' },
+        { k: 'pg', x: '11' }, { k: 'p', x: 'A second paragraph about maps and tracings, with more words after it.' }];
+      await put('content', 'cb', B);
+      await put('texts', 'cb', { title: 'Plateaus', author: 'Deleuze and Guattari', year: '1980', hasContent: true, total: B.length, pos: 0, status: 'reading', createdAt: 1, updatedAt: 1, sections: [{ id: 'c1', label: 'On Roots' }] });
+      await put('texts', 'cx', { title: 'Elsewhere', author: 'Someone', createdAt: 1, updatedAt: 1 });
+      const p1 = 'the rhizome is alliance', a = B[2].x.indexOf(p1);
+      await put('notes', 'e1', { textId: 'cb', kind: 'passage', passage: p1, at: 2, page: '10', anchor: { a: 2, ao: a, b: 2, bo: a + p1.length, pre: '', suf: '' }, gloss: 'Alliance against filiation.', links: [], createdAt: 1, updatedAt: 1, followups: [{ id: 'f', at: 2, x: 'Compare the burrow.' }] });
+      await put('notes', 'e2', { textId: 'cb', kind: 'passage', passage: 'maps and tracings', at: 4, page: '12', links: [], createdAt: 1, updatedAt: 1 });
+      await put('notes', 'e3', { textId: 'cb', kind: 'passage', passage: 'words never written in it', at: 2, links: [], createdAt: 1, updatedAt: 1 });
+      await put('notes', 'e4', { textId: 'cx', kind: 'passage', passage: 'a typed quotation', page: '5', links: [], createdAt: 1, updatedAt: 1 });
+      await put('drafts', 'dc', { title: 'Roots and maps', items: [{ t: 'h', x: 'Thesis' }, { t: 'p', x: GUIDE + 'Say what you argue.' }, { t: 'p', x: 'Genealogy, I argue, works like a map.' },
+        { t: 'note', id: 'e1' }, { t: 'note', id: 'e2' }, { t: 'note', id: 'e3' }, { t: 'note', id: 'e4' }], createdAt: 1, updatedAt: 1 });
+    })()""")
+    md = await page.evaluate("critiqueMarkdown('dc')")
+    part = lambda a, b: md.split(a, 1)[1].split(b, 1)[0] if a in md else ""
+    draft, ev, terms = part("## 1. The draft", "## 2."), part("## 2. The evidence", "## 3."), part("## 3. Glossary terms", "## 4.")
+    check("### Thesis" in draft and "Genealogy, I argue" in draft and "Say what you argue" not in md, "the draft comes first, its guide lines left out")
+    check("> the rhizome is alliance [E1]" in draft and "[E4]" in draft and "[E5]" not in md, "each quoted passage is marked in the draft")
+    e = [ev.split(f"### E{k}.")[1].split("### E")[0] if f"### E{k}." in ev else "" for k in (1, 2, 3, 4)]
+    check("Verbatim: selected in the book and still reads the same" in e[0] and "p. 10, chapter “On Roots”" in e[0] and "**the rhizome is alliance**" in e[0] and "Compare the burrow" in e[0],
+          f"a selected passage is verbatim at its saved place, with page, chapter, context and follow-ups ({e[0][:300]!r})")
+    check("Verbatim: found word for word" in e[1] and "p. 11" in e[1] and "the note gives p. 12" in e[1], f"a typed passage found in the text gets the book's page, and the note's own page where it disagrees ({e[1][:200]!r})")
+    check("Not found" in e[2] and "Not checked" in e[3] and "p. 5 (as the note gives it)" in e[3], f"a passage not in the text, and one whose text isn't here, are flagged ({e[2][:120]!r} / {e[3][:160]!r})")
+    check("**Genealogy**" in terms and "Rhizome" not in terms and "no evidence that a quoted passage uses the word" in md, f"terms come from the writer's own words only, with the warning ({terms[:200]!r})")
+    check("## 4. Works cited" in md and "Plateaus" in part("## 4. Works cited", "\u0000"), "the works cited are listed")
+    await page.evaluate("go({ screen: 'draft', draftId: 'dc' })"); await page.wait_for_timeout(300)
+    await page.click("#d-export"); await page.wait_for_selector("#dx-crit")
+    async with page.expect_download() as dl: await page.click("#dx-crit")
+    name = (await dl.value).suggested_filename
+    check(name.endswith("-for-critique.md"), f"Export offers the critique file ({name})")
+    check(not errs, "no script errors in the critique export" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def main():
     sources()
     section_sources()
@@ -945,6 +985,7 @@ async def main():
         await primers(browser)
         await branch_sources(browser)
         await mentions(browser)
+        await critique(browser)
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

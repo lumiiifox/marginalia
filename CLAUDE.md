@@ -45,7 +45,7 @@ ideas? If not, it waits.
 - After changes to `branchLinks`, to thinkers' names or to `CLASSIC_NAMES`, run `python3 tests/links.py` (four-letter names in exact case, accents in either Unicode form,
   word-like names only in full, punctuation around names, and every link across the articles naming the entry it opens).
 - After changes to colours or styles, run `python3 tests/contrast.py` (every screen and the main panels, light and dark, against WCAG AA).
-- After changes to the study tools around the reference sections (Mentioned in, the truth table, term of the day, Hear it, the Anki export, a term's thinkers in time, two-step lineage, your notes through the book, the fallacies, reading paths, from your margins, essay templates, argument puzzles, guess the thinker, connect two thinkers, order of birth, bookplates, missing premise, steps in order, the reconstruction guide, quiz sets, disputations, questions to read with, primers), run `python3 tests/study_tools.py`.
+- After changes to the study tools around the reference sections (Mentioned in, the truth table, term of the day, Hear it, the Anki export, a term's thinkers in time, two-step lineage, your notes through the book, the fallacies, reading paths, from your margins, essay templates, argument puzzles, guess the thinker, connect two thinkers, order of birth, bookplates, missing premise, steps in order, the reconstruction guide, quiz sets, disputations, questions to read with, primers), run `python3 tests/study_tools.py` (also after changes to the critique export).
 - This session can't delete remote branches; the repo is set to delete merged PR branches automatically (if not, tell the owner).
 
 ## Save points
@@ -213,6 +213,12 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   paraphrased from its sources. Save makes an ordinary Objection note on the book, tagged #disputation (`disputeNotes` finds them).
 - From your margins (`resurfHTML`, `resurfaced`, on the home screen after the bookshelf): one note made `RESURF_DAYS` or more ago, picked by
   `dayNumber`; Another (`resurfSkip`) redraws only the card. Nothing stored.
+- A draft for critique (a draft's Export → `exportMenu`: the essay as before, or For critique, saved or copied, `exportCritique`): `critiqueMarkdown`
+  writes the draft (guide lines left out) with each quoted passage marked [E1]…, then the evidence: each passage checked against its book's
+  text when it is here (`placeNote`: verbatim at its saved place, found elsewhere, not found, or not checked), the page and chapter at that
+  place (`sectionIndex`) with the note's own page where it disagrees, the paragraph around it, the gloss and follow-ups; then the glossary terms
+  found in the writer's own words only (`termNeedles`, `findNeedles`), with a warning that a definition is no evidence of a passage's sense;
+  then works cited. Nothing stored. Tested by `tests/study_tools.py`.
 - Essay templates (`ESSAY_TEMPLATES`, in New draft, `draftTitleSheet`): headings, each followed by a paragraph starting with `GUIDE`, drawn
   muted (`.dguide`); ordinary draft items, so backups need nothing new.
 - Puzzles (Thinkers → Puzzles, `puzzlesMenu`): Guess the thinker, Connect two thinkers and Order of birth. Connect (`connectPanel`, state in `CN`):

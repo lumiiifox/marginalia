@@ -122,7 +122,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "d-addnotes") { const d = S.drafts.get(S.draftId); if (!d) return; const have = new Set((d.items || []).filter((x) => x.t === "note").map((x) => x.id)); const id = S.draftId; return notePickerPanel("Add notes", have, (ids) => addNotesToDraft(id, ids).then((n) => toast(`Added ${n} note${n === 1 ? "" : "s"}.`))); }
   if (b.id === "d-addh") return draftTextSheet(S.draftId, null, "h");
   if (b.id === "d-addp") return draftTextSheet(S.draftId, null, "p");
-  if (b.id === "d-export") return exportDraft(S.draftId);
+  if (b.id === "d-export") return exportMenu(S.draftId);
   if (b.id === "d-more") return draftMore(S.draftId);
   if (b.dataset.dmove) { const [k, dir] = b.dataset.dmove.split(":").map(Number); return moveDraftItem(S.draftId, k, dir); }
   if (b.dataset.dremove) return removeDraftItem(S.draftId, +b.dataset.dremove);
