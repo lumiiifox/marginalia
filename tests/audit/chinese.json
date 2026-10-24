@@ -1,0 +1,452 @@
+{
+ "article": "chinese",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited source, 2026-10-24 (20 fixes applied, among them the Guodian evidence for the Laozi, Chan as a reaffirmation of embodied practice, Sima Tan's coining of fajia, Eze on individual and community, and Wiredu's own words quoted; Gyekye's liberty clause cut as a view he reports of Western liberals)",
+ "cited_sources_before": 2,
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "Classical schools and their debates",
+   "text": "Classical Chinese philosophy took shape in the Warring States era (479–221 BCE), when rival schools competed for the attention of rulers.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "by": "Confucius (Csikszentmihalyi) §2",
+     "note": "The rival-schools framing is not in the cited entry.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "Classical schools and their debates",
+   "text": "Confucius sought to preserve the Zhou ritual system and taught the way of the gentleman (junzi), with its virtues, among them ren, benevolence.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Confucius (Csikszentmihalyi) §§3–4",
+     "excerpt": "Confucius sought to preserve the Zhou ritual system",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "Classical schools and their debates",
+   "text": "His followers Mencius and Xunzi disagreed over how far goodness is rooted in natural dispositions and how far it is the product of training.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Chinese Ethics (Wong) §§2.5–2.6",
+     "excerpt": "human nature is bad because it includes a love of profit",
+     "fix": "reword to Wong's statement of each view"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "Classical schools and their debates",
+   "text": "Mozi argued for jian ai, inclusive care, and the Mohists debated the Confucians; Daoist texts such as the Daodejing and Zhuangzi attacked the authoritarian views of Mohism, Xunzi and Han Fei, the leading figure of the school later called fa jia, or Legalism.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Chinese Ethics (Wong) §2.4; Legalism (Pines) §1",
+     "excerpt": "Mozi advocated the doctrine of jian ai as a remedy",
+     "note": "Not confirmed in the entries consulted.",
+     "fix": "split; the Daoist attack on Mohism, Xunzi and Han Fei cut"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "Confucian cultivation and ritual",
+   "text": "The Analects connects ethical cultivation with ren, ritual practice, learning, and the responsibilities of social roles.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Confucius (Csikszentmihalyi) §4",
+     "excerpt": "Five behaviors of the gentleman most central to the Analects are benevolence",
+     "fix": "merged"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "Confucian cultivation and ritual",
+   "text": "Mencius defended an account of morally promising human dispositions, while Xunzi emphasized deliberate cultivation and the transforming work of ritual.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Chinese Ethics (Wong) §§2.5–2.6",
+     "fix": "merged (duplicate of 3)"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "Confucian cultivation and ritual",
+   "text": "Their differences remain central to discussions of moral psychology and political education.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "Mohism, argumentation, and impartial concern",
+   "text": "Mohist texts defend inclusive care and criticize wasteful warfare and extravagant expenditure.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Mohism (Fraser) §§1, 7; Chinese Ethics (Wong) §2.4",
+     "fix": "merged"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "Mohism, argumentation, and impartial concern",
+   "text": "Later Mohist writings developed sophisticated accounts of names, distinctions, reasoning, and standards of judgment.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Mohist Canons (Fraser) §4",
+     "excerpt": "The later Mohists develop a sophisticated naturalistic semantic theory",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "Mohism, argumentation, and impartial concern",
+   "text": "Mohism was a rival to Confucian schools, not merely an early version of contemporary consequentialism.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "Daoist texts and the limits of fixed distinctions",
+   "text": "The Daodejing and Zhuangzi explore dao, spontaneity, cultivated responsiveness, and the limits of rigid classifications.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Laozi (Chan) §§6–7",
+     "excerpt": "The concept of wuwei, \"nonaction,\" serves to explain naturalness in practice.",
+     "fix": "reword to the Laozi"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "Daoist texts and the limits of fixed distinctions",
+   "text": "Their textual histories and philosophical emphases differ, and neither should be reduced to a simple doctrine of passivity.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Laozi (Chan) §§2–3, 7",
+     "excerpt": "Wuwei does not mean total inaction.",
+     "fix": "reword (contrastive)"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Daoist texts and the limits of fixed distinctions",
+   "text": "Questions about language, skill, and transformation connect these writings to later debates.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Imperial and Neo-Confucian developments",
+   "text": "By the Han dynasty experts in the Confucian classics held scholastic positions in the government.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Confucius (Csikszentmihalyi) §1",
+     "excerpt": "were given scholastic positions in the government",
+     "fix": "keep; Five Classics"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Imperial and Neo-Confucian developments",
+   "text": "Much later, Zhu Xi (1130–1200) gave the Analects a Neo-Confucian interpretation and made it part of a curriculum built on the Four Books.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Confucius (Csikszentmihalyi) §1",
+     "excerpt": "integrated the study of the Analects into a curriculum based on the",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Statecraft, Buddhism, and medieval transformations",
+   "text": "Warring States discussions of law, administration, and political order include texts associated with Shang Yang and Han Fei.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Legalism (Pines) §1",
+     "excerpt": "the fajia label was designated primarily as a bibliographic category",
+     "fix": "keep, made specific"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "Statecraft, Buddhism, and medieval transformations",
+   "text": "Buddhism's transmission into China stimulated new debates about emptiness, mind, practice, and liberation, contributing to distinctive schools including Tiantai, Huayan, and Chan.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Chan Buddhism (Hershock) §§2–3",
+     "excerpt": "Chan Buddhism developed in China as a radical reaffirmation",
+     "fix": "reword"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Statecraft, Buddhism, and medieval transformations",
+   "text": "These interactions reshaped rather than simply replaced earlier vocabularies.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Neo-Confucianism and later intellectual life",
+   "text": "Song and Ming thinkers such as Zhu Xi and Wang Yangming debated principle, vital force, knowledge, and moral cultivation.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Wang Yangming (Van Norden) §§2–4",
+     "excerpt": "Wang’s most distinctive and well-known doctrine is the unity of knowing and acting",
+     "fix": "make specific"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Neo-Confucianism and later intellectual life",
+   "text": "Their interpretations influenced education, government, and philosophical practice across East Asia.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Wang Yangming (Van Norden) §6",
+     "fix": "reword: Japan as Van Norden gives it"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Neo-Confucianism and later intellectual life",
+   "text": "Modern Chinese philosophy continues to revisit classical traditions alongside science, political change, and intercultural debate.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 21,
+  "claims": 21,
+  "unverified": 1,
+  "supported": 13,
+  "overstated": 2,
+  "editorial": 5,
+  "assertive_claims": 21,
+  "cited_source_supports_before": 16,
+  "shipped_sentences": 10
+ },
+ "new_text": [
+  {
+   "text": "In the Analects and later sources, Confucius works to keep alive the ritual order of the Zhou, and the Analects centres the gentleman (junzi) on five virtues, benevolence (ren), righteousness (yi), ritual propriety (li), wisdom (zhi) and trustworthiness (xin), of which benevolence is the broadest.",
+   "section": "Confucius and his followers",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Confucius” (Csikszentmihalyi) §§3–4",
+     "excerpt": "Confucius sought to preserve the Zhou ritual system",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Mencius held that human nature is good, its beginnings like sprouts that need nurture, and Xunzi that it is bad, full of envy, hatred and a desire for gain, and must be reshaped by teaching and ritual.",
+   "section": "Confucius and his followers",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Chinese Ethics” (Wong) §§2.5–2.6",
+     "excerpt": "human nature is bad because it includes a love of profit",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Mozi advocated inclusive care (jian ai) as a remedy for the conflicts that lead great states to attack small ones, judged practices by whether they benefit all the world, and condemned Confucian ritual and music as wasteful.",
+   "section": "Mohism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Chinese Ethics” (Wong) §2.4",
+     "excerpt": "Mozi advocated the doctrine of jian ai as a remedy",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Mohism” (Fraser) §§1, 7",
+     "excerpt": "the notion of impartiality that stands at the heart of their ethics",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The later Mohists developed a sophisticated naturalistic theory of names and sought objective standards for distinguishing what is so from what is not.",
+   "section": "Mohism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Mohist Canons” (Fraser) §§1, 4",
+     "excerpt": "The later Mohists develop a sophisticated naturalistic semantic theory",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The Laozi, or Daodejing, is probably the work of many hands over a long period, as two differing versions of one chapter in the Guodian manuscripts suggest; its central ideas include dao, naturalness (ziran) and nonaction (wuwei), which shows how naturalness works in practice.",
+   "section": "Daoist texts",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Laozi” (Chan) §§2–3, 6–7",
+     "excerpt": "The concept of wuwei, \"nonaction,\" serves to explain naturalness in practice.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Fajia, “Legalism,” is a Han label, coined by Sima Tan and used by Liu Xiang as a bibliographic category of the imperial library, for thinkers such as Shang Yang and Han Fei who sought a rich state and a powerful army; Han Fei presented himself as synthesizing and improving the ideas of Shang Yang and Shen Buhai, and their fa means standards and methods as well as law.",
+   "section": "Legalism and the imperial state",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Legalism in Chinese Philosophy” (Pines) intro, §1",
+     "excerpt": "the fajia label was designated primarily as a bibliographic category",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "By the Han dynasty, experts in the Five Classics held scholastic positions in the government.",
+   "section": "Legalism and the imperial state",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Confucius” (Csikszentmihalyi) §1",
+     "excerpt": "were given scholastic positions in the government",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "After Buddhism entered China, schools built on rival rankings of the scriptures, such as Tiantai and Huayan, arose, and Chan developed as a radical reaffirmation of the primacy of embodied practice; Chinese Buddhists debated emptiness, the original purity of mind and whether all beings have Buddha-nature.",
+   "section": "Buddhism and Neo-Confucianism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Chan Buddhism” (Hershock) §§2–3",
+     "excerpt": "Chan Buddhism developed in China as a radical reaffirmation",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Zhu Xi (1130–1200) gave the Analects a Neo-Confucian reading within a curriculum based on the Four Books and held that everything has two aspects, pattern (li) and qi; Wang Yangming (1472–1529) challenged almost every aspect of Zhu's reading of the Great Learning, and is best known for the unity of knowing and acting.",
+   "section": "Buddhism and Neo-Confucianism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Confucius” (Csikszentmihalyi) §1",
+     "excerpt": "integrated the study of the Analects into a curriculum based on the",
+     "accuracy": "supported"
+    },
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Wang Yangming” (Van Norden) §§2–4",
+     "excerpt": "Wang’s most distinctive and well-known doctrine is the unity of knowing and acting",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In Japan Wang's philosophy, known as Ōyōmeigaku, was taken up by Nakae Tōju and Kumazawa Banzan.",
+   "section": "Buddhism and Neo-Confucianism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Wang Yangming” (Van Norden) §6",
+     "excerpt": "Ōyōmeigaku",
+     "accuracy": "supported"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}

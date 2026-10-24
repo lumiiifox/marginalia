@@ -1,0 +1,492 @@
+{
+ "article": "african",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited source, 2026-10-24 (20 fixes applied, among them the Guodian evidence for the Laozi, Chan as a reaffirmation of embodied practice, Sima Tan's coining of fajia, Eze on individual and community, and Wiredu's own words quoted; Gyekye's liberty clause cut as a view he reports of Western liberals)",
+ "cited_sources_before": 3,
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "Scope and intellectual traditions",
+   "text": "African philosophy draws on African systems of thought, transmitted largely orally, and on the work of individual thinkers.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "African Sage Philosophy (Masolo) §3",
+     "excerpt": "thoughts can be expressed either in writing, or as unwritten oral reflections",
+     "note": "Masolo says this of sage philosophy, not of African philosophy as a whole.",
+     "fix": "reword: oral and written reflection"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "Plural histories, languages, and intellectual traditions",
+   "text": "African philosophy encompasses diverse written, oral, and dialogical traditions across the continent and its diasporas.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "Plural histories, languages, and intellectual traditions",
+   "text": "Its history cannot be reduced to twentieth-century academic debates or to a single communal worldview.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "History of African Philosophy (IEP) §§1, 6–7",
+     "note": "Contrastive.",
+     "fix": "replaced by the IEP's periodization and its contested precursors"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "Plural histories, languages, and intellectual traditions",
+   "text": "Philosophical inquiry takes place through arguments about ethics, politics, metaphysics, knowledge, and the interpretation of inherited concepts.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "Ethnophilosophy and philosophical agency",
+   "text": "Twentieth-century debate turned on what African philosophy is.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "African Sage Philosophy (Masolo) §4",
+     "fix": "merged"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "Ethnophilosophy and philosophical agency",
+   "text": "Placide Tempels's Bantu Philosophy (1945) presented the shared worldview of a people as a philosophy, an approach Paulin Hountondji made notorious as ethnophilosophy, faulting Tempels and his followers for casting African philosophy as an anonymous system of thought without individual thinkers.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "African Sage Philosophy (Masolo) §4",
+     "excerpt": "casting African philosophy as an anonymous system of thought",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "Ethnophilosophy and philosophical agency",
+   "text": "Henry Odera Oruka's sage philosophy answered the same mistake by seeking the critical reflection of individual sages within traditional communities.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "African Sage Philosophy (Masolo) §5",
+     "excerpt": "capable of the critical, second-order type of thinking about the various problems",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "Ethnophilosophy and its critics",
+   "text": "Debates about ethnophilosophy ask whether shared beliefs can be presented as philosophy without identifying arguments and individual interlocutors.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "Ethnophilosophy and its critics",
+   "text": "Paulin Hountondji challenged the attribution of an anonymous collective doctrine to entire peoples, while Henry Odera Oruka investigated critical reflection among individual sages.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "African Sage Philosophy (Masolo) §§4–5",
+     "fix": "cut (duplicate of 6 and 7)"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "Ethnophilosophy and its critics",
+   "text": "Their disagreements concern method, evidence, and intellectual agency.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "Personhood and community",
+   "text": "Recurring themes include personhood and community.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "Personhood and community",
+   "text": "Ifeanyi Menkiti argued that personhood is attained through participation in communal life, and Kwame Gyekye, who held that human beings are social by nature, counted individual liberty among the basic goods of a society while holding that duties take precedence over rights.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "African Ethics (Gyekye) §§4, 7–9",
+     "excerpt": "In this morality duties trump rights, not the other way around",
+     "fix": "keep, split"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Personhood and community",
+   "text": "Kwasi Wiredu called for the conceptual decolonization of African philosophy: concepts absorbed through colonial languages should be tested against intuitions in one's own language and kept or discarded on their merits.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Wiredu (Osha) §§2, 4",
+     "note": "The test against one's own language is reported in Osha, not framed as a rule for every colonial concept.",
+     "fix": "reword to what Osha reports"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Personhood, community, and moral obligation",
+   "text": "Kwame Gyekye and Ifeanyi Menkiti advanced different accounts of personhood and communal life.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "African Ethics (Gyekye) §§4, 7",
+     "fix": "cut (duplicate of 12)"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Personhood, community, and moral obligation",
+   "text": "Discussions of ubuntu and related ethical vocabularies ask how relationships, dignity, responsibility, and autonomy interact.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Hunhu/Ubuntu (Mangena) §3",
+     "excerpt": "a person is a person through other persons",
+     "fix": "reword to Mangena's account, with the debate he reports"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Personhood, community, and moral obligation",
+   "text": "No single formula represents all African societies, and communal values need not imply the disappearance of individual rights.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "Conceptual decolonization and language",
+   "text": "Kwasi Wiredu examined how philosophical problems can change when translated across languages and conceptual traditions.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "by": "Wiredu (Osha) §4",
+     "note": "Osha does not say Wiredu claims translation changes the problems.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Conceptual decolonization and language",
+   "text": "His project of conceptual decolonization encouraged scrutiny of inherited colonial categories rather than the uncritical rejection of external ideas.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Wiredu (Osha) §§2, 6",
+     "excerpt": "reflective integration of the traditional and the modern",
+     "fix": "keep, reworded (contrastive)"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Conceptual decolonization and language",
+   "text": "Questions of translation, education, and intellectual authority remain central.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Political thought, diaspora, and contemporary debates",
+   "text": "African and diasporic philosophers address anticolonial liberation, democracy, gender, race, migration, and global justice.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Political thought, diaspora, and contemporary debates",
+   "text": "Debates about African socialism, Pan-Africanism, feminist thought, and political reconciliation reflect divergent histories and commitments.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "History of African Philosophy (IEP) §§4.b, 7.a",
+     "excerpt": "Nkrumah advocates African socialism",
+     "fix": "make specific: Nyerere, Nkrumah, Senghor"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "section": "Political thought, diaspora, and contemporary debates",
+   "text": "The field's plurality resists treating its intellectual work as only a response to European philosophy.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 22,
+  "claims": 22,
+  "overstated": 2,
+  "editorial": 8,
+  "supported": 10,
+  "unverified": 2,
+  "assertive_claims": 22,
+  "cited_source_supports_before": 13,
+  "shipped_sentences": 14
+ },
+ "new_text": [
+  {
+   "text": "The Internet Encyclopedia of Philosophy's history divides African philosophy into a pre-systematic epoch and a systematic one, whose first period runs from the 1920s to the 1960s.",
+   "section": "Periods and precursors",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “History of African Philosophy” §6",
+     "excerpt": "Early period 1920s – 1960s",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Whether ancient Egyptian thought belongs to African philosophy is treated there as a controversy of the pre-systematic epoch, as is how independent the seventeenth-century Ethiopian philosophers Zera Yacob and Walda Heywat were of foreign influences.",
+   "section": "Periods and precursors",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “History of African Philosophy” §§1, 6.a, 7.a",
+     "excerpt": "how independent are their views from foreign influences",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Twentieth-century debate turned on what African philosophy is.",
+   "section": "Ethnophilosophy and its critics",
+   "claims": [
+    {
+     "type": "editorial",
+     "accuracy": "editorial"
+    }
+   ]
+  },
+  {
+   "text": "Placide Tempels's Bantu Philosophy (1945) presented the shared worldview of a people as a philosophy, and Paulin Hountondji, calling this approach ethnophilosophy, faulted Tempels and his followers for presenting African philosophy as a collective, anonymous body of thought that no individual thinker claims or answers for.",
+   "section": "Ethnophilosophy and its critics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “African Sage Philosophy” (Masolo) §4",
+     "excerpt": "casting African philosophy as an anonymous system of thought",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In the resulting Great Debate, universalists such as Hountondji, Kwasi Wiredu and Peter Bodunrin held that African philosophy must argue and clarify as philosophy does anywhere, while traditionalists held that studying the philosophical elements in a people's world-view is African philosophy.",
+   "section": "Ethnophilosophy and its critics",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “History of African Philosophy” §§2, 7.b",
+     "excerpt": "without argument and clarification, there is strictly no philosophy",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Henry Odera Oruka's sage philosophy looked for individual sages within traditional communities capable of critical, second-order thinking, whose reflections may be written or unwritten and oral.",
+   "section": "Ethnophilosophy and its critics",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “African Sage Philosophy” (Masolo) §§3, 5",
+     "excerpt": "capable of the critical, second-order type of thinking about the various problems",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Ifeanyi Menkiti held that personhood is something that has to be attained, through participation in communal life.",
+   "section": "Personhood and community",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “African Ethics” (Gyekye) §4",
+     "excerpt": "personhood is the sort of thing which has to be attained",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Kwame Gyekye held that the human being is social by nature, and that in African morality duties trump rights.",
+   "section": "Personhood and community",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “African Ethics” (Gyekye) §§8–9",
+     "excerpt": "In this morality duties trump rights, not the other way around",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Hunhu or ubuntu, a word shared by Shona, Zulu, Xhosa, Ndebele, Sesotho and most other Bantu languages of Southern Africa, names the moral attribute of a person, often glossed by the maxim that a person is a person through other persons.",
+   "section": "Hunhu/ubuntu",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “Hunhu/Ubuntu in Traditional Southern African Thought” (Mangena) intro, §3",
+     "excerpt": "referring to the moral attribute of a person",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Fainos Mangena reports that many ubuntu writers put community above the individual, while Michael Onyebuchi Eze argues that individual and community form each other at the same time, so that neither comes first.",
+   "section": "Hunhu/ubuntu",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “Hunhu/Ubuntu in Traditional Southern African Thought” (Mangena) §3",
+     "excerpt": "the individual and the community are not radically opposed in the sense of priority",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Kwasi Wiredu called for purging African philosophical thinking of “all uncritical assimilation of Western ways of thinking,” and saw no reason why an African philosopher should not test formulations made in a colonial language against intuitions in his own.",
+   "section": "Conceptual decolonization",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “Wiredu, Kwasi” (Osha) §§2, 4",
+     "excerpt": "uncritical assimilation of Western ways of thinking",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "His aim was a “reflective integration of the traditional and the modern,” and he judged traditional ideas on their merits, calling traditional medicine “terribly weak in diagnosis,” a criticism Sanya Osha thinks goes too far.",
+   "section": "Conceptual decolonization",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “Wiredu, Kwasi” (Osha) §§2, 4, 6",
+     "excerpt": "reflective integration of the traditional and the modern",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Nationalist thinkers of the early period proposed political philosophies for decolonization, among them Julius Nyerere's ujamaa, Kwame Nkrumah's African socialism and Léopold Sédar Senghor's Négritude.",
+   "section": "Political thought and later movements",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “History of African Philosophy” §§4.b, 7.a",
+     "excerpt": "Nkrumah advocates African socialism",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "More recently, Jonathan Chimakonam proposed a conversational method, and the conversationalists seek to build an enduring corpus of African philosophy through critical exchange.",
+   "section": "Political thought and later movements",
+   "claims": [
+    {
+     "by": "Internet Encyclopedia of Philosophy, “History of African Philosophy” §§3.c, 5.d, 7.d",
+     "excerpt": "This method was first proposed by Jonathan Chimakonam.",
+     "accuracy": "supported"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}

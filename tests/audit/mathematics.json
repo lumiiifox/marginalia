@@ -1,0 +1,554 @@
+{
+ "article": "mathematics",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited source, 2026-10-24 (20 fixes applied, among them the Guodian evidence for the Laozi, Chan as a reaffirmation of embodied practice, Sima Tan's coining of fajia, Eze on individual and community, and Wiredu's own words quoted; Gyekye's liberty clause cut as a view he reports of Western liberals)",
+ "cited_sources_before": 3,
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "Objects, proof, and mathematical knowledge",
+   "text": "Philosophy of mathematics asks what numbers, sets, structures, and proofs are and how mathematical knowledge is possible.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §1",
+     "fix": "merged with 20"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "Objects, proof, and mathematical knowledge",
+   "text": "The apparent necessity and abstractness of mathematical truths create problems for theories of knowledge based exclusively on sensory observation.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §1",
+     "fix": "merged with 20"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "Logicism, formalism, and intuitionism",
+   "text": "Gottlob Frege and Bertrand Russell sought logical foundations for mathematics.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §2.1",
+     "fix": "merged with 22"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "Logicism, formalism, and intuitionism",
+   "text": "David Hilbert developed a programme centered on formal systems and consistency proofs.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §2.3",
+     "fix": "merged with 24"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "Logicism, formalism, and intuitionism",
+   "text": "L. E. J. Brouwer's intuitionism connects mathematics with constructive mental activity and questions some classical proof principles.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §2.2",
+     "fix": "merged with 23"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "Logicism, formalism, and intuitionism",
+   "text": "Kurt Gödel's incompleteness results placed limits on certain formalist ambitions.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §2.3",
+     "fix": "merged with 24"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "Platonism, nominalism, and structuralism",
+   "text": "Mathematical platonists treat mathematical objects as mind-independent.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §3",
+     "fix": "merged with 25"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "Platonism, nominalism, and structuralism",
+   "text": "Nominalists seek to avoid such commitments, while structuralists describe mathematical objects through positions and relations within patterns.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §§4.2–4.5",
+     "fix": "merged with 28"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "Platonism, nominalism, and structuralism",
+   "text": "Paul Benacerraf's challenges concern both how abstract objects could be known and how numbers should be identified.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §§3.4, 4.1",
+     "fix": "merged with 27"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "Infinity, sets, and foundations",
+   "text": "Set theory studies infinite collections and the axioms governing them.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "Infinity, sets, and foundations",
+   "text": "Questions about the continuum hypothesis and large cardinals raise issues about independence, truth, and the justification of axioms.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §5.4",
+     "fix": "merged with 29"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "Infinity, sets, and foundations",
+   "text": "Category theory offers a different language for relationships and structures, though its role as a foundation remains contested.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §5.1",
+     "fix": "merged with 29"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Proof, computation, and mathematical practice",
+   "text": "Mathematical knowledge depends on proof, but philosophers examine the roles of diagrams, examples, intuition, explanation, and computer verification.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Proof, computation, and mathematical practice",
+   "text": "Formal proof assistants and computer-assisted proofs invite questions about trust, surveyability, and the social organization of mathematical expertise.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Mathematics across traditions",
+   "text": "Ancient Greek mathematical argument, Indian work on numeration and algebra, Chinese mathematical problem-solving, and mathematical traditions in the Islamic world developed varied techniques and standards of demonstration.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Mathematics across traditions",
+   "text": "These histories complicate the idea that mathematics has one uninterrupted methodological origin or a single timeless style of proof.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "Application, explanation, and open questions",
+   "text": "Why does mathematics apply so effectively to the physical world?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Application, explanation, and open questions",
+   "text": "Does mathematical explanation in science support realism about abstract entities?",
+   "claims": [
+    {
+     "type": "question",
+     "evidence": "n/a",
+     "accuracy": "non-assertive",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Application, explanation, and open questions",
+   "text": "Philosophers also examine probability, mathematical beauty, the epistemology of diagrams, and the relationships among logic, computation, and mathematical understanding.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Earlier overview",
+   "text": "Philosophy of mathematics asks what mathematical objects are and how we can know about them, given that numbers and sets seem not to be physical and mathematical knowledge seems to come from proof alone.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) intro, §1",
+     "excerpt": "At first blush, mathematics appears to study abstract entities.",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Earlier overview",
+   "text": "Around 1900 three programs tried to secure the foundations of mathematics.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §2",
+     "excerpt": "three non-platonistic accounts of mathematics were developed: logicism, formalism, and intuitionism",
+     "fix": "keep; predicativism noted"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "section": "Earlier overview",
+   "text": "Logicism, from Frege and Russell, sought to reduce mathematics to logic; Frege's system fell to Russell's paradox, though a neo-logicism built on Hume's principle has been revived.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §2.1",
+     "excerpt": "Russell showed that Frege's Basic Law V entails a contradiction.",
+     "fix": "keep, made specific"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "section": "Earlier overview",
+   "text": "Intuitionism, from Brouwer, treats mathematics as mental construction, rejects completed infinities and proofs of existence that give no construction, and so revises classical logic.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §2.2",
+     "excerpt": "According to intuitionism, mathematics is essentially an activity of construction.",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "section": "Earlier overview",
+   "text": "Formalism, from Hilbert, treated higher mathematics as a formal system whose consistency was to be proved; Gödel's incompleteness theorems undermined that hope.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §2.3",
+     "excerpt": "Together, they entail that Hilbert's program fails.",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 25,
+   "section": "Earlier overview",
+   "text": "Platonists hold that mathematical objects exist independently of us.",
+   "claims": [
+    {
+     "type": "conceptual",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §3",
+     "fix": "merged with 26"
+    }
+   ]
+  },
+  {
+   "s": 26,
+   "section": "Earlier overview",
+   "text": "Gödel defended this view, and Quine and Putnam argued that, because our best scientific theories cannot do without mathematics, we are committed to the entities it describes.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §§3, 3.2",
+     "excerpt": "an indispensability argument",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 27,
+   "section": "Earlier overview",
+   "text": "Paul Benacerraf posed two problems for platonism: how we could know about abstract objects that we cannot causally interact with, and which sets the natural numbers really are, when several set-theoretic constructions serve equally well.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §§3.4, 4.1",
+     "excerpt": "Benacerraf formulated an epistemological problem for a variety of platonistic positions.",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 28,
+   "section": "Earlier overview",
+   "text": "Structuralists such as Shapiro and Resnik answer that mathematics describes structures, positions in patterns, and nominalists, such as Hartry Field, try to do without abstract objects altogether, or treat mathematics as a kind of useful fiction.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §§4.2–4.5",
+     "excerpt": "made an earnest attempt to carry out a nominalistic reconstruction",
+     "fix": "keep, with Field's Newtonian mechanics"
+    }
+   ]
+  },
+  {
+   "s": 29,
+   "section": "Earlier overview",
+   "text": "Current debates concern whether set theory or category theory should serve as the foundation, the status of the continuum hypothesis, computer-assisted proofs such as that of the four-color theorem, and the practice of mathematics as it actually develops.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Philosophy of Mathematics (Horsten) §§5.1, 5.4, 6",
+     "excerpt": "The continuum hypothesis is independent of ZFC",
+     "fix": "keep; the four-colour example and the practice theme as Horsten gives them"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 29,
+  "claims": 29,
+  "supported": 21,
+  "editorial": 3,
+  "unverified": 3,
+  "non-assertive": 2,
+  "assertive_claims": 27,
+  "cited_source_supports_before": 21,
+  "shipped_sentences": 11
+ },
+ "new_text": [
+  {
+   "text": "Philosophy of mathematics asks what mathematical objects are and how we can know about them, since mathematics appears to study abstract entities and its knowledge seems to come by deduction from basic principles.",
+   "section": "Abstract objects and mathematical knowledge",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of Mathematics” (Horsten) intro, §1",
+     "excerpt": "At first blush, mathematics appears to study abstract entities.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In the first decades of the twentieth century three non-platonistic accounts of mathematics took shape, logicism, intuitionism and formalism, with predicativism as a fourth.",
+   "section": "Logicism, intuitionism, and formalism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of Mathematics” (Horsten) §2",
+     "excerpt": "three non-platonistic accounts of mathematics were developed: logicism, formalism, and intuitionism",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Logicism, from Frege and Russell, sought to reduce mathematics to logic; Russell showed that Frege's Basic Law V entails a contradiction, and Crispin Wright later revived the project as a neo-logicism built on Hume's Principle.",
+   "section": "Logicism, intuitionism, and formalism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of Mathematics” (Horsten) §2.1",
+     "excerpt": "Russell showed that Frege's Basic Law V entails a contradiction.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Brouwer's intuitionism treats mathematics as essentially an activity of construction, rejects the actual or completed infinite and non-constructive proofs of existence, and drops the law of excluded middle from its logic.",
+   "section": "Logicism, intuitionism, and formalism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of Mathematics” (Horsten) §2.2",
+     "excerpt": "According to intuitionism, mathematics is essentially an activity of construction.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Hilbert's formalism sought proofs of the consistency of mathematics, and Gödel's incompleteness theorems together entail that Hilbert's program fails.",
+   "section": "Logicism, intuitionism, and formalism",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of Mathematics” (Horsten) §2.3",
+     "excerpt": "Together, they entail that Hilbert's program fails.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Platonists take the subject matter of mathematics to be abstract entities; Gödel was a platonist, and Quine and Putnam gave an indispensability argument: our best science cannot do without mathematics, so we are committed to what it describes.",
+   "section": "Platonism and its challengers",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of Mathematics” (Horsten) §§3, 3.2",
+     "excerpt": "an indispensability argument",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Paul Benacerraf posed two problems: how we could know abstract objects, and which sets the natural numbers are, when no set-theoretic construction seems better than the others.",
+   "section": "Platonism and its challengers",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of Mathematics” (Horsten) §§3.4, 4.1",
+     "excerpt": "Benacerraf formulated an epistemological problem for a variety of platonistic positions.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Structuralists such as Stewart Shapiro and Michael Resnik hold that mathematical theories describe structures, Hartry Field attempted a nominalistic reconstruction of Newtonian mechanics, and fictionalists treat mathematical theories as stories.",
+   "section": "Platonism and its challengers",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of Mathematics” (Horsten) §§4.2–4.5",
+     "excerpt": "made an earnest attempt to carry out a nominalistic reconstruction",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Current debates concern whether set theory or category theory should serve as the foundation, the continuum hypothesis, which is independent of the standard axioms of set theory, proofs in which computers play an essential role, and a historical and sociological turn toward mathematical practice.",
+   "section": "Current debates",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of Mathematics” (Horsten) §§5.1, 5.4, 6",
+     "excerpt": "The continuum hypothesis is independent of ZFC",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Why does mathematics apply so effectively to the physical world?",
+   "section": "Open questions",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "Does mathematical explanation in science support realism about abstract entities?",
+   "section": "Open questions",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}
