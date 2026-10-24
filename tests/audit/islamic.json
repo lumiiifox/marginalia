@@ -1,0 +1,470 @@
+{
+ "article": "islamic",
+ "audited": "2026-10-23",
+ "mode": "in place (owner's decision, 2026-10-23: audit and fix in place, not rebuilt on frame-2026-10)",
+ "by": "Claude (lead dev); independent review of every shipped sentence against its cited SEP section, 2026-10-24 (11 fixes applied, among them the Pudgalavādins on persons as ultimately real, Nyāya's debt to Buddhist logic, al-Kindī's own synthesis, and al-Ashʿarī as founder of the Ashʿarite school)",
+ "cited_sources_before": 3,
+ "verdicts": "evidence: did one of the article's cited sources support it (yes|partly|no|n/a). accuracy: supported|overstated|contested|wrong|unverified|editorial|non-assertive, settled by the source in 'by'. Excerpts are under 15 words and come from a summarizing fetch, so the reviewer re-reads the section named.",
+ "sentences": [
+  {
+   "s": 1,
+   "section": "Falsafa and kalām",
+   "text": "Philosophy in the Islamic world developed along two currents.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 2,
+   "section": "Falsafa and kalām",
+   "text": "Falsafa took up Aristotle and the Neoplatonists in Arabic translation, and kalām was rational theology; philosophers such as al-Fārābī, Ibn Sīnā and Ibn Rushd regarded kalām as unscientific dialectical argument.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "unverified",
+     "note": "The cited Cambridge chapter could not be opened; the falāsifa's verdict on kalām is not confirmed in an SEP entry consulted.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 3,
+   "section": "Translation, intellectual exchange, and diverse languages",
+   "text": "Arabic translations and adaptations of Greek philosophical and scientific works helped create new intellectual traditions in the Abbasid period.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Greek Sources (D'Ancona) §§1–3",
+     "excerpt": "the Christians of Syria who took part in the translation movement",
+     "fix": "keep, made specific"
+    }
+   ]
+  },
+  {
+   "s": 4,
+   "section": "Translation, intellectual exchange, and diverse languages",
+   "text": "Philosophers and translators worked across Muslim, Christian, and Jewish communities, and philosophy also developed in Persian and other languages.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Greek Sources (D'Ancona) §1",
+     "fix": "merged with 3; Persian clause cut"
+    }
+   ]
+  },
+  {
+   "s": 5,
+   "section": "Translation, intellectual exchange, and diverse languages",
+   "text": "The intellectual history is therefore wider than a single confessional or linguistic category.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 6,
+   "section": "Falsafa, kalām, and their disagreements",
+   "text": "Al-Fārābī and Ibn Sīnā transformed Aristotelian and Neoplatonic resources while developing distinctive accounts of logic, metaphysics, psychology, and political life.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Greek Sources (D'Ancona) intro, §4",
+     "excerpt": "he adopted them in a new synthesis in his philosophical works",
+     "fix": "keep, sourced"
+    }
+   ]
+  },
+  {
+   "s": 7,
+   "section": "Falsafa, kalām, and their disagreements",
+   "text": "Kalām traditions debated divine attributes, causation, human action, and revelation.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 8,
+   "section": "Falsafa, kalām, and their disagreements",
+   "text": "The relation between philosophical demonstration and theological argument was contested rather than uniformly antagonistic.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 9,
+   "section": "Avicenna: existence, essence, and intellect",
+   "text": "Ibn Sīnā distinguished essence and existence in influential ways and developed arguments about necessary existence.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "supported",
+     "by": "Ibn Sina's Metaphysics (Lizzini) §4.2",
+     "excerpt": "The Necessarily Existent is therefore absolutely one, indivisible and unique",
+     "fix": "keep, sourced"
+    }
+   ]
+  },
+  {
+   "s": 10,
+   "section": "Avicenna: existence, essence, and intellect",
+   "text": "His psychology, including the famous flying-person thought experiment, asks how self-awareness relates to bodily perception.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "no",
+     "accuracy": "unverified",
+     "note": "The flying man is not in Lizzini's entry.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 11,
+   "section": "Avicenna: existence, essence, and intellect",
+   "text": "Later philosophers and theologians engaged with and criticized these arguments across generations.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 12,
+   "section": "Causation and theological critique",
+   "text": "The first explicit occasionalists were theologians of the Ashʿarite school of kalām.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Occasionalism (Lee) §1.1",
+     "excerpt": "the first philosophers to explicitly expound the position were the Islamic occasionalists",
+     "fix": "keep, reworded"
+    }
+   ]
+  },
+  {
+   "s": 13,
+   "section": "Causation and theological critique",
+   "text": "Al-Ghazālī's Incoherence of the Philosophers, directed chiefly against Ibn Sīnā, argued that we observe only that burning follows the contact of fire with cotton, never a necessary connection, so that God creates the burning each time.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Occasionalism (Lee) §3.3",
+     "excerpt": "Their connection is due to the prior decree of God",
+     "note": "Lee does not say al-Ghazālī holds that we observe only succession, or that God creates each burning.",
+     "fix": "reword to Lee's account, with the dispute over al-Ghazālī's occasionalism"
+    }
+   ]
+  },
+  {
+   "s": 14,
+   "section": "Causation and theological critique",
+   "text": "Ibn Rushd replied in The Incoherence of the Incoherence that things have essences that determine their functions, and his commentaries on Aristotle, among them the long commentary on De anima, were transmitted to Jewish and Latin readers.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Ibn Rushd (Pasnau) §§1.2, 4, 9.2–9.3",
+     "excerpt": "things have essences and attributes that determine the special functions of each thing",
+     "fix": "keep; De anima clause cut"
+    }
+   ]
+  },
+  {
+   "s": 15,
+   "section": "Ghazālī, Averroes, and causation",
+   "text": "Al-Ghazālī criticized specific philosophical claims while also making extensive use of logic.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "al-Ghazali (Griffel) intro, §3",
+     "fix": "reword: demonstration and the three condemned teachings"
+    }
+   ]
+  },
+  {
+   "s": 16,
+   "section": "Ghazālī, Averroes, and causation",
+   "text": "Ibn Rushd defended philosophical demonstration and responded to Ghazālī's critique, offering influential readings of Aristotle.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Ibn Rushd (Pasnau) §§2, 6.2",
+     "excerpt": "the most perfect kind of reflection",
+     "fix": "keep, made specific"
+    }
+   ]
+  },
+  {
+   "s": 17,
+   "section": "Ghazālī, Averroes, and causation",
+   "text": "Disputes about causation, creation, and divine knowledge cannot be captured by a simple conflict between reason and faith.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 18,
+   "section": "Later philosophical traditions",
+   "text": "Philosophy continued in the east, in the illuminationist philosophy of Suhrawardī and later in Mullā Ṣadrā.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Suhrawardi (Marcotte) §§1.1, 6.1",
+     "fix": "merged"
+    }
+   ]
+  },
+  {
+   "s": 19,
+   "section": "Illuminationism and later philosophical traditions",
+   "text": "Suhrawardī's illuminationist philosophy explored knowledge, presence, and the metaphysics of light.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "yes",
+     "accuracy": "supported",
+     "by": "Suhrawardi (Marcotte) §§1.1, 3.2, 4",
+     "excerpt": "has become the eponym of an 'Illuminationist' (ishraqi) philosophical tradition",
+     "fix": "keep"
+    }
+   ]
+  },
+  {
+   "s": 20,
+   "section": "Illuminationism and later philosophical traditions",
+   "text": "Mullā Ṣadrā later developed influential arguments about existence, change, and substantial motion.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "overstated",
+     "by": "Suhrawardi (Marcotte) §§4.2, 6.1",
+     "excerpt": "upholds the principality of existence (wujud), in opposition to",
+     "note": "Substantial motion is not in Marcotte.",
+     "fix": "reword: primacy of existence; substantial motion cut"
+    }
+   ]
+  },
+  {
+   "s": 21,
+   "section": "Illuminationism and later philosophical traditions",
+   "text": "Philosophical activity continued in diverse settings long after the period often treated as a supposed medieval endpoint.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Suhrawardi (Marcotte) §6.1",
+     "excerpt": "a number of philosophical circles in the Islamic East studied his works",
+     "fix": "reword"
+    }
+   ]
+  },
+  {
+   "s": 22,
+   "section": "Transmission, ethics, and ongoing interpretation",
+   "text": "Arabic philosophical texts influenced Jewish and Latin scholastic traditions through translation and commentary, while later Islamic intellectual traditions pursued independent debates.",
+   "claims": [
+    {
+     "type": "historical",
+     "evidence": "partly",
+     "accuracy": "supported",
+     "by": "Ibn Rushd (Pasnau) §§9.2–9.3",
+     "fix": "merged into the Ibn Rushd sentence"
+    }
+   ]
+  },
+  {
+   "s": 23,
+   "section": "Transmission, ethics, and ongoing interpretation",
+   "text": "Ethics, law, political philosophy, mysticism, and theories of knowledge intersected in varying ways.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "fix": "cut"
+    }
+   ]
+  },
+  {
+   "s": 24,
+   "section": "Transmission, ethics, and ongoing interpretation",
+   "text": "Scholarship increasingly resists narratives that portray this tradition solely as a conduit for Greek thought.",
+   "claims": [
+    {
+     "type": "editorial",
+     "evidence": "n/a",
+     "accuracy": "editorial",
+     "note": "Contrastive.",
+     "fix": "cut"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sentences": 24,
+  "claims": 24,
+  "editorial": 7,
+  "unverified": 3,
+  "supported": 12,
+  "overstated": 2,
+  "assertive_claims": 24,
+  "cited_source_supports_before": 12,
+  "shipped_sentences": 9
+ },
+ "new_text": [
+  {
+   "text": "In the Abbasid period Greek philosophy and science were translated into Arabic, often through Syriac, and Syrian Christians took part in the translation movement.",
+   "section": "Translation and falsafa",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Greek Sources in Arabic and Islamic Philosophy” (D’Ancona) §§1–2",
+     "excerpt": "the Christians of Syria who took part in the translation movement",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The circle of al-Kindī translated and reworked Neoplatonic works such as Proclus' Elements of Theology alongside Aristotle, and al-Kindī adopted these doctrines in a new synthesis of his own; al-Fārābī and Ibn Sīnā both read Aristotle as a systematic whole.",
+   "section": "Translation and falsafa",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Greek Sources in Arabic and Islamic Philosophy” (D’Ancona) §§3–4",
+     "excerpt": "he adopted them in a new synthesis in his philosophical works",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Ibn Sīnā distinguished essence from existence and argued for a Necessary Existent that is absolutely one, indivisible and unique.",
+   "section": "Avicenna",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Ibn Sina’s Metaphysics” (Lizzini) §4.2",
+     "excerpt": "The Necessarily Existent is therefore absolutely one, indivisible and unique",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The first philosophers to set out occasionalism explicitly were Islamic theologians of the Ashʿarite school of kalām, founded by al-Ashʿarī (873–935).",
+   "section": "Causation, al-Ghazālī, and Ibn Rushd",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Occasionalism” (Lee) §1.1",
+     "excerpt": "the first philosophers to explicitly expound the position were the Islamic occasionalists",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Against the Aristotelian philosophers, exemplified by Avicenna, al-Ghazālī argued that the connection between fire and the burning of cotton is not logically necessary and is due to God's prior decree, though scholars disagree over whether he was an occasionalist.",
+   "section": "Causation, al-Ghazālī, and Ibn Rushd",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Occasionalism” (Lee) §3.3",
+     "excerpt": "Their connection is due to the prior decree of God",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Al-Ghazālī accepted demonstration and condemned three teachings of the philosophers as unbelief, and his Incoherence of the Philosophers belongs to the genre of kalām while being philosophical too.",
+   "section": "Causation, al-Ghazālī, and Ibn Rushd",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “al-Ghazali” (Griffel) intro, §§3–4",
+     "excerpt": "everybody who teaches these three positions publicly is an unbeliever",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Ibn Rushd replied in The Incoherence of the Incoherence that things have essences and attributes that determine their functions; his Decisive Treatise gave philosophy a prominent place in religious reflection, and by 1340 virtually all his commentaries on Aristotle were available in Hebrew, and they reached Latin readers too.",
+   "section": "Causation, al-Ghazālī, and Ibn Rushd",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Ibn Rushd [Averroes]” (Pasnau) §§1.2, 4, 6.2, 9.2–9.3",
+     "excerpt": "things have essences and attributes that determine the special functions of each thing",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Suhrawardī became the eponym of an illuminationist (ishrāqī) tradition, built on a metaphysics of light and knowledge by presence, and from the thirteenth century his works were read in philosophical circles of the Islamic East.",
+   "section": "Illumination and later philosophy",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Suhrawardi” (Marcotte) §§1.1, 3.2, 4, 6.1",
+     "excerpt": "has become the eponym of an 'Illuminationist' (ishraqi) philosophical tradition",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Mullā Ṣadrā took up Suhrawardī's critique of Avicenna and his idea of gradations of light while upholding the principality of existence against the view ascribed to Suhrawardī.",
+   "section": "Illumination and later philosophy",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, “Suhrawardi” (Marcotte) §§4.2, 6.1",
+     "excerpt": "upholds the principality of existence (wujud), in opposition to",
+     "accuracy": "supported"
+    }
+   ]
+  }
+ ],
+ "applied": {
+  "date": "2026-10-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
+ }
+}
