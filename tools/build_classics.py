@@ -46,6 +46,8 @@ BOOKS = [
     dict(id="classic-spinoza-ethics", text_source=dict(repo="https://github.com/GITenberg/Ethics_3800", file="3800.txt", convert="spinoza_ethics"),
          cover=dict(title="Ethics", size=40, art="stars"),
          text=dict(title="Ethics", author="Benedict de Spinoza", edition="trans. R. H. M. Elwes", orig="1677")),
+    dict(id="classic-hume-treatise", repo="david-hume_a-treatise-of-human-nature", files=None,
+         text=dict(title="A Treatise of Human Nature", author="David Hume", edition="", publisher="Standard Ebooks", year="2026", orig="1739–40")),
     dict(id="classic-hume-enquiry", repo="david-hume_an-enquiry-concerning-human-understanding", files=None,
          text=dict(title="An Enquiry Concerning Human Understanding", author="David Hume", edition="", publisher="Standard Ebooks", year="2024", orig="1748")),
     dict(id="classic-kant-groundwork", text_source=dict(repo="https://github.com/GITenberg/Fundamental-Principles-of-the-Metaphysic-of-Morals_5682", file="5682.txt", convert="kant_groundwork"),

@@ -299,7 +299,7 @@ function primerHTML(id, t) {
 }
 // Titles for steps whose book isn't in the library: the classics' own titles (tests/study_tools.py checks them against data/books/).
 const CLASSIC_TITLES = { "classic-plato-socrates": "Euthyphro, Apology, Crito, Phaedo", "classic-aristotle-ethics": "Nicomachean Ethics", "classic-descartes-meditations": "Discourse on the Method and Meditations on First Philosophy",
-  "classic-hobbes-leviathan": "Leviathan", "classic-spinoza-ethics": "Ethics", "classic-hume-enquiry": "An Enquiry Concerning Human Understanding", "classic-rousseau-social-contract": "The Social Contract",
+  "classic-hobbes-leviathan": "Leviathan", "classic-spinoza-ethics": "Ethics", "classic-hume-treatise": "A Treatise of Human Nature", "classic-hume-enquiry": "An Enquiry Concerning Human Understanding", "classic-rousseau-social-contract": "The Social Contract",
   "classic-kant-groundwork": "Fundamental Principles of the Metaphysic of Morals", "classic-wollstonecraft-vindication": "A Vindication of the Rights of Woman",
   "classic-marx-engels-manifesto": "The Communist Manifesto", "classic-nietzsche-genealogy": "The Genealogy of Morals", "classic-cooper-voice": "A Voice from the South", "classic-du-bois-souls": "The Souls of Black Folk",
   "classic-plato-republic": "The Republic", "classic-mill-liberty": "On Liberty", "classic-russell-problems": "The Problems of Philosophy" };
@@ -315,6 +315,7 @@ const CLASSIC_NAMES = {
   "classic-descartes-meditations": { by: ["descartes"], full: ["Discourse on the Method", "Discourse on Method", "Meditations on First Philosophy"], own: ["Meditations"] },
   "classic-hobbes-leviathan": { by: ["hobbes"], full: ["Leviathan"] },
   "classic-spinoza-ethics": { by: ["spinoza"], full: ["Spinoza's Ethics", { s: "Ethics", post: /^ \(1677\)/ }], own: ["Ethics"] },
+  "classic-hume-treatise": { by: ["hume"], full: ["A Treatise of Human Nature", "Treatise of Human Nature"], own: [{ s: "Treatise", pre: ["the", "The", "his"] }] },
   "classic-hume-enquiry": { by: ["hume"], full: ["Enquiry concerning Human Understanding", "Enquiry Concerning Human Understanding", "first Enquiry"] },
   "classic-rousseau-social-contract": { by: ["rousseau"], full: ["The Social Contract", "Of the Social Contract", { s: "Social Contract", post: /^ \(1762\)/ }] },
   "classic-kant-groundwork": { by: ["kant"], full: ["Groundwork of the Metaphysics of Morals", "Groundwork of the Metaphysic of Morals", "Fundamental Principles of the Metaphysic of Morals"], own: ["Groundwork"] },
@@ -582,6 +583,9 @@ const PASSAGE_STYLES = {
     find: (B, [book, ch]) => headPath(B, [[2, (t) => t === `Book ${book}`], [3, (t) => t.startsWith(`${toRoman(+ch)}. `)]]) },
   // Hobbes, Leviathan: chapter, "Lev. XIII".
   // Hume, Enquiry concerning Human Understanding: section and part, "EHU IV.2" ("EHU VII").
+  // Hume, A Treatise of Human Nature: book, part and section, "T 1.4.6".
+  "hume-treatise": { book: "classic-hume-treatise", item: /^T ([123])\.(\d+)\.(\d+)$/,
+    find: (B, [b, p, s]) => headPath(B, [[2, (t) => t.startsWith(`Book ${toRoman(+b)}:`)], [3, (t) => t.startsWith(`Part ${toRoman(+p)}:`)], [4, (t) => t.startsWith(`Section ${toRoman(+s)}:`)]]) },
   "hume-enquiry": { book: "classic-hume-enquiry", item: /^EHU ([IVX]+)(?:\.(\d))?$/,
     find: (B, [sec, part]) => headPath(B, [[2, (t) => t.startsWith(`${sec}. `)], ...(part ? [[3, (t) => t === `Part ${toRoman(+part)}`]] : [])]) },
   // Descartes: a Meditation or a part of the Discourse, "Med. II", "Disc. IV".

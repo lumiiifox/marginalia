@@ -667,7 +667,7 @@
    ]
   },
   {
-   "text": "Most Indian Buddhist schools deny a self or substantive mind, a position Giles, Tillemans and Kapstein have compared with Hume's report that he never finds a self among his perceptions; the Pudgalavādins dissented, and Nāgārjuna applied the lack of intrinsic existence (svabhāva) to the self as well.",
+   "text": "Most Indian Buddhist schools deny a self or substantive mind, a position Giles, Tillemans and Kapstein have compared with Hume's report that he never finds a self among his perceptions (T 1.4.6); the Pudgalavādins dissented, and Nāgārjuna applied the lack of intrinsic existence (svabhāva) to the self as well.",
    "section": "Selves and other minds",
    "claims": [
     {
@@ -711,6 +711,12 @@
    "note": "Bracketed references to the bundled classics added and linked: Med. VI (“entirely and truly distinct from my body, and may exist without it”).",
    "checked_against": "the editions bundled with the app (data/books/)",
    "review": "Independent check against the bundled texts (Claude subagent, fresh context): reference and excerpt confirmed."
+  },
+  {
+   "date": "2026-10-25",
+   "kind": "primary-text references",
+   "note": "Bracketed reference to the newly bundled Treatise added and linked: T 1.4.6 (“I never can catch myself at any time without a perception”).",
+   "checked_against": "the edition bundled with the app (data/books/classic-hume-treatise.json)"
   }
  ]
 }

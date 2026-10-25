@@ -115,7 +115,7 @@ async def main():
         # citations to the other classics: every reference in every article resolves to its own heading
         other = await page.evaluate("""async () => {
           const label = { 'nietzsche-genealogy': (p) => p[1], 'aristotle-ethics': (p) => toRoman(+p[1]), 'rousseau-social-contract': (p) => toRoman(+p[1]) + '. ', 'hobbes-leviathan': (p) => p[0] + '. ',
-            'hume-enquiry': (p) => p[1] ? 'Part ' + toRoman(+p[1]) : p[0] + '. ', 'descartes-meditations': (p) => p[0] === 'Med' ? 'Meditation ' + p[1] + ':' : 'Part ' + p[1],
+            'hume-treatise': (p) => 'Section ' + toRoman(+p[2]) + ':', 'hume-enquiry': (p) => p[1] ? 'Part ' + toRoman(+p[1]) : p[0] + '. ', 'descartes-meditations': (p) => p[0] === 'Med' ? 'Meditation ' + p[1] + ':' : 'Part ' + p[1],
             'plato-republic': (p) => 'Book ' + p[0], 'plato-socrates': (p) => p[0], 'kant-groundwork': (p) => ({ Preface: 'Preface', I: 'First Section', II: 'Second Section', III: 'Third Section' })[p[0]],
             'marx-engels-manifesto': (p) => p[0] + '. ', 'du-bois-souls': (p) => p[0] + '. ', 'mill-liberty': (p) => p[0] + '. ' };
           const out = { n: {}, bad: [] }, books = {};
@@ -148,13 +148,13 @@ async def main():
         gm = await page.evaluate("(async () => { const B = await loadContent('classic-nietzsche-genealogy'); const want = passageBlock(B, 'II|4', 'nietzsche-genealogy'), at = currentBlock(); return { near: Math.abs(at - want) <= 3, essay: plain(B.slice(0, want).reverse().find((b) => b.k === 'h' && b.l === 2).x).slice(0, 12) }; })()")
         check(gm["near"] and gm["essay"].startswith("Second Essay"), f"tapping (GM II §4) in Ethics opens the Genealogy at the Second Essay, section 4 ({gm})")
         more = await page.evaluate("""async () => { const one = async (st, at) => { const B = (await (await fetch('data/books/' + PASSAGE_STYLES[st].book + '.json')).json()).content; const i = passageBlock(B, at, st); return i < 0 ? null : plain(B[i].x); };
-          return [await one('hume-enquiry', 'IV|2'), await one('hume-enquiry', 'VII|'), await one('descartes-meditations', 'Med|VI'), await one('descartes-meditations', 'Disc|IV'), await one('plato-republic', 'V'),
+          return [await one('hume-enquiry', 'IV|2'), await one('hume-treatise', '1|4|6'), await one('hume-enquiry', 'VII|'), await one('descartes-meditations', 'Med|VI'), await one('descartes-meditations', 'Disc|IV'), await one('plato-republic', 'V'),
             await one('plato-socrates', 'Apology'), await one('kant-groundwork', 'II'), await one('marx-engels-manifesto', 'II'), await one('du-bois-souls', 'I'), await one('mill-liberty', 'I'), await one('mill-liberty', 'VI')]; }""")
-        want = ["Part II", "VII. Of the Idea of Necessary Connection", "Meditation VI:", "Part IV", "Book V", "Apology", "Second Section:", "II. Proletarians and Communists", "I. Of Our Spiritual Strivings", "I. Introductory", None]
-        check(all((w is None and g is None) or (g and g.startswith(w)) for g, w in zip(more, want)) and more[5] == "Apology",
+        want = ["Part II", "Section VI: Of Personal Identity", "VII. Of the Idea of Necessary Connection", "Meditation VI:", "Part IV", "Book V", "Apology", "Second Section:", "II. Proletarians and Communists", "I. Of Our Spiritual Strivings", "I. Introductory", None]
+        check(all((w is None and g is None) or (g and g.startswith(w)) for g, w in zip(more, want)) and more[6] == "Apology",
               f"the Enquiry, Descartes, the Republic, the Socratic dialogues, the Groundwork, the Manifesto, Souls and On Liberty find their chapters, and a missing one finds nothing ({more})")
         unl = await page.evaluate("""() => { const bad = []; for (const b of BRANCHES) { const d = document.createElement('div'); d.innerHTML = articleHTML(b, allTerms()); d.querySelectorAll('.cite-nb').forEach((x) => x.remove());
-          const m = d.textContent.match(/\\((?:EHU [IVX]+(?:\\.\\d)?|Med\\. [IVX]+|Disc\\. [IVX]+|Rep\\. [IVX]+|G (?:Preface|I|II|III)|CM [IV]+|Souls [IVX]+|OL [IV]+)\\)/g); if (m) bad.push(b.id + ': ' + m.join(' ')); } return bad; }""")
+          const m = d.textContent.match(/\\((?:EHU [IVX]+(?:\\.\\d)?|Med\\. [IVX]+|Disc\\. [IVX]+|Rep\\. [IVX]+|G (?:Preface|I|II|III)|CM [IV]+|Souls [IVX]+|OL [IV]+|T \\d\\.\\d+\\.\\d+)\\)/g); if (m) bad.push(b.id + ': ' + m.join(' ')); } return bad; }""")
         check(unl == [], f"every reference to these classics in the articles is a link ({unl})")
         # the classics' titles
         hits = await page.evaluate("""() => [
