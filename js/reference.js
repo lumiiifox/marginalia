@@ -289,6 +289,11 @@ function pathsView() {
   const group = (paths, label) => paths.length ? `<section class="path-catalogue"><h2>${label}</h2>${paths.map((P) => `<section class="path path-entry" data-path-id="${esc(P.id)}"><div class="sec-head"><h3><button class="path-title-link" data-path="${esc(P.id)}">${esc(P.n)}</button></h3>${P.custom ? pathActions(P) : ""}</div><div class="sub">${P.kind === "close" ? "Close reading" : `${P.steps.length} readings`}</div><p>${esc(P.d || "Arrange readings around your own questions.")}</p><button class="linkbtn" data-path="${esc(P.id)}">Open path</button></section>`).join("")}</section>` : "";
   return `<button class="linkbtn path-back" id="back">Back</button><header class="paths-title"><h1>Reading paths</h1><p>Reading sequences shaped around a question.</p><div class="noteacts"><button class="btn primary" id="newpath">Create a reading path</button><button class="linkbtn" id="importpath">Import a path</button></div></header>${group(list.filter((p) => p.custom), "Your paths")}${group(list.filter((p) => !p.custom), "From the reference library")}`;
 }
+// The toggle event arrives a task later, so a render in between would reopen the outline: record the new state on the click itself.
+document.addEventListener("click", (e) => {
+  const d = e.target.closest?.("summary")?.parentElement;
+  if (d?.dataset?.pathoutline) { const id = d.dataset.pathoutline; PATH_VIEW.set(id, { ...(PATH_VIEW.get(id) || {}), outline: !d.open }); }
+}, true);
 document.addEventListener("toggle", (e) => {
   if (e.target.dataset?.pathoutline) { const id = e.target.dataset.pathoutline; PATH_VIEW.set(id, { ...(PATH_VIEW.get(id) || {}), outline: e.target.open }); }
 }, true);
