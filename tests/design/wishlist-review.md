@@ -11,6 +11,8 @@ Validation passed:
 - discovery.py — version 9 migration, safe links and escaped text, persistence, manual links, owned-book handling, title/author disambiguation, wishlist-based matches, obtained status, delete/Undo, and 320/390/1280 px layouts.
 - trash.py — version 7 migration and all existing deletion/restore regression checks.
 - contrast.py — light and dark schemes, including wishlist and all recommendation cards.
+- study_tools.py — existing study tools and version 8 upgrade.
+- pdf_import.py and printed_page.py — PDF import and printed-page controls, including version 6 upgrade. The printed-page fixture now leaves enough space for font-metric differences to preserve its declared six pages.
 - Browser — saved an actual catalogue recommendation in the disposable preview, opened the wishlist and inspected the resulting entry and companion link at 390 × 844 CSS pixels.
 
 ![Wishlist mobile preview](wishlist-mobile.jpg)

@@ -205,7 +205,7 @@ async def custom_paths(browser):
         tx.oncomplete=() => {db.close();res()}; tx.onerror=() => rej(tx.error); }; r.onerror=() => rej(r.error);
     })""")
     await pg.goto(URL); await pg.wait_for_function(READY)
-    check(await pg.evaluate("[idb.version, S.paths.size, S.texts.get('old').pos, S.notes.get('old-note').gloss]") == [9,0,7,'Preserve my note'],
+    check(await pg.evaluate("[idb.version, S.paths.size, S.texts.get('old').pos, S.notes.get('old-note').gloss]") == [10,0,7,'Preserve my note'],
           'version 8 upgrade preserves existing position and annotations')
     await ctx.close()
 
