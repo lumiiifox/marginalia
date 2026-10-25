@@ -41,6 +41,7 @@ ideas? If not, it waits.
 - After any change to the reader, also run `python3 tests/paged_reader.py` (Swipe pages: gestures, alignment, flips, joined paragraphs, chapters) `python3 tests/structure.py` (marking chapters, headings, running heads and title pages with Edit) `python3 tests/comfort.py` (tap to turn, the hidden toolbar, the screen kept on, status-bar colours, Scroll mode on a long book) `python3 tests/navigate.py` (Find with marks and arrows, the slider and your notes marked above it, Go to page, pages left in the chapter, the Contents tabs) `python3 tests/highlights.py` (highlights on the exact words, across paragraphs and pages, after corrections; Continue on next page) `python3 tests/notes_lookup.py` (tapping note numbers for footnotes and endnotes; Wiktionary in Look up, with a stand-in for the API; glossary terms linked in the text) `python3 tests/quotes_language.py` (Edit → A block quote; a book's language for hyphenation) `python3 tests/pin.py` (the pinned passage: Pin, collapse, gestures, Go to it and back, notes, changed or removed sources) `python3 tests/followups.py` (follow-ups on notes and earlier wordings: the card, the sheet, search, tags, export, restore keeping both copies' ones) `python3 tests/classics.py` (the classics that come with the app: added once, deleted stays deleted, each opens with its chapters and notes; also after rebuilding them) and `python3 tests/printed_page.py` (keeping a book's PDF and showing its printed pages; the storage upgrade to version 7).
 - After changes to the Wikisource import or the HTML importer, run `python3 tests/wikisource.py` (a stand-in for Wikisource's API).
 - After changes to another edition's pages, a book paired with its original, or reading pace, run `python3 tests/editions.py`.
+- After changes to a glossary term's In your books, `findNeedles`, `termNeedles` or `sectionIndex`, run `python3 tests/in_your_books.py`.
 - After changes to a branch or tradition article, run `python3 tests/study_tools.py` (section sources and the article frame) and `python3 tests/links.py`.
 - After changes to `branchLinks`, to thinkers' names or to `CLASSIC_NAMES`, run `python3 tests/links.py` (four-letter names in exact case, accents in either Unicode form,
   word-like names only in full, punctuation around names, and every link across the articles naming the entry it opens).
@@ -254,6 +255,11 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   links them), each once with the sentence of its first mention marked (`mentionSnip`). A glossary entry fills it when it opens (`fillMentions`,
   from the toggle event); a thinker's card shows it with your notes that name them (`thinkerNotes`). An article row opens the article at its
   section (`go({ screen: "branches", focus, sec })`, sections carry `data-bsec`). `mentionSources` folds the built-in texts once. Nothing stored.
+- A glossary term's "In your books" (`inBooksStart`, Search your books → `runInBooks`, `bookOccurrences`, `inBooksHTML`): searched only when asked,
+  every book with its text, by `termNeedles` through `findNeedles` (whole words, accents ignored, plurals); every occurrence counts. Each
+  book's count, its first `INBOOK_SHOWN` hits and `INBOOK_LISTED` more folded, each with page and chapter from `sectionIndex` and its
+  sentence; a hit (`data-inbook`) opens the reader there with the word in Find and ← Your place. Texts are read from IndexedDB without
+  being kept in `S.content`. Nothing stored. Tested by `tests/in_your_books.py`.
 - A glossary term's "In your notes" (`termHitsHTML`, from `termNotes`): your notes using the term, grouped by author and then book, each book in
   reading order with your glosses, four shown and the rest folded. Only your own notes; nothing is written about the term for you.
 - Where you left off (`briefHTML`, `placeIn`, on a book's page under Continue reading): page and chapter at `t.pos`, your summary of that

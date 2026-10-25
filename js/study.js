@@ -57,6 +57,66 @@ function termHitsHTML(hits) {
   };
   return `<div class="thits"><div class="label">In your notes</div>${books.length > 1 ? `<p class="hint">In ${books.length} books${authors.size > 1 ? ` by ${authors.size} authors` : ""}, grouped by author, to compare how each uses it.</p>` : ""}${books.map(group).join("")}</div>`;
 }
+/* ---------- In your books: where a term's name occurs in the texts of your library ----------
+   Searched only when you ask, since it reads every book's text. Matching is Mentioned in's (termNeedles, findNeedles): whole words,
+   accents ignored in either Unicode form, plurals. Every occurrence counts, so two in one paragraph count as two. Each book shows its
+   count and its first hits with page and chapter (sectionIndex) and the sentence; tapping one opens the reader there, with the word
+   in Find and ← Your place to go back. Nothing is stored. */
+const INBOOK_SHOWN = 3, INBOOK_LISTED = 40;
+const IS_ASCII = /^[\x00-\x7f]*$/;
+// One book's occurrences: { count, hits: [{ i, page, sec, word, snip }] } (the first INBOOK_SHOWN + INBOOK_LISTED), or null with no text.
+async function bookOccurrences(tid, needles) {
+  const B = S.content.get(tid) || (idb ? await idbGet("content", tid) : null); if (!B) return null;
+  const ix = sectionIndex(B), hits = [], cap = INBOOK_SHOWN + INBOOK_LISTED;
+  let count = 0;
+  for (let i = 0; i < B.length; i++) {
+    const b = B[i]; if (!b || !b.x || b.k === "pg" || isHidden(b)) continue;
+    const text = plain(b.x);
+    // plain ASCII folds to itself, letter for letter: skip linkFold's work, and blocks without any needle
+    const ascii = IS_ASCII.test(text), low = ascii ? text.toLowerCase() : null;
+    if (ascii && !needles.some((nd) => (nd.exact ? text : low).includes(nd.s))) continue;
+    const F = ascii ? { cased: text, low } : linkFold(text), at = (k) => (ascii ? k : F.map[k]);
+    const found = findNeedles(F, needles);
+    count += found.length;
+    for (const h of found) if (hits.length < cap) { const a = at(h.pos), e = at(h.end); hits.push({ i, page: ix.pageAt[i], sec: ix.secAt[i], word: text.slice(a, e), snip: rawSnip(text, a, e) }); }
+  }
+  return { count, hits };
+}
+function inBooksStart(g) {
+  const n = [...S.texts.values()].filter((t) => t.hasContent).length; if (!n || !termNeedles(g).length) return "";
+  return `<div class="label">In your books</div><p class="hint">Where it occurs in the text of your ${n} book${n === 1 ? "" : "s"}, by its name${termNeedles(g).length > 1 ? "s" : ""} as whole words.</p>
+    <div class="noteacts"><button class="btn ghost" data-inbooks="${esc(g.id)}">Search your books</button></div>`;
+}
+async function runInBooks(btn) {
+  const box = btn.closest("[data-inbooks-box]"), g = box && allTerms().find((x) => x.id === box.dataset.inbooksBox); if (!g) return;
+  const needles = termNeedles(g), texts = [...S.texts.entries()].filter(([, t]) => t.hasContent);
+  btn.disabled = true;
+  const found = []; let missing = 0, k = 0;
+  for (const [tid, t] of texts) {
+    btn.textContent = `Searching ${++k} of ${texts.length}…`;
+    await new Promise((r) => setTimeout(r));
+    if (!box.isConnected) return;
+    let r = null; try { r = await bookOccurrences(tid, needles); } catch { r = null; }
+    if (!r) { missing++; continue; }
+    if (r.count) found.push([tid, t, r]);
+  }
+  box.innerHTML = inBooksHTML(g, found, texts.length, missing);
+}
+function inBooksHTML(g, found, searched, missing) {
+  found.sort(([, a], [, b]) => (a.author || "￿").localeCompare(b.author || "￿", undefined, { sensitivity: "base" }) || a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
+  const total = found.reduce((n, [, , r]) => n + r.count, 0);
+  const row = (tid, t) => (h) => {
+    const sec = h.sec && (t.sections || []).find((s) => s.id === h.sec), meta = [h.page ? loc(h.page) : "", sec ? sec.label : ""].filter(Boolean);
+    return `<button class="mention" data-inbook="${esc(tid)}" data-at="${h.i}" data-find="${esc(h.word)}"><span class="mn">${meta.map((m) => `<span>${esc(m)}</span>`).join("") || "<span>Open it here</span>"}</span><span class="ms">${h.snip}</span></button>`;
+  };
+  const group = ([tid, t, r]) => {
+    const first = r.hits.slice(0, INBOOK_SHOWN), rest = r.hits.slice(INBOOK_SHOWN), over = r.count - r.hits.length;
+    return `<div class="tbook"><div class="tbh"><button class="src" data-open="${esc(tid)}">${esc(t.title)}</button>${t.author ? `<span>${esc(t.author)}</span>` : ""}<span class="cnt">${r.count} time${r.count === 1 ? "" : "s"}</span></div>
+      ${first.map(row(tid, t)).join("")}${rest.length ? `<details class="tmorehits"><summary>${rest.length} more${over > 0 ? ` of ${r.count - INBOOK_SHOWN}` : ""} from this book</summary>${rest.map(row(tid, t)).join("")}${over > 0 ? `<p class="hint">${over} more not listed: open one and Find steps through them all.</p>` : ""}</details>` : ""}</div>`;
+  };
+  const head = total ? `${total} time${total === 1 ? "" : "s"} in ${found.length} of your ${searched} book${searched === 1 ? "" : "s"}.` : `Not found in your ${searched} book${searched === 1 ? "" : "s"}.`;
+  return `<div class="label">In your books</div><div class="thits inbooks"><p class="hint" role="status">${head}${missing ? ` ${missing} couldn't be read.` : ""}</p>${found.map(group).join("")}</div>`;
+}
 /* ---------- Mentioned in: where the articles, thinker cards and glossary entries use a term or a thinker's name ----------
    Matching follows the articles' own links (branchLinks): accents ignored in either Unicode form, whole words only, a name under five
    letters in exact case, LINK_FULL_ONLY names only in full, a name two thinkers share never matched. A term matches by its name and the
@@ -197,6 +257,7 @@ function termHTML(g, tmap) {
       ${termTimeHTML(g.p)}
       <div data-mentions="${esc(g.id)}"></div>
       ${termHitsHTML(hits)}
+      <div data-inbooks-box="${esc(g.id)}">${inBooksStart(g)}</div>
       <div class="noteacts">
         ${sayBtn(g.t)}
         ${TT_TERMS.has(g.id) ? `<button class="btn" data-truth="${TT_TERMS.get(g.id)}">Try it in a truth table</button>` : ""}
