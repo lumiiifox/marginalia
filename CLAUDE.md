@@ -218,7 +218,8 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   as ← Your place), `says` gives the text's own words, `deleuze` what named scholarship says of Deleuze's reading (sources in `PATH_SRC`), with
   `terms`, questions (`askCloseQuestion`) and the path's typed `conns`. A station is read once a note of yours falls in one of its passages'
   blocks (`passageSpan`: a proposition with its proof, corollaries and notes; questions added from the path don't count; `closeState`).
-  Nothing stored. Now "spinoza-deleuze", Parts I and III; every quotation is checked against the bundled text and each station's
+  Nothing stored. Now "spinoza-deleuze", all five parts (30 stations); a Deleuze line marked `own` is his own words from a lecture transcript,
+  labelled apart from scholarship; every quotation is checked against the bundled text and each station's
   independent review is in `tests/audit/spinoza-deleuze.json`. Tested by `tests/study_tools.py` (`close_reading`).
 - Bookplates (`platesView`, the `plates` screen, from the home screen's Across your library; a book's own on its page): `bookplates()` works them
   out each time from notes, follow-ups, summaries, ticked chapters, shelves, drafts, comparisons and `PATHS` (`FIRSTS`, `bookPlates`; `BACK_MATTER`
