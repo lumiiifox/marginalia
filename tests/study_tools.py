@@ -1005,11 +1005,13 @@ async def close_reading(browser):
     ui = await page.evaluate("""(() => { const sec = document.querySelector('section.path.close[data-path-id="spinoza-deleuze"]');
       return sec && { stations: sec.querySelectorAll('.pstep').length, links: sec.querySelectorAll('[data-passage="spinoza-ethics"]').length, parts: [...sec.querySelectorAll('.ph')].map((h) => h.textContent),
         labels: [...new Set([...sec.querySelectorAll('.ck')].map((k) => k.textContent))], conns: [...sec.querySelectorAll('.crow .chip[data-thinker]')].map((c) => c.textContent), done: sec.querySelectorAll('.pstep.done').length }; })()""")
-    check(ui and ui["stations"] == 12 and ui["links"] == 27 and len(ui["parts"]) == 2 and ui["done"] == 0, f"the path lists its 12 stations under Parts I and III, every passage a link ({ui})")
-    check(ui and ui["labels"] == ["In the text", "Deleuze, through scholarship"], f"Spinoza's text comes first and Deleuze's reading apart, each labelled ({ui and ui['labels']})")
+    want = await page.evaluate("(() => { const P = PATHS.find((x) => x.id === 'spinoza-deleuze'); return [closeStations(P).length, closeStations(P).reduce((n, s) => n + s.refs.length, 0)]; })()")
+    check(ui and ui["stations"] == want[0] == 30 and ui["links"] == want[1] and len(ui["parts"]) == 5 and ui["done"] == 0, f"the path lists its 30 stations under Parts I to V, every passage a link ({ui}, {want})")
+    check(ui and ui["labels"] == ["In the text", "Deleuze, through scholarship", "Deleuze, in his lectures"], f"Spinoza's text comes first and Deleuze's reading apart, scholarship and his own lectures each labelled ({ui and ui['labels']})")
     check(ui and ui["conns"] == ["Deleuze reinterprets Spinoza", "Nietzsche criticizes Spinoza"], f"the path shows its typed connections ({ui and ui['conns']})")
     nodel = await page.evaluate("[...document.querySelectorAll('section.path.close .pstep')].filter((s) => s.querySelector('.nodel')).map((s) => s.dataset.station)")
-    check(nodel == ["kingdom", "conatus"], f"a station without a sourced Deleuze reading says so ({nodel})")
+    nodel_want = await page.evaluate("closeStations(PATHS.find((x) => x.id === 'spinoza-deleuze')).filter((s) => !(s.deleuze || []).length).map((s) => s.id)")
+    check(nodel == nodel_want and "kingdom" in nodel and "conatus" in nodel, f"each station without a sourced Deleuze reading says so ({nodel})")
     # a passage opens the Ethics there, keeping your place; Back returns to the path
     await page.click("[data-station='immanent-cause'] [data-passage-at='I|Proposition|18||']")
     await page.wait_for_function("S.screen === 'reader' && R.tid === 'classic-spinoza-ethics' && R.blocks", timeout=20000); await page.wait_for_timeout(700)
@@ -1029,7 +1031,7 @@ async def close_reading(browser):
     await page.evaluate("(async () => { const B = S.content.get('classic-spinoza-ethics'), i = passageBlock(B, 'III|Proposition|7|'); await put('notes', 'cn1', { textId: 'classic-spinoza-ethics', kind: 'gloss', passage: 'nothing else but the actual essence', gloss: 'Essence as effort.', at: i + 1, links: [], createdAt: Date.now(), updatedAt: Date.now() }); render(); })()")
     await page.wait_for_timeout(400)
     st2 = await page.evaluate("""(() => { const s = document.querySelector("[data-station='conatus']"); return { done: s.classList.contains('done'), mine: [...s.querySelectorAll('.mgroup .mention')].map((m) => m.dataset.gotoNote), sub: document.querySelector('section.path.close .sub').textContent }; })()""")
-    check(st2["done"] and len(st2["mine"]) == 1 and st2["sub"] == "12 stations, 1 with your notes", f"a note of your own on a station's passage (here in a proposition's proof) marks it read and is listed there ({st2})")
+    check(st2["done"] and len(st2["mine"]) == 1 and st2["sub"] == "30 stations, 1 with your notes", f"a note of your own on a station's passage (here in a proposition's proof) marks it read and is listed there ({st2})")
     # notes at the edges: just past a station's passages, or just before them, mark nothing; the passage's last block does
     edge = await page.evaluate("""(async () => {
       const B = S.content.get('classic-spinoza-ethics'), P = PATHS.find((x) => x.id === 'spinoza-deleuze'), sts = closeStations(P);
