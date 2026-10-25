@@ -236,6 +236,11 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   place (`sectionIndex`) with the note's own page where it disagrees, the paragraph around it, the gloss and follow-ups; then the glossary terms
   found in the writer's own words only (`termNeedles`, `findNeedles`), with a warning that a definition is no evidence of a passage's sense;
   then works cited. Nothing stored. Tested by `tests/study_tools.py`.
+- Critiques you received (a draft's More → Add a critique you received, `critiqueSheet`; `d.critiques = [{ id, at, by, x }]`, up to `CRIT_MAX`
+  characters each): kept with the draft, apart from its text, under it as `critiquesHTML`; a critique's [E1], [E2] … open the items the export
+  numbers as evidence (`critiqueEvidence`, `jumpToItem`), an [E…] with no passage stays text. The next export For critique quotes them as
+  Earlier critiques. Checked by `VALID.drafts`; a restore keeps both copies' critiques (`withCritiques`, in `applyRestore`). Tested by
+  `tests/study_tools.py` (`critique_import`) and the round trip in `tests/smoke.py`.
 - Essay templates (`ESSAY_TEMPLATES`, in New draft, `draftTitleSheet`): headings, each followed by a paragraph starting with `GUIDE`, drawn
   muted (`.dguide`); ordinary draft items, so backups need nothing new.
 - Puzzles (Thinkers → Puzzles, `puzzlesMenu`): Guess the thinker, Connect two thinkers and Order of birth. Connect (`connectPanel`, state in `CN`):

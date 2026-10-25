@@ -946,3 +946,13 @@ span.bhid { display: inline; }
 .cite-nb { white-space: nowrap; }
 .branch-inline-link:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 [data-gx] { display: grid; gap: 10px; }
+
+/* critiques kept with a draft */
+.crits { display: grid; gap: 10px; }
+.crit { border-left: 2px solid var(--brass); padding-left: 10px; }
+.crit summary { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; cursor: pointer; min-height: 24px; }
+.crit summary span { font: 400 14px/1.3 var(--f-ui); color: var(--muted); }
+.critbody { display: grid; gap: 8px; padding: 6px 0; font: 16px/1.55 var(--f-text); overflow-wrap: anywhere; }
+.critbody p { margin: 0; }
+.critbody blockquote { margin: 0; padding-left: 10px; border-left: 2px solid var(--rule); color: var(--muted); }
+.ditem.flash { animation: flash 1.6s ease-out; }
