@@ -57,6 +57,91 @@ function termHitsHTML(hits) {
   };
   return `<div class="thits"><div class="label">In your notes</div>${books.length > 1 ? `<p class="hint">In ${books.length} books${authors.size > 1 ? ` by ${authors.size} authors` : ""}, grouped by author, to compare how each uses it.</p>` : ""}${books.map(group).join("")}</div>`;
 }
+/* ---------- In your books: where a term's name occurs in the texts of your library ----------
+   Searched only when you ask, since it reads every book's text. Matching is Mentioned in's (termNeedles, findNeedles): whole words,
+   accents ignored in either Unicode form, plurals. The text is read as Find reads it (textRuns): a paragraph and its continuations past
+   printed-page breaks are one run, so a name the printed page split is found. Every occurrence counts, so two in one paragraph count
+   two. Passages you linked to the term yourself (t.termMarks) are listed too, as Your link, placed like a note's passage; a name inside
+   one of them is that link, counted once. Each book shows its count and its first hits with page and chapter (sectionIndex) and the
+   sentence; tapping one opens the reader there, with the word in Find and ← Your place to go back. Nothing is stored. */
+const INBOOK_SHOWN = 3, INBOOK_LISTED = 40;
+const IS_ASCII = /^[\x00-\x7f]*$/;
+// One book's occurrences: { count, links, hits: [{ i, page, sec, word, snip, mine }] } (the first INBOOK_SHOWN + INBOOK_LISTED, in
+// reading order), or null with no text. termId picks your links to the term.
+async function bookOccurrences(tid, needles, termId) {
+  const B = S.content.get(tid) || (idb ? await idbGet("content", tid) : null); if (!B) return null;
+  const ix = sectionIndex(B), all = [];
+  // your links first, so a name inside one counts as the link
+  const links = [];
+  for (const m of termMarksOf(S.texts.get(tid))) {
+    if (m.id !== termId) continue;
+    const A = placeNote(m, B); if (A) links.push(A);
+  }
+  const inLink = (i, off) => links.some((A) => (i > A.a || (i === A.a && off >= A.ao)) && (i < A.b || (i === A.b && off < A.bo)));
+  for (const A of links) all.push({ i: A.a, off: A.ao, mine: true, snip: () => { const p = quoteOf(B, A); return `<mark>${esc(p.length > 260 ? p.slice(0, 250).replace(/\s\S*$/, "") + "…" : p)}</mark>`; } });
+  if (needles.length) for (const run of textRuns(B)) {
+    const text = run.text;
+    // plain ASCII folds to itself, letter for letter: skip linkFold's work, and runs without any needle
+    const ascii = IS_ASCII.test(text), low = ascii ? text.toLowerCase() : null;
+    if (ascii && !needles.some((nd) => (nd.exact ? text : low).includes(nd.s))) continue;
+    const F = ascii ? { cased: text, low } : linkFold(text), at = (k) => (ascii ? k : F.map[k]);
+    for (const h of findNeedles(F, needles)) {
+      const a = at(h.pos), e = at(h.end);
+      // the block the match starts in, and where in that block's own characters
+      let sg = run.segs[0]; for (const x of run.segs) if (x.at <= a) sg = x;
+      const i = sg.i, off = Math.max(0, a - sg.at) + sg.base;
+      if (inLink(i, off)) continue;
+      all.push({ i, off, word: text.slice(a, e), snip: () => rawSnip(text, a, e) });
+    }
+  }
+  all.sort((x, y) => x.i - y.i || x.off - y.off);
+  const hits = all.slice(0, INBOOK_SHOWN + INBOOK_LISTED).map((h) => ({ i: h.i, page: ix.pageAt[h.i], sec: ix.secAt[h.i], word: h.word || "", mine: !!h.mine, snip: h.snip() }));
+  return { count: all.length, links: links.length, hits };
+}
+function inBooksStart(g) {
+  const n = [...S.texts.values()].filter((t) => t.hasContent).length; if (!n || (!termNeedles(g).length && ![...S.texts.values()].some((t) => termMarksOf(t).some((m) => m.id === g.id)))) return "";
+  return `<div class="label">In your books</div><p class="hint">Where it occurs in the text of your ${n} book${n === 1 ? "" : "s"}, by its name${termNeedles(g).length > 1 ? "s" : ""} as whole words.</p>
+    <div class="noteacts"><button class="btn ghost" data-inbooks="${esc(g.id)}">Search your books</button></div>`;
+}
+let INBOOK_RUN = 0;
+async function runInBooks(btn) {
+  const box = btn.closest("[data-inbooks-box]"), g = box && allTerms().find((x) => x.id === box.dataset.inbooksBox); if (!g) return;
+  const entry = box.closest("details"), run = String(++INBOOK_RUN); box.dataset.run = run;
+  const needles = termNeedles(g), texts = [...S.texts.entries()].filter(([, t]) => t.hasContent);
+  btn.disabled = true;
+  const found = []; let missing = 0, k = 0;
+  for (const [tid, t] of texts) {
+    btn.textContent = `Searching ${++k} of ${texts.length}…`;
+    await new Promise((r) => setTimeout(r));
+    // gone, closed, or started again: stop, and leave the button ready for next time
+    if (!box.isConnected || box.dataset.run !== run) return;
+    if (entry && !entry.open) { box.innerHTML = inBooksStart(g); return; }
+    let r = null; try { r = await bookOccurrences(tid, needles, g.id); } catch { r = null; }
+    if (!r) { missing++; continue; }
+    if (r.count) found.push([tid, t, r]);
+  }
+  if (!box.isConnected || box.dataset.run !== run) return;
+  if (entry && !entry.open) { box.innerHTML = inBooksStart(g); return; }
+  box.innerHTML = inBooksHTML(g, found, texts.length, missing);
+}
+function inBooksHTML(g, found, searched, missing) {
+  found.sort(([, a], [, b]) => (a.author || "￿").localeCompare(b.author || "￿", undefined, { sensitivity: "base" }) || a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
+  const total = found.reduce((n, [, , r]) => n + r.count, 0);
+  const row = (tid, t) => (h) => {
+    const sec = h.sec && (t.sections || []).find((s) => s.id === h.sec), meta = [h.page ? loc(h.page) : "", sec ? sec.label : ""].filter(Boolean);
+    if (h.mine) meta.unshift("Your link");
+    return `<button class="mention" data-inbook="${esc(tid)}" data-at="${h.i}"${h.word ? ` data-find="${esc(h.word)}"` : ""}><span class="mn">${meta.map((m) => `<span>${esc(m)}</span>`).join("") || "<span>Open it here</span>"}</span><span class="ms">${h.snip}</span></button>`;
+  };
+  const group = ([tid, t, r]) => {
+    const first = r.hits.slice(0, INBOOK_SHOWN), rest = r.hits.slice(INBOOK_SHOWN), over = r.count - r.hits.length;
+    return `<div class="tbook"><div class="tbh"><button class="src" data-open="${esc(tid)}">${esc(t.title)}</button>${t.author ? `<span>${esc(t.author)}</span>` : ""}<span class="cnt">${r.count} time${r.count === 1 ? "" : "s"}${r.links ? `, ${r.links} your link${r.links === 1 ? "" : "s"}` : ""}</span></div>
+      ${first.map(row(tid, t)).join("")}${rest.length ? `<details class="tmorehits"><summary>${rest.length} more${over > 0 ? ` of ${r.count - INBOOK_SHOWN}` : ""} from this book</summary>${rest.map(row(tid, t)).join("")}${over > 0 ? `<p class="hint">${over} more not listed: open one and Find steps through them all.</p>` : ""}</details>` : ""}</div>`;
+  };
+  const read = searched - missing, books = (n) => `${n} book${n === 1 ? "" : "s"}`;
+  const where = missing ? `the ${books(read)} that could be read` : `your ${books(read)}`;
+  const head = total ? `${total} time${total === 1 ? "" : "s"} in ${found.length} of ${where}.` : read ? `Not found in ${where}.` : "None of your books could be read.";
+  return `<div class="label">In your books</div><div class="thits inbooks"><p class="hint" role="status">${head}${missing ? ` ${books(missing)} couldn't be read, so ${missing === 1 ? "it wasn't" : "they weren't"} searched.` : ""}</p>${found.map(group).join("")}</div>`;
+}
 /* ---------- Mentioned in: where the articles, thinker cards and glossary entries use a term or a thinker's name ----------
    Matching follows the articles' own links (branchLinks): accents ignored in either Unicode form, whole words only, a name under five
    letters in exact case, LINK_FULL_ONLY names only in full, a name two thinkers share never matched. A term matches by its name and the
@@ -197,6 +282,7 @@ function termHTML(g, tmap) {
       ${termTimeHTML(g.p)}
       <div data-mentions="${esc(g.id)}"></div>
       ${termHitsHTML(hits)}
+      <div data-inbooks-box="${esc(g.id)}">${inBooksStart(g)}</div>
       <div class="noteacts">
         ${sayBtn(g.t)}
         ${TT_TERMS.has(g.id) ? `<button class="btn" data-truth="${TT_TERMS.get(g.id)}">Try it in a truth table</button>` : ""}

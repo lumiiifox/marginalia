@@ -24,6 +24,8 @@ document.addEventListener("click", (e) => {
   }
   if (b.id === "read") return go({ screen: "reader", textId: S.textId });
   if (b.id === "loadfile") return fileSheet(S.textId);
+  if (b.dataset.inbooks) return runInBooks(b);
+  if (b.dataset.inbook) return go({ screen: "reader", textId: b.dataset.inbook, at: +b.dataset.at, flash: true, find: b.dataset.find });
   if (b.dataset.gotoNote) return go({ screen: "reader", textId: b.dataset.tid, at: +b.dataset.gotoNote, flash: true });
   if (b.id === "rback") return back();
   if (b.id === "rtback") return trailBack();
