@@ -1167,21 +1167,29 @@ function nextPart(B, i) {
 // The book as Find reads it: a paragraph and its continuations past printed-page breaks are one run of text, so a phrase
 // the printed page split is still found. Each run keeps where each block's text sits in it, and a folded copy (accents and
 // capitals ignored) with a map back to the original characters.
-function findRuns() {
-  if (R.findRuns && R.findRunsOf === R.blocks) return R.findRuns;
-  const B = R.blocks, n = B.length, used = new Uint8Array(n), runs = [];
+// The runs of any book's blocks: [{ text, segs: [{ i, at, len, base }] }] (also what In your books searches).
+function textRuns(B) {
+  const n = B.length, used = new Uint8Array(n), runs = [];
   for (let i = 0; i < n; i++) {
     const b = B[i]; if (used[i] || b.k === "pg" || isHidden(b)) continue;
     const parts = [i]; used[i] = 1;
     for (let q = nextPart(B, i); q >= 0; q = nextPart(B, q)) { parts.push(q); used[q] = 1; }
     let text = ""; const segs = [];
     for (const k of parts) { if (text) text += glueAfter(text); const x = shownText(B[k]); segs.push({ i: k, at: text.length, len: x.length, base: B[k].st === "hide" && B[k].sth ? B[k].sth : 0 }); text += x; }
+    runs.push({ text, segs });
+  }
+  return runs;
+}
+function findRuns() {
+  if (R.findRuns && R.findRunsOf === R.blocks) return R.findRuns;
+  const runs = [];
+  for (const { text, segs } of textRuns(R.blocks)) {
     let ft = "", fm = [];
     for (let c = 0; c < text.length; c++) { const ch = text[c], f = ch.charCodeAt(0) < 128 ? ch.toLowerCase() : fold(ch); for (let z = 0; z < f.length; z++) fm.push(c); ft += f; }
     fm.push(text.length);
     runs.push({ text, segs, ft, fm });
   }
-  R.findRuns = runs; R.findRunsOf = B;
+  R.findRuns = runs; R.findRunsOf = R.blocks;
   return runs;
 }
 // Every match of q: the block it starts in, and the stretch of each block it covers (in that block's characters).

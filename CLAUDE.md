@@ -256,10 +256,13 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   from the toggle event); a thinker's card shows it with your notes that name them (`thinkerNotes`). An article row opens the article at its
   section (`go({ screen: "branches", focus, sec })`, sections carry `data-bsec`). `mentionSources` folds the built-in texts once. Nothing stored.
 - A glossary term's "In your books" (`inBooksStart`, Search your books → `runInBooks`, `bookOccurrences`, `inBooksHTML`): searched only when asked,
-  every book with its text, by `termNeedles` through `findNeedles` (whole words, accents ignored, plurals); every occurrence counts. Each
-  book's count, its first `INBOOK_SHOWN` hits and `INBOOK_LISTED` more folded, each with page and chapter from `sectionIndex` and its
-  sentence; a hit (`data-inbook`) opens the reader there with the word in Find and ← Your place. Texts are read from IndexedDB without
-  being kept in `S.content`. Nothing stored. Tested by `tests/in_your_books.py`.
+  every book with its text read as Find reads it (`textRuns`, which `findRuns` also uses: a paragraph and its continuations past page breaks
+  are one run), by `termNeedles` through `findNeedles` (whole words, accents ignored, plurals); every occurrence counts. Your links to the
+  term (`t.termMarks`, placed by `placeNote`) are listed as Your link, and a name inside one counts as the link. Each book's count, its first
+  `INBOOK_SHOWN` hits and `INBOOK_LISTED` more folded, in reading order, each with page and chapter from `sectionIndex` and its sentence; a hit
+  (`data-inbook`) opens the reader there with the word in Find and ← Your place. Closing the entry or starting again stops a search
+  (`INBOOK_RUN`); books that can't be read are counted apart. Texts are read from IndexedDB without being kept in `S.content`. Nothing
+  stored. Tested by `tests/in_your_books.py`.
 - A glossary term's "In your notes" (`termHitsHTML`, from `termNotes`): your notes using the term, grouped by author and then book, each book in
   reading order with your glosses, four shown and the rest folded. Only your own notes; nothing is written about the term for you.
 - Where you left off (`briefHTML`, `placeIn`, on a book's page under Continue reading): page and chapter at `t.pos`, your summary of that
