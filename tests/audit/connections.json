@@ -1,0 +1,92 @@
+{
+ "id": "connections",
+ "standard": "connections-2026-10",
+ "date": "2026-10-25",
+ "note": "Typed connections between thinkers (CONNECTIONS in data/thinkers.js). Each claim, primary-text line and reading checked against its source; quotations checked character for character.",
+ "connections": [
+  {
+   "from": "nietzsche",
+   "to": [
+    "spinoza"
+   ],
+   "kind": "critique",
+   "checked": [
+    "BGE §13 in data/books/classic-nietzsche-beyond.json: 'superfluous teleological principles!—one of which is the instinct of self-preservation (we owe it to Spinoza’s inconsistency)'; 'life itself is Will to Power; self-preservation is only one of the indirect and most frequent results thereof'",
+    "Wiesmann 2013, pp. 49–61: Spinoza 'as an avowedly antiteleological thinker'; 'As A. Rupschus and W. Stegmaier have shown, Nietzsche … uses Trendelenburg’s critique … in Beyond Good and Evil 13'; postcard to Overbeck, 30 July 1881: 'I have a precursor, and what a precursor!'"
+   ],
+   "review": {
+    "verdict": "pass",
+    "fixes": [
+     "series title of the journal given in full"
+    ]
+   }
+  },
+  {
+   "from": "deleuze",
+   "to": [
+    "nietzsche"
+   ],
+   "kind": "reinterpretation",
+   "checked": [
+    "SEP 'Gilles Deleuze' (substantive revision 3 June 2022): Nietzsche and Philosophy 'suggests that Nietzsche completed and inverted Kantianism'; genealogy 'constituted Nietzsche’s genetic method, and the will-to-power was his principle of difference'; 'noble' forces 'differentiate themselves first'"
+   ],
+   "review": {
+    "verdict": "pass",
+    "fixes": [
+     "SEP credit given as Smith, Protevi and Voss (PhilPapers' linked bibliography), and the reading attributed to the entry instead of to Voss alone, since the entry's copyright line could not be read"
+    ]
+   }
+  },
+  {
+   "from": "deleuze",
+   "to": [
+    "spinoza"
+   ],
+   "kind": "reinterpretation",
+   "checked": [
+    "SEP 'Gilles Deleuze': 'being is said in a single sense of all of which it is said'; univocity the key to a 'philosophy of difference'; 'a Spinozism minus substance, a purely modal or differential universe'; secondary thesis 1968, Spinoza and the Problem of Expression"
+   ],
+   "review": {
+    "verdict": "pass",
+    "fixes": [
+     "as above, the SEP credit"
+    ]
+   }
+  },
+  {
+   "from": "land",
+   "to": [
+    "deleuze",
+    "guattari"
+   ],
+   "kind": "reinterpretation",
+   "checked": [
+    "Cunningham, Radical Philosophy 191 (2015), 29–38: Anti-Oedipus: 'to go further, to “accelerate [or hasten] the process”, as Nietzsche put it'; note 16: 'Land’s argument, written in 1993, and quoting Anti-Oedipus' … 'Machinic revolution must therefore go in the opposite direction to socialistic regulation'; 'Anti-Oedipus may have provided much of the vocabulary for such a position'; Land’s later work favours 'the time-structure of capital accumulation'",
+    "Haynes 2021 (accepted version; Royal Holloway record for the details): 'The work of Nick Land prioritises above all Anti-Oedipus … and particularly its vocabulary and conceptual framework for mapping productive desire onto cybernetic-productive processes'; right accelerationism 'as exemplified in Land’s work … embraces the project of capitalism'"
+   ],
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "fix",
+    "fixes": [
+     "the essay title 'Machinic Desire' removed, since the cited source does not name it",
+     "Anti-Oedipus quoted as Cunningham gives it, “accelerate [or hasten] the process”",
+     "Land's quotation given with its capital M",
+     "Haynes linked to the open accepted version, DOI kept in the name"
+    ]
+   }
+  }
+ ],
+ "drew_on": [
+  {
+   "thinker": "land",
+   "added": [
+    "deleuze",
+    "guattari"
+   ],
+   "basis": "Haynes ('prioritises above all Anti-Oedipus'); Cunningham note 16 (Land 'quoting Anti-Oedipus')",
+   "review": {
+    "verdict": "pass"
+   }
+  }
+ ]
+}
