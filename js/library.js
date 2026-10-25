@@ -185,7 +185,7 @@ function bookplates() {
   const d = firstOf(S.drafts); if (d) earned.push({ id: "draft", n: "First draft", sub: d.title || "", at: d.createdAt, first: true }); else todo.push(["First draft", "Start a draft from your notes, or from an essay template."]);
   const c = firstOf(S.compares); if (c) earned.push({ id: "compare", n: "First comparison", sub: c.title || "", at: c.createdAt, first: true }); else todo.push(["First comparison", "Set two views side by side in Comparisons."]);
   const books = [...S.texts.keys()].flatMap((tid) => bookPlates(tid));
-  const paths = (typeof PATHS === "undefined" ? [] : PATHS).filter((P) => P.steps.every((st) => stepState(st).done)).map((P) => ({ id: `path:${P.id}`, n: "A path walked", sub: P.n, path: P.id }));
+  const paths = bookPaths().filter((P) => P.steps.every((st) => stepState(st).done)).map((P) => ({ id: `path:${P.id}`, n: "A path walked", sub: P.n, path: P.id }));
   if (!books.length) todo.push(["A book read through", "Tick every chapter of a book as read, on its page."]);
   if (!paths.length) todo.push(["A path walked", "Finish every step of a reading path."]);
   return { firsts: earned, books, paths, todo, count: earned.length + books.length + paths.length };

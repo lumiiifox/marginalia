@@ -220,6 +220,7 @@ function termBranches(g) { return (Array.isArray(g.br) ? g.br : AREA_BRANCH[g.a]
    Each step opens its book at its first chapter, or where you are if you're already inside those chapters; a step is done once
    you've ticked all its chapters as read on the book's page. A classic you deleted can be added back. Nothing else is stored. */
 const pathsFor = (bid) => (typeof PATHS === "undefined" ? [] : PATHS.filter((x) => (x.br || []).includes(bid)));
+const bookPaths = () => (typeof PATHS === "undefined" ? [] : PATHS.filter((P) => P.steps)); // paths of chapters across books (not close readings)
 function stepState(st) {
   const t = S.texts.get(st.book); if (!t) return { t: null, secs: [], done: false, started: false };
   const by = new Map((t.sections || []).map((x) => [x.id, x])), secs = st.secs.map((id) => by.get(id)).filter(Boolean);
@@ -229,6 +230,7 @@ function pathsView() {
   const list = typeof PATHS === "undefined" ? [] : PATHS;
   const tmap = termMap();
   const path = (P) => {
+    if (P.kind === "close") return closePathHTML(P, tmap);
     const states = P.steps.map(stepState), done = states.filter((x) => x.done).length;
     const step = (st, k) => {
       const s = states[k], t = s.t, title = t ? t.title : (CLASSIC_TITLES[st.book] || "A classic");
@@ -256,6 +258,76 @@ function pathsView() {
     <p class="hint">Each path reads a few chapters from each book, in an order where each answers the one before. A step is done once you tick its chapters as read on the book's page.</p>
     ${list.map(path).join("") || `<p class="empty">No paths yet.</p>`}`;
 }
+/* ---------- close readings (PATHS with kind "close"): one classic, station by station ----------
+   Each station opens the book at its own passages (citation links, so your place is kept as ← Your place), says what they say, and keeps
+   Deleuze's reading apart, through named scholarship. A station counts as read once you've a note of your own on one of its passages
+   (closeState: notes whose `at` falls in a passage's blocks, questions added from the path left out). Nothing is stored. */
+// The blocks a cited passage covers: a preface or appendix to the next heading; a proposition with its proof, corollaries and notes;
+// a definition, axiom, postulate, corollary or note to the next item.
+function passageSpan(B, i) {
+  const t = (k) => plain(B[k].x || "").trim(), item = (k) => B[k].k === "h" || /^PROP\. |^(?:[A-Z]+ )?[IVXL]+\.\s|^(?:Corollary|Note)\b/.test(t(k));
+  let j = i + 1;
+  if (B[i].k === "h") { while (j < B.length && B[j].k !== "h") j++; return [i, j]; }
+  // a proposition keeps its proof, corollaries and notes; anything else ends at the next item
+  const stop = /^PROP\. /.test(t(i)) ? (k) => B[k].k === "h" || /^PROP\. /.test(t(k)) : item;
+  while (j < B.length && !stop(j)) j++;
+  return [i, j];
+}
+const closeStations = (P) => P.parts.flatMap((part) => part.st);
+let CLOSE_ASKED = false;
+function closeState(P) {
+  const t = S.texts.get(P.book), B = t && S.content.get(P.book);
+  if (t && !B && !CLOSE_ASKED) { CLOSE_ASKED = true; loadContent(P.book).then((x) => { if (x && S.screen === "paths") render(); }).catch(() => {}); }
+  const out = new Map();
+  for (const st of closeStations(P)) {
+    const spans = B ? st.refs.map((r) => { const m = r.match(PASSAGE_STYLES[P.style].item); const i = m ? PASSAGE_STYLES[P.style].find(B, m.slice(1).map((v) => v || "")) : -1; return i >= 0 ? passageSpan(B, i) : null; }).filter(Boolean) : [];
+    const asked = new Set(st.q || []);
+    const notes = t ? notesFor(P.book).filter(([, n]) => Number.isInteger(n.at) && spans.some(([a, b]) => n.at >= a && n.at < b) && !(n.kind === "question" && asked.has(n.gloss))) : [];
+    out.set(st.id, { start: spans.length ? spans[0][0] : -1, notes });
+  }
+  return { t, loaded: !!B, out };
+}
+function closePathHTML(P, tmap) {
+  const state = closeState(P), all = closeStations(P), done = all.filter((st) => state.out.get(st.id).notes.length).length;
+  const conns = (P.conns || []).map(([a, b]) => CONNECTIONS.find((c) => c.from === a && connTo(c).includes(b))).filter(Boolean);
+  const station = (st) => {
+    const s = state.out.get(st.id), read = s.notes.length > 0;
+    const cite = passageLinks(esc(`(${st.refs.join("; ")})`), P.style);
+    const have = new Set(state.t ? notesFor(P.book).filter(([, n]) => n.kind === "question").map(([, n]) => n.gloss) : []);
+    const qs = (st.q || []).map((q, i) => `<li><span>${esc(q)}</span>${state.t && s.start >= 0 ? (have.has(q) ? `<small>In your questions</small>` : `<button class="linkbtn" data-askcq="${esc(P.id)}|${esc(st.id)}|${i}">Add to my questions</button>`) : ""}</li>`).join("");
+    const mine = s.notes.map(([, n]) => `<button class="mention" data-goto-note="${n.at}" data-tid="${esc(P.book)}"><span class="mn"><span>${esc(KINDS[n.kind] || "Note")}</span>${n.page ? `<span>${esc(loc(n.page))}</span>` : ""}</span><span class="ms">${esc(noteSnippet(n, 140))}</span></button>`).join("");
+    return `<li class="pstep${read ? " done" : ""}" data-station="${esc(st.id)}"><span class="pn" aria-hidden="true">${read ? "✓" : all.indexOf(st) + 1}</span><div class="pbody">
+      <div class="pt"><b>${esc(st.n)}</b></div>
+      <div class="pch">${state.t ? cite : esc(`(${st.refs.join("; ")})`)}</div>
+      <p><span class="ck">In the text</span> ${esc(st.says)}</p>
+      ${(st.deleuze || []).map((d) => `<p><span class="ck">Deleuze, through scholarship</span> ${esc(d.says)} <a href="${esc(d.src)}" target="_blank" rel="noopener" class="tsrc">${esc(d.srcName)}</a></p>`).join("")}
+      ${chipRow("Terms", termChips(st.terms || [], tmap))}
+      ${qs ? `<details class="readqd"><summary>Questions to read with</summary><ol class="readqs">${qs}</ol></details>` : ""}
+      ${mine ? `<div class="mgroup"><div class="clabel">Your notes here</div>${mine}</div>` : ""}
+    </div></li>`;
+  };
+  return `<section class="path group close" data-path-id="${esc(P.id)}">
+    <div class="sec-head"><div><h2>${esc(P.n)}</h2><div class="sub">${all.length} stations${done ? `, ${done} with your notes` : ""}</div></div><button class="btn ghost" data-pathshare="${esc(P.id)}">Share</button></div>
+    <p class="pd">${esc(P.d)}</p>
+    ${state.t ? "" : `<div class="noteacts"><span class="hint">Not on your shelf: you deleted it.</span><button class="btn" data-pathadd="${esc(P.book)}">Add it back</button></div>`}
+    <div class="pbar" aria-hidden="true">${all.map((st) => `<i class="${state.out.get(st.id).notes.length ? "on" : ""}"></i>`).join("")}</div>
+    ${conns.length ? chipRow("Connections", conns.map((c) => `<button class="chip" data-thinker="${esc(c.from)}">${esc(THINKER.get(c.from).sn)} ${esc((CONN_KINDS[c.kind] || [c.kind])[0].toLowerCase())} ${esc(connTo(c).map((x) => THINKER.get(x).sn).join(" and "))}</button>`).join("")) : ""}
+    ${P.parts.map((part) => `<h3 class="ph">${esc(part.h)}</h3><ol class="psteps">${part.st.map(station).join("")}</ol>`).join("")}
+    ${P.next ? `<p class="hint">${esc(P.next)}</p>` : ""}
+  </section>`;
+}
+async function askCloseQuestion(ref) {
+  const [pid, sid, i] = ref.split("|"), P = PATHS.find((x) => x.id === pid), st = P && closeStations(P).find((x) => x.id === sid), q = st && (st.q || [])[+i];
+  if (!q || !S.texts.has(P.book)) return;
+  if (notesFor(P.book).some(([, n]) => n.kind === "question" && n.gloss === q)) return toast("That's already in your questions.");
+  try {
+    const B = await loadContent(P.book), m = st.refs[0].match(PASSAGE_STYLES[P.style].item), at = B && m ? PASSAGE_STYLES[P.style].find(B, m.slice(1).map((v) => v || "")) : -1;
+    const note = { textId: P.book, kind: "question", passage: "", gloss: q, page: at >= 0 ? pagesOf(B)[at] || "" : "", createdAt: Date.now(), updatedAt: Date.now() };
+    if (at >= 0) note.at = at;
+    await put("notes", gid(), note);
+    toast(`Added to your questions on “${S.texts.get(P.book).title}”.`); render();
+  } catch (e) { toast(failMsg(e)); }
+}
 // Questions to read a step with: folded on the path, open in Where you left off; each can become a Question note on the book.
 function readQsHTML(P, k, canAsk, open) {
   const st = P.steps[k], qs = st.q || []; if (!qs.length) return "";
@@ -266,14 +338,14 @@ function readQsHTML(P, k, canAsk, open) {
 // The path step whose chapters hold a place in a book, if any (the first, where two paths share chapters).
 function stepAt(tid, B, pos) {
   if (typeof PATHS === "undefined" || !B) return null;
-  for (const P of PATHS) for (const [k, st] of P.steps.entries()) {
+  for (const P of bookPaths()) for (const [k, st] of P.steps.entries()) {
     if (st.book !== tid || !(st.q || []).length) continue;
     const r = stepRange(B, st.secs); if (r && pos >= r[0] && pos < r[1]) return { P, k };
   }
   return null;
 }
 async function askQuestion(ref) {
-  const [pid, k, i] = ref.split("|"), P = PATHS.find((x) => x.id === pid), st = P && P.steps[+k], q = st && (st.q || [])[+i];
+  const [pid, k, i] = ref.split("|"), P = bookPaths().find((x) => x.id === pid), st = P && P.steps[+k], q = st && (st.q || [])[+i];
   if (!q || !S.texts.has(st.book)) return;
   if (notesFor(st.book).some(([, n]) => n.kind === "question" && n.gloss === q)) return toast("That's already in your questions.");
   try {
@@ -288,12 +360,13 @@ async function askQuestion(ref) {
 function primerHTML(id, t) {
   const p = typeof PRIMERS !== "undefined" && PRIMERS[id]; if (!p) return "";
   const fresh = !(t.pos > 0) && !notesFor(id).length;
-  const paths = (typeof PATHS === "undefined" ? [] : PATHS).flatMap((P) => P.steps.map((st, k) => [P, k, st]).filter(([, , st]) => st.book === id));
+  const paths = bookPaths().flatMap((P) => P.steps.map((st, k) => [P, k, st]).filter(([, , st]) => st.book === id));
+  const close = (typeof PATHS === "undefined" ? [] : PATHS).filter((P) => P.kind === "close" && P.book === id);
   return `<section class="group"><details class="primer"${fresh ? " open" : ""}><summary class="label">Before you start</summary><div class="paperpanel primerbody">
     <p class="tdef">${esc(p.about)}</p>
     <div class="crow"><span class="clabel">How it's built</span><p class="tdef">${esc(p.built)}</p></div>
     ${chipRow("Words to know", termChips(p.terms || [], termMap()))}
-    ${paths.length ? chipRow("Read it in a path", paths.map(([P, k]) => `<button class="chip" data-path="${esc(P.id)}">${esc(P.n)} · step ${k + 1}</button>`).join("")) : ""}
+    ${paths.length || close.length ? chipRow("Read it in a path", paths.map(([P, k]) => `<button class="chip" data-path="${esc(P.id)}">${esc(P.n)} · step ${k + 1}</button>`).join("") + close.map((P) => `<button class="chip" data-path="${esc(P.id)}">${esc(P.n)}</button>`).join("")) : ""}
     ${thinkerSources(p)}
   </div></details></section>`;
 }
@@ -572,7 +645,7 @@ function articleHTML(b, terms) {
 // Citation styles: each names a bundled classic, the form of one reference to it, and how to find that reference's block.
 // An article's `xr` names the styles it uses (one, or a list). Several references in one bracket are joined by "; ".
 const PASSAGE_STYLES = {
-  "spinoza-ethics": { book: "classic-spinoza-ethics", item: /^(?:Part )?(I|II|III|IV|V), (Definition|Axiom|Postulate|Proposition) (\d+)(?:, (Corollary|Note)(?: (\d+))?)?$/, find: spinozaBlock },
+  "spinoza-ethics": { book: "classic-spinoza-ethics", item: /^(?:Part )?(I|II|III|IV|V), ((?:Definition|Axiom|Postulate|Proposition)(?= \d)|Preface|Appendix)(?: (\d+)(?:, (Corollary|Note)(?: (\d+))?)?)?$/, find: spinozaBlock },
   // Nietzsche, Genealogy of Morality: essay and section, "GM II §12" ("GM Preface §3").
   "nietzsche-genealogy": { book: "classic-nietzsche-genealogy", item: /^GM (Preface|I|II|III) §(\d+)$/,
     find: (B, [part, sec]) => headPath(B, [[2, (t) => t.startsWith({ Preface: "Preface", I: "First Essay", II: "Second Essay", III: "Third Essay" }[part])], [3, (t) => t === sec]]) },
@@ -648,6 +721,11 @@ function spinozaBlock(B, [part, kind, num, sub, subNum]) {
   const txt = (b) => plain(b.x || "").trim(), R = toRoman(+num);
   const start = B.findIndex((b) => b.k === "h" && b.l === 2 && txt(b).startsWith(`Part ${part}:`)); if (start < 0) return -1;
   let end = B.findIndex((b, i) => i > start && b.k === "h" && b.l === 2); if (end < 0) end = B.length;
+  // a part's preface or appendix: its heading, or for a preface without one (Part III), the text before the part's first heading
+  if (kind === "Preface" || kind === "Appendix") {
+    for (let i = start + 1; i < end; i++) if (B[i].k === "h" && txt(B[i]) === kind) return i;
+    return kind === "Preface" && B[start + 1] && B[start + 1].k !== "h" ? start + 1 : -1;
+  }
   const find = (from, to, re) => { for (let i = from; i < to; i++) if (B[i].k !== "h" && B[i].k !== "fn" && re.test(txt(B[i]))) return i; return -1; };
   if (kind !== "Proposition") {
     const head = { Definition: /^Definitions$/, Axiom: /^Axioms?$/, Postulate: /^Postulates$/ }[kind];

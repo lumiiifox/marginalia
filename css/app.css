@@ -791,7 +791,10 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .conn .conn-h { font: 600 15px/1.3 var(--f-ui); }
 .conn .conn-h .linkbtn { font: inherit; }
 .conn .conn-c { font-size: 16px; }
-.conn .ck { font: 500 12px/1.2 var(--f-ui); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+.ck { font: 500 12px/1.2 var(--f-ui); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+.path.close .ph { margin: 18px 0 6px; font: 600 17px/1.3 var(--f-ui); }
+.path.close .pbody > p { margin: 0; overflow-wrap: anywhere; }
+.path.close .pbody .tsrc { font-size: 14px; }
 .conn a.tsrc, .conn span.tsrc { font-size: 14px; }
 .crow { display: grid; gap: 6px; }
 .clabel { font: 500 12px/1.2 var(--f-ui); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }

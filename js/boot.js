@@ -76,6 +76,7 @@ document.addEventListener("click", (e) => {
   if (b.dataset.pathread) { const [tid, sec] = b.dataset.pathread.split("|"); return readStep(tid, sec.split(",")); }
   if (b.dataset.pathadd) return readdClassic(b.dataset.pathadd);
   if (b.dataset.askq) return askQuestion(b.dataset.askq);
+  if (b.dataset.askcq) return askCloseQuestion(b.dataset.askcq);
   if (b.dataset.wsfind) { const [lang, q] = b.dataset.wsfind.split("|"); textSheet(null); const v = $("#sheetroot .veil"); if (v && v.wsStart) v.wsStart(lang, q); return; }
   if (b.dataset.pathshare) { const P = PATHS.find((x) => x.id === b.dataset.pathshare); return shareLink(`${appURL()}#path=${encodeURIComponent(P.id)}`, `Reading path: ${P.n}`); }
   if (b.dataset.argquiz) return quizPanel(b.dataset.argquiz);

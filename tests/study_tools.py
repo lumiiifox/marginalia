@@ -340,7 +340,7 @@ async def fallacies(browser):
 async def paths(browser):
     page, errs = await fresh(browser)
     bad = await page.evaluate("""(async () => { const bad = [], ids = new Set(GLOSSARY.map((g) => g.id));
-      for (const P of PATHS) {
+      for (const P of PATHS.filter((P) => P.steps)) {
         for (const b of P.br) if (!BRANCH.has(b)) bad.push(P.id + ' branch ' + b);
         for (const t of P.terms || []) if (!ids.has(t)) bad.push(P.id + ' term ' + t);
         for (const st of P.steps) {
@@ -356,7 +356,7 @@ async def paths(browser):
     check(bad == [], f"every step is a classic the app has, its chapters exist and are in order, and the terms, branches and titles match ({bad})")
     await page.evaluate("addClassics(true)"); await page.wait_for_timeout(300)
     await page.evaluate("go({ screen: 'library' })"); await page.click("#openpaths"); await page.wait_for_timeout(200)
-    shown = await page.evaluate("[S.screen, [...document.querySelectorAll('section.path')].map((x) => x.dataset.pathId), document.querySelectorAll('.pstep').length, PATHS.reduce((k, P) => k + P.steps.length, 0)]")
+    shown = await page.evaluate("[S.screen, [...document.querySelectorAll('section.path')].map((x) => x.dataset.pathId), document.querySelectorAll('section.path:not(.close) .pstep').length, PATHS.filter((P) => P.steps).reduce((k, P) => k + P.steps.length, 0)]")
     check(shown[0] == "paths" and shown[1] == await page.evaluate("PATHS.map((P) => P.id)") and shown[2] == shown[3], f"the home screen opens the paths, every step listed ({shown})")
     await page.evaluate("go({ screen: 'branches', focus: 'ethics' })"); await page.wait_for_timeout(200)
     await page.click("details[data-branch-id='ethics'] [data-path='how-to-live']"); await page.wait_for_timeout(300)
@@ -726,10 +726,10 @@ async def disputes(browser):
 async def readqs(browser):
     page, errs = await fresh(browser)
     await page.evaluate("addClassics(true)"); await page.wait_for_timeout(300)
-    bad = await page.evaluate("PATHS.flatMap((P) => P.steps.filter((st) => !Array.isArray(st.q) || st.q.length !== 3 || st.q.some((q) => typeof q !== 'string' || q.length < 20)).map((st) => P.id + ' ' + st.book))")
+    bad = await page.evaluate("PATHS.filter((P) => P.steps).flatMap((P) => P.steps.filter((st) => !Array.isArray(st.q) || st.q.length !== 3 || st.q.some((q) => typeof q !== 'string' || q.length < 20)).map((st) => P.id + ' ' + st.book))")
     check(bad == [], f"every path step has three questions to read with ({bad})")
     await page.evaluate("go({ screen: 'paths' })"); await page.wait_for_timeout(200)
-    n = await page.evaluate("[document.querySelectorAll('.readqd').length, PATHS.reduce((k, P) => k + P.steps.length, 0), [...document.querySelectorAll('.readqd')].every((d) => !d.open && d.querySelectorAll('li').length === 3)]")
+    n = await page.evaluate("[document.querySelectorAll('section.path:not(.close) .readqd').length, PATHS.filter((P) => P.steps).reduce((k, P) => k + P.steps.length, 0), [...document.querySelectorAll('section.path:not(.close) .readqd')].every((d) => !d.open && d.querySelectorAll('li').length === 3)]")
     check(n[0] == n[1] and n[2], f"each step folds its three questions ({n})")
     await page.evaluate("document.querySelector('[data-askq=\"why-obey|2|1\"]').closest('details').open = true")
     await page.click("[data-askq='why-obey|2|1']"); await page.wait_for_timeout(400)
@@ -971,6 +971,67 @@ async def connections(browser):
     check(not errs, "no script errors in connections" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def close_reading(browser):
+    import re, json
+    page, errs = await fresh(browser)
+    await page.evaluate("addClassics(true)"); await page.wait_for_function("S.texts.has('classic-spinoza-ethics')", timeout=60000)
+    # every station: its passages exist, its quotations are the bundled text's words, its sources and terms are real
+    chk = await page.evaluate("""(async () => { const out = { bad: [], n: 0, quotes: 0 }, ids = new Set(GLOSSARY.map((g) => g.id));
+      for (const P of PATHS.filter((P) => P.kind === 'close')) {
+        const B = await loadContent(P.book), whole = B.map((b) => plain(b.x || '')).join(' ').replace(/[¹²³⁴⁵⁶⁷⁸⁹⁰]/g, '').replace(/\\s+/g, ' ');
+        const st = PASSAGE_STYLES[P.style];
+        for (const s of closeStations(P)) {
+          out.n++;
+          for (const r of s.refs) { const m = r.match(st.item); if (!m || st.find(B, m.slice(1).map((v) => v || '')) < 0) out.bad.push(s.id + ' ref ' + r); }
+          for (const q of (s.says.match(/“[^”]*”/g) || [])) { out.quotes++; if (!whole.includes(q.slice(1, -1).replace(/\\s+/g, ' '))) out.bad.push(s.id + ' quote ' + q); }
+          for (const t of s.terms || []) if (!ids.has(t)) out.bad.push(s.id + ' term ' + t);
+          for (const d of s.deleuze || []) if (!/^https:\\/\\//.test(d.src) || !d.srcName || !d.says) out.bad.push(s.id + ' source');
+          if (!(s.q || []).length) out.bad.push(s.id + ' questions');
+        } }
+      return out; })()""")
+    check(chk["n"] >= 12 and chk["quotes"] >= 25 and chk["bad"] == [], f"every station's passages exist in the bundled Ethics, its {chk['quotes']} quotations are its words, its terms and sources real ({chk['bad'][:4]})")
+    words = await page.evaluate("PATHS.filter((P) => P.kind === 'close').flatMap((P) => [P.d, ...closeStations(P).flatMap((s) => [s.says, ...(s.q || []), ...(s.deleuze || []).map((d) => d.says)])]).join(' ')")
+    hits = [m.group(0) for pat in CONTRASTIVE for m in re.finditer(pat, re.sub(r"“[^”]*”", "", words), flags=re.I)]
+    check(not hits, f"the close reading: no contrastive constructions ({hits[:3]})")
+    audit = json.loads((ROOT / "tests" / "audit" / "spinoza-deleuze.json").read_text())
+    ids = await page.evaluate("closeStations(PATHS.find((P) => P.id === 'spinoza-deleuze')).map((s) => s.id)")
+    check(sorted(audit["stations"]) == sorted(ids) and all(v.get("review", {}).get("verdict") == "pass" for v in audit["stations"].values()),
+          "every station has its audit record with a passed independent review")
+    # the path on screen
+    await page.evaluate("(async () => { const t = S.texts.get('classic-spinoza-ethics'); await put('texts', t.id || 'classic-spinoza-ethics', { ...t, pos: 300 }); })()")
+    await page.evaluate("go({ screen: 'paths', path: 'spinoza-deleuze' })"); await page.wait_for_timeout(800)
+    ui = await page.evaluate("""(() => { const sec = document.querySelector('section.path.close[data-path-id="spinoza-deleuze"]');
+      return sec && { stations: sec.querySelectorAll('.pstep').length, links: sec.querySelectorAll('[data-passage="spinoza-ethics"]').length, parts: [...sec.querySelectorAll('.ph')].map((h) => h.textContent),
+        labels: [...new Set([...sec.querySelectorAll('.ck')].map((k) => k.textContent))], conns: [...sec.querySelectorAll('.crow .chip[data-thinker]')].map((c) => c.textContent), done: sec.querySelectorAll('.pstep.done').length }; })()""")
+    check(ui and ui["stations"] == 12 and ui["links"] == 27 and len(ui["parts"]) == 2 and ui["done"] == 0, f"the path lists its 12 stations under Parts I and III, every passage a link ({ui})")
+    check(ui and ui["labels"] == ["In the text", "Deleuze, through scholarship"], f"Spinoza's text comes first and Deleuze's reading apart, each labelled ({ui and ui['labels']})")
+    check(ui and ui["conns"] == ["Deleuze reinterprets Spinoza", "Nietzsche criticizes Spinoza"], f"the path shows its typed connections ({ui and ui['conns']})")
+    # a passage opens the Ethics there, keeping your place; Back returns to the path
+    await page.click("[data-station='immanent-cause'] [data-passage-at='I|Proposition|18|']")
+    await page.wait_for_function("S.screen === 'reader' && R.tid === 'classic-spinoza-ethics' && R.blocks", timeout=20000); await page.wait_for_timeout(700)
+    rd = await page.evaluate("({ want: passageBlock(R.blocks, 'I|Proposition|18|'), at: currentBlock(), visiting: R.visiting, home: R.home })")
+    check(abs(rd["at"] - rd["want"]) <= 3 and rd["visiting"] and rd["home"] == 300, f"a station's passage opens the Ethics there, with your place kept as ← Your place ({rd})")
+    await page.evaluate("back()"); await page.wait_for_timeout(500)
+    check(await page.evaluate("S.screen") == "paths", "Back returns to the path")
+    check(await page.evaluate("S.texts.get('classic-spinoza-ethics').pos") == 300, "your place in the book is unchanged")
+    # a question added from the path doesn't count; a note of your own on the passage does
+    await page.evaluate("document.querySelector(`[data-station='conatus'] details.readqd`).open = true")
+    await page.click("[data-askcq='spinoza-deleuze|conatus|0']"); await page.wait_for_timeout(500)
+    q = await page.evaluate("(() => { const n = [...S.notes.values()].find((n) => n.kind === 'question' && n.textId === 'classic-spinoza-ethics'); return n && [n.at, n.gloss.slice(0, 30)]; })()")
+    want6 = await page.evaluate("passageBlock(S.content.get('classic-spinoza-ethics'), 'III|Proposition|6|')")
+    check(q and q[0] == want6, f"Add to my questions makes a Question note at the station's first passage ({q}, {want6})")
+    st = await page.evaluate("document.querySelector(`[data-station='conatus']`).classList.contains('done')")
+    check(not st, "a question added from the path doesn't mark the station read")
+    await page.evaluate("(async () => { const B = S.content.get('classic-spinoza-ethics'), i = passageBlock(B, 'III|Proposition|7|'); await put('notes', 'cn1', { textId: 'classic-spinoza-ethics', kind: 'gloss', passage: 'nothing else but the actual essence', gloss: 'Essence as effort.', at: i + 1, links: [], createdAt: Date.now(), updatedAt: Date.now() }); render(); })()")
+    await page.wait_for_timeout(400)
+    st2 = await page.evaluate("""(() => { const s = document.querySelector("[data-station='conatus']"); return { done: s.classList.contains('done'), mine: [...s.querySelectorAll('.mgroup .mention')].map((m) => m.dataset.gotoNote), sub: document.querySelector('section.path.close .sub').textContent }; })()""")
+    check(st2["done"] and len(st2["mine"]) == 1 and st2["sub"] == "12 stations, 1 with your notes", f"a note of your own on a station's passage (here in a proposition's proof) marks it read and is listed there ({st2})")
+    await page.evaluate("go({ screen: 'text', textId: 'classic-spinoza-ethics' })"); await page.wait_for_timeout(400)
+    chip = await page.evaluate("[...document.querySelectorAll('.primer .chip[data-path]')].map((c) => c.textContent)")
+    check("Spinoza's Ethics, toward Deleuze" in chip, f"the Ethics' primer offers the path ({chip})")
+    check(not errs, "no script errors in the close reading" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def critique(browser):
     page, errs = await fresh(browser)
     await page.evaluate("""(async () => {
@@ -1037,6 +1098,7 @@ async def main():
         await branch_sources(browser)
         await mentions(browser)
         await connections(browser)
+        await close_reading(browser)
         await critique(browser)
         await browser.close()
 
