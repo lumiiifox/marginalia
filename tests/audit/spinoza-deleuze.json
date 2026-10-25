@@ -2,7 +2,7 @@
  "id": "spinoza-deleuze",
  "standard": "close-2026-10",
  "date": "2026-10-25",
- "note": "Close reading of the Ethics, Parts I and III. Every quotation in a station's `says` checked against the bundled Elwes text (also by tests/study_tools.py); every Deleuze line checked against its source for wording and for whose words they are.",
+ "note": "Close reading of the Ethics, Parts I to V. Every quotation in a station's `says` checked against the bundled Elwes text (also by tests/study_tools.py); every Deleuze line checked against its source for wording and for whose words they are.",
  "stations": {
   "in-itself": {
    "review": {
@@ -87,17 +87,164 @@
     "first_verdict": "pass",
     "notes": "Bolaños quotes Deleuze 1988, pp. 22–23, with his ellipsis."
    }
+  },
+  "two-ways": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "quotations exact and within the station's own passages; questions fair.",
+    "date": "2026-10-25"
+   }
+  },
+  "idea-of-body": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "quotations exact and within the station's own passages; questions fair.",
+    "date": "2026-10-25"
+   }
+  },
+  "adequate": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "quotations exact and within the station's own passages; questions fair.",
+    "date": "2026-10-25"
+   }
+  },
+  "common-notions": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "fix",
+    "notes": "second question misstated the text (Prop. 40 Note II has the third kind know essences adequately); now asks about Prop. 37. Lecture 24 Jan 1978 quotations exact; Rocha quotes Deleuze, Spinoza: Practical Philosophy pp. 56–57 (his note 52); 'forming a common notion…' is Rocha's own sentence.",
+    "date": "2026-10-25"
+   }
+  },
+  "three-kinds": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "fix",
+    "notes": "'In the same lecture' depended on the station before; now dated (24 January 1978). Quotation exact, about essence ideas, the third kind.",
+    "date": "2026-10-25"
+   }
+  },
+  "no-free-will": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "quotations exact and within the station's own passages; questions fair.",
+    "date": "2026-10-25"
+   }
+  },
+  "bondage": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "'a man at the mercy of his emotions' mixed two phrases of the Preface; now 'a man who is a prey to his emotions'. The despot and priest sentence cites the Theological-Political Treatise in the lecture of 24 January 1978.",
+    "date": "2026-10-25"
+   }
+  },
+  "useful": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "quotations exact and within the station's own passages; questions fair.",
+    "date": "2026-10-25"
+   }
+  },
+  "stronger-emotion": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "quotations exact and within the station's own passages; questions fair.",
+    "date": "2026-10-25"
+   }
+  },
+  "joy-good": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "both lecture quotations exact, 24 January 1978.",
+    "date": "2026-10-25"
+   }
+  },
+  "agree": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "quotations exact and within the station's own passages; questions fair.",
+    "date": "2026-10-25"
+   }
+  },
+  "free-man": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "quotations exact and within the station's own passages; questions fair.",
+    "date": "2026-10-25"
+   }
+  },
+  "understand-passion": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "quotations exact and within the station's own passages; questions fair.",
+    "date": "2026-10-25"
+   }
+  },
+  "third-kind": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "lecture quotation exact (24 January 1978); Rocha's sentence his own.",
+    "date": "2026-10-25"
+   }
+  },
+  "eternal": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "fix",
+    "notes": "Deleuze's 20 January 1981 sentence is about essence and time, and doesn't take up Part V's eternity of the mind; 'begins from the same thought' overstated it, now 'says of essence'.",
+    "date": "2026-10-25"
+   }
+  },
+  "intellectual-love": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "quotations exact and within the station's own passages; questions fair.",
+    "date": "2026-10-25"
+   }
+  },
+  "capable-body": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "quotations exact and within the station's own passages; questions fair.",
+    "date": "2026-10-25"
+   }
+  },
+  "blessedness": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "quotations exact and within the station's own passages; questions fair.",
+    "date": "2026-10-25"
+   }
   }
  },
  "path": {
   "d": {
    "verdict": "pass",
-   "first_verdict": "fix",
-   "notes": "now says Deleuze's reading is given where a named source supports it"
+   "notes": "rewritten for five parts; accurate."
   },
   "sources": {
    "verdict": "pass",
    "notes": "SEP credited to Smith, Protevi and Voss (PhilPapers), revised by Voss 2022 (entry metadata)"
+  },
+  "sources_parts_II_IV_V": {
+   "verdict": "pass",
+   "notes": "Rocha (ICI Berlin Press 2021, Cultural Inquiry 20, pp. 73–90; DOI 10.37050/ci-20_04) and the Vincennes lecture transcripts (24 January 1978, 20 January 1981; webdeleuze.com, hosted by Goldsmiths) checked."
   }
  },
  "also": "spinoza-ethics citations can now name a part's preface or appendix: (I, Appendix), (III, Preface)."
