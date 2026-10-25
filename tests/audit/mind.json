@@ -717,6 +717,11 @@
    "kind": "primary-text references",
    "note": "Bracketed reference to the newly bundled Treatise added and linked: T 1.4.6 (“I never can catch myself at any time without a perception”).",
    "checked_against": "the edition bundled with the app (data/books/classic-hume-treatise.json)"
+  },
+  {
+   "date": "2026-10-25",
+   "kind": "independent review of a primary-text reference",
+   "note": "Independent review of T 1.4.6: PASS. Location confirmed (Book I, Part IV, Section VI, Of Personal Identity); 'report' matches Hume's first-person framing and his allowance that another 'may, perhaps, perceive something simple and continued'; the Appendix's later doubts do not change what T 1.4.6 reports."
   }
  ]
 }

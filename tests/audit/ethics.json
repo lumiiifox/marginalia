@@ -1290,6 +1290,16 @@
    "kind": "primary-text references",
    "note": "Bracketed reference to the newly bundled Treatise added and linked: T 3.1.1 (“instead of the usual copulations of propositions, is, and is not”).",
    "checked_against": "the edition bundled with the app (data/books/classic-hume-treatise.json)"
+  },
+  {
+   "date": "2026-10-25",
+   "kind": "independent review of a primary-text reference",
+   "note": "Independent review of T 3.1.1 found the old wording (Hume's point that an “ought” cannot be derived from an “is”) stated the contested strict reading as Hume's own claim; the text says the deduction 'seems altogether inconceivable' and asks that 'a reason should be given'. Reworded to Hume's demand for a reason, with the strict reading (“Hume's Law”) and its contestation attributed in a second sentence. Location confirmed: Book III, Part I, Section I. Second review: 'propositions joined by “is”' misread the copula and MacIntyre was unsupported by the listed sources; changed to the copula wording and to the 1962 Philosophy paper, whose abstract answers 'No' to whether Hume held that ought-propositions cannot be entailed by factual ones.",
+   "sources": [
+    "https://philosophynow.org/issues/83/Hume_on_Is_and_Ought",
+    "https://dc2.philarchive.org/rec/GEOHOI"
+   ],
+   "new_text": "Its debates include Hume's demand that a reason be given for how an “ought” can be deduced from propositions whose copula is “is” or “is not” (T 3.1.1), Moore's open question argument, and the contested link between sincere moral judgment and motivation. Hume's passage is often read as forbidding any such inference, a principle called “Hume's Law”; a 1962 paper in Philosophy argued that Hume held no such principle."
   }
  ]
 }
