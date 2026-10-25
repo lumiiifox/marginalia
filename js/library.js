@@ -17,6 +17,7 @@ function render() {
   buildBacklinks();
   if (S.screen === "draft" && !S.drafts.has(S.draftId)) S.screen = "drafts";
   if (S.screen === "compare" && !S.compares.has(S.cmpId)) S.screen = "compares";
+  document.body.classList.toggle("path-mode", S.screen === "paths");
   const reading = S.screen === "reader";
   $("#main").hidden = reading;
   $("#reader").hidden = !reading;

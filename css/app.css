@@ -956,3 +956,113 @@ span.bhid { display: inline; }
 .critbody p { margin: 0; }
 .critbody blockquote { margin: 0; padding-left: 10px; border-left: 2px solid var(--rule); color: var(--muted); }
 .ditem.flash { animation: flash 1.6s ease-out; }
+
+/* Reading paths: a scholarly syllabus with a navigable outline. */
+body.path-mode { background: var(--paper); }
+.path-mode .wrap { max-width: 1040px; padding: 22px 24px 80px; gap: 32px; }
+.path-mode .linkbtn { min-height: 44px; text-align: left; }
+.path-back { justify-self: start; }
+.paths-title h1, .syllabus-title h1 { font: 700 29px/1.12 var(--f-text); letter-spacing: -.025em; overflow-wrap: anywhere; }
+.paths-title > p { font: 400 21px/1.5 var(--f-text); color: var(--muted); margin: 14px 0 24px; }
+.path-catalogue > h2 { font: 500 15px/1.4 var(--f-ui); color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+.path-entry { padding: 25px 0; border-bottom: 1px solid var(--rule); }
+.path-entry .sec-head { align-items: center; }
+.path-entry h3 { flex: 1; min-width: 180px; }
+.path-title-link { padding: 0; text-align: left; color: var(--ink); font: 500 26px/1.2 var(--f-text); overflow-wrap: anywhere; }
+.path-entry .sub { margin-top: 8px; }
+.path-entry > p { font: 400 18px/1.5 var(--f-text); max-width: 65ch; margin: 12px 0 8px; color: var(--muted); }
+.syllabus { padding: 0; margin: 0; border: 0; background: transparent; }
+.syllabus-nav { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 24px; }
+.syllabus-nav .linkbtn { font-size: 17px; }
+.syllabus-title { margin-bottom: 22px; }
+.syllabus-title > p { font: 400 18px/1.4 var(--f-text); color: var(--muted); margin: 18px 0 12px; overflow-wrap: anywhere; max-width: 65ch; }
+.syllabus-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.syllabus-meta .sub { font-size: 14px; }
+.syllabus-outline { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 16px 0 18px; }
+.syllabus-outline summary { font: 500 25px/1.3 var(--f-text); cursor: pointer; padding: 4px 0 12px; }
+.syllabus-outline ol, .syllabus .psteps { list-style: none; margin: 0; padding: 0; }
+.syllabus-outline-row { width: 100%; display: grid; grid-template-columns: 22px minmax(0,1fr) auto; align-items: center; gap: 12px; text-align: left; padding: 12px 8px 12px 12px; border-left: 2px solid transparent; border-bottom: 1px solid var(--rule); color: var(--ink); }
+.syllabus-outline li:last-child .syllabus-outline-row { border-bottom: 0; }
+.syllabus-outline-row[aria-current] { border-left-color: var(--leather); background: var(--field); }
+.syllabus-outline-row em { font: italic 400 21px/1.2 var(--f-text); display: block; overflow-wrap: anywhere; }
+.syllabus-outline-row small { display: block; font: 400 16px/1.3 var(--f-text); margin-top: 4px; }
+.syllabus-number { font: 400 17px/1.3 var(--f-text); color: var(--muted); }
+.syllabus-status { font: 500 13px/1.4 var(--f-ui); color: var(--muted); }
+.syllabus-assignments { padding-top: 28px; min-width: 0; }
+.syllabus-assignments > h2, .syllabus-next h2 { font: 500 29px/1.2 var(--f-text); margin-bottom: 24px; }
+.syllabus .pstep { display: block; padding: 0 0 24px; margin: 0 0 24px; border-bottom: 1px solid var(--rule); }
+.syllabus-reading-head { display: grid; grid-template-columns: minmax(0,1fr); gap: 24px; }
+.syllabus-reading-head:has(.syllabus-cover) { grid-template-columns: 100px minmax(0,1fr); }
+.syllabus-cover { display: block; width: 100%; height: auto; max-height: 190px; object-fit: contain; object-position: top left; border-radius: 2px; }
+.syllabus-reading-head h3 { font: italic 400 31px/1.12 var(--f-text); margin: 4px 0 8px; overflow-wrap: anywhere; }
+.syllabus-author { font: 400 20px/1.3 var(--f-text); color: var(--muted); margin: 0 0 12px; }
+.syllabus-assignment { padding-top: 12px; border-top: 1px solid var(--rule); font: 400 17px/1.45 var(--f-text); margin: 0; overflow-wrap: anywhere; }
+.syllabus-reading-body { margin-top: 20px; }
+.syllabus-purpose p { font: 400 19px/1.5 var(--f-text); margin: 8px 0 20px; white-space: pre-line; overflow-wrap: anywhere; }
+.syllabus .readqd { margin: 0 0 20px; }
+.syllabus .readqd summary { font: 400 18px/1.4 var(--f-text); color: var(--muted); min-height: 36px; }
+.syllabus .readqs { border-left: 2px solid var(--rule); padding-left: 20px; margin: 8px 0; }
+.syllabus .readqs li { font: 400 19px/1.4 var(--f-text); }
+.syllabus .readqs .linkbtn { font: 400 14px/1.4 var(--f-ui); }
+.syllabus-read-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; }
+.syllabus-read-actions .primary { min-height: 46px; font: 500 19px/1.3 var(--f-text); padding: 12px 22px; }
+.syllabus-compact { display: flex; gap: 18px; align-items: flex-start; width: 100%; color: var(--ink); text-align: left; padding: 0; }
+.syllabus-compact .syllabus-cover { width: 68px; max-height: 105px; flex: none; }
+.syllabus-compact > span:not(.syllabus-expand) { display: grid; gap: 4px; flex: 1; min-width: 0; }
+.syllabus-compact em { font: italic 400 23px/1.2 var(--f-text); overflow-wrap: anywhere; }
+.syllabus-compact small { font: 400 16px/1.4 var(--f-text); color: var(--muted); overflow-wrap: anywhere; }
+.syllabus-expand { font: 400 14px/1.5 var(--f-ui); color: var(--link); padding-top: 6px; }
+.syllabus-next { margin-top: 24px; }
+.syllabus-next p, .syllabus-empty p { font: 400 19px/1.5 var(--f-text); margin-bottom: 20px; }
+.syllabus-empty { border-top: 1px solid var(--rule); padding: 30px 0; }
+.syllabus-empty h2 { font: 500 26px/1.2 var(--f-text); margin-bottom: 12px; }
+@media (min-width: 800px) {
+  .path-mode .wrap { padding-top: 36px; }
+  .syllabus-title h1 { font-size: 46px; }
+  .syllabus-title { margin-bottom: 36px; }
+  .syllabus-layout { display: grid; grid-template-columns: 260px minmax(0,1fr); gap: 54px; align-items: start; }
+  .syllabus-outline { position: sticky; top: 24px; }
+  .syllabus-assignments { padding-top: 0; }
+  .syllabus-reading-head:has(.syllabus-cover) { grid-template-columns: 140px minmax(0,1fr); }
+  .syllabus-cover { max-height: 220px; }
+  .syllabus-reading-head h3 { font-size: 35px; }
+}
+@media (max-width: 350px) {
+  .path-mode .wrap { padding-inline: 16px; }
+  .syllabus-reading-head:has(.syllabus-cover) { grid-template-columns: 76px minmax(0,1fr); gap: 16px; }
+}
+
+.path-title-link, .syllabus-compact { background: transparent; border: 0; }
+.syllabus-outline-row { background: transparent; border-top: 0; border-right: 0; }
+.syllabus-outline-row[aria-current] { background: transparent; }
+.syllabus-outline-row { padding-block: 10px; }
+.syllabus-meta .linkbtn { min-height: 28px; }
+.syllabus-title > p { margin-block: 14px 0; }
+.syllabus-meta { margin-top: 10px; }
+.syllabus-reading:has(.syllabus-cover) .syllabus-reading-body { margin-left: 124px; }
+.syllabus-reading-body .readqs { list-style: none; }
+.syllabus .readqs li { font-size: 18px; }
+.syllabus .readqd summary { font-size: 17px; min-height: 30px; }
+.syllabus-read-actions .primary { width: 100%; }
+@media (min-width: 800px) { .syllabus-reading:has(.syllabus-cover) .syllabus-reading-body { margin-left: 164px; } }
+@media (max-width: 350px) { .syllabus-reading:has(.syllabus-cover) .syllabus-reading-body { margin-left: 0; } }
+
+@media (max-width: 799px) {
+  .path-mode .wrap { padding-top: 12px; }
+  .syllabus-nav { margin-bottom: 12px; }
+}
+.syllabus-outline summary { display: flex; justify-content: space-between; align-items: center; list-style: none; }
+.syllabus-outline summary::-webkit-details-marker { display: none; }
+.syllabus-outline summary::after { content: ""; width: 8px; height: 8px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg); margin-right: 6px; }
+.syllabus-outline[open] summary::after { transform: rotate(225deg); }
+.syllabus-status:empty::after { content: "›"; font-size: 26px; }
+
+@media (max-width: 799px) {
+  .syllabus-title > p { font-size: 17px; line-height: 1.3; margin-top: 10px; }
+  .syllabus-outline { padding: 12px 0; }
+  .syllabus-outline summary { font-size: 23px; padding: 0 0 8px; }
+  .syllabus-outline-row { padding-block: 6px; }
+  .syllabus-outline-row small { font-size: 15px; line-height: 1.2; margin-top: 0; }
+  .syllabus-assignments { padding-top: 24px; }
+  .syllabus-assignments > h2 { margin-bottom: 18px; }
+}

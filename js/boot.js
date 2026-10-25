@@ -68,6 +68,9 @@ document.addEventListener("click", (e) => {
   if (b.id === "quiz") return quizPanel(S.screen === "glossary" ? S.gArea : S.screen === "thinkers" || (S.screen === "reference" && S.rk === "thinkers") ? "thinkers" : "all");
   if (b.id === "mywords") return wordsPanel();
   if (b.id === "resurfnext") { resurfSkip++; const el = $("#resurf"); if (el) el.outerHTML = resurfHTML(); return; }
+  if (b.id === "allpaths") return go({ screen: "paths" });
+  if (b.dataset.pathselect) return selectPathStep(b.dataset.pathselect, +b.dataset.step);
+  if (b.dataset.pathmenu) return pathMenu(b.dataset.pathmenu);
   if (b.id === "newpath") return customPathSheet();
   if (b.id === "importpath") return importPathPicker();
   if (b.dataset.pathedit) return customPathSheet(b.dataset.pathedit);

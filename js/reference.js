@@ -227,39 +227,72 @@ function stepState(st) {
   const by = new Map((t.sections || []).map((x) => [x.id, x])), secs = st.secs.length ? st.secs.map((id) => by.get(id)).filter(Boolean) : [...by.values()];
   return { t, secs, done: st.secs.length ? secs.length === st.secs.length && secs.every((x) => x.done) : t.status === "finished" || (secs.length > 0 && secs.every((x) => x.done)), started: secs.some((x) => x.done) || (t.pos || 0) > 0 };
 }
-function pathsView() {
-  const list = allPaths();
-  const tmap = termMap();
-  const path = (P) => {
-    if (P.kind === "close") return closePathHTML(P, tmap);
-    const states = P.steps.map(stepState), done = states.filter((x) => x.done).length;
-    const step = (st, k) => {
-      const s = states[k], t = s.t, title = t ? t.title : (st.title || CLASSIC_TITLES[st.book] || "Book unavailable");
-      const ch = !st.secs.length ? "Whole book" : s.secs.length ? s.secs.map((x) => x.label).join(" · ") : "Chapters unavailable";
-      return `<li class="pstep${s.done ? " done" : ""}"><span class="pn" aria-hidden="true">${s.done ? "✓" : k + 1}</span><div class="pbody">
-        <div class="pt"><b>${esc(title)}</b>${t && t.author ? `<span>${esc(t.author)}</span>` : ""}</div>
-        ${ch ? `<div class="pch">${esc(ch)}</div>` : ""}
-        <p>${esc(st.why)}</p>
-        ${readQsHTML(P, k, !!t)}
-        <div class="noteacts">${t ? `<button class="btn${s.done ? "" : " primary"}" data-pathread="${esc(st.book)}|${esc(st.secs.join(","))}">${s.done ? "Read again" : progressIn(st) ? "Continue" : st.secs.length ? "Read these chapters" : "Read this book"}</button><button class="btn ghost" data-open="${esc(st.book)}">The book's page</button>`
-          : `<span class="hint">Not on your shelf.</span>${CLASSIC_TITLES[st.book] ? `<button class="btn" data-pathadd="${esc(st.book)}">Add it back</button>` : `<span class="hint">Edit this path to choose a copy from your library.</span>`}`}</div>
-      </div></li>`;
-    };
-    return `<section class="path group" data-path-id="${esc(P.id)}">
-      <div class="sec-head"><div><h2>${esc(P.n)}</h2><div class="sub">${P.steps.length} steps${done ? `, ${done} done` : ""}</div></div><div class="noteacts">${P.custom ? `<button class="btn" data-pathedit="${esc(P.id)}">Edit</button><button class="btn ghost" data-pathexport="${esc(P.id)}">Export path</button><button class="btn ghost danger" data-pathdelete="${esc(P.id)}">Delete</button>` : `<button class="btn ghost" data-pathshare="${esc(P.id)}">Share</button>`}<button class="btn ghost" data-pathcopy="${esc(P.id)}">Make a copy</button></div></div>
-      <p class="pd">${esc(P.d)}</p>
-      <div class="pbar" aria-hidden="true">${P.steps.map((_, k) => `<i class="${states[k].done ? "on" : ""}"></i>`).join("")}</div>
-      <ol class="psteps">${P.steps.map(step).join("")}</ol>
-      ${chipRow("Terms along the way", termChips(P.terms || [], tmap))}
-      ${P.next ? `<p class="hint">Then: ${esc(P.next)}</p>${P.ws ? `<div class="noteacts"><button class="btn" data-wsfind="${esc(P.ws.lang)}|${esc(P.ws.q)}">Find it on Wikisource</button></div>` : ""}` : ""}
-    </section>`;
-  };
-  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
-    <header class="gl-head"><div><h1>Reading paths</h1><div class="sub">${S.paths.size} of your own · ${typeof PATHS === "undefined" ? 0 : PATHS.length} built-in paths</div></div></header>
-    <div class="noteacts"><button class="btn primary" id="newpath">Create a reading path</button><button class="btn" id="importpath">Import a path</button></div>
-    <p class="hint">Arrange books and chapters around your own questions. A step is done when its chapters are marked as read; a whole book can also be moved to the Finished shelf.</p>
-    ${list.map(path).join("") || `<p class="empty">No paths yet.</p>`}`;
+// The outline and selected reading are view state only; the syllabus never changes a book's progress.
+const PATH_VIEW = new Map();
+function pathBook(st) {
+  const t = S.texts.get(st.book);
+  return { title: t?.title || st.title || CLASSIC_TITLES[st.book] || "Book unavailable", author: t?.author || st.author || "" };
 }
+function pathCover(st) {
+  const url = coverURL(st.book) || (typeof CLASSICS !== "undefined" && CLASSICS.includes(st.book) ? `data/books/${st.book}.jpg` : null);
+  return url ? `<img class="syllabus-cover" src="${esc(url)}" alt="" loading="lazy">` : "";
+}
+function pathActions(P) {
+  return P.custom ? `<button class="linkbtn" data-pathedit="${esc(P.id)}">Edit path</button>` : `<button class="linkbtn" data-pathcopy="${esc(P.id)}">Make your own copy</button>`;
+}
+function pathMenu(id) {
+  const P = allPaths().find((x) => x.id === id); if (!P) return;
+  openPanel(`<h2>${esc(P.n)}</h2><div class="menu">${P.custom ? `<button class="menuitem" data-pathexport="${esc(id)}">Export path</button><button class="menuitem" data-pathcopy="${esc(id)}">Make a copy</button><button class="menuitem danger" data-keep="1" data-pathdelete="${esc(id)}">Delete path</button>` : `<button class="menuitem" data-pathshare="${esc(id)}">Share path</button>`}</div>`, (b) => {
+    if (b.dataset.pathexport) exportCustomPath(id).catch((e) => toast(failMsg(e)));
+    if (b.dataset.pathcopy) customPathSheet(id, true);
+    if (b.dataset.pathshare) shareLink(`${appURL()}#path=${encodeURIComponent(id)}`, `Reading path: ${P.n}`);
+    if (b.dataset.pathdelete) arm(b, async () => { await closeOverlay(); deleteCustomPath(id).catch((e) => toast(failMsg(e))); });
+  });
+}
+function selectPathStep(id, k) {
+  const P = bookPaths().find((x) => x.id === id); if (!P || !Number.isInteger(k) || !P.steps[k]) return;
+  PATH_VIEW.set(id, { ...(PATH_VIEW.get(id) || {}), selected: k });
+  render();
+  const el = document.querySelector('[data-selected-reading]');
+  if (el) { el.focus({ preventScroll: true }); el.scrollIntoView({ block: "nearest", behavior: "instant" }); }
+}
+function syllabusHTML(P) {
+  const states = P.steps.map(stepState), done = states.filter((s) => s.done).length;
+  const state = PATH_VIEW.get(P.id) || {}, selected = P.steps[state.selected] ? state.selected : Math.max(0, states.findIndex((s) => !s.done));
+  const outline = P.steps.map((st, k) => { const b = pathBook(st); return `<li><button class="syllabus-outline-row" data-pathselect="${esc(P.id)}" data-step="${k}"${k === selected ? ' aria-current="step"' : ""}><span class="syllabus-number">${k + 1}</span><span><em>${esc(b.title)}</em>${b.author ? `<small>${esc(b.author)}</small>` : ""}</span><span class="syllabus-status">${states[k].done ? "Read" : ""}</span></button></li>`; }).join("");
+  const readings = P.steps.map((st, k) => {
+    const s = states[k], b = pathBook(st), active = k === selected;
+    const chapters = st.secs.length ? (s.secs.map((sec) => sec.label).join(" · ") || "Chapters unavailable") : "Whole book";
+    const missing = s.t && s.secs.length < st.secs.length;
+    const action = s.t ? `<button class="btn primary" data-pathread="${esc(st.book)}|${esc(st.secs.join(","))}">${s.done ? "Read again" : progressIn(st) ? "Continue" : "Read assignment"}</button><button class="linkbtn" data-open="${esc(st.book)}">The book’s page</button>` : `${CLASSIC_TITLES[st.book] ? `<button class="btn" data-pathadd="${esc(st.book)}">Add the book back</button>` : `<p class="hint">Not on your shelf. Edit this path to choose a copy from your library.</p>`}`;
+    return `<li class="pstep syllabus-reading${s.done ? " done" : ""}${active ? " selected" : ""}">
+      ${active ? `<div class="syllabus-reading-head">${pathCover(st)}<div><span class="syllabus-number">${k + 1}.</span><h3 tabindex="-1" data-selected-reading>${esc(b.title)}</h3>${b.author ? `<p class="syllabus-author">${esc(b.author)}</p>` : ""}<p class="syllabus-assignment">${esc(chapters)}</p>${s.done ? `<p class="syllabus-status">Read</p>` : ""}</div></div>` : `<button class="syllabus-compact" data-pathselect="${esc(P.id)}" data-step="${k}">${pathCover(st)}<span><span class="syllabus-number">${k + 1}.</span><em>${esc(b.title)}</em>${b.author ? `<span>${esc(b.author)}</span>` : ""}<small>${esc(chapters)}${s.done ? " · Read" : ""}</small></span><span class="syllabus-expand">View</span></button>`}
+      <div class="syllabus-reading-body"${active ? "" : " hidden"}>
+        ${missing ? `<p class="hint">Some assigned chapters are missing from this copy. Edit the path to choose the range again.</p>` : ""}
+        ${st.why ? `<div class="syllabus-purpose"><div class="label">Reading notes</div><p>${esc(st.why)}</p></div>` : ""}
+        ${readQsHTML(P, k, !!s.t, false).replace('<details class="readqd">', active ? '<details class="readqd" open>' : '<details class="readqd">')}
+        <div class="syllabus-read-actions">${action}</div>
+      </div></li>`;
+  }).join("");
+  return `<section class="path syllabus" data-path-id="${esc(P.id)}">
+    <nav class="syllabus-nav" aria-label="Reading path"><button class="linkbtn" id="allpaths">Back to paths</button>${pathActions(P)}</nav>
+    <header class="syllabus-title"><h1>${esc(P.n)}</h1>${P.d ? P.d.split(/\n\s*\n/).map((p) => `<p>${esc(p)}</p>`).join("") : ""}</header>
+    ${P.steps.length ? `<div class="syllabus-layout"><details class="syllabus-outline" data-pathoutline="${esc(P.id)}"${state.outline === false ? "" : " open"}><summary>Path outline</summary><ol>${outline}</ol></details><div class="syllabus-assignments"><h2>Readings</h2><ol class="psteps">${readings}</ol></div></div>` : `<div class="syllabus-empty"><h2>Your inquiry starts here</h2><p>Add books, choose chapters, and arrange them around your questions.</p><button class="btn primary" data-pathedit="${esc(P.id)}">Add a reading</button></div>`}
+    ${P.next ? `<footer class="syllabus-next"><h2>Further reading</h2><p>${esc(P.next)}</p>${P.ws ? `<button class="btn" data-wsfind="${esc(P.ws.lang)}|${esc(P.ws.q)}">Find it on Wikisource</button>` : ""}</footer>` : ""}
+    <div class="syllabus-meta"><span class="sub">${P.steps.length} steps${done ? `, ${done} done` : ""}</span><button class="linkbtn" data-pathmenu="${esc(P.id)}">Path options</button></div>
+    ${chipRow("Terms along the way", termChips(P.terms || [], termMap()))}
+  </section>`;
+}
+function pathsView() {
+  const list = allPaths(), P = list.find((p) => p.id === S.pathFocus);
+  if (P) return P.kind === "close" ? `<button class="linkbtn" id="allpaths">Back to paths</button>${closePathHTML(P, termMap())}` : syllabusHTML(P);
+  const group = (paths, label) => paths.length ? `<section class="path-catalogue"><h2>${label}</h2>${paths.map((P) => `<section class="path path-entry" data-path-id="${esc(P.id)}"><div class="sec-head"><h3><button class="path-title-link" data-path="${esc(P.id)}">${esc(P.n)}</button></h3>${P.custom ? pathActions(P) : ""}</div><div class="sub">${P.kind === "close" ? "Close reading" : `${P.steps.length} readings`}</div><p>${esc(P.d || "Arrange readings around your own questions.")}</p><button class="linkbtn" data-path="${esc(P.id)}">Open path</button></section>`).join("")}</section>` : "";
+  return `<button class="linkbtn path-back" id="back">Back</button><header class="paths-title"><h1>Reading paths</h1><p>Reading sequences shaped around a question.</p><div class="noteacts"><button class="btn primary" id="newpath">Create a reading path</button><button class="linkbtn" id="importpath">Import a path</button></div></header>${group(list.filter((p) => p.custom), "Your paths")}${group(list.filter((p) => !p.custom), "From the reference library")}`;
+}
+document.addEventListener("toggle", (e) => {
+  if (e.target.dataset?.pathoutline) { const id = e.target.dataset.pathoutline; PATH_VIEW.set(id, { ...(PATH_VIEW.get(id) || {}), outline: e.target.open }); }
+}, true);
+
 /* ---------- close readings (PATHS with kind "close"): one classic, station by station ----------
    Each station opens the book at its own passages (citation links, so your place is kept as ← Your place), says what they say, and keeps
    Deleuze's reading apart, through named scholarship. A station counts as read once you've a note of your own on one of its passages

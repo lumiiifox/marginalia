@@ -15,6 +15,7 @@ function showView(view, fresh) {
   if (view.screen === "reader") { openReader(view.textId, view.at, view); return; }
   if (S.screen === "reader") { savePos(true); resetReader(); }
   S.screen = view.screen;
+  if (view.screen === "paths") S.pathFocus = view.path || null;
   if (view.textId) S.textId = view.textId;
   if (view.screen === "tag") S.tag = view.tag || "";
   if (view.draftId) S.draftId = view.draftId;
@@ -33,7 +34,7 @@ function showView(view, fresh) {
     if (sec) { sec.scrollIntoView({ block: "start" }); sec.classList.add("flash"); setTimeout(() => sec.classList.remove("flash"), 2400); }
     else if (el) el.scrollIntoView({ block: "start" });
   }
-  if (fresh && view.path) { const el = document.querySelector(`section.path[data-path-id="${CSS.escape(view.path)}"]`); if (el) el.scrollIntoView({ block: "start" }); }
+  if (fresh && view.path && !document.querySelector(".syllabus")) { const el = document.querySelector(`section.path[data-path-id="${CSS.escape(view.path)}"]`); if (el) el.scrollIntoView({ block: "start" }); }
   if (fresh && view.era) { const el = document.querySelector(`section.tl-era[data-era="${CSS.escape(view.era)}"]`); if (el) el.scrollIntoView({ block: "start" }); }
   if (fresh && view.scrollTo) { const el = document.querySelector(`[data-term-id="${CSS.escape(view.scrollTo)}"]`); if (el) el.scrollIntoView({ block: "start" }); }
   if (rerun) runConcord();

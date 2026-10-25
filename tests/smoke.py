@@ -42,7 +42,7 @@ SEED = """async () => {
 DUMP = "async (st) => { const o = {}; for (const s of st) o[s] = Object.fromEntries(await idbAll(s)); return o; }"
 READY = "typeof idb !== 'undefined' && idb"
 SCREENS = [("library", {}), ("text", {"textId": "t1"}), ("glossary", {}), ("branches", {}), ("thinkers", {}), ("reference", {}), ("tag", {"tag": "tag"}),
-           ("questions", {}), ("drafts", {}), ("draft", {"draftId": "d1"}), ("concord", {}), ("compares", {}), ("compare", {"cmpId": "c1"}), ("paths", {}), ("plates", {}), ("disputes", {})]
+           ("questions", {}), ("drafts", {}), ("draft", {"draftId": "d1"}), ("concord", {}), ("compares", {}), ("compare", {"cmpId": "c1"}), ("paths", {"pathFocus": None}), ("paths", {"pathFocus": "path-test"}), ("plates", {}), ("disputes", {})]
 
 failures = []
 def check(ok, what):
