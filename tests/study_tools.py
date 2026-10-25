@@ -983,13 +983,15 @@ async def close_reading(browser):
         for (const s of closeStations(P)) {
           out.n++;
           for (const r of s.refs) { const m = r.match(st.item); if (!m || st.find(B, m.slice(1).map((v) => v || '')) < 0) out.bad.push(s.id + ' ref ' + r); }
-          for (const q of (s.says.match(/“[^”]*”/g) || [])) { out.quotes++; if (!whole.includes(q.slice(1, -1).replace(/\\s+/g, ' '))) out.bad.push(s.id + ' quote ' + q); }
+          // each quotation must be in the station's own passages (each ref's span: a proposition with its proof, corollaries and notes)
+          const own = s.refs.map((r) => { const m = r.match(st.item), i = m ? st.find(B, m.slice(1).map((v) => v || '')) : -1; if (i < 0) return ''; const [a, b] = passageSpan(B, i); return B.slice(a, b).map((x) => plain(x.x || '')).join(' '); }).join(' ').replace(/[¹²³⁴⁵⁶⁷⁸⁹⁰]/g, '').replace(/\\s+/g, ' ');
+          for (const q of (s.says.match(/“[^”]*”/g) || [])) { out.quotes++; const w = q.slice(1, -1).replace(/\\s+/g, ' '); if (!own.includes(w)) out.bad.push(s.id + (whole.includes(w) ? ' quote from outside its passages ' : ' quote ') + q); }
           for (const t of s.terms || []) if (!ids.has(t)) out.bad.push(s.id + ' term ' + t);
           for (const d of s.deleuze || []) if (!/^https:\\/\\//.test(d.src) || !d.srcName || !d.says) out.bad.push(s.id + ' source');
           if (!(s.q || []).length) out.bad.push(s.id + ' questions');
         } }
       return out; })()""")
-    check(chk["n"] >= 12 and chk["quotes"] >= 25 and chk["bad"] == [], f"every station's passages exist in the bundled Ethics, its {chk['quotes']} quotations are its words, its terms and sources real ({chk['bad'][:4]})")
+    check(chk["n"] >= 12 and chk["quotes"] >= 25 and chk["bad"] == [], f"every station's passages exist in the bundled Ethics, its {chk['quotes']} quotations are words of those very passages, its terms and sources real ({chk['bad'][:4]})")
     words = await page.evaluate("PATHS.filter((P) => P.kind === 'close').flatMap((P) => [P.d, ...closeStations(P).flatMap((s) => [s.says, ...(s.q || []), ...(s.deleuze || []).map((d) => d.says)])]).join(' ')")
     hits = [m.group(0) for pat in CONTRASTIVE for m in re.finditer(pat, re.sub(r"“[^”]*”", "", words), flags=re.I)]
     check(not hits, f"the close reading: no contrastive constructions ({hits[:3]})")
@@ -1026,6 +1028,25 @@ async def close_reading(browser):
     await page.wait_for_timeout(400)
     st2 = await page.evaluate("""(() => { const s = document.querySelector("[data-station='conatus']"); return { done: s.classList.contains('done'), mine: [...s.querySelectorAll('.mgroup .mention')].map((m) => m.dataset.gotoNote), sub: document.querySelector('section.path.close .sub').textContent }; })()""")
     check(st2["done"] and len(st2["mine"]) == 1 and st2["sub"] == "12 stations, 1 with your notes", f"a note of your own on a station's passage (here in a proposition's proof) marks it read and is listed there ({st2})")
+    # notes at the edges: just past a station's passages, or just before them, mark nothing; the passage's last block does
+    edge = await page.evaluate("""(async () => {
+      const B = S.content.get('classic-spinoza-ethics'), P = PATHS.find((x) => x.id === 'spinoza-deleuze'), sts = closeStations(P);
+      const spans = new Map(sts.map((st) => [st.id, st.refs.map((r) => { const m = r.match(PASSAGE_STYLES[P.style].item); return passageSpan(B, PASSAGE_STYLES[P.style].find(B, m.slice(1).map((v) => v || ''))); })]));
+      const inAny = (at) => sts.filter((st) => spans.get(st.id).some(([a, b]) => at >= a && at < b)).map((st) => st.id);
+      const [a, b] = passageSpan(B, passageBlock(B, 'I|Proposition|18||'));
+      const out = { after: [], before: [], last: [] };
+      for (const [k, at] of [['after', b], ['before', a - 1], ['last', b - 1]]) {
+        await put('notes', 'edge', { textId: 'classic-spinoza-ethics', kind: 'gloss', passage: '', gloss: 'edge', at, links: [], createdAt: Date.now(), updatedAt: Date.now() });
+        const st = closeState(P); out[k] = sts.filter((s) => st.out.get(s.id).notes.some(([id]) => id === 'edge')).map((s) => s.id); out[k + 'Expect'] = inAny(at);
+      }
+      await del('notes', 'edge'); return out; })()""")
+    check(edge["after"] == [] and edge["before"] == [] and edge["last"] == ["immanent-cause"] and edge["after"] == edge["afterExpect"],
+          f"a note just past a station's passages, or just before them, marks no station; one in the passage's last block marks its own ({edge})")
+    overlap = await page.evaluate("""(() => { const B = S.content.get('classic-spinoza-ethics'), P = PATHS.find((x) => x.id === 'spinoza-deleuze'), seen = new Map(), clash = [];
+      for (const st of closeStations(P)) for (const r of st.refs) { const m = r.match(PASSAGE_STYLES[P.style].item), [a, b] = passageSpan(B, PASSAGE_STYLES[P.style].find(B, m.slice(1).map((v) => v || '')));
+        for (let i = a; i < b; i++) { if (seen.has(i) && seen.get(i) !== st.id) clash.push(i + ' ' + seen.get(i) + '/' + st.id); seen.set(i, st.id); } }
+      return clash; })()""")
+    check(overlap == [], f"no block belongs to two stations' passages, so one note never marks two stations ({overlap[:4]})")
     await page.evaluate("go({ screen: 'text', textId: 'classic-spinoza-ethics' })"); await page.wait_for_timeout(400)
     chip = await page.evaluate("[...document.querySelectorAll('.primer .chip[data-path]')].map((c) => c.textContent)")
     check("Spinoza's Ethics, toward Deleuze" in chip, f"the Ethics' primer offers the path ({chip})")
