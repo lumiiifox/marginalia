@@ -383,7 +383,7 @@ const CLASSIC_TITLES = { "classic-plato-socrates": "Euthyphro, Apology, Crito, P
    book; "Republic" counts after "Plato's" or "the", or before a book number. Nothing is stored. */
 const CLASSIC_NAMES = {
   "classic-plato-socrates": { by: ["plato", "socrates"], full: ["Euthyphro", "Crito", "Phaedo", "Plato's Apology"], own: ["Apology"] },
-  "classic-plato-republic": { by: ["plato"], full: ["Plato's Republic", { s: "Republic", pre: ["the", "The"], notPost: /^ of\b/ }, { s: "Republic", post: /^ (\d|[IVX]+\b)/ }], own: ["Republic"] },
+  "classic-plato-republic": { by: ["plato"], full: ["Plato's Republic", { s: "Republic", pre: ["the", "The"], notPost: /^ of\b/, notPre: /\bOn the $/ }, { s: "Republic", post: /^ (\d|[IVX]+\b)/, notPre: /\bOn the $/ }], own: ["Republic"] },
   "classic-aristotle-ethics": { by: ["aristotle"], full: ["Nicomachean Ethics"] },
   "classic-descartes-meditations": { by: ["descartes"], full: ["Discourse on the Method", "Discourse on Method", "Meditations on First Philosophy"], own: ["Meditations"] },
   "classic-hobbes-leviathan": { by: ["hobbes"], full: ["Leviathan"] },
@@ -410,6 +410,7 @@ function classicHits(text, ctx) {
       const end = at + n.s.length, after = text.slice(end, end + 12);
       if (word.test(text[at - 1] || "") || word.test(text[end] || "")) continue;
       if (n.pre && !n.pre.includes((text.slice(Math.max(0, at - 20), at).match(/(\S+)\s$/) || [])[1])) continue;
+      if (n.notPre && n.notPre.test(text.slice(Math.max(0, at - 20), at))) continue;
       if (n.post && !n.post.test(after)) continue;
       if (n.notPost && n.notPost.test(after)) continue;
       found.push({ a: at, b: end, id });
@@ -425,6 +426,55 @@ function classicLinks(text, ctx) {
   let html = "", at = 0;
   for (const h of hits) { html += esc(text.slice(at, h.a)) + `<button type="button" class="branch-inline-link" data-classic="${esc(h.id)}">${esc(text.slice(h.a, h.b))}</button>`; at = h.b; }
   return html + esc(String(text || "").slice(at));
+}
+/* A glossary entry's source line, with each bundled classic's title linked to its page (classicLinks) and each locator after the title
+   linked to that passage, in the classic's citation style: "Ethics I, Def. 3", "III, Props. 6–9, 11 Schol." (a part carried over from the
+   item before), "Leviathan (1651), ch. 13", "Treatise of Human Nature (1739), I.iv.6", "Nicomachean Ethics I.7", "Beyond Good and Evil
+   (1886), §§13, 36". A range links to its first number. A locator the bundled edition can't be found by (the Groundwork's Akademie pages)
+   stays text. Items are "; "-separated. */
+const unRoman = (s) => { const v = { i: 1, v: 5, x: 10, l: 50 }; let n = 0; s = s.toLowerCase(); for (let k = 0; k < s.length; k++) { const a = v[s[k]], b = v[s[k + 1]] || 0; n += a < b ? -a : a; } return n; };
+const SRC_LOCS = {
+  "classic-spinoza-ethics": ["spinoza-ethics", (tail, ctx) => {
+    const out = [], KIND = { Def: "Definition", Defs: "Definition", Prop: "Proposition", Props: "Proposition", Ax: "Axiom", Axs: "Axiom", Post: "Postulate" };
+    const re = /\b(V|IV|III|II|I),|\b(Defs?|Props?|Axs?|Post)\.|\b(Appendix|Preface)\b|(\d+)(?:[–-]\d+)?(?:,? (Schol|Cor)\.)?/g;
+    for (let m; (m = re.exec(tail));) {
+      if (m[1]) ctx.part = m[1]; else if (m[2]) ctx.kind = KIND[m[2]];
+      else if (m[3] && ctx.part) out.push([m.index, m.index + m[0].length, `${ctx.part}|${m[3]}|||`]);
+      else if (m[4] && ctx.part && ctx.kind) out.push([m.index, m.index + m[0].length, `${ctx.part}|${ctx.kind}|${m[4]}|${m[5] ? (m[5] === "Schol" ? "Note" : "Corollary") : ""}|`]);
+    }
+    return out; }],
+  "classic-hobbes-leviathan": ["hobbes-leviathan", (tail) => [...tail.matchAll(/\bchs?\. (\d+)(?:[–-]\d+)?/g)].map((m) => [m.index, m.index + m[0].length, toRoman(+m[1])])],
+  "classic-hume-treatise": ["hume-treatise", (tail) => [...tail.matchAll(/\b(III|II|I)\.([ivx]+)\.(\d+)/g)].map((m) => [m.index, m.index + m[0].length, `${unRoman(m[1])}|${unRoman(m[2])}|${m[3]}`])],
+  "classic-hume-enquiry": ["hume-enquiry", (tail) => [...tail.matchAll(/§(\d+)/g)].map((m) => [m.index, m.index + m[0].length, `${toRoman(+m[1])}|`])],
+  "classic-aristotle-ethics": ["aristotle-ethics", (tail) => [...tail.matchAll(/\b(VIII|VII|VI|IV|IX|III|II|X|V|I)\.(\d+)(?:[–-]\d+)?/g)].map((m) => [m.index, m.index + m[0].length, `${m[1]}|${m[2]}`])],
+  "classic-rousseau-social-contract": ["rousseau-social-contract", (tail) => [...tail.matchAll(/\b(IV|III|II|I)\.(\d+)(?:[–-]\d+)?/g)].map((m) => [m.index, m.index + m[0].length, `${m[1]}|${m[2]}`])],
+  "classic-nietzsche-genealogy": ["nietzsche-genealogy", (tail) => { const m = tail.match(/\b(First|Second|Third) Essay, §§?(\d+)|\bPreface,? §(\d+)/); if (!m) return [];
+    return [[m.index, m.index + m[0].length, m[3] ? `Preface|${m[3]}` : `${{ First: "I", Second: "II", Third: "III" }[m[1]]}|${m[2]}`]]; }],
+  "classic-nietzsche-beyond": ["nietzsche-beyond", (tail) => { const m = tail.match(/§§?\s?\d+(?:,\s?\d+)*/); if (!m) return [];
+    return [...m[0].matchAll(/\d+/g)].map((n) => [m.index + n.index, m.index + n.index + n[0].length, `§${n[0]}`]); }],
+  "classic-descartes-meditations": ["descartes-meditations", (tail, ctx) => { if (!/Meditations/.test(ctx.title)) return []; const m = tail.match(/(?:^|[\s,])(VI|IV|V|III|II|I)\b/); if (!m) return [];
+    const a = m.index + m[0].length - m[1].length; return [[a, a + m[1].length, `Med|${m[1]}`]]; }],
+  "classic-plato-republic": ["plato-republic", (tail) => { const m = tail.match(/^\s*(X|IX|VIII|VII|VI|V|IV|III|II|I)(?:[–-](?:X|IX|VIII|VII|VI|V|IV|III|II|I))?\b/); if (!m) return [];
+    const a = m.index + m[0].search(/\S/); return [[a, m.index + m[0].length, m[1]]]; }],
+  "classic-du-bois-souls": ["du-bois-souls", (tail) => [...tail.matchAll(/\bch\. (\d+)/g)].map((m) => [m.index, m.index + m[0].length, toRoman(+m[1])])],
+  "classic-mill-liberty": ["mill-liberty", (tail) => [...tail.matchAll(/\bch\. (\d+)/g)].map((m) => [m.index, m.index + m[0].length, toRoman(+m[1])])],
+};
+function sourceLinks(text) {
+  text = String(text || ""); let html = "", ctx = {};
+  for (const [k, item] of text.split("; ").entries()) {
+    // "Spinoza, Ethics I, …": a short title counts after its author's name
+    const by = (item.match(/^([^,;]+), /) || [])[1], who = by && THINKERS.find((p) => p.sn === by || p.n === by);
+    const hits = classicHits(item, who && who.id);
+    let id = hits.length ? hits[0].id : null, from = hits.length ? hits[0].b : 0;
+    if (hits.length) ctx = { id, title: item.slice(hits[0].a, hits[0].b) }; else if (ctx.id === "classic-spinoza-ethics" && /^(V|IV|III|II|I), /.test(item)) id = ctx.id; else ctx = {};
+    let part = hits.length ? classicLinks(item.slice(0, from)) : esc(item.slice(0, from));
+    const tail = item.slice(from), loc = id && SRC_LOCS[id];
+    const spans = loc ? loc[1](tail, ctx).filter(([a, b]) => a >= 0 && b > a).sort((x, y) => x[0] - y[0]) : [];
+    let at = 0;
+    for (const [a, b, ref] of spans) { if (a < at) continue; part += esc(tail.slice(at, a)) + `<button type="button" class="branch-inline-link" data-passage="${esc(loc[0])}" data-passage-at="${esc(ref)}">${esc(tail.slice(a, b))}</button>`; at = b; }
+    html += (k ? "; " : "") + part + esc(tail.slice(at));
+  }
+  return html;
 }
 // A glossary entry's or thinker card's text with the terms, thinkers and classics it mentions linked, itself left out.
 function refParas(x, self) {

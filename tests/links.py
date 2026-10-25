@@ -197,6 +197,25 @@ async def main():
         check(refs[2] == ["genealogy", "rhizome", "hobbes"], f"an article links any glossary term ({refs[2]})")
         await page.evaluate("openTerm('genealogy')"); await page.wait_for_timeout(300)
         check(await page.locator("details[data-term-id='genealogy'] [data-gx] [data-thinker='nietzsche']").count() == 1, "an open entry shows its links")
+        # glossary source lines: locators after a bundled classic's title open that passage
+        src = await page.evaluate("""(async () => { const out = { bad: [], n: 0, styles: new Set() }, books = {};
+          for (const g of GLOSSARY) { if (!g.s) continue; const d = document.createElement('div'); d.innerHTML = sourceLinks(g.s);
+            if (d.textContent !== g.s) out.bad.push(g.id + ' text changed');
+            for (const a of d.querySelectorAll('[data-passage]')) { const st = a.dataset.passage; out.n++; out.styles.add(st);
+              if (!books[st]) books[st] = (await (await fetch('data/books/' + PASSAGE_STYLES[st].book + '.json')).json()).content;
+              if (passageBlock(books[st], a.dataset.passageAt, st) < 0) out.bad.push(g.id + ' ' + a.textContent); } }
+          const one = (s) => { const d = document.createElement('div'); d.innerHTML = sourceLinks(s); return [...d.querySelectorAll('[data-passage]')].map((a) => a.dataset.passageAt); };
+          return { bad: out.bad, n: out.n, styles: out.styles.size,
+            cases: [one('Spinoza, Ethics I, Defs. 4 and 6; II, Prop. 7, Schol. (Curley trans.)'), one('Spinoza, Ethics III, Props. 6–9, 11 Schol.'), one('Hobbes, Leviathan (1651), chs. 17–18'),
+              one('Hume, Treatise of Human Nature (1739), I.iv.6'), one('Nietzsche, Beyond Good and Evil (1886), §§13, 36'), one('Cicero, On the Republic III'), one('Kant, Groundwork of the Metaphysics of Morals (1785), 4:421')] }; })()""")
+        check(src["bad"] == [] and src["n"] >= 40 and src["styles"] >= 10, f"every locator in the glossary's source lines links a passage that exists, the line's words unchanged ({src['n']} links, {src['styles']} books, {src['bad'][:3]})")
+        check(src["cases"] == [["I|Definition|4||", "I|Definition|6||", "II|Proposition|7|Note|"], ["III|Proposition|6||", "III|Proposition|11|Note|"], ["XVII"], ["1|4|6"], ["§13", "§36"], [], []],
+              f"parts carry across items, ranges link their first number, Schol. is a note, Cicero's Republic and Akademie pages stay text ({src['cases']})")
+        await page.evaluate("openTerm('conatus')"); await page.wait_for_timeout(300)
+        await page.click("details.term[data-term-id='conatus'] .tsrc [data-passage='spinoza-ethics'] >> nth=0")
+        await page.wait_for_function("S.screen === 'reader' && R.tid === 'classic-spinoza-ethics' && R.blocks", timeout=20000); await page.wait_for_timeout(600)
+        op = await page.evaluate("(() => { const w = passageBlock(R.blocks, 'III|Proposition|6||'); return [Math.abs(currentBlock() - w) <= 3, plain(R.blocks[w].x).slice(0, 9)]; })()")
+        check(op == [True, "PROP. VI."], f"tapping “6–9” in Conatus's sources opens the Ethics at III, Proposition 6 ({op})")
         check(not errs, "no script errors" + (f": {errs}" if errs else ""))
         await browser.close()
 

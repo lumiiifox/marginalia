@@ -155,6 +155,10 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   (`own`: "the Ethics", "Meditations", "Groundwork") only on the author's card; `pre`/`post`/`notPost` guard look-alikes such as the Dutch
   Republic. A classic's page lists where it is named or cited (`classicMentions`, `classicMentionsHTML`, drawn by `mentionsHTML`). Tested by
   `tests/links.py`. A new classic needs its entry in `CLASSIC_NAMES`.
+- A glossary entry's source line (`sourceLinks`, `SRC_LOCS`): each bundled classic's title links to its page, and each locator after it
+  ("Ethics I, Def. 3", "III, Props. 6–9, 11 Schol.", "Leviathan (1651), ch. 13", "Treatise … I.iv.6", "§§13, 36") to that passage in the
+  classic's citation style; a short title counts after its author's name ("Spinoza, Ethics"); a range links its first number; a locator the
+  bundled edition can't be found by stays text. Tested by `tests/links.py`.
 - Audits of the articles: `tests/audit/<id>.json`, one record per sentence with each claim's verdict and source (see `tests/audit/README.md`).
   An audit's fixes ship only after an independent second review.
 - Audits in place (owner's decision, 2026-10-23): an audit corrects the article as it stands: it fixes what the sources contradict,

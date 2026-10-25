@@ -276,7 +276,7 @@ function termHTML(g, tmap) {
       <p class="tdef">${esc(g.d)}</p>
       ${figHTML(g.img)}${diaHTML(g.fig)}
       <div data-gx="${esc(g.id)}">${S.gOpen.has(g.id) ? refParas(g.x, { kind: "term", id: g.id }) : classicParas(g.x)}</div>
-      ${g.s ? `<p class="tsrc">${classicLinks(g.s)}</p>` : ""}
+      ${g.s ? `<p class="tsrc">${sourceLinks(g.s)}</p>` : ""}
       ${thinkerSources(g)}
       ${g.w ?`<p class="tsrc">Associated with ${esc(g.w)}</p>` : ""}
       ${aliasesOf(g.id).length ? `<p class="tsrc">Look up also finds: ${esc(aliasesOf(g.id).join(", "))}</p>` : ""}
