@@ -301,7 +301,7 @@ function primerHTML(id, t) {
 const CLASSIC_TITLES = { "classic-plato-socrates": "Euthyphro, Apology, Crito, Phaedo", "classic-aristotle-ethics": "Nicomachean Ethics", "classic-descartes-meditations": "Discourse on the Method and Meditations on First Philosophy",
   "classic-hobbes-leviathan": "Leviathan", "classic-spinoza-ethics": "Ethics", "classic-hume-treatise": "A Treatise of Human Nature", "classic-hume-enquiry": "An Enquiry Concerning Human Understanding", "classic-rousseau-social-contract": "The Social Contract",
   "classic-kant-groundwork": "Fundamental Principles of the Metaphysic of Morals", "classic-wollstonecraft-vindication": "A Vindication of the Rights of Woman",
-  "classic-marx-engels-manifesto": "The Communist Manifesto", "classic-nietzsche-genealogy": "The Genealogy of Morals", "classic-cooper-voice": "A Voice from the South", "classic-du-bois-souls": "The Souls of Black Folk",
+  "classic-marx-engels-manifesto": "The Communist Manifesto", "classic-nietzsche-beyond": "Beyond Good and Evil", "classic-nietzsche-genealogy": "The Genealogy of Morals", "classic-cooper-voice": "A Voice from the South", "classic-du-bois-souls": "The Souls of Black Folk",
   "classic-plato-republic": "The Republic", "classic-mill-liberty": "On Liberty", "classic-russell-problems": "The Problems of Philosophy" };
 /* ---------- the classics where the reference pages name them ----------
    A classic's title in an article, a thinker card or a glossary entry opens the book (added back first if you deleted it), and
@@ -322,6 +322,7 @@ const CLASSIC_NAMES = {
   "classic-wollstonecraft-vindication": { by: ["wollstonecraft"], full: ["A Vindication of the Rights of Woman", "Vindication of the Rights of Woman"] },
   "classic-marx-engels-manifesto": { by: ["marx", "engels"], full: ["The Communist Manifesto", "Communist Manifesto", "Manifesto of the Communist Party"], own: [{ s: "Manifesto", pre: ["the", "The"] }] },
   "classic-mill-liberty": { by: ["mill"], full: ["On Liberty"] },
+  "classic-nietzsche-beyond": { by: ["nietzsche"], full: ["Beyond Good and Evil"] },
   "classic-nietzsche-genealogy": { by: ["nietzsche"], full: ["On the Genealogy of Morality", "On the Genealogy of Morals", "Genealogy of Morality", "Genealogy of Morals"], own: [{ s: "Genealogy", pre: ["the", "The"] }] },
   "classic-cooper-voice": { by: ["cooper"], full: ["A Voice from the South", "Voice from the South"] },
   "classic-du-bois-souls": { by: ["dubois"], full: ["The Souls of Black Folk", "Souls of Black Folk"] },
@@ -575,6 +576,9 @@ const PASSAGE_STYLES = {
   // Nietzsche, Genealogy of Morality: essay and section, "GM II §12" ("GM Preface §3").
   "nietzsche-genealogy": { book: "classic-nietzsche-genealogy", item: /^GM (Preface|I|II|III) §(\d+)$/,
     find: (B, [part, sec]) => headPath(B, [[2, (t) => t.startsWith({ Preface: "Preface", I: "First Essay", II: "Second Essay", III: "Third Essay" }[part])], [3, (t) => t === sec]]) },
+  // Nietzsche, Beyond Good and Evil: the numbered section, "BGE §260" ("BGE 260" too, "BGE Preface"); §237A is the book's own extra section.
+  "nietzsche-beyond": { book: "classic-nietzsche-beyond", item: /^BGE (Preface|§?\d+A?)$/,
+    find: (B, [s]) => { const n = s.replace("§", ""); return n === "Preface" ? headPath(B, [[2, (t) => t === "Preface"]]) : headPath(B, [[3, (t) => t === n || t.startsWith(n + ":")]]); } },
   // Aristotle, Nicomachean Ethics: book and chapter, "NE I.7".
   "aristotle-ethics": { book: "classic-aristotle-ethics", item: /^NE (I|II|III|IV|V|VI|VII|VIII|IX|X)\.(\d+)$/,
     find: (B, [book, ch]) => headPath(B, [[2, (t) => t === `Book ${book}`], [4, (t) => t === toRoman(+ch)]]) },

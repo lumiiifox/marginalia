@@ -177,7 +177,7 @@ document.addEventListener("input", (e) => {
    lists those added, so a classic you delete stays deleted; one that can't be fetched (offline) is tried again next time.
    Tests run in an automated browser, which is left out unless a test asks (addClassics(true)). */
 const CLASSICS = ["classic-plato-socrates", "classic-plato-republic", "classic-aristotle-ethics", "classic-descartes-meditations", "classic-hobbes-leviathan", "classic-spinoza-ethics", "classic-hume-treatise", "classic-hume-enquiry",
-  "classic-rousseau-social-contract", "classic-kant-groundwork", "classic-wollstonecraft-vindication", "classic-marx-engels-manifesto", "classic-mill-liberty", "classic-nietzsche-genealogy",
+  "classic-rousseau-social-contract", "classic-kant-groundwork", "classic-wollstonecraft-vindication", "classic-marx-engels-manifesto", "classic-mill-liberty", "classic-nietzsche-beyond", "classic-nietzsche-genealogy",
   "classic-cooper-voice", "classic-du-bois-souls", "classic-russell-problems"]; // in historical order, the shelf's order
 let classicsBusy = false;
 // One classic from data/books/ into the library, queued, with its text and cover: the record, "here" if it already is, or null if

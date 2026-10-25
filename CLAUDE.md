@@ -142,7 +142,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   under its own section (unverified claims reported apart).
 - Citations into a classic (`xr` on a branch entry names one style in `PASSAGE_STYLES`, or a list): each style has the classic's `book`, an
   `item` pattern for one reference and a `find(B, groups)` for its block. Now "spinoza-ethics" ("(I, Proposition 17, Corollary 2)", found by the
-  book's own labels in `spinozaBlock`), "nietzsche-genealogy" ("(GM II §12)"), "aristotle-ethics" ("(NE I.7)"), "rousseau-social-contract"
+  book's own labels in `spinozaBlock`), "nietzsche-genealogy" ("(GM II §12)"), "nietzsche-beyond" ("(BGE §260)"), "aristotle-ethics" ("(NE I.7)"), "rousseau-social-contract"
   ("(SC I.6)"), "hobbes-leviathan" ("(Lev. XIII)"), "hume-treatise" ("(T 1.4.6)"), "hume-enquiry" ("(EHU IV.2)"), "descartes-meditations" ("(Med. VI)", "(Disc. IV)"),
   "plato-republic" ("(Rep. V)"), "plato-socrates" ("(Apology)"), "kant-groundwork" ("(G II)"), "marx-engels-manifesto" ("(CM I)"), "du-bois-souls"
   ("(Souls I)") and "mill-liberty" ("(OL I)"), all but Spinoza's found by headings (`headPath`). `passageLinks` turns a bracket into links

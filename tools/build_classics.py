@@ -71,6 +71,8 @@ BOOKS = [
          text=dict(title="The Problems of Philosophy", author="Bertrand Russell", edition="", publisher="Standard Ebooks", year="2019", orig="1912")),
     dict(id="classic-nietzsche-genealogy", repo="friedrich-nietzsche_the-genealogy-of-morals_horace-b-samuel", files=None,
          text=dict(title="The Genealogy of Morals", author="Friedrich Nietzsche", edition="trans. Horace B. Samuel", publisher="Standard Ebooks", year="2023", orig="1887")),
+    dict(id="classic-nietzsche-beyond", repo="friedrich-nietzsche_beyond-good-and-evil_helen-zimmern", files=None,
+         text=dict(title="Beyond Good and Evil", author="Friedrich Nietzsche", edition="trans. Helen Zimmern", publisher="Standard Ebooks", year="2014", orig="1886")),
 ]
 SKIP = {"titlepage", "imprint", "halftitlepage", "colophon", "uncopyright", "endnotes", "loi"}
 
