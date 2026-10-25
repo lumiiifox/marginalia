@@ -93,6 +93,8 @@ async def main():
         # 5 the book's page: edition and citation
         await page.evaluate("go({ screen: 'text', textId: 'classic-plato-socrates' })"); await page.wait_for_timeout(400)
         head = await page.inner_text("#main header")
+        two = await page.evaluate("['mla', 'note', 'ad'].map((st) => bibEntry({ title: 'Anti-Oedipus', author: 'Deleuze and Guattari', year: '1972' }, st, 'plain').split('.')[0]).concat(bibEntry({ title: 'Anti-Oedipus', author: 'Gilles Deleuze and Félix Guattari' }, 'mla', 'plain').split('. ')[0])")
+        check(two == ["Deleuze and Guattari"] * 3 + ["Deleuze, Gilles, and Félix Guattari"], f"two authors given by surname alone take no comma; full names keep the inverted first name's ({two})")
         cite = await page.evaluate("bibEntry(S.texts.get('classic-plato-socrates'), 'mla', 'plain')")
         check("From Standard Ebooks" in head and "Plato" in head, f"the book's page says where the text is from ({head[:160]!r})")
         check("Jowett" in cite and "Standard Ebooks" in cite and "2022" in cite, f"it cites the translation and the edition ({cite})")

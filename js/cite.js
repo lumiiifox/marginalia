@@ -92,7 +92,7 @@ function bibEntry(t, style, fmt) {
   const c = citeParts(t, fmt);
   const inv = c.names.length ? [invertName(c.names[0]), ...c.names.slice(1)] : [];
   const eds = c.editors ? (c.names.length > 1 ? (style === "mla" ? ", editors" : ", eds.") : (style === "mla" ? ", editor" : ", ed.")) : "";
-  const who = !inv.length ? "" : style === "mla" && inv.length >= 3 ? `${inv[0]}, et al.` : inv.length === 2 ? `${inv[0]}, and ${inv[1]}` : andList(inv);
+  const who = !inv.length ? "" : style === "mla" && inv.length >= 3 ? `${inv[0]}, et al.` : inv.length === 2 && inv[0].includes(",") ? `${inv[0]}, and ${inv[1]}` : andList(inv); // "Deleuze, Gilles, and Félix Guattari"; a lone surname takes no comma: "Deleuze and Guattari"
   const lead = who ? `${c.E(who)}${eds}. ` : "";
   const ed = editionParts(c.edition);
   if (style === "mla") {
