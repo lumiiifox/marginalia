@@ -300,7 +300,7 @@ function closePathHTML(P, tmap) {
       <div class="pt"><b>${esc(st.n)}</b></div>
       <div class="pch">${state.t ? cite : esc(`(${st.refs.join("; ")})`)}</div>
       <p><span class="ck">In the text</span> ${esc(st.says)}</p>
-      ${(st.deleuze || []).map((d) => `<p><span class="ck">Deleuze, through scholarship</span> ${esc(d.says)} <a href="${esc(d.src)}" target="_blank" rel="noopener" class="tsrc">${esc(d.srcName)}</a></p>`).join("")}
+      ${(st.deleuze || []).map((d) => `<p><span class="ck">Deleuze, through scholarship</span> ${esc(d.says)} <a href="${esc(d.src)}" target="_blank" rel="noopener" class="tsrc">${esc(d.srcName)}</a></p>`).join("") || `<p class="hint nodel">No sourced Deleuze reading yet.</p>`}
       ${chipRow("Terms", termChips(st.terms || [], tmap))}
       ${qs ? `<details class="readqd"><summary>Questions to read with</summary><ol class="readqs">${qs}</ol></details>` : ""}
       ${mine ? `<div class="mgroup"><div class="clabel">Your notes here</div>${mine}</div>` : ""}

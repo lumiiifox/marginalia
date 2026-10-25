@@ -1008,6 +1008,8 @@ async def close_reading(browser):
     check(ui and ui["stations"] == 12 and ui["links"] == 27 and len(ui["parts"]) == 2 and ui["done"] == 0, f"the path lists its 12 stations under Parts I and III, every passage a link ({ui})")
     check(ui and ui["labels"] == ["In the text", "Deleuze, through scholarship"], f"Spinoza's text comes first and Deleuze's reading apart, each labelled ({ui and ui['labels']})")
     check(ui and ui["conns"] == ["Deleuze reinterprets Spinoza", "Nietzsche criticizes Spinoza"], f"the path shows its typed connections ({ui and ui['conns']})")
+    nodel = await page.evaluate("[...document.querySelectorAll('section.path.close .pstep')].filter((s) => s.querySelector('.nodel')).map((s) => s.dataset.station)")
+    check(nodel == ["kingdom", "conatus"], f"a station without a sourced Deleuze reading says so ({nodel})")
     # a passage opens the Ethics there, keeping your place; Back returns to the path
     await page.click("[data-station='immanent-cause'] [data-passage-at='I|Proposition|18||']")
     await page.wait_for_function("S.screen === 'reader' && R.tid === 'classic-spinoza-ethics' && R.blocks", timeout=20000); await page.wait_for_timeout(700)
