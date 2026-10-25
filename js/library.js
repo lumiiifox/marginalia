@@ -185,7 +185,7 @@ function bookplates() {
   const d = firstOf(S.drafts); if (d) earned.push({ id: "draft", n: "First draft", sub: d.title || "", at: d.createdAt, first: true }); else todo.push(["First draft", "Start a draft from your notes, or from an essay template."]);
   const c = firstOf(S.compares); if (c) earned.push({ id: "compare", n: "First comparison", sub: c.title || "", at: c.createdAt, first: true }); else todo.push(["First comparison", "Set two views side by side in Comparisons."]);
   const books = [...S.texts.keys()].flatMap((tid) => bookPlates(tid));
-  const paths = bookPaths().filter((P) => P.steps.every((st) => stepState(st).done)).map((P) => ({ id: `path:${P.id}`, n: "A path walked", sub: P.n, path: P.id }));
+  const paths = bookPaths().filter((P) => P.steps.length > 0 && P.steps.every((st) => stepState(st).done)).map((P) => ({ id: `path:${P.id}`, n: "A path walked", sub: P.n, path: P.id }));
   if (!books.length) todo.push(["A book read through", "Tick every chapter of a book as read, on its page."]);
   if (!paths.length) todo.push(["A path walked", "Finish every step of a reading path."]);
   return { firsts: earned, books, paths, todo, count: earned.length + books.length + paths.length };
@@ -260,11 +260,11 @@ function backupView() {
 function trashView() {
   const list = [...S.trash.entries()].sort(([, a], [, b]) => b.at - a.at);
   const what = (e) => e.kind === "text" ? `“${esc(e.title)}”${e.notes ? ` and its ${e.notes === 1 ? "note" : `${e.notes} notes`}` : ""}`
-    : e.kind === "note" ? `A note${e.title ? ` in “${esc(e.title)}”` : ""}` : `${e.kind === "draft" ? "Draft" : "Comparison"} “${esc(e.title)}”`;
+    : e.kind === "note" ? `A note${e.title ? ` in “${esc(e.title)}”` : ""}` : `${e.kind === "draft" ? "Draft" : e.kind === "path" ? "Reading path" : "Comparison"} “${esc(e.title)}”`;
   const left = (e) => { const d = Math.max(1, Math.ceil((e.at + TRASH_DAYS * DAY - Date.now()) / DAY)); return `${d} day${d === 1 ? "" : "s"} left`; };
   return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>${banner()}
     <header class="gl-head"><div><h1>Recently deleted</h1><div class="sub">${list.length} item${list.length === 1 ? "" : "s"}</div></div>${list.length > 1 ? `<button class="btn ghost danger" id="trash-empty">Empty</button>` : ""}</header>
-    <p class="hint">Books, notes, drafts and comparisons you delete stay here for ${TRASH_DAYS} days, then go for good. Backups don't include them.</p>
+    <p class="hint">Books, notes, drafts, comparisons and reading paths you delete stay here for ${TRASH_DAYS} days, then go for good. Backups don't include them.</p>
     ${list.length ? `<div class="gl-list">${list.map(([id, e]) => `<div class="thinkrow trashrow"><b>${what(e)}</b><span class="ty">${esc(fmtDate(e.at))}</span>
       ${e.snip ? `<span class="td">${esc(e.snip)}</span>` : ""}<span class="td">${left(e)}</span>
       <div class="trashacts"><button class="btn" data-untrash="${esc(id)}">Restore</button><button class="btn ghost danger" data-purge="${esc(id)}">Delete now</button></div></div>`).join("")}</div>`

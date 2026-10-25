@@ -22,7 +22,7 @@ from playwright.async_api import async_playwright
 ROOT = Path(__file__).resolve().parent.parent
 PORT = 8799
 URL = f"http://localhost:{PORT}/index.html"
-STORES = ["texts", "notes", "content", "drafts", "compares", "terms"]
+STORES = ["texts", "notes", "content", "drafts", "compares", "terms", "paths"]
 
 SEED = """async () => {
   const now = Date.now();
@@ -36,6 +36,7 @@ SEED = """async () => {
     followups: [{ id: "f1", at: now, x: "A later thought" }], was: [{ at: now - 86400000, gloss: "an earlier gloss" }], wordAt: now });
   await put("drafts", "d1", { title: "Draft", items: [{ t: "h", x: "Heading" }, { t: "note", id: "n1" }], critiques: [{ id: "cr1", at: now, by: "A tutor", x: "The reading of [E1] is too quick." }], createdAt: now, updatedAt: now });
   await put("compares", "c1", { title: "Comparison", q: "Question?", verdict: "Conclusion", cols: [{ id: "a", label: "A" }], rows: [{ id: "r1", q: "row" }], cells: { "r1:a": { x: "cell", notes: ["n1"] } }, createdAt: now, updatedAt: now });
+  await put("paths", "path-test", { version: 1, n: "My research path", d: "A research question", steps: [{ book: "t1", title: "Test Book", author: "Author, Test", secs: ["s1"], why: "Compare the argument", q: ["What follows?"] }], createdAt: now, updatedAt: now });
   await put("terms", "g1", { t: "Test term", d: "a definition", createdAt: now, updatedAt: now });
 }"""
 DUMP = "async (st) => { const o = {}; for (const s of st) o[s] = Object.fromEntries(await idbAll(s)); return o; }"
@@ -232,7 +233,7 @@ async def main():
         await page.wait_for_function("!!document.querySelector('#bsum')", timeout=5000)
         brief = await page.evaluate("""(() => { const b = document.querySelector('.brief'); return [b.querySelector('.bwhere').textContent, b.querySelector('#bsum').textContent,
           [...b.querySelectorAll('.blab')].map((x) => x.textContent), b.querySelector('.brow').textContent, !!b.querySelector('.brow[data-goto-note="6"][data-tid="t1"]')]; })()""")
-        check(brief[0].startswith("p. 2 in Ch. 1") and brief[1] == "summary" and brief[2] == ["Next time", "Your summary of this chapter", "Open questions in this book", "Your latest notes"] and "Why this?" in brief[3] and brief[4],
+        check(brief[0].startswith("p. 2 in Ch. 1") and brief[1] == "summary" and brief[2] == ["Next time", "Your summary of this chapter", "Open questions in this book", "Your latest notes", "Questions to read these chapters with"] and "Why this?" in brief[3] and brief[4],
               f"a book's page says where you left off: page, chapter, your summary, open questions and latest notes, each opening the text ({brief})")
         await page.evaluate("(async () => { await put('texts', 'tnew', { title: 'Unread', hasContent: false, pos: 0, createdAt: 1, updatedAt: 1 }); go({ screen: 'text', textId: 'tnew' }); })()"); await page.wait_for_timeout(300)
         check(await page.evaluate("!document.querySelector('.brief')"), "a book not started and without notes has no brief")

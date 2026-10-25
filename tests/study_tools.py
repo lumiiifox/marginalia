@@ -101,6 +101,107 @@ async def fresh(browser):
 
 TT = "([p, c]) => { const r = ttCheck(p, c); return r.err !== undefined ? { err: r.err } : { vars: r.vars, cx: r.cx, live: r.live, n: r.rows.length, prem: r.prem.map((x) => ttShow(x)), concl: ttShow(r.concl) }; }"
 
+async def custom_paths(browser):
+    page, errs = await fresh(browser)
+    await page.evaluate("""async () => {
+      await put('texts', 'own-a', { title: 'A research text', author: 'Author', hasContent: true, pos: 0,
+        sections: [{id:'a',label:'First chapter'}, {id:'b',label:'Second chapter'}, {id:'c',label:'Third chapter'}] });
+      await put('content', 'own-a', [{k:'h',l:2,s:'a',x:'First chapter'}, {k:'p',x:'First paragraph. '.repeat(300)},
+        {k:'h',l:2,s:'b',x:'Second chapter'}, {k:'p',x:'Second paragraph.'}, {k:'h',l:2,s:'c',x:'Third chapter'}, {k:'p',x:'Third paragraph.'}]);
+      await put('texts', 'own-b', {title:'B research text', sections:[], status:'finished'});
+      go({screen:'paths'});
+    }""")
+    await page.click('#newpath')
+    await page.fill('#pe-name', 'My inquiry <em>literal</em>')
+    await page.fill('#pe-description', 'A question of method')
+    await page.click('#pe-add')
+    await page.select_option('#pe-start-0', 'b')
+    await page.select_option('#pe-end-0', 'c')
+    await page.fill('#pe-why-0', 'Read the argument carefully.')
+    await page.fill('#pe-q-0', 'What is presupposed?\nWhat would refute it?')
+    await page.click('#pe-add')
+    await page.select_option('#pe-book-1', 'own-b')
+    await page.click('[data-pe-move="1"][data-dir="-1"]')
+    await page.click('#sheetroot button[type=submit]')
+    await page.wait_for_function('S.paths.size === 1 && !NAV.overlay')
+    key = await page.evaluate('[...S.paths.keys()][0]')
+    path = await page.evaluate('[...S.paths.values()][0]')
+    check(path['steps'][0]['book'] == 'own-b' and path['steps'][1]['secs'] == ['b','c'] and len(path['steps'][1]['q']) == 2,
+          'custom path saves whole books, chapter ranges, order and questions')
+    check(await page.locator(f'[data-path-id="{key}"] h2 em').count() == 0, 'custom path title renders as plain text')
+    for width in [390, 1280]:
+        await page.set_viewport_size({'width':width,'height':844})
+        check(await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), f'custom path fits {width}px')
+    await page.click(f'[data-pathedit="{key}"]')
+    await page.fill('#pe-name', 'Cancelled edit')
+    await page.click('#cancel')
+    check(await page.evaluate('[...S.paths.values()][0].n') == path['n'], 'Cancel leaves saved path intact')
+    await page.click(f'[data-pathedit="{key}"]')
+    await page.select_option('#pe-start-1', 'c')
+    await page.select_option('#pe-end-1', 'b')
+    await page.click('#sheetroot button[type=submit]')
+    check('reading order' in await page.locator('#err').inner_text(), 'reversed chapter range is rejected')
+    await page.select_option('#pe-start-1', 'b')
+    await page.select_option('#pe-end-1', 'c')
+    await page.fill('#pe-name', 'Revised inquiry')
+    await page.click('#sheetroot button[type=submit]')
+    await page.wait_for_function('!NAV.overlay')
+    await page.click(f'[data-path-id="{key}"] [data-pathread="own-a|b,c"]')
+    await page.wait_for_function("S.screen === 'reader' && !!R.blocks")
+    await page.wait_for_timeout(300)
+    check(await page.evaluate('pageForBlock(currentBlock()) === pageForBlock(2)'), 'custom chapter step opens at its first chapter')
+    await page.evaluate("go({screen:'paths'})")
+    await page.locator(f'[data-path-id="{key}"] .readqd summary').click()
+    await page.locator(f'[data-path-id="{key}"] [data-askq]').first.click()
+    await page.wait_for_function("[...S.notes.values()].some(n => n.gloss === 'What is presupposed?')")
+    check(True, 'custom path question becomes a question note')
+    async with page.expect_download() as dl:
+        await page.click(f'[data-pathexport="{key}"]')
+    import json
+    data = json.loads(Path(await (await dl.value).path()).read_text())
+    check(data['app'] == 'marginalia-path' and 'texts' not in data and 'notes' not in data, 'path export contains references only')
+    await page.evaluate('(data) => importCustomPath(new File([JSON.stringify(data)], "path.json"))', data)
+    await page.wait_for_selector('#pe-name')
+    check(await page.evaluate('S.paths.size') == 1, 'import shows a review before saving')
+    await page.click('#sheetroot button[type=submit]')
+    await page.wait_for_function('S.paths.size === 2 && !NAV.overlay')
+    check(await page.evaluate('S.notes.size') == 1, 'import creates a separate path without changing annotations')
+    await page.reload(); await page.wait_for_function(READY)
+    check(await page.evaluate('S.paths.size') == 2, 'custom paths survive reload')
+    await page.evaluate("go({screen:'paths'})")
+    await page.click(f'[data-pathdelete="{key}"]'); await page.click(f'[data-pathdelete="{key}"]')
+    await page.wait_for_function('S.paths.size === 1')
+    await page.click('#toast .toastbtn')
+    await page.wait_for_function('S.paths.size === 2')
+    check(True, 'deleted custom path is recoverable with Undo')
+    result = await page.evaluate("""() => {
+      const P = [...S.paths.values()][0], clone = () => JSON.parse(JSON.stringify(P));
+      const bad = clone(); bad.steps[0].q = [3]; const unknown = clone(); unknown.html = '<script>';
+      const future = clone(); future.version = 2; const large = clone(); large.steps = Array(101).fill(P.steps[0]);
+      return [bad, unknown, future, large].every(p => !VALID.paths(p));
+    }""")
+    check(result, 'invalid types, unknown fields, versions and oversized paths are rejected')
+    check(await page.evaluate("() => { const p = {...[...S.paths.values()][0], steps:[]}; S.paths.set('empty-test',p); const done = bookplates().paths.some(x => x.path === 'empty-test'); S.paths.delete('empty-test'); return !done; }"), 'an empty path is never counted as completed')
+    await page.evaluate("""async () => { await del('texts','own-a'); go({screen:'paths'}); }""")
+    check('Edit this path to choose a copy' in await page.locator('#main').inner_text(), 'missing imported book has an explicit way to reconnect it')
+    check(not errs, f'custom paths without script errors: {errs}')
+    await page.context.close()
+
+    ctx = await browser.new_context(); pg = await ctx.new_page()
+    await pg.goto(f'http://localhost:{PORT}/sw.js')
+    await pg.evaluate("""() => new Promise((res,rej) => {
+      const r = indexedDB.open('marginalia',8);
+      r.onupgradeneeded = () => ['texts','notes','content','covers','terms','drafts','compares','files','trash','trashlist'].forEach(s => r.result.createObjectStore(s));
+      r.onsuccess = () => { const db=r.result, tx=db.transaction(['texts','notes'],'readwrite');
+        tx.objectStore('texts').put({title:'Existing book',pos:7},'old');
+        tx.objectStore('notes').put({textId:'old',gloss:'Preserve my note'},'old-note');
+        tx.oncomplete=() => {db.close();res()}; tx.onerror=() => rej(tx.error); }; r.onerror=() => rej(r.error);
+    })""")
+    await pg.goto(URL); await pg.wait_for_function(READY)
+    check(await pg.evaluate("[idb.version, S.paths.size, S.texts.get('old').pos, S.notes.get('old-note').gloss]") == [9,0,7,'Preserve my note'],
+          'version 8 upgrade preserves existing position and annotations')
+    await ctx.close()
+
 async def truth_table(browser):
     page, errs = await fresh(browser)
     # from the Logic branch
@@ -377,7 +478,7 @@ async def paths(browser):
     await page.evaluate("(() => { const id = 'classic-kant-groundwork', t = S.texts.get(id); return put('texts', id, { ...t, sections: t.sections.map((x) => ['classic-kant-groundwork-s2', 'classic-kant-groundwork-s3'].includes(x.id) ? { ...x, done: true } : x) }); })()")
     await page.evaluate("go({ screen: 'paths' })"); await page.wait_for_timeout(300)
     d = await page.evaluate("(() => { const s = document.querySelector('section.path[data-path-id=\"how-to-live\"]'); return [s.querySelector('.sub').textContent, [...s.querySelectorAll('.pstep')].map((x) => x.classList.contains('done')), s.querySelectorAll('.pbar i.on').length]; })()")
-    check(d == ["5 books, 1 done", [False, False, False, True, False], 1], f"ticking a step's chapters as read marks it done ({d})")
+    check(d == ["5 steps, 1 done", [False, False, False, True, False], 1], f"ticking a step's chapters as read marks it done ({d})")
     # deleted, then added back
     await page.evaluate("deleteText('classic-cooper-voice')"); await page.wait_for_timeout(300)
     await page.evaluate("go({ screen: 'paths' })"); await page.wait_for_timeout(300)
@@ -1148,6 +1249,7 @@ async def main():
         await spread(browser)
         await fallacies(browser)
         await paths(browser)
+        await custom_paths(browser)
         await margins(browser)
         await templates(browser)
         await puzzles(browser)
