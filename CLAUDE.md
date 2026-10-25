@@ -142,7 +142,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   Sections get sources only as part of an article's audit, aiming at full traceability: every verified claim's deciding source listed
   under its own section (unverified claims reported apart).
 - Citations into a classic (`xr` on a branch entry names one style in `PASSAGE_STYLES`, or a list): each style has the classic's `book`, an
-  `item` pattern for one reference and a `find(B, groups)` for its block. Now "spinoza-ethics" ("(I, Proposition 17, Corollary 2)", found by the
+  `item` pattern for one reference and a `find(B, groups)` for its block. Now "spinoza-ethics" ("(I, Proposition 17, Corollary 2)", "(I, Appendix)", "(III, Preface)", found by the
   book's own labels in `spinozaBlock`), "nietzsche-genealogy" ("(GM II §12)"), "nietzsche-beyond" ("(BGE §260)"), "aristotle-ethics" ("(NE I.7)"), "rousseau-social-contract"
   ("(SC I.6)"), "hobbes-leviathan" ("(Lev. XIII)"), "hume-treatise" ("(T 1.4.6)"), "hume-enquiry" ("(EHU IV.2)"), "descartes-meditations" ("(Med. VI)", "(Disc. IV)"),
   "plato-republic" ("(Rep. V)"), "plato-socrates" ("(Apology)"), "kant-groundwork" ("(G II)"), "marx-engels-manifesto" ("(CM I)"), "du-bois-souls"
@@ -209,6 +209,13 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   (also what `addClassics` uses). `CLASSIC_TITLES` names books not in the library; the tests check it against `data/books/`.
   Each step's `q` are questions to read it with (`readQsHTML`): folded on the path, and in Where you left off while your place is inside the
   step's chapters (`stepAt`); `askQuestion` turns one into an ordinary Question note on the book, once.
+- Close readings (a `PATHS` entry with `kind: "close"`, a `book`, its citation `style` and `parts` of stations; `closePathHTML` on the paths
+  screen, `bookPaths()` for the other paths): each station's `refs` open the book at its passages through `passageLinks` (so your place is kept
+  as ← Your place), `says` gives the text's own words, `deleuze` what named scholarship says of Deleuze's reading (sources in `PATH_SRC`), with
+  `terms`, questions (`askCloseQuestion`) and the path's typed `conns`. A station is read once a note of yours falls in one of its passages'
+  blocks (`passageSpan`: a proposition with its proof, corollaries and notes; questions added from the path don't count; `closeState`).
+  Nothing stored. Now "spinoza-deleuze", Parts I and III; every quotation is checked against the bundled text and each station's
+  independent review is in `tests/audit/spinoza-deleuze.json`. Tested by `tests/study_tools.py` (`close_reading`).
 - Bookplates (`platesView`, the `plates` screen, from the home screen's Across your library; a book's own on its page): `bookplates()` works them
   out each time from notes, follow-ups, summaries, ticked chapters, shelves, drafts, comparisons and `PATHS` (`FIRSTS`, `bookPlates`; `BACK_MATTER`
   sections don't count as chapters; example books never count). Nothing stored, nothing expires.
