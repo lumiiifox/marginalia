@@ -77,7 +77,9 @@ async function bookOccurrences(tid, needles, termId) {
     if (m.id !== termId) continue;
     const A = placeNote(m, B); if (A) links.push(A);
   }
-  const inLink = (i, off) => links.some((A) => (i > A.a || (i === A.a && off >= A.ao)) && (i < A.b || (i === A.b && off < A.bo)));
+  // places as [block, character]; a match overlapping a link anywhere, even across blocks, is that link
+  const before = (i, o, j, p) => i < j || (i === j && o < p);
+  const inLink = (s, e) => links.some((A) => before(s.i, s.off, A.b, A.bo) && before(A.a, A.ao, e.i, e.off));
   for (const A of links) all.push({ i: A.a, off: A.ao, mine: true, snip: () => { const p = quoteOf(B, A); return `<mark>${esc(p.length > 260 ? p.slice(0, 250).replace(/\s\S*$/, "") + "…" : p)}</mark>`; } });
   if (needles.length) for (const run of textRuns(B)) {
     const text = run.text;
@@ -87,10 +89,10 @@ async function bookOccurrences(tid, needles, termId) {
     const F = ascii ? { cased: text, low } : linkFold(text), at = (k) => (ascii ? k : F.map[k]);
     for (const h of findNeedles(F, needles)) {
       const a = at(h.pos), e = at(h.end);
-      // the block the match starts in, and where in that block's own characters
-      let sg = run.segs[0]; for (const x of run.segs) if (x.at <= a) sg = x;
-      const i = sg.i, off = Math.max(0, a - sg.at) + sg.base;
-      if (inLink(i, off)) continue;
+      // where the match starts and ends, as a block and a character in that block's own text (the end exclusive)
+      const where = (c, end) => { let sg = run.segs[0]; for (const x of run.segs) if (end ? x.at < c : x.at <= c) sg = x; return { i: sg.i, off: Math.max(0, Math.min(c - sg.at, sg.len)) + sg.base }; };
+      const st = where(a, false), en = where(e, true), i = st.i, off = st.off;
+      if (inLink(st, en)) continue;
       all.push({ i, off, word: text.slice(a, e), snip: () => rawSnip(text, a, e) });
     }
   }

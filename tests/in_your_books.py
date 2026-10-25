@@ -9,7 +9,8 @@ Made-up books only, phone-sized touch screen. Checks that:
   5. a book with many hits lists the first INBOOK_SHOWN + INBOOK_LISTED and says how many more Find will step through;
   6. tapping a hit opens the reader at that block with the word in Find, keeping your place as ← Your place, and Back returns to it;
   7. searching stores nothing: books, notes and positions are unchanged, and no book's text is kept in memory by it;
-  8. passages you linked to the term yourself are listed as Your link, even without its name, and a name inside one counts once;
+  8. passages you linked to the term yourself are listed as Your link, even without its name, and a name overlapping one anywhere
+     (inside it, or starting before it, even across a page break) counts once, as the link;
   9. a name split by a printed-page break (a paragraph continued on the next page) is found, at the page it starts on;
  10. a book whose text can't be read is reported apart, and the summary counts only the books searched;
  11. closing the entry stops the search and leaves the button ready again.
@@ -43,6 +44,10 @@ SEED = r"""() => (async () => {
   const D = [{ k: 'h', l: 1, x: 'Breaks', s: 'k1' }, { k: 'pg', x: '20' }, { k: 'p', x: 'He calls it the expression of the will' }, { k: 'pg', x: '21' }, { k: 'c', x: 'to power, and comes back to it later.' }];
   await put('content', 'b6', D);
   await put('texts', 'b6', { title: 'Breaks', author: 'Beta', hasContent: true, total: D.length, sections: [{ id: 'k1', label: 'Breaks' }], createdAt: now, updatedAt: now });
+  const P = [{ k: 'h', l: 1, x: 'Partial', s: 'p1' }, { k: 'p', x: 'Here the will to power is linked in part.' }, { k: 'pg', x: '30' }, { k: 'p', x: 'And across the page the will' }, { k: 'pg', x: '31' }, { k: 'c', x: 'to power, again linked in part.' }];
+  await put('content', 'b7', P);
+  await put('texts', 'b7', { title: 'Partial', author: 'Gamma', hasContent: true, total: P.length, sections: [{ id: 'p1', label: 'Partial' }],
+    termMarks: [{ id: 'will-to-power', at: 1, passage: 'power', createdAt: now }, { id: 'will-to-power', at: 5, passage: 'power', createdAt: now }], createdAt: now, updatedAt: now });
   await put('notes', 'n1', { textId: 'b1', kind: 'passage', passage: 'Derrida writes differance', gloss: 'with an a', page: '12', sectionId: 'a1', at: 3, createdAt: now, updatedAt: now });
   S.content.clear();
 })()"""
@@ -72,7 +77,7 @@ async def main():
         await page.evaluate("openTerm('differance')"); await page.wait_for_timeout(300)
         box = "details.term[data-term-id='differance'] [data-inbooks-box]"
         start = await page.inner_text(box)
-        check("Search your books" in start and "your 5 books" in start, f"the entry offers Search your books over the 5 books with their text ({start!r})")
+        check("Search your books" in start and "your 6 books" in start, f"the entry offers Search your books over the 6 books with their text ({start!r})")
         check(await page.evaluate("S.content.size") == 0, "opening the entry reads no book's text")
 
         # 2-3 matching and counting
@@ -83,7 +88,7 @@ async def main():
             books: [...box.querySelectorAll('.tbook')].map((g) => ({{ title: g.querySelector('.tbh .src').textContent, cnt: g.querySelector('.cnt').textContent,
               rows: [...g.querySelectorAll('.mention')].map((r) => ({{ meta: [...r.querySelectorAll('.mn span')].map((s) => s.textContent), mark: [...r.querySelectorAll('mark')].map((m) => m.textContent), at: +r.dataset.at, find: r.dataset.find }})),
               more: (g.querySelector(':scope details summary') || {{}}).textContent || '', over: (g.querySelector(':scope details .hint') || {{}}).textContent || '' }})) }}; }}""")
-        check(res["head"] == "65 times in 3 of the 4 books that could be read. 1 book couldn't be read, so it wasn't searched.", f"the summary counts every occurrence, and only the books searched ({res['head']!r})")
+        check(res["head"] == "65 times in 3 of the 5 books that could be read. 1 book couldn't be read, so it wasn't searched.", f"the summary counts every occurrence, and only the books searched ({res['head']!r})")
         titles = [b["title"] for b in res["books"]]
         check(titles == ["Alpha", "Many", "Omega"], f"books with hits or your links are listed by author, books without neither ({titles})")
         alpha = res["books"][0]
@@ -142,6 +147,10 @@ async def main():
         await page.wait_for_function(f"!document.querySelector(\"{wbox} [data-inbooks]\")", timeout=20000)
         brk = await page.evaluate(f"""() => [...document.querySelectorAll("{wbox} .tbook")].map((g) => ({{ title: g.querySelector('.tbh .src').textContent, cnt: g.querySelector('.cnt').textContent,
           rows: [...g.querySelectorAll('.mention')].map((r) => ({{ meta: [...r.querySelectorAll('.mn span')].map((s) => s.textContent), mark: r.querySelector('mark').textContent, at: +r.dataset.at }})) }}))""")
+        part = [b for b in brk if b["title"] == "Partial"]
+        check(part and part[0]["cnt"] == "2 times, 2 your links" and [r["meta"][0] for r in part[0]["rows"]] == ["Your link", "Your link"] and [r["mark"] for r in part[0]["rows"]] == ["power", "power"],
+              f"a name that only partly overlaps your link (it starts before it), in one paragraph or across a page break, counts once, as the link ({part})")
+        brk = [b for b in brk if b["title"] != "Partial"]
         check(brk == [{"title": "Breaks", "cnt": "1 time", "rows": [{"meta": ["p. 20", "Breaks"], "mark": "will to power", "at": 2}]}],
               f"a name split by a printed-page break is found, at the page and block it starts in ({brk})")
 
