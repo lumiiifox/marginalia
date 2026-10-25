@@ -192,6 +192,11 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   no button where the device has no voice.
 - Flashcards for Anki (Export → `ankiRows`, `ankiFile`): tab-separated text with Anki's import headers (2.1.54+), HTML fields made safe by
   `ankiCell`; "mine" is your notes, the terms you added or edited and your looked-up words, "glossary" every entry.
+- Connections between thinkers (`CONNECTIONS` at the end of `data/thinkers.js`; `connectionsHTML` on both thinkers' cards, `CONN_KINDS`,
+  `connectionsOf`): each has a kind (influence, critique, reinterpretation), a one-sentence claim, `text` (what the primary texts show: a
+  reference into a bundled classic, opened like an article's, or where the words were checked) kept apart from `reading` (what named
+  scholarship argues, with its source). Every connection has a reading and a passed independent review in `tests/audit/connections.json`;
+  a "drew on" entry in `THINKERS` may rest on one. Tested by `tests/study_tools.py` (`connections`).
 - A term's thinkers in time (`termTimeHTML`, in each glossary entry): the term's `p` on one scale, in order of birth. A thinker's card goes
   two steps along "drew on" (`lineageSteps`: Further back, Further on), long rows folded by `foldChips`.
 - Your notes through the book (`spreadHTML`, on a book's page under Where you left off): notes by `at` in `SPREAD_BINS` stretches of `t.total`,

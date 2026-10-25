@@ -920,6 +920,57 @@ async def mentions(browser):
     check(not errs, "no script errors in Mentioned in" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def connections(browser):
+    import re, json
+    page, errs = await fresh(browser)
+    data = await page.evaluate("""CONNECTIONS.map((c) => ({ from: c.from, to: connTo(c), kind: c.kind, claim: c.claim, text: c.text || [], reading: c.reading || [],
+      ok: !!THINKER.get(c.from) && connTo(c).every((x) => THINKER.get(x)) && !!CONN_KINDS[c.kind] }))""")
+    check(len(data) >= 4 and all(c["ok"] for c in data), f"every connection names known thinkers and a known kind ({[(c['from'], c['to'], c['kind']) for c in data if not c['ok']]})")
+    check(all(c["reading"] and all(r.get("src", "").startswith("https://") and r.get("srcName") and r.get("says") for r in c["reading"]) for c in data),
+          "every connection rests on at least one scholarly reading with its source")
+    check(all(all(t.get("says") and (t.get("ref") or t.get("cite")) for t in c["text"]) for c in data),
+          "every primary-text line says where its words are: a bundled classic's reference, or where they were checked")
+    words = " ".join(" ".join([c["claim"]] + [t["says"] for t in c["text"]] + [r["says"] for r in c["reading"]]) for c in data)
+    plain = re.sub(r"“[^”]*”", "", words)
+    hits = [m.group(0) for pat in CONTRASTIVE for m in re.finditer(pat, plain, flags=re.I)]
+    check(not hits, f"connections: no contrastive constructions ({hits[:3]})")
+    audit = json.loads((ROOT / "tests" / "audit" / "connections.json").read_text())
+    keys = {(c["from"], ",".join(c["to"]), c["kind"]) for c in data}
+    rec = {(r["from"], ",".join(r["to"] if isinstance(r["to"], list) else [r["to"]]), r["kind"]): r for r in audit["connections"]}
+    check(keys == set(rec) and all(r.get("review", {}).get("verdict") == "pass" for r in rec.values()),
+          f"every connection has its audit record with a passed independent review ({sorted(keys ^ set(rec))})")
+    refs = await page.evaluate("""(async () => { const out = [];
+      for (const c of CONNECTIONS) for (const t of c.text || []) if (t.ref) {
+        const html = passageLinks(esc(t.ref), t.style), m = html.match(/data-passage="([^"]+)" data-passage-at="([^"]*)"/);
+        if (!m) { out.push([t.ref, null]); continue; }
+        const B = (await (await fetch('data/books/' + PASSAGE_STYLES[m[1]].book + '.json')).json()).content, i = passageBlock(B, m[2], m[1]);
+        out.push([t.ref, i >= 0 ? plain(B[i].x) : null]); }
+      return out; })()""")
+    check(refs and all(x[1] for x in refs), f"every reference into a bundled classic links and finds its passage ({refs})")
+    # both sides of the card
+    await page.evaluate("thinkerPanel('spinoza')"); await page.wait_for_timeout(300)
+    sp = await page.evaluate("""[...document.querySelectorAll('.sheet .conn')].map((c) => ({ kind: c.dataset.connKind, head: c.querySelector('.conn-h').textContent, lines: [...c.querySelectorAll('.ck')].map((k) => k.textContent) }))""")
+    heads = sorted(c["head"] for c in sp)
+    check(heads == ["Criticized by Nietzsche", "Reinterpreted by Deleuze"], f"Spinoza's card words each connection from Spinoza's side ({heads})")
+    nz = [c for c in sp if c["kind"] == "critique"]
+    check(nz and nz[0]["lines"][:1] == ["In the text"] and "Scholarship" in nz[0]["lines"], f"the primary text comes first, then the scholarship, each labelled ({nz})")
+    await page.evaluate("thinkerPanel('land')"); await page.wait_for_timeout(300)
+    land = await page.evaluate("[...document.querySelectorAll('.sheet .conn-h')].map((h) => h.textContent)")
+    check(land == ["Reinterprets Deleuze and Guattari"], f"a connection to co-authors names both, from Land's side ({land})")
+    await page.evaluate("thinkerPanel('guattari')"); await page.wait_for_timeout(300)
+    gu = await page.evaluate("[...document.querySelectorAll('.sheet .conn-h')].map((h) => h.textContent)")
+    check(gu == ["Reinterpreted by Land"], f"and from each co-author's ({gu})")
+    check(await page.evaluate("connectionsHTML('aristotle')") == "", "a thinker without connections shows no Connections row")
+    # the primary reference opens the classic there
+    await page.evaluate("addClassics(true)"); await page.wait_for_function("S.texts.has('classic-nietzsche-beyond')", timeout=60000)
+    await page.evaluate("thinkerPanel('nietzsche')"); await page.wait_for_timeout(300)
+    await page.click(".sheet .conn [data-passage='nietzsche-beyond']")
+    await page.wait_for_function("S.screen === 'reader' && R.tid === 'classic-nietzsche-beyond' && R.blocks", timeout=20000); await page.wait_for_timeout(600)
+    at = await page.evaluate("(() => { const want = passageBlock(R.blocks, '§13', 'nietzsche-beyond'); return [want, currentBlock(), plain(R.blocks[want].x)]; })()")
+    check(at[2] == "13" and abs(at[1] - at[0]) <= 3, f"tapping (BGE §13) on a card opens Beyond Good and Evil at section 13 ({at})")
+    check(not errs, "no script errors in connections" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def critique(browser):
     page, errs = await fresh(browser)
     await page.evaluate("""(async () => {
@@ -985,6 +1036,7 @@ async def main():
         await primers(browser)
         await branch_sources(browser)
         await mentions(browser)
+        await connections(browser)
         await critique(browser)
         await browser.close()
 
