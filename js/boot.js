@@ -127,6 +127,8 @@ document.addEventListener("click", (e) => {
   if (b.id === "d-addp") return draftTextSheet(S.draftId, null, "p");
   if (b.id === "d-export") return exportMenu(S.draftId);
   if (b.id === "d-more") return draftMore(S.draftId);
+  if (b.dataset.ejump) return jumpToItem(+b.dataset.ejump);
+  if (b.dataset.critdel) return removeCritique(S.draftId, b.dataset.critdel, b);
   if (b.dataset.dmove) { const [k, dir] = b.dataset.dmove.split(":").map(Number); return moveDraftItem(S.draftId, k, dir); }
   if (b.dataset.dremove) return removeDraftItem(S.draftId, +b.dataset.dremove);
   if (b.dataset.dedit) return draftTextSheet(S.draftId, +b.dataset.dedit);

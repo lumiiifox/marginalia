@@ -280,7 +280,8 @@ const VALID = {
     && (v.anchor === undefined || (isObj(v.anchor) && ["a", "ao", "b", "bo"].every((k) => Number.isInteger(v.anchor[k])) && optStr(v.anchor.pre) && optStr(v.anchor.suf)))
     && optArr(v.followups, (x) => isObj(x) && isS(x.id) && Number.isFinite(x.at) && isS(x.x)) && optNum(v.wordAt)
     && optArr(v.was, (x) => isObj(x) && Number.isFinite(x.at) && optStr(x.gloss) && optArr(x.premises, isS) && optStr(x.conclusion)),
-  drafts: (v) => isObj(v) && optStr(v.title) && Array.isArray(v.items) && v.items.every((x) => isObj(x) && (x.t === "note" ? isS(x.id) : (x.t === "h" || x.t === "p") && isS(x.x))),
+  drafts: (v) => isObj(v) && optStr(v.title) && Array.isArray(v.items) && v.items.every((x) => isObj(x) && (x.t === "note" ? isS(x.id) : (x.t === "h" || x.t === "p") && isS(x.x)))
+    && (v.critiques === undefined || (Array.isArray(v.critiques) && v.critiques.every((c) => isObj(c) && isS(c.id) && Number.isFinite(c.at) && optStr(c.by) && isS(c.x)))),
   compares: (v) => isObj(v) && optStr(v.title) && optStr(v.q) && optStr(v.verdict) && Array.isArray(v.cols) && v.cols.every((x) => isObj(x) && isS(x.id) && isS(x.label) && optStr(x.src))
     && Array.isArray(v.rows) && v.rows.every((x) => isObj(x) && isS(x.id) && isS(x.q)) && (v.cells === undefined || (isObj(v.cells) && Object.values(v.cells).every((c) => isObj(c) && optStr(c.x) && optArr(c.notes, isS)))),
   terms: (v) => isObj(v) && ((isS(v.t) && isS(v.d)) || (isObj(v.map) && Object.values(v.map).every((a) => Array.isArray(a) && a.every(isS)))),
@@ -425,11 +426,19 @@ function withThoughts(base, other) {
   if (was.size) out.was = [...was.values()].sort((a, b) => a.at - b.at);
   return out;
 }
+// A draft's critiques are only ever added to (or removed on purpose), so whichever copy wins, critiques only the other copy has are kept too.
+function withCritiques(base, other) {
+  if (!other || base === other || !(other.critiques || []).length) return base;
+  const have = new Set((base.critiques || []).map((c) => c.id)), add = other.critiques.filter((c) => !have.has(c.id));
+  if (!add.length) return base;
+  return { ...base, critiques: [...(base.critiques || []), ...add].sort((a, b) => a.at - b.at) };
+}
 async function applyRestore(plan, theirs) {
   const take = (st) => st === "new" || st === "older" || (theirs && (st === "newer" || st === "conflict"));
   const ops = [];
   for (const [store] of RESTORE_KINDS) for (const r of plan.rows[store]) {
-    if (take(r.st)) ops.push([store, r.id, store === "texts" ? withReading(r.v, r.cur) : store === "notes" ? withThoughts(r.v, r.cur) : r.v]);
+    if (take(r.st)) ops.push([store, r.id, store === "texts" ? withReading(r.v, r.cur) : store === "notes" ? withThoughts(r.v, r.cur) : store === "drafts" ? withCritiques(r.v, r.cur) : r.v]);
+    else if (store === "drafts" && r.cur) { const m = withCritiques(r.cur, r.v); if (m !== r.cur) ops.push([store, r.id, m, "merged"]); } // the backup's critiques join this device's draft
     else if (store === "notes" && r.cur) { const m = withThoughts(r.cur, r.v); if (m !== r.cur) ops.push([store, r.id, m, "merged"]); } // the backup's follow-ups join this device's note
     else if (store === "texts" && r.cur) { const m = withReading(r.cur, r.v); if (m !== r.cur) ops.push([store, r.id, m, "pos"]); } // a later reading position travels on its own
   }

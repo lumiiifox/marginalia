@@ -1057,6 +1057,47 @@ async def close_reading(browser):
     check(not errs, "no script errors in the close reading" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def critique_import(browser):
+    page, errs = await fresh(browser)
+    await page.evaluate("""(async () => {
+      const B = [{ k: 'pg', x: '3' }, { k: 'h', l: 1, x: 'One', s: 'c1' }, { k: 'p', x: 'First passage words here.' }, { k: 'p', x: 'Second passage words here.' }];
+      await put('content', 'kb', B);
+      await put('texts', 'kb', { title: 'A Book', author: 'Someone', hasContent: true, total: B.length, sections: [{ id: 'c1', label: 'One' }], createdAt: 1, updatedAt: 1 });
+      await put('notes', 'k1', { textId: 'kb', kind: 'passage', passage: 'First passage', at: 2, links: [], createdAt: 1, updatedAt: 1 });
+      await put('notes', 'k2', { textId: 'kb', kind: 'gloss', passage: '', gloss: 'A thought of mine.', links: [], createdAt: 1, updatedAt: 1 });
+      await put('notes', 'k3', { textId: 'kb', kind: 'passage', passage: 'Second passage', at: 3, links: [], createdAt: 1, updatedAt: 1 });
+      await put('drafts', 'kd', { title: 'Essay', items: [{ t: 'h', x: 'Intro' }, { t: 'note', id: 'k1' }, { t: 'p', x: 'Guide: write here' }, { t: 'note', id: 'k2' }, { t: 'note', id: 'k3' }], createdAt: 1, updatedAt: 1 });
+    })()""")
+    await page.evaluate("go({ screen: 'draft', draftId: 'kd' })"); await page.wait_for_timeout(300)
+    await page.click("#d-more"); await page.click("#dm-crit"); await page.wait_for_selector("#c-x")
+    await page.fill("#c-by", "My tutor")
+    await page.fill("#c-x", "## Overall\n\nThe reading of [E2] is too quick, and **[E1]** needs context.\n\n> a quoted line\n\n[E9] doesn't exist.")
+    await page.click("button[type=submit]"); await page.wait_for_timeout(400)
+    d = await page.evaluate("JSON.parse(JSON.stringify(S.drafts.get('kd')))")
+    c = (d.get("critiques") or [{}])[0]
+    check(len(d.get("critiques") or []) == 1 and c.get("by") == "My tutor" and c.get("x", "").startswith("## Overall") and c.get("id") and c.get("at"), f"a critique you paste in is kept with the draft, dated and credited ({d.get('critiques')})")
+    check(d["items"] == [{"t": "h", "x": "Intro"}, {"t": "note", "id": "k1"}, {"t": "p", "x": "Guide: write here"}, {"t": "note", "id": "k2"}, {"t": "note", "id": "k3"}], "and the draft's own text is left as it was")
+    view = await page.evaluate("""(() => { const c = document.querySelector('.crits .crit'); return c && { head: c.querySelector('summary').textContent, jumps: [...c.querySelectorAll('[data-ejump]')].map((b) => [b.textContent, +b.dataset.ejump]),
+      bold: !!c.querySelector('b [data-ejump], b'), quote: (c.querySelector('blockquote') || {}).textContent, dead: c.textContent.includes('[E9]') && !c.querySelector('[data-ejump="9"]') }; })()""")
+    check(view and view["head"].startswith("My tutor") and view["jumps"] == [["[E2]", 4], ["[E1]", 1]] and view["quote"] == "a quoted line" and view["dead"],
+          f"it's shown under the draft, its [E1], [E2] opening the passages the export numbered, an [E9] with no passage left as text ({view})")
+    md = await page.evaluate("critiqueMarkdown('kd')")
+    check("## 5. Earlier critiques" in md and "### My tutor," in md and "> The reading of [E2] is too quick" in md and md.count("[E1]") >= 2,
+          "the next export For critique carries the earlier critiques, quoted, so a critic sees what was said before")
+    await page.click("[data-ejump='4']"); await page.wait_for_timeout(500)
+    fl = await page.evaluate("[...document.querySelectorAll('.dlist .ditem')].findIndex((e) => e.classList.contains('flash'))")
+    check(fl == 4, f"tapping [E2] goes to the draft's second quoted passage ({fl})")
+    ok = await page.evaluate("""[VALID.drafts({ title: 'x', items: [], critiques: [{ id: 'a', at: 1, by: '', x: 'y' }] }), VALID.drafts({ title: 'x', items: [] }),
+      VALID.drafts({ title: 'x', items: [], critiques: [{ id: 'a', at: 'soon', x: 'y' }] }), VALID.drafts({ title: 'x', items: [], critiques: 'none' })]""")
+    check(ok == [True, True, False, False], f"a backup's critiques are checked: well-formed ones restore, malformed ones are refused ({ok})")
+    merged = await page.evaluate("""(() => { const a = { title: 'x', items: [], critiques: [{ id: 'a', at: 1, x: 'one' }] }, b = { title: 'x', items: [], critiques: [{ id: 'b', at: 2, x: 'two' }, { id: 'a', at: 1, x: 'one' }] };
+      return [withCritiques(a, b).critiques.map((c) => c.id), withCritiques(b, a) === b, withCritiques(a, { title: 'x', items: [] }) === a]; })()""")
+    check(merged == [["a", "b"], True, True], f"a restore keeps both copies' critiques, whichever copy wins ({merged})")
+    await page.click(".crit [data-critdel]"); await page.click(".crit [data-critdel]"); await page.wait_for_timeout(400)
+    check(await page.evaluate("(S.drafts.get('kd').critiques || []).length") == 0 and not await page.evaluate("!!document.querySelector('.crits')"), "Remove, tapped twice, takes the critique off the draft")
+    check(not errs, "no script errors in critiques" + (f": {errs}" if errs else ""))
+    await page.context.close()
+
 async def critique(browser):
     page, errs = await fresh(browser)
     await page.evaluate("""(async () => {
@@ -1122,6 +1163,7 @@ async def main():
         await primers(browser)
         await branch_sources(browser)
         await mentions(browser)
+        await critique_import(browser)
         await connections(browser)
         await close_reading(browser)
         await critique(browser)

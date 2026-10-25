@@ -55,7 +55,55 @@ function draftView() {
         <button class="btn" id="d-more" aria-haspopup="dialog">More</button>
       </div>
     </header>
-    <section class="group"><div class="dlist">${items.map((it, k) => draftItemHTML(it, k, items.length - 1)).join("") || `<p class="empty"><b>Nothing here yet.</b> Add notes from any of your texts, or write a heading or a paragraph of your own.</p>`}</div></section>`;
+    <section class="group"><div class="dlist">${items.map((it, k) => draftItemHTML(it, k, items.length - 1)).join("") || `<p class="empty"><b>Nothing here yet.</b> Add notes from any of your texts, or write a heading or a paragraph of your own.</p>`}</div></section>
+    ${critiquesHTML(d)}`;
+}
+/* ---------- critiques you received (d.critiques: [{ id, at, by, x }]) ----------
+   A critique of the draft, pasted in from wherever it came back (a reader, a teacher, another AI): kept with the draft, apart from its
+   text, dated and credited. Its [E1], [E2] … are the passages numbered as the export For critique numbers them (critiqueEvidence), and
+   each opens that passage's item in the draft. Kept in backups; a restore keeps both copies' critiques (withCritiques). */
+// The draft's items that the export numbers as evidence, in order: notes with a passage, guide lines left out.
+const critiqueEvidence = (d) => (d.items || []).map((it, k) => [it, k]).filter(([it]) => it.t === "note" && S.notes.has(it.id) && S.notes.get(it.id).passage).map(([, k]) => k);
+function critiqueText(x, d) {
+  const ev = critiqueEvidence(d);
+  const inline = (s) => esc(s).replace(/\[E(\d+)\]/g, (m, n) => (ev[+n - 1] !== undefined ? `<button type="button" class="branch-inline-link" data-ejump="${ev[+n - 1]}">[E${n}]</button>` : m))
+    .replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>");
+  return String(x).replace(/\r/g, "").split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean).map((p) => {
+    const h = p.match(/^#{1,6}\s+(.*)$/); if (h && !p.includes("\n")) return `<p class="ch"><b>${inline(h[1])}</b></p>`;
+    if (/^>/.test(p)) return `<blockquote>${p.split("\n").map((l) => inline(l.replace(/^>\s?/, ""))).join("<br>")}</blockquote>`;
+    return `<p>${p.split("\n").map(inline).join("<br>")}</p>`;
+  }).join("");
+}
+function critiquesHTML(d) {
+  const list = d.critiques || []; if (!list.length) return "";
+  return `<section class="group crits"><div class="label">Critiques you received</div>${list.map((c) => `<details class="crit" data-crit="${esc(c.id)}"${list.length === 1 ? " open" : ""}>
+    <summary><b>${esc(c.by || "A critique")}</b><span>${esc(fmtDate(c.at))}</span></summary>
+    <div class="critbody">${critiqueText(c.x, d)}</div>
+    <div class="noteacts"><button class="btn ghost danger" data-critdel="${esc(c.id)}">Remove</button></div></details>`).join("")}</section>`;
+}
+function critiqueSheet(id) {
+  const d = S.drafts.get(id); if (!d) return;
+  openSheet(`<h2>Add a critique you received</h2>
+    <p class="hint">Paste the reply to your draft's export For critique. Its [E1], [E2] … will open those passages in the draft.</p>
+    <div class="field"><label for="c-by">From</label><input id="c-by" name="by" placeholder="e.g. my tutor, ChatGPT" autocomplete="off"></div>
+    <div class="field"><label for="c-x">The critique</label><textarea id="c-x" name="x" rows="12"></textarea></div>
+    ${navigator.clipboard && navigator.clipboard.readText ? `<button type="button" class="btn ghost" id="c-paste">Paste from the clipboard</button>` : ""}`,
+  async (fd) => {
+    const x = String(fd.get("x") || "").trim(); if (!x) return "Paste or write the critique.";
+    if (x.length > CRIT_MAX) return `That's too long to keep with a draft (over ${CRIT_MAX.toLocaleString()} characters).`;
+    const cur = S.drafts.get(id); if (!cur) return;
+    await saveDraft(id, { critiques: [...(cur.critiques || []), { id: gid(), at: Date.now(), by: String(fd.get("by") || "").trim(), x }] });
+  });
+  const pb = document.getElementById("c-paste");
+  if (pb) pb.onclick = async () => { try { const t = await navigator.clipboard.readText(); if (t) document.getElementById("c-x").value = t; } catch { toast("Couldn't read the clipboard. Paste into the box instead."); } };
+}
+const CRIT_MAX = 100000;
+async function removeCritique(id, cid, btn) {
+  arm(btn, async () => { const d = S.drafts.get(id); if (!d) return; await saveDraft(id, { critiques: (d.critiques || []).filter((c) => c.id !== cid) }); render(); toast("Critique removed."); });
+}
+function jumpToItem(k) {
+  const el = document.querySelectorAll(".dlist .ditem")[k]; if (!el) return;
+  el.scrollIntoView({ block: "center", behavior: "smooth" }); el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
 }
 async function saveDraft(id, change) {
   const d = S.drafts.get(id); if (!d) return;
@@ -175,11 +223,13 @@ function draftMore(id) {
   const d = S.drafts.get(id); if (!d) return;
   openPanel(`<h2>${esc(d.title || "Untitled draft")}</h2>
     <div class="menu">
+      <button class="menuitem" id="dm-crit">Add a critique you received</button>
       <button class="menuitem" id="dm-rename">Rename</button>
       <button class="menuitem" id="dm-copy">Copy as formatted text</button>
       <button class="menuitem danger" id="dm-delete">Delete this draft</button>
     </div><p class="hint">Deleting a draft leaves its notes where they are.</p>`, (b) => {
-    if (b.id === "dm-rename") draftTitleSheet(id);
+    if (b.id === "dm-crit") critiqueSheet(id);
+    else if (b.id === "dm-rename") draftTitleSheet(id);
     else if (b.id === "dm-copy") copyDraft(id);
     else if (b.id === "dm-delete") openPanel(`<h2>Delete “${esc(d.title)}”?</h2><div class="menu"><button class="menuitem danger" id="dm-delete-yes">Delete this draft</button></div>`, async (b2) => {
       if (b2.id !== "dm-delete-yes") return;
@@ -325,6 +375,10 @@ async function critiqueMarkdown(id) {
     ...(terms.length ? terms.flatMap((g) => [`- **${g.t}**${g.builtIn ? "" : " (the writer's own entry)"}: ${g.d}${g.srcName ? ` Source: ${g.srcName}${g.src ? ` (${g.src})` : ""}.` : ""}`]) : ["None of the glossary's terms appear in the writer's own words."]), ""];
   const tids = [...books.keys()].filter((tid) => S.texts.has(tid));
   if (tids.length) out.push("## 4. Works cited", "", ...bibliography(tids, "ad", "md").flatMap((x) => [x, ""]));
+  // earlier rounds, so a critic can see what was already said and whether the draft answered it
+  const crits = d.critiques || [];
+  if (crits.length) out.push(`## ${tids.length ? 5 : 4}. Earlier critiques`, "", "Critiques the writer received on earlier versions of this draft, oldest first. The draft may have changed since.", "",
+    ...crits.flatMap((c) => [`### ${c.by || "A critique"}, ${fmtDate(c.at)}`, "", quote(c.x), ""]));
   return out.join("\n").replace(/\n{3,}/g, "\n\n");
 }
 async function exportCritique(id, copy) {
