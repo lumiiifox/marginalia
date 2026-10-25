@@ -1007,7 +1007,7 @@ async def close_reading(browser):
     check(ui and ui["labels"] == ["In the text", "Deleuze, through scholarship"], f"Spinoza's text comes first and Deleuze's reading apart, each labelled ({ui and ui['labels']})")
     check(ui and ui["conns"] == ["Deleuze reinterprets Spinoza", "Nietzsche criticizes Spinoza"], f"the path shows its typed connections ({ui and ui['conns']})")
     # a passage opens the Ethics there, keeping your place; Back returns to the path
-    await page.click("[data-station='immanent-cause'] [data-passage-at='I|Proposition|18|']")
+    await page.click("[data-station='immanent-cause'] [data-passage-at='I|Proposition|18||']")
     await page.wait_for_function("S.screen === 'reader' && R.tid === 'classic-spinoza-ethics' && R.blocks", timeout=20000); await page.wait_for_timeout(700)
     rd = await page.evaluate("({ want: passageBlock(R.blocks, 'I|Proposition|18|'), at: currentBlock(), visiting: R.visiting, home: R.home })")
     check(abs(rd["at"] - rd["want"]) <= 3 and rd["visiting"] and rd["home"] == 300, f"a station's passage opens the Ethics there, with your place kept as ← Your place ({rd})")

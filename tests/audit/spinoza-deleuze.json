@@ -1,0 +1,104 @@
+{
+ "id": "spinoza-deleuze",
+ "standard": "close-2026-10",
+ "date": "2026-10-25",
+ "note": "Close reading of the Ethics, Parts I and III. Every quotation in a station's `says` checked against the bundled Elwes text (also by tests/study_tools.py); every Deleuze line checked against its source for wording and for whose words they are.",
+ "stations": {
+  "in-itself": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "EPS p. 100, as quoted by Jimenez."
+   }
+  },
+  "god-expression": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "fix",
+    "notes": "SEP sentence garbled ('being' read as a participle); reworded to the entry's terms: being 'is said in a single sense of all of which it is said', univocity 'the key to developing a philosophy of difference'."
+   }
+  },
+  "one-substance": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "fix",
+    "notes": "one item quoted Jimenez under May's source; split: DR p. 40 as quoted by May; 'turn around modes' (DR) as quoted by Jimenez p. 339; 'presented Spinoza minus the substance' is Jimenez's own sentence, p. 352."
+   }
+  },
+  "immanent-cause": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "I.18 Latin 'causa immanens, non vero transiens' (Cambridge Spinoza Lexicon, 'Immanence'), Elwes 'indwelling and not the transient'; EPS p. 67 as quoted by Jimenez."
+   }
+  },
+  "necessity-freedom": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "May's own words; nested quotation set as ‘necessitarianism’."
+   }
+  },
+  "final-causes": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "Bolaños block-quotes Deleuze, Spinoza: Practical Philosophy p. 23; Protevi's phrase is his own."
+   }
+  },
+  "kingdom": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "Preface quotations exact."
+   }
+  },
+  "acting": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "fix",
+    "notes": "Postulate 1 cited but not described; its words added (block 403); conatus term dropped."
+   }
+  },
+  "body": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "Bolaños: 'Deleuze interprets the above passage as Spinoza's war cry (Deleuze 1990, p. 255)', the passage being the III.2 Note on what the body can do."
+   }
+  },
+  "conatus": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "fix",
+    "notes": "the Bolaños sentence on joy is his own account of Spinoza, without a Deleuze citation; removed from the Deleuze line, so the station has none."
+   }
+  },
+  "passages": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "fix",
+    "notes": "the Bolaños sentence on sadness, same misattribution; removed. Protevi's line is his own words."
+   }
+  },
+  "active-joys": {
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "pass",
+    "notes": "Bolaños quotes Deleuze 1988, pp. 22–23, with his ellipsis."
+   }
+  }
+ },
+ "path": {
+  "d": {
+   "verdict": "pass",
+   "first_verdict": "fix",
+   "notes": "now says Deleuze's reading is given where a named source supports it"
+  },
+  "sources": {
+   "verdict": "pass",
+   "notes": "SEP credited to Smith, Protevi and Voss (PhilPapers), revised by Voss 2022 (entry metadata)"
+  }
+ },
+ "also": "spinoza-ethics citations can now name a part's preface or appendix: (I, Appendix), (III, Preface)."
+}
