@@ -68,12 +68,18 @@ document.addEventListener("click", (e) => {
   if (b.id === "quiz") return quizPanel(S.screen === "glossary" ? S.gArea : S.screen === "thinkers" || (S.screen === "reference" && S.rk === "thinkers") ? "thinkers" : "all");
   if (b.id === "mywords") return wordsPanel();
   if (b.id === "resurfnext") { resurfSkip++; const el = $("#resurf"); if (el) el.outerHTML = resurfHTML(); return; }
+  if (b.id === "newpath") return customPathSheet();
+  if (b.id === "importpath") return importPathPicker();
+  if (b.dataset.pathedit) return customPathSheet(b.dataset.pathedit);
+  if (b.dataset.pathcopy) return customPathSheet(b.dataset.pathcopy, true);
+  if (b.dataset.pathexport) return exportCustomPath(b.dataset.pathexport).catch((e) => toast(failMsg(e)));
+  if (b.dataset.pathdelete) return arm(b, () => deleteCustomPath(b.dataset.pathdelete).catch((e) => toast(failMsg(e))));
   if (b.id === "openpaths") return go({ screen: "paths" });
   if (b.id === "opendisputes") return go({ screen: "disputes" });
   if (b.dataset.dispute) return disputePanel(b.dataset.dispute);
   if (b.id === "openplates") return go({ screen: "plates" });
   if (b.dataset.path) return go({ screen: "paths", path: b.dataset.path });
-  if (b.dataset.pathread) { const [tid, sec] = b.dataset.pathread.split("|"); return readStep(tid, sec.split(",")); }
+  if (b.dataset.pathread) { const [tid, sec] = b.dataset.pathread.split("|"); return readStep(tid, sec ? sec.split(",") : []); }
   if (b.dataset.pathadd) return readdClassic(b.dataset.pathadd);
   if (b.dataset.askq) return askQuestion(b.dataset.askq);
   if (b.dataset.askcq) return askCloseQuestion(b.dataset.askcq);
@@ -245,6 +251,7 @@ const bootSlow = setTimeout(() => {
     S.terms = await idbAll("terms");
     S.drafts = await idbAll("drafts");
     S.compares = await idbAll("compares");
+    S.paths = await idbAll("paths");
     await loadTrash().catch(() => {});
     S.mode = "ready";
   } catch (e) { idb = null; S.mode = "local"; S.openErr = e; }

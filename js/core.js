@@ -2,7 +2,7 @@
 const KINDS = { passage: "Passage", gloss: "Gloss", question: "Question", objection: "Objection", argument: "Argument" };
 const STATUS = { reading: "Reading", queued: "Queued", finished: "Finished" };
 const I0 = "\u0001", I1 = "\u0002";
-const S = { texts: new Map(), notes: new Map(), content: new Map(), covers: new Map(), terms: new Map(), drafts: new Map(), compares: new Map(), trash: new Map(), cmpId: null, cmpGaps: false, bOpen: new Set(), shelfOpen: new Set(), screen: "library", textId: null, sec: "all", kind: "all", q: "", tq: "", gq: "", gArea: "all", gOpen: new Set(), mode: "pending" };
+const S = { texts: new Map(), notes: new Map(), content: new Map(), covers: new Map(), terms: new Map(), drafts: new Map(), compares: new Map(), paths: new Map(), trash: new Map(), cmpId: null, cmpGaps: false, bOpen: new Set(), shelfOpen: new Set(), screen: "library", textId: null, sec: "all", kind: "all", q: "", tq: "", gq: "", gArea: "all", gOpen: new Set(), mode: "pending" };
 const R = { tid: null, blocks: null, els: [], tops: [], dirty: true, pageAt: [], secAt: [], sig: new Map(), saved: -1, sel: null,
   visiting: false, home: null, trail: [], landed: 0, landedAt: 0, landedY: 0 };
 // Where you are reading and where you are looking are kept apart: a jump (Find, Contents, a bookmark, a note or search

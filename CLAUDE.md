@@ -318,3 +318,5 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   your note's words keeps the old ones in `was: [{at, gloss, premises, conclusion}]` unless they were written within `REWORD_GRACE`
   (`wordAt` dates the current words). `laterHTML` draws both; follow-ups count for search, tags and export, earlier wordings for search
   only. Restore never drops either: `withThoughts` adds the other copy's to whichever copy wins.
+
+- Custom reading paths (`S.paths`, IndexedDB version 9, backup version 6): Create a reading path on the paths screen, choose library books and whole books or chapter ranges, reorder readings, and add notes/questions. `customPathSheet` edits a separate draft until Save. `validCustomPath` bounds the versioned record and rejects unknown fields; paths render as plain text. `exportCustomPath` / `importCustomPath` use reference-only JSON files, imported as a new copy after review. Missing books can be rebound in the editor, never guessed by title. Deletions use Recently deleted. Built-in chapter paths can be copied. Checked by `custom_paths` in study_tools.py and the smoke backup round trip.

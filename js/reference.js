@@ -218,34 +218,35 @@ const AREA_BRANCH = { meta: ["metaphysics"], know: ["epistemology"], logic: ["lo
 function termBranches(g) { return (Array.isArray(g.br) ? g.br : AREA_BRANCH[g.a] || []).filter((b) => BRANCH.has(b)); }
 /* ---------- reading paths (PATHS, in data/branches.js): routes through the classics that come with the app ----------
    Each step opens its book at its first chapter, or where you are if you're already inside those chapters; a step is done once
-   you've ticked all its chapters as read on the book's page. A classic you deleted can be added back. Nothing else is stored. */
+   you've ticked all its chapters as read on the book's page. A classic you deleted can be added back. Custom paths live in their own store. */
 const pathsFor = (bid) => (typeof PATHS === "undefined" ? [] : PATHS.filter((x) => (x.br || []).includes(bid)));
-const bookPaths = () => (typeof PATHS === "undefined" ? [] : PATHS.filter((P) => P.steps)); // paths of chapters across books (not close readings)
+const allPaths = () => [...S.paths].filter(([, P]) => validCustomPath(P)).map(([id, P]) => ({ ...P, id, custom: true })).concat(typeof PATHS === "undefined" ? [] : PATHS);
+const bookPaths = () => allPaths().filter((P) => P.steps); // paths of chapters across books (not close readings)
 function stepState(st) {
   const t = S.texts.get(st.book); if (!t) return { t: null, secs: [], done: false, started: false };
-  const by = new Map((t.sections || []).map((x) => [x.id, x])), secs = st.secs.map((id) => by.get(id)).filter(Boolean);
-  return { t, secs, done: secs.length > 0 && secs.every((x) => x.done), started: secs.some((x) => x.done) || (t.pos || 0) > 0 };
+  const by = new Map((t.sections || []).map((x) => [x.id, x])), secs = st.secs.length ? st.secs.map((id) => by.get(id)).filter(Boolean) : [...by.values()];
+  return { t, secs, done: st.secs.length ? secs.length === st.secs.length && secs.every((x) => x.done) : t.status === "finished" || (secs.length > 0 && secs.every((x) => x.done)), started: secs.some((x) => x.done) || (t.pos || 0) > 0 };
 }
 function pathsView() {
-  const list = typeof PATHS === "undefined" ? [] : PATHS;
+  const list = allPaths();
   const tmap = termMap();
   const path = (P) => {
     if (P.kind === "close") return closePathHTML(P, tmap);
     const states = P.steps.map(stepState), done = states.filter((x) => x.done).length;
     const step = (st, k) => {
-      const s = states[k], t = s.t, title = t ? t.title : (CLASSIC_TITLES[st.book] || "A classic");
-      const ch = s.secs.length ? s.secs.map((x) => x.label).join(" · ") : "";
+      const s = states[k], t = s.t, title = t ? t.title : (st.title || CLASSIC_TITLES[st.book] || "Book unavailable");
+      const ch = !st.secs.length ? "Whole book" : s.secs.length ? s.secs.map((x) => x.label).join(" · ") : "Chapters unavailable";
       return `<li class="pstep${s.done ? " done" : ""}"><span class="pn" aria-hidden="true">${s.done ? "✓" : k + 1}</span><div class="pbody">
         <div class="pt"><b>${esc(title)}</b>${t && t.author ? `<span>${esc(t.author)}</span>` : ""}</div>
         ${ch ? `<div class="pch">${esc(ch)}</div>` : ""}
         <p>${esc(st.why)}</p>
         ${readQsHTML(P, k, !!t)}
-        <div class="noteacts">${t ? `<button class="btn${s.done ? "" : " primary"}" data-pathread="${esc(st.book)}|${esc(st.secs.join(","))}">${s.done ? "Read again" : progressIn(st) ? "Continue" : "Read these chapters"}</button><button class="btn ghost" data-open="${esc(st.book)}">The book's page</button>`
-          : `<span class="hint">Not on your shelf: you deleted it.</span><button class="btn" data-pathadd="${esc(st.book)}">Add it back</button>`}</div>
+        <div class="noteacts">${t ? `<button class="btn${s.done ? "" : " primary"}" data-pathread="${esc(st.book)}|${esc(st.secs.join(","))}">${s.done ? "Read again" : progressIn(st) ? "Continue" : st.secs.length ? "Read these chapters" : "Read this book"}</button><button class="btn ghost" data-open="${esc(st.book)}">The book's page</button>`
+          : `<span class="hint">Not on your shelf.</span>${CLASSIC_TITLES[st.book] ? `<button class="btn" data-pathadd="${esc(st.book)}">Add it back</button>` : `<span class="hint">Edit this path to choose a copy from your library.</span>`}`}</div>
       </div></li>`;
     };
     return `<section class="path group" data-path-id="${esc(P.id)}">
-      <div class="sec-head"><div><h2>${esc(P.n)}</h2><div class="sub">${P.steps.length} books${done ? `, ${done} done` : ""}</div></div><button class="btn ghost" data-pathshare="${esc(P.id)}">Share</button></div>
+      <div class="sec-head"><div><h2>${esc(P.n)}</h2><div class="sub">${P.steps.length} steps${done ? `, ${done} done` : ""}</div></div><div class="noteacts">${P.custom ? `<button class="btn" data-pathedit="${esc(P.id)}">Edit</button><button class="btn ghost" data-pathexport="${esc(P.id)}">Export path</button><button class="btn ghost danger" data-pathdelete="${esc(P.id)}">Delete</button>` : `<button class="btn ghost" data-pathshare="${esc(P.id)}">Share</button>`}<button class="btn ghost" data-pathcopy="${esc(P.id)}">Make a copy</button></div></div>
       <p class="pd">${esc(P.d)}</p>
       <div class="pbar" aria-hidden="true">${P.steps.map((_, k) => `<i class="${states[k].done ? "on" : ""}"></i>`).join("")}</div>
       <ol class="psteps">${P.steps.map(step).join("")}</ol>
@@ -254,8 +255,9 @@ function pathsView() {
     </section>`;
   };
   return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
-    <header class="gl-head"><div><h1>Reading paths</h1><div class="sub">${list.length} routes through the classics that come with the app</div></div></header>
-    <p class="hint">Each path reads a few chapters from each book, in an order where each answers the one before. A step is done once you tick its chapters as read on the book's page.</p>
+    <header class="gl-head"><div><h1>Reading paths</h1><div class="sub">${S.paths.size} of your own · ${typeof PATHS === "undefined" ? 0 : PATHS.length} built-in paths</div></div></header>
+    <div class="noteacts"><button class="btn primary" id="newpath">Create a reading path</button><button class="btn" id="importpath">Import a path</button></div>
+    <p class="hint">Arrange books and chapters around your own questions. A step is done when its chapters are marked as read; a whole book can also be moved to the Finished shelf.</p>
     ${list.map(path).join("") || `<p class="empty">No paths yet.</p>`}`;
 }
 /* ---------- close readings (PATHS with kind "close"): one classic, station by station ----------
@@ -519,6 +521,7 @@ function progressIn(st) {
 }
 // The blocks a step covers: from its first chapter's heading to the start of the chapter after its last.
 function stepRange(B, secs) {
+  if (!secs.length) return B.length ? [0, B.length] : null;
   const heads = B.map((b, i) => [b, i]).filter(([b]) => b.s && !b.stj && roleOf(b) === "chapter");
   const k0 = heads.findIndex(([b]) => b.s === secs[0]), k1 = heads.findIndex(([b]) => b.s === secs[secs.length - 1]);
   if (k0 < 0 || k1 < 0) return null;
@@ -834,4 +837,118 @@ function branchesView() {
     <header class="gl-head"><div><h1>Branches of philosophy</h1><div class="sub">${BRANCHES.filter((b) => b.k === "branch").length} branches and ${BRANCHES.filter((b) => b.k === "tradition").length} traditions</div></div></header>
     ${sec("branch", "Branches by subject", "The main fields of philosophy, defined by the questions they ask.")}
     ${sec("tradition", "Traditions and approaches", "Schools and lineages, defined by shared methods, problems and texts. They cut across the branches above.")}`;
+}
+
+/* Custom paths contain references only: no book text, annotations or reading progress.
+   Empty secs means the whole book. Files use the same bounded, versioned shape as backups. */
+const PATH_LIMIT = 100, PATH_FILE_LIMIT = 2000000;
+function validCustomPath(P) {
+  const text = (x, n) => typeof x === "string" && x.length <= n;
+  const ref = (x) => text(x, 199) && x.length > 0 && !/[|,]/.test(x);
+  const keys = (x, allowed) => isObj(x) && Object.keys(x).every((k) => allowed.includes(k));
+  return keys(P, ["version", "n", "d", "steps", "createdAt", "updatedAt"]) && P.version === 1
+    && text(P.n, 200) && P.n.trim().length > 0 && text(P.d, 10000)
+    && Number.isFinite(P.createdAt) && Number.isFinite(P.updatedAt)
+    && Array.isArray(P.steps) && P.steps.length <= PATH_LIMIT
+    && P.steps.every((st) => keys(st, ["book", "title", "author", "secs", "why", "q"])
+      && ref(st.book) && text(st.title, 1000) && text(st.author, 1000) && text(st.why, 10000)
+      && Array.isArray(st.secs) && st.secs.length <= 2000 && st.secs.every(ref) && new Set(st.secs).size === st.secs.length
+      && Array.isArray(st.q) && st.q.length <= 30 && st.q.every((q) => text(q, 2000) && q.trim().length > 0))
+    && new TextEncoder().encode(JSON.stringify(P)).length < PATH_FILE_LIMIT - 100;
+}
+function customPathSheet(id, copy = false, imported = null) {
+  const source = imported || allPaths().find((P) => P.id === id);
+  if (id && !source) return;
+  const original = !copy && !imported && S.paths.get(id), now = Date.now();
+  const draft = { version: 1, n: source ? source.n + (copy ? " — copy" : "") : "", d: source ? source.d || "" : "",
+    steps: source ? source.steps.map((st) => ({ book: st.book, title: st.title || S.texts.get(st.book)?.title || CLASSIC_TITLES[st.book] || "Book unavailable",
+      author: st.author || S.texts.get(st.book)?.author || "", secs: [...st.secs], why: st.why || "", q: [...(st.q || [])] })) : [],
+    createdAt: original ? original.createdAt : now, updatedAt: now };
+  const books = [...S.texts].sort((a, b) => a[1].title.localeCompare(b[1].title));
+  const option = (value, label, selected) => `<option value="${esc(value)}"${selected ? " selected" : ""}>${esc(label)}</option>`;
+  const stepHTML = (st, k) => {
+    const t = S.texts.get(st.book), secs = t?.sections || [], missing = st.secs.filter((s) => !secs.some((x) => x.id === s));
+    const opts = (selected) => option("", "Whole book", !selected) + secs.map((s) => option(s.id, s.label, s.id === selected)).join("")
+      + missing.map((s) => option(s, "Unavailable chapter", s === selected)).join("");
+    return `<section class="paperpanel" data-pe-step="${k}"><h3>Step ${k + 1}</h3>
+      <div class="field"><label for="pe-book-${k}">Book</label><select id="pe-book-${k}" data-pe-book="${k}">${!t ? option(st.book, st.title || "Choose a book", true) : ""}${books.map(([bid, b]) => option(bid, `${b.title}${b.author ? " — " + b.author : ""}`, bid === st.book)).join("")}</select></div>
+      <div class="field"><label for="pe-start-${k}">Start at</label><select id="pe-start-${k}">${opts(st.secs[0])}</select></div>
+      <div class="field"><label for="pe-end-${k}">End at</label><select id="pe-end-${k}">${opts(st.secs[st.secs.length - 1])}</select></div>
+      ${missing.length ? `<p class="hint">Some chapters are missing. Choose the range again to change it.</p>` : ""}
+      <div class="field"><label for="pe-why-${k}">Reading notes or purpose</label><textarea id="pe-why-${k}" maxlength="10000" rows="2">${esc(st.why)}</textarea></div>
+      <div class="field"><label for="pe-q-${k}">Questions (one per line)</label><textarea id="pe-q-${k}" rows="3">${esc(st.q.join("\n"))}</textarea></div>
+      <div class="noteacts"><button type="button" class="btn ghost" data-pe-move="${k}" data-dir="-1"${k === 0 ? " disabled" : ""} aria-label="Move step ${k + 1} up">Move up</button><button type="button" class="btn ghost" data-pe-move="${k}" data-dir="1"${k === draft.steps.length - 1 ? " disabled" : ""} aria-label="Move step ${k + 1} down">Move down</button><button type="button" class="btn ghost" data-pe-remove="${k}">Remove step</button></div>
+    </section>`;
+  };
+  const capture = () => {
+    draft.n = $("#pe-name").value.trim(); draft.d = $("#pe-description").value.trim();
+    draft.steps.forEach((st, k) => {
+      st.why = $(`#pe-why-${k}`).value.trim(); st.q = $(`#pe-q-${k}`).value.split("\n").map((x) => x.trim()).filter(Boolean);
+      const a = $(`#pe-start-${k}`).value, b = $(`#pe-end-${k}`).value, secs = S.texts.get(st.book)?.sections || [];
+      if (!a && !b) st.secs = [];
+      else if (a === st.secs[0] && b === st.secs[st.secs.length - 1]) return;
+      else {
+        const lo = secs.findIndex((s) => s.id === a), hi = secs.findIndex((s) => s.id === b);
+        if (lo < 0 || hi < lo) throw new UErr(`Step ${k + 1}: choose a start and end chapter in reading order, or Whole book in both fields.`);
+        st.secs = secs.slice(lo, hi + 1).map((s) => s.id);
+      }
+    });
+  };
+  const draw = () => { $("#pe-steps").innerHTML = draft.steps.map(stepHTML).join("") || `<p class="hint">Add your first reading below.</p>`; };
+  openSheet(`<h2>${original ? "Edit reading path" : "Create a reading path"}</h2>
+    <div class="field"><label for="pe-name">Title</label><input id="pe-name" maxlength="200" value="${esc(draft.n)}"></div>
+    <div class="field"><label for="pe-description">Introduction or research question</label><textarea id="pe-description" maxlength="10000" rows="3">${esc(draft.d)}</textarea></div>
+    <div id="pe-steps"></div><button type="button" class="btn" id="pe-add">Add a reading</button>
+    ${books.length ? "" : `<p class="hint">Import a book into your library to add readings. You can save an empty path now.</p>`}`, async () => {
+      capture(); draft.updatedAt = Date.now();
+      if (!draft.n) return "Give this path a title.";
+      if (!validCustomPath(draft)) return "Check the readings: up to 100 steps, 30 questions per step, 2,000 characters per question, and 2 MB in total.";
+      const key = original ? id : "path-" + gid();
+      await put("paths", key, draft);
+      return () => { go({ screen: "paths", path: key }); toast("Reading path saved."); };
+    }, (veil) => {
+      draw();
+      veil.addEventListener("change", (e) => {
+        if (e.target.dataset.peBook === undefined) return;
+        const k = +e.target.dataset.peBook;
+        try { capture(); const bid = e.target.value, t = S.texts.get(bid); if (!t) return;
+          Object.assign(draft.steps[k], { book: bid, title: t.title, author: t.author || "", secs: [] }); draw();
+        } catch (err) { e.target.value = draft.steps[k].book; $("#err").textContent = err.message; }
+      });
+      veil.addEventListener("click", (e) => {
+        const b = e.target.closest("button"); if (!b || (b.id !== "pe-add" && b.dataset.peMove === undefined && b.dataset.peRemove === undefined)) return;
+        try {
+          capture(); $("#err").textContent = "";
+          if (b.id === "pe-add") {
+            if (!books.length) throw new UErr("Import a book into your library first.");
+            if (draft.steps.length >= PATH_LIMIT) throw new UErr("A path can contain up to 100 steps.");
+            const [bid, t] = books[0]; draft.steps.push({ book: bid, title: t.title, author: t.author || "", secs: [], why: "", q: [] });
+          } else if (b.dataset.peRemove !== undefined) draft.steps.splice(+b.dataset.peRemove, 1);
+          else { const k = +b.dataset.peMove, j = k + +b.dataset.dir; if (j < 0 || j >= draft.steps.length) return; [draft.steps[k], draft.steps[j]] = [draft.steps[j], draft.steps[k]]; }
+          draw();
+        } catch (err) { $("#err").textContent = err.message; }
+      });
+    });
+}
+async function deleteCustomPath(id) {
+  const P = S.paths.get(id); if (!P) return;
+  const tid = await trashAndRemove("path", P.n, [["paths", id, P]]);
+  render(); delToast("Reading path deleted.", tid);
+}
+async function exportCustomPath(id) {
+  const P = S.paths.get(id); if (!P || !validCustomPath(P)) return;
+  await saveFile(`${slug(P.n)}-reading-path.json`, JSON.stringify({ app: "marginalia-path", version: 1, path: P }), "application/json");
+}
+async function importCustomPath(file) {
+  try {
+    if (file.size > PATH_FILE_LIMIT) throw new Error();
+    const data = JSON.parse(await file.text());
+    if (!isObj(data) || data.app !== "marginalia-path" || data.version !== 1 || !validCustomPath(data.path)) throw new Error();
+    // Open a reviewable new copy; never guess an edition by title or overwrite an existing path.
+    customPathSheet(null, false, data.path);
+  } catch { toast("That file isn't a supported reading path, or exceeds the path limits."); }
+}
+function importPathPicker() {
+  const input = document.createElement("input"); input.type = "file"; input.accept = ".json,application/json";
+  input.onchange = () => { if (input.files[0]) importCustomPath(input.files[0]); }; input.click();
 }

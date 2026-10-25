@@ -1,9 +1,9 @@
 // Marginalia: storage on this device (IndexedDB), Recently deleted, covers, toasts, saving files, and backup and restore. One of the app's scripts, loaded in order by index.html (see CLAUDE.md).
 /* ---------- store: IndexedDB on this device ---------- */
-const STORES = ["texts", "notes", "content", "covers", "terms", "drafts", "compares", "files", "trash", "trashlist"]; // files: original PDFs; trash: Recently deleted, listed in trashlist. Only trashlist is read at start; none is backed up
+const STORES = ["texts", "notes", "content", "covers", "terms", "drafts", "compares", "files", "trash", "trashlist", "paths"]; // files: original PDFs; trash: Recently deleted, listed in trashlist. Only trashlist is read at start; none is backed up
 function idbOpen() {
   return new Promise((res, rej) => {
-    const r = indexedDB.open("marginalia", 8); // 5 added the drafts store, 6 the comparisons store, 7 the original PDFs, 8 Recently deleted
+    const r = indexedDB.open("marginalia", 9); // 5 added the drafts store, 6 the comparisons store, 7 the original PDFs, 8 Recently deleted, 9 custom reading paths
     r.onupgradeneeded = () => { const d = r.result; STORES.forEach((n) => { if (!d.objectStoreNames.contains(n)) d.createObjectStore(n); }); };
     r.onsuccess = () => {
       const d = r.result;
@@ -38,7 +38,7 @@ function idbGet(store, key) {
 }
 // The copy in memory of a store's records ("files" has none: PDFs are read from storage when wanted).
 function mapFor(col) {
-  const m = { texts: S.texts, notes: S.notes, content: S.content, covers: S.covers, terms: S.terms, drafts: S.drafts, compares: S.compares }[col];
+  const m = { texts: S.texts, notes: S.notes, content: S.content, covers: S.covers, terms: S.terms, drafts: S.drafts, compares: S.compares, paths: S.paths }[col];
   if (!m) throw new Error(`No copy in memory for "${col}".`);
   return m;
 }
@@ -136,8 +136,8 @@ async function restoreTrash(tid) {
   const { back, kept } = await putBackMissing(tid, e.items);
   back.forEach(([store, id, v]) => { if (store !== "files") mapFor(store).set(id, v); });
   S.trash.delete(tid); render();
-  const said = e.kind === "text" ? `“${e.title}” is back on its shelf${back.some(([st]) => st === "notes") ? ", with its notes" : ""}.` : e.kind === "note" ? "Note restored." : e.kind === "draft" ? "Draft restored." : "Comparison restored.";
-  const k = kept.filter(([st]) => ["texts", "notes", "drafts", "compares"].includes(st)).length;
+  const said = e.kind === "text" ? `“${e.title}” is back on its shelf${back.some(([st]) => st === "notes") ? ", with its notes" : ""}.` : e.kind === "note" ? "Note restored." : e.kind === "draft" ? "Draft restored." : e.kind === "path" ? "Reading path restored." : "Comparison restored.";
+  const k = kept.filter(([st]) => ["texts", "notes", "drafts", "compares", "paths"].includes(st)).length;
   toast(!back.length ? "Everything in it is already in your library, so it was left as it is." : k ? `${said} ${k} ${k === 1 ? "record was" : "records were"} already in your library again and ${k === 1 ? "was" : "were"} left as ${k === 1 ? "it is" : "they are"}.` : said);
   return true;
 }
@@ -238,7 +238,7 @@ async function exportBackup() {
   const content = idb ? await idbAll("content") : S.content;
   const covers = {};
   for (const [id, b] of S.covers) { try { covers[id] = await blobToDataURL(b); } catch {} }
-  const data = { app: "marginalia", version: 5, exportedAt: new Date().toISOString(), ...(PIN ? { pin: PIN } : {}), texts: Object.fromEntries(S.texts), notes: Object.fromEntries(S.notes), content: Object.fromEntries(content), covers, terms: Object.fromEntries(S.terms), drafts: Object.fromEntries(S.drafts), compares: Object.fromEntries(S.compares) };
+  const data = { app: "marginalia", version: 6, exportedAt: new Date().toISOString(), ...(PIN ? { pin: PIN } : {}), texts: Object.fromEntries(S.texts), notes: Object.fromEntries(S.notes), content: Object.fromEntries(content), covers, terms: Object.fromEntries(S.terms), drafts: Object.fromEntries(S.drafts), compares: Object.fromEntries(S.compares), paths: Object.fromEntries(S.paths) };
   const ok = await saveFile(`marginalia-backup-${stamp()}.json`, JSON.stringify(data), "application/json");
   if (ok) { try { localStorage.setItem("mg-backup", String(Date.now())); } catch {} render(); }
 }
@@ -253,7 +253,7 @@ function idbTx(stores, fn) {
   });
 }
 /* restoring: check the file, show what it would change, then merge in one transaction */
-const RESTORE_KINDS = [["texts", "text", "texts"], ["notes", "note", "notes"], ["drafts", "draft", "drafts"], ["compares", "comparison", "comparisons"], ["terms", "glossary entry", "glossary entries"]];
+const RESTORE_KINDS = [["texts", "text", "texts"], ["notes", "note", "notes"], ["drafts", "draft", "drafts"], ["compares", "comparison", "comparisons"], ["terms", "glossary entry", "glossary entries"], ["paths", "reading path", "reading paths"]];
 // Checked to the depth the app relies on when it draws a record; anything else in a record is kept as it is.
 const isObj = (x) => !!x && typeof x === "object" && !Array.isArray(x);
 const optStr = (x) => x === undefined || x === null || typeof x === "string";
@@ -265,6 +265,7 @@ const CONC_MAX = 2000; // pairs of pages kept for another edition (t.conc)
 const DAYS_MAX = 3000; // days of reading time kept on a book (t.days), oldest dropped first
 const DAY_KEY = /^\d{4}-\d{2}-\d{2}$/;
 const VALID = {
+  paths: (v) => validCustomPath(v),
   texts: (v) => isObj(v) && isS(v.title) && optStr(v.author) && optStr(v.edition) && optStr(v.lang) && optStr(v.next) && (v.rank === undefined || Number.isFinite(v.rank)) && optArr(v.pdfLabels, isS) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
     && optArr(v.bookmarks, (x) => isObj(x) && Number.isInteger(x.at)) && (v.summaries === undefined || isObj(v.summaries)) && (v.pos === undefined || Number.isInteger(v.pos))
     && (v.source === undefined || v.source === null || (isObj(v.source) && optStr(v.source.name) && optStr(v.source.kind) && optNum(v.source.pages)))
@@ -376,7 +377,7 @@ async function importBackup(file) {
 }
 // Another window of the app (the installed app and a browser tab, say) may have changed the library since the summary.
 async function reloadStores() {
-  for (const st of ["texts", "notes", "drafts", "compares", "terms"]) { const m = await idbAll(st), map = mapFor(st); map.clear(); m.forEach((v, k) => map.set(k, v)); }
+  for (const st of ["texts", "notes", "drafts", "compares", "terms", "paths"]) { const m = await idbAll(st), map = mapFor(st); map.clear(); m.forEach((v, k) => map.set(k, v)); }
 }
 async function confirmRestore(name, data, sig, theirs) {
   if (idb) await reloadStores();
