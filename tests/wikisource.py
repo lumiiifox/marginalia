@@ -124,7 +124,7 @@ async def main():
 
         # 5 from a reading path
         await page.evaluate("go({ screen: 'paths' })"); await page.wait_for_timeout(200)
-        await page.click("section.path-entry[data-path-id='what-can-we-know'] button.linkbtn[data-path]"); await page.wait_for_timeout(200)
+        await page.click("section.path-entry[data-path-id='what-can-we-know'] .path-title-link"); await page.wait_for_timeout(200)
         await page.click("section.syllabus[data-path-id='what-can-we-know'] [data-wsfind]"); await page.wait_for_selector(".wshit", timeout=5000)
         check(await page.evaluate("[!document.querySelector('#f-wsbox').hidden, document.querySelector('#f-wsq').value]") == [True, "Critique of Pure Reason"], "a reading path's Find it on Wikisource opens the sheet with its search done")
         check(not errs, "no script errors" + (f": {errs}" if errs else ""))

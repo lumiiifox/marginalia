@@ -958,19 +958,28 @@ span.bhid { display: inline; }
 .ditem.flash { animation: flash 1.6s ease-out; }
 
 /* Reading paths: a scholarly syllabus with a navigable outline. */
-body.path-mode { background: var(--paper); }
 .path-mode .wrap { max-width: 1040px; padding: 22px 24px 80px; gap: 32px; }
 .path-mode .linkbtn { min-height: 44px; text-align: left; }
 .path-back { justify-self: start; }
 .paths-title h1, .syllabus-title h1 { font: 700 29px/1.12 var(--f-text); letter-spacing: -.025em; overflow-wrap: anywhere; }
-.paths-title > p { font: 400 21px/1.5 var(--f-text); color: var(--muted); margin: 14px 0 24px; }
-.path-catalogue > h2 { font: 500 15px/1.4 var(--f-ui); color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
-.path-entry { padding: 25px 0; border-bottom: 1px solid var(--rule); }
-.path-entry .sec-head { align-items: center; }
-.path-entry h3 { flex: 1; min-width: 180px; }
-.path-title-link { padding: 0; text-align: left; color: var(--ink); font: 500 26px/1.2 var(--f-text); overflow-wrap: anywhere; }
-.path-entry .sub { margin-top: 8px; }
-.path-entry > p { font: 400 18px/1.5 var(--f-text); max-width: 65ch; margin: 12px 0 8px; color: var(--muted); }
+.paths-title > p { font: 400 16.5px/1.5 var(--f-text); color: var(--muted); margin: 6px 0 18px; max-width: 46ch; }
+.paths-title .noteacts { margin-left: 0; gap: 8px 22px; align-items: center; }
+.path-mode .wrap:has(> .paths-title) { gap: 22px; }
+.path-catalogue > h2 { font: 600 13px/1.4 var(--f-ui); color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin: 0 0 6px; }
+.path-catalogue + .path-catalogue { margin-top: 10px; }
+.path-catalogue, .paths-title { max-width: 720px; }
+.path-entry { position: relative; margin: 0; padding: 16px 0 18px; border-bottom: 1px solid var(--rule); }
+.path-entry:first-of-type { border-top: 1px solid var(--rule); }
+.path-entry .sec-head { align-items: baseline; flex-wrap: nowrap; }
+.path-entry h3 { flex: 1; min-width: 0; }
+.path-title-link { padding: 0; text-align: left; color: var(--ink); font: 600 20px/1.25 var(--f-text); overflow-wrap: anywhere; }
+/* The whole entry opens the path; its own buttons sit above that. */
+.path-title-link::after { content: ""; position: absolute; inset: 0; }
+.path-entry .sec-head .linkbtn { position: relative; z-index: 1; min-height: 32px; flex: none; }
+.path-entry:hover .path-title-link, .path-title-link:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+.path-entry .sub { margin-top: 3px; font: 500 13.5px/1.4 var(--f-ui); }
+.path-entry > p { font: 400 15.5px/1.5 var(--f-text); max-width: 65ch; margin: 6px 0 0; color: var(--muted);
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
 .syllabus { padding: 0; margin: 0; border: 0; background: transparent; }
 .syllabus-nav { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 24px; }
 .syllabus-nav .linkbtn { font-size: 17px; }
@@ -1092,3 +1101,13 @@ body.discovery-mode { background: var(--paper); }
 .discovery-mode .linkbtn, .discovery-mode .btn { min-height: 44px; }
 .discovery-card .label { font-size: 13px; letter-spacing: .04em; text-transform: uppercase; }
 @media (max-width: 350px) { .discovery-mode .wrap { padding-inline: 16px; } }
+
+/* Reading paths on the oak desk: the headings sit on the wood, the lists and readings on paper sheets. */
+.path-catalogue, .paths-title { max-width: 720px; }
+.path-catalogue { background: var(--paper); border-radius: 6px; box-shadow: var(--paper-shadow); padding: 4px 18px; }
+.path-catalogue > h2 { margin: 14px 0 2px; }
+.path-entry:first-of-type { border-top: 0; }
+.path-catalogue .path-entry:last-child { border-bottom: 0; }
+.syllabus-outline, .syllabus-next, .syllabus-empty { background: var(--paper); border: 0; border-radius: 6px; box-shadow: var(--paper-shadow); padding: 14px 18px 16px; }
+.syllabus .pstep { background: var(--paper); border: 0; border-radius: 6px; box-shadow: var(--paper-shadow); padding: 18px 18px 20px; margin: 0 0 16px; }
+@media (max-width: 599px) { .syllabus-reading:has(.syllabus-cover) .syllabus-reading-body { margin-left: 0; } }
