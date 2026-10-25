@@ -22,7 +22,7 @@ from playwright.async_api import async_playwright
 ROOT = Path(__file__).resolve().parent.parent
 PORT = 8799
 URL = f"http://localhost:{PORT}/index.html"
-STORES = ["texts", "notes", "content", "drafts", "compares", "terms", "paths"]
+STORES = ["texts", "notes", "content", "drafts", "compares", "terms", "paths", "wishlist"]
 
 SEED = """async () => {
   const now = Date.now();
@@ -37,12 +37,13 @@ SEED = """async () => {
   await put("drafts", "d1", { title: "Draft", items: [{ t: "h", x: "Heading" }, { t: "note", id: "n1" }], critiques: [{ id: "cr1", at: now, by: "A tutor", x: "The reading of [E1] is too quick." }], createdAt: now, updatedAt: now });
   await put("compares", "c1", { title: "Comparison", q: "Question?", verdict: "Conclusion", cols: [{ id: "a", label: "A" }], rows: [{ id: "r1", q: "row" }], cells: { "r1:a": { x: "cell", notes: ["n1"] } }, createdAt: now, updatedAt: now });
   await put("paths", "path-test", { version: 1, n: "My research path", d: "A research question", steps: [{ book: "t1", title: "Test Book", author: "Author, Test", secs: ["s1"], why: "Compare the argument", q: ["What follows?"] }], createdAt: now, updatedAt: now });
+  await put("wishlist", "wish-test", {title:"Future reading", author:"A scholar", note:"Compare the argument", url:"https://example.com/book", forBook:"t1", status:"wanted", createdAt:now, updatedAt:now});
   await put("terms", "g1", { t: "Test term", d: "a definition", createdAt: now, updatedAt: now });
 }"""
 DUMP = "async (st) => { const o = {}; for (const s of st) o[s] = Object.fromEntries(await idbAll(s)); return o; }"
 READY = "typeof idb !== 'undefined' && idb"
 SCREENS = [("library", {}), ("text", {"textId": "t1"}), ("glossary", {}), ("branches", {}), ("thinkers", {}), ("reference", {}), ("tag", {"tag": "tag"}),
-           ("questions", {}), ("drafts", {}), ("draft", {"draftId": "d1"}), ("concord", {}), ("compares", {}), ("compare", {"cmpId": "c1"}), ("paths", {"pathFocus": None}), ("paths", {"pathFocus": "path-test"}), ("plates", {}), ("disputes", {})]
+           ("questions", {}), ("drafts", {}), ("draft", {"draftId": "d1"}), ("concord", {}), ("compares", {}), ("compare", {"cmpId": "c1"}), ("paths", {"pathFocus": None}), ("paths", {"pathFocus": "path-test"}), ("plates", {}), ("disputes", {}), ("wishlist", {}), ("recommendations", {"recBook": None, "recAll": True})]
 
 failures = []
 def check(ok, what):

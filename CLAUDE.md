@@ -45,6 +45,7 @@ ideas? If not, it waits.
 - After changes to a branch or tradition article, run `python3 tests/study_tools.py` (section sources and the article frame) and `python3 tests/links.py`.
 - After changes to `branchLinks`, to thinkers' names or to `CLASSIC_NAMES`, run `python3 tests/links.py` (four-letter names in exact case, accents in either Unicode form,
   word-like names only in full, punctuation around names, and every link across the articles naming the entry it opens).
+- After changes to the wishlist or book recommendations, run `python3 tests/discovery.py` (version 9 upgrade, wishlist editing, matching, companion links, deletion/Undo, safe links and responsive layouts). Recommendation entries in `data/recommendations.js` need a publisher or author source and a reason specific to the paired work; expand coverage only with verified entries.
 - After changes to colours or styles, run `python3 tests/contrast.py` (every screen and the main panels, light and dark, against WCAG AA).
 - After changes to the study tools around the reference sections (Mentioned in, the truth table, term of the day, Hear it, the Anki export, a term's thinkers in time, two-step lineage, your notes through the book, the fallacies, reading paths, from your margins, essay templates, argument puzzles, guess the thinker, connect two thinkers, order of birth, bookplates, missing premise, steps in order, the reconstruction guide, quiz sets, disputations, questions to read with, primers), run `python3 tests/study_tools.py` (also after changes to the critique export).
 - This session can't delete remote branches; the repo is set to delete merged PR branches automatically (if not, tell the owner).
@@ -96,6 +97,7 @@ can break that order: keep new code in the file of its area, and check with a te
 | `js/bookmenu.js` | a book's More menu (another edition's pages, the paired original), the book menu and arranging the shelf |
 | `js/reader.js` | the reader: layout, swipe pages and the flip, your place and jumps, reading pace, highlights and notes in the text, the pinned passage |
 | `js/structure.js` | Edit → marking a book's structure, and the reader's gestures and controls |
+| `js/discovery.js` | wishlist records and forms, sourced reading recommendations, and companion books |
 | `js/boot.js` | events for the whole app, the classics (`CLASSICS`) and starting up |
 
 Each entry below names its functions; `grep -n` over `js/` finds them.
