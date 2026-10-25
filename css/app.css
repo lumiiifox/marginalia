@@ -1078,21 +1078,20 @@ span.bhid { display: inline; }
 
 /* Wishlist and sourced companion reading. */
 .discovery-home { margin-top: 20px; }
-.discovery-list { display: grid; gap: 22px; }
-.discovery-card { padding: 22px; border: 1px solid var(--rule); border-radius: 5px; background: var(--paper); min-width: 0; overflow-wrap: anywhere; }
-.discovery-card h2 { font: 500 25px/1.2 var(--f-text); margin: 8px 0; }
-.discovery-card p { margin: 12px 0; font: 400 18px/1.5 var(--f-text); }
+.discovery-list { display: grid; gap: 16px; }
+.discovery-card { padding: 18px 18px 14px; border: 0; border-radius: 6px; background: var(--paper); box-shadow: var(--paper-shadow); min-width: 0; overflow-wrap: anywhere; }
+.discovery-card h2 { font: 600 21px/1.25 var(--f-text); margin: 6px 0 4px; }
+.discovery-card p { margin: 10px 0; font: 400 16px/1.5 var(--f-text); }
 .discovery-card .discovery-author { color: var(--muted); margin-top: 0; }
-.discovery-card .hint { font: 400 16px/1.5 var(--f-ui); }
+.discovery-card .hint { font: 400 15px/1.5 var(--f-ui); }
 .discovery-note { white-space: pre-line; }
 .discovery-source { display: inline-block; margin-bottom: 16px; font: 400 15px/1.5 var(--f-ui); }
-.discovery-intro { font: 400 21px/1.5 var(--f-text); margin-top: 16px; }
+.discovery-intro { font: 400 16.5px/1.5 var(--f-text); color: var(--muted); margin-top: 6px; }
 .discovery-card .noteacts { gap: 12px 18px; }
 @media (min-width: 800px) { .discovery-list { grid-template-columns: repeat(2, minmax(0,1fr)); align-items: start; } }
 
-.discovery-mode h1 { font: 700 32px/1.15 var(--f-text); overflow-wrap: anywhere; }
+.discovery-mode h1 { font: 700 29px/1.12 var(--f-text); letter-spacing: -.025em; overflow-wrap: anywhere; }
 
-body.discovery-mode { background: var(--paper); }
 .discovery-mode .wrap { max-width: 1040px; padding-inline: 24px; gap: 24px; }
 .discovery-mode .noteacts { gap: 12px 20px; margin-left: 0; align-items: center; }
 .discovery-mode a { color: var(--link); }
