@@ -46,6 +46,7 @@ ideas? If not, it waits.
 - After changes to `branchLinks`, to thinkers' names or to `CLASSIC_NAMES`, run `python3 tests/links.py` (four-letter names in exact case, accents in either Unicode form,
   word-like names only in full, punctuation around names, and every link across the articles naming the entry it opens).
 - After changes to the wishlist or book recommendations, run `python3 tests/discovery.py` (version 9 upgrade, wishlist editing, matching, companion links, deletion/Undo, safe links and responsive layouts). Recommendation entries in `data/recommendations.js` need a publisher or author source and a reason specific to the paired work; expand coverage only with verified entries.
+- After changes to chapter density, `chapterHeads`, `readerTermNames` or reading pace, run `python3 tests/density.py` (Spinoza's and Kant's numbers, skipped names, plurals, the panel, times at your pace).
 - After changes to colours or styles, run `python3 tests/contrast.py` (every screen and the main panels, light and dark, against WCAG AA).
 - After changes to the study tools around the reference sections (Mentioned in, the truth table, term of the day, Hear it, the Anki export, a term's thinkers in time, two-step lineage, your notes through the book, the fallacies, reading paths, from your margins, essay templates, argument puzzles, guess the thinker, connect two thinkers, order of birth, bookplates, missing premise, steps in order, the reconstruction guide, quiz sets, disputations, questions to read with, primers), run `python3 tests/study_tools.py` (also after changes to the critique export).
 - This session can't delete remote branches; the repo is set to delete merged PR branches automatically (if not, tell the owner).
@@ -289,6 +290,11 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   stored. Tested by `tests/in_your_books.py`.
 - A glossary term's "In your notes" (`termHitsHTML`, from `termNotes`): your notes using the term, grouped by author and then book, each book in
   reading order with your glosses, four shown and the rest folded. Only your own notes; nothing is written about the term for you.
+- Chapter density (`densityHTML`, `densityOf`, on a book's page under reading pace): per chapter (back matter and chapters under
+  `DENSITY_MIN_WORDS` left out) words a sentence and glossary terms per 1,000 words (`readerTermNames`, plurals counted, `DENSITY_SKIP`
+  everyday-sense names left out), each a bar on a fixed scale (`DENSITY_SENT_FULL`, `DENSITY_TERMS_FULL`) so books compare, never one score;
+  the chapter's top terms as chips, and its time at your pace (`paceOf`) or `DENSITY_WPM`. A chapter opens the reader at its heading.
+  Cached per content array (`DENSITY_CACHE`). Nothing stored. Tested by `tests/density.py`.
 - Where you left off (`briefHTML`, `placeIn`, on a book's page under Continue reading): page and chapter at `t.pos`, your summary of that
   chapter or the last one summarized, the book's open questions and latest notes. Nothing stored; it loads the book's text once for the chapter.
 - The pinned passage (`PIN`, `drawPin`, `pinGo`): one passage or note kept at the foot of the reader, from Pin on a selection or a note's

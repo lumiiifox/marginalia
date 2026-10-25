@@ -308,6 +308,7 @@ function textView() {
     ${bookPlates(id, t).length ? `<section class="group"><div class="label">Bookplates</div><div class="plates">${bookPlates(id, t).map((x) => plateHTML({ ...x, tid: null, sub: "" })).join("")}</div></section>` : ""}
     ${spreadHTML(id, t)}
     ${paceHTML(id, t)}
+    ${densityHTML(id, t)}
     ${secs.length ? `<section class="group"><div><div class="label">Sections</div><p class="hint">Tick a section once you have read it. Tap its name to see its notes.</p></div><div class="sections">
       ${secs.map((s) => `<div class="sec ${s.done ? "done" : ""} ${S.sec === s.id ? "sel" : ""}">
         <input type="checkbox" id="chk-${esc(s.id)}" data-tick="${esc(s.id)}" ${s.done ? "checked" : ""} aria-label="Mark ${esc(s.label)} as read">
@@ -387,6 +388,67 @@ function paceHTML(id, t) {
     <div class="sp-ends"><span>Two weeks ago</span><span>Today</span></div>
     <p class="hint"><b>${esc(fmtDur(P.total))}</b> in this book, over ${P.on} day${P.on === 1 ? "" : "s"}${shown && shown < P.total ? `; ${esc(fmtDur(shown))} in the last two weeks` : ""}.
       ${P.wpm ? `${P.recentOnly ? "Lately" : "So far"} about ${Math.round(P.wpm / 10) * 10} words a minute${P.daily >= 60 ? `, ${esc(fmtDur(P.daily))} on a day you read it` : ""}.` : "Read a little longer for a pace."} ${esc(left)}</p>
+  </div></section>`;
+}
+
+/* ---------- chapter density, on a book's page ----------
+   For each chapter (back matter left out): words a sentence, the glossary's terms per thousand words (readerTermNames, plurals
+   counted) and the time it takes at your pace in this book (paceOf), or at DENSITY_WPM until there is one. Two separate measures,
+   never one score: both are rough guides to how hard a chapter reads. Worked out from the text each time; nothing is stored. */
+// Bars are on fixed scales (DENSITY_SENT_FULL words a sentence, DENSITY_TERMS_FULL terms per 1,000 words fill one), so they compare across books.
+const DENSITY_WPM = 200, DENSITY_MIN_WORDS = 200, DENSITY_TOP_TERMS = 3, DENSITY_SENT_FULL = 50, DENSITY_TERMS_FULL = 20;
+const DENSITY_CACHE = new WeakMap();
+// Glossary names that are mostly everyday English in the classics (a gift of nature, a transgression of duty); the reader still links them.
+const DENSITY_SKIP = new Set(["gift", "transgression", "recognition", "discourse"]);
+const densityWords = (s) => fold(s).replace(/[-–—]/g, " ").match(/[\p{L}\p{N}]+(?:['’][\p{L}\p{N}]+)*/gu) || [];
+function densityOf(B, t) {
+  const names = readerTermNames(), hit = DENSITY_CACHE.get(B);
+  if (hit && hit.n === names.length && hit.t === t.sections) return hit.res;
+  const byFirst = new Map();
+  for (const n of names) { const w = densityWords(n.s); if (!w.length || DENSITY_SKIP.has(n.s)) continue; if (!byFirst.has(w[0])) byFirst.set(w[0], []); byFirst.get(w[0]).push({ w, id: n.id }); }
+  for (const L of byFirst.values()) L.sort((a, b) => b.w.length - a.w.length);
+  const same = (tok, want, last) => tok === want || (last && (tok === want + "s" || tok === want + "es"));
+  const labels = new Map((t.sections || []).map((x) => [x.id, x.label])), heads = chapterHeads(B), res = [];
+  heads.forEach((h, k) => {
+    const label = (labels.get(B[h].s) || "").trim(), end = k + 1 < heads.length ? heads[k + 1] : B.length;
+    if (!label || BACK_MATTER.test(label)) return;
+    let words = 0, sentences = 0; const terms = new Map();
+    for (let i = h + 1; i < end; i++) {
+      const b = B[i]; if (b.k === "pg" || b.k === "fn" || isHidden(b) || (b.s && !b.stj && roleOf(b) === "chapter")) continue;
+      const x = shownText(b), toks = densityWords(x); if (!toks.length) continue;
+      words += toks.length;
+      sentences += Math.max(1, (x.match(/[.!?]+(?=[\s"”’)\]]|$)/g) || []).length);
+      for (let j = 0; j < toks.length; j++) {
+        const w = toks[j], L = byFirst.get(w) || (w.endsWith("s") && byFirst.get(w.slice(0, -1))) || (w.endsWith("es") && byFirst.get(w.slice(0, -2))); if (!L) continue;
+        const m = L.find((c) => c.w.every((w, q) => j + q < toks.length && same(toks[j + q], w, q === c.w.length - 1)));
+        if (m) { terms.set(m.id, (terms.get(m.id) || 0) + 1); j += m.w.length - 1; }
+      }
+    }
+    if (words < DENSITY_MIN_WORDS) return;
+    const top = [...terms].sort((a, b) => b[1] - a[1]).slice(0, DENSITY_TOP_TERMS).map(([id]) => id);
+    res.push({ at: h, label, words, perSentence: words / sentences, perK: (1000 * [...terms.values()].reduce((a, c) => a + c, 0)) / words, top });
+  });
+  DENSITY_CACHE.set(B, { n: names.length, t: t.sections, res });
+  return res;
+}
+function densityHTML(id, t) {
+  if (!t.hasContent) return "";
+  const B = S.content.get(id);
+  if (!B) { if (!BRIEF_LOADING.has(id)) { BRIEF_LOADING.add(id); loadContent(id).then((x) => { if (x && S.screen === "text" && S.textId === id) render(); }).catch(() => {}); } return ""; }
+  const C = densityOf(B, t); if (C.length < 2) return "";
+  const P = paceOf(t), wpm = P && P.wpm ? P.wpm : DENSITY_WPM, tmap = termMap();
+  const shortest = C.reduce((a, c) => (c.perSentence < a.perSentence ? c : a)), longest = C.reduce((a, c) => (c.perSentence > a.perSentence ? c : a)), termiest = C.reduce((a, c) => (c.perK > a.perK ? c : a));
+  const bar = (v, full) => `<span class="dn-bar" aria-hidden="true"><i style="width:${Math.min(100, Math.max(4, Math.round((100 * v) / full)))}%"></i></span>`;
+  const rows = C.map((c) => `<li class="dn-row">
+      <div class="dn-head"><button class="dn-ch" data-goto-note="${c.at}" data-tid="${esc(id)}">${esc(c.label)}</button><span class="dn-time">${esc(fmtDur((60 * c.words) / wpm))}</span></div>
+      <div class="dn-m">${bar(c.perSentence, DENSITY_SENT_FULL)}<small>${Math.round(c.perSentence)} words a sentence</small></div>
+      <div class="dn-m">${bar(c.perK, DENSITY_TERMS_FULL)}<small>${c.perK < 0.5 ? "almost no" : Math.round(c.perK)} glossary terms per 1,000 words</small></div>
+      ${c.top.length ? `<div class="chips dn-terms">${termChips(c.top, tmap)}</div>` : ""}
+    </li>`).join("");
+  return `<section class="group"><div class="label">Chapter density</div><div class="paperpanel density">
+    <p class="dn-sum">${longest.perSentence >= 1.2 * shortest.perSentence ? `Longest sentences: <b>${esc(longest.label)}</b> (${Math.round(longest.perSentence)} words).` : `Sentence length is even, ${Math.round(shortest.perSentence)}–${Math.round(longest.perSentence)} words.`} Most glossary terms: <b>${esc(termiest.label)}</b>${termiest.perK >= 0.5 ? ` (${Math.round(termiest.perK)} per 1,000 words)` : ""}.</p>
+    <details class="dn-list"><summary>Chapter by chapter</summary><ol>${rows}</ol></details>
+    <p class="hint">Times are at ${P && P.wpm ? `your pace in this book, about ${Math.round(P.wpm / 10) * 10} words a minute` : `${DENSITY_WPM} words a minute until your pace in this book is measured`}. Sentence length and term counts are rough guides: they count only the glossary's own terms, and a short sentence can still be hard. Tap a chapter to open it.</p>
   </div></section>`;
 }
 

@@ -46,6 +46,7 @@ jobs:
           python3 tests/contrast.py
           python3 tests/wikisource.py
           python3 tests/editions.py
+          python3 tests/density.py
       - name: Run Recently deleted tests (storage version 8)
         run: python3 tests/trash.py
       # printed_page.py uses the PDF.js copy that pdf_import.py downloads into tests/.cache, so the importer tests go first
