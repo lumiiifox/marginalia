@@ -18,6 +18,7 @@ function render() {
   if (S.screen === "draft" && !S.drafts.has(S.draftId)) S.screen = "drafts";
   if (S.screen === "compare" && !S.compares.has(S.cmpId)) S.screen = "compares";
   document.body.classList.toggle("path-mode", S.screen === "paths");
+  document.body.classList.toggle("discovery-mode", ["wishlist", "recommendations"].includes(S.screen));
   const reading = S.screen === "reader";
   $("#main").hidden = reading;
   $("#reader").hidden = !reading;
@@ -25,7 +26,7 @@ function render() {
   if (reading) { refreshMarks(); return; }
   wakeOff();
   $("#selbar").hidden = true;
-  const views = { text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, paths: pathsView, plates: platesView, disputes: disputesView, concord: concordView, compares: comparesView, compare: compareView };
+  const views = { wishlist: wishlistView, recommendations: recommendationsView, text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, paths: pathsView, plates: platesView, disputes: disputesView, concord: concordView, compares: comparesView, compare: compareView };
   $("#main").innerHTML = (views[S.screen] || libraryView)();
 }
 
@@ -151,6 +152,7 @@ function libraryView() {
     <section class="home-sec">
       <div class="sec-head"><div><h2>Bookshelf</h2><div class="sub">${S.texts.size} text${S.texts.size === 1 ? "" : "s"}, ${S.notes.size} note${S.notes.size === 1 ? "" : "s"}</div></div><button class="btn primary" id="addtext">Add text</button></div>
       ${body}
+      <div class="noteacts discovery-home"><button class="btn" id="openwishlist">Wishlist · ${S.wishlist.size}</button><button class="linkbtn" id="openrecommendations">Reading recommendations</button></div>
       ${S.mode === "pending" ? "" : acrossHTML()}
     </section>
     ${S.mode === "pending" ? "" : resurfHTML() + referenceHome() + backupView()}`}`;
@@ -261,11 +263,11 @@ function backupView() {
 function trashView() {
   const list = [...S.trash.entries()].sort(([, a], [, b]) => b.at - a.at);
   const what = (e) => e.kind === "text" ? `“${esc(e.title)}”${e.notes ? ` and its ${e.notes === 1 ? "note" : `${e.notes} notes`}` : ""}`
-    : e.kind === "note" ? `A note${e.title ? ` in “${esc(e.title)}”` : ""}` : `${e.kind === "draft" ? "Draft" : e.kind === "path" ? "Reading path" : "Comparison"} “${esc(e.title)}”`;
+    : e.kind === "note" ? `A note${e.title ? ` in “${esc(e.title)}”` : ""}` : `${e.kind === "draft" ? "Draft" : e.kind === "path" ? "Reading path" : e.kind === "wish" ? "Wishlist book" : "Comparison"} “${esc(e.title)}”`;
   const left = (e) => { const d = Math.max(1, Math.ceil((e.at + TRASH_DAYS * DAY - Date.now()) / DAY)); return `${d} day${d === 1 ? "" : "s"} left`; };
   return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>${banner()}
     <header class="gl-head"><div><h1>Recently deleted</h1><div class="sub">${list.length} item${list.length === 1 ? "" : "s"}</div></div>${list.length > 1 ? `<button class="btn ghost danger" id="trash-empty">Empty</button>` : ""}</header>
-    <p class="hint">Books, notes, drafts, comparisons and reading paths you delete stay here for ${TRASH_DAYS} days, then go for good. Backups don't include them.</p>
+    <p class="hint">Books, notes, drafts, comparisons, reading paths and wishlist books you delete stay here for ${TRASH_DAYS} days, then go for good. Backups don't include them.</p>
     ${list.length ? `<div class="gl-list">${list.map(([id, e]) => `<div class="thinkrow trashrow"><b>${what(e)}</b><span class="ty">${esc(fmtDate(e.at))}</span>
       ${e.snip ? `<span class="td">${esc(e.snip)}</span>` : ""}<span class="td">${left(e)}</span>
       <div class="trashacts"><button class="btn" data-untrash="${esc(id)}">Restore</button><button class="btn ghost danger" data-purge="${esc(id)}">Delete now</button></div></div>`).join("")}</div>`
@@ -299,6 +301,7 @@ function textView() {
         ${t.example ? `<span class="chip ex">Example</span>` : ""}
       </div>
     </header>
+    <div class="noteacts"><button class="btn" data-companions="${esc(id)}">Companion books</button></div>
     ${primerHTML(id, t)}
     ${briefHTML(id, t)}
     ${classicMentionsHTML(id)}

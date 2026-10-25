@@ -68,6 +68,15 @@ document.addEventListener("click", (e) => {
   if (b.id === "quiz") return quizPanel(S.screen === "glossary" ? S.gArea : S.screen === "thinkers" || (S.screen === "reference" && S.rk === "thinkers") ? "thinkers" : "all");
   if (b.id === "mywords") return wordsPanel();
   if (b.id === "resurfnext") { resurfSkip++; const el = $("#resurf"); if (el) el.outerHTML = resurfHTML(); return; }
+  if (b.id === "openwishlist") return go({ screen: "wishlist" });
+  if (b.id === "openrecommendations") return go({ screen: "recommendations" });
+  if (b.dataset.companions) return go({ screen: "recommendations", recBook: b.dataset.companions });
+  if (b.id === "rec-browse") { S.recAll = !S.recAll; render(); return; }
+  if (b.id === "newwish") return wishSheet();
+  if (b.dataset.wishfor) return wishSheet(null, b.dataset.wishfor);
+  if (b.dataset.wishedit) return wishSheet(b.dataset.wishedit);
+  if (b.dataset.wishrec) return wishRecommendation(b.dataset.wishrec, b.dataset.wishanchor).catch((e) => toast(failMsg(e)));
+  if (b.dataset.wishdelete) return arm(b, () => deleteWish(b.dataset.wishdelete).catch((e) => toast(failMsg(e))));
   if (b.id === "allpaths") return go({ screen: "paths" });
   if (b.dataset.pathselect) return selectPathStep(b.dataset.pathselect, +b.dataset.step);
   if (b.dataset.pathmenu) return pathMenu(b.dataset.pathmenu);
@@ -255,6 +264,7 @@ const bootSlow = setTimeout(() => {
     S.drafts = await idbAll("drafts");
     S.compares = await idbAll("compares");
     S.paths = await idbAll("paths");
+    S.wishlist = await idbAll("wishlist");
     await loadTrash().catch(() => {});
     S.mode = "ready";
   } catch (e) { idb = null; S.mode = "local"; S.openErr = e; }

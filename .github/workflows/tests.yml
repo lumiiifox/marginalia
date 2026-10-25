@@ -41,6 +41,7 @@ jobs:
           python3 tests/followups.py
           python3 tests/classics.py
           python3 tests/study_tools.py
+          python3 tests/discovery.py
           python3 tests/links.py
           python3 tests/contrast.py
           python3 tests/wikisource.py

@@ -28,7 +28,8 @@ def pdfjs_build():
     return d
 
 def html(pages, word):
-    body = "".join(f'<div style="break-after:page"><h1 style="font-size:16pt">{word} {k + 1}</h1><p>{BODY * 6}</p></div>' for k in range(pages))
+    # Leave room for font-metric differences so each declared page fits on one printed page.
+    body = "".join(f'<div style="break-after:page"><h1 style="font-size:16pt">{word} {k + 1}</h1><p>{BODY * 3}</p></div>' for k in range(pages))
     return f'<html lang="en"><style>@page {{ size: 5.5in 8.5in; }} body {{ font: 11pt/1.45 Georgia, serif; }}</style>{body}</html>'
 
 failures = []
@@ -150,7 +151,7 @@ async def main():
                 t.oncomplete = () => { d.close(); res(); }; t.onerror = () => rej(t.error); }; r.onerror = () => rej(r.error); })""")
             await pg2.goto(f"http://localhost:{PORT}/index.html"); await pg2.wait_for_function(READY)
             up = await pg2.evaluate("() => ({ v: idb.version, stores: [...idb.objectStoreNames], text: S.texts.get('k1') && S.texts.get('k1').title, note: S.notes.has('n1') })")
-            check(up["v"] == 9 and "files" in up["stores"] and "trash" in up["stores"] and up["text"] == "Kept from before" and up["note"], f"a library from storage version 6 opens with its books and notes, and gains the PDF and Recently deleted stores ({up['stores']})")
+            check(up["v"] == 10 and "files" in up["stores"] and "trash" in up["stores"] and up["text"] == "Kept from before" and up["note"], f"a library from storage version 6 opens with its books and notes, and gains the PDF and Recently deleted stores ({up['stores']})")
             await ctx2.close()
             await browser.close()
     finally:
