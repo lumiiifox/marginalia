@@ -497,6 +497,24 @@ function thinkerSources(p) {
   const link = (x) => `<a href="${esc(x.src)}" target="_blank" rel="noopener">${esc(x.srcName || x.src)}</a>`;
   return all.length === 1 ? `<p class="tsrc">Source: ${link(all[0])}</p>` : `<div class="tsrc">Sources:<ul class="srclist">${all.map((x) => `<li>${link(x)}</li>`).join("")}</ul></div>`;
 }
+/* ---------- connections between thinkers (CONNECTIONS, in data/thinkers.js) ----------
+   Each says what kind it is and rests on evidence: what the primary texts show (a reference into a bundled classic opens it there), then
+   what scholarship argues, with its source. On both thinkers' cards, worded from each side. Nothing stored. */
+const CONN_KINDS = { influence: ["Influenced by", "Influenced"], critique: ["Criticizes", "Criticized by"], reinterpretation: ["Reinterprets", "Reinterpreted by"] };
+const connTo = (c) => (Array.isArray(c.to) ? c.to : [c.to]);
+const connectionsOf = (id) => CONNECTIONS.filter((c) => c.from === id || connTo(c).includes(id));
+function connectionsHTML(id) {
+  const list = connectionsOf(id); if (!list.length) return "";
+  const names = (ids) => ids.map((x) => THINKER.get(x)).filter(Boolean).map((p) => `<button class="linkbtn" data-thinker="${esc(p.id)}">${esc(p.sn)}</button>`).join(" and ");
+  const one = (c) => {
+    const mine = c.from === id, [fwd, back] = CONN_KINDS[c.kind] || [c.kind, c.kind];
+    const head = mine ? `${fwd} ${names(connTo(c))}` : `${back} ${names([c.from])}`;
+    const text = (c.text || []).map((t) => `<p><span class="ck">In the text</span> ${esc(t.says)}${t.ref ? ` ${passageLinks(esc(t.ref), t.style)}` : ""}${t.cite ? ` <span class="tsrc">(${esc(t.cite)})</span>` : ""}</p>`).join("");
+    const reading = (c.reading || []).map((r) => `<p><span class="ck">Scholarship</span> ${esc(r.says)} <a href="${esc(r.src)}" target="_blank" rel="noopener" class="tsrc">${esc(r.srcName)}</a></p>`).join("");
+    return `<div class="conn" data-conn-kind="${esc(c.kind)}"><div class="conn-h">${head}</div><p class="conn-c">${esc(c.claim)}</p>${text}${reading}</div>`;
+  };
+  return `<div class="crow"><span class="clabel">Connections</span><div class="conns">${list.map(one).join("")}</div></div>`;
+}
 function thinkerPanel(id) {
   const p = THINKER.get(id); if (!p) return;
   const tmap = termMap();
@@ -512,6 +530,7 @@ function thinkerPanel(id) {
     ${refParas(p.x, { kind: "thinker", id })}
     ${thinkerSources(p)}
     ${p.w.length ? `<div class="crow"><span class="clabel">Key works</span><ul class="bq-list">${p.w.map((w) => `<li>${classicLinks(w, id)}</li>`).join("")}</ul></div>` : ""}
+    ${connectionsHTML(id)}
     <div class="tconn">
       ${chipRow("On your shelf", shelf.map(([tid, t]) => `<button class="chip" data-open="${esc(tid)}">${esc(t.title)}</button>`).join(""))}
       ${chipRow("Glossary terms", termChips(terms, tmap))}
@@ -529,6 +548,7 @@ function thinkerPanel(id) {
     else if (b.dataset.term) openTerm(b.dataset.term);
     else if (b.dataset.branch) go({ screen: "branches", focus: b.dataset.branch, sec: b.dataset.bsec });
     else if (b.dataset.classic) openClassic(b.dataset.classic);
+    else if (b.dataset.passage) openPassage(b.dataset.passage, b.dataset.passageAt);
     else if (b.dataset.gotoNote) go({ screen: "reader", textId: b.dataset.tid, at: +b.dataset.gotoNote, flash: true });
     else if (b.dataset.open) go({ screen: "text", textId: b.dataset.open });
   });
