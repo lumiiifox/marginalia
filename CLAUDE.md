@@ -328,3 +328,21 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   only. Restore never drops either: `withThoughts` adds the other copy's to whichever copy wins.
 
 - Custom reading paths (`S.paths`, IndexedDB version 9, backup version 6): Create a reading path on the paths screen, choose library books and whole books or chapter ranges, reorder readings, and add notes/questions. `customPathSheet` edits a separate draft until Save. `validCustomPath` bounds the versioned record and rejects unknown fields; paths render as plain text. `exportCustomPath` / `importCustomPath` use reference-only JSON files, imported as a new copy after review. Missing books can be rebound in the editor, never guessed by title. Deletions use Recently deleted. Built-in chapter paths can be copied. Checked by `custom_paths` in study_tools.py and the smoke backup round trip.
+
+- Automatic private backups (`js/cloud-backup.js`): opt-in fine-grained GitHub token, scoped to a dedicated private repository,
+  stored in `mg-cloud-backup` after explicit consent. All Pages projects on the same origin can read it; setup explains this and
+  the upload of imported copyrighted text as unencrypted JSON. Never include credentials in backup files or source code.
+  `split-1` manifests retain version-7 records plus `assets` and a frozen `reading` map. Notes, drafts, terms, paths, wishlist and
+  book metadata share one small device UUID manifest. Imported content and covers are immutable SHA-256-addressed JSON objects
+  under `marginalia-backups/objects/`, uploaded only when absent. Bundled content/covers are excluded from the cloud snapshot and
+  rebuilt locally during restore; changes to their text, structure or covers require manual backup. Local manual backup is unchanged.
+  During reading, periodic note backups retain the previous session's position, readAt and days. Leaving the reader, switching books
+  or hiding the app queues a session-end upload after local position writes. If hidden execution is suspended, the next opening
+  retries the durable local state. Explicit Back up now includes current progress. Background checks never force unchanged commits.
+  Every write rechecks privacy and connection identity. Web Locks serialize tabs; manifests use SHA leases, and objects are uploaded
+  before their manifest. Restore validates object hashes and hydrates a normal backup before the existing review/confirmation.
+  Nothing is written locally by cloud preview. Legacy version-7 single-file snapshots still restore.
+  The home-screen banner appears after three days without a successful upload or verified unchanged remote backup, including failed
+  first setup. `last` records real uploads; `verifiedAt` records successful verification. Errors never advance either. Per-file 50 MiB
+  is an application limit, not a claimed GitHub upload limit. Original PDFs and trash remain excluded. Smoke tests mock GitHub,
+  measure zero writes across twelve reading checks, and cover asset reuse, session throttling, failure recovery and split restore.

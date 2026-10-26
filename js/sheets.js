@@ -13,7 +13,7 @@ function histBack() {
 }
 function showView(view, fresh) {
   if (view.screen === "reader") { openReader(view.textId, view.at, view); return; }
-  if (S.screen === "reader") { savePos(true); resetReader(); }
+  if (S.screen === "reader") { savePos(true); cloudSessionEnd(); resetReader(); }
   S.screen = view.screen;
   if (view.screen === "recommendations") { S.recBook = view.recBook || null; if (fresh) S.recAll = false; }
   if (view.screen === "paths") S.pathFocus = view.path || null;

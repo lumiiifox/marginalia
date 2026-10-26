@@ -146,7 +146,7 @@ function libraryView() {
   }
   const searching = !!S.q.trim();
   return `<header class="top"><h1 class="mark-leaf">${LEAF_SVG}<span class="sr">Marginalia</span></h1></header>
-    ${banner()}
+    ${banner()}<div id="cloud-warning-slot">${cloudBackupWarningHTML()}</div>
     <input class="search" id="q" type="search" placeholder="Search books, notes, glossary" value="${esc(S.q)}" aria-label="Search your books, notes and the glossary">
     ${searching ? body : `
     <section class="home-sec">
@@ -250,12 +250,14 @@ function backupView() {
   const when = last ? new Date(last).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) : "never";
   return `<footer class="backup">
     <div class="label">Backups and exports</div>
-    <p class="hint">Last backup ${esc(when)}. Everything is stored only on this device. A backup file keeps it safe and moves it to another device; Export gives you Markdown, a bibliography and BibTeX for writing elsewhere.</p>
+    <p class="hint">Last backup ${esc(when)}. Your working library is stored on this device. A backup file keeps it safe and moves it to another device; Export gives you Markdown, a bibliography and BibTeX for writing elsewhere.</p>
     <div class="row">
       <button class="btn" id="backup">Save backup</button>
+      <button class="btn" id="cloudbackup">Automatic backups</button>
       <span class="btn filebtn">Restore<input id="restore" type="file" aria-label="Restore from a backup file"></span>
       <button class="btn" id="exportbtn">Export</button>
     </div>
+    ${cloudBackupStatusHTML()}
     ${S.trash.size ? `<button class="btn ghost" id="opentrash" style="padding-left:0">Recently deleted (${S.trash.size})</button>` : ""}
   </footer>`;
 }

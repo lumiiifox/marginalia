@@ -444,7 +444,7 @@ function resetReader() {
   R.sumPrev = null; R.tid = null; R.blocks = null; R.els = []; R.tops = []; R.sig = new Map(); R.saved = -1; R.sel = null; R.beat = 0; R.paceMs = 0; R.paceW = 0; $("#book").innerHTML = ""; $("#selbar").hidden = true; }
 
 async function openReader(tid, at, opts) {
-  if (S.screen === "reader" && R.blocks) savePos(true); // from one book straight into another (a paired original)
+  if (S.screen === "reader" && R.blocks) { savePos(true); cloudSessionEnd(); } // from one book straight into another (a paired original)
   resetReader();
   S.screen = "reader"; S.textId = tid; render();
   window.scrollTo(0, 0);

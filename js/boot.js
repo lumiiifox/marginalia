@@ -107,6 +107,7 @@ document.addEventListener("click", (e) => {
   if (b.dataset.editterm) return termSheet(b.dataset.editterm);
   if (b.dataset.restoreterm) return del("terms", b.dataset.restoreterm).catch((e) => toast(failMsg(e)));
   if (b.dataset.delterm) return arm(b, () => del("terms", b.dataset.delterm).catch((e) => toast(failMsg(e))));
+  if (b.id === "cloudbackup" || b.dataset.cloudSettings) return cloudBackupPanel();
   if (b.id === "backup") return exportBackup().catch((e) => toast(failMsg(e)));
   if (b.id === "addnote") return noteSheet(null);
   if (b.dataset.editnote) return noteSheet(b.dataset.editnote);
@@ -273,6 +274,7 @@ const bootSlow = setTimeout(() => {
   try { openFromHash(); } catch {}
   if (S.openErr && S.openErr.name && !["InvalidStateError", "SecurityError", "UnknownError"].includes(S.openErr.name)) bootProblem(`Storage didn't open (${S.openErr.name}: ${S.openErr.message}). Close every copy of the app and open it again; your books and notes are still on this device.`);
   addClassics().catch(() => {});
+  startCloudBackups();
   try { if (navigator.storage && navigator.storage.persist) S.persisted = await navigator.storage.persist(); } catch {}
 })();
 if ("serviceWorker" in navigator && location.protocol === "https:") {
