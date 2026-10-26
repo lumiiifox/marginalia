@@ -5,11 +5,12 @@ panels, at phone width in both colour schemes: each piece of visible text agains
 opacity blended) must reach WCAG AA, 4.5:1, or 3:1 for large text. Disabled controls are exempt, as in WCAG.
 Needs: pip install playwright && playwright install chromium
 """
+import os
 import asyncio, subprocess, sys, time, re
 from pathlib import Path
 from playwright.async_api import async_playwright
 ROOT = Path(__file__).resolve().parent.parent
-PORT = 8813
+PORT = int(os.environ.get("MG_PORT", 8813))  # tests/run.py gives each test its own port
 src = (ROOT / "tests" / "smoke.py").read_text(encoding="utf-8")
 SEED = re.search(r'SEED = """(.*?)"""', src, re.S).group(1)
 SCREENS = eval(re.search(r"SCREENS = (\[.*?\])\n", src, re.S).group(1))

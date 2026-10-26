@@ -11,12 +11,13 @@ Makes its own small PDFs (Chromium's print-to-PDF) and uses PDF.js from tests/.c
   5. a library stored before this (storage version 6) opens with everything in it and gains the store for PDFs.
 Needs: pip install playwright && playwright install chromium
 """
+import os
 import asyncio, json, re, subprocess, sys, tempfile, time
 from pathlib import Path
 from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
-PORT = 8805
+PORT = int(os.environ.get("MG_PORT", 8805))  # tests/run.py gives each test its own port
 READY = "typeof idb !== 'undefined' && idb && S.mode === 'ready'"
 BODY = ("The question of method returns whenever philosophy examines the conditions under which its concepts become "
         "intelligible. Genealogy uncovers the contingent struggles sedimented in values that present themselves as eternal. ")

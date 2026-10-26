@@ -13,12 +13,13 @@ headings that the import took for two sections. Selects text the way a reader do
   7. Edit text → Sections: renaming a line keeps its section; removing one stops it being a chapter in the text.
 Needs: pip install playwright && playwright install chromium
 """
+import os
 import asyncio, subprocess, sys, time
 from pathlib import Path
 from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
-PORT = 8799
+PORT = int(os.environ.get("MG_PORT", 8799))  # tests/run.py gives each test its own port
 URL = f"http://localhost:{PORT}/index.html"
 READY = "typeof idb !== 'undefined' && idb && S.mode === 'ready'"
 

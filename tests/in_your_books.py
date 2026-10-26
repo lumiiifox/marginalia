@@ -16,10 +16,11 @@ Made-up books only, phone-sized touch screen. Checks that:
  11. closing the entry stops the search and leaves the button ready again.
 Needs: pip install playwright && playwright install chromium
 """
+import os
 import asyncio, json, unicodedata, subprocess, sys, time
 from playwright.async_api import async_playwright
 
-PORT = 8823
+PORT = int(os.environ.get("MG_PORT", 8823))  # tests/run.py gives each test its own port
 URL = f"http://localhost:{PORT}/index.html"
 READY = "typeof idb !== 'undefined' && idb && S.mode === 'ready'"
 SEED = r"""() => (async () => {

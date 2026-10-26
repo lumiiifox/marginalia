@@ -22,12 +22,13 @@ Checks that:
   5. across every article in data/branches.js: every link's words name the entry it opens (accents and case aside), Kant and Hume
      link somewhere, no link opens on "Said" or "Land" alone, and no paragraph's visible text changes.
 """
+import os
 import asyncio, subprocess, sys, time
 from pathlib import Path
 from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
-PORT = 8814
+PORT = int(os.environ.get("MG_PORT", 8814))  # tests/run.py gives each test its own port
 URL = f"http://localhost:{PORT}/index.html"
 READY = "typeof idb !== 'undefined' && idb && S.mode === 'ready'"
 failures = []

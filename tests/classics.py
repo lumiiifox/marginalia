@@ -9,12 +9,13 @@ Checks that:
   6. the book files hold only what the app accepts from a backup, and their covers are 400 x 600 JPEGs.
 Needs: pip install playwright && playwright install chromium
 """
+import os
 import asyncio, json, re, subprocess, sys, time
 from pathlib import Path
 from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
-PORT = 8807
+PORT = int(os.environ.get("MG_PORT", 8807))  # tests/run.py gives each test its own port
 URL = f"http://localhost:{PORT}/index.html"
 READY = "typeof idb !== 'undefined' && idb && S.mode === 'ready'"
 IDS = re.search(r"const CLASSICS = (\[[^\]]*\])", (ROOT / "js" / "boot.js").read_text(encoding="utf-8")).group(1)

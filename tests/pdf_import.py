@@ -22,13 +22,14 @@ PDF.js isn't committed; the first run downloads the version the app uses from it
 tests/.cache (git-ignored).
 Needs: pip install playwright && playwright install chromium
 """
+import os
 import asyncio, io, json, re, subprocess, sys, tempfile, time, urllib.request, zipfile
 from pathlib import Path
 from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
 CACHE = ROOT / "tests" / ".cache"
-PORT = 8798
+PORT = int(os.environ.get("MG_PORT", 8798))  # tests/run.py gives each test its own port
 
 def pdfjs_dir():
     ver = re.search(r"pdf\.js/([\d.]+)/pdf\.min\.js", (ROOT / "js" / "core.js").read_text()).group(1)

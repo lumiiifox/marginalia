@@ -9,12 +9,13 @@ Checks that, on the bundled classics:
   6. a book with one chapter or none shows no panel; it fits a phone with no script errors.
 Needs: pip install playwright && playwright install chromium
 """
+import os
 import asyncio, re, subprocess, sys, time
 from pathlib import Path
 from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
-PORT = 8811
+PORT = int(os.environ.get("MG_PORT", 8811))  # tests/run.py gives each test its own port
 URL = f"http://localhost:{PORT}/index.html"
 READY = "typeof idb !== 'undefined' && idb && S.mode === 'ready'"
 failures = []

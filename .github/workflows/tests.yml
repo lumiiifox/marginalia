@@ -26,33 +26,5 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install playwright pypdf
           python -m playwright install --with-deps chromium
-      - name: Run smoke tests
-        run: python3 tests/smoke.py
-      - name: Run reader regression tests
-        run: |
-          python3 tests/paged_reader.py
-          python3 tests/structure.py
-          python3 tests/comfort.py
-          python3 tests/navigate.py
-          python3 tests/highlights.py
-          python3 tests/notes_lookup.py
-          python3 tests/quotes_language.py
-          python3 tests/pin.py
-          python3 tests/followups.py
-          python3 tests/classics.py
-          python3 tests/study_tools.py
-          python3 tests/discovery.py
-          python3 tests/links.py
-          python3 tests/contrast.py
-          python3 tests/wikisource.py
-          python3 tests/editions.py
-          python3 tests/density.py
-      - name: Run Recently deleted tests (storage version 8)
-        run: python3 tests/trash.py
-      # printed_page.py uses the PDF.js copy that pdf_import.py downloads into tests/.cache, so the importer tests go first
-      - name: Run PDF importer tests
-        run: python3 tests/pdf_import.py
-      - name: Run printed page tests
-        run: python3 tests/printed_page.py
-      - name: Run PDF highlights tests
-        run: python3 tests/pdf_highlights.py
+      - name: Run every test (tests/run.py)
+        run: python3 tests/run.py

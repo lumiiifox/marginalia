@@ -15,12 +15,13 @@ Uses made-up records only (never real books). Checks that:
   7. every file index.html loads (css/, js/, data/) is in the service worker's list, and the app opens offline from it.
 Needs: pip install playwright && playwright install chromium
 """
+import os
 import asyncio, json, subprocess, sys, time
 from pathlib import Path
 from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
-PORT = 8799
+PORT = int(os.environ.get("MG_PORT", 8799))  # tests/run.py gives each test its own port
 URL = f"http://localhost:{PORT}/index.html"
 STORES = ["texts", "notes", "content", "drafts", "compares", "terms", "paths", "wishlist"]
 

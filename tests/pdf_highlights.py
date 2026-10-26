@@ -10,6 +10,7 @@ Highlight running over two lines, an Underline with a comment, and a sticky note
      shapes PDF.js gives quad points in are read, and a mark ending inside a word takes the whole word.
 Uses PDF.js from tests/.cache, as tests/pdf_import.py does (run that once first). Needs: pip install playwright pypdf
 """
+import os
 import asyncio, subprocess, sys, tempfile, time
 from pathlib import Path
 from playwright.async_api import async_playwright
@@ -17,7 +18,7 @@ from pypdf import PdfReader, PdfWriter
 from pypdf.generic import ArrayObject, DictionaryObject, FloatObject, NameObject, TextStringObject
 
 ROOT = Path(__file__).resolve().parent.parent
-PORT = 8814
+PORT = int(os.environ.get("MG_PORT", 8814))  # tests/run.py gives each test its own port
 READY = "typeof idb !== 'undefined' && idb && S.mode === 'ready'"
 
 def pdfjs_build():

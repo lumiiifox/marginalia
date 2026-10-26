@@ -13,10 +13,11 @@ Made-up notes only, phone-sized touch screen. Checks that:
   8. tapping a highlighted note in the reader opens the same sheet, with its follow-ups.
 Needs: pip install playwright && playwright install chromium
 """
+import os
 import asyncio, subprocess, sys, time
 from playwright.async_api import async_playwright
 
-PORT = 8808
+PORT = int(os.environ.get("MG_PORT", 8808))  # tests/run.py gives each test its own port
 URL = f"http://localhost:{PORT}/index.html"
 READY = "typeof idb !== 'undefined' && idb && S.mode === 'ready'"
 DAY = 86400000

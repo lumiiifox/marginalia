@@ -11,13 +11,14 @@ with accents. Checks that:
   5. a reading path's Find it on Wikisource opens the sheet with the search done.
 Needs: pip install playwright && playwright install chromium
 """
+import os
 import asyncio, json, subprocess, sys, time
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
-PORT = 8815
+PORT = int(os.environ.get("MG_PORT", 8815))  # tests/run.py gives each test its own port
 URL = f"http://localhost:{PORT}/index.html"
 READY = "typeof idb !== 'undefined' && idb && S.mode === 'ready'"
 failures = []

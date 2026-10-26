@@ -13,12 +13,13 @@ Uses made-up books only. Checks that:
      backup with malformed days is refused.
 Needs: pip install playwright && playwright install chromium
 """
+import os
 import asyncio, json, subprocess, sys, time
 from pathlib import Path
 from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
-PORT = 8816
+PORT = int(os.environ.get("MG_PORT", 8816))  # tests/run.py gives each test its own port
 URL = f"http://localhost:{PORT}/index.html"
 READY = "typeof idb !== 'undefined' && idb && S.mode === 'ready'"
 failures = []

@@ -11,12 +11,13 @@ Made-up book only, phone-sized touch screen. Selects text as a reader does and c
   7. backups accept anchors and refuse broken ones; Scroll mode marks the same words.
 Needs: pip install playwright && playwright install chromium
 """
+import os
 import asyncio, subprocess, sys, time
 from pathlib import Path
 from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
-PORT = 8802
+PORT = int(os.environ.get("MG_PORT", 8802))  # tests/run.py gives each test its own port
 URL = f"http://localhost:{PORT}/index.html"
 READY = "typeof idb !== 'undefined' && idb && S.mode === 'ready'"
 BOOK = """(rs) => (async () => {

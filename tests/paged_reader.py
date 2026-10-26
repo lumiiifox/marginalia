@@ -16,12 +16,13 @@ Samsung/Pixel class) and checks that:
      highlights, Edit text and sections all respect the join; Scroll mode is unchanged; Justified / Ragged right.
 Needs: pip install playwright && playwright install chromium
 """
+import os
 import asyncio, subprocess, sys, time
 from pathlib import Path
 from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
-PORT = 8798
+PORT = int(os.environ.get("MG_PORT", 8798))  # tests/run.py gives each test its own port
 URL = f"http://localhost:{PORT}/index.html"
 READY = "typeof idb !== 'undefined' && idb && S.mode === 'ready'"
 

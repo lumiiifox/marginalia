@@ -8,12 +8,13 @@ Made-up books only. Checks that:
 (Block quotes found at import are checked in tests/pdf_import.py.)
 Needs: pip install playwright && playwright install chromium
 """
+import os
 import asyncio, subprocess, sys, time
 from pathlib import Path
 from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
-PORT = 8804
+PORT = int(os.environ.get("MG_PORT", 8804))  # tests/run.py gives each test its own port
 URL = f"http://localhost:{PORT}/index.html"
 READY = "typeof idb !== 'undefined' && idb && S.mode === 'ready'"
 BOOK = """(async () => {

@@ -20,12 +20,13 @@ Made-up book only; Wiktionary is stood in for by a local reply shaped like its A
      a backup checks it, and a restore keeps both copies' links.
 Needs: pip install playwright && playwright install chromium
 """
+import os
 import asyncio, json, subprocess, sys, time
 from pathlib import Path
 from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
-PORT = 8803
+PORT = int(os.environ.get("MG_PORT", 8803))  # tests/run.py gives each test its own port
 URL = f"http://localhost:{PORT}/index.html"
 READY = "typeof idb !== 'undefined' && idb && S.mode === 'ready'"
 BOOK = """(async () => {
