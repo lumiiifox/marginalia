@@ -1,6 +1,6 @@
 // Marginalia service worker: lets the app open offline and caches the reading libraries.
 // Pages from this site are fetched fresh when online, so updates show up on the next open.
-const CACHE = "marginalia-v5";
+const CACHE = "marginalia-v6";
 // Every file index.html loads (tests/smoke.py checks this list against index.html).
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./css/app.css",
   "./data/glossary.js", "./data/thinkers.js", "./data/branches.js", "./data/recommendations.js",

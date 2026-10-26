@@ -146,7 +146,7 @@ function libraryView() {
   }
   const searching = !!S.q.trim();
   return `<header class="top"><h1 class="mark-leaf">${LEAF_SVG}<span class="sr">Marginalia</span></h1></header>
-    ${banner()}
+    ${banner()}<div id="cloud-warning-slot">${cloudBackupWarningHTML()}</div>
     <input class="search" id="q" type="search" placeholder="Search books, notes, glossary" value="${esc(S.q)}" aria-label="Search your books, notes and the glossary">
     ${searching ? body : `
     <section class="home-sec">

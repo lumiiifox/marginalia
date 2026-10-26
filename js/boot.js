@@ -107,7 +107,7 @@ document.addEventListener("click", (e) => {
   if (b.dataset.editterm) return termSheet(b.dataset.editterm);
   if (b.dataset.restoreterm) return del("terms", b.dataset.restoreterm).catch((e) => toast(failMsg(e)));
   if (b.dataset.delterm) return arm(b, () => del("terms", b.dataset.delterm).catch((e) => toast(failMsg(e))));
-  if (b.id === "cloudbackup") return cloudBackupPanel();
+  if (b.id === "cloudbackup" || b.dataset.cloudSettings) return cloudBackupPanel();
   if (b.id === "backup") return exportBackup().catch((e) => toast(failMsg(e)));
   if (b.id === "addnote") return noteSheet(null);
   if (b.dataset.editnote) return noteSheet(b.dataset.editnote);

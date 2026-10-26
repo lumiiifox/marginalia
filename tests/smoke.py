@@ -51,11 +51,13 @@ def check(ok, what):
     if not ok: failures.append(what)
 
 async def cloud_backups(browser):
-    """Private remote transport uses fake credentials and fabricated books only."""
+    """Split transport: fabricated books, byte counts, failure recovery and confirmed restore."""
     import base64
-    state = {"private": True, "status": 200, "writes": [], "file": None, "sha": "", "conflict": False}
+    from urllib.parse import urlsplit
+    state = {"private": True, "status": 200, "writes": [], "files": {}, "conflict": False, "fail_asset": False}
     device = "11111111-1111-4111-a111-111111111111"
-    config = {"repo": "test/private-notes", "token": "github_pat_fake_test_only", "device": device}
+    path = "marginalia-backups/" + device + ".json"
+    config = {"repo": "test/private-notes", "token": "github_pat_fake_test_only", "device": device, "enabledAt": 1}
     ctx = await browser.new_context(viewport={"width": 390, "height": 820})
     async def route(r):
         if "api.github.com" not in r.request.url:
@@ -65,81 +67,108 @@ async def cloud_backups(browser):
             return await r.fulfill(status=state["status"], json={"message": "failure"})
         if "/contents/" not in url:
             return await r.fulfill(json={"id": 123, "private": state["private"], "visibility": "private" if state["private"] else "public", "default_branch": "main"})
+        key = urlsplit(url).path.split('/contents/')[1]
+        old = state['files'].get(key)
         if r.request.method == "PUT":
             body = r.request.post_data_json
-            if state["conflict"]:
+            if state['conflict'] or (state['fail_asset'] and '/objects/' in key):
                 return await r.fulfill(status=409, json={"message": "conflict"})
-            check(body.get("sha", "") == state["sha"], "remote backup supplies the current file SHA")
-            state["writes"].append(body)
-            state["file"] = base64.b64decode(body["content"]).decode()
-            state["sha"] = "sha-" + str(len(state["writes"]))
-            return await r.fulfill(status=201, json={"content": {"sha": state["sha"]}, "commit": {"sha": "commit-1"}})
-        if not state["file"]:
-            return await r.fulfill(status=404, json={"message": "missing"})
-        if url.endswith("/marginalia-backups"):
-            return await r.fulfill(json=[{"type": "file", "name": device + ".json", "size": len(state["file"])}])
-        if "raw" in r.request.headers.get("accept", ""):
-            return await r.fulfill(body=state["file"], content_type="application/json")
-        return await r.fulfill(json={"type": "file", "sha": state["sha"]})
-    await ctx.route("**/*", route)
-    page = await ctx.new_page()
-    errors = []
-    page.on("pageerror", lambda e: errors.append(str(e)))
+            if body.get('sha') != (old['sha'] if old else None):
+                return await r.fulfill(status=409, json={"message": "wrong SHA"})
+            raw = base64.b64decode(body['content']).decode()
+            state['writes'].append((key, raw))
+            state['files'][key] = {'raw': raw, 'sha': 'sha-' + str(len(state['writes']))}
+            return await r.fulfill(status=201, json={"content": {"sha": state['files'][key]['sha']}, "commit": {"sha": "commit-1"}})
+        if key == 'marginalia-backups':
+            return await r.fulfill(json=[{'type':'file','name': k.split('/')[-1], 'size':len(v['raw'])} for k,v in state['files'].items() if '/objects/' not in k])
+        if not old: return await r.fulfill(status=404, json={'message':'missing'})
+        if 'raw' in r.request.headers.get('accept',''): return await r.fulfill(body=old['raw'], content_type='application/json')
+        return await r.fulfill(json={'type':'file','sha':old['sha']})
+    await ctx.route('**/*', route)
+    page = await ctx.new_page(); errors = []
+    page.on('pageerror', lambda e: errors.append(str(e)))
     await page.goto(URL); await page.wait_for_function(READY)
-    check(await page.evaluate("cloudConfig() === null && cloudUpload() instanceof Promise"), "automatic backups start disabled")
+    check(await page.evaluate('cloudConfig() === null'), 'automatic backups start disabled')
     await page.evaluate("""async () => {
-      await put('texts', 'remote-book', {title: 'Éthique', updatedAt: 1});
-      await put('notes', 'remote-note', {textId: 'remote-book', gloss: 'Différence — 日本語', updatedAt: 1, followups: [{id: 'f', at: 2, x: 'Later'}]});
-      // A committed edit absent from this tab's memory must appear in the backup.
-      await idbDo('notes', s => s.put({textId: 'remote-book', gloss: 'From another tab', updatedAt: 2}, 'other-tab'));
+      await put('texts', 'remote-book', {title:'Éthique', hasContent:true, total:2, updatedAt:1, pos:0, readAt:1});
+      await put('content', 'remote-book', [{k:'p', x:'Imported text — 日本語 '.repeat(10000)}, {k:'p', x:'Last page'}]);
+      await put('covers', 'remote-book', new Blob(['test cover'], {type:'image/png'}));
+      await put('notes', 'remote-note', {textId:'remote-book', gloss:'Différence — 日本語', updatedAt:1, followups:[{id:'f',at:2,x:'Later'}]});
+      await idbDo('notes', s => s.put({textId:'remote-book',gloss:'From another tab',updatedAt:2}, 'other-tab'));
+      await putClassic('classic-spinoza-ethics', 1);
+      await put('notes', 'classic-note', {textId:'classic-spinoza-ethics', gloss:'My classic annotation', updatedAt:1});
     }""")
-    await page.evaluate("cloudSetup()")
-    await page.fill('#cloud-repo', config['repo']); await page.fill('#cloud-token', config['token'])
+    await page.evaluate('cloudSetup()')
+    check('same origin' in await page.locator('.sheet').inner_text() and 'copyrighted' in await page.locator('.sheet').inner_text(), 'setup discloses shared-origin tokens and unencrypted copyrighted text uploads')
+    await page.fill('#cloud-repo',config['repo']); await page.fill('#cloud-token',config['token'])
     await page.click('button[type=submit]')
-    check(await page.evaluate("cloudConfig() === null"), "setup requires explicit upload and credential-storage consent")
-    await page.check('#cloud-consent')
-    state['private'] = False
+    check(await page.evaluate('cloudConfig() === null'), 'setup requires explicit consent')
+    await page.check('#cloud-consent'); state['private'] = False
     await page.click('button[type=submit]'); await page.wait_for_function("!document.querySelector('form[data-busy]')")
-    check(await page.evaluate("cloudConfig() === null") and not state['writes'], "setup rejects public repositories before any upload")
-    await page.evaluate("closeOverlay()")
-    state['private'] = True
-    await page.evaluate('(c) => cloudSave(c)', config)
-    check(await page.evaluate('cloudUpload()'), 'first private backup succeeds')
-    data = json.loads(state['file'])
-    check(data['notes']['remote-note']['gloss'] == 'Différence — 日本語' and 'other-tab' in data['notes'], 'remote snapshot keeps Unicode and committed edits from another tab')
-    check(all(k not in data for k in ['files', 'trash', 'trashlist', 'token']) and config['token'] not in state['file'], 'credentials, original PDFs and trash stay out of backup data')
+    check(await page.evaluate('cloudConfig() === null') and not state['writes'], 'public repository rejected before upload')
+    await page.evaluate('closeOverlay()'); state['private'] = True
+    await page.evaluate('(c) => cloudSave(c)',config)
+    check(await page.evaluate('cloudUpload()'), 'first split backup succeeds')
+    data = json.loads(state['files'][path]['raw'])
+    check(data['layout']=='split-1' and 'content' not in data and 'covers' not in data, 'small manifest contains references instead of text and cover payloads')
+    check('classic-spinoza-ethics' not in data['assets']['content'] and 'classic-spinoza-ethics' not in data['assets']['covers'] and len(state['writes'])==3, 'bundled classic text and cover produce zero asset uploads')
+    check('other-tab' in data['notes'] and data['notes']['remote-note']['gloss']=='Différence — 日本語', 'snapshot keeps Unicode and other-tab edits')
+    check(config['token'] not in ''.join(raw for _,raw in state['writes']), 'credentials stay out of every uploaded file')
     count = len(state['writes'])
+    await page.evaluate("S.textId='remote-book'; S.screen='reader'")
+    for i in range(12):
+        await page.evaluate("async (i) => { await put('texts','remote-book',{...S.texts.get('remote-book'),pos:i,readAt:100+i,days:{'2026-10-25':[i*300,i*1000]}}); await cloudUpload(); }", i)
+    check(len(state['writes'])==count, 'twelve checks during an hour of reading upload zero bytes and create zero commits')
+    await page.evaluate("put('notes','remote-note',{...S.notes.get('remote-note'),gloss:'Updated note',updatedAt:3})")
     await page.evaluate('cloudUpload()')
-    check(len(state['writes']) == count, 'unchanged library creates no extra commit')
-    last = await page.evaluate('cloudConfig().last')
-    state['status'] = 401
-    check(not await page.evaluate('cloudUpload(true)') and await page.evaluate('cloudConfig().last') == last, 'authentication failure preserves last successful backup')
-    state['status'] = 200; state['private'] = False
-    check(not await page.evaluate('cloudUpload(true)') and len(state['writes']) == count, 'a repository made public receives no further snapshots')
-    state['private'] = True; state['conflict'] = True
-    check(not await page.evaluate('cloudUpload(true)') and await page.evaluate('cloudConfig().last') == last, 'write conflict never advances backup success')
-    state['conflict'] = False
-    await page.evaluate("put('notes', 'remote-note', {...S.notes.get('remote-note'), gloss:'Updated note', updatedAt:3})")
-    check(await page.evaluate('cloudUpload()') and len(state['writes']) == count + 1, 'changed library retries successfully with SHA protection')
-    data = json.loads(state['file'])
+    delta=state['writes'][count:]
+    check(len(delta)==1 and delta[0][0]==path and len(delta[0][1].encode())<20000, f'editing a note uploads only the small manifest ({sum(len(x.encode()) for _,x in delta)} bytes)')
+    check(json.loads(delta[0][1])['reading']['remote-book']['pos']==0, 'note backup during reading preserves the previous session position')
+    before=len(state['writes']); await page.evaluate('cloudSessionEnd()')
+    await page.wait_for_function('!cloudBusy'); await page.wait_for_timeout(300)
+    check(len(state['writes'])==before+1 and json.loads(state['files'][path]['raw'])['reading']['remote-book']['pos']==11, 'session boundary uploads the final position once')
+    before=len(state['writes']); await page.evaluate('cloudUpload(true)')
+    check(len(state['writes'])==before, 'unchanged manual check creates no commit')
+    last=await page.evaluate('cloudConfig().last'); state['status']=401
+    check(not await page.evaluate('cloudUpload()') and await page.evaluate('cloudConfig().last')==last, 'expired token never advances last upload')
+    await page.evaluate("cloudSave({...cloudConfig(),last:Date.now()-4*DAY,verifiedAt:Date.now()-4*DAY}); S.screen='library'; render(); cloudDrawStatus()")
+    check(await page.locator('#cloud-warning-slot [role=alert]').count()==1, 'three-day backup failure is visible above the home bookshelf')
+    state['status']=200; state['private']=False; before=len(state['writes'])
+    check(not await page.evaluate('cloudUpload()') and len(state['writes'])==before, 'public repository receives no further writes')
+    state['private']=True
+    await page.evaluate('cloudUpload()')
+    check(await page.locator('#cloud-warning-slot [role=alert]').count()==0 and len(state['writes'])==before, 'verified unchanged backup clears stale warning without a needless commit')
+    # A revised imported text creates a new immutable object; failed assets cannot publish a manifest.
+    old_manifest=state['files'][path]['raw']; state['fail_asset']=True
+    await page.evaluate("put('content','remote-book',[{k:'p',x:'Corrected imported text'}, {k:'p',x:'Last page'}])")
+    check(not await page.evaluate('cloudUpload()') and state['files'][path]['raw']==old_manifest, 'asset upload failure leaves the previous complete manifest intact')
+    state['fail_asset']=False; await page.evaluate('cloudUpload()')
+    check(state['writes'][-2][0].startswith('marginalia-backups/objects/') and state['writes'][-1][0]==path, 'changed imported text uploads a new object before publishing its reference')
+    state['conflict']=True
+    await page.evaluate("put('notes','other-tab',{...S.notes.get('other-tab'),gloss:'Conflict test',updatedAt:4})")
+    last=await page.evaluate('cloudConfig().last')
+    check(not await page.evaluate('cloudUpload()') and await page.evaluate('cloudConfig().last')==last, 'manifest SHA conflict never advances success')
+    state['conflict']=False; await page.evaluate('cloudUpload()')
     await page.evaluate('cloudList()')
-    check(await page.locator('[data-cloud-file]').count() == 1, 'remote device list offers a restore preview')
-    await page.evaluate('closeOverlay()')
-    # A second device: no local library changes before explicit restore confirmation.
-    other = await browser.new_context(viewport={"width": 1280, "height": 900})
-    await other.route('**/*', route)
-    laptop = await other.new_page(); await laptop.goto(URL); await laptop.wait_for_function(READY)
-    await laptop.evaluate('(c) => cloudSave({...c, device:"22222222-2222-4222-a222-222222222222"})', config)
-    check(await laptop.evaluate('cloudPath(cloudConfig())') != 'marginalia-backups/' + device + '.json', 'second device uses a separate remote file')
-    await laptop.evaluate('(name) => cloudReview(cloudConfig(), name)', device + '.json')
-    check(await laptop.evaluate('S.notes.size') == 0, 'reviewing a remote backup does not write local data')
+    check(await page.locator('[data-cloud-file]').count()==1, 'remote chooser lists device manifests, excluding assets')
+    other=await browser.new_context(viewport={'width':1280,'height':900}); await other.route('**/*',route)
+    laptop=await other.new_page(); await laptop.goto(URL); await laptop.wait_for_function(READY)
+    await laptop.evaluate('(c)=>cloudSave({...c,device:"22222222-2222-4222-a222-222222222222"})',config)
+    await laptop.evaluate('(name)=>cloudReview(cloudConfig(),name)',device+'.json')
+    check(await laptop.evaluate('S.notes.size')==0, 'split restore review makes no local changes')
     await laptop.click('#rs-merge'); await laptop.wait_for_function("S.notes.has('remote-note')")
-    check(await laptop.evaluate("S.notes.get('remote-note').gloss") == 'Updated note', 'remote backup restores on a second device after confirmation')
+    check(await laptop.evaluate("S.notes.get('remote-note').gloss==='Updated note' && S.notes.has('classic-note') && S.texts.get('remote-book').pos===11"), 'confirmed restore recovers notes, classic annotations and session position')
+    check(await laptop.evaluate("(async()=> (await idbGet('content','remote-book'))[0].x==='Corrected imported text' && (await idbGet('content','classic-spinoza-ethics')).length>100)()"), 'restore downloads hash-verified imported text and rebuilds bundled classics')
     await laptop.reload(); await laptop.wait_for_function(READY)
-    check(await laptop.evaluate("S.notes.has('other-tab') && S.notes.get('remote-note').followups[0].x === 'Later'"), 'restored notes and their history survive reload')
+    check(await laptop.evaluate("S.notes.get('remote-note').followups[0].x==='Later'"), 'restored history survives reload')
+    # Corruption must fail before a preview can be offered.
+    data=json.loads(state['files'][path]['raw']); asset='marginalia-backups/objects/'+data['assets']['content']['remote-book']+'.json'
+    old=state['files'][asset]['raw']; state['files'][asset]['raw']='{}'
+    check(await laptop.evaluate("async name=>{try{await cloudReview(cloudConfig(),name);return false}catch{return true}}",device+'.json'), 'asset checksum mismatch refuses restore')
+    state['files'][asset]['raw']=old
     await page.evaluate('cloudBackupPanel()'); await page.click('#cloud-disconnect')
-    check(await page.evaluate('cloudConfig() === null') and state['file'] is not None, 'disconnect removes local credentials and retains the remote backup')
-    check(not errors, f'no script errors in automatic backups ({errors})')
+    check(await page.evaluate('cloudConfig()===null') and path in state['files'], 'disconnect removes credentials and retains remote files')
+    check(not errors, f'no script errors in split backups ({errors})')
     await other.close(); await ctx.close()
 
 async def fresh_page(browser, w, h):
