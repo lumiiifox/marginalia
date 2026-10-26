@@ -1,11 +1,11 @@
 // Marginalia service worker: lets the app open offline and caches the reading libraries.
 // Pages from this site are fetched fresh when online, so updates show up on the next open.
-const CACHE = "marginalia-v4";
+const CACHE = "marginalia-v5";
 // Every file index.html loads (tests/smoke.py checks this list against index.html).
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./css/app.css",
   "./data/glossary.js", "./data/thinkers.js", "./data/branches.js", "./data/recommendations.js",
   "./js/core.js", "./js/storage.js", "./js/cite.js", "./js/import.js", "./js/library.js", "./js/writing.js", "./js/study.js",
-  "./js/reference.js", "./js/sheets.js", "./js/wikisource.js", "./js/bookmenu.js", "./js/reader.js", "./js/structure.js", "./js/discovery.js", "./js/boot.js"];
+  "./js/reference.js", "./js/sheets.js", "./js/wikisource.js", "./js/bookmenu.js", "./js/reader.js", "./js/structure.js", "./js/discovery.js", "./js/cloud-backup.js", "./js/boot.js"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

@@ -50,6 +50,98 @@ def check(ok, what):
     print(("ok   " if ok else "FAIL ") + what)
     if not ok: failures.append(what)
 
+async def cloud_backups(browser):
+    """Private remote transport uses fake credentials and fabricated books only."""
+    import base64
+    state = {"private": True, "status": 200, "writes": [], "file": None, "sha": "", "conflict": False}
+    device = "11111111-1111-4111-a111-111111111111"
+    config = {"repo": "test/private-notes", "token": "github_pat_fake_test_only", "device": device}
+    ctx = await browser.new_context(viewport={"width": 390, "height": 820})
+    async def route(r):
+        if "api.github.com" not in r.request.url:
+            return await (r.continue_() if "localhost" in r.request.url else r.abort())
+        url = r.request.url
+        if state["status"] != 200:
+            return await r.fulfill(status=state["status"], json={"message": "failure"})
+        if "/contents/" not in url:
+            return await r.fulfill(json={"id": 123, "private": state["private"], "visibility": "private" if state["private"] else "public", "default_branch": "main"})
+        if r.request.method == "PUT":
+            body = r.request.post_data_json
+            if state["conflict"]:
+                return await r.fulfill(status=409, json={"message": "conflict"})
+            check(body.get("sha", "") == state["sha"], "remote backup supplies the current file SHA")
+            state["writes"].append(body)
+            state["file"] = base64.b64decode(body["content"]).decode()
+            state["sha"] = "sha-" + str(len(state["writes"]))
+            return await r.fulfill(status=201, json={"content": {"sha": state["sha"]}, "commit": {"sha": "commit-1"}})
+        if not state["file"]:
+            return await r.fulfill(status=404, json={"message": "missing"})
+        if url.endswith("/marginalia-backups"):
+            return await r.fulfill(json=[{"type": "file", "name": device + ".json", "size": len(state["file"])}])
+        if "raw" in r.request.headers.get("accept", ""):
+            return await r.fulfill(body=state["file"], content_type="application/json")
+        return await r.fulfill(json={"type": "file", "sha": state["sha"]})
+    await ctx.route("**/*", route)
+    page = await ctx.new_page()
+    errors = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    await page.goto(URL); await page.wait_for_function(READY)
+    check(await page.evaluate("cloudConfig() === null && cloudUpload() instanceof Promise"), "automatic backups start disabled")
+    await page.evaluate("""async () => {
+      await put('texts', 'remote-book', {title: 'Éthique', updatedAt: 1});
+      await put('notes', 'remote-note', {textId: 'remote-book', gloss: 'Différence — 日本語', updatedAt: 1, followups: [{id: 'f', at: 2, x: 'Later'}]});
+      // A committed edit absent from this tab's memory must appear in the backup.
+      await idbDo('notes', s => s.put({textId: 'remote-book', gloss: 'From another tab', updatedAt: 2}, 'other-tab'));
+    }""")
+    await page.evaluate("cloudSetup()")
+    await page.fill('#cloud-repo', config['repo']); await page.fill('#cloud-token', config['token'])
+    await page.click('button[type=submit]')
+    check(await page.evaluate("cloudConfig() === null"), "setup requires explicit upload and credential-storage consent")
+    await page.check('#cloud-consent')
+    state['private'] = False
+    await page.click('button[type=submit]'); await page.wait_for_function("!document.querySelector('form[data-busy]')")
+    check(await page.evaluate("cloudConfig() === null") and not state['writes'], "setup rejects public repositories before any upload")
+    await page.evaluate("closeOverlay()")
+    state['private'] = True
+    await page.evaluate('(c) => cloudSave(c)', config)
+    check(await page.evaluate('cloudUpload()'), 'first private backup succeeds')
+    data = json.loads(state['file'])
+    check(data['notes']['remote-note']['gloss'] == 'Différence — 日本語' and 'other-tab' in data['notes'], 'remote snapshot keeps Unicode and committed edits from another tab')
+    check(all(k not in data for k in ['files', 'trash', 'trashlist', 'token']) and config['token'] not in state['file'], 'credentials, original PDFs and trash stay out of backup data')
+    count = len(state['writes'])
+    await page.evaluate('cloudUpload()')
+    check(len(state['writes']) == count, 'unchanged library creates no extra commit')
+    last = await page.evaluate('cloudConfig().last')
+    state['status'] = 401
+    check(not await page.evaluate('cloudUpload(true)') and await page.evaluate('cloudConfig().last') == last, 'authentication failure preserves last successful backup')
+    state['status'] = 200; state['private'] = False
+    check(not await page.evaluate('cloudUpload(true)') and len(state['writes']) == count, 'a repository made public receives no further snapshots')
+    state['private'] = True; state['conflict'] = True
+    check(not await page.evaluate('cloudUpload(true)') and await page.evaluate('cloudConfig().last') == last, 'write conflict never advances backup success')
+    state['conflict'] = False
+    await page.evaluate("put('notes', 'remote-note', {...S.notes.get('remote-note'), gloss:'Updated note', updatedAt:3})")
+    check(await page.evaluate('cloudUpload()') and len(state['writes']) == count + 1, 'changed library retries successfully with SHA protection')
+    data = json.loads(state['file'])
+    await page.evaluate('cloudList()')
+    check(await page.locator('[data-cloud-file]').count() == 1, 'remote device list offers a restore preview')
+    await page.evaluate('closeOverlay()')
+    # A second device: no local library changes before explicit restore confirmation.
+    other = await browser.new_context(viewport={"width": 1280, "height": 900})
+    await other.route('**/*', route)
+    laptop = await other.new_page(); await laptop.goto(URL); await laptop.wait_for_function(READY)
+    await laptop.evaluate('(c) => cloudSave({...c, device:"22222222-2222-4222-a222-222222222222"})', config)
+    check(await laptop.evaluate('cloudPath(cloudConfig())') != 'marginalia-backups/' + device + '.json', 'second device uses a separate remote file')
+    await laptop.evaluate('(name) => cloudReview(cloudConfig(), name)', device + '.json')
+    check(await laptop.evaluate('S.notes.size') == 0, 'reviewing a remote backup does not write local data')
+    await laptop.click('#rs-merge'); await laptop.wait_for_function("S.notes.has('remote-note')")
+    check(await laptop.evaluate("S.notes.get('remote-note').gloss") == 'Updated note', 'remote backup restores on a second device after confirmation')
+    await laptop.reload(); await laptop.wait_for_function(READY)
+    check(await laptop.evaluate("S.notes.has('other-tab') && S.notes.get('remote-note').followups[0].x === 'Later'"), 'restored notes and their history survive reload')
+    await page.evaluate('cloudBackupPanel()'); await page.click('#cloud-disconnect')
+    check(await page.evaluate('cloudConfig() === null') and state['file'] is not None, 'disconnect removes local credentials and retains the remote backup')
+    check(not errors, f'no script errors in automatic backups ({errors})')
+    await other.close(); await ctx.close()
+
 async def fresh_page(browser, w, h):
     page = await browser.new_page(viewport={"width": w, "height": h}, accept_downloads=True)
     errs = []
@@ -371,6 +463,7 @@ async def main():
         for k in range(1, 11): await page.mouse.move(a[0] + (b[0] - a[0]) * k / 10, a[1] + (b[1] - a[1]) * k / 10); await page.wait_for_timeout(20)
         await page.mouse.up(); await page.wait_for_timeout(500)
         check(await page.evaluate("[S.screen, shelfList('reading').map(([x]) => x)]") == ["library", ["m2", "t1", "m1"]], "with a mouse, dragging a book moves it, and the drag doesn't open it")
+        await cloud_backups(browser)
         await offline(browser)
         await browser.close()
 

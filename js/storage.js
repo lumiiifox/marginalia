@@ -234,11 +234,24 @@ async function saveFile(name, text, type) {
   return true;
 }
 const blobToDataURL = (b) => new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = () => rej(fr.error); fr.readAsDataURL(b); });
+// One readonly transaction captures all exported stores together, including edits from other tabs.
+const BACKUP_STORES = ["texts", "notes", "content", "covers", "terms", "drafts", "compares", "paths", "wishlist"];
+async function backupData() {
+  const records = idb ? await new Promise((resolve, reject) => {
+    const tx = idb.transaction(BACKUP_STORES, "readonly"), out = {};
+    tx.oncomplete = () => resolve(out);
+    tx.onerror = tx.onabort = () => reject(tx.error || new Error("Backup snapshot failed."));
+    for (const name of BACKUP_STORES) {
+      out[name] = {};
+      const r = tx.objectStore(name).openCursor();
+      r.onsuccess = () => { const c = r.result; if (c) { Object.defineProperty(out[name], c.key, { value: c.value, enumerable: true, writable: true }); c.continue(); } };
+    }
+  }) : Object.fromEntries(BACKUP_STORES.map((name) => [name, Object.fromEntries(mapFor(name))]));
+  for (const [key, blob] of Object.entries(records.covers)) records.covers[key] = await blobToDataURL(blob);
+  return { app: "marginalia", version: 7, exportedAt: new Date().toISOString(), ...(PIN ? { pin: structuredClone(PIN) } : {}), ...records };
+}
 async function exportBackup() {
-  const content = idb ? await idbAll("content") : S.content;
-  const covers = {};
-  for (const [id, b] of S.covers) { try { covers[id] = await blobToDataURL(b); } catch {} }
-  const data = { app: "marginalia", version: 7, exportedAt: new Date().toISOString(), ...(PIN ? { pin: PIN } : {}), texts: Object.fromEntries(S.texts), notes: Object.fromEntries(S.notes), content: Object.fromEntries(content), covers, terms: Object.fromEntries(S.terms), drafts: Object.fromEntries(S.drafts), compares: Object.fromEntries(S.compares), paths: Object.fromEntries(S.paths), wishlist: Object.fromEntries(S.wishlist) };
+  const data = await backupData();
   const ok = await saveFile(`marginalia-backup-${stamp()}.json`, JSON.stringify(data), "application/json");
   if (ok) { try { localStorage.setItem("mg-backup", String(Date.now())); } catch {} render(); }
 }

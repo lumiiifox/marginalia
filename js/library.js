@@ -250,12 +250,14 @@ function backupView() {
   const when = last ? new Date(last).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) : "never";
   return `<footer class="backup">
     <div class="label">Backups and exports</div>
-    <p class="hint">Last backup ${esc(when)}. Everything is stored only on this device. A backup file keeps it safe and moves it to another device; Export gives you Markdown, a bibliography and BibTeX for writing elsewhere.</p>
+    <p class="hint">Last backup ${esc(when)}. Your working library is stored on this device. A backup file keeps it safe and moves it to another device; Export gives you Markdown, a bibliography and BibTeX for writing elsewhere.</p>
     <div class="row">
       <button class="btn" id="backup">Save backup</button>
+      <button class="btn" id="cloudbackup">Automatic backups</button>
       <span class="btn filebtn">Restore<input id="restore" type="file" aria-label="Restore from a backup file"></span>
       <button class="btn" id="exportbtn">Export</button>
     </div>
+    ${cloudBackupStatusHTML()}
     ${S.trash.size ? `<button class="btn ghost" id="opentrash" style="padding-left:0">Recently deleted (${S.trash.size})</button>` : ""}
   </footer>`;
 }
