@@ -144,6 +144,15 @@ async def cloud_backups(browser):
     check(not await page.evaluate('cloudUpload()') and state['files'][path]['raw']==old_manifest, 'asset upload failure leaves the previous complete manifest intact')
     state['fail_asset']=False; await page.evaluate('cloudUpload()')
     check(state['writes'][-2][0].startswith('marginalia-backups/objects/') and state['writes'][-1][0]==path, 'changed imported text uploads a new object before publishing its reference')
+    # Marking a heading in a bundled classic (Edit) makes its text differ from the bundled copy: it uploads once, like an import.
+    before=len(state['writes'])
+    await page.evaluate("(async()=>{ const c=await idbGet('content','classic-spinoza-ethics'); c[7]={...c[7],st:'heading'}; await put('content','classic-spinoza-ethics',c); })()")
+    await page.evaluate('cloudUpload()')
+    data=json.loads(state['files'][path]['raw'])
+    check('classic-spinoza-ethics' in data['assets']['content'] and 'classic-spinoza-ethics' not in data['assets']['covers'] and len(state['writes'])==before+2,
+          'an edited classic uploads its text once; its unchanged cover stays out')
+    before=len(state['writes']); await page.evaluate('cloudUpload()')
+    check(len(state['writes'])==before, 'the edited classic is not uploaded again while unchanged')
     state['conflict']=True
     await page.evaluate("put('notes','other-tab',{...S.notes.get('other-tab'),gloss:'Conflict test',updatedAt:4})")
     last=await page.evaluate('cloudConfig().last')
@@ -159,6 +168,7 @@ async def cloud_backups(browser):
     await laptop.click('#rs-merge'); await laptop.wait_for_function("S.notes.has('remote-note')")
     check(await laptop.evaluate("S.notes.get('remote-note').gloss==='Updated note' && S.notes.has('classic-note') && S.texts.get('remote-book').pos===11"), 'confirmed restore recovers notes, classic annotations and session position')
     check(await laptop.evaluate("(async()=> (await idbGet('content','remote-book'))[0].x==='Corrected imported text' && (await idbGet('content','classic-spinoza-ethics')).length>100)()"), 'restore downloads hash-verified imported text and rebuilds bundled classics')
+    check(await laptop.evaluate("(async()=> (await idbGet('content','classic-spinoza-ethics'))[7].st==='heading' && !!(await idbGet('covers','classic-spinoza-ethics')))()"), 'restore brings back the edits to a classic, with its bundled cover')
     await laptop.reload(); await laptop.wait_for_function(READY)
     check(await laptop.evaluate("S.notes.get('remote-note').followups[0].x==='Later'"), 'restored history survives reload')
     # Corruption must fail before a preview can be offered.

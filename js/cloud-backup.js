@@ -77,6 +77,33 @@ async function cloudWrite(c, path, text, branch, sha) {
   if (!result.content?.sha || !result.commit?.sha) throw new UErr('GitHub did not confirm the backup.');
   return result;
 }
+// The bundled classics' hashes, worked out once per run of the app. A failed fetch leaves the local copy in the backup.
+const CLOUD_BUNDLED = new Map();
+async function cloudBundledHash(id, kind) {
+  const key = kind + ':' + id;
+  if (!CLOUD_BUNDLED.has(key)) {
+    let hash = null;
+    try {
+      if (kind === 'content') {
+        const r = await fetch(`data/books/${id}.json`);
+        if (r.ok) { const book = await r.json(); if (VALID.content(book.content)) hash = await cloudHash(JSON.stringify(book.content)); }
+      } else {
+        const r = await fetch(`data/books/${id}.jpg`);
+        if (r.ok) hash = await cloudHash(await blobToDataURL(await r.blob()));
+      }
+    } catch {}
+    if (hash === null) return null; // not cached: tried again next time
+    CLOUD_BUNDLED.set(key, hash);
+  }
+  return CLOUD_BUNDLED.get(key);
+}
+async function cloudDropBundled(data) {
+  for (const id of CLASSICS) for (const kind of ['content', 'covers']) {
+    if (!Object.hasOwn(data[kind], id)) continue;
+    const mine = await cloudHash(kind === 'content' ? JSON.stringify(data[kind][id]) : data[kind][id]);
+    if (mine === await cloudBundledHash(id, kind)) delete data[kind][id];
+  }
+}
 // Serializes tabs. Include reading only at a session boundary or an explicit Back up now.
 async function cloudUpload(includeReading = S.screen !== 'reader') {
   if (navigator.locks) return navigator.locks.request('marginalia-cloud-upload', { ifAvailable: true }, (lock) => lock ? cloudUploadLocked(includeReading) : false);
@@ -94,8 +121,9 @@ async function cloudUploadLocked(includeReading) {
     // The write lease uses the metadata SHA: a concurrent manifest change rejects our write.
     const previous = meta ? JSON.parse(await cloudRead(c, path, branch)) : null;
     if (previous && (previous.app !== 'marginalia' || previous.version !== 7 || !isObj(previous.texts) || (previous.layout !== undefined && previous.layout !== 'split-1'))) throw new UErr('Remote backup format is unsupported. Nothing was replaced.');
-    const data = await backupData(true), assets = { content: {}, covers: {} }, reading = {};
-    // Keep metadata/annotations for classics; their bundled text and cover never leave this device.
+    const data = await backupData(), assets = { content: {}, covers: {} }, reading = {};
+    // A classic's text or cover leaves this device only when it differs from the bundled copy (edited in Edit, or an older build).
+    await cloudDropBundled(data);
     for (const [id, t] of Object.entries(data.texts)) {
       if (t.hasContent && !CLASSICS.includes(id) && !Object.hasOwn(data.content, id)) throw new UErr('An imported book’s text is missing locally. The previous backup was kept.');
       const saved = previous?.layout === 'split-1' ? previous.reading?.[id] : previous?.texts?.[id];
@@ -148,7 +176,7 @@ function cloudSetup() {
   const old = cloudConfig();
   openSheet(`<h2>Automatic private backups</h2>
     <p class="hint">Create a dedicated private GitHub repository with a README. Create a fine-grained personal access token restricted to that repository, with Contents: read and write. Paste it here, never in a chat or the app's source code.</p>
-    <p class="hint">Imported books’ full extracted text, including copyrighted works, and covers are uploaded once per content version to GitHub’s servers as unencrypted JSON. Notes, drafts, terms, paths and wishlist use a separate small file. Bundled classics’ text and covers are excluded and rebuilt on restore; their notes and book metadata are preserved. Use Save backup to preserve your edits to a bundled classic’s text, structure or cover. Reading position is uploaded at session end. Original PDFs and Recently deleted are excluded, just as in Save backup. Files are readable by anyone you give access to that private repository; they are not encrypted by Marginalia.</p>
+    <p class="hint">Imported books’ full extracted text, including copyrighted works, and covers are uploaded once per content version to GitHub’s servers as unencrypted JSON. Notes, drafts, terms, paths and wishlist use a separate small file. A bundled classic’s text and cover are uploaded only once you change them (chapters, headings or corrections in Edit, or a new cover); unchanged ones are rebuilt from the app on restore. Their notes and book metadata are always backed up. Reading position is uploaded at session end. Original PDFs and Recently deleted are excluded, just as in Save backup. Files are readable by anyone you give access to that private repository; they are not encrypted by Marginalia.</p>
     <p class="hint">Each device has its own file. GitHub's file history keeps older copies. To move work between devices, choose Review remote backup. Restoring always asks before changing your library.</p>
     <div class="field"><label for="cloud-repo">Private repository (owner/name)</label><input id="cloud-repo" autocomplete="off" autocapitalize="none" spellcheck="false" value="${esc(old?.repo || '')}" maxlength="180"></div>
     <div class="field"><label for="cloud-token">Fine-grained token</label><input id="cloud-token" type="password" autocomplete="off" maxlength="300"></div>
@@ -205,7 +233,7 @@ async function cloudReview(c, name) {
     for (const kind of ['content', 'covers']) {
       if (!isObj(data.assets[kind])) throw new Error('Invalid assets');
       for (const [id, hash] of Object.entries(data.assets[kind])) {
-        if (!Object.hasOwn(data.texts, id) || !/^[a-f0-9]{64}$/.test(hash) || CLASSICS.includes(id)) throw new Error('Invalid asset reference');
+        if (!Object.hasOwn(data.texts, id) || !/^[a-f0-9]{64}$/.test(hash)) throw new Error('Invalid asset reference');
         const raw = await cloudRead(c, cloudAssetPath(hash), repo.default_branch);
         if (await cloudHash(raw) !== hash) throw new Error('Backup asset checksum failed');
         const asset = JSON.parse(raw);
@@ -219,12 +247,17 @@ async function cloudReview(c, name) {
       if (reading !== undefined && (!isObj(reading) || Object.keys(reading).some((k) => !CLOUD_READING.includes(k)))) throw new Error('Invalid reading position');
       Object.assign(t, reading || {});
       if (!VALID.texts(t)) throw new Error('Invalid reading record');
+      // A classic backed up with its own text or cover (edited) keeps it; otherwise the bundled copy fills in.
       if (CLASSICS.includes(id)) {
-        const r = await fetch(`data/books/${id}.json`); if (!r.ok) throw new Error('Bundled classic unavailable');
-        const book = await r.json(); if (!VALID.content(book.content)) throw new Error('Invalid classic');
-        data.content[id] = book.content;
-        const cover = await fetch(`data/books/${id}.jpg`);
-        if (cover.ok) data.covers[id] = await blobToDataURL(await cover.blob());
+        if (!Object.hasOwn(data.content, id)) {
+          const r = await fetch(`data/books/${id}.json`); if (!r.ok) throw new Error('Bundled classic unavailable');
+          const book = await r.json(); if (!VALID.content(book.content)) throw new Error('Invalid classic');
+          data.content[id] = book.content;
+        }
+        if (!Object.hasOwn(data.covers, id)) {
+          const cover = await fetch(`data/books/${id}.jpg`);
+          if (cover.ok) data.covers[id] = await blobToDataURL(await cover.blob());
+        }
       } else if (t.hasContent && !Object.hasOwn(data.content, id)) throw new Error('Missing book asset');
     }
   }
