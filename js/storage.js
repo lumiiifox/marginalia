@@ -236,7 +236,7 @@ async function saveFile(name, text, type) {
 const blobToDataURL = (b) => new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = () => rej(fr.error); fr.readAsDataURL(b); });
 // One readonly transaction captures all exported stores together, including edits from other tabs.
 const BACKUP_STORES = ["texts", "notes", "content", "covers", "terms", "drafts", "compares", "paths", "wishlist"];
-async function backupData(cloud = false) {
+async function backupData() {
   const records = idb ? await new Promise((resolve, reject) => {
     const tx = idb.transaction(BACKUP_STORES, "readonly"), out = {};
     tx.oncomplete = () => resolve(out);
@@ -244,7 +244,7 @@ async function backupData(cloud = false) {
     for (const name of BACKUP_STORES) {
       out[name] = {};
       const r = tx.objectStore(name).openCursor();
-      r.onsuccess = () => { const c = r.result; if (c) { if (!(cloud && ["content", "covers"].includes(name) && CLASSICS.includes(c.key))) Object.defineProperty(out[name], c.key, { value: c.value, enumerable: true, writable: true }); c.continue(); } };
+      r.onsuccess = () => { const c = r.result; if (c) { Object.defineProperty(out[name], c.key, { value: c.value, enumerable: true, writable: true, configurable: true }); c.continue(); } };
     }
   }) : Object.fromEntries(BACKUP_STORES.map((name) => [name, Object.fromEntries(mapFor(name))]));
   for (const [key, blob] of Object.entries(records.covers)) records.covers[key] = await blobToDataURL(blob);

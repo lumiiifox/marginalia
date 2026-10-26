@@ -334,8 +334,9 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   the upload of imported copyrighted text as unencrypted JSON. Never include credentials in backup files or source code.
   `split-1` manifests retain version-7 records plus `assets` and a frozen `reading` map. Notes, drafts, terms, paths, wishlist and
   book metadata share one small device UUID manifest. Imported content and covers are immutable SHA-256-addressed JSON objects
-  under `marginalia-backups/objects/`, uploaded only when absent. Bundled content/covers are excluded from the cloud snapshot and
-  rebuilt locally during restore; changes to their text, structure or covers require manual backup. Local manual backup is unchanged.
+  under `marginalia-backups/objects/`, uploaded only when absent. A classic's content or cover is left out while its hash equals the bundled copy's (`cloudDropBundled`,
+  bundled hashes cached per run by `cloudBundledHash`); once edited in Edit, given a new cover, or older than a rebuilt classic, it
+  uploads as an ordinary object. Restore uses a classic's own object when the manifest names one, otherwise the bundled copy. Local manual backup is unchanged.
   During reading, periodic note backups retain the previous session's position, readAt and days. Leaving the reader, switching books
   or hiding the app queues a session-end upload after local position writes. If hidden execution is suspended, the next opening
   retries the durable local state. Explicit Back up now includes current progress. Background checks never force unchanged commits.
