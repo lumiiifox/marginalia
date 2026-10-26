@@ -13,7 +13,9 @@ those files refer to and numbers them from 1, makes note references superscript 
 paragraphs, a chapter's number and title one heading, and verse line breaks " / ". Then runs the app's own domToBlocks,
 finalize, makeSections and guessLang in a browser, as importing an EPUB does. The cover is the edition's own, drawn at the size
 the app keeps covers; a book taken from a larger volume gets the volume's art with its own title, set as Standard Ebooks sets it.
-A work Standard Ebooks hasn't produced comes from a plain-text transcription of a public-domain translation (`text`: a git
+A work Standard Ebooks hasn't produced comes from a Project Gutenberg EPUB of a public-domain translation (`epub_source`: kept in
+tests/.cache/gutenberg, fetched from gutenberg.org when missing; its page numbers become page breaks and its footnotes endnotes),
+or from a plain-text transcription of one (`text`: a git
 repository and file, with a converter here that drops the transcription's license header and footer, finds the headings,
 turns its starred footnotes into numbered ones and straight quotes and spaced hyphens into curly quotes and dashes), and
 gets a cover drawn here. After building, add a new book's id to CLASSICS in js/boot.js.
@@ -71,6 +73,12 @@ BOOKS = [
          text=dict(title="The Problems of Philosophy", author="Bertrand Russell", edition="", publisher="Standard Ebooks", year="2019", orig="1912")),
     dict(id="classic-nietzsche-genealogy", repo="friedrich-nietzsche_the-genealogy-of-morals_horace-b-samuel", files=None,
          text=dict(title="The Genealogy of Morals", author="Friedrich Nietzsche", edition="trans. Horace B. Samuel", publisher="Standard Ebooks", year="2023", orig="1887")),
+    dict(id="classic-freud-pleasure", epub_source=dict(file="pg76031-images-3.epub", url="https://www.gutenberg.org/cache/epub/76031/pg76031-images-3.epub", convert="gutenberg_epub"),
+         cover=dict(title="Beyond the Pleasure Principle", size=36, art="stars"),
+         text=dict(title="Beyond the Pleasure Principle", author="Sigmund Freud", edition="trans. C. J. M. Hubback, with an editorial preface by Ernest Jones", orig="1920")),
+    dict(id="classic-freud-dreams", epub_source=dict(file="pg66048-images-3.epub", url="https://www.gutenberg.org/cache/epub/66048/pg66048-images-3.epub", convert="gutenberg_epub"),
+         cover=dict(title="The Interpretation of Dreams", size=36, art="stars"),
+         text=dict(title="The Interpretation of Dreams", author="Sigmund Freud", edition="trans. A. A. Brill", orig="1900")),
     dict(id="classic-nietzsche-beyond", repo="friedrich-nietzsche_beyond-good-and-evil_helen-zimmern", files=None,
          text=dict(title="Beyond Good and Evil", author="Friedrich Nietzsche", edition="trans. Helen Zimmern", publisher="Standard Ebooks", year="2014", orig="1886")),
 ]
@@ -297,6 +305,66 @@ def spinoza_ethics(raw):
     assert refs == notes == list(range(1, 18)), (refs, notes)
     return f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Ethics</title></head><body>{"".join(out)}</body></html>'
 
+GUTENBERG = CACHE / "gutenberg"
+def heading_text(t):
+    """A Gutenberg heading as the app shows it: "I   THE SCIENTIFIC LITERATURE ..." -> "I. The Scientific Literature ...",
+    "( a )  Recent ..." -> "(a) Recent ...", "“ A Beautiful Dream ”" -> "“A Beautiful Dream”"."""
+    t = " ".join(t.replace(" ", " ").split())
+    t = re.sub(r"\(\s*([a-z])\s*\)", r"(\1)", t)
+    t = re.sub(r"([“‘])\s+", r"\1", t); t = re.sub(r"\s+([”’])", r"\1", t)
+    m = re.fullmatch(r"([IVXL]+)\.?\s+(.+)", t)
+    if m and m.group(2).isupper(): return f"{m.group(1)}. {title_case(m.group(2))}"
+    letters = [c for c in t if c.isalpha()]
+    if letters and sum(c.isupper() for c in letters) / len(letters) > 0.8 and not re.fullmatch(r"[IVXL]+", t): return title_case(t)
+    return t.rstrip(".")
+def gutenberg_epub(folder):
+    """A Project Gutenberg EPUB: the work's own files in spine order (not Gutenberg's header and licence, the title page, the
+    contents or the general index), each as XHTML the build reads like a Standard Ebooks file. Its page-number markers become page
+    breaks with the printed page, its lettered footnotes numbered endnotes, its headings set as the app shows headings."""
+    from bs4 import BeautifulSoup
+    oebps = next(folder.rglob("content.opf")).parent
+    opf = (oebps / "content.opf").read_text(encoding="utf-8")
+    man = {m.group(1): m.group(2) for m in re.finditer(r'<item\b[^>]*\bid="([^"]+)"[^>]*\bhref="([^"]+)"', opf)}
+    man.update({m.group(2): m.group(1) for m in re.finditer(r'<item\b[^>]*\bhref="([^"]+)"[^>]*\bid="([^"]+)"', opf)})
+    spine = [man[i] for i in re.findall(r'<itemref idref="([^"]+)"', opf) if i in man]
+    notes, docs, seen_h2 = {}, [], False
+    for href in spine:
+        soup = BeautifulSoup((oebps / href).read_text(encoding="utf-8"), "xml")
+        for fn in soup.select("div.footnote"):  # the notes, wherever Gutenberg put them
+            a = fn.find("a"); nid = fn.get("id")
+            if a is not None:
+                nxt = a.next_sibling; a.decompose()
+                if isinstance(nxt, str): nxt.replace_with(re.sub(r"^\s*\.\s*", "", nxt))
+            notes[nid] = fn; fn.extract()
+        heads = [" ".join(h.get_text(" ").split()) for h in soup.find_all(["h1", "h2"])]
+        words = len(soup.body.get_text(" ").split()) if soup.body else 0
+        if not soup.body or any(re.match(r"(The Project Gutenberg eBook|THE FULL PROJECT GUTENBERG|CONTENTS$|INDEX$)", h) for h in heads): continue
+        if not soup.find("h2"):
+            if not seen_h2 or words < 40: continue   # the title page, an empty divider
+        seen_h2 = True
+        for sp in soup.select("span.x-ebookmaker-pageno"):
+            sp.attrs = {"epub:type": "pagebreak", "title": sp.get("title", "")}; sp.clear()
+        for a in soup.find_all("a"):
+            h = a.get("href", "")
+            if "#f" in h and a.find("sup"):
+                a.attrs = {"epub:type": "noteref", "href": "endnotes.xhtml#" + h.split("#")[1]}; a.string = h.split("#")[1][1:]
+            elif not h and a.get("id") and not a.contents: a.decompose()
+            else: a.unwrap()
+        for r in soup.find_all("a", attrs={"epub:type": "noteref"}):  # two marks side by side would read as one number
+            prev = r.previous_sibling
+            if getattr(prev, "name", None) == "a" and prev.get("epub:type") == "noteref": r.insert_before("\u2009")
+        for el in soup.find_all(["h1", "h2", "h3", "h4"]):
+            refs = [r.extract() for r in el.find_all("a", attrs={"epub:type": "noteref"})]
+            txt = heading_text(el.get_text(" "))
+            el.clear(); el.append(txt)
+            for r in refs: el.append(r)
+        for sp in soup.find_all("span"):
+            if sp.get("epub:type") != "pagebreak": sp.unwrap()
+        docs.append(str(soup))
+    ol = "".join(f'<li id="{nid}">{"".join(str(c) for c in fn.find_all("p", recursive=False)) or "<p>" + fn.get_text(" ") + "</p>"}</li>' for nid, fn in notes.items())
+    endnotes = f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Notes</title></head><body><section epub:type="endnotes"><h2>Notes</h2><ol>{ol}</ol></section></body></html>'
+    return docs, endnotes
+
 CONVERT = {"kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics}
 
 def clone(url, dest):
@@ -338,6 +406,13 @@ async def main(only):
     books = [b for b in BOOKS if not only or b["id"] in only]
     for bk in books:
         if bk.get("repo"): clone(f"https://github.com/standardebooks/{bk['repo']}", SE / bk["repo"])
+        elif bk.get("epub_source"):
+            es = bk["epub_source"]; GUTENBERG.mkdir(parents=True, exist_ok=True); f = GUTENBERG / es["file"]
+            if not f.exists():
+                import urllib.request; urllib.request.urlretrieve(es["url"], f)
+            dest = TEXTS / bk["id"]
+            if not dest.exists():
+                import zipfile; zipfile.ZipFile(f).extractall(dest)
         else: clone(bk["text_source"]["repo"], TEXTS / bk["id"])
     if any(b.get("cover") for b in books): clone("https://github.com/theleagueof/league-spartan", FONT.parent.parent)
     OUT.mkdir(parents=True, exist_ok=True)
@@ -355,6 +430,9 @@ async def main(only):
                     names = bk.get("files") or [n for n in spine(bk["repo"]) if n not in SKIP | bk.get("skip", set())]
                     files = [(text_dir / f"{n}.xhtml").read_text(encoding="utf-8") for n in names]
                     en = text_dir / "endnotes.xhtml"; endnotes = en.read_text(encoding="utf-8") if en.exists() else None
+                elif bk.get("epub_source"):
+                    names = []
+                    files, endnotes = gutenberg_epub(TEXTS / bk["id"])
                 else:
                     names = []
                     ts = bk["text_source"]
@@ -364,7 +442,7 @@ async def main(only):
                 for s in r["sections"]:
                     if bk.get("partOf") and re.fullmatch(r"Part [IVX]+", s["label"]): s["label"] = f'{bk["partOf"]}, {s["label"]}'
                 rec = {**{k: v for k, v in bk["text"].items() if v}, "lang": r["lang"], "sections": r["sections"],
-                       "source": {"name": "Standard Ebooks", "kind": "EPUB", "pages": 0} if bk.get("repo") else {"name": "a public-domain transcription", "kind": "Text", "pages": 0}}
+                       "source": {"name": "Standard Ebooks", "kind": "EPUB", "pages": 0} if bk.get("repo") else {"name": "Project Gutenberg", "kind": "EPUB", "pages": 0} if bk.get("epub_source") else {"name": "a public-domain transcription", "kind": "Text", "pages": 0}}
                 (OUT / f"{bk['id']}.json").write_text(json.dumps({"text": rec, "content": r["blocks"]}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
                 await cover(browser, bk, OUT / f"{bk['id']}.jpg")
                 print(f"{bk['id']}: {len(r['blocks'])} blocks, {r['notes']} notes, {len(r['sections'])} chapters, {(OUT / (bk['id'] + '.json')).stat().st_size // 1024} KB")

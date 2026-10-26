@@ -65,8 +65,8 @@ ideas? If not, it waits.
 ## Rules
 
 - **Never commit books, PDFs or backup files.** The repository is public. The one exception is `data/books/`: the classics that come
-  with the app, built by `tools/build_classics.py` from Standard Ebooks editions (or, for a work they lack, a public-domain
-  transcription of a public-domain translation) and public domain in both the US and Canada
+  with the app, built by `tools/build_classics.py` from Standard Ebooks editions (or, for a work they lack, a Project Gutenberg EPUB
+  or a public-domain transcription of a public-domain translation; the EPUBs sit in the git-ignored tests/.cache/gutenberg) and public domain in both the US and Canada
   (author and any translator died in 1971 or earlier). Nothing from the owner's library ever goes there.
 - Changing the stored shape of a record: bump `indexedDB.open("marginalia", N)` only when a store is added or needs migration,
   keep old records readable, and update `VALID` so old backups still restore.

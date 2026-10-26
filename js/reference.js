@@ -415,7 +415,8 @@ const CLASSIC_TITLES = { "classic-plato-socrates": "Euthyphro, Apology, Crito, P
   "classic-hobbes-leviathan": "Leviathan", "classic-spinoza-ethics": "Ethics", "classic-hume-treatise": "A Treatise of Human Nature", "classic-hume-enquiry": "An Enquiry Concerning Human Understanding", "classic-rousseau-social-contract": "The Social Contract",
   "classic-kant-groundwork": "Fundamental Principles of the Metaphysic of Morals", "classic-wollstonecraft-vindication": "A Vindication of the Rights of Woman",
   "classic-marx-engels-manifesto": "The Communist Manifesto", "classic-nietzsche-beyond": "Beyond Good and Evil", "classic-nietzsche-genealogy": "The Genealogy of Morals", "classic-cooper-voice": "A Voice from the South", "classic-du-bois-souls": "The Souls of Black Folk",
-  "classic-plato-republic": "The Republic", "classic-mill-liberty": "On Liberty", "classic-russell-problems": "The Problems of Philosophy" };
+  "classic-plato-republic": "The Republic", "classic-mill-liberty": "On Liberty", "classic-russell-problems": "The Problems of Philosophy",
+  "classic-freud-dreams": "The Interpretation of Dreams", "classic-freud-pleasure": "Beyond the Pleasure Principle" };
 /* ---------- the classics where the reference pages name them ----------
    A classic's title in an article, a thinker card or a glossary entry opens the book (added back first if you deleted it), and
    the book's page lists where it is named or cited. Titles match in their own capitals, as whole words. A bare short title
@@ -440,6 +441,8 @@ const CLASSIC_NAMES = {
   "classic-cooper-voice": { by: ["cooper"], full: ["A Voice from the South", "Voice from the South"] },
   "classic-du-bois-souls": { by: ["dubois"], full: ["The Souls of Black Folk", "Souls of Black Folk"] },
   "classic-russell-problems": { by: ["russell"], full: ["The Problems of Philosophy", "Problems of Philosophy"] },
+  "classic-freud-dreams": { by: ["freud"], full: ["The Interpretation of Dreams", "Interpretation of Dreams"] },
+  "classic-freud-pleasure": { by: ["freud"], full: ["Beyond the Pleasure Principle"] },
 };
 // Every classic named in a text: [{ a, b, id }], in order, without overlaps; ctx is the thinker whose card it is, if any.
 function classicHits(text, ctx) {
