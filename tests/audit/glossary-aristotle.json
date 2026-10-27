@@ -1,0 +1,676 @@
+{
+ "audit": "glossary-aristotle",
+ "audited": "2026-10-27",
+ "mode": "in place",
+ "scope": "Glossary entries on the route's ancient and early modern ground: determinism, rationalism, four causes, potentiality and actuality, essence, eudaimonia",
+ "by": {
+  "first_pass": "Claude (Opus 5.5), drafting and checking against the sources below",
+  "review": "Independent reviewer (separate agent, fresh context), 2026-10-27: checked every new sentence and quotation against its source (23 lookups; Stanford pages through WebFetch, bundled Ethics and Nicomachean Ethics directly); all quotations verbatim; four causes passed as drafted; fixed as asked: Hoefer's hedges restored on Hume, fatalism and quantum collapse, Xia credited with the escape (the space invader is its time-reverse), the rationalist theses given as three with at least one adopted, two runs of a scholar's wording put in quotation marks (Reeve, Kraut), an unsourced modal definition of essence replaced by Aristotle's; Kraut's second quotation then confirmed in its sentence; passed after the fixes."
+ },
+ "sources": {
+  "HOE": {
+   "name": "Carl Hoefer, “Causal Determinism”, Stanford Encyclopedia of Philosophy (substantive revision 21 September 2023)",
+   "src": "https://plato.stanford.edu/entries/determinism-causal/"
+  },
+  "FOL": {
+   "name": "M. Folescu, “Rationalism vs. Empiricism”, Stanford Encyclopedia of Philosophy (substantive revision 2 September 2021)",
+   "src": "https://plato.stanford.edu/entries/rationalism-empiricism/"
+  },
+  "KNT": {
+   "name": "Michael Rohlf, “Immanuel Kant”, Stanford Encyclopedia of Philosophy (Spring 2020 edition)",
+   "src": "https://plato.stanford.edu/archives/spr2020/entries/kant/"
+  },
+  "FAL": {
+   "name": "Andrea Falcon, “Aristotle on Causality”, Stanford Encyclopedia of Philosophy (substantive revision 7 March 2023)",
+   "src": "https://plato.stanford.edu/entries/aristotle-causality/"
+  },
+  "TEL": {
+   "name": "Colin Allen and Jacob Neal, “Teleological Notions in Biology”, Stanford Encyclopedia of Philosophy (substantive revision 6 February 2026)",
+   "src": "https://plato.stanford.edu/entries/teleology-biology/"
+  },
+  "ARM": {
+   "name": "C. D. C. Reeve, “Aristotle’s Metaphysics”, Stanford Encyclopedia of Philosophy (substantive revision 24 January 2025)",
+   "src": "https://plato.stanford.edu/entries/aristotle-metaphysics/"
+  },
+  "BEN": {
+   "name": "Fedor Benevich, “Essence and Existence in Arabic and Islamic Philosophy”, Stanford Encyclopedia of Philosophy (2024)",
+   "src": "https://plato.stanford.edu/entries/arabic-islamic-essence/"
+  },
+  "LOC": {
+   "name": "William Uzgalis, “John Locke”, Stanford Encyclopedia of Philosophy (revision 7 July 2022)",
+   "src": "https://plato.stanford.edu/entries/locke/"
+  },
+  "AHO": {
+   "name": "Kevin Aho, “Existentialism”, Stanford Encyclopedia of Philosophy (2023)",
+   "src": "https://plato.stanford.edu/entries/existentialism/"
+  },
+  "KRA": {
+   "name": "Richard Kraut, “Aristotle’s Ethics”, Stanford Encyclopedia of Philosophy (substantive revision 11 August 2026)",
+   "src": "https://plato.stanford.edu/entries/aristotle-ethics/"
+  },
+  "ETH": {
+   "name": "Spinoza, Ethics, trans. R. H. M. Elwes (1883), the edition bundled with the app"
+  },
+  "NE": {
+   "name": "Aristotle, Nicomachean Ethics, trans. F. H. Peters, the edition bundled with the app"
+  }
+ },
+ "note": "Aristotle's Nicomachean Ethics and Spinoza's Ethics are quoted from the editions bundled with the app. Claims the sources consulted did not cover were cut, keeping each entry to what was checked.",
+ "terms": {
+  "determinism": {
+   "old": [
+    {
+     "s": 1,
+     "text": "Definition: every event fixed by prior causes with the laws; a complete description at one time settles everything after.",
+     "accuracy": "supported",
+     "by": "HOE",
+     "note": "Now in Hoefer's words."
+    },
+    {
+     "s": 2,
+     "text": "Hoefer frames determinism for the whole world, since single events and their sufficient causes are hard to define.",
+     "accuracy": "supported",
+     "by": "HOE"
+    },
+    {
+     "s": 3,
+     "text": "What determinism amounts to depends on what laws of nature are; views of laws (Best Systems: Hume, Mill, Ramsey, Lewis; Cartwright, van Fraassen, Dupré doubting universal laws).",
+     "accuracy": "unverified",
+     "note": "Not re-read in this pass; cut to keep the entry to what was checked."
+    },
+    {
+     "s": 4,
+     "text": "Leibniz's principle of sufficient reason is a close relative of the thesis.",
+     "accuracy": "unverified",
+     "by": "HOE",
+     "note": "Hoefer mentions the PSR; cut for length."
+    },
+    {
+     "s": 5,
+     "text": "First given precise form in the eighteenth century; Laplace's Philosophical Essay on Probabilities (1814) imagined an intellect that could foresee the future and recover the past; Hoefer notes Laplace probably had God in mind.",
+     "accuracy": "supported",
+     "by": "HOE",
+     "note": "Hoefer cites the 1820 edition; the 1814 first edition stays in the source line."
+    },
+    {
+     "s": 6,
+     "text": "Theological determinism traces events to God's will; Spinoza held that all things follow necessarily from God's nature.",
+     "accuracy": "supported",
+     "by": "ETH I Prop. 29",
+     "note": "Spinoza now quoted."
+    },
+    {
+     "s": 7,
+     "text": "Russell attacked the notion of cause in 1912; Earman's Primer (1986) remains the fullest study.",
+     "accuracy": "overstated",
+     "by": "HOE",
+     "note": "Russell not re-checked, cut; Earman's book given in Hoefer's words."
+    },
+    {
+     "s": 8,
+     "text": "Determinism and predictability come apart (Popper 1982; chaos); Suppes on chaos and chance looking alike.",
+     "accuracy": "supported",
+     "by": "HOE",
+     "note": "Suppes not re-checked, cut."
+    },
+    {
+     "s": 9,
+     "text": "Determinism differs from fatalism.",
+     "accuracy": "supported",
+     "by": "HOE"
+    },
+    {
+     "s": 10,
+     "text": "Classical mechanics leaves room for indeterminism: escapes to infinity (Xia 1992), space invaders, undecided collisions, Norton's dome (2003).",
+     "accuracy": "supported",
+     "by": "HOE",
+     "note": "Collisions cut for length."
+    },
+    {
+     "s": 11,
+     "text": "Special relativity friendliest; general relativity's hole argument (Earman and Norton 1987).",
+     "accuracy": "unverified",
+     "note": "Not re-read; cut."
+    },
+    {
+     "s": 12,
+     "text": "Quantum mechanics: Born rule probabilities, deterministic Schrödinger equation, Copenhagen collapse, Everett, Bohm 1952; Wallace 2020 on Bohmian field theory.",
+     "accuracy": "overstated",
+     "by": "HOE",
+     "note": "Wallace not re-checked, cut; the rest kept."
+    },
+    {
+     "s": 13,
+     "text": "Free will: incompatibilists, compatibilists, Hume; Lewis (1981), Ismael (2016) and Hoefer on the fixity of the past; randomness does little to secure freedom.",
+     "accuracy": "overstated",
+     "by": "HOE",
+     "note": "Lewis, Ismael and the closing judgement not re-checked; cut."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "The view that “every event is necessitated by antecedent events and conditions together with the laws of nature”.",
+     "claims": [
+      {
+       "by": "HOE"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Carl Hoefer's working definition is that, given a specified way things are at a time, “the way things go thereafter is fixed as a matter of natural law”.",
+     "claims": [
+      {
+       "by": "HOE"
+      }
+     ]
+    },
+    {
+     "text": "He frames the thesis for the whole state of the world, since ordinary ideas of events have no correlate in any modern physical theory, and he reports John Earman's quip that defining determinism through causation explains a vague concept in terms of “a truly obscure one”.",
+     "claims": [
+      {
+       "by": "HOE"
+      }
+     ]
+    },
+    {
+     "text": "Laplace imagined “An intelligence knowing all the forces acting in nature at a given instant”, to which the whole future would be open, and Hoefer notes that Laplace probably had God in mind.",
+     "claims": [
+      {
+       "by": "HOE"
+      }
+     ]
+    },
+    {
+     "text": "Spinoza holds that “Nothing in the universe is contingent, but all things are conditioned to exist and operate in a particular manner by the necessity of the divine nature”.",
+     "claims": [
+      {
+       "by": "ETH I Prop. 29"
+      }
+     ]
+    },
+    {
+     "text": "Determinism and predictability come apart: sensitive dependence on initial conditions can make prediction impossible for finite agents even in a deterministic world, although Karl Popper defined determinism in terms of predictability.",
+     "claims": [
+      {
+       "by": "HOE"
+      }
+     ]
+    },
+    {
+     "text": "Fatalism holds that events are destined to occur no matter what we do, with the guarantee lying in the will of the gods, divine foreknowledge or some teleological aspect of the universe, and Hoefer treats it as separable from determinism by natural law to the extent that these can be disentangled from natural law.",
+     "claims": [
+      {
+       "by": "HOE"
+      }
+     ]
+    },
+    {
+     "text": "Even classical mechanics leaves room for indeterminism: on John Norton's dome a resting ball may start to slide with no violation of Newton's laws, and Hoefer describes the “space invader”, the time-reverse of a body that escapes to infinity, an escape Xia showed five bodies can bring about by gravitation alone.",
+     "claims": [
+      {
+       "by": "HOE"
+      }
+     ]
+    },
+    {
+     "text": "In quantum mechanics the evolution of a wavefunction under the Schrödinger equation is normally taken to be deterministic; the more common twentieth-century approach adds a collapse of the wavefunction at measurement, Everettian readings keep the deterministic evolution throughout, and David Bohm's theory of 1952 is deterministic.",
+     "claims": [
+      {
+       "by": "HOE"
+      }
+     ]
+    },
+    {
+     "text": "On free will, a long tradition of compatibilists holds that freedom is fully compatible with determinism, incompatibilists deny it, and Hume argued that determinism, or at least some causality principle along the lines of “same cause, same effect”, is a necessary condition of freedom.",
+     "claims": [
+      {
+       "by": "HOE"
+      }
+     ]
+    },
+    {
+     "text": "Hoefer calls John Earman's A Primer on Determinism (1986) “the richest storehouse of information on the truth or falsity of determinism in various physical theories”.",
+     "claims": [
+      {
+       "by": "HOE"
+      }
+     ]
+    }
+   ],
+   "s": "Laplace, A Philosophical Essay on Probabilities (1814); Spinoza, Ethics I, Prop. 29 (Elwes trans.)",
+   "src": "HOE",
+   "srcs": []
+  },
+  "rationalism": {
+   "old": [
+    {
+     "s": 1,
+     "text": "Reason can yield substantive knowledge independently of experience; rationalists typically defend innate ideas and hold that reason grasps necessary truths.",
+     "accuracy": "supported",
+     "by": "FOL",
+     "note": "Now in the entry's words."
+    },
+    {
+     "s": 2,
+     "text": "Descartes built knowledge on clear and distinct ideas known by reason.",
+     "accuracy": "unverified",
+     "note": "Not in the source consulted; cut."
+    },
+    {
+     "s": 3,
+     "text": "Spinoza set out his Ethics in geometrical order, from definitions and axioms.",
+     "accuracy": "supported",
+     "by": "ETH I"
+    },
+    {
+     "s": 4,
+     "text": "Leibniz held that the mind contains innate principles, and grounded his metaphysics in the principle of sufficient reason.",
+     "accuracy": "overstated",
+     "by": "FOL",
+     "note": "Kept the New Essays argument the source gives; the PSR clause cut."
+    },
+    {
+     "s": 5,
+     "text": "Kant's critique of pure reason was in large part a critique of this tradition's claims about God, the soul and the world as a whole.",
+     "accuracy": "overstated",
+     "by": "FOL; KNT",
+     "note": "Restated as the sources put it."
+    },
+    {
+     "s": 6,
+     "text": "srcName/src: Stanford Encyclopedia “Gottfried Wilhelm Leibniz”",
+     "accuracy": "unverified",
+     "note": "Replaced by the entry consulted."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "The view that “there are significant ways in which our concepts and knowledge are gained independently of sense experience”.",
+     "claims": [
+      {
+       "by": "FOL"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "The Stanford Encyclopedia sets out three theses, at least one of which a rationalist adopts: that some truths are knowable by intuition alone and others by deduction from them, that we have knowledge of some truths as part of our nature, and that we have some concepts as part of our rational nature.",
+     "claims": [
+      {
+       "by": "FOL"
+      }
+     ]
+    },
+    {
+     "text": "It groups Descartes, Spinoza and Leibniz as the Continental Rationalists, and cautions that such labels can oversimplify their views.",
+     "claims": [
+      {
+       "by": "FOL"
+      }
+     ]
+    },
+    {
+     "text": "Leibniz's New Essays argues that necessary truths, such as those of pure mathematics, must have principles whose proof does not depend on instances.",
+     "claims": [
+      {
+       "by": "FOL"
+      }
+     ]
+    },
+    {
+     "text": "Spinoza sets out his Ethics in geometrical order, from definitions and axioms to propositions and their proofs.",
+     "claims": [
+      {
+       "by": "ETH I"
+      }
+     ]
+    },
+    {
+     "text": "Kant, who first applied the distinction between rationalists and empiricists, held that a priori knowledge of things in themselves, the claim of transcendent metaphysics, is impossible.",
+     "claims": [
+      {
+       "by": "FOL"
+      },
+      {
+       "by": "KNT"
+      }
+     ]
+    }
+   ],
+   "s": "Descartes, Meditations on First Philosophy (1641); Spinoza, Ethics (1677); Leibniz, New Essays on Human Understanding (written 1704)",
+   "src": "FOL",
+   "srcs": [
+    "KNT"
+   ]
+  },
+  "four-causes": {
+   "old": [
+    {
+     "s": 1,
+     "text": "The four kinds of explanation, material, formal, efficient, final.",
+     "accuracy": "supported",
+     "by": "FAL"
+    },
+    {
+     "s": 2,
+     "text": "The Greek aitia is closer to “explanation” or “that because of which”.",
+     "accuracy": "overstated",
+     "by": "FAL",
+     "note": "Falcon: useful to think of a cause as a type of explanation; the gloss “that because of which” not in the source."
+    },
+    {
+     "s": 3,
+     "text": "Bronze statue: bronze, shape, sculptor, purpose.",
+     "accuracy": "overstated",
+     "by": "FAL",
+     "note": "Kept the parts of the example the source gives."
+    },
+    {
+     "s": 4,
+     "text": "Modern science kept the efficient cause and largely dropped the final cause.",
+     "accuracy": "overstated",
+     "by": "TEL",
+     "note": "Narrowed to what the source reports of Hobbes and Descartes on Harvey."
+    },
+    {
+     "s": 5,
+     "text": "Natural things have their source of change within them; formal, efficient and final causes often coincide; the oak example.",
+     "accuracy": "overstated",
+     "by": "FAL",
+     "note": "The source's Physics II.7 sentence quoted; the oak example and the internal-principle contrast cut."
+    },
+    {
+     "s": 6,
+     "text": "Explanation of organs by purpose persisted until early modern mechanism.",
+     "accuracy": "unverified",
+     "note": "Cut."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "Aristotle's four kinds of cause: material (what a thing is made of), formal (its form), efficient (what brought it about) and final (what it is for).",
+     "claims": [
+      {
+       "by": "FAL"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "The Greek word is aitia, and Andrea Falcon suggests that “it can be useful to think of a cause as a certain type of explanation”.",
+     "claims": [
+      {
+       "by": "FAL"
+      }
+     ]
+    },
+    {
+     "text": "Aristotle gives his general account of the four causes in Physics II 3 and Metaphysics V 2.",
+     "claims": [
+      {
+       "by": "FAL"
+      }
+     ]
+    },
+    {
+     "text": "In the making of a bronze statue, the bronze enters the explanation as the material cause, and the statue enters the explanation of each step of the work as the final cause.",
+     "claims": [
+      {
+       "by": "FAL"
+      }
+     ]
+    },
+    {
+     "text": "In nature, Aristotle observes, “the form and the end often coincide, and they are formally the same as that which produces the change”.",
+     "claims": [
+      {
+       "by": "FAL"
+      }
+     ]
+    },
+    {
+     "text": "Hobbes and Descartes took William Harvey's work as a turn away from Galenic and Aristotelian anatomy, with its appeal to final causes, toward mechanistic science.",
+     "claims": [
+      {
+       "by": "TEL"
+      }
+     ]
+    }
+   ],
+   "s": "Aristotle, Physics II.3, II.7; Metaphysics V.2",
+   "src": "FAL",
+   "srcs": [
+    "TEL"
+   ]
+  },
+  "potentiality": {
+   "old": [
+    {
+     "s": 1,
+     "text": "Dunamis and energeia; the acorn and the oak.",
+     "accuracy": "supported",
+     "by": "ARM",
+     "note": "Example kept as an illustration."
+    },
+    {
+     "s": 2,
+     "text": "Introduced to answer Parmenides' denial of change: change is the actualizing of a potential.",
+     "accuracy": "unverified",
+     "note": "Not in the source consulted; cut."
+    },
+    {
+     "s": 3,
+     "text": "Actuality is prior to potentiality in definition and substance; the unmoved mover is pure actuality.",
+     "accuracy": "supported",
+     "by": "ARM",
+     "note": "Priority in time added; the mover in the source's words."
+    },
+    {
+     "s": 4,
+     "text": "Shapes medieval accounts of God and the soul, and later theories of development, including Hegel's.",
+     "accuracy": "unverified",
+     "note": "Cut; Aquinas and Hegel taken off the entry's thinkers."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "Aristotle's dunamis and energeia: a capacity to be or do something, and its realization. The acorn is potentially an oak; the grown oak is the actuality toward which it develops.",
+     "claims": [
+      {
+       "by": "ARM"
+      },
+      {
+       "by": "editorial"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "In the strictest sense, C. D. C. Reeve writes, “a dunamis is the power that a thing has to produce a change”.",
+     "claims": [
+      {
+       "by": "ARM"
+      }
+     ]
+    },
+    {
+     "text": "Metaphysics IX (Theta) argues that actuality is prior to potentiality in account, in time and in substance.",
+     "claims": [
+      {
+       "by": "ARM"
+      }
+     ]
+    },
+    {
+     "text": "Because what is potentially may possibly not be, eternal movement needs a starting-point “the very substance of which is activity”, and “the primary essence does not have matter, since it is an actuality”.",
+     "claims": [
+      {
+       "by": "ARM"
+      }
+     ]
+    }
+   ],
+   "s": "Aristotle, Metaphysics IX; XII.6–8",
+   "src": "ARM",
+   "srcs": []
+  },
+  "essence": {
+   "old": [
+    {
+     "s": 1,
+     "text": "What a thing is; quiddity, the scholastic name; accidents.",
+     "accuracy": "editorial",
+     "note": "The scholastic term cut."
+    },
+    {
+     "s": 2,
+     "text": "Aristotle's “what it was to be” given in its definition.",
+     "accuracy": "supported",
+     "by": "ARM"
+    },
+    {
+     "s": 3,
+     "text": "Ibn Sīnā distinguished essence from existence (the horse example), and Aquinas built on the distinction.",
+     "accuracy": "overstated",
+     "by": "BEN",
+     "note": "The Aquinas clause has no source consulted; cut."
+    },
+    {
+     "s": 4,
+     "text": "Locke's real and nominal essences.",
+     "accuracy": "supported",
+     "by": "LOC"
+    },
+    {
+     "s": 5,
+     "text": "Existentialists reverse the order: “existence precedes essence.”",
+     "accuracy": "supported",
+     "by": "AHO"
+    }
+   ],
+   "new_d": [
+    {
+     "text": "What a thing is, as its definition states it.",
+     "claims": [
+      {
+       "by": "ARM"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "“Essence” is the standard English translation of Aristotle's phrase to ti ên einai; for Aristotle there is an essence only of those things whose account is a definition, and each substance is one and the same as its essence.",
+     "claims": [
+      {
+       "by": "ARM"
+      }
+     ]
+    },
+    {
+     "text": "Ibn Sīnā argued that essence and existence are distinct, since, as Fedor Benevich puts his argument, “we can know what things are (human beings, horses, triangles) without knowing whether they exist”.",
+     "claims": [
+      {
+       "by": "BEN"
+      }
+     ]
+    },
+    {
+     "text": "Locke separates the real essence of a material thing, its atomic constitution, which is “quite unknown to us”, from its nominal essence, the general idea by which we pick out a sort.",
+     "claims": [
+      {
+       "by": "LOC"
+      }
+     ]
+    },
+    {
+     "text": "Sartre's existentialism reverses the order for human beings: existence precedes essence, meaning that a human being “exists, turns up, appears on the scene, and, only afterwards, defines himself”.",
+     "claims": [
+      {
+       "by": "AHO"
+      }
+     ]
+    }
+   ],
+   "s": "Aristotle, Metaphysics VII.4–6; Locke, Essay III.iii; Sartre, Existentialism Is a Humanism (1946)",
+   "src": "ARM",
+   "srcs": [
+    "BEN",
+    "LOC",
+    "AHO"
+   ]
+  },
+  "eudaimonia": {
+   "old": [
+    {
+     "s": 1,
+     "text": "Highest human good, “happiness” or “flourishing”: activity of the soul in accordance with virtue.",
+     "accuracy": "supported",
+     "by": "KRA; NE I.7"
+    },
+    {
+     "s": 2,
+     "text": "A complete life of activity, needing external goods; its highest form is contemplation.",
+     "accuracy": "supported",
+     "by": "KRA"
+    },
+    {
+     "s": 3,
+     "text": "The Stoics held virtue alone suffices; the Epicureans identified it with tranquility and freedom from pain.",
+     "accuracy": "unverified",
+     "note": "Not in the source consulted; cut."
+    },
+    {
+     "s": 4,
+     "text": "Modern research on well-being uses the term for flourishing.",
+     "accuracy": "unverified",
+     "note": "Cut."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "Aristotle's term for the highest human good, usually translated “happiness” or “flourishing”: activity of the rational part of the soul in accordance with virtue.",
+     "claims": [
+      {
+       "by": "KRA"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "In F. H. Peters's translation the good of man is “exercise of his faculties in accordance with excellence or virtue, or, if there be more than one, in accordance with the best and most complete virtue”.",
+     "claims": [
+      {
+       "by": "NE I.7"
+      }
+     ]
+    },
+    {
+     "text": "Richard Kraut writes that “using reason well over the course of a full life is what happiness consists in”, and that one must also possess “such goods as friends, wealth, and power”.",
+     "claims": [
+      {
+       "by": "KRA"
+      }
+     ]
+    },
+    {
+     "text": "In Book X perfect happiness consists in contemplation, and the happiest kind of life is that of a philosopher.",
+     "claims": [
+      {
+       "by": "KRA"
+      }
+     ]
+    }
+   ],
+   "s": "Aristotle, Nicomachean Ethics I.7, X.7–8 (Peters trans.)",
+   "src": "KRA",
+   "srcs": []
+  }
+ }
+}
