@@ -73,7 +73,8 @@ async def main():
         await page.evaluate("closeOverlay()")
 
         # 2 meeting
-        await page.evaluate("openTerm('univocity')"); await page.wait_for_timeout(300)
+        await page.evaluate("openTerm('univocity')")
+        await page.wait_for_function("/Univocity/.test(document.querySelector('#toast').textContent)", timeout=5000)
         m = await page.evaluate("[S.mastery.get('term:univocity')?.met > 0, document.querySelector('#toast').textContent, document.querySelector('#toast').classList.contains('earn')]")
         check(m[0] and m[1].startswith("Met: Univocity") and m[2], f"opening a checked term meets it, with a toast that pops ({m[1]})")
         await page.evaluate("openTerm('univocity')"); await page.wait_for_timeout(200)
