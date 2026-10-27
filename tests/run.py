@@ -11,14 +11,14 @@ from concurrent.futures import ThreadPoolExecutor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 FIRST = ["pdf_import"]
-# Timing checks (a page flip within so many milliseconds) run alone at the end, so the other tests can't slow them down.
-LAST = ["paged_reader"]
+# Timing-sensitive tests (a page flip within so many milliseconds, a summary saved as the page turns) run alone at the end, so the other tests can't slow them down.
+LAST = ["paged_reader", "navigate"]
 GROUPS = {
-    "storage": ["smoke", "trash", "classics", "printed_page"],
+    "storage": ["smoke", "trash", "classics", "printed_page", "mastery"],
     "reader": ["paged_reader", "structure", "comfort", "navigate", "highlights", "notes_lookup", "quotes_language", "pin",
                "followups", "classics", "printed_page", "editions", "density"],
     "import": ["pdf_import", "pdf_highlights", "wikisource"],
-    "reference": ["study_tools", "links", "in_your_books", "density"],
+    "reference": ["study_tools", "links", "in_your_books", "density", "mastery"],
     "look": ["contrast", "smoke"],
 }
 ALL = sorted(f[:-3] for f in os.listdir(HERE) if f.endswith(".py") and f != "run.py")
