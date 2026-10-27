@@ -1,0 +1,699 @@
+{
+ "audit": "glossary-spinoza",
+ "audited": "2026-10-26",
+ "mode": "in place",
+ "scope": "Glossary entries on Spinoza's metaphysics and its neighbours: substance, attribute, mode, conatus, immanence, monism, teleology",
+ "by": {
+  "first_pass": "Claude (Opus 5.5), drafting and checking against the sources below",
+  "review": "Independent reviewer (separate agent, fresh context), 2026-10-26: checked every new sentence and quotation against its source (36 lookups; Stanford pages through WebFetch, bundled texts directly); all quotations verbatim; conatus and teleology passed as drafted; fixed as asked: Descartes's principal attribute limited to created substances (substance, attribute), Nadler's 'perhaps' restored, the Locke phrase attributed to Uzgalis, the attribute debate restated as finite versus infinite intellect, an unsourced note on the Latin immanens cut, Deleuze's claim brought to the source's wording, Schaffer's priority-monism list marked as partial; passed after the fixes."
+ },
+ "sources": {
+  "SPN": {
+   "name": "Steven Nadler, “Baruch Spinoza”, Stanford Encyclopedia of Philosophy (substantive revision 8 November 2023)",
+   "src": "https://plato.stanford.edu/entries/spinoza/"
+  },
+  "ATT": {
+   "name": "Noa Shein, “Spinoza’s Theory of Attributes”, Stanford Encyclopedia of Philosophy (substantive revision 3 June 2023)",
+   "src": "https://plato.stanford.edu/entries/spinoza-attributes/"
+  },
+  "ARM": {
+   "name": "C. D. C. Reeve, “Aristotle’s Metaphysics”, Stanford Encyclopedia of Philosophy (substantive revision 24 January 2025)",
+   "src": "https://plato.stanford.edu/entries/aristotle-metaphysics/"
+  },
+  "LOC": {
+   "name": "William Uzgalis, “John Locke”, Stanford Encyclopedia of Philosophy (revision 7 July 2022)",
+   "src": "https://plato.stanford.edu/entries/locke/"
+  },
+  "MON": {
+   "name": "Jonathan Schaffer, “Monism”, Stanford Encyclopedia of Philosophy (substantive revision 10 December 2018)",
+   "src": "https://plato.stanford.edu/entries/monism/"
+  },
+  "TEL": {
+   "name": "Colin Allen and Jacob Neal, “Teleological Notions in Biology”, Stanford Encyclopedia of Philosophy (substantive revision 6 February 2026)",
+   "src": "https://plato.stanford.edu/entries/teleology-biology/"
+  },
+  "KNT": {
+   "name": "Michael Rohlf, “Immanuel Kant”, Stanford Encyclopedia of Philosophy (Spring 2020 edition)",
+   "src": "https://plato.stanford.edu/archives/spr2020/entries/kant/"
+  },
+  "CRT": {
+   "name": "Jeffrey Flynn, “Critical Theory (Frankfurt School)”, Stanford Encyclopedia of Philosophy (2023)",
+   "src": "https://plato.stanford.edu/entries/critical-theory/"
+  },
+  "DEL": {
+   "name": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss; revised by Voss, 2022)",
+   "src": "https://plato.stanford.edu/entries/deleuze/"
+  },
+  "ETH": {
+   "name": "Spinoza, Ethics, trans. R. H. M. Elwes (1883), the edition bundled with the app"
+  },
+  "LEV": {
+   "name": "Hobbes, Leviathan (1651), the edition bundled with the app"
+  },
+  "BGE": {
+   "name": "Nietzsche, Beyond Good and Evil, trans. Helen Zimmern, the edition bundled with the app"
+  }
+ },
+ "note": "Spinoza is quoted from the bundled Elwes translation (public domain), so every quotation can be checked against the text in the app and opened there; the earlier Curley quotations ran past the repository's limit for copyrighted text.",
+ "terms": {
+  "substance": {
+   "old": [
+    {
+     "s": 1,
+     "text": "Spinoza: “By substance I understand what is in itself and is conceived through itself…” (Curley trans.)",
+     "accuracy": "supported",
+     "by": "ETH I Def. 3",
+     "note": "Curley's wording, from a copyrighted translation; replaced by the bundled Elwes text so the quotation can be checked and linked."
+    },
+    {
+     "s": 2,
+     "text": "Aristotle's Categories treats individual things, this man or this horse, as primary substances; Metaphysics VII asks whether substance is form, matter or their compound.",
+     "accuracy": "overstated",
+     "by": "ARM",
+     "note": "Zeta.3 lists essence, universal, genus and subject; matter, form and compound are candidates for subject."
+    },
+    {
+     "s": 3,
+     "text": "Descartes counts two kinds of created substance, thinking and extended, which raises the problem of how they interact.",
+     "accuracy": "supported",
+     "by": "SPN; ATT"
+    },
+    {
+     "s": 4,
+     "text": "Spinoza argues from his definition that there can be only one substance, God or Nature, of which minds and bodies are modes.",
+     "accuracy": "supported",
+     "by": "SPN; ETH I Prop. 14"
+    },
+    {
+     "s": 5,
+     "text": "Locke held that our idea of substance is only the idea of an unknown support of qualities.",
+     "accuracy": "supported",
+     "by": "LOC",
+     "note": "Given Locke's own phrase."
+    },
+    {
+     "s": 6,
+     "text": "srcName/src: Stanford Encyclopedia “Metaphysics”",
+     "accuracy": "unverified",
+     "note": "The general Metaphysics entry was not the source of these claims; replaced by the entries consulted."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "What exists in its own right and bears properties, Aristotle's ousia. Spinoza: “By substance, I mean that which is in itself, and is conceived through itself”.",
+     "claims": [
+      {
+       "by": "ARM"
+      },
+      {
+       "by": "ETH I Def. 3"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "In the Categories Aristotle gives an individual man or horse as examples of primary substances.",
+     "claims": [
+      {
+       "by": "ARM"
+      }
+     ]
+    },
+    {
+     "text": "Metaphysics VII (Zeta) lists essence, universal, genus and subject as candidates for the substance of a thing, and counts matter, form and their compound as subjects.",
+     "claims": [
+      {
+       "by": "ARM"
+      }
+     ]
+    },
+    {
+     "text": "For Descartes each created substance has a principal attribute that is its essence, thought for minds and extension for bodies, and the mind-body problem, how “two radically different substances such as mind and body” can interact, is in Steven Nadler's words perhaps the most celebrated legacy of his dualism.",
+     "claims": [
+      {
+       "by": "ATT"
+      },
+      {
+       "by": "SPN"
+      }
+     ]
+    },
+    {
+     "text": "Spinoza argues that there is only one substance, God or Nature, and that minds and bodies are its modes.",
+     "claims": [
+      {
+       "by": "SPN"
+      },
+      {
+       "by": "ETH I Prop. 14"
+      }
+     ]
+    },
+    {
+     "text": "William Uzgalis describes Locke's substance in general as a “something I know not what”, the support of qualities that cannot subsist by themselves.",
+     "claims": [
+      {
+       "by": "LOC"
+      }
+     ]
+    }
+   ],
+   "s": "Aristotle, Categories 5 and Metaphysics VII; Descartes, Principles of Philosophy I.51–53; Spinoza, Ethics I, Def. 3 and Prop. 14 (Elwes trans.); Locke, Essay Concerning Human Understanding II.xxiii",
+   "src": "ARM",
+   "srcs": [
+    "SPN",
+    "ATT",
+    "LOC"
+   ]
+  },
+  "attribute": {
+   "old": [
+    {
+     "s": 1,
+     "text": "Spinoza: “By attribute I understand what the intellect perceives of a substance, as constituting its essence.” (Curley trans.)",
+     "accuracy": "supported",
+     "by": "ETH I Def. 4",
+     "note": "Curley quotation of 16 words exceeds the repository's limit for copyrighted text; replaced by Elwes."
+    },
+    {
+     "s": 2,
+     "text": "For Descartes each substance has one principal attribute: thought for minds, extension for bodies.",
+     "accuracy": "supported",
+     "by": "ATT"
+    },
+    {
+     "s": 3,
+     "text": "Spinoza's God has infinitely many attributes, of which we know two, thought and extension, and a mind and its body are one and the same thing conceived under two attributes.",
+     "accuracy": "supported",
+     "by": "ATT; SPN; ETH II Prop. 7 Note"
+    },
+    {
+     "s": 4,
+     "text": "Commentators still debate whether Spinoza's attributes are really distinct features of substance or the ways an intellect grasps it.",
+     "accuracy": "supported",
+     "by": "ATT",
+     "note": "Camps now named as the source names them."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "An essential property of a substance. Spinoza: “By attribute, I mean that which the intellect perceives as constituting the essence of substance”.",
+     "claims": [
+      {
+       "by": "ETH I Def. 4"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "For Descartes each created substance has a principal attribute, which is its essence: thought for minds, extension for bodies.",
+     "claims": [
+      {
+       "by": "ATT"
+      }
+     ]
+    },
+    {
+     "text": "Spinoza defines God as a substance consisting of infinite attributes, and holds that we know only two of them, thought and extension.",
+     "claims": [
+      {
+       "by": "ETH I Def. 6"
+      },
+      {
+       "by": "ATT"
+      },
+      {
+       "by": "SPN"
+      }
+     ]
+    },
+    {
+     "text": "In his words, “a mode of extension and the idea of that mode are one and the same thing, though expressed in two ways”, so a human mind and its body are one thing conceived under two attributes.",
+     "claims": [
+      {
+       "by": "ETH II Prop. 7 Note"
+      },
+      {
+       "by": "SPN"
+      }
+     ]
+    },
+    {
+     "text": "Interpreters divide over the definition: a subjective reading, which follows Hegel, takes the attributes to be what a finite intellect perceives of substance as if constituting its essence, and the objective reading, now the standard, takes them to be what the infinite intellect perceives as in fact constituting it.",
+     "claims": [
+      {
+       "by": "ATT"
+      }
+     ]
+    }
+   ],
+   "s": "Spinoza, Ethics I, Defs. 4 and 6; II, Prop. 7, Schol. (Elwes trans.); Descartes, Principles of Philosophy I.53",
+   "src": "ATT",
+   "srcs": [
+    "SPN"
+   ]
+  },
+  "mode": {
+   "old": [
+    {
+     "s": 1,
+     "text": "Spinoza: “By mode I understand the affections of a substance, or that which is in another through which it is also conceived.” (Curley trans.)",
+     "accuracy": "supported",
+     "by": "ETH I Def. 5",
+     "note": "Curley quotation of 21 words exceeds the limit; replaced by Elwes."
+    },
+    {
+     "s": 2,
+     "text": "Modes are the particular, dependent things and states that exist in substance: this body, this idea, a motion, a feeling.",
+     "accuracy": "supported",
+     "by": "SPN",
+     "note": "Examples cut to the source's."
+    },
+    {
+     "s": 3,
+     "text": "Descartes uses the term for the variable features of a substance, such as a particular shape of an extended body.",
+     "accuracy": "unverified",
+     "note": "No source consulted covers Descartes's modes; cut."
+    },
+    {
+     "s": 4,
+     "text": "In Spinoza every finite thing, including each human being, is a mode of the one substance, and its striving to persist (conatus) is its actual essence.",
+     "accuracy": "supported",
+     "by": "SPN; ETH III Prop. 7"
+    }
+   ],
+   "new_d": [
+    {
+     "text": "A way or modification in which a substance exists. Spinoza: “By mode, I mean the modifications of substance, or that which exists in, and is conceived through, something other than itself”.",
+     "claims": [
+      {
+       "by": "ETH I Def. 5"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Modes are the dependent things and states that exist in a substance, such as this body or this idea.",
+     "claims": [
+      {
+       "by": "SPN"
+      }
+     ]
+    },
+    {
+     "text": "In Spinoza every particular thing, minds and bodies included, is a mode of God's attributes: bodies are modes of extension, and ideas modes of thought.",
+     "claims": [
+      {
+       "by": "SPN"
+      }
+     ]
+    },
+    {
+     "text": "Each thing strives to persist in its being, and Spinoza calls this striving “nothing else but the actual essence of the thing in question”.",
+     "claims": [
+      {
+       "by": "ETH III Prop. 6"
+      },
+      {
+       "by": "ETH III Prop. 7"
+      }
+     ]
+    },
+    {
+     "text": "The Stanford Encyclopedia describes the result of Deleuze's reading of Spinoza as “a Spinozism minus substance, a purely modal or differential universe”.",
+     "claims": [
+      {
+       "by": "DEL"
+      }
+     ]
+    }
+   ],
+   "s": "Spinoza, Ethics I, Def. 5; III, Prop. 7 (Elwes trans.)",
+   "src": "SPN",
+   "srcs": [
+    "DEL"
+   ]
+  },
+  "conatus": {
+   "old": [
+    {
+     "s": 1,
+     "text": "Spinoza: “Each thing, as far as it can by its own power, strives to persevere in its being.” (Curley trans.)",
+     "accuracy": "supported",
+     "by": "SPN; ETH III Prop. 6",
+     "note": "Replaced by Elwes."
+    },
+    {
+     "s": 2,
+     "text": "The Latin word means effort or endeavour.",
+     "accuracy": "editorial",
+     "note": "Cut; the point is carried by Hobbes's “endeavour”."
+    },
+    {
+     "s": 3,
+     "text": "Hobbes used it for the small beginnings of motion, including appetite and aversion.",
+     "accuracy": "supported",
+     "by": "LEV ch. 6",
+     "note": "Hobbes's word in English is “endeavour”; now quoted."
+    },
+    {
+     "s": 4,
+     "text": "Spinoza makes conatus the actual essence of every thing; in human beings, who are conscious of it, it is called desire, and joy and sadness are passages to greater or lesser power of acting.",
+     "accuracy": "supported",
+     "by": "ETH III Props. 7, 9 Note, 11 Note; SPN"
+    },
+    {
+     "s": 5,
+     "text": "Nietzsche called self-preservation a superfluous teleological principle that we owe to Spinoza's inconsistency, and put will to power in its place.",
+     "accuracy": "overstated",
+     "by": "BGE §13",
+     "note": "Nietzsche says self-preservation is an indirect result of will to power; “put in its place” replaced by his words."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "The striving of each thing to persist in its being. Spinoza: “Everything, in so far as it is in itself, endeavours to persist in its own being”.",
+     "claims": [
+      {
+       "by": "ETH III Prop. 6"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Hobbes calls the small beginnings of motion within the body, before they appear in visible actions, “endeavour”, and endeavour toward something is appetite or desire.",
+     "claims": [
+      {
+       "by": "LEV ch. 6"
+      }
+     ]
+    },
+    {
+     "text": "Spinoza makes the striving the actual essence of each thing.",
+     "claims": [
+      {
+       "by": "ETH III Prop. 7"
+      },
+      {
+       "by": "SPN"
+      }
+     ]
+    },
+    {
+     "text": "In human beings, who are conscious of it, it is desire: “Desire is appetite with consciousness thereof”.",
+     "claims": [
+      {
+       "by": "ETH III Prop. 9 Note"
+      }
+     ]
+    },
+    {
+     "text": "Joy and sadness, pleasure and pain in Elwes's translation, are passages to a greater or a lesser perfection or power of acting.",
+     "claims": [
+      {
+       "by": "ETH III Prop. 11 Note"
+      },
+      {
+       "by": "SPN"
+      }
+     ]
+    },
+    {
+     "text": "Nietzsche's Beyond Good and Evil counts the instinct of self-preservation among superfluous teleological principles (“we owe it to Spinoza’s inconsistency”) and holds that life itself is will to power.",
+     "claims": [
+      {
+       "by": "BGE §13"
+      }
+     ]
+    }
+   ],
+   "s": "Spinoza, Ethics III, Props. 6–9, 11 Schol. (Elwes trans.); Hobbes, Leviathan (1651), ch. 6; Nietzsche, Beyond Good and Evil (1886), §13",
+   "src": "SPN",
+   "srcs": []
+  },
+  "immanence": {
+   "old": [
+    {
+     "s": 1,
+     "text": "Spinoza: “God is the immanent, not the transitive, cause of all things.” (Curley trans.)",
+     "accuracy": "supported",
+     "by": "ETH I Prop. 18",
+     "note": "Replaced by Elwes, with a note on his “indwelling”."
+    },
+    {
+     "s": 2,
+     "text": "The term has several uses.",
+     "accuracy": "editorial",
+     "note": "Cut."
+    },
+    {
+     "s": 3,
+     "text": "In theology an immanent God dwells within the world; its opposite is a God who transcends it.",
+     "accuracy": "supported",
+     "by": "SPN",
+     "note": "Now given through Nadler's contrast with a transcendent creator."
+    },
+    {
+     "s": 4,
+     "text": "In Kant, immanent principles apply within the limits of possible experience, while transcendent ones claim to pass those limits.",
+     "accuracy": "supported",
+     "by": "KNT",
+     "note": "Reworded to the source."
+    },
+    {
+     "s": 5,
+     "text": "In phenomenology, what is immanent belongs to consciousness itself.",
+     "accuracy": "unverified",
+     "note": "No source consulted; cut, and Husserl taken off the entry's thinkers."
+    },
+    {
+     "s": 6,
+     "text": "Immanent critique applies the same idea to criticism, judging a position by its own standards.",
+     "accuracy": "supported",
+     "by": "CRT"
+    }
+   ],
+   "new_d": [
+    {
+     "text": "Existing or operating within something; an immanent cause produces effects that remain in it. Spinoza: “God is the indwelling and not the transient cause of all things”.",
+     "claims": [
+      {
+       "by": "ETH I Prop. 18"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Steven Nadler describes Spinoza's God as the “universal, immanent and sustaining cause of all that exists”, and sets this against the traditional picture of a transcendent creator who freely makes a world distinct from himself.",
+     "claims": [
+      {
+       "by": "SPN"
+      }
+     ]
+    },
+    {
+     "text": "Kant calls immanent a metaphysics of the principles at work within human experience, and transcendent the claimed a priori knowledge of things in themselves, which he holds impossible.",
+     "claims": [
+      {
+       "by": "KNT"
+      }
+     ]
+    },
+    {
+     "text": "Immanent critique judges a society or a position by standards drawn from its own norms.",
+     "claims": [
+      {
+       "by": "CRT"
+      }
+     ]
+    },
+    {
+     "text": "Deleuze characterized his own work as a philosophy of immanence: see plane of immanence.",
+     "claims": [
+      {
+       "by": "DEL"
+      }
+     ]
+    }
+   ],
+   "s": "Spinoza, Ethics I, Prop. 18 (Elwes trans.); Kant, Critique of Pure Reason, A295–96/B352–53",
+   "src": "SPN",
+   "srcs": [
+    "KNT",
+    "CRT"
+   ]
+  },
+  "monism": {
+   "old": [
+    {
+     "s": 1,
+     "text": "Substance monism says there is one substance; existence monism says there is one concrete thing; kind monism says everything is of one kind, as materialism and idealism each claim.",
+     "accuracy": "overstated",
+     "by": "MON",
+     "note": "Schaffer's substance monism counts by highest types; priority monism added."
+    },
+    {
+     "s": 2,
+     "text": "Parmenides argued that being is one and unchanging, since what is not cannot be thought.",
+     "accuracy": "unverified",
+     "note": "Cut here; the Parmenides card covers him. Schaffer lists him only as a possible existence monist."
+    },
+    {
+     "s": 3,
+     "text": "Spinoza's “God or Nature” (Deus sive Natura) is the classic early modern monism, and the Advaita Vedānta identification of self and Brahman is often compared with it.",
+     "accuracy": "unverified",
+     "by": "ETH IV Preface",
+     "note": "“God or Nature” kept from the Ethics; the Advaita comparison has no source and is cut."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "The view that reality is ultimately one thing, or one kind of thing. Spinoza holds that there is a single substance, God or Nature.",
+     "claims": [
+      {
+       "by": "MON"
+      },
+      {
+       "by": "SPN"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Jonathan Schaffer notes that there are many monisms, and that what they share is that they attribute oneness.",
+     "claims": [
+      {
+       "by": "MON"
+      }
+     ]
+    },
+    {
+     "text": "Existence monism counts concrete objects and holds there is one; priority monism counts only basic ones; substance monism counts by highest types; and materialists, idealists and neutral monists are all monists about kinds.",
+     "claims": [
+      {
+       "by": "MON"
+      }
+     ]
+    },
+    {
+     "text": "Schaffer names Parmenides, Melissus, Spinoza and Bradley as possible defenders of existence monism, and Plato, Plotinus, Proclus, Spinoza and Hegel, among others, of priority monism.",
+     "claims": [
+      {
+       "by": "MON"
+      }
+     ]
+    },
+    {
+     "text": "Spinoza's phrase for the one substance is “God or Nature”.",
+     "claims": [
+      {
+       "by": "ETH IV Preface"
+      },
+      {
+       "by": "SPN"
+      }
+     ]
+    }
+   ],
+   "s": "Spinoza, Ethics I, Prop. 14; IV, Preface (Elwes trans.)",
+   "src": "MON",
+   "srcs": [
+    "SPN"
+   ]
+  },
+  "teleology": {
+   "old": [
+    {
+     "s": 1,
+     "text": "Explanation by ends or purposes (Greek telos), with eyes and the acorn as examples.",
+     "accuracy": "editorial"
+    },
+    {
+     "s": 2,
+     "text": "Aristotle's final cause is teleological, and he applied it throughout nature.",
+     "accuracy": "overstated",
+     "by": "TEL",
+     "note": "The source speaks of the teleology of living beings, which is immanent."
+    },
+    {
+     "s": 3,
+     "text": "Early modern mechanists such as Descartes and Spinoza expelled final causes from physics; Spinoza called them human fictions projected onto nature.",
+     "accuracy": "overstated",
+     "by": "ETH I Appendix; SPN",
+     "note": "The Descartes half has no source consulted; Spinoza now in his own words."
+    },
+    {
+     "s": 4,
+     "text": "Kant held that we must judge organisms as if they were purposive, while claiming no knowledge that nature has purposes.",
+     "accuracy": "supported",
+     "by": "TEL"
+    },
+    {
+     "s": 5,
+     "text": "Darwin explained apparent design by natural selection, and debate continues about whether talk of biological functions is teleological.",
+     "accuracy": "overstated",
+     "by": "TEL",
+     "note": "The source reports the claim (Ghiselin) and the disagreement; it is now attributed."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "Explanation by ends or purposes (Greek telos). A teleological explanation says what something is for: eyes are for seeing, and an acorn grows toward being an oak.",
+     "claims": [
+      {
+       "by": "editorial"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "For Aristotle the teleology that directs living beings is immanent: the goal lies within the organism.",
+     "claims": [
+      {
+       "by": "TEL"
+      }
+     ]
+    },
+    {
+     "text": "Spinoza's appendix to the first part of the Ethics argues that “nature has no particular goal in view, and that final causes are mere human figments”.",
+     "claims": [
+      {
+       "by": "ETH I Appendix"
+      },
+      {
+       "by": "SPN"
+      }
+     ]
+    },
+    {
+     "text": "Kant held that humans inevitably understand living things as if they were teleological systems.",
+     "claims": [
+      {
+       "by": "TEL"
+      }
+     ]
+    },
+    {
+     "text": "The biologist Michael Ghiselin held that Darwin's theory got rid of teleology, and there is still disagreement over whether evolutionary explanations are teleological.",
+     "claims": [
+      {
+       "by": "TEL"
+      }
+     ]
+    }
+   ],
+   "s": "Aristotle, Physics II.8; Spinoza, Ethics I, Appendix (Elwes trans.); Kant, Critique of the Power of Judgment (1790), §§64–66",
+   "src": "TEL",
+   "srcs": [
+    "SPN"
+   ]
+  }
+ }
+}
