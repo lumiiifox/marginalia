@@ -118,7 +118,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - Flashcards for Anki (Export → `ankiRows`, `ankiFile`): tab-separated text with Anki's import headers (2.1.54+), HTML fields made safe by
   `ankiCell`; "mine" is your notes, the terms you added or edited and your looked-up words, "glossary" every entry.
 - Connections between thinkers (`CONNECTIONS` at the end of `data/thinkers.js`; `connectionsHTML` on both thinkers' cards, `CONN_KINDS`,
-  `connectionsOf`): each has a kind (influence, critique, reinterpretation), a one-sentence claim, `text` (what the primary texts show: a
+  `connectionsOf`; `from` and `to` are an id or a list, `connFrom`/`connTo`, so co-authors act together and each co-author's card says "(with …)"): each has a kind (influence, critique, reinterpretation), a one-sentence claim, `text` (what the primary texts show: a
   reference into a bundled classic, opened like an article's, or where the words were checked) kept apart from `reading` (what named
   scholarship argues, with its source). Every connection has a reading and a passed independent review in `tests/audit/connections.json`;
   a "drew on" entry in `THINKERS` may rest on one. Tested by `tests/study_tools.py` (`connections`).
@@ -167,7 +167,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   muted (`.dguide`); ordinary draft items, so backups need nothing new.
 - Puzzles (Thinkers → Puzzles, `puzzlesMenu`): Guess the thinker, Connect two thinkers and Order of birth. Connect (`connectPanel`, state in `CN`):
   `tookMap` reads the "drew on" lists the other way, `lineFrom` finds distances and a shortest route; a target is `CN.k` steps on, with
-  `CN_SLACK` steps to spare. Order of birth (`orderPanel`, `OB`): five exact births `ORDER_GAP` years apart, the answer drawn by `termTimeHTML`.
+  `CN_SLACK` steps to spare. A step along a checked connection is marked ✓ (`cnChecked`, `CN_TICK`) and counts toward Mastery. Order of birth (`orderPanel`, `OB`): five exact births `ORDER_GAP` years apart, the answer drawn by `termTimeHTML`.
   Nothing stored.
 - Guess the thinker (`guessPanel`, from Thinkers → Puzzles): `guessOfDay` picks from `guessPool` by `dayNumber`, every one once a round;
   `guessClues` builds up to `GUESS_MAX` clues from the entries with the name blanked out. Today's game is in `localStorage` as `mg-guess` (not in

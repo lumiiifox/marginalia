@@ -64,8 +64,8 @@ async def main():
         check(sorted(lists[0]) == sorted(terms), "VERIFIED_TERMS are exactly the audited glossary entries")
         check(sorted(lists[1]) == sorted(thinkers), "VERIFIED_THINKERS are exactly the audited thinker cards")
         conns = json.load(open(ROOT / "tests/audit/connections.json"))["connections"]
-        check(lists[2] == len(conns), f"every connection in the app has its review ({lists[2]} and {len(conns)})")
-        await page.evaluate("openTerm('substance'); thinkerPanel('kant')"); await page.wait_for_timeout(300)
+        check(lists[2] == len(conns), f"every connection in the app has its review ({lists[2]} and {len(conns)})")  # each one counts toward mastery
+        await page.evaluate("openTerm('substance'); thinkerPanel('locke')"); await page.wait_for_timeout(300)
         check(await page.evaluate("S.mastery.size") == 0, "opening an entry that hasn't been audited counts for nothing")
         await page.evaluate("closeOverlay()")
 
@@ -76,8 +76,8 @@ async def main():
         await page.evaluate("openTerm('univocity')"); await page.wait_for_timeout(200)
         check(await page.evaluate("Object.keys(S.mastery.get('term:univocity'))") == ["met"], "meeting it again earns nothing more")
         await page.evaluate("thinkerPanel('spinoza')"); await page.wait_for_timeout(300)
-        t = await page.evaluate("[['thinker:spinoza','conn:nietzsche>spinoza','conn:deleuze>spinoza'].every((k) => S.mastery.get(k)?.met), document.querySelector('#toast').textContent]")
-        check(t[0] and t[1].startswith("3 collected"), f"a thinker's card meets the thinker and their connections, in one toast ({t[1]})")
+        t = await page.evaluate("[['thinker:spinoza', ...connectionsOf('spinoza').map((c) => 'conn:' + connId(c))].every((k) => S.mastery.get(k)?.met), document.querySelector('#toast').textContent, connectionsOf('spinoza').length + 1]")
+        check(t[0] and t[1].startswith(f"{t[2]} collected"), f"a thinker's card meets the thinker and their connections, in one toast ({t[1]})")
         await page.evaluate("closeOverlay()")
 
         # 3 answering

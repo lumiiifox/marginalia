@@ -984,8 +984,8 @@ async def mentions(browser):
 async def connections(browser):
     import re, json
     page, errs = await fresh(browser)
-    data = await page.evaluate("""CONNECTIONS.map((c) => ({ from: c.from, to: connTo(c), kind: c.kind, claim: c.claim, text: c.text || [], reading: c.reading || [],
-      ok: !!THINKER.get(c.from) && connTo(c).every((x) => THINKER.get(x)) && !!CONN_KINDS[c.kind] }))""")
+    data = await page.evaluate("""CONNECTIONS.map((c) => ({ from: connFrom(c), to: connTo(c), kind: c.kind, claim: c.claim, text: c.text || [], reading: c.reading || [],
+      ok: connFrom(c).every((x) => THINKER.get(x)) && connTo(c).every((x) => THINKER.get(x)) && !!CONN_KINDS[c.kind] }))""")
     check(len(data) >= 4 and all(c["ok"] for c in data), f"every connection names known thinkers and a known kind ({[(c['from'], c['to'], c['kind']) for c in data if not c['ok']]})")
     check(all(c["reading"] and all(r.get("src", "").startswith("https://") and r.get("srcName") and r.get("says") for r in c["reading"]) for c in data),
           "every connection rests on at least one scholarly reading with its source")
@@ -996,8 +996,8 @@ async def connections(browser):
     hits = [m.group(0) for pat in CONTRASTIVE for m in re.finditer(pat, plain, flags=re.I)]
     check(not hits, f"connections: no contrastive constructions ({hits[:3]})")
     audit = json.loads((ROOT / "tests" / "audit" / "connections.json").read_text())
-    keys = {(c["from"], ",".join(c["to"]), c["kind"]) for c in data}
-    rec = {(r["from"], ",".join(r["to"] if isinstance(r["to"], list) else [r["to"]]), r["kind"]): r for r in audit["connections"]}
+    keys = {(",".join(c["from"]), ",".join(c["to"]), c["kind"]) for c in data}
+    rec = {(",".join(r["from"] if isinstance(r["from"], list) else [r["from"]]), ",".join(r["to"] if isinstance(r["to"], list) else [r["to"]]), r["kind"]): r for r in audit["connections"]}
     check(keys == set(rec) and all(r.get("review", {}).get("verdict") == "pass" for r in rec.values()),
           f"every connection has its audit record with a passed independent review ({sorted(keys ^ set(rec))})")
     refs = await page.evaluate("""(async () => { const out = [];
@@ -1012,16 +1012,25 @@ async def connections(browser):
     await page.evaluate("thinkerPanel('spinoza')"); await page.wait_for_timeout(300)
     sp = await page.evaluate("""[...document.querySelectorAll('.sheet .conn')].map((c) => ({ kind: c.dataset.connKind, head: c.querySelector('.conn-h').textContent, lines: [...c.querySelectorAll('.ck')].map((k) => k.textContent) }))""")
     heads = sorted(c["head"] for c in sp)
-    check(heads == ["Criticized by Nietzsche", "Reinterpreted by Deleuze"], f"Spinoza's card words each connection from Spinoza's side ({heads})")
+    check(heads == ["Criticized by Nietzsche", "Criticizes Descartes", "Criticizes Hobbes", "Reinterpreted by Deleuze"], f"Spinoza's card words each connection from Spinoza's side ({heads})")
     nz = [c for c in sp if c["kind"] == "critique"]
     check(nz and nz[0]["lines"][:1] == ["In the text"] and "Scholarship" in nz[0]["lines"], f"the primary text comes first, then the scholarship, each labelled ({nz})")
     await page.evaluate("thinkerPanel('land')"); await page.wait_for_timeout(300)
     land = await page.evaluate("[...document.querySelectorAll('.sheet .conn-h')].map((h) => h.textContent)")
-    check(land == ["Reinterprets Deleuze and Guattari"], f"a connection to co-authors names both, from Land's side ({land})")
+    check(land == ["Reinterprets Deleuze and Guattari", "Criticizes Kant"], f"a connection to co-authors names both, from Land's side ({land})")
     await page.evaluate("thinkerPanel('guattari')"); await page.wait_for_timeout(300)
     gu = await page.evaluate("[...document.querySelectorAll('.sheet .conn-h')].map((h) => h.textContent)")
-    check(gu == ["Reinterpreted by Land"], f"and from each co-author's ({gu})")
+    check(gu == ["Reinterpreted by Land", "Criticizes Freud (with Deleuze)", "Reinterprets Lacan (with Deleuze)"], f"and from each co-author's ({gu})")
     check(await page.evaluate("connectionsHTML('aristotle')") == "", "a thinker without connections shows no Connections row")
+    await page.evaluate("thinkerPanel('freud')"); await page.wait_for_timeout(300)
+    fr = await page.evaluate("[...document.querySelectorAll('.sheet .conn-h')].map((h) => h.textContent)")
+    check(fr == ["Criticized by Deleuze and Guattari"], f"a connection made by co-authors names both on the other side ({fr})")
+    await page.evaluate("thinkerPanel('deleuze')"); await page.wait_for_timeout(300)
+    de = await page.evaluate("[...document.querySelectorAll('.sheet .conn-h')].map((h) => h.textContent)")
+    check("Criticizes Freud (with Guattari)" in de and "Reinterprets Lacan (with Guattari)" in de, f"and on each co-author's card, with the other named ({de})")
+    await page.evaluate("connectPanel(); CN.a = 'descartes'; CN.b = 'land'; CN.chain = ['descartes', 'spinoza']; CN.over = ''; CN.shortest = 3; document.querySelector('#cnbox').innerHTML = connectHTML()")
+    ck = await page.evaluate("[document.querySelectorAll('.cnchain .cn-ck').length, [...document.querySelectorAll('[data-cngo]')].filter((b) => b.querySelector('.cn-ck')).map((b) => b.dataset.cngo)]")
+    check(ck[0] == 1 and "deleuze" in ck[1], f"Connect two thinkers marks the steps that run along checked connections ({ck})")
     # the primary reference opens the classic there
     await page.evaluate("addClassics(true)"); await page.wait_for_function("S.texts.has('classic-nietzsche-beyond')", timeout=60000)
     await page.evaluate("thinkerPanel('nietzsche')"); await page.wait_for_timeout(300)

@@ -2,7 +2,7 @@
  "id": "connections",
  "standard": "connections-2026-10",
  "date": "2026-10-25",
- "note": "Typed connections between thinkers (CONNECTIONS in data/thinkers.js). Each claim, primary-text line and reading checked against its source; quotations checked character for character.",
+ "note": "Typed connections between thinkers (CONNECTIONS in data/thinkers.js). Each claim, primary-text line and reading checked against its source; quotations checked character for character. 2026-10-26: eight connections along the reading route added; first pass by Claude, independent review by a separate agent that checked every quotation verbatim.",
  "connections": [
   {
    "from": "nietzsche",
@@ -72,6 +72,148 @@
      "Anti-Oedipus quoted as Cunningham gives it, “accelerate [or hasten] the process”",
      "Land's quotation given with its capital M",
      "Haynes linked to the open accepted version, DOI kept in the name"
+    ]
+   }
+  },
+  {
+   "from": "spinoza",
+   "to": [
+    "descartes"
+   ],
+   "kind": "critique",
+   "checked": [
+    "Ethics III, Preface (bundled Elwes, block 396): 'the illustrious Descartes', 'strove to explain human emotions by their primary causes', 'nothing beyond a display of the acuteness of his own great intellect'",
+    "Ethics V, Preface (block 975): pineal gland doctrine; 'thought in most intimate union with a certain particle of extended matter'",
+    "Schmitter, SEP 'Spinoza on the Emotions' §2: 'as both anatomically incorrect and non-explanatory'; 'that it is metaphysically impossible for the human mind to be autonomous in the way he claims Descartes believed'"
+   ],
+   "review": {
+    "verdict": "pass",
+    "by": "independent reviewer (separate agent), 2026-10-26",
+    "fixes": [
+     "'credits Descartes with explaining' changed to 'with striving to explain': Spinoza credits the attempt only ('strove to explain')"
+    ]
+   }
+  },
+  {
+   "from": "spinoza",
+   "to": [
+    "hobbes"
+   ],
+   "kind": "critique",
+   "checked": [
+    "Steinberg, SEP 'Spinoza's Political Philosophy' (substantive revision 30 Sep 2024) §2.1: 'often regarded as broadly Hobbesian'; Epistle 50 quoted: 'I always preserve natural Right unimpaired'; 'natural right is not a title that can be given away. It is—or is coextensive with—one's power'",
+    "§2.2: 'a contract can have no force except by reason of its utility'; §4.2: rejects Hobbes's definition of peace as the 'absence of war'"
+   ],
+   "review": {
+    "verdict": "pass",
+    "by": "independent reviewer (separate agent), 2026-10-26",
+    "fixes": [
+     "natural right wording brought to Steinberg's 'is, or is coextensive with, one's power'"
+    ]
+   }
+  },
+  {
+   "from": "deleuze",
+   "to": [
+    "hume"
+   ],
+   "kind": "reinterpretation",
+   "checked": [
+    "SEP 'Gilles Deleuze' (substantive revision 3 June 2022): 'Already in his Hume book, Empiricism and Subjectivity (1953), Deleuze had pointed to an empiricist reversal of Kant.' and the two questions, verbatim"
+   ],
+   "review": {
+    "verdict": "pass",
+    "by": "independent reviewer (separate agent), 2026-10-26",
+    "fixes": [
+     "subject of 'pointed to' returned to Deleuze"
+    ]
+   }
+  },
+  {
+   "from": "deleuze",
+   "to": [
+    "kant"
+   ],
+   "kind": "critique",
+   "checked": [
+    "SEP 'Gilles Deleuze' (substantive revision 3 June 2022): 'Deleuze criticizes Kant for copying the transcendental field in the image of the empirical field'; 'he had simply presumed the existence of knowledge and morality as “facts” and then sought their conditions of possibility'; 'his differential, immanent and genetic position' … 'transcendental empiricism'"
+   ],
+   "review": {
+    "verdict": "pass",
+    "by": "independent reviewer (separate agent), 2026-10-26"
+   }
+  },
+  {
+   "from": "deleuze",
+   "to": [
+    "leibniz"
+   ],
+   "kind": "reinterpretation",
+   "checked": [
+    "SEP 'Gilles Deleuze' (substantive revision 3 June 2022): 'Deleuze pushes Leibniz’s thought to a point where Leibniz could never have taken it, given his theological presuppositions'; The Fold (1988); early reading in Difference and Repetition; 'monadic' to 'nomadic'"
+   ],
+   "review": {
+    "verdict": "pass",
+    "by": "independent reviewer (separate agent), 2026-10-26",
+    "fixes": [
+     "claim reworded to the source's sense and to drop a 'beyond' construction"
+    ]
+   }
+  },
+  {
+   "from": [
+    "deleuze",
+    "guattari"
+   ],
+   "to": [
+    "freud"
+   ],
+   "kind": "critique",
+   "checked": [
+    "SEP 'Gilles Deleuze' (substantive revision 3 June 2022): desiring-production 'crisscrosses Marx and Freud'; 'is the very heart of the world'; 'psychoanalysis is transcendent use of the syntheses, producing five “paralogisms”'; 'all the paralogisms subordinate differential processes to identities derived from products'"
+   ],
+   "review": {
+    "verdict": "pass",
+    "by": "independent reviewer (separate agent), 2026-10-26",
+    "fixes": [
+     "'unconscious syntheses' changed to the entry's 'syntheses' (of desiring-production)",
+     "Freud tied in by the entry's 'crisscrosses Marx and Freud'"
+    ]
+   }
+  },
+  {
+   "from": [
+    "deleuze",
+    "guattari"
+   ],
+   "to": [
+    "lacan"
+   ],
+   "kind": "reinterpretation",
+   "checked": [
+    "SEP 'Gilles Deleuze' (substantive revision 3 June 2022): 'In Lacan, the real is produced as an illusory and retrojected remainder to a signifying system; for Deleuze and Guattari, the Real is reality itself in its process of self-making'; 'in a twisting of the Lacanian sense of the term'"
+   ],
+   "review": {
+    "verdict": "pass",
+    "by": "independent reviewer (separate agent), 2026-10-26"
+   }
+  },
+  {
+   "from": "land",
+   "to": [
+    "kant"
+   ],
+   "kind": "critique",
+   "checked": [
+    "Mackay and Brassier, Editors' Introduction to Fanged Noumena (2011), p. 6: 'At the core of Land's thought are the works of Immanuel Kant'; 'Exposing an isomorphy between the structures of capital and Kant's model of experience, Land views…'",
+    "p. 8: Land's work 'anticipates the current critical diagnosis of what Quentin Meillassoux has now named \"correlationism\" - the implicit assumption in Kant's work that whatever is outside the subject must correlate to it'",
+    "essay title 'Kant, Capital, and the Prohibition of Incest' (Third Text, 1988), checked against the Fanged Noumena contents and a copy of the 1988 paper"
+   ],
+   "review": {
+    "verdict": "pass",
+    "by": "independent reviewer (separate agent), 2026-10-26",
+    "fixes": [
+     "'the essay exposes' changed to 'Land exposes'; 'anticipates the critique' to 'his work anticipates the critical diagnosis'"
     ]
    }
   }

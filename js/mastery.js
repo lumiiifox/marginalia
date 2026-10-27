@@ -13,14 +13,14 @@
 const MASTERY_STAGES = { term: ["met", "ans", "used"], thinker: ["met", "ans", "used"], conn: ["met", "ans"], station: ["read"] };
 const STAGE_NAMES = { met: "Met", ans: "Answered", used: "Used in your notes", read: "Read" };
 const MASTERY_KIND_NAMES = { term: ["Concepts", "concept"], thinker: ["Thinkers", "thinker"], conn: ["Connections", "connection"], station: ["Close-reading stations", "station"] };
-const connId = (c) => `${c.from}>${connTo(c).join("+")}`;
+const connId = (c) => `${connFrom(c).join("+")}>${connTo(c).join("+")}`;
 const masteryKey = (kind, id) => `${kind}:${id}`;
 const VERIFIED_SET = { term: new Set(VERIFIED_TERMS), thinker: new Set(VERIFIED_THINKERS), conn: new Set(CONNECTIONS.map(connId)) };
 const validMastery = (v) => isObj(v) && Object.keys(v).every((k) => k === "met" || k === "ans") && optNum(v.met) && optNum(v.ans) && (v.met !== undefined || v.ans !== undefined);
 
 function connName(c) {
   const verb = (CONN_KINDS[c.kind] || [c.kind])[0].toLowerCase();
-  return `${THINKER.get(c.from)?.sn || c.from} ${verb} ${connTo(c).map((x) => THINKER.get(x)?.sn || x).join(" and ")}`;
+  return `${connFrom(c).map((x) => THINKER.get(x)?.sn || x).join(" and ")} ${verb} ${connTo(c).map((x) => THINKER.get(x)?.sn || x).join(" and ")}`;
 }
 // Every item in the collection, in reading-route order within each kind.
 function masteryItems() {
@@ -63,7 +63,7 @@ function withinReach(item, metKeys) {
   if (item.kind === "term") return (item.g.p || []).some((p) => has("thinker", p)) || [...(LINKS.see.get(item.id) || []), ...(LINKS.vs.get(item.id) || [])].some((t) => has("term", t));
   if (item.kind === "thinker") return connectionsOf(item.id).some((c) => has("conn", connId(c))) || VERIFIED_TERMS.some((t) => has("term", t) && (GLOSSARY_BY_ID.get(t)?.p || []).includes(item.id))
     || THINKERS.some((x) => (x.i.includes(item.id) || item.p.i.includes(x.id)) && has("thinker", x.id));
-  return [item.c.from, ...connTo(item.c)].some((p) => has("thinker", p));
+  return [...connFrom(item.c), ...connTo(item.c)].some((p) => has("thinker", p));
 }
 // The whole collection worked out once: each item's stages, and the met keys used for "within reach". Kept until a note, a book,
 // the collection or a loaded book changes (masteryKeyNow), so drawing the home screen again costs almost nothing.
@@ -156,7 +156,7 @@ function masteryCardHTML() {
 function masteryTile(it) {
   const stages = MASTERY_STAGES[it.kind], done = stagesDone(it, it.s), full = done === stages.length;
   const cls = full ? "mastered" : done ? "started" : it.reach ? "reach" : "locked";
-  const open = it.kind === "term" ? `data-term="${esc(it.id)}"` : it.kind === "thinker" ? `data-thinker="${esc(it.id)}"` : it.kind === "conn" ? `data-thinker="${esc(it.c.from)}"` : `data-mpath="${esc(it.P.id)}"`;
+  const open = it.kind === "term" ? `data-term="${esc(it.id)}"` : it.kind === "thinker" ? `data-thinker="${esc(it.id)}"` : it.kind === "conn" ? `data-thinker="${esc(connFrom(it.c)[0])}"` : `data-mpath="${esc(it.P.id)}"`;
   const pips = stages.map((k) => `<i class="${it.s[k] ? "on" : ""}" title="${esc(STAGE_NAMES[k])}"></i>`).join("");
   const label = cls === "locked" ? `<span class="mt-n">Locked</span><span class="mt-h">Meet something next to it</span>` : `<span class="mt-n">${esc(it.name)}</span>`;
   const state = full ? "mastered" : stages.map((k) => `${STAGE_NAMES[k]}: ${it.s[k] ? "yes" : "not yet"}`).join(", ");

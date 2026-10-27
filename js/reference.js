@@ -329,7 +329,7 @@ function closeState(P) {
 }
 function closePathHTML(P, tmap) {
   const state = closeState(P), all = closeStations(P), done = all.filter((st) => state.out.get(st.id).notes.length).length;
-  const conns = (P.conns || []).map(([a, b]) => CONNECTIONS.find((c) => c.from === a && connTo(c).includes(b))).filter(Boolean);
+  const conns = (P.conns || []).map(([a, b]) => CONNECTIONS.find((c) => connFrom(c).includes(a) && connTo(c).includes(b))).filter(Boolean);
   const station = (st) => {
     const s = state.out.get(st.id), read = s.notes.length > 0;
     const cite = passageLinks(esc(`(${st.refs.join("; ")})`), P.style);
@@ -351,7 +351,7 @@ function closePathHTML(P, tmap) {
     <p class="pd">${esc(P.d)}</p>
     ${state.t ? "" : `<div class="noteacts"><span class="hint">Not on your shelf: you deleted it.</span><button class="btn" data-pathadd="${esc(P.book)}">Add it back</button></div>`}
     <div class="pbar" aria-hidden="true">${all.map((st) => `<i class="${state.out.get(st.id).notes.length ? "on" : ""}"></i>`).join("")}</div>
-    ${conns.length ? chipRow("Connections", conns.map((c) => `<button class="chip" data-thinker="${esc(c.from)}">${esc(THINKER.get(c.from).sn)} ${esc((CONN_KINDS[c.kind] || [c.kind])[0].toLowerCase())} ${esc(connTo(c).map((x) => THINKER.get(x).sn).join(" and "))}</button>`).join("")) : ""}
+    ${conns.length ? chipRow("Connections", conns.map((c) => `<button class="chip" data-thinker="${esc(connFrom(c)[0])}">${esc(connFrom(c).map((x) => THINKER.get(x).sn).join(" and "))} ${esc((CONN_KINDS[c.kind] || [c.kind])[0].toLowerCase())} ${esc(connTo(c).map((x) => THINKER.get(x).sn).join(" and "))}</button>`).join("")) : ""}
     ${P.parts.map((part) => `<h3 class="ph">${esc(part.h)}</h3><ol class="psteps">${part.st.map(station).join("")}</ol>`).join("")}
     ${P.next ? `<p class="hint">${esc(P.next)}</p>` : ""}
   </section>`;

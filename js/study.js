@@ -503,13 +503,15 @@ function thinkerSources(p) {
    what scholarship argues, with its source. On both thinkers' cards, worded from each side. Nothing stored. */
 const CONN_KINDS = { influence: ["Influenced by", "Influenced"], critique: ["Criticizes", "Criticized by"], reinterpretation: ["Reinterprets", "Reinterpreted by"] };
 const connTo = (c) => (Array.isArray(c.to) ? c.to : [c.to]);
-const connectionsOf = (id) => CONNECTIONS.filter((c) => c.from === id || connTo(c).includes(id));
+const connFrom = (c) => (Array.isArray(c.from) ? c.from : [c.from]); // co-authors (Deleuze and Guattari) act together
+const connectionsOf = (id) => CONNECTIONS.filter((c) => connFrom(c).includes(id) || connTo(c).includes(id));
 function connectionsHTML(id) {
   const list = connectionsOf(id); if (!list.length) return "";
   const names = (ids) => ids.map((x) => THINKER.get(x)).filter(Boolean).map((p) => `<button class="linkbtn" data-thinker="${esc(p.id)}">${esc(p.sn)}</button>`).join(" and ");
   const one = (c) => {
-    const mine = c.from === id, [fwd, back] = CONN_KINDS[c.kind] || [c.kind, c.kind];
-    const head = mine ? `${fwd} ${names(connTo(c))}` : `${back} ${names([c.from])}`;
+    const mine = connFrom(c).includes(id), [fwd, back] = CONN_KINDS[c.kind] || [c.kind, c.kind];
+    const others = connFrom(c).filter((x) => x !== id), withWho = mine && others.length ? ` (with ${names(others)})` : "";
+    const head = mine ? `${fwd} ${names(connTo(c))}${withWho}` : `${back} ${names(connFrom(c))}`;
     const text = (c.text || []).map((t) => `<p><span class="ck">In the text</span> ${esc(t.says)}${t.ref ? ` ${passageLinks(esc(t.ref), t.style)}` : ""}${t.cite ? ` <span class="tsrc">(${esc(t.cite)})</span>` : ""}</p>`).join("");
     const reading = (c.reading || []).map((r) => `<p><span class="ck">Scholarship</span> ${esc(r.says)} <a href="${esc(r.src)}" target="_blank" rel="noopener" class="tsrc">${esc(r.srcName)}</a></p>`).join("");
     return `<div class="conn" data-conn-kind="${esc(c.kind)}"><div class="conn-h">${head}</div><p class="conn-c">${esc(c.claim)}</p>${text}${reading}</div>`;
@@ -670,23 +672,28 @@ function connectNew(k = CN.k) {
   Object.assign(CN, { k, a: "", b: "" });
 }
 const cnName = (id) => esc(THINKER.get(id)?.sn || THINKER.get(id)?.n || id);
+// A step from a to b (b took up a) that runs along a checked connection (CONNECTIONS); the other steps come from the
+// thinker entries' "drew on" lists, which haven't all been checked.
+const cnChecked = (a, b) => CONNECTIONS.some((c) => connFrom(c).includes(b) && connTo(c).includes(a));
+const CN_TICK = `<span class="cn-ck" title="A checked connection" aria-label="checked connection">✓</span>`;
 function connectHTML() {
   if (!CN.a) return `<p class="hint">The thinker entries don't have a chain that long.</p>`;
   const cur = CN.chain[CN.chain.length - 1], steps = CN.chain.length - 1, left = CN.shortest + CN_SLACK - steps;
   const diff = `<div class="chips">${[2, 3, 4].map((k) => `<button class="chip ${CN.k === k ? "on" : ""}" data-keep="1" data-cnk="${k}">${k} steps</button>`).join("")}</div>`;
-  const chain = `<ol class="cnchain">${CN.chain.map((id, i) => `<li class="${i === CN.chain.length - 1 ? "cur" : ""}">${cnName(id)}</li>`).join("")}${CN.over === "solved" ? "" : `<li class="goal">${cnName(CN.b)}</li>`}</ol>`;
+  const chain = `<ol class="cnchain">${CN.chain.map((id, i) => `<li class="${i === CN.chain.length - 1 ? "cur" : ""}">${i && cnChecked(CN.chain[i - 1], id) ? CN_TICK : ""}${cnName(id)}</li>`).join("")}${CN.over === "solved" ? "" : `<li class="goal">${cnName(CN.b)}</li>`}</ol>`;
   const head = `<p class="qz-q">From <b>${cnName(CN.a)}</b> to <b>${cnName(CN.b)}</b> <span class="hint">(${esc(THINKER.get(CN.b).y)})</span>, through who took up whom. The shortest way takes ${CN.shortest} steps.</p>`;
   if (CN.over) {
     const best = lineFrom(CN.a).route(CN.b);
     const said = CN.over === "solved"
-      ? `<b>There in ${steps} step${steps === 1 ? "" : "s"}.</b> ${steps === CN.shortest ? "That's the shortest way." : `The shortest takes ${CN.shortest}.`}`
+      ? `<b>There in ${steps} step${steps === 1 ? "" : "s"}.</b> ${steps === CN.shortest ? "That's the shortest way." : `The shortest takes ${CN.shortest}.`}${(() => { const n = CN.chain.slice(1).filter((id, i) => cnChecked(CN.chain[i], id)).length; return n ? ` ${n} of your steps ran along checked connections.` : ""; })()}`
       : `<b class="bad">${CN.over === "gave" ? "Here's a way." : "Out of steps."}</b>`;
     return `${diff}${head}${chain}<p class="qz-say">${said}${CN.over !== "solved" || steps > CN.shortest ? ` One shortest route: ${best.map(cnName).join(" → ")}.` : ""}</p>
       <div class="noteacts"><button class="btn primary" data-keep="1" data-cnnew="1">Another</button><button class="btn" data-thinker="${esc(CN.b)}">About ${cnName(CN.b)}</button></div>`;
   }
   const next = [...tookMap().get(cur)].sort((x, y) => birthYear(THINKER.get(x).y) - birthYear(THINKER.get(y).y));
   const choices = next.length
-    ? `<div class="label">Who took up ${cnName(cur)}?</div><div class="chips">${next.map((id) => `<button class="chip pchip${CN.hint === id ? " hinted" : ""}${CN.chain.includes(id) ? " used" : ""}" data-keep="1" data-cngo="${esc(id)}"${CN.chain.includes(id) ? " disabled" : ""}>${cnName(id)}</button>`).join("")}</div>`
+    ? `<div class="label">Who took up ${cnName(cur)}?</div><div class="chips">${next.map((id) => `<button class="chip pchip${CN.hint === id ? " hinted" : ""}${CN.chain.includes(id) ? " used" : ""}" data-keep="1" data-cngo="${esc(id)}"${CN.chain.includes(id) ? " disabled" : ""}>${cnChecked(cur, id) ? CN_TICK : ""}${cnName(id)}</button>`).join("")}</div>
+      <p class="hint">${CN_TICK} marks a step along a checked connection, which also counts toward Mastery. The other steps come from the thinker entries’ “drew on” lists, which are still to be checked.</p>`
     : `<p class="hint">No one in the app's entries took up ${cnName(cur)}. Step back and try another way.</p>`;
   return `${diff}${head}${chain}${choices}
     <p class="hint">${left} step${left === 1 ? "" : "s"} left.</p>
@@ -702,7 +709,7 @@ function connectPanel() {
     else if (b.dataset.cngo && !CN.over) {
       const from = CN.chain[CN.chain.length - 1], to = b.dataset.cngo;
       CN.chain.push(to); CN.hint = "";
-      for (const c of CONNECTIONS) if (c.from === to && connTo(c).includes(from)) earn("conn", connId(c), "ans"); // a step along a checked connection
+      for (const c of CONNECTIONS) if (connFrom(c).includes(to) && connTo(c).includes(from)) earn("conn", connId(c), "ans"); // a step along a checked connection
       if (b.dataset.cngo === CN.b) CN.over = "solved";
       else if (CN.chain.length - 1 >= CN.shortest + CN_SLACK) CN.over = "out";
     } else if (b.dataset.cnback && CN.chain.length > 1) { CN.chain.pop(); CN.hint = ""; }
