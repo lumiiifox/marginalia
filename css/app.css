@@ -1126,3 +1126,28 @@ span.bhid { display: inline; }
 .dn-bar { display: block; height: 6px; border-radius: 3px; background: color-mix(in srgb, var(--rule) 60%, transparent); overflow: hidden; }
 .dn-bar i { display: block; height: 100%; border-radius: 3px; background: var(--leather); }
 .dn-terms { margin-top: 2px; }
+
+/* ---------- mastery (js/mastery.js): the collection, its meter, and the toast when something is earned ---------- */
+.refcard .rc-meter, .mmeter { display: block; height: 6px; border-radius: 3px; background: color-mix(in srgb, var(--rule) 60%, transparent); overflow: hidden; }
+.refcard .rc-meter { grid-column: 1; margin-top: 4px; }
+.rc-meter i, .mmeter i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--leather), var(--brass)); transition: width 0.6s ease; }
+.mmeter { height: 10px; margin: 4px 0 10px; }
+.mtiles { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.mtile { display: grid; align-content: space-between; gap: 8px; min-height: 76px; text-align: left; padding: 10px 12px; border-radius: 8px;
+  background: var(--paper); border: 1px solid var(--rule); box-shadow: var(--paper-shadow); color: var(--ink); }
+.mtile .mt-n { font: 600 15px/1.25 var(--f-text); }
+.mtile .mt-h { font-size: 13px; color: var(--muted); }
+.mt-pips, .mlegend span { display: flex; gap: 5px; align-items: center; }
+.mt-pips i, .mlegend i { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--muted); }
+.mt-pips i.on, .mlegend i.on { background: var(--brass); border-color: var(--brass); }
+.mtile.reach { border-style: dashed; }
+.mtile.reach .mt-n { color: var(--muted); }
+.mtile.started { border-color: color-mix(in srgb, var(--brass) 60%, var(--rule)); }
+.mtile.mastered { border: 1.5px solid var(--brass); background: color-mix(in srgb, var(--brass) 12%, var(--paper)); }
+.mtile.mastered .mt-n::after { content: " ✦"; color: var(--brass); }
+.mtile.locked { background: transparent; box-shadow: none; border-style: dashed; opacity: 1; color: var(--muted); }
+.mtile.locked .mt-n { font: 400 13px/1.2 var(--f-mark); letter-spacing: 0.06em; text-transform: lowercase; }
+.mlegend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0 0 6px; font-size: 13px; color: var(--muted); }
+.toast.earn { animation: earn-pop 0.45s cubic-bezier(0.2, 1.4, 0.4, 1); border-left: 4px solid var(--brass); }
+@keyframes earn-pop { 0% { transform: translateX(-50%) scale(0.85); opacity: 0.4; } 100% { transform: translateX(-50%) scale(1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .toast.earn { animation: none; } .rc-meter i, .mmeter i { transition: none; } }

@@ -90,6 +90,8 @@ document.addEventListener("click", (e) => {
   if (b.id === "opendisputes") return go({ screen: "disputes" });
   if (b.dataset.dispute) return disputePanel(b.dataset.dispute);
   if (b.id === "openplates") return go({ screen: "plates" });
+  if (b.id === "openmastery") return go({ screen: "mastery" });
+  if (b.dataset.mpath) return go({ screen: "paths" });
   if (b.dataset.path) return go({ screen: "paths", path: b.dataset.path });
   if (b.dataset.pathread) { const [tid, sec] = b.dataset.pathread.split("|"); return readStep(tid, sec ? sec.split(",") : []); }
   if (b.dataset.pathadd) return readdClassic(b.dataset.pathadd);
@@ -186,7 +188,7 @@ document.addEventListener("change", (e) => {
 document.addEventListener("toggle", (e) => {
   const d = e.target;
   if (d && d.matches && d.matches("details.branch")) { if (d.open) S.bOpen.add(d.dataset.branchId); else S.bOpen.delete(d.dataset.branchId); return; }
-  if (d && d.matches && d.matches("details.term")) { if (d.open) { S.gOpen.add(d.dataset.termId); fillLinks(d); fillMentions(d); } else S.gOpen.delete(d.dataset.termId); }
+  if (d && d.matches && d.matches("details.term")) { if (d.open) { S.gOpen.add(d.dataset.termId); fillLinks(d); fillMentions(d); earn("term", d.dataset.termId, "met"); } else S.gOpen.delete(d.dataset.termId); }
 }, true);
 let qTimer;
 document.addEventListener("input", (e) => {
@@ -266,6 +268,7 @@ const bootSlow = setTimeout(() => {
     S.compares = await idbAll("compares");
     S.paths = await idbAll("paths");
     S.wishlist = await idbAll("wishlist");
+    S.mastery = await idbAll("mastery");
     await loadTrash().catch(() => {});
     S.mode = "ready";
   } catch (e) { idb = null; S.mode = "local"; S.openErr = e; }
@@ -274,6 +277,7 @@ const bootSlow = setTimeout(() => {
   try { openFromHash(); } catch {}
   if (S.openErr && S.openErr.name && !["InvalidStateError", "SecurityError", "UnknownError"].includes(S.openErr.name)) bootProblem(`Storage didn't open (${S.openErr.name}: ${S.openErr.message}). Close every copy of the app and open it again; your books and notes are still on this device.`);
   addClassics().catch(() => {});
+  try { USED_SEEN = usedNow(); } catch {} // what your notes already use, so only new uses are celebrated
   startCloudBackups();
   try { if (navigator.storage && navigator.storage.persist) S.persisted = await navigator.storage.persist(); } catch {}
 })();

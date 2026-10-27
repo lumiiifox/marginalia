@@ -1,9 +1,11 @@
 // Marginalia: storage on this device (IndexedDB), Recently deleted, covers, toasts, saving files, and backup and restore. One of the app's scripts, loaded in order by index.html (see CLAUDE.md).
 /* ---------- store: IndexedDB on this device ---------- */
-const STORES = ["texts", "notes", "content", "covers", "terms", "drafts", "compares", "files", "trash", "trashlist", "paths", "wishlist"]; // files: original PDFs; trash: Recently deleted, listed in trashlist. Only trashlist is read at start; none is backed up
+const STORES = ["texts", "notes", "content", "covers", "terms", "drafts", "compares", "files", "trash", "trashlist", "paths", "wishlist", "mastery"]; // files: original PDFs; trash: Recently deleted, listed in trashlist. Only trashlist is read at start; none is backed up
+// The storage version: raise it only when a store is added or needs migrating (CLAUDE.md). Tests compare against it.
+const DB_VERSION = 11;
 function idbOpen() {
   return new Promise((res, rej) => {
-    const r = indexedDB.open("marginalia", 10); // 5 added the drafts store, 6 the comparisons store, 7 the original PDFs, 8 Recently deleted, 9 custom reading paths, 10 wishlist
+    const r = indexedDB.open("marginalia", DB_VERSION); // 5 added the drafts store, 6 the comparisons store, 7 the original PDFs, 8 Recently deleted, 9 custom reading paths, 10 wishlist, 11 mastery
     r.onupgradeneeded = () => { const d = r.result; STORES.forEach((n) => { if (!d.objectStoreNames.contains(n)) d.createObjectStore(n); }); };
     r.onsuccess = () => {
       const d = r.result;
@@ -38,7 +40,7 @@ function idbGet(store, key) {
 }
 // The copy in memory of a store's records ("files" has none: PDFs are read from storage when wanted).
 function mapFor(col) {
-  const m = { texts: S.texts, notes: S.notes, content: S.content, covers: S.covers, terms: S.terms, drafts: S.drafts, compares: S.compares, paths: S.paths, wishlist: S.wishlist }[col];
+  const m = { texts: S.texts, notes: S.notes, content: S.content, covers: S.covers, terms: S.terms, drafts: S.drafts, compares: S.compares, paths: S.paths, wishlist: S.wishlist, mastery: S.mastery }[col];
   if (!m) throw new Error(`No copy in memory for "${col}".`);
   return m;
 }
@@ -46,6 +48,7 @@ async function put(col, id, data) {
   if (idb) await idbDo(col, (s) => s.put(data, id));
   mapFor(col).set(id, data);
   if (col !== "content") render();
+  if (col === "notes") masteryNoteChanged(id); // a note can make a checked concept "used" (js/mastery.js)
 }
 async function del(col, id) {
   if (idb) await idbDo(col, (s) => s.delete(id));
@@ -213,7 +216,7 @@ function progressOf(t) {
 /* ---------- toast, downloads, backups ---------- */
 let toastT;
 function toast(msg, act) {
-  const el = $("#toast"); el.textContent = msg;
+  const el = $("#toast"); el.textContent = msg; el.classList.remove("earn"); // celebrate() adds it back for something earned
   for (const a of [].concat(act || [])) { const b = document.createElement("button"); b.className = "toastbtn"; b.textContent = a.label; b.onclick = () => { el.hidden = true; a.run(); }; el.append(b); }
   el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { el.hidden = true; }, act ? 8000 : 3200);
 }
@@ -235,7 +238,7 @@ async function saveFile(name, text, type) {
 }
 const blobToDataURL = (b) => new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = () => rej(fr.error); fr.readAsDataURL(b); });
 // One readonly transaction captures all exported stores together, including edits from other tabs.
-const BACKUP_STORES = ["texts", "notes", "content", "covers", "terms", "drafts", "compares", "paths", "wishlist"];
+const BACKUP_STORES = ["texts", "notes", "content", "covers", "terms", "drafts", "compares", "paths", "wishlist", "mastery"];
 async function backupData() {
   const records = idb ? await new Promise((resolve, reject) => {
     const tx = idb.transaction(BACKUP_STORES, "readonly"), out = {};
@@ -278,6 +281,7 @@ const CONC_MAX = 2000; // pairs of pages kept for another edition (t.conc)
 const DAYS_MAX = 3000; // days of reading time kept on a book (t.days), oldest dropped first
 const DAY_KEY = /^\d{4}-\d{2}-\d{2}$/;
 const VALID = {
+  mastery: (v) => validMastery(v),
   wishlist: (v) => validWish(v),
   paths: (v) => validCustomPath(v),
   texts: (v) => isObj(v) && isS(v.title) && optStr(v.author) && optStr(v.edition) && optStr(v.lang) && optStr(v.next) && (v.rank === undefined || Number.isFinite(v.rank)) && optArr(v.pdfLabels, isS) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
@@ -334,7 +338,7 @@ function withReading(base, other) {
   for (const k of READING) { if (other[k] !== undefined) out[k] = other[k]; else delete out[k]; }
   return out;
 }
-const planSig = (plan) => [...RESTORE_KINDS.map(([st]) => plan.rows[st].map((r) => `${r.id}:${r.st}`).join(",")), plan.aliasSt].join("|");
+const planSig = (plan) => [...RESTORE_KINDS.map(([st]) => plan.rows[st].map((r) => `${r.id}:${r.st}`).join(",")), plan.aliasSt, plan.mastery.map(([id]) => id).join(",")].join("|");
 function canon(v) {
   if (Array.isArray(v)) return `[${v.map(canon).join(",")}]`;
   if (v && typeof v === "object") return `{${Object.keys(v).filter((k) => !ACTIVITY.has(k) && v[k] !== undefined).sort().map((k) => `${JSON.stringify(k)}:${canon(v[k])}`).join(",")}}`;
@@ -371,6 +375,14 @@ function planRestore(data) {
       list.push({ id, v, st: textWins.get(id) || "orphan" });
     }
   }
+  // Mastery only ever grows: each item keeps the earlier time of each stage from either copy, so nothing earned is lost.
+  plan.mastery = [];
+  for (const [id, v] of Object.entries((data.mastery && typeof data.mastery === "object" && data.mastery) || {})) {
+    if (!goodId(id) || !VALID.mastery(v)) { plan.skipped++; continue; }
+    const cur = S.mastery.get(id) || {}, early = (a, b) => (a && b ? Math.min(a, b) : a || b || undefined);
+    const merged = Object.fromEntries(["met", "ans"].map((k) => [k, early(cur[k], v[k])]).filter(([, x]) => x));
+    if (merged.met !== cur.met || merged.ans !== cur.ans) plan.mastery.push([id, merged]);
+  }
   return plan;
 }
 function restoreSummary(plan) {
@@ -381,7 +393,7 @@ function restoreSummary(plan) {
     return total ? `<li><b>${total} ${total === 1 ? one : many}:</b> ${parts.join(", ")}</li>` : "";
   };
   const al = { new: "added", older: "updated from the backup", newer: "newer here (kept)", conflict: "changed in both (this device's kept)", same: "unchanged" }[plan.aliasSt];
-  return `<ul class="rs-list">${RESTORE_KINDS.map(([s, one, many]) => line(s, one, many)).join("")}${al ? `<li><b>Look-up aliases:</b> ${al}</li>` : ""}${plan.pin ? `<li><b>Pinned passage:</b> ${PIN ? "a different one is pinned here (kept)" : "pinned again"}</li>` : ""}</ul>`;
+  return `<ul class="rs-list">${RESTORE_KINDS.map(([s, one, many]) => line(s, one, many)).join("")}${al ? `<li><b>Look-up aliases:</b> ${al}</li>` : ""}${plan.mastery.length ? `<li><b>Mastery:</b> ${plan.mastery.length} stage${plan.mastery.length === 1 ? "" : "s"} earned elsewhere added</li>` : ""}${plan.pin ? `<li><b>Pinned passage:</b> ${PIN ? "a different one is pinned here (kept)" : "pinned again"}</li>` : ""}</ul>`;
 }
 async function importBackup(file) {
   let data;
@@ -392,7 +404,7 @@ async function importBackup(file) {
 }
 // Another window of the app (the installed app and a browser tab, say) may have changed the library since the summary.
 async function reloadStores() {
-  for (const st of ["texts", "notes", "drafts", "compares", "terms", "paths", "wishlist"]) { const m = await idbAll(st), map = mapFor(st); map.clear(); m.forEach((v, k) => map.set(k, v)); }
+  for (const st of ["texts", "notes", "drafts", "compares", "terms", "paths", "wishlist", "mastery"]) { const m = await idbAll(st), map = mapFor(st); map.clear(); m.forEach((v, k) => map.set(k, v)); }
 }
 async function confirmRestore(name, data, sig, theirs) {
   if (idb) await reloadStores();
@@ -410,6 +422,7 @@ async function showRestore(name, data, notice) {
   for (const r of plan.content) if (["new", "older"].includes(r.st) || (!S.content.has(r.id) && !(idb && (await idbGet("content", r.id).catch(() => null))))) extra++;
   for (const r of plan.covers) if (["new", "older"].includes(r.st) || !S.covers.has(r.id)) extra++;
   if (plan.pin && !PIN) extra++;
+  extra += plan.mastery.length;
   openPanel(`<h2>Restore this backup?</h2>
     ${notice ? `<p class="hint bad">${esc(notice)}</p>` : ""}
     <p class="hint">${esc(file.name)}${when ? `, saved ${esc(when)}` : ""}. Nothing changes until you choose below.</p>
@@ -460,6 +473,7 @@ async function applyRestore(plan, theirs) {
   }
   for (const r of plan.content) if (take(r.st) || !S.content.has(r.id) && !(idb && (await idbGet("content", r.id)))) ops.push(["content", r.id, r.v]);
   for (const r of plan.covers) if (take(r.st) || !S.covers.has(r.id)) { try { ops.push(["covers", r.id, await (await fetch(r.v)).blob()]); } catch {} }
+  for (const [id, v] of plan.mastery) ops.push(["mastery", id, v, "merged"]);
   const pinBack = !!plan.pin && (!PIN || theirs);
   if (!ops.length && !pinBack) { toast("Nothing to restore."); return; }
   if (idb && ops.length) await idbTx([...new Set(ops.map((o) => o[0]))], (st) => ops.forEach(([store, id, v]) => st(store).put(v, id)));

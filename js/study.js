@@ -432,7 +432,7 @@ function referenceHome() {
     ${card("glossary", "Glossary", `${allTerms().length} terms`)}
     ${card("branches", "Branches", `${BRANCHES.filter((b) => b.k === "branch").length} branches, ${BRANCHES.filter((b) => b.k === "tradition").length} traditions`)}
     ${card("thinkers", "Thinkers", `${THINKERS.length} philosophers and theorists`)}
-  </div>${typeof PATHS !== "undefined" && PATHS.length ? `<button class="refcard pathcard" id="openpaths"><span class="rc-t">Reading paths</span><span class="rc-s">${PATHS.length} routes through the classics on your shelf, chapter by chapter</span><span class="rc-go" aria-hidden="true">›</span></button>` : ""}${typeof DISPUTES !== "undefined" && DISPUTES.length ? `<button class="refcard pathcard" id="opendisputes"><span class="rc-t">Disputations</span><span class="rc-s">${DISPUTES.length} arguments to answer, then compare with the classic objection</span><span class="rc-go" aria-hidden="true">›</span></button>` : ""}</section>`;
+  </div>${masteryCardHTML()}${typeof PATHS !== "undefined" && PATHS.length ? `<button class="refcard pathcard" id="openpaths"><span class="rc-t">Reading paths</span><span class="rc-s">${PATHS.length} routes through the classics on your shelf, chapter by chapter</span><span class="rc-go" aria-hidden="true">›</span></button>` : ""}${typeof DISPUTES !== "undefined" && DISPUTES.length ? `<button class="refcard pathcard" id="opendisputes"><span class="rc-t">Disputations</span><span class="rc-s">${DISPUTES.length} arguments to answer, then compare with the classic objection</span><span class="rc-go" aria-hidden="true">›</span></button>` : ""}</section>`;
 }
 // Everything in the three reference sections as one searchable list; each row opens its entry, and each group can open its
 // full screen (the glossary's areas and quiz, a branch's questions and reading, the thinkers' timeline).
@@ -461,6 +461,7 @@ function referenceView() {
     ${body || `<p class="empty">Nothing matches.</p>`}`;
 }
 function openTerm(id) {
+  earn("term", id, "met");
   go({ screen: "glossary", gs: { gOpen: [id], gq: "", gArea: "all" }, scrollTo: id });
 }
 // Thinkers whose names appear in a book's author field, so a book can link to its author's card.
@@ -517,6 +518,7 @@ function connectionsHTML(id) {
 }
 function thinkerPanel(id) {
   const p = THINKER.get(id); if (!p) return;
+  earn("thinker", id, "met"); earnConnectionsOf(id);
   const tmap = termMap();
   const terms = [...tmap.values()].filter((g) => (g.p || []).includes(id)).map((g) => g.id);
   const trad = BRANCHES.filter((b) => b.p.includes(id)).map((b) => b.id);
@@ -614,7 +616,7 @@ function guessPanel() {
     if (b.dataset.gtry) {
       const v = $("#g-in").value, who = guessFind(v);
       if (!who) { $("#g-err").textContent = v.trim() ? "That isn't one of the app's thinkers. Pick a name from the list." : "Type a name first."; return; }
-      if (who.id === p.id) st.done = "solved";
+      if (who.id === p.id) { st.done = "solved"; earn("thinker", p.id, "ans"); }
       else if (!st.wrong.includes(who.id)) { st.wrong.push(who.id); if (st.shown < clues.length) st.shown++; else st.done = "gave"; }
       guessSave(st); return draw();
     }
@@ -698,7 +700,9 @@ function connectPanel() {
     if (b.dataset.cnk) connectNew(+b.dataset.cnk);
     else if (b.dataset.cnnew) connectNew();
     else if (b.dataset.cngo && !CN.over) {
-      CN.chain.push(b.dataset.cngo); CN.hint = "";
+      const from = CN.chain[CN.chain.length - 1], to = b.dataset.cngo;
+      CN.chain.push(to); CN.hint = "";
+      for (const c of CONNECTIONS) if (c.from === to && connTo(c).includes(from)) earn("conn", connId(c), "ans"); // a step along a checked connection
       if (b.dataset.cngo === CN.b) CN.over = "solved";
       else if (CN.chain.length - 1 >= CN.shortest + CN_SLACK) CN.over = "out";
     } else if (b.dataset.cnback && CN.chain.length > 1) { CN.chain.pop(); CN.hint = ""; }
@@ -975,7 +979,7 @@ function quizPanel(area, set) {
     const box = $("#quizbox");
     if (b.dataset.qzans !== undefined && QZ.picked < 0) {
       QZ.picked = +b.dataset.qzans; const q = QZ.qs[QZ.k];
-      if (QZ.picked === q.answer) QZ.right++; else QZ.missed.push(q);
+      if (QZ.picked === q.answer) { QZ.right++; if (q.g && q.g.builtIn && !q.g.edited) earn("term", q.g.id, "ans"); else if (q.p) earn("thinker", q.p.id, "ans"); } else QZ.missed.push(q);
     } else if (b.dataset.qznext) { QZ.k++; QZ.picked = -1; }
     else if (b.dataset.qzmode) quizStart(b.dataset.qzmode, QZ.area);
     else if (b.dataset.qzagain) quizStart(QZ.mode, QZ.area);

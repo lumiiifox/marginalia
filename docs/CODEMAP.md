@@ -23,6 +23,7 @@ can break that order: keep new code in the file of its area, and check with a te
 | `js/bookmenu.js` | a book's More menu (another edition's pages, the paired original), the book menu and arranging the shelf |
 | `js/reader.js` | the reader: layout, swipe pages and the flip, your place and jumps, reading pace, highlights and notes in the text, the pinned passage |
 | `js/structure.js` | Edit → marking a book's structure, and the reader's gestures and controls |
+| `js/mastery.js` | mastery: the collection earned by reading checked material, its toasts and screen |
 | `js/discovery.js` | wishlist records and forms, sourced reading recommendations, and companion books |
 | `js/boot.js` | events for the whole app, the classics (`CLASSICS`) and starting up |
 
@@ -264,3 +265,17 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   first setup. `last` records real uploads; `verifiedAt` records successful verification. Errors never advance either. Per-file 50 MiB
   is an application limit, not a claimed GitHub upload limit. Original PDFs and trash remain excluded. Smoke tests mock GitHub,
   measure zero writes across twelve reading checks, and cover asset reuse, session throttling, failure recovery and split restore.
+
+- Mastery (`js/mastery.js`, IndexedDB version 11, the `mastery` store): only audited material counts (`VERIFIED_TERMS` at the end of
+  `data/glossary.js`, `VERIFIED_THINKERS` at the end of `data/thinkers.js`, every `CONNECTIONS` entry, every close-reading station).
+  Stages (`MASTERY_STAGES`): met (opening the entry: `openTerm`, a glossary entry's toggle, `termPanel`, `thinkerPanel`, which also meets
+  its connections), answered (a right answer in `quizPanel`, solving `guessPanel`, a step of `connectPanel` along a connection) and used
+  (your notes name it: `termNotes`, `t.termMarks`, `thinkerNotes`); a station has one stage, read (`closeState`). `earn(kind, id, stage)`
+  stores `{ met, ans }` times keyed `term:<id>`, `thinker:<id>`, `conn:<from>><to>`; used and read are worked out from notes each time
+  (`masteryStages`). `put` calls `masteryNoteChanged(id)` after a note is saved, which celebrates only what that note itself brings
+  (`USED_SEEN`, set at start). `celebrate` batches what's earned together into one toast (`flushEarned`: pips, a pop, `navigator.vibrate`).
+  `withinReach` unlocks an item when something next to it is met (a station when the one before is read); locked ones fold into one tile.
+  Screens: `masteryCardHTML` on the home screen (doesn't load a book to count stations), `masteryView` (`S.screen` "mastery").
+  Backups carry the store; `planRestore` merges each stage's earlier time (`plan.mastery`), so restoring never takes anything away.
+  Tested by `tests/mastery.py`.
+
