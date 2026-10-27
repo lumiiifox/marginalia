@@ -38,7 +38,8 @@ OLD_LIBRARY = """new Promise((res, rej) => {
 
 
 def audit_lists():
-    terms = list(json.load(open(ROOT / "tests/audit/glossary-dg.json"))["terms"].keys())
+    # every glossary audit (glossary-*.json) whose independent review passed
+    terms = [t for f in sorted((ROOT / "tests/audit").glob("glossary-*.json")) for t in json.load(open(f))["terms"]]
     thinkers = list(json.load(open(ROOT / "tests/audit/thinkers-route.json"))["cards"].keys())
     return terms, thinkers
 
@@ -61,11 +62,13 @@ async def main():
         # 1 verified lists
         terms, thinkers = audit_lists()
         lists = await page.evaluate("[VERIFIED_TERMS, VERIFIED_THINKERS, CONNECTIONS.length, masteryItems().length]")
-        check(sorted(lists[0]) == sorted(terms), "VERIFIED_TERMS are exactly the audited glossary entries")
+        check(sorted(lists[0]) == sorted(terms), f"VERIFIED_TERMS are exactly the audited glossary entries ({sorted(set(lists[0]) ^ set(terms))})")
+        reviewed = [f.name for f in sorted((ROOT / "tests/audit").glob("glossary-*.json")) if not json.load(open(f)).get("by", {}).get("review")]
+        check(not reviewed, f"every glossary audit records its independent review ({reviewed})")
         check(sorted(lists[1]) == sorted(thinkers), "VERIFIED_THINKERS are exactly the audited thinker cards")
         conns = json.load(open(ROOT / "tests/audit/connections.json"))["connections"]
         check(lists[2] == len(conns), f"every connection in the app has its review ({lists[2]} and {len(conns)})")  # each one counts toward mastery
-        await page.evaluate("openTerm('substance'); thinkerPanel('locke')"); await page.wait_for_timeout(300)
+        await page.evaluate("openTerm('validity'); thinkerPanel('locke')"); await page.wait_for_timeout(300)
         check(await page.evaluate("S.mastery.size") == 0, "opening an entry that hasn't been audited counts for nothing")
         await page.evaluate("closeOverlay()")
 
@@ -75,19 +78,20 @@ async def main():
         check(m[0] and m[1].startswith("Met: Univocity") and m[2], f"opening a checked term meets it, with a toast that pops ({m[1]})")
         await page.evaluate("openTerm('univocity')"); await page.wait_for_timeout(200)
         check(await page.evaluate("Object.keys(S.mastery.get('term:univocity'))") == ["met"], "meeting it again earns nothing more")
-        await page.evaluate("thinkerPanel('spinoza')"); await page.wait_for_timeout(300)
+        await page.evaluate("thinkerPanel('spinoza')")
+        await page.wait_for_function("/collected/.test(document.querySelector('#toast').textContent)", timeout=5000)  # earned things arrive together, a moment later
         t = await page.evaluate("[['thinker:spinoza', ...connectionsOf('spinoza').map((c) => 'conn:' + connId(c))].every((k) => S.mastery.get(k)?.met), document.querySelector('#toast').textContent, connectionsOf('spinoza').length + 1]")
         check(t[0] and t[1].startswith(f"{t[2]} collected"), f"a thinker's card meets the thinker and their connections, in one toast ({t[1]})")
         await page.evaluate("closeOverlay()")
 
         # 3 answering
-        await page.evaluate("""quizPanel('all'); const g = termMap().get('rhizome'), u = termMap().get('substance');
+        await page.evaluate("""quizPanel('all'); const g = termMap().get('rhizome'), u = termMap().get('validity');
           QZ.qs = [{ prompt: 'x', opts: ['a', 'b'], answer: 0, g }, { prompt: 'y', opts: ['a', 'b'], answer: 0, g: u }, { prompt: 'z', opts: ['a', 'b'], answer: 0, g: termMap().get('assemblage') }, { prompt: 'w', opts: ['a', 'b'], answer: 0, g }];
           QZ.k = 0; QZ.picked = -1; document.querySelector('#quizbox').innerHTML = quizHTML();""")
         await page.click("[data-qzans='0']"); await page.wait_for_timeout(200)
         await page.click("[data-qznext]"); await page.click("[data-qzans='0']"); await page.wait_for_timeout(200)
         await page.click("[data-qznext]"); await page.click("[data-qzans='1']"); await page.wait_for_timeout(200)
-        q = await page.evaluate("[S.mastery.get('term:rhizome'), S.mastery.has('term:substance'), S.mastery.has('term:assemblage')]")
+        q = await page.evaluate("[S.mastery.get('term:rhizome'), S.mastery.has('term:validity'), S.mastery.has('term:assemblage')]")
         check(q[0] and q[0].get("ans") and q[0].get("met"), "a right answer on a checked term answers it (and meets it)")
         check(q[1] is False and q[2] is False, "a right answer on an unchecked term, or a wrong one, earns nothing")
         await page.evaluate("closeOverlay()")

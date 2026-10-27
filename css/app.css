@@ -1150,5 +1150,5 @@ span.bhid { display: inline; }
 .mtile.locked .mt-n { font: 400 13px/1.2 var(--f-mark); letter-spacing: 0.06em; text-transform: lowercase; }
 .mlegend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0 0 6px; font-size: 13px; color: var(--muted); }
 .toast.earn { animation: earn-pop 0.45s cubic-bezier(0.2, 1.4, 0.4, 1); border-left: 4px solid var(--brass); }
-@keyframes earn-pop { 0% { transform: translateX(-50%) scale(0.85); opacity: 0.4; } 100% { transform: translateX(-50%) scale(1); opacity: 1; } }
+@keyframes earn-pop { 0% { transform: translateX(-50%) scale(0.85); } 100% { transform: translateX(-50%) scale(1); } } /* scale only: fading would dip the text below AA contrast */
 @media (prefers-reduced-motion: reduce) { .toast.earn { animation: none; } .rc-meter i, .mmeter i { transition: none; } }
