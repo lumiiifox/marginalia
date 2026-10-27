@@ -41,7 +41,7 @@ async def main():
     async with async_playwright() as p:
         b = await p.chromium.launch()
         for scheme in ["light", "dark"]:
-            ctx = await b.new_context(viewport={"width": 390, "height": 844}, color_scheme=scheme)
+            ctx = await b.new_context(viewport={"width": 390, "height": 844}, color_scheme=scheme, reduced_motion="reduce")  # colours at rest: a panel caught mid-rise reads faint
             pg = await ctx.new_page()
             await pg.route("https://commons.wikimedia.org/**", lambda r: r.abort())
             await pg.goto(f"http://localhost:{PORT}/index.html"); await pg.wait_for_function("typeof idb !== 'undefined' && idb")
