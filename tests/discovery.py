@@ -18,7 +18,7 @@ async def main():
         await page.evaluate("""() => new Promise((resolve,reject)=>{const r=indexedDB.open('marginalia',9);r.onupgradeneeded=()=>{for(const s of ['texts','notes','content','covers','terms','drafts','compares','files','trash','trashlist','paths'])r.result.createObjectStore(s)};r.onsuccess=()=>{const d=r.result,t=d.transaction(['texts','paths'],'readwrite');t.objectStore('texts').put({title:'Ethics',author:'Benedict de Spinoza',status:'reading'},'ethics');t.objectStore('paths').put({version:1,n:'Earlier path',d:'',steps:[],createdAt:1,updatedAt:1},'p');t.oncomplete=()=>{d.close();resolve()};t.onerror=()=>reject(t.error)}})""")
         await page.evaluate("localStorage.setItem('mg-classics','1')")
         await page.goto(f'http://localhost:{PORT}/index.html');await page.wait_for_function("S.mode==='ready'")
-        check(await page.evaluate("idb.version===10 && S.texts.has('ethics') && S.paths.has('p') && S.wishlist.size===0"),'version 9 upgrades without losing books or paths')
+        check(await page.evaluate("idb.version===DB_VERSION && S.texts.has('ethics') && S.paths.has('p') && S.wishlist.size===0"),'version 9 upgrades without losing books or paths')
         await page.evaluate("go({screen:'library'})")
         await page.click('#openwishlist');await page.click('#newwish')
         await page.fill('#wish-title','A book <em>literal</em>');await page.fill('#wish-author','A scholar')

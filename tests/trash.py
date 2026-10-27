@@ -1,7 +1,7 @@
 """Recently deleted keeps what you delete for 30 days. Run after changes to storage or deleting:  python3 tests/trash.py
 
 Made-up records only, phone-sized screen. Checks that:
-  1. a library saved by the previous storage version (7) opens in version 10 with everything in it;
+  1. a library saved by the previous storage version (7) opens in version 11 with everything in it;
   2. deleting a book moves it, its notes, text, cover and PDF to Recently deleted in one entry, and Undo puts them all back;
   3. deleting a note, a draft or a comparison files it there too; Restore puts each back;
   4. a note whose book was deleted after it can't be restored until the book is;
@@ -52,8 +52,8 @@ async def main():
         await page.goto(URL); await page.wait_for_function(READY)
 
         # 1 upgrade
-        up = await page.evaluate("[idb.version, ['trash', 'trashlist'].every((n) => [...idb.objectStoreNames].includes(n)), S.texts.has('e'), S.notes.size, S.trash.size]")
-        check(up == [10, True, True, 2, 0], f"a version 7 library opens in version 10 with its book and notes ({up})")
+        up = await page.evaluate("[idb.version === DB_VERSION && DB_VERSION, ['trash', 'trashlist', 'mastery'].every((n) => [...idb.objectStoreNames].includes(n)), S.texts.has('e'), S.notes.size, S.trash.size]")
+        check(up == [11, True, True, 2, 0], f"a version 7 library opens in version 11 with its book and notes ({up})")
         check(await page.query_selector("#opentrash") is None, "with nothing deleted, the home screen shows no Recently deleted link")
 
         # 2 a book

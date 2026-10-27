@@ -1106,6 +1106,7 @@ function termAt(x, y) {
   return null;
 }
 function termPanel(id, mark) {
+  earn("term", id, "met");
   const g = allTerms().find((x) => x.id === id); if (!g) return;
   const m = Number.isInteger(mark) ? termMarksOf(S.texts.get(R.tid))[mark] : null;
   openPanel(`<h2>${esc(g.t)}</h2>${AREAS[g.a] ? `<p class="hint">${esc(AREAS[g.a])}</p>` : ""}<p class="tdef">${esc(g.d)}</p>

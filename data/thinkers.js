@@ -203,3 +203,7 @@ const CONNECTIONS = [
       { says: "Paul Haynes writes that Land’s work “prioritises above all Anti-Oedipus”, especially its vocabulary for mapping productive desire onto cybernetic-productive processes, and counts it as the right accelerationism that embraces the project of capitalism.",
       src: "https://pure.royalholloway.ac.uk/files/41165815/Is_there_a_Future_for_Accelerationism_Final_accepted_version.pdf", srcName: "Paul Haynes, “Is there a Future for Accelerationism?”, Journal of Organizational Change Management 34.6 (2021), 1175–1187, doi:10.1108/JOCM-12-2019-0398 (accepted version)" }] },
 ];
+
+// The thinker cards audited on the reading route (tests/audit/thinkers-route.json). Only these, and the CONNECTIONS above (each
+// reviewed), count toward mastery (js/mastery.js); add an id here in the same change that adds its audit. Tested by study_tools.py.
+const VERIFIED_THINKERS = ["aristotle", "spinoza", "nietzsche", "deleuze", "guattari", "land"];
