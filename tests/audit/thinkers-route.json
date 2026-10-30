@@ -86,7 +86,26 @@
    ],
    "not_retrieved": [
     "the list of later books and their dates"
-   ]
+   ],
+   "added": {
+    "date": "2026-10-30",
+    "text": "A first paragraph on his philosophy, from the Stanford Encyclopedia entry (introduction, §§1–2): philosophy as the production of concepts, a philosophy of immanence, the early studies and the privilege of identity, difference in itself, multiplicity, the virtual.",
+    "checked": [
+     "“conceived of philosophy as the production of concepts”, “a philosophy of immanence”, “the presuppositions he absorbed in his education”, “a deep-seated privilege of identity over difference” (with 'he felt'), “difference in itself”, “difference that is freed from identities seen as metaphysically primary”, “the concept of multiplicity replaces that of substance, event replaces essence and virtuality replaces possibility”, “fully real”, “what happens in genesis is that the virtual is actualized”: all verbatim",
+     "the early studies are Hume, Bergson, Nietzsche, Kant and Spinoza (Leibniz's book is 1988); Bergsonism (1966) develops virtuality and multiplicity"
+    ],
+    "review": {
+     "verdict": "pass",
+     "by": "independent reviewer (separate agent), 2026-10-30",
+     "fixes": [
+      "Leibniz taken out of the early studies",
+      "'served to unearth' made 'sought to unearth', with 'as he saw it' for the source's 'he felt'",
+      "runs of the source's wording put in quotation marks",
+      "Difference and Repetition's aims stated as aims",
+      "the opening fragment made a sentence"
+     ]
+    }
+   }
   },
   "guattari": {
    "sources": [
