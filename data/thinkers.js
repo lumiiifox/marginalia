@@ -242,3 +242,11 @@ const CONNECTIONS = [
 // The thinker cards audited on the reading route (tests/audit/thinkers-route.json). Only these, and the CONNECTIONS above (each
 // reviewed), count toward mastery (js/mastery.js); add an id here in the same change that adds its audit. Tested by study_tools.py.
 const VERIFIED_THINKERS = ["aristotle", "spinoza", "nietzsche", "deleuze", "guattari", "land"];
+
+// Book titles the reference texts name that aren't in a thinker's key works (w), so they are set in italics and nothing inside them
+// links (bookTitles, js/reference.js). Titles of one word go only here, chosen by hand: a name such as Foucault is left out.
+const BOOK_TITLES = ["Anti-Oedipus", "Bergsonism", "Empiricism and Subjectivity", "Kant's Critical Philosophy", "Masochism: Coldness and Cruelty",
+  "Proust and Signs", "Expressionism in Philosophy: Spinoza", "Spinoza and the Problem of Expression", "The Logic of Sense", "Capitalism and Schizophrenia",
+  "Kafka: Toward a Minor Literature", "Francis Bacon: The Logic of Sensation", "Cinema 1: The Movement-Image", "Cinema 2: The Time-Image",
+  "The Fold: Leibniz and the Baroque", "Essays Critical and Clinical", "Nietzsche and Philosophy", "Difference and Repetition", "A Thousand Plateaus",
+  "What Is Philosophy?", "The Persistence of the Negative", "Lord of Light"];

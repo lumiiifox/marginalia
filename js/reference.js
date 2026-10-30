@@ -690,14 +690,47 @@ function linkSet(terms, thinkers) {
   for (const c of candidates) { const k = c.key.low; if (!owners.has(k)) owners.set(k, new Set()); owners.get(k).add(c.kind + ":" + c.id); }
   return { candidates: candidates.filter((c) => owners.get(c.key.low).size === 1), owners };
 }
+/* Book titles named in the reference texts: each thinker's key works (w) and BOOK_TITLES (data/thinkers.js), for titles the texts name
+   that aren't key works. A title is set in italics and nothing inside it links, so "Empiricism" in Empiricism and Subjectivity stays
+   part of the title. Titles of one word come only from BOOK_TITLES, chosen by hand (Foucault is also a name); an essay's title, which
+   the texts put in quotation marks, only stops links inside it. */
+let TITLE_LIST = null;
+function bookTitles() {
+  if (TITLE_LIST) return TITLE_LIST;
+  const out = new Map();
+  const add = (t, essay) => { t = t.trim(); if (t.length >= 4 && !out.has(t)) out.set(t, { s: t, essay }); };
+  for (const p of THINKERS) for (const w of p.w || []) {
+    const t = w.replace(/\s*\(.*$/, "").trim();
+    if (/^[“"]/.test(t)) add(t.replace(/^[“"]|[”"]$/g, "").replace(/^#/, ""), true);
+    else if (/\s/.test(t)) add(t, false);
+  }
+  for (const t of typeof BOOK_TITLES !== "undefined" ? BOOK_TITLES : []) add(t, false);
+  return (TITLE_LIST = [...out.values()].sort((a, b) => b.s.length - a.s.length));
+}
+function titleSpans(text) {
+  const word = /[\p{L}\p{N}]/u, spans = [];
+  for (const t of bookTitles()) for (let at = text.indexOf(t.s); at >= 0; at = text.indexOf(t.s, at + 1)) {
+    const end = at + t.s.length;
+    if (word.test(text[at - 1] || "") || word.test(text[end] || "")) continue;
+    if (spans.some((x) => at < x.b && end > x.a)) continue;
+    spans.push({ a: at, b: end, essay: t.essay });
+  }
+  return spans;
+}
 function linkWith(text, candidates, owners, ctx) {
   const T = linkFold(text), word = /[\p{L}\p{N}]/u, hits = [];
-  // a classic's title links to the book, each once per paragraph (positions moved into the folded text's)
+  // a classic's title links to the book, each once per paragraph (positions moved into the folded text's); later mentions are titles
   const seenBook = new Set();
   for (const h of classicHits(text, ctx)) {
     const pos = T.map.indexOf(h.a), end = T.map.indexOf(h.b);
-    if (seenBook.has(h.id) || pos < 0 || end < 0) continue;
+    if (pos < 0 || end < 0) continue;
+    if (seenBook.has(h.id)) { hits.push({ pos, end, kind: "title" }); continue; }
     seenBook.add(h.id); hits.push({ pos, end, id: h.id, kind: "classic" });
+  }
+  for (const t of titleSpans(text)) {
+    const pos = T.map.indexOf(t.a), end = T.map.indexOf(t.b);
+    if (pos < 0 || end < 0 || hits.some((h) => pos < h.end && end > h.pos)) continue;
+    hits.push({ pos, end, kind: t.essay ? "essay" : "title" });
   }
   for (const c of candidates) {
     if (owners.get(c.key.low).size > 1) continue;
@@ -712,8 +745,9 @@ function linkWith(text, candidates, owners, ctx) {
   hits.sort((a, b) => a.pos - b.pos);
   let html = "", cursor = 0;
   for (const h of hits) {
-    const a = T.map[h.pos], b = T.map[h.end];
-    html += esc(text.slice(cursor, a)) + '<button type="button" class="branch-inline-link" data-' + h.kind + '="' + esc(h.id) + '">' + esc(text.slice(a, b)) + '</button>';
+    const a = T.map[h.pos], b = T.map[h.end], words = esc(text.slice(a, b));
+    html += esc(text.slice(cursor, a)) + (h.kind === "title" ? `<cite class="wtitle">${words}</cite>` : h.kind === "essay" ? words
+      : '<button type="button" class="branch-inline-link' + (h.kind === "classic" ? " wtitle" : "") + '" data-' + h.kind + '="' + esc(h.id) + '">' + words + '</button>');
     cursor = b;
   }
   return html + esc(text.slice(cursor));

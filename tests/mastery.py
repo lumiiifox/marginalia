@@ -110,7 +110,8 @@ async def main():
         await page.evaluate("put('texts', 'b1', { title: 'My book', hasContent: false, createdAt: 2, updatedAt: 2 })")
         await page.evaluate("put('notes', 'n-plain', { textId: 'b1', gloss: 'Nothing checked in here', createdAt: 3, updatedAt: 3 })"); await page.wait_for_timeout(200)
         before = await page.evaluate("document.querySelector('#toast').textContent")
-        await page.evaluate("put('notes', 'n-rh', { textId: 'b1', gloss: 'A rhizome has no centre', createdAt: 4, updatedAt: 4 })"); await page.wait_for_timeout(200)
+        await page.evaluate("put('notes', 'n-rh', { textId: 'b1', gloss: 'A rhizome has no centre', createdAt: 4, updatedAt: 4 })")
+        await page.wait_for_function("/Rhizome/.test(document.querySelector('#toast').textContent)", timeout=5000)  # an earlier toast may still be showing under load
         u = await page.evaluate("[document.querySelector('#toast').textContent, masteryStages(masteryItems().find((x) => x.id === 'rhizome'))]")
         check(u[0].startswith("Mastered: Rhizome") and u[1]["used"], f"a note naming a checked concept makes it used; met, answered and used, it's mastered ({u[0]})")
         await page.evaluate("document.querySelector('#toast').textContent = ''; put('notes', 'n-rh', { textId: 'b1', gloss: 'A rhizome has no centre, again', createdAt: 4, updatedAt: 5 })"); await page.wait_for_timeout(200)

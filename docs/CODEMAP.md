@@ -279,3 +279,8 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   Backups carry the store; `planRestore` merges each stage's earlier time (`plan.mastery`), so restoring never takes anything away.
   Tested by `tests/mastery.py`.
 
+- Book titles in the reference texts (`bookTitles`, `titleSpans`, in `linkWith`, js/reference.js): every thinker's key works (`w`, titles of
+  two words or more) and `BOOK_TITLES` (end of data/thinkers.js; one-word titles only by hand) are set in italics (`cite.wtitle`), and no
+  thinker or term links inside them. A title in quotation marks in `w` is an essay: it only keeps links out. A bundled classic's first
+  mention in a paragraph still links (`wtitle` on the link too); later mentions are titles.
+
