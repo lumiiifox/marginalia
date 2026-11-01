@@ -187,8 +187,14 @@ async def main():
           !!document.querySelector('.group .mentions') || null]; })()""")
         check("ethics" in rows[0] and "epistemology" in rows[0] and "nietzsche" in rows[1] and "ressentiment" in rows[2], f"a classic's page lists the articles, cards and entries that name or cite it ({rows[:3]})")
         await page.evaluate("go({ screen: 'text', textId: 'classic-plato-republic' })")
-        await page.wait_for_function("document.querySelector(\"#main .mentions [data-branch='political']\")", timeout=15000)  # under load the page can take longer than a fixed wait
-        check("In the reference pages" in (await page.inner_text("#main") if await page.wait_for_function("document.querySelector('#main').innerText.includes('In the reference pages')", timeout=15000) else "") and await page.locator("#main .mentions [data-branch='political']").count() >= 1, "the book's page shows them")
+        # One check of the whole state, waited for: the page re-draws while the classics finish loading in the background, so two
+        # separate reads could straddle a re-draw (found by running the suite at double load).
+        try:
+            await page.wait_for_function("document.querySelector('#main').innerText.includes('In the reference pages') && !!document.querySelector(\"#main .mentions [data-branch='political']\")", timeout=20000)
+            shown = True
+        except Exception:
+            shown = False
+        check(shown, "the book's page shows them")
         refs = await page.evaluate("""(() => {
           const d = document.createElement('div'), ids = (html) => { d.innerHTML = html; return [...d.querySelectorAll('button')].map((b) => b.dataset.term || b.dataset.thinker || b.dataset.classic); };
           const g = GLOSSARY.find((x) => x.id === 'genealogy');
