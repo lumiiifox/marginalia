@@ -71,6 +71,54 @@ function linkHeadings(blocks, parsedSecs, finalSecs) {
 // Marks a place in a line where text is missing: OCR leaves a wide blank where it couldn't read a word.
 // parsePDF turns it into "[…]" or drops it (see there).
 const GAP = "\uE000";
+/* Spaces the PDF itself contains. Some scanned books' OCR layers write each word as its own string with its space after it, in a
+   stand-in font wider than the print, so each word's box overlaps the next and PDF.js reads the words as run together
+   ("closertranslation"). The page's glyph stream still holds those spaces. Aligned with the text items letter by letter, a space
+   the source has between two letters of one item is put back. Nothing is guessed: where the letters don't match one for one, the
+   page is left as PDF.js read it. A title set in spaced-out letters ("D I S C I P L I N E"), whose source has no space inside it,
+   is joined up. Returns how many items it changed. */
+function sourceSpaces(items, ol, OPS) {
+  let src = "";
+  for (let i = 0; i < ol.fnArray.length; i++) {
+    const f = ol.fnArray[i];
+    if (f !== OPS.showText && f !== OPS.showSpacedText) continue;
+    for (const g of ol.argsArray[i][0] || []) if (g && typeof g === "object" && typeof g.unicode === "string") src += g.unicode;
+  }
+  // after[k]: the source has whitespace after its k-th letter (whitespace left out of the count)
+  const letters = [], after = [];
+  for (const ch of src.normalize("NFKC")) { if (/\s/.test(ch)) { if (after.length) after[after.length - 1] = true; } else { letters.push(ch); after.push(false); } }
+  const have = items.map((it) => (it.str || "").normalize("NFKC")), joined = letters.join("");
+  // Each item is found in the source by its letters, from where the previous one ended; an item that can't be found (PDF.js
+  // left out something the source has, or the other way round) is left as it was, and the next one is looked for afresh.
+  let k = 0, changed = 0;
+  items.forEach((it, n) => {
+    const chars = [...have[n]], mine = chars.filter((ch) => !/\s/.test(ch)).join("");
+    if (!mine) return;
+    const at = joined.indexOf(mine, k);
+    if (at < 0 || at - k > 400) return;
+    k = at;
+    const startK = k, out = [];
+    chars.forEach((ch, j) => {
+      out.push(ch);
+      if (/\s/.test(ch)) return;
+      const next = chars[j + 1];
+      if (after[k] && next !== undefined && !/\s/.test(next)) out.push(" ");
+      else if (after[k] && next === undefined) out.push(" "); // the space after an item's last word, kept for linesOf
+      k++;
+    });
+    let s = out.join("");
+    // Spaced-out letters ("D I S C I P L I N E", "M i c h e l Fo u c a u l t"): an item made mostly of single letters is spelled
+    // with the source's spaces only. (Ordinary text has few one-letter words, so it never qualifies.)
+    const segs = s.trim().split(/\s+/), singles = segs.filter((x) => [...x].length === 1 && /\p{L}/u.test(x)).length;
+    if ((segs.length >= 3 && singles === segs.length) || (segs.length >= 4 && singles >= segs.length * 0.6)) {
+      let t = "";
+      for (let m = startK; m < k; m++) { t += letters[m]; if (after[m] && m < k - 1) t += " "; }
+      s = t + (after[k - 1] ? " " : "");
+    }
+    if (s !== have[n]) { it.str = s; changed++; }
+  });
+  return changed;
+}
 function linesOf(items) {
   const its = [];
   for (const it of items) {
@@ -87,7 +135,10 @@ function linesOf(items) {
   const lines = [];
   for (const it of its) {
     const L = lines[lines.length - 1];
-    if (L && Math.abs(L.y - it.y) <= Math.max(1.5, 0.5 * Math.max(L.z, it.z || L.z))) { L.items.push(it); if (it.z > L.z) { L.z = it.z; L.y = it.y; } }
+    // near the line's own height, or near any item already on it: OCR can set a word a few points high (a raised
+    // quotation mark), which would otherwise split the line in two and put its words out of order
+    const tol = L && Math.max(1.5, 0.5 * Math.max(L.z, it.z || L.z));
+    if (L && (Math.abs(L.y - it.y) <= tol || L.items.some((o) => !o.gap && Math.abs(o.y - it.y) <= 0.3 * tol))) { L.items.push(it); if (it.z > L.z) { L.z = it.z; L.y = it.y; } }
     else lines.push({ y: it.y, z: it.z, items: [it] });
   }
   return lines.map((L) => {
@@ -410,13 +461,21 @@ async function parsePDF(buf, say) {
   try { const m = await pdf.getMetadata(); title = clean(m?.info?.Title || ""); author = clean(m?.info?.Author || ""); } catch {}
   if (/^(microsoft|untitled)|\.(pdf|docx?|indd|tex)$/i.test(title)) title = "";
   let labels = null; try { labels = await pdf.getPageLabels(); } catch {}
-  const pages = [];
+  const pages = [], spaceCheck = { tried: 0, fixed: 0, on: false };
   try {
     for (let p = 1; p <= n; p++) {
       if (p === 1 || p % 10 === 0) { say(`Reading page ${p} of ${n}…`); await new Promise((r) => setTimeout(r, 0)); }
       const page = await pdf.getPage(p);
       const vb = page.getViewport({ scale: 1 }).viewBox;
       const tc = await page.getTextContent();
+      // The source's own spaces (sourceSpaces): tried on the first pages with text, and kept up for the whole book only where
+      // they change something, since reading a page's glyphs takes longer than reading its text.
+      if (spaceCheck.on || spaceCheck.tried < 12) {
+        if (tc.items.length) {
+          try { const ol = await page.getOperatorList(); const c = sourceSpaces(tc.items, ol, window.pdfjsLib.OPS); spaceCheck.fixed += c; } catch {}
+          if (++spaceCheck.tried === 12 || p === n) spaceCheck.on = spaceCheck.fixed >= 10;
+        }
+      }
       pages.push({ lines: linesOf(tc.items), y0: vb[1], y1: vb[3] });
       try { const anns = await page.getAnnotations(); if (anns.some((a) => MARK_TYPES.has(a.subtype))) marks.push(...marksOnPage(anns, tc.items).map((m) => ({ ...m, p: p - 1 }))); } catch {}
       page.cleanup();

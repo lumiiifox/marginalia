@@ -125,6 +125,39 @@ PHIL = """async ([url, base]) => {
   return at;
 }"""
 
+# A scanned book's OCR layer as some scanners write it (found in a real scan of a translated monograph): invisible text over the
+# page image, every word its own text object with its space after it, set in a stand-in font wider than the print, so each word's
+# box overlaps the next; a quotation mark read a few points high; a title in letter-spaced capitals (character spacing, Tc).
+# PDF.js reads such words as run together ("closertranslation"); the importer must put back the spaces the PDF itself holds.
+OCR_WORDS = ("Any closer translation of the French title of this book has proved unsatisfactory on various counts. To begin with, "
+             "the author uses the infinitive, which, as here, may have the effect of an 'impersonal imperative'. Such a nuance is "
+             "denied us in English. More seriously the verb has no adequate English equivalent.")
+def ocr_layer_pdf():
+    ops = ["3 Tr"]
+    # the title: letter-spaced capitals, written as one string with its spaces
+    # (Tc is in text space, scaled by the font size, as in the scan: 0.218 at 11 points)
+    for wx, w in ((41.04, "DISCIPLINE "), (133.44, "AND "), (172.56, "PUNISH")):
+        ops.append(f"BT 0.218 Tc 11 0 0 11 {wx} 520 Tm /F1 1 Tf ({w}) Tj 0 Tc ET")
+    x, y, line_w = 40.0, 480.0, 270.0
+    for w in OCR_WORDS.split(" "):
+        adv = 4.1 * len(w) + 2.2          # where the next word starts: narrower than Helvetica sets it, so the boxes overlap
+        if x + adv > 40 + line_w: x, y = 40.0, y - 12
+        yy = y + (4.4 if w.startswith("'") else 0)   # a quotation mark read high, as OCR does
+        word = w.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)")
+        ops.append(f"BT 9 0 0 9 {x:.2f} {yy:.2f} Tm /F1 1 Tf ({word} ) Tj ET")
+        x += adv
+    content = "\n".join(ops).encode("latin-1")
+    objs = [b"<< /Type /Catalog /Pages 2 0 R >>", b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+            b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 357 576] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>",
+            b"<< /Length %d >>\nstream\n" % len(content) + content + b"\nendstream",
+            b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>"]
+    out, offs = bytearray(b"%PDF-1.4\n"), []
+    for i, o in enumerate(objs, 1): offs.append(len(out)); out += b"%d 0 obj\n" % i + o + b"\nendobj\n"
+    xref = len(out); out += b"xref\n0 %d\n0000000000 65535 f \n" % (len(objs) + 1)
+    for o in offs: out += b"%010d 00000 n \n" % o
+    out += b"trailer\n<< /Size %d /Root 1 0 R >>\nstartxref\n%d\n%%%%EOF\n" % (len(objs) + 1, xref)
+    return bytes(out)
+
 FRONT = """async ([url, base]) => {
   LIBS.pdf = [base + "/pdf.js"]; LIBS.pdfw = [base + "/pdf.worker.js"];
   const r = await parseFile(new File([await (await fetch(url)).arrayBuffer()], url.split("/").pop()), () => {});
@@ -259,6 +292,16 @@ async def main(paths):
                 check(pre == ["p", "p"] and ("h", "Preface") in [(k, x) for k, x, pg in at], f"philosophy: the short preface is a heading and prose, though it mentions contents and copyright ({pre})")
                 end = [k for k, x, pg in at if CHAPTER_END in x]
                 check(end in (["p"], ["c"]), f"philosophy: the chapter's last lines, on a page of their own, are prose ({end})")
+                (tmp / "ocrlayer.pdf").write_bytes(ocr_layer_pdf())
+                raw = await page.evaluate("""async ([url, base]) => { LIBS.pdf = [base + "/pdf.js"]; LIBS.pdfw = [base + "/pdf.worker.js"];
+                  const { pdf, stop } = await pdfOpen(await (await fetch(url)).arrayBuffer()); const tc = await (await pdf.getPage(1)).getTextContent();
+                  await pdf.destroy(); stop(); return tc.items.map((i) => i.str).join("|"); }""", ["/ocrlayer.pdf", base])
+                check("anycloser" in raw.lower().replace("|", ""), f"ocrlayer: the generated page reproduces the fault, words run together as PDF.js reads them ({raw[:80]!r})")
+                r = await page.evaluate(PARSE, ["/ocrlayer.pdf", base])
+                body = re.sub(r"\s+", " ", r["text"] + " " + " ".join(r["heads"]))
+                check(OCR_WORDS in body, f"ocrlayer: every space the PDF holds comes back, in order, quotation mark and all ({body[:160]!r})")
+                check("DISCIPLINE AND PUNISH" in body, f"ocrlayer: a letter-spaced title reads as its words ({body[:60]!r})")
+                check("[…]" not in body, "ocrlayer: a word read a few points high doesn't split its line or leave a false gap")
                 r = await page.evaluate(BADPAGE, ["/justified.pdf", base])
                 check("unreadable page" in r["err"] and r["made"] >= 1 and r["ended"] == r["made"], f"a page that can't be read stops the import and its worker ({r})")
                 # The OCR repairs, on lines from a real scan, with the book's vocabulary they rely on.
