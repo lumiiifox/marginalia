@@ -7,9 +7,19 @@ the part you're changing before you change it, and update it in the same commit.
 ## Who decides
 
 Claude is the lead on Marginalia (owner's decision, 2026-10-26): it decides what goes in, what waits and what comes out, and says
-why. The owner sets direction and can overrule. ChatGPT may contribute through pull requests; Claude reviews them against this file
-before the owner merges. The app is vibe coded on purpose: it is a place to see what the idea can become, separate from the owner
-learning to program, so explain changes in terms of what they do for reading, never as coding lessons.
+why. The owner sets direction and can overrule. The app is vibe coded on purpose: it is a place to see what the idea can become,
+separate from the owner learning to program, so explain changes in terms of what they do for reading, never as coding lessons.
+
+Roles (owner's decision, 2026-11-01):
+- **Claude** owns the codebase: implementation, testing, integration and final technical review. Only Claude changes code.
+- **ChatGPT** is a philosophical collaborator, kept off the codebase: it drafts entries, examines interpretations of Nietzsche,
+  Deleuze, Guattari and Land, finds conceptual inconsistencies and challenges questionable readings. Its drafts and objections reach
+  the app through Claude, which checks them against sources like any other draft; a reading ChatGPT disputes is settled by the
+  sources, and an open dispute is recorded in the audit, not papered over.
+- **The owner** approves every content change before it ships (below), and sets direction.
+
+Intellectual quality comes first. Automation takes the repetitive work (drafting from sources, checking quotations, running tests);
+interpretation stays under review.
 
 ## What Marginalia is for
 
@@ -48,6 +58,15 @@ ideas, or reward doing so? If not, it waits.
   at least the groups you touched plus `smoke`; run everything before a PR. Add a check when a change adds a screen, a stored
   field or a reward. CI runs `tests/run.py` on every push and PR.
 - Content audits: `tests/audit/` (see its README). Every audit gets an independent second review before its fixes ship.
+  Audit along the reading route only, in the order of `tests/audit/ROUTE_QUEUE.md`; the rest stays visibly unchecked until a reading
+  needs it (owner's decision, 2026-11-01).
+- **Owner approval before content ships** (owner's decision, 2026-11-01, until the workflow has proved itself): a drafted and reviewed
+  batch waits on the `drafts` branch with a summary for the owner, and goes to `main` only once the owner approves. Automatic
+  publishing is reconsidered once the independent review has shown it reliably catches conceptual problems.
+- **One drafts branch.** Unreviewed or unapproved work goes on `drafts` (reset from `main` for each new batch), never on a new
+  branch per batch, so there is nothing to clean up. This session can't delete remote branches.
+- Tests for a change: content only (`data/`, `tests/audit/`) → `python3 tests/run.py content`; anything in `js/`, `css/`, `index.html`
+  or storage → the full `python3 tests/run.py`.
 - This session can't delete remote branches; the repo deletes merged PR branches automatically (if not, tell the owner).
 
 ## Writing for the app

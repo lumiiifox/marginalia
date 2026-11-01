@@ -72,6 +72,17 @@ async def main():
         check(await page.evaluate("S.mastery.size") == 0, "opening an entry that hasn't been audited counts for nothing")
         await page.evaluate("closeOverlay()")
 
+        # checked and unchecked, as the reader sees them
+        await page.evaluate("go({ screen: 'glossary', gs: { gOpen: ['univocity', 'validity'], gq: '', gArea: 'all' } })"); await page.wait_for_timeout(300)
+        marks = await page.evaluate("['univocity', 'validity'].map((id) => document.querySelector(`details.term[data-term-id='${id}'] .ckmark`)?.className)")
+        sumline = await page.evaluate("document.querySelector(\"details.term[data-term-id='validity'] .ta\").textContent")
+        check(marks == ["ckmark ok", "ckmark un"] and "unchecked" in sumline, f"an audited entry says it's checked, and an unaudited one says it's unchecked, in its summary line too ({marks}, {sumline})")
+        await page.evaluate("thinkerPanel('spinoza')"); await page.wait_for_timeout(200)
+        sp = await page.evaluate("document.querySelector('.sheet .ckmark')?.className")
+        await page.evaluate("closeOverlay()"); await page.evaluate("thinkerPanel('locke')"); await page.wait_for_timeout(200)
+        lo = await page.evaluate("document.querySelector('.sheet .ckmark')?.className")
+        check(sp == "ckmark ok" and lo == "ckmark un", f"thinker cards are marked the same way ({sp}, {lo})")
+        await page.evaluate("closeOverlay()"); await page.evaluate("S.mastery.clear(); idbDo('mastery', (s) => s.clear())"); await page.wait_for_timeout(200)
         # 2 meeting
         await page.evaluate("openTerm('univocity')")
         await page.wait_for_function("/Univocity/.test(document.querySelector('#toast').textContent)", timeout=5000)

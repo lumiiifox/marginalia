@@ -1153,3 +1153,6 @@ span.bhid { display: inline; }
 @keyframes earn-pop { 0% { transform: translateX(-50%) scale(0.85); } 100% { transform: translateX(-50%) scale(1); } } /* scale only: fading would dip the text below AA contrast */
 @media (prefers-reduced-motion: reduce) { .toast.earn { animation: none; } .rc-meter i, .mmeter i { transition: none; } }
 .wtitle { font-style: italic; } /* a book's title in the reference texts (bookTitles) */
+.ckmark { margin: 2px 0 6px; font-size: 13px; color: var(--muted); } /* checked or unchecked (checkMark) */
+.ckmark.ok::before { content: "✓ "; color: color-mix(in srgb, var(--brass) 75%, var(--ink)); font-weight: 700; }
+.ckmark.un::before { content: "○ "; }

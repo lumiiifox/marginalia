@@ -284,3 +284,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   thinker or term links inside them. A title in quotation marks in `w` is an essay: it only keeps links out. A bundled classic's first
   mention in a paragraph still links (`wtitle` on the link too); later mentions are titles.
 
+
+- Checked and unchecked (`isCheckedTerm`, `isCheckedThinker`, `checkMark`, in study.js): a built-in glossary entry or thinker card says
+  whether it passed an audit (`VERIFIED_TERMS`, `VERIFIED_THINKERS`): a ✓ line, or "Unchecked: not yet audited against its sources";
+  an unchecked entry's summary line also says "unchecked". Your own or edited terms carry no mark. Tested by `tests/mastery.py`.

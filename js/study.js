@@ -263,6 +263,13 @@ function thinkerNotes(needles) {
   return [...S.notes.entries()].filter(([, n]) => findNeedles(linkFold([n.passage, n.gloss].filter(Boolean).join("\n")), needles).length)
     .sort(([, a], [, b]) => (b.createdAt || 0) - (a.createdAt || 0));
 }
+/* Checked or unchecked: an entry is checked once its every claim passed an audit and an independent review (VERIFIED_TERMS,
+   VERIFIED_THINKERS). Unchecked entries say so plainly, so reviewed material stays apart from provisional material. Your own or edited
+   terms carry no mark: they're yours. */
+const isCheckedTerm = (g) => g.builtIn && !g.edited && VERIFIED_TERMS.includes(g.id);
+const isCheckedThinker = (id) => VERIFIED_THINKERS.includes(id);
+const UNCHECKED_NOTE = "Unchecked: not yet audited against its sources. Treat it as provisional.";
+const checkMark = (ok) => `<p class="ckmark ${ok ? "ok" : "un"}">${ok ? "Checked: every claim audited against its sources and independently reviewed." : UNCHECKED_NOTE}</p>`;
 function termHTML(g, tmap) {
   const hits = termNotes(g);
   const see = [...(LINKS.see.get(g.id) || [])], vs = [...(LINKS.vs.get(g.id) || [])];
@@ -271,9 +278,10 @@ function termHTML(g, tmap) {
     + chipRow("See also", termChips(see, tmap))
     + chipRow("Contrast with", termChips(vs, tmap));
   return `<details class="term" data-term-id="${esc(g.id)}"${S.gOpen.has(g.id) ? " open" : ""}>
-    <summary><span class="tm">${esc(g.t)}</span><span class="ta">${esc(AREAS[g.a] || "")}${hits.length ? `, ${hits.length} in your notes` : ""}${g.edited ? ", edited by you" : ""}</span></summary>
+    <summary><span class="tm">${esc(g.t)}</span><span class="ta">${esc(AREAS[g.a] || "")}${hits.length ? `, ${hits.length} in your notes` : ""}${g.edited ? ", edited by you" : ""}${g.builtIn && !g.edited && !isCheckedTerm(g) ? ", unchecked" : ""}</span></summary>
     <div class="tbody">
       <p class="tdef">${esc(g.d)}</p>
+      ${g.builtIn && !g.edited ? checkMark(isCheckedTerm(g)) : ""}
       ${figHTML(g.img)}${diaHTML(g.fig)}
       <div data-gx="${esc(g.id)}">${S.gOpen.has(g.id) ? refParas(g.x, { kind: "term", id: g.id }) : classicParas(g.x)}</div>
       ${g.s ? `<p class="tsrc">${sourceLinks(g.s)}</p>` : ""}
@@ -531,6 +539,7 @@ function thinkerPanel(id) {
     ${p.y || CAN_SAY ? `<div class="sayline">${p.y ? `<p class="hint">${esc(p.y)}</p>` : ""}${sayBtn(p.n, "linkbtn")}</div>` : ""}
     ${figHTML(p.img)}
     <p class="tdef">${esc(p.d)}</p>
+    ${checkMark(isCheckedThinker(id))}
     ${refParas(p.x, { kind: "thinker", id })}
     ${thinkerSources(p)}
     ${p.w.length ? `<div class="crow"><span class="clabel">Key works</span><ul class="bq-list">${p.w.map((w) => `<li>${classicLinks(w, id)}</li>`).join("")}</ul></div>` : ""}

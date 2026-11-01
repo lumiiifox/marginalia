@@ -20,9 +20,11 @@ GROUPS = {
     "import": ["pdf_import", "pdf_highlights", "wikisource"],
     "reference": ["study_tools", "links", "in_your_books", "density", "mastery"],
     "look": ["contrast", "smoke"],
+    # a change to reference content only (data/, tests/audit/): what it can break, in about two minutes
+    "content": ["study_tools", "links", "in_your_books", "mastery", "density"],
 }
 ALL = sorted(f[:-3] for f in os.listdir(HERE) if f.endswith(".py") and f != "run.py")
-WORKERS = 4
+WORKERS = int(os.environ.get("MG_WORKERS", 4))  # more workers means more load: a way to shake out timing flakes
 
 
 def run(name, port):
