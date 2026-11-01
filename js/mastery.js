@@ -100,9 +100,11 @@ async function earn(kind, id, stage) {
   if (rec[stage]) return false;
   const now = Date.now(), next = { ...rec, [stage]: now, ...(rec.met ? {} : { met: now }) };
   S.mastery.set(key, next);
-  if (idb) await idbDo("mastery", (st) => st.put(next, key)).catch(() => {});
+  // Celebrated at once (the toast doesn't wait for storage), so things earned together, such as a card and its connections,
+  // always arrive as one toast however slow the device is to save them.
   const item = masteryItems().find((it) => it.kind === kind && it.id === id);
   if (item) celebrate(item, stage === "ans" && !rec.met ? "ans" : stage);
+  if (idb) await idbDo("mastery", (st) => st.put(next, key)).catch(() => {});
   return true;
 }
 // A card showing these thinkers' connections has been seen: each connection on it is met.
@@ -132,7 +134,8 @@ function masteryNoteChanged(noteId) {
 // that meets a thinker and their connections) arrive as one toast.
 let EARNED = [], EARN_T = 0;
 function celebrate(item, stage) {
-  EARNED.push([item, stage]); clearTimeout(EARN_T); EARN_T = setTimeout(flushEarned, 60);
+  // gathered for one turn of the event loop: everything earned by the same tap is pushed before it ends
+  EARNED.push([item, stage]); clearTimeout(EARN_T); EARN_T = setTimeout(flushEarned, 0);
 }
 function flushEarned() {
   const list = EARNED; EARNED = []; if (!list.length) return;
