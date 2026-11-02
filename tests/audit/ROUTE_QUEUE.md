@@ -5,11 +5,7 @@ and leave the rest unchecked until a reading needs them. Unchecked entries say s
 sources"), so reviewed and provisional material stay apart. Take the next batch from the top; take its lines off in the change that
 ships its audit, and add the ids to `VERIFIED_TERMS`.
 
-## Nietzsche (next)
-
-will-to-power, eternal-recurrence, ressentiment, genealogy, genetic-fallacy
-
-## Land and accelerationism
+## Land and accelerationism (next)
 
 hyperstition, accelerationism
 
@@ -24,4 +20,4 @@ ontology, metaphysics, accident, universals, deduction, essentialism, existentia
 ## Audited
 
 The 15 Deleuze and Guattari entries and structuralism (glossary-dg.json); Spinoza's metaphysics (glossary-spinoza.json); the ancient and
-early modern ground (glossary-aristotle.json); Kant and Hegel (glossary-kant-hegel.json).
+early modern ground (glossary-aristotle.json); Kant and Hegel (glossary-kant-hegel.json); Nietzsche (glossary-nietzsche.json).
