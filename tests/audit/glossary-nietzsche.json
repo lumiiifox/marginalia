@@ -1,0 +1,555 @@
+{
+ "audit": "glossary-nietzsche",
+ "audited": "2026-11-02",
+ "mode": "in place",
+ "scope": "Glossary entries on Nietzsche along the route to Deleuze and Land: will to power, eternal recurrence, ressentiment, genealogy, genetic fallacy",
+ "by": {
+  "first_pass": "Claude (Opus 5.5), scheduled overnight run: drafting and checking against the sources below; every quotation from the bundled Zimmern and Samuel translations checked character for character against data/books",
+  "review": "Independent reviewer (separate agent, fresh context), 2026-11-02: checked all 25 new sentences and every quotation (7 WebSearch and 15 WebFetch lookups, and a character-for-character script against the bundled Zimmern and Samuel texts, all 12 of whose quotations and section numbers matched); no term passed as drafted; fixed as asked: two Kirwin quotations cut under 15 words, Elisabeth's publishing of The Will to Power placed after Nietzsche's illness as Anderson has it, Anderson's quotation brought to his lower case and curly apostrophe, his full list of will-to-power readings given (Nehamas and Poellner, Schacht, Abel and Anderson added), the §36 hypothesis quoted with Nietzsche's 'as my thesis puts it', unquoted runs of Oksala, Leiter, Kirwin, Aylesworth and the Internet Encyclopedia quoted or reworded, the Genealogy's essay headings quoted as the bundled text has them, Kirwin credited for the Zarathustra sentence and her point that Nietzsche knew of the fallacy added, Anderson's wider dispute over the slave revolt reported, the genetic-fallacy examples marked as the app's own, two old verdicts corrected (eternal recurrence s5 and genealogy s3 to overstated), an unsourced part number dropped from the Zarathustra locator; passed after the fixes."
+ },
+ "sources": {
+  "AND": {
+   "name": "R. Lanier Anderson, “Friedrich Nietzsche”, Stanford Encyclopedia of Philosophy (substantive revision 25 June 2026)",
+   "src": "https://plato.stanford.edu/entries/nietzsche/"
+  },
+  "LEI": {
+   "name": "Brian Leiter, “Nietzsche’s Moral and Political Philosophy”, Stanford Encyclopedia of Philosophy (revision 5 September 2024)",
+   "src": "https://plato.stanford.edu/entries/nietzsche-moral-political/"
+  },
+  "KIR": {
+   "name": "Claire Kirwin, “Nietzsche’s Ethics”, Internet Encyclopedia of Philosophy",
+   "src": "https://iep.utm.edu/nietzsches-ethics/"
+  },
+  "OKS": {
+   "name": "Johanna Oksala, “Michel Foucault”, Stanford Encyclopedia of Philosophy (substantive revision 21 April 2026)",
+   "src": "https://plato.stanford.edu/entries/foucault/"
+  },
+  "AYL": {
+   "name": "Gary Aylesworth, “Postmodernism”, Stanford Encyclopedia of Philosophy (substantive revision 5 February 2015)",
+   "src": "https://plato.stanford.edu/entries/postmodernism/"
+  },
+  "DEL": {
+   "name": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss; revised by Voss, 2022)",
+   "src": "https://plato.stanford.edu/entries/deleuze/"
+  },
+  "FAL": {
+   "name": "Internet Encyclopedia of Philosophy, “Fallacies”",
+   "src": "https://iep.utm.edu/fallacy/"
+  },
+  "BGE": {
+   "name": "Nietzsche, Beyond Good and Evil, trans. Helen Zimmern (Standard Ebooks), bundled: data/books/classic-nietzsche-beyond.json",
+   "src": "data/books/classic-nietzsche-beyond.json"
+  },
+  "GM": {
+   "name": "Nietzsche, The Genealogy of Morals, trans. Horace B. Samuel (Standard Ebooks), bundled: data/books/classic-nietzsche-genealogy.json",
+   "src": "data/books/classic-nietzsche-genealogy.json"
+  }
+ },
+ "note": "Claims the sources consulted did not cover were cut. Nietzsche is quoted from the editions bundled with the app wherever the passage is in them; the Gay Science and Zarathustra are not bundled, so passages from them are given as the cited scholar quotes or describes them.",
+ "terms": {
+  "will-to-power": {
+   "old": [
+    {
+     "s": 1,
+     "text": "Nietzsche's name for the basic drive of living things to expand, overcome resistance and discharge their strength. Self-preservation, he says, is only one of its indirect results.",
+     "accuracy": "overstated",
+     "by": "BGE §13; AND",
+     "note": "Discharge and self-preservation are BGE §13, now quoted from the bundled edition; overcoming resistance is Reginster's emphasis (as Anderson reports), so it is left out of the definition."
+    },
+    {
+     "s": 2,
+     "text": "Zarathustra says that wherever he found the living he found will to power, and that life is what must always overcome itself.",
+     "accuracy": "unverified",
+     "note": "Zarathustra is not bundled and no source consulted quotes the passage; cut. BGE §§9, 259 give the same claim in the bundled text."
+    },
+    {
+     "s": 3,
+     "text": "Nietzsche uses the idea to interpret morality, knowledge and philosophy as expressions of drives, which grounds his genealogical method.",
+     "accuracy": "contested",
+     "by": "BGE §§9, 36; DEL",
+     "note": "Philosophy as will to power is BGE §9; the tie to genealogy is Deleuze's reading, now credited to him."
+    },
+    {
+     "s": 4,
+     "text": "The Will to Power (1901), compiled after his death by his sister and Heinrich Köselitz from unpublished notes, presented as a system what he never finished, and Heidegger read will to power as the culmination of Western metaphysics.",
+     "accuracy": "overstated",
+     "by": "AND; GM III §27",
+     "note": "Anderson: Elisabeth's selection, after Nietzsche's announced plan (GM III §27), editing not well founded in his plans. Köselitz and the year not in the sources consulted; 'culmination' not in them either: Anderson counts Heidegger among readers who take the doctrine as foundational metaphysics."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "Nietzsche's name for what he holds living things seek above all. Beyond Good and Evil §13: “A living thing seeks above all to discharge its strength—life itself is Will to Power; self-preservation is only one of the indirect and most frequent results thereof.”",
+     "claims": [
+      {
+       "by": "BGE"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "In the same section he counts the instinct of self-preservation among superfluous teleological principles, adding “we owe it to Spinoza’s inconsistency”.",
+     "claims": [
+      {
+       "by": "BGE"
+      }
+     ]
+    },
+    {
+     "text": "He calls philosophy “the most spiritual Will to Power” (§9), and says a living organization “will endeavour to grow, to gain ground, attract to itself and acquire ascendancy” “because life is precisely Will to Power” (§259).",
+     "claims": [
+      {
+       "by": "BGE"
+      }
+     ]
+    },
+    {
+     "text": "Section 36 states the widest version as a hypothesis: granted that our entire instinctive life could be explained as “the development and ramification of one fundamental form of will—namely, the Will to Power, as my thesis puts it”, “one would thus have acquired the right to define all active force unequivocally as Will to Power”.",
+     "claims": [
+      {
+       "by": "BGE"
+      }
+     ]
+    },
+    {
+     "text": "R. Lanier Anderson writes that “much scholarly controversy concerns what kind of doctrine Nietzsche intended to advance”: Heidegger is among the readers who take it as a foundational metaphysics, Nehamas and Poellner read it as a rejection of traditional metaphysics, Kaufmann, Soll, and Clark and Dudrick read it as a psychological hypothesis, Schacht, Abel and Anderson himself read it as a (quasi-)scientific conjecture, and Maudemarie Clark reads it as an expression of Nietzsche's values that says nothing about how the world is.",
+     "claims": [
+      {
+       "by": "AND"
+      }
+     ]
+    },
+    {
+     "text": "Deleuze, in Nietzsche and Philosophy (1962), made the will to power Nietzsche's “principle of difference”.",
+     "claims": [
+      {
+       "by": "DEL"
+      }
+     ]
+    },
+    {
+     "text": "During Nietzsche's illness his sister Elisabeth took control of his literary legacy, and she later published a selection from his notebooks as The Will to Power, the title he had announced for a work in preparation (Genealogy, Third Essay, §27); Anderson judges that the editing “was not well founded in Nietzsche’s surviving plans for the book”.",
+     "claims": [
+      {
+       "by": "AND"
+      },
+      {
+       "by": "GM"
+      }
+     ]
+    }
+   ],
+   "s": "Nietzsche, Beyond Good and Evil (1886), §§9, 13, 36, 259; On the Genealogy of Morality (1887), Third Essay, §27",
+   "src": "AND",
+   "srcs": [
+    "DEL"
+   ],
+   "p": [
+    "nietzsche",
+    "spinoza",
+    "heidegger",
+    "deleuze"
+   ]
+  },
+  "eternal-recurrence": {
+   "old": [
+    {
+     "s": 1,
+     "text": "Nietzsche's thought that one's life, and everything in it, will recur endlessly in exactly the same way.",
+     "accuracy": "overstated",
+     "by": "KIR",
+     "note": "Kirwin: it is generally agreed Nietzsche was not claiming everything will in fact recur; restated as a thought."
+    },
+    {
+     "s": 2,
+     "text": "He offers it as a test: could you affirm your life if you had to live it again innumerable times?",
+     "accuracy": "supported",
+     "by": "KIR; AND",
+     "note": "Kept, limited to the published works as Kirwin has it."
+    },
+    {
+     "s": 3,
+     "text": "The Gay Science §341 introduces it through a demon who whispers it to you in your loneliest loneliness.",
+     "accuracy": "supported",
+     "by": "KIR",
+     "note": "Unquoted translation wording; now quoted as Kirwin quotes it."
+    },
+    {
+     "s": 4,
+     "text": "In Zarathustra it is the “most abysmal thought”, which the hero must learn to will.",
+     "accuracy": "unverified",
+     "by": "KIR",
+     "note": "The quoted phrase is in no source consulted; cut. Kirwin's account (central teaching, hard even for Zarathustra to will) kept."
+    },
+    {
+     "s": 5,
+     "text": "Scholars debate whether Nietzsche held it as a cosmological claim or as an ethical thought experiment; most of his published uses are of the second kind.",
+     "accuracy": "overstated",
+     "by": "KIR",
+     "note": "Kirwin reports general agreement that Nietzsche was not making the cosmological claim, which the old sentence presented as an open debate. Restated with Kirwin's terms and her report of the prevailing view, credited to her."
+    },
+    {
+     "s": 6,
+     "text": "It belongs with amor fati, the love of one's fate.",
+     "accuracy": "supported",
+     "by": "AND",
+     "note": "Anderson treats both under affirmation; GS §276 quoted as he quotes it."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "Nietzsche's thought that one's life, with every pain and joy in it, might return endlessly in the same order. In his published works it serves mainly as a test: could one affirm one's life if told it would recur forever?",
+     "claims": [
+      {
+       "by": "KIR"
+      },
+      {
+       "by": "AND"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "The Gay Science §341 brings it in with a question, quoted here as Claire Kirwin quotes it: what if “a demon were to steal into your loneliest loneliness” and told you that your life would return to you in every detail?",
+     "claims": [
+      {
+       "by": "KIR"
+      }
+     ]
+    },
+    {
+     "text": "Kirwin writes that some notes Nietzsche left unpublished treat it as “a cosmological thesis”, with time cyclical, while the published works stress it as “a sort of test of affirmation”; she reports that it is “generally agreed” that he was not claiming everything will actually recur forever.",
+     "claims": [
+      {
+       "by": "KIR"
+      }
+     ]
+    },
+    {
+     "text": "In Kirwin's account, Thus Spoke Zarathustra makes it the chief doctrine its hero teaches, and Zarathustra himself struggles to will it sincerely.",
+     "claims": [
+      {
+       "by": "KIR"
+      }
+     ]
+    },
+    {
+     "text": "R. Lanier Anderson discusses it with amor fati, the love of one's fate: Book IV of The Gay Science opens with “Amor fati: let that be my love henceforth!” (§276), and he notes that the book closes by first introducing the thought of eternal recurrence (§341).",
+     "claims": [
+      {
+       "by": "AND"
+      }
+     ]
+    },
+    {
+     "text": "Deleuze reads the eternal return as a return of difference: in the Stanford entry's words, repetition is “the return of the differential genetic condition of real experience”. See syntheses of time.",
+     "claims": [
+      {
+       "by": "DEL"
+      }
+     ]
+    }
+   ],
+   "s": "Nietzsche, The Gay Science (1882), §§276, 341; Thus Spoke Zarathustra",
+   "src": "KIR",
+   "srcs": [
+    "AND",
+    "DEL"
+   ],
+   "p": [
+    "nietzsche",
+    "deleuze"
+   ]
+  },
+  "ressentiment": {
+   "old": [
+    {
+     "s": 1,
+     "text": "Nietzsche: the reactive hostility of the weak toward the strong which, when it becomes creative, produces values that condemn strength as evil and call weakness good.",
+     "accuracy": "supported",
+     "by": "AND; GM I §10",
+     "note": "Restated in Anderson's terms."
+    },
+    {
+     "s": 2,
+     "text": "In the First Essay of the Genealogy, the “slave revolt in morality” begins when ressentiment itself becomes creative: those denied the reaction of deeds take an imaginary revenge by calling the powerful “evil” and themselves “good”.",
+     "accuracy": "supported",
+     "by": "GM I §10",
+     "note": "Now quoted from the bundled Samuel translation."
+    },
+    {
+     "s": 3,
+     "text": "Nietzsche sets this reactive valuation against the noble mode, which affirms itself first and calls the low “bad” only as an afterthought.",
+     "accuracy": "supported",
+     "by": "GM I §10; AND",
+     "note": "'Afterthought' is not Nietzsche's word; his phrase (“pale late-born foil”) quoted."
+    },
+    {
+     "s": 4,
+     "text": "Max Scheler wrote a study of ressentiment in 1912, and the concept remains in use in political analysis of grievance.",
+     "accuracy": "unverified",
+     "note": "Neither claim is in the sources consulted (the Stanford entry on Scheler does not discuss the work); cut."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "Nietzsche's word for the resentful hatred of the powerless toward those who dominate them. In the Genealogy it becomes creative and produces values that call the powerful evil and the powerless good.",
+     "claims": [
+      {
+       "by": "AND"
+      },
+      {
+       "by": "GM"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "The Genealogy, First Essay, §10, in Horace Samuel's translation, which renders the word as “resentment”: “The revolt of the slaves in morals begins in the very principle of resentment becoming creative and giving birth to values—a resentment experienced by creatures who, deprived as they are of the proper outlet of action, are forced to find their compensation in an imaginary revenge.”",
+     "claims": [
+      {
+       "by": "GM"
+      }
+     ]
+    },
+    {
+     "text": "The same section sets this against aristocratic valuation, which “springs from a triumphant affirmation of its own demands” and whose negative concept “bad” is “merely a pale late-born foil”, while slave morality begins by saying no to what is outside and different from itself.",
+     "claims": [
+      {
+       "by": "GM"
+      }
+     ]
+    },
+    {
+     "text": "R. Lanier Anderson describes the two as a good/bad and a good/evil pattern of valuation: the concept of evil is made first, to condemn enemies, and the slaves' idea of the good is reached by negating it; he notes that the exact nature of this revolt, including whether it was conscious, remains disputed among scholars.",
+     "claims": [
+      {
+       "by": "AND"
+      }
+     ]
+    },
+    {
+     "text": "Brian Leiter notes that Nietzsche traces ressentiment, and the morality it produces, to an “actual physiological cause”.",
+     "claims": [
+      {
+       "by": "LEI"
+      }
+     ]
+    }
+   ],
+   "s": "Nietzsche, On the Genealogy of Morality (1887), First Essay, §§7–11",
+   "src": "AND",
+   "srcs": [
+    "LEI"
+   ]
+  },
+  "genealogy": {
+   "old": [
+    {
+     "s": 1,
+     "text": "A historical method that traces how values, concepts or institutions came to be, exposing their contingent and often conflictual origins.",
+     "accuracy": "supported",
+     "by": "GM Preface §6, II §12; OKS",
+     "note": "'Conflictual' left to Nietzsche's own words (GM II §12)."
+    },
+    {
+     "s": 2,
+     "text": "Nietzsche's Genealogy traces good and evil, guilt and the ascetic ideal to struggles between forces, and asks what value our values have.",
+     "accuracy": "overstated",
+     "by": "GM",
+     "note": "The three essays' subjects and the value of values confirmed in the bundled text; 'struggles between forces' replaced by Nietzsche's own §12 principle, which it paraphrased loosely."
+    },
+    {
+     "s": 3,
+     "text": "Foucault took up the method to show how practices of punishment, sexuality and madness came to seem natural, attending to descent (Herkunft) and emergence (Entstehung) and treating the search for a pure origin with suspicion.",
+     "accuracy": "overstated",
+     "by": "OKS; AYL",
+     "note": "Oksala: genealogy first deployed in Discipline and Punish; the History of Madness belongs to his earlier archaeological work, so madness is dropped. Herkunft and Entstehung not in the sources consulted, cut; suspicion of origins kept from Aylesworth."
+    },
+    {
+     "s": 4,
+     "text": "Exposing a belief's history can weaken its claim to be natural or necessary, which makes genealogy a tool of critique.",
+     "accuracy": "supported",
+     "by": "OKS",
+     "note": "Restated with Oksala's phrase; the dispute over whether origins bear on value pointed to the genetic fallacy entry."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "A historical method that traces how values, concepts or institutions came to be, bringing out the contingent events that produced them.",
+     "claims": [
+      {
+       "by": "OKS"
+      },
+      {
+       "by": "GM"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "The preface to Nietzsche's Genealogy states the program: “we need a critique of moral values, the value of these values is for the first time to be called into question—and for this purpose a knowledge is necessary of the conditions and circumstances out of which these values grew” (§6).",
+     "claims": [
+      {
+       "by": "GM"
+      }
+     ]
+    },
+    {
+     "text": "Its three essays are headed “Good and Evil,” “Good and Bad”; “Guilt,” “Bad Conscience,” and the Like; and What Is the Meaning of Ascetic Ideals?",
+     "claims": [
+      {
+       "by": "GM"
+      }
+     ]
+    },
+    {
+     "text": "The Second Essay gives a principle for any such history: “The origin of the existence of a thing and its final utility, its practical application and incorporation in a system of ends, are toto coelo opposed to each other”, since whatever exists “will always be put to new purposes by a force superior to itself” (§12).",
+     "claims": [
+      {
+       "by": "GM"
+      }
+     ]
+    },
+    {
+     "text": "Johanna Oksala writes that Foucault meant the term to “evoke Nietzsche’s genealogy of morals”; his genealogical method, first used in Discipline and Punish, shows a given system of thought to be “the result of contingent turns of history”, and his critique asks “what, in the apparently necessary, might be contingent”.",
+     "claims": [
+      {
+       "by": "OKS"
+      }
+     ]
+    },
+    {
+     "text": "Gary Aylesworth reports that for Foucault genealogy “opposes itself to the search for ‘origins’”, and glosses it as studying “the accidents and contingencies that converge at crucial moments”.",
+     "claims": [
+      {
+       "by": "AYL"
+      }
+     ]
+    },
+    {
+     "text": "Deleuze, in Nietzsche and Philosophy, takes genealogy as Nietzsche's “genetic method”. Whether a history of origins can bear on the value of what it traces is a standing question: see genetic fallacy.",
+     "claims": [
+      {
+       "by": "DEL"
+      },
+      {
+       "by": "KIR"
+      }
+     ]
+    }
+   ],
+   "s": "Nietzsche, On the Genealogy of Morality (1887), Preface §6; On the Genealogy of Morality, Second Essay, §12; Foucault, Discipline and Punish",
+   "src": "OKS",
+   "srcs": [
+    "AYL",
+    "DEL"
+   ],
+   "p": [
+    "nietzsche",
+    "foucault",
+    "deleuze"
+   ]
+  },
+  "genetic-fallacy": {
+   "old": [
+    {
+     "s": 1,
+     "text": "Judging a claim true or false by where it came from instead of by the evidence for it: “That idea began as a myth, so it can't be right.”",
+     "accuracy": "supported",
+     "by": "FAL",
+     "note": "Restated with the Internet Encyclopedia's definition, which covers arguments and requires the appeal to be irrelevant; the invented example in quotation marks taken out, since it reads as a quotation."
+    },
+    {
+     "s": 2,
+     "text": "Origins are sometimes relevant.",
+     "accuracy": "supported",
+     "by": "FAL"
+    },
+    {
+     "s": 3,
+     "text": "A source with a record of errors, or one that stands to profit, is a reason to check a claim more carefully, and in the history of ideas a belief's origin is often the point of interest.",
+     "accuracy": "overstated",
+     "by": "FAL; KIR",
+     "note": "Profit (FAL) and an untrustworthy informant (KIR) kept with their examples; the history-of-ideas clause has no source, cut."
+    },
+    {
+     "s": 4,
+     "text": "What doesn't follow is that a claim's truth is settled by its source.",
+     "accuracy": "editorial",
+     "note": "Restates the definition; cut as redundant."
+    },
+    {
+     "s": 5,
+     "text": "The question matters for genealogical method, which traces how values and practices came about (Nietzsche's On the Genealogy of Morals, Foucault's histories): whether, and how, such a history bears on their validity is a standing question about the method.",
+     "accuracy": "supported",
+     "by": "KIR",
+     "note": "Now Kirwin's report and her answer, credited."
+    },
+    {
+     "s": "ex",
+     "text": "Examples: human rights from European thought; an argument first made by a tobacco company.",
+     "accuracy": "editorial",
+     "note": "The app's own illustrations of the definition (the Internet Encyclopedia's examples differ); kept as illustrations."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "Using the origin of a claim or an argument to discredit or support it when that origin is irrelevant to the question.",
+     "claims": [
+      {
+       "by": "FAL"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "An origin can matter. The Internet Encyclopedia's example: if a building plan comes from someone likely to profit from it, asking for the plan's merits to be checked independently commits no fallacy.",
+     "claims": [
+      {
+       "by": "FAL"
+      }
+     ]
+    },
+    {
+     "text": "Claire Kirwin gives another: learning that an informant is untrustworthy leaves the information possibly true, and takes away the reason one had for accepting it.",
+     "claims": [
+      {
+       "by": "KIR"
+      }
+     ]
+    },
+    {
+     "text": "Some cases are hard to call: the Internet Encyclopedia asks whether Freud, by tracing belief in God to a wish for a powerful father, would show that belief misplaced or commit the fallacy.",
+     "claims": [
+      {
+       "by": "FAL"
+      }
+     ]
+    },
+    {
+     "text": "The question matters for genealogy, which traces how values and practices came about. Kirwin notes that many readers have thought Nietzsche's Genealogy commits the genetic fallacy, suggests that Nietzsche was aware of the fallacy (The Gay Science §345), and holds that a thing's origin can properly bear on how we assess it, adding that the Genealogy may work this way.",
+     "claims": [
+      {
+       "by": "KIR"
+      }
+     ]
+    }
+   ],
+   "src": "FAL",
+   "srcs": [
+    "KIR"
+   ],
+   "p": [
+    "nietzsche",
+    "foucault",
+    "freud"
+   ]
+  }
+ }
+}
