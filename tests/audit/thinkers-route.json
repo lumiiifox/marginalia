@@ -148,5 +148,55 @@
     "the 2012 date of The Dark Enlightenment"
    ]
   }
+ },
+ "pending": {
+  "_note": "Cards drafted or checked for the reading route, awaiting independent review. They move into 'cards', and their ids into VERIFIED_THINKERS, once the review passes.",
+  "bergson": {
+   "sources": [
+    "SEP “Henri Bergson” (Leonard Lawlor and Valentine Moulard-Leonard), substantive revision 22 October 2025"
+   ],
+   "checked": [
+    "born in Paris on 18 October 1859; Polish father and English mother, both Jewish",
+    "accepted at the École Normale with Jaurès and Durkheim; graduated 1881; lycée in Angers, then Clermont-Ferrand",
+    "1888, two doctoral theses in Paris: Quid Aristoteles de loco senserit (Aristotle’s Conception of Place) and the Essai, published 1889 as Time and Free Will",
+    "Matter and Memory 1896; Laughter 1900; Creative Evolution 1907; Mind-Energy 1919; The Two Sources 1932; The Creative Mind 1934",
+    "Chair of Ancient Philosophy at the Collège de France (no year stated in the entry, so none given); Académie française the year after 1913, its first Jewish member; president of the International Commission for Intellectual Cooperation in 1922; Nobel Prize for Literature 1928",
+    "quotation 'reached cult-like heights during his lifetime', verbatim",
+    "severe arthritis from the second half of the 1920s, which eventually forced him to retire from public life; Vichy exemptions offered and refused; died 3 January 1941 at 81",
+    "duration as the immediate data of consciousness; quantitative multiplicity 'by means of externalizing one from another', out of a practical or utilitarian interest; qualitative multiplicity organized into a whole, states permeating one another",
+    "survival of personal memories, unconscious; the cone 'SAB' symbolizes memory; the vital impulse (élan vital) as an original common impulse; intuition as entering into the thing; closed morality with static religion, open morality with dynamic religion",
+    "influence decreased notably after the Second World War; Deleuze’s 1966 Bergsonism marked the reawakening of interest; multiplicity his most enduring contribution, as Deleuze realized; revitalization due almost entirely to Deleuze"
+   ],
+   "left_out": [
+    "Duration and Simultaneity: the entry gives no first-publication year",
+    "the year of the Collège de France appointment and any later chair"
+   ],
+   "drew_on": "left empty: no source checked for Bergson's own sources",
+   "review": {
+    "verdict": "pending",
+    "by": "awaiting independent review (separate agent)"
+   }
+  },
+  "bataille": {
+   "status": "existing card, not rewritten in this pass; its dates and key works checked",
+   "sources": [
+    "Allan Stoekl, “Bataille, Georges (1897–1962)”, Encyclopedia of Philosophy, 2nd ed. (Macmillan, 2005), via encyclopedia.com",
+    "Jonathan Maskit, “Bataille, Georges (1897–1962)”, Routledge Encyclopedia of Philosophy (summary)",
+    "Jean Piel, introduction to Bataille, La Part maudite (Éditions de Minuit), extract on the publisher's site"
+   ],
+   "checked": [
+    "1897–1962 (Stoekl; Maskit); born in Billom (Maskit)",
+    "“The Notion of Expenditure”: written for La Critique sociale, 'l'article de 1933' (Piel); Stoekl brackets it [1932]; the card's works list keeps 1933 and its text '1932–33'",
+    "Inner Experience 1943; The Accursed Share 1949; Erotism 1957 (Stoekl)",
+    "Stoekl on Derrida (deconstruction as close following and disarticulation) and on Foucault's counter-discourse"
+   ],
+   "not_retrieved": [
+    "École des Chartes and Bibliothèque nationale dates; Documents, Contre-Attaque, Acéphale, the College of Sociology, Critique; Story of the Eye under 'Lord Auch' (not in the parts of Stoekl or Maskit retrieved; the card's Larousse source was not re-read)"
+   ],
+   "review": {
+    "verdict": "pending",
+    "by": "awaiting independent review (separate agent)"
+   }
+  }
  }
 }

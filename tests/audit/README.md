@@ -3,7 +3,8 @@
 One JSON file per audited branch or tradition article (`data/branches.js`), and a few for groups of other entries:
 `glossary-dg.json` (the glossary entries on Deleuze and Guattari's concepts, and Structuralism: `old` sentence verdicts, `new_text`
 with each sentence's sources) and `thinkers-route.json` (the thinker cards on the reading route: what was checked, fixed, or not
-re-read). Each sentence of the audited text has a record, and each
+re-read; cards awaiting their independent review sit under `pending`, outside `cards`, and stay out of `VERIFIED_THINKERS`
+until it passes). Each sentence of the audited text has a record, and each
 claim in it an assessment:
 
 - `type`: historical, conceptual, interpretive, editorial or question.
