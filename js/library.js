@@ -124,6 +124,9 @@ function libraryView() {
     body = `<p class="empty"><b>No texts yet.</b> Add a book from a PDF, EPUB, Word or text file, then read it here and save passages as you go.</p>`;
   } else {
     const per = shelfPer();
+    // Two books with the same title (two translations, a PDF and an EPUB) each say which they are, under the title.
+    const same = new Map(); for (const [, t] of S.texts) { const k = norm(t.title || ""); same.set(k, (same.get(k) || 0) + 1); }
+    const which = (t) => (same.get(norm(t.title || "")) > 1 ? [t.author, t.edition, t.year].filter(Boolean).join(", ") || [t.kind, t.createdAt ? `added ${new Date(t.createdAt).toLocaleDateString()}` : ""].filter(Boolean).join(", ") : "");
     body = Object.keys(STATUS).map((st) => {
       const books = shelfList(st);
       if (!books.length) return "";
@@ -134,9 +137,10 @@ function libraryView() {
         ${rows.map((row) => `<div class="shelfrow" style="--per:${per}"><div class="plank"></div>${row.map(([id, t]) => {
           const nc = notesFor(id).length, p0 = progressOf(t), pc = p0 > 0 ? p0 : null;
           const meta = [pc != null ? `${pc}%` : "", nc ? `${nc} note${nc === 1 ? "" : "s"}` : ""].filter(Boolean).join(", ");
-          return `<div class="sbwrap"><button class="shelfbook" data-open="${esc(id)}" aria-label="${esc(t.title)}">
+          const w = which(t);
+          return `<div class="sbwrap"><button class="shelfbook" data-open="${esc(id)}" aria-label="${esc(t.title + (w ? ", " + w : ""))}">
             ${coverHTML(t, coverURL(id))}
-            <span class="sb-title">${esc(t.title)}</span>
+            <span class="sb-title">${esc(t.title)}</span>${w ? `<span class="sb-which">${esc(w)}</span>` : ""}
             ${meta ? `<span class="sb-meta">${meta}</span>` : ""}
             ${pc != null ? `<span class="sb-prog"><i style="width:${pc}%"></i></span>` : ""}
           </button><button class="sbmenu" data-bookmenu="${esc(id)}" aria-label="More for ${esc(t.title)}">⋯</button></div>`; }).join("")}</div>`).join("")}

@@ -130,6 +130,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .dropmark { position: fixed; z-index: 41; box-shadow: 0 0 0 2px var(--paper); width: 4px; border-radius: 2px; background: var(--leather); pointer-events: none; }
 .dropmark[hidden] { display: none; }
 @media (prefers-reduced-motion: reduce) { .shelfbook .cover { transition: none; } }
+.sb-which { font: italic 400 13px/1.2 var(--f-text); color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .sb-title { font: 500 15px/1.25 var(--f-text); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; hyphens: auto; }
 .sb-meta { font-size: 13px; line-height: 1.3; color: var(--muted); }
 .shelfmore { justify-self: start; margin-top: 2px; }

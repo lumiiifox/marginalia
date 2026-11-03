@@ -53,6 +53,13 @@ async def main():
         bad = {k: v for k, v in recs.items() if not (v["status"] == "queued" and v["has"] and v["total"] == v["blocks"] and v["blocks"] > 50 and v["secs"] >= 4 and v["tied"] == v["secs"] and v["cover"] and v["cover"].startswith("image/jpeg"))}
         check(len(recs) == len(IDS) and not bad, f"every classic is in the library, queued, with its text, chapters and cover ({bad or len(recs)})")
         await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(300)
+        # two books with one title say which each is; a title of its own says nothing more
+        await page.evaluate("""async () => { await put('texts', 'dup-a', { title: 'The Ethics', author: 'Spinoza', edition: 'tr. Elwes', status: 'reading', createdAt: 5, updatedAt: 5 });
+          await put('texts', 'dup-b', { title: 'The Ethics', author: 'Spinoza', edition: 'tr. Curley', status: 'reading', createdAt: 6, updatedAt: 6 }); render(); }""")
+        await page.wait_for_timeout(300)
+        whichs = await page.evaluate("['dup-a', 'dup-b', 'classic-kant-groundwork'].map((id) => document.querySelector(`.shelfbook[data-open='${id}'] .sb-which`)?.textContent || '')")
+        check(whichs == ["Spinoza, tr. Elwes", "Spinoza, tr. Curley", ""], f"two books with one title say which each is on the shelf; others don't ({whichs})")
+        await page.evaluate("async () => { for (const id of ['dup-a', 'dup-b']) { await del('texts', id); S.texts.delete(id); } render(); }"); await page.wait_for_timeout(200)
         lib = await page.inner_text("#main")
         shelf = await page.evaluate("[...document.querySelectorAll('.shelf[data-st=\"queued\"] .shelfbook')].map((b) => b.dataset.open)")
         more = await page.evaluate("document.querySelector('.shelf[data-st=\"queued\"] .shelfmore')?.textContent || ''")
