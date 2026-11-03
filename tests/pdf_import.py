@@ -92,7 +92,9 @@ def listbook():
     # numbered and bulleted items long enough to run over, their run-over lines hanging under the first
     items = "".join(f"<li>{t}</li>" for t in ITEMS)
     return (f'<html lang="en"><style>{CSS} p {{ text-align: justify; }} li {{ margin: 0.3em 0; }}</style><h1>Definitions</h1><p>{BODY * 2}</p>'
-            f'<ol>{items}</ol><p>{BODY}</p><ul>{items}</ul><p>{BODY * 2}</p></html>')
+            f'<ol>{items}</ol><p>{BODY}</p><ul>{items}</ul><p>{BODY * 2}</p>'
+            f'<blockquote style="font-size:0.9em;margin-left:2em">{"<br>".join(VERSE_LINES)}</blockquote><p>{BODY * 2}</p></html>')
+VERSE_LINES = ["I met a traveller from an antique land,", "Who said: two vast and trunkless legs", "Stand in the desert; near them, on the sand,", "Half sunk, a shattered visage lies"]
 BIO = ("The author was born in a small town in the north, lectured in universities throughout the world, and wrote often for "
        "newspapers and reviews in the years before this book.")
 def biopage():
@@ -341,6 +343,7 @@ async def main(paths):
                 # (Chrome draws a bullet as a shape, so the bulleted items have no marker to keep)
                 want = [f"1. {ITEMS[0]}", f"2. {ITEMS[1]}", ITEMS[0], ITEMS[1]]
                 check(whole == want, f"listbook: a list item runs on under its number as one paragraph, its number kept ({[x[:30] for x in whole]})")
+                check(" / ".join(VERSE_LINES) in r["text"], f"listbook: verse quoted in short lines keeps them, as \" / \" ({[x[:90] for x in paras if 'traveller' in x]})")
                 await maker.set_content(f'<html lang="en"><style>{CSS}</style><p>{BODY * 3}</p><p>{BODY * 3}</p></html>')
                 await maker.pdf(path=str(tmp / "headed.pdf"), prefer_css_page_size=True, display_header_footer=True,
                     header_template='<div style="font-size:9px;width:100%;padding-left:0.7in"><span class="pageNumber"></span> ON METHOD IN SHORT ESSAYS</div>', footer_template="<span></span>",

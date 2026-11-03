@@ -813,6 +813,8 @@ async function parsePDF(buf, say) {
       if (start) curList = lm ? l.x : null;
       if (start) { flush(); cur = l.t; curK = kind; }
       else if (!cur) { cur = l.t; curK = "c"; }
+      // verse in a quotation: a line stopping far short of the margin without ending a sentence ends a line of verse, kept as " / "
+      else if (curK === "q" && kind === "q" && last && last.xe < last.right - B * 6 && !/[\p{L}]-$/u.test(last.t)) cur = cur + " / " + l.t;
       else cur = joinLine(cur, l.t, lost);
       carry = false; prev = l; last = { t: l.t, xe: l.xe, right };
     }
