@@ -170,6 +170,8 @@ async def cloud_backups(browser):
     check(await laptop.evaluate("S.notes.get('remote-note').gloss==='Updated note' && S.notes.has('classic-note') && S.texts.get('remote-book').pos===11"), 'confirmed restore recovers notes, classic annotations and session position')
     check(await laptop.evaluate("(async()=> (await idbGet('content','remote-book'))[0].x==='Corrected imported text' && (await idbGet('content','classic-spinoza-ethics')).length>100)()"), 'restore downloads hash-verified imported text and rebuilds bundled classics')
     check(await laptop.evaluate("(async()=> (await idbGet('content','classic-spinoza-ethics'))[7].st==='heading' && !!(await idbGet('covers','classic-spinoza-ethics')))()"), 'restore brings back the edits to a classic, with its bundled cover')
+    # (the restore is written before the reload: under load the write can still be on its way when the note shows in memory)
+    await laptop.wait_for_function("(async () => !!(await idbGet('notes', 'remote-note')))()")
     await laptop.reload(); await laptop.wait_for_function(READY)
     check(await laptop.evaluate("S.notes.get('remote-note').followups[0].x==='Later'"), 'restored history survives reload')
     # Corruption must fail before a preview can be offered.
