@@ -317,6 +317,17 @@ const VBR = `<span class="vs"> / </span><br>`;
 // A short paragraph that starts with a list's number or bullet ("3. ", "(a) ", "IV. ", "• ") is set as a list item, hanging;
 // a long numbered section keeps the paragraph's indent.
 const LIST_ITEM = /^\s*(?:\d{1,3}[.)]|\((?:\d{1,3}|[a-z]|[ivx]{1,5})\)|(?:[IVX]|[IVXLC]{2,6})\.|[•◦])\s/;
+// A text set out in the geometric order (Spinoza's Ethics): a proposition, definition, axiom or postulate is set apart, its label in
+// small capitals and its statement in italics, as printed editions set them; a proof's, corollary's or note's label in italics.
+// Only the drawing changes: the label is wrapped as it stands.
+const LEAD_STATEMENT = /^((?:PROP\.|PROPOSITION|DEFINITION|AXIOM|POSTULATE|LEMMA) [IVXLC]+\.)(?=\s)/;
+const LEAD_PART = /^((?:Proof|Demonstration|Corollary|Note|Scholium|Explanation)(?: [IVX]+)?\.?(?:<span class="rx">\u2060<\/span>)?—)/;
+function leadIn(b, html) {
+  if (b.k !== "p") return [html, ""];
+  let m = html.match(LEAD_STATEMENT); if (m) return [`<span class="lead">${m[1]}</span>${html.slice(m[1].length)}`, "stmt"];
+  m = html.match(LEAD_PART); if (m) return [`<span class="lead2">${m[1]}</span>${html.slice(m[1].length)}`, "part"];
+  return [html, ""];
+}
 const isListItem = (b) => (b.k === "p" || b.k === "q") && LIST_ITEM.test(plain(b.x || "")) && plain(b.x || "").length <= 400;
 // A word joiner before a dash set close to its word (".rx": drawn, never counted as the text's), so a line never starts with "—".
 const WJ = `<span class="rx">\u2060</span>`;
@@ -391,7 +402,7 @@ function blockHTML(b, i, marks) {
     // a chapter title of more than a line or two at heading size ("Of the Interior Beginnings of Voluntary Motions; …") is set smaller
     return `<h2 class="bh l${titleLevel(b)}${plain(html.replace(/<[^>]+>/g, "")).length > 60 ? " long" : ""}" data-i="${i}">${html}${notes}</h2>`;
   }
-  const x = inlineHTML(b.x || "", m) + marginHTML(m, b.x || ""), v = (isVerse(b.x || "") ? " verse" : "") + (isListItem(b) ? " li" : "");
+  const [x0, lead] = leadIn(b, inlineHTML(b.x || "", m)), x = x0 + marginHTML(m, b.x || ""), v = (isVerse(b.x || "") ? " verse" : "") + (lead ? " " + lead : "") + (!lead && isListItem(b) ? " li" : "");
   if (role === "title") return `<p class="btitle" data-i="${i}">${x}</p>`;
   if (role === "text") return `<p class="bp${b.k === "c" ? " cont" : ""}${v}" data-i="${i}">${x}</p>`;
   if (b.k === "q" || role === "quote") return `<p class="bq${v}" data-i="${i}">${x}</p>`;

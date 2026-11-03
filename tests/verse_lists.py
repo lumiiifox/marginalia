@@ -7,7 +7,8 @@ Made-up book only, phone-sized screen, Swipe pages. Checks that:
   3. a short paragraph starting with a list's number or bullet hangs as a list item; a long numbered section stays a paragraph;
   4. a dash set close to its word never starts a line, and the joiner that keeps it there isn't counted as text;
   5. a chapter title of more than a line or two at heading size is set smaller;
-  6. Justified pages are justified at the usual type size and set ragged right at a large one.
+  6. Justified pages are justified at the usual type size and set ragged right at a large one;
+  7. a proposition in the geometric order is set apart, its label in small capitals; a proof's label in italics.
 Needs: pip install playwright && playwright install chromium
 """
 import os
@@ -30,7 +31,8 @@ BOOK = """(v) => (async () => {
     { k: 'p', x: '2. A thing is called finite after its kind, when it can be limited by another thing of the same nature.' },
     { k: 'p', x: '1. A numbered section, long as a chapter section is: ' + P.repeat(5) },
     { k: 'p', x: 'A great hall—many guests whom we are receiving—among them Irma, whom I immediately take aside, as though to answer her letter, to reproach her—' + P.repeat(2) },
-    { k: 'h', l: 1, x: 'A Short Title' }];
+    { k: 'h', l: 1, x: 'A Short Title' },
+    { k: 'p', x: 'PROP. XIII. Substance absolutely infinite is indivisible.' }, { k: 'p', x: 'Proof.—If it could be divided, the parts would retain its nature.' }];
   for (let n = 0; n < 30; n++) B.push({ k: 'p', x: P.repeat(3) });
   await put('content', 'v', B);
   await put('texts', 'v', { title: 'Verse', author: 'Test', hasContent: true, total: B.length, pos: 0, status: 'reading', createdAt: 1, updatedAt: 1, sections: [{ id: 'c1', label: 'VI' }] });
@@ -97,6 +99,11 @@ async def main():
         await page.evaluate("setRS({ fs: 26 })"); await page.wait_for_timeout(400)
         j26 = await page.evaluate("[document.querySelector('#reader').classList.contains('short-lines'), getComputedStyle(R.els[1]).textAlign, getComputedStyle(R.els[1]).hyphens]")
         check(j20 == [False, "justify"] and j26[0] and j26[1] in ("left", "start") and j26[2] == "auto", f"Justified pages justify at 20 px and are set ragged right, hyphenated, at 26 ({j20}, {j26})")
+        # 7 the geometric order
+        await page.evaluate("setRS({ fs: 20 })"); await page.wait_for_timeout(300)
+        g = await page.evaluate("[R.els[10].className, getComputedStyle(R.els[10]).fontStyle, R.els[10].querySelector('.lead')?.textContent, R.els[11].querySelector('.lead2')?.textContent, getComputedStyle(R.els[11].querySelector('.lead2') || R.els[11]).fontStyle, offsetIn(11, R.els[11].lastChild, R.els[11].lastChild.data.length), plain(R.blocks[11].x).length]")
+        check("stmt" in g[0] and g[1] == "italic" and g[2] == "PROP. XIII." and g[3] == "Proof.\u2060—" and g[4] == "italic" and g[5] == g[6],
+              f"a proposition is set apart, its label in small capitals, its statement in italics; a proof's label in italics, its text's places unchanged ({g})")
         check(not errs, f"no script errors ({errs[:2]})")
         await browser.close()
 
