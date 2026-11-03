@@ -324,8 +324,10 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .bh.l1 { font-size: 1.5em; }
 .bh.l2 { font-size: 1.22em; }
 .bh.l3, .bh.l4 { font-size: 1.04em; }
+.bh.l1.long { font-size: 1.24em; } .bh.l2.long { font-size: 1.1em; }
 .book > .bh:first-child, .bpg:first-child + .bh { margin-top: 0.4em; }
 .bq { margin: 0.7em 0 0.7em 1.3em !important; font-size: 0.92em; }
+.book :is(.bp, .bq).li { text-indent: -1.3em; padding-left: 1.3em; } /* a list item: its number hangs, its run-over lines align */
 .bfn { font-size: 0.78em; line-height: 1.5; color: var(--muted); padding-left: 1em; }
 .bp + .bfn, .bq + .bfn, .bh + .bfn { margin-top: 0.9em !important; padding-top: 0.5em; border-top: 1px solid var(--rule); }
 .bpg { display: flex; align-items: center; gap: 8px; margin: 0.5em 0; min-height: 1em; font: 500 13px/1 var(--f-ui); color: var(--muted); user-select: none; -webkit-user-select: none; }
@@ -378,6 +380,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .segb { border: 1px solid var(--rule); background: var(--field); border-radius: 8px; padding: 8px 12px; font: 500 15px/1 var(--f-ui); color: var(--ink); }
 .segb.on { background: var(--leather); color: var(--leather-ink); border-color: transparent; }
 .rs-fs { min-width: 2.5em; text-align: center; font-size: 15px; }
+.rs-hint { margin: -4px 0 4px; font-size: 13.5px; }
 .rload { color: var(--muted); font: 15px var(--f-ui); text-indent: 0 !important; }
 .selbar { position: fixed; left: 0; right: 0; bottom: var(--pin-h, 0px); display: flex; justify-content: center; padding: 12px 16px calc(14px + env(safe-area-inset-bottom, 0px)); pointer-events: none; z-index: 10; }
 .selbar .btn { pointer-events: auto; box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3); }
@@ -861,8 +864,16 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 #reader.paged-reader :is(#book, #flipbook)::-webkit-scrollbar { display: none; }
 /* Book-like pages: justified text with hyphenation (Aa > Text in pages), headings kept with what follows,
    printed page numbers as small markers inside the text. */
-#reader.paged-reader.justify :is(#book, #flipbook) :is(.bp, .bq, .bfn) { text-align: justify; text-align-last: start; hyphens: auto; -webkit-hyphens: auto; text-wrap: pretty; }
-#reader.paged-reader:not(.justify) :is(#book, #flipbook) :is(.bp, .bq) { text-wrap: pretty; }
+/* (word spaces a little narrower to start from, about the shrink a typesetter allows them: fuller lines, so fewer stretched wide;
+   with too few characters a line to justify evenly, ragged right instead, hyphenated: layoutPages sets .short-lines) */
+#reader.paged-reader.justify:not(.short-lines) :is(#book, #flipbook) :is(.bp, .bq, .bfn) { text-align: justify; text-align-last: start; hyphens: auto; -webkit-hyphens: auto; text-wrap: pretty; word-spacing: -0.04em; }
+#reader.paged-reader.justify.short-lines :is(#book, #flipbook) :is(.bp, .bq, .bfn) { hyphens: auto; -webkit-hyphens: auto; }
+#reader.paged-reader:is(:not(.justify), .short-lines) :is(#book, #flipbook) :is(.bp, .bq) { text-wrap: pretty; }
+/* Verse line by line (isVerse): never justified, a long line's run-over hanging under it */
+#reader :is(#book, #flipbook) .verse { text-align: left !important; text-align-last: auto !important; hyphens: manual !important; -webkit-hyphens: manual !important; word-spacing: normal !important; text-indent: 1.5em hanging each-line; text-wrap: wrap; }
+.book .vs { display: none; }
+/* a page marker with no number at the very start of a book (an unnumbered title page) draws nothing */
+:is(#book, #flipbook) > .bpg:first-child:empty { display: none; }
 #reader.paged-reader :is(#book, #flipbook) .bh { break-after: avoid; break-inside: avoid; text-wrap: balance; }
 #reader.paged-reader :is(#book, #flipbook) .chap { break-before: column; }
 #reader.paged-reader :is(#book, #flipbook) .chap.bh, #reader.paged-reader :is(#book, #flipbook) .chap + .bh { margin-top: 0.4em; }

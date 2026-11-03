@@ -298,6 +298,9 @@ function layoutPages() {
   const col = Math.min(w - PAGE_GAP, Math.floor((parseFloat(MEASURE[RS.w]) || 34) * RS.fs));
   book.style.setProperty("--col-w", col + "px");
   book.style.setProperty("--col-gap", w - col + "px");
+  // Justified text needs about 40 characters a line to space evenly (Alegreya averages 0.4 of its size a character): with fewer,
+  // at a large type size or on a small phone, Justified pages are set ragged right, hyphenated.
+  reader.classList.toggle("short-lines", col / (RS.fs * 0.4) < 40);
   R.pageW = w; R.dirty = true; R.ver = (R.ver || 0) + 1;
 }
 function saveRS() { try { localStorage.setItem("mg-reader", JSON.stringify(RS)); } catch {} }
@@ -306,9 +309,21 @@ const barH = () => $(".rbar")?.offsetHeight || 0;
 // A note number printed as a superscript (¹², as the import writes them) can be tapped to read its note.
 const FNREF = /[⁰¹²³⁴⁵⁶⁷⁸⁹]{1,3}/g;
 const fnRefs = (html) => html.replace(FNREF, (m) => `<span class="fnref" data-fn="${[...m].map((c) => "⁰¹²³⁴⁵⁶⁷⁸⁹".indexOf(c)).join("")}" role="button" tabindex="0" aria-label="Note ${[...m].map((c) => "⁰¹²³⁴⁵⁶⁷⁸⁹".indexOf(c)).join("")}">${m}</span>`);
+// Verse, stored with " / " between its lines (as verse is quoted): a block whose every part is a line's length is drawn line by
+// line. The slash stays in the page, hidden, so a passage chosen from it is quoted as stored and keeps its place.
+const VERSE_LINE = 110;
+const isVerse = (x) => { const p = plain(x); if (!p.includes(" / ")) return false; const parts = p.split(" / "); return parts.length > 1 && parts.every((t) => t.length <= VERSE_LINE); };
+const VBR = `<span class="vs"> / </span><br>`;
+// A short paragraph that starts with a list's number or bullet ("3. ", "(a) ", "IV. ", "• ") is set as a list item, hanging;
+// a long numbered section keeps the paragraph's indent.
+const LIST_ITEM = /^\s*(?:\d{1,3}[.)]|\((?:\d{1,3}|[a-z]|[ivx]{1,5})\)|(?:[IVX]|[IVXLC]{2,6})\.|[•◦])\s/;
+const isListItem = (b) => (b.k === "p" || b.k === "q") && LIST_ITEM.test(plain(b.x || "")) && plain(b.x || "").length <= 400;
+// A word joiner before a dash set close to its word (".rx": drawn, never counted as the text's), so a line never starts with "—".
+const WJ = `<span class="rx">\u2060</span>`;
+const dress = (html, verse) => (verse ? html.replace(/ \/ /g, VBR) : html).replace(/([^\s>]|<\/em>)(?=—)/g, `$1${WJ}`);
 function inlineHTML(x, marks) { return fnRefs(inlineMarks(x, marks)); }
 function inlineMarks(x, marks) {
-  if (!marks || !marks.length) return esc(x).replace(/\u0001/g, "<em>").replace(/\u0002/g, "</em>");
+  if (!marks || !marks.length) return dress(esc(x).replace(/\u0001/g, "<em>").replace(/\u0002/g, "</em>"), isVerse(x));
   let raw = x;
   if (marks && marks.length) {
     const map = []; let ps = "";
@@ -328,10 +343,14 @@ function inlineMarks(x, marks) {
     ins.sort((a, b) => b[0] - a[0]);
     for (const [pos, str] of ins) raw = raw.slice(0, pos) + str + raw.slice(pos);
   }
-  let out = "", depth = 0, mid = "";
+  let out = "", depth = 0, mid = "", before = " ";
+  const verse = isVerse(x);
   const open = () => `<mark data-note="${esc(mid)}" class="k-${esc((S.notes.get(mid) || {}).kind || "passage")}">`;
   for (let k = 0; k < raw.length; k++) {
     const c = raw[k];
+    if (verse && c === " " && raw[k + 1] === "/" && raw[k + 2] === " ") { out += VBR; k += 2; before = " "; continue; }
+    if (c === "—" && !/\s/.test(before)) out += WJ;
+    if (c.charCodeAt(0) > 5) before = c;
     if (c === "\u0003") { const e = raw.indexOf("\u0005", k); const id = raw.slice(k + 1, e); k = e; if (!depth) { mid = id; out += open(); } depth++; }
     else if (c === "\u0004") { depth = Math.max(0, depth - 1); if (!depth) out += "</mark>"; }
     else if (c === I0) out += depth ? `</mark><em>${open()}` : "<em>";
@@ -369,14 +388,15 @@ function blockHTML(b, i, marks) {
   if (isTitleLead(b)) { // a title broken over several lines is drawn as one
     let html = inlineHTML(b.x || "", m), notes = marginHTML(m, b.x || ""), prev = b.x;
     for (const k of titleTail(R.blocks, i)) { const mk = marks && marks.get(k), x = R.blocks[k].x || ""; html += `${glueAfter(prev)}<span class="bjoin" data-i="${k}">${inlineHTML(x, mk)}</span>`; notes += marginHTML(mk, x); prev = x; }
-    return `<h2 class="bh l${titleLevel(b)}" data-i="${i}">${html}${notes}</h2>`;
+    // a chapter title of more than a line or two at heading size ("Of the Interior Beginnings of Voluntary Motions; …") is set smaller
+    return `<h2 class="bh l${titleLevel(b)}${plain(html.replace(/<[^>]+>/g, "")).length > 60 ? " long" : ""}" data-i="${i}">${html}${notes}</h2>`;
   }
-  const x = inlineHTML(b.x || "", m) + marginHTML(m, b.x || "");
+  const x = inlineHTML(b.x || "", m) + marginHTML(m, b.x || ""), v = (isVerse(b.x || "") ? " verse" : "") + (isListItem(b) ? " li" : "");
   if (role === "title") return `<p class="btitle" data-i="${i}">${x}</p>`;
-  if (role === "text") return `<p class="bp${b.k === "c" ? " cont" : ""}" data-i="${i}">${x}</p>`;
-  if (b.k === "q" || role === "quote") return `<p class="bq" data-i="${i}">${x}</p>`;
-  if (b.k === "fn") return `<p class="bfn" data-i="${i}">${x}</p>`;
-  return `<p class="bp${b.k === "c" ? " cont" : ""}" data-i="${i}">${x}</p>`;
+  if (role === "text") return `<p class="bp${b.k === "c" ? " cont" : ""}${v}" data-i="${i}">${x}</p>`;
+  if (b.k === "q" || role === "quote") return `<p class="bq${v}" data-i="${i}">${x}</p>`;
+  if (b.k === "fn") return `<p class="bfn${v}" data-i="${i}">${x}</p>`;
+  return `<p class="bp${b.k === "c" ? " cont" : ""}${v}" data-i="${i}">${x}</p>`;
 }
 /* Where a highlight sits. A note made from a selection keeps an anchor: the block and character it starts at (a, ao), the
    block and character it ends at (b, bo, exclusive), and a few words either side (pre, suf). Characters are counted in the
@@ -822,6 +842,7 @@ function readerSettings() {
       <div class="rs-row"><span>Navigation</span>${seg("flow", [["scroll", "Scroll"], ["pages", "Swipe pages"]])}</div>
       <div class="rs-row"><span>Page turn</span>${seg("turn", [["flip", "Flip"], ["slide", "Slide"], ["none", "None"]])}</div>
       <div class="rs-row"><span>Text in pages</span>${seg("align", [["justify", "Justified"], ["left", "Ragged right"]])}</div>
+      <p class="hint rs-hint">At large type sizes, Justified pages are set ragged right: a short line can't be spaced evenly.</p>
       <div class="rs-row"><span>Toolbar in pages</span>${seg("bars", [["hide", "Tap to show"], ["show", "Always shown"]])}</div>
       <div class="rs-row"><span>Line spacing</span>${seg("lh", [["compact", "Compact"], ["normal", "Normal"], ["airy", "Airy"]])}</div>
       <div class="rs-row"><span>Text width</span>${seg("w", [["narrow", "Narrow"], ["medium", "Medium"], ["wide", "Wide"]])}</div>
@@ -1218,7 +1239,7 @@ function findHits(q) {
 // A stretch of block i's text as a range on screen, counting characters the way a selection is measured (offsetIn).
 function rangeFor(i, from, to) {
   const el = R.els[i]; if (!el || !el.isConnected) return null;
-  const skip = (t) => { const p = t.parentElement; if (p.closest(".mnote, .pgm, .bhid")) return true; const j = p.closest(".bjoin"); return !!j && j !== el && el.contains(j); };
+  const skip = (t) => { const p = t.parentElement; if (p.closest(".mnote, .pgm, .bhid, .rx")) return true; const j = p.closest(".bjoin"); return !!j && j !== el && el.contains(j); };
   const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, { acceptNode: (t) => (skip(t) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) });
   let pos = +el.dataset.o || 0, started = false, t; const r = document.createRange();
   while ((t = w.nextNode())) {
@@ -1457,6 +1478,6 @@ function offsetIn(k, node, off) {
   const el = R.els[k]; if (!el || !el.contains(node)) return null;
   const rg = document.createRange();
   try { rg.setStart(el, 0); rg.setEnd(node, off); } catch { return null; }
-  const f = rg.cloneContents(); f.querySelectorAll(".mnote, .pgm, .bjoin, .bhid").forEach((x) => x.remove());
+  const f = rg.cloneContents(); f.querySelectorAll(".mnote, .pgm, .bjoin, .bhid, .rx").forEach((x) => x.remove());
   return (+el.dataset.o || 0) + f.textContent.length;
 }

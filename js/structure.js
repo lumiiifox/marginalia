@@ -253,7 +253,7 @@ function saveSel() {
 // The selected words, leaving out any of your notes shown in the margin.
 function selectionText(r) {
   const frag = r.cloneContents();
-  frag.querySelectorAll(".mnote, .pgm, .bhid").forEach((x) => x.remove());
+  frag.querySelectorAll(".mnote, .pgm, .bhid, .rx").forEach((x) => x.remove());
   const blocks = [...frag.childNodes].some((x) => x.nodeType === 1 && /^(P|H2|DIV)$/.test(x.tagName));
   return (blocks ? [...frag.childNodes].map((x) => x.textContent).join(" ") : frag.textContent).replace(/\s+/g, " ").trim();
 }

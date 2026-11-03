@@ -16,7 +16,7 @@ LAST = ["paged_reader", "navigate"]
 GROUPS = {
     "storage": ["smoke", "trash", "classics", "printed_page", "mastery"],
     "reader": ["paged_reader", "structure", "comfort", "navigate", "highlights", "notes_lookup", "quotes_language", "pin",
-               "followups", "classics", "printed_page", "editions", "density"],
+               "followups", "classics", "printed_page", "editions", "density", "verse_lists"],
     "import": ["pdf_import", "pdf_highlights", "wikisource", "text_import"],
     "reference": ["study_tools", "links", "in_your_books", "density", "mastery"],
     "look": ["contrast", "smoke"],
