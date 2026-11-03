@@ -230,6 +230,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - Terms you link yourself (Look up → Link to a glossary term, `linkTermPanel`, `addTermMark`; Unlink in `termPanel`, `removeTermMark`): kept on the
   book as `t.termMarks = [{ id, at, passage, anchor, createdAt }]`, placed like a note's passage (`placeNote`, in `markHits`) and underlined
   whether or not the book links terms by itself. Checked by `VALID.texts`; a restore keeps both copies' links (`withTermMarks`, in `withReading`).
+- Swipe pages (`layoutPages`): CSS columns, one a page; a column is no wider than the Aa reading width (`MEASURE` × type size), centred by `--col-gap`, so one page is one screen (`pageStride`) at any width.
 - Reader settings live in `localStorage` under `mg-reader`; other small preferences use `mg-*` keys (`mg-dict`: Wiktionary definitions kept for offline).
 - A text's `lang` (optional, e.g. "fr") sets the reader's `lang` for hyphenation; without it the language is guessed from the text (`guessLang`).
 - Book structure the owner marks in the reader (Edit → chapter title, heading, running head, title page, block quote, plain text) is stored on

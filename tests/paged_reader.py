@@ -39,7 +39,7 @@ BOOK = """(n) => (async () => {
   localStorage.setItem('mg-reader', JSON.stringify({ fs: 20, lh: 'normal', w: 'medium', tone: 'app', mn: 'show', flow: 'pages', bars: 'show', turn: localStorage.getItem('test-turn') || 'slide' }));
 })()"""
 # Distance between where the text on screen starts and where a page should start (0 = on the edge).
-MISALIGN = """() => { const book = document.querySelector('#book'), r = book.getBoundingClientRect(), x0 = r.left + 24;
+MISALIGN = """() => { const book = document.querySelector('#book'), r = book.getBoundingClientRect(), x0 = r.left + parseFloat(getComputedStyle(book).paddingLeft);
   let best = null; for (const el of R.els) if (el) for (const q of el.getClientRects()) { if (q.width < 1) continue; const off = q.left - x0;
     if (off > -r.width / 2 && off < r.width / 2 && (best === null || Math.abs(off) < Math.abs(best))) best = off; }
   return best === null ? 0 : Math.round(best * 100) / 100; }"""
@@ -189,7 +189,7 @@ async def main():
         for k in range(1, 7):
             await asyncio.sleep(0.03); await cdp.send("Input.dispatchTouchEvent", {"type": "touchMove", "touchPoints": pt(330 - 25 * k, 450)})
         mid = await page.evaluate("""() => { const f = document.querySelector('#flip'), tw = document.querySelector('#flipbook');
-          const W = pageStride(), p = Math.round(tw.scrollLeft / W), x0 = tw.getBoundingClientRect().left - tw.scrollLeft + 24;
+          const W = pageStride(), p = Math.round(tw.scrollLeft / W), x0 = tw.getBoundingClientRect().left - tw.scrollLeft + parseFloat(getComputedStyle(tw).paddingLeft);
           const first = [...tw.children].find((el) => [...el.getClientRects()].some((q) => Math.round((q.left - x0) / W) === p && q.width > 0));
           return { on: f.classList.contains('on'), transform: f.style.transform, p: R.flip && R.flip.p, twinText: first ? first.textContent.slice(0, 40) : '', bookPage: currentPage() }; }""")
         await page.screenshot(path="/tmp/flip-mid.png")

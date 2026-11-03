@@ -286,14 +286,18 @@ function ensureWindow(i) { if (R.blocks && (!R.win || i < R.win[0] || i >= R.win
 const PAGE_GAP = 48;
 function layoutPages() {
   const book = $("#book"), reader = $("#reader");
-  if (RS.flow !== "pages") { ["--page-w", "--page-h", "--col-w"].forEach((k) => book.style.removeProperty(k)); R.pageW = 0; return; }
+  if (RS.flow !== "pages") { ["--page-w", "--page-h", "--col-w", "--col-gap"].forEach((k) => book.style.removeProperty(k)); R.pageW = 0; return; }
   const w = Math.floor(reader.getBoundingClientRect().width || window.innerWidth);
   const barBottom = immersive() ? 0 : $(".rbar").getBoundingClientRect().bottom;
   const h = Math.floor(window.innerHeight - Math.max(0, barBottom) - PINH); // the pinned passage, if any, sits below the page
   if (w < 200 || h < 200) return; // the reader isn't on screen yet
   book.style.setProperty("--page-w", w + "px");
   book.style.setProperty("--page-h", h + "px");
-  book.style.setProperty("--col-w", w - PAGE_GAP + "px");
+  // One column a page, no wider than the reading width set in Aa (as in Scroll mode), centred: on a tablet, a desktop or a phone
+  // turned sideways the lines stay a comfortable length, and the gap between columns grows so one page is still one screen.
+  const col = Math.min(w - PAGE_GAP, Math.floor((parseFloat(MEASURE[RS.w]) || 34) * RS.fs));
+  book.style.setProperty("--col-w", col + "px");
+  book.style.setProperty("--col-gap", w - col + "px");
   R.pageW = w; R.dirty = true; R.ver = (R.ver || 0) + 1;
 }
 function saveRS() { try { localStorage.setItem("mg-reader", JSON.stringify(RS)); } catch {} }

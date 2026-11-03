@@ -849,8 +849,8 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
   height: var(--page-h, calc(100dvh - 64px));
   max-width: none; width: var(--page-w, 100%); box-sizing: border-box;
   overflow: hidden; /* pages move only when the app moves them: no fling, no half-scrolled page */
-  column-width: var(--col-w, calc(100vw - 48px)); column-gap: 48px; column-fill: auto;
-  padding: 18px 24px 28px; scroll-snap-type: none; scroll-behavior: auto !important;
+  column-width: var(--col-w, calc(100vw - 48px)); column-gap: var(--col-gap, 48px); column-fill: auto;
+  padding: 18px calc(var(--col-gap, 48px) / 2) 28px; scroll-snap-type: none; scroll-behavior: auto !important;
   touch-action: pinch-zoom; /* swipes are handled by the app; zoom stays available */
   overscroll-behavior: none;
 }

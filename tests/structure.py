@@ -104,7 +104,7 @@ async def main():
         check(gl["st"] == "chapter" and gl["sth"] == 21 and gl["head"] == "1 Desiring-Production" and gl["rest"].strip().startswith("It is at"), f"it is drawn as a heading above the rest of the paragraph ({gl['head']!r} / {gl['rest']!r})")
         check(gl["secs"] == ["1 Desiring-Production", "2 SAVAGES,", "BARBARIANS, CIVILIZED MEN"] and gl["first"], f"Sections lists it first, in reading order ({gl['secs']})")
         check(gl["n1"], "a note in that chapter is filed under it")
-        top = await page.evaluate(f"""() => {{ const el = R.els[{g}], book = document.querySelector('#book'), W = pageStride(), x0 = book.getBoundingClientRect().left - book.scrollLeft + 24;
+        top = await page.evaluate(f"""() => {{ const el = R.els[{g}], book = document.querySelector('#book'), W = pageStride(), x0 = book.getBoundingClientRect().left - book.scrollLeft + parseFloat(getComputedStyle(book).paddingLeft);
             const r = el.getClientRects()[0], prev = screenPagesOf({g} - 2); return {{ page: Math.round((r.left - x0) / W), prevLast: prev[1], dTop: Math.round(r.top - book.getBoundingClientRect().top), mark: Math.round(R.els[{g} - 1].getBoundingClientRect().top - book.getBoundingClientRect().top) }}; }}""")
         check(gl["chap"] and top["page"] == top["prevLast"] + 1 and top["mark"] < 30 and top["dTop"] < 60, f"in Swipe pages the chapter starts on a fresh page, its page marker with it ({top})")
         off = await page.evaluate(f"() => {{ const p = R.els[{g}].querySelector('p'); return offsetIn({g}, p.firstChild, 0); }}")
