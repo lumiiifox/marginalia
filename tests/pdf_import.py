@@ -78,6 +78,14 @@ def scanlike():
                     for i, (k, h) in enumerate(zip([1, 1.18, 1.0, 1.25, 1.06, 1.3, 1.0, 1.2], heads)))
     return f'<html lang="en"><style>{CSS} @page {{ margin-bottom: 0.4in; }} p {{ text-align: justify; hyphens: auto; }} h1 {{ break-before: auto; margin: 0.3in 0 0.4in; }}</style>{pages}</html>', ["Scanned Chapter"]
 
+def parttitle():
+    # A part-title page: the part's name alone on its page in large type, as printed books open each part. The chapter after it
+    # must still be a heading, though the line before it ("Torture") ends no sentence.
+    heads = ["Preface", "PART ONE Torture", "1. The body of the condemned"]
+    return (f'<html lang="en"><style>{CSS} p {{ text-align: justify; }} h1 {{ break-before: auto; }}</style><h1>Preface</h1><p>{BODY * 4}</p>'
+            '<div style="break-before:page;break-after:page;font-size:16pt;line-height:1.6;padding-top:.2in">PART ONE<br>Torture</div>'
+            f'<h1>1. The body of the condemned</h1><p>{BODY * 3}</p></html>', heads)
+
 OPENS = "Chapter 2 takes up the question of genealogy where the first left off. "
 def front():
     body = f"<p>{BODY * 2}</p>" * 6
@@ -244,7 +252,7 @@ async def main(paths):
                     for h in r["heads"]: print("    " + h[:100])
             else:
                 maker = await browser.new_page()
-                for name, (html, heads) in {"justified": book(True), "ragged": book(False), "twoline": twoline(), "scanlike": scanlike(), "quotes": quotes()}.items():
+                for name, (html, heads) in {"justified": book(True), "ragged": book(False), "twoline": twoline(), "parttitle": parttitle(), "scanlike": scanlike(), "quotes": quotes()}.items():
                     await maker.set_content(html)
                     await maker.pdf(path=str(tmp / f"{name}.pdf"), prefer_css_page_size=True, display_header_footer=True, header_template="<span></span>",
                         footer_template='<div style="font-size:9px;width:100%;text-align:center"><span class="pageNumber"></span></div>',

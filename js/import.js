@@ -585,6 +585,8 @@ async function parsePDF(buf, say) {
     pg.lines = pg.lines.filter((l, i) => {
       if (!E.has(i) || !inEdge(l, pg)) return true;
       if (FOLIO.test(l.t)) { if (printed[p] == null) printed[p] = l.t.replace(/[^0-9A-Za-z]/g, ""); return false; }
+      // a chapter's title at the top of its first page repeats the running head of the pages after it, but in large type: it stays
+      if (l.z >= pg.body * 1.18) return true;
       if (isHead(l.t)) { const m = l.t.match(/^\s*(\d{1,4})\b|\b(\d{1,4})\s*$/); if (m && fromHead == null) fromHead = m[1] || m[2]; return false; }
       return true;
     });
@@ -696,7 +698,8 @@ async function parsePDF(buf, say) {
     }
     const B = pg.body, lead = leadR * B;
     // This page's own line spacing, measured directly (on scans it doesn't always follow the type size).
-    const pitch = median(L.slice(1).map((l, i) => L[i].y - l.y).filter((d) => d > B * 0.6 && d < B * 3)) || lead;
+    // (a page of two or three lines, such as a part's title page, has too few to measure its spacing by: it takes the book's)
+    const pitch = (L.length >= 4 && median(L.slice(1).map((l, i) => L[i].y - l.y).filter((d) => d > B * 0.6 && d < B * 3))) || lead;
     const bl = L.filter((l) => near(l.z, B));
     const left = bl.length ? pct(bl.map((l) => l.x), 0.15) : 0;
     const right = bl.length ? pct(bl.map((l) => l.xe), 0.9) : Infinity;
@@ -739,11 +742,14 @@ async function parsePDF(buf, say) {
       if (drops.length && i < 5) { const nl = norm(l.t), bl = bare(l.t); if ((nl.length >= 2 && drops.some((d) => isTitleLine(nl, d))) || (bl.length >= 4 && bareDrops.includes(bl))) continue; }
       const words = l.t.split(" ").length;
       // Large type alone doesn't make a heading: one doesn't start in lowercase, break into an unfinished
-      // sentence, or fill a justified line from margin to margin.
-      const plausible = headOpen || (!/^\p{Ll}/u.test(l.t) && !(last && !/[.!?:;]["”’)\]]*[0-9⁰¹²³⁴⁵⁶⁷⁸⁹*†‡]*$/u.test(last.t)) && !(words >= 6 && l.x <= left + B * 0.5 && l.xe >= right - B * 0.5));
+      // sentence (a lone number before it is a missed page number, no sentence), or fill a justified line from margin to margin.
+      const plausible = headOpen || (!/^\p{Ll}/u.test(l.t) && !(last && !/^[^\p{L}]*\d[^\p{L}]*$|^[ivxlc]+$/iu.test(last.t) && !/[.!?:;]["”’)\]]*[0-9⁰¹²³⁴⁵⁶⁷⁸⁹*†‡]*$/u.test(last.t)) && !(words >= 6 && l.x <= left + B * 0.5 && l.xe >= right - B * 0.5));
       // ...and it has extra space above or below it. The top or bottom of a page doesn't count: a heading
       // there still has space before the text it introduces.
-      const above = i > 0 && L[i - 1].y - l.y > pitch * 1.35, below = i + 1 < L.length && l.y - L[i + 1].y > pitch * 1.35;
+      // The last line of a page of three lines or fewer, with the lower half of the page empty below it (a part's title page),
+      // has space below it too.
+      const above = i > 0 && L[i - 1].y - l.y > pitch * 1.35,
+        below = i + 1 < L.length ? l.y - L[i + 1].y > pitch * 1.35 : L.length <= 3 && l.y > pg.y0 + (pg.y1 - pg.y0) * 0.5;
       if (l.z >= B * 1.18 && words <= 16 && plausible && (headOpen || above || below)) {
         flush(); carry = false; last = null;
         // A second line of the same heading has the same size and follows closely; anything else
