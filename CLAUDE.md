@@ -16,7 +16,7 @@ Roles (owner's decision, 2026-11-01):
   Deleuze, Guattari and Land, finds conceptual inconsistencies and challenges questionable readings. Its drafts and objections reach
   the app through Claude, which checks them against sources like any other draft; a reading ChatGPT disputes is settled by the
   sources, and an open dispute is recorded in the audit, not papered over.
-- **The owner** approves every content change before it ships (below), and sets direction.
+- **The owner** sets direction and can overrule; reviewed content ships without waiting for approval (below).
 
 Intellectual quality comes first. Automation takes the repetitive work (drafting from sources, checking quotations, running tests);
 interpretation stays under review.
