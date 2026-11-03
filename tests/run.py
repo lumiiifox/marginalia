@@ -24,9 +24,9 @@ GROUPS = {
     "content": ["study_tools", "links", "in_your_books", "mastery", "density"],
 }
 ALL = sorted(f[:-3] for f in os.listdir(HERE) if f.endswith(".py") and f != "run.py")
-WORKERS = int(os.environ.get("MG_WORKERS", 4))
+WORKERS = int(os.environ.get("MG_WORKERS", 4))  # more workers means more load: a way to shake out timing flakes
 # each run takes its own block of ports, so two checkouts testing at once never reach each other's servers
-BASE = int(os.environ.get("MG_PORT_BASE", 9100 + 100 * random.randrange(0, 40)))  # more workers means more load: a way to shake out timing flakes
+BASE = int(os.environ.get("MG_PORT_BASE", 9100 + 100 * random.randrange(0, 40)))
 
 
 def run(name, port):
