@@ -166,6 +166,50 @@ def ocr_layer_pdf():
     out += b"trailer\n<< /Size %d /Root 1 0 R >>\nstartxref\n%d\n%%%%EOF\n" % (len(objs) + 1, xref)
     return bytes(out)
 
+# Line ends in justified text, written word by word in Courier so each line ends exactly where it should: a hyphenated
+# fragment at the margin ("A"), a whole word a little short of it ("B", where a typeset PDF's word-ending lines stop: 0.16
+# of the type size short of the hyphen-ending ones), and one hyphen's width short with the hyphen missing from the text
+# ("C", a lost hyphen). Only the C line's word may be joined to the next line's; every B line ends a word.
+ENDS_LINES = [("B", "Eighty years later the warden drew up his"), ("B", "rules for the house of young prisoners in"),
+              ("A", "the capital. The prisoners rose at six, consid-"), ("B", "ered the bell an order and worked; a dog"),
+              ("C", "had lain the day before on the grass, philoso"), ("B", "phy was nowhere taught, and an ornamental"),
+              ("B", "crepe hung over the chapel door, warmer"), ("B", "than the yard where the archers waited by"),
+              ("A", "the fire until nearly eleven; then a sen-"), ("B", "tinel called the names of the inmates who"),
+              ("B", "had worked well and those who had shirked"), ("B", "their tasks, and the clerk wrote both lists"),
+              ("A", "into the ledger kept for it by the superin-"), ("B", "tendent of the house, who signed it nightly"),
+              ("B", "before the lamps were put out in the yard"), ("E", "and the doors were locked on the street.")]
+ENDS_TEXT = ("Eighty years later the warden drew up his rules for the house of young prisoners in the capital. The prisoners rose "
+             "at six, considered the bell an order and worked; a dog had lain the day before on the grass, philosophy was nowhere "
+             "taught, and an ornamental crepe hung over the chapel door, warmer than the yard where the archers waited by the fire "
+             "until nearly eleven; then a sentinel called the names of the inmates who had worked well and those who had shirked "
+             "their tasks, and the clerk wrote both lists into the ledger kept for it by the superintendent of the house, who "
+             "signed it nightly before the lamps were put out in the yard and the doors were locked on the street.")
+def line_ends_pdf():
+    size, cw, left, right = 9, 5.4, 40.0, 330.0   # Courier: every glyph 0.6 of the type size wide
+    ops, y = [], 520.0
+    for kind, line in ENDS_LINES:
+        words = line.split(" ")
+        end = {"A": right, "B": right - 0.16 * size, "C": right - 0.6 * size, "E": None}[kind]
+        letters = sum(len(w) for w in words) * cw
+        gap = cw if end is None else (end - left - letters) / (len(words) - 1)
+        assert gap >= 3, (line, gap)
+        x = left
+        for w in words:
+            ops.append(f"BT /F1 {size} Tf {x:.2f} {y:.2f} Td ({w}) Tj ET")
+            x += len(w) * cw + gap
+        y -= 12
+    content = "\n".join(ops).encode("latin-1")
+    objs = [b"<< /Type /Catalog /Pages 2 0 R >>", b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+            b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 370 576] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>",
+            b"<< /Length %d >>\nstream\n" % len(content) + content + b"\nendstream",
+            b"<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>"]
+    out, offs = bytearray(b"%PDF-1.4\n"), []
+    for i, o in enumerate(objs, 1): offs.append(len(out)); out += b"%d 0 obj\n" % i + o + b"\nendobj\n"
+    xref = len(out); out += b"xref\n0 %d\n0000000000 65535 f \n" % (len(objs) + 1)
+    for o in offs: out += b"%010d 00000 n \n" % o
+    out += b"trailer\n<< /Size %d /Root 1 0 R >>\nstartxref\n%d\n%%%%EOF\n" % (len(objs) + 1, xref)
+    return bytes(out)
+
 FRONT = """async ([url, base]) => {
   LIBS.pdf = [base + "/pdf.js"]; LIBS.pdfw = [base + "/pdf.worker.js"];
   const r = await parseFile(new File([await (await fetch(url)).arrayBuffer()], url.split("/").pop()), () => {});
@@ -310,6 +354,12 @@ async def main(paths):
                 check(OCR_WORDS in body, f"ocrlayer: every space the PDF holds comes back, in order, quotation mark and all ({body[:160]!r})")
                 check("DISCIPLINE AND PUNISH" in body, f"ocrlayer: a letter-spaced title reads as its words ({body[:60]!r})")
                 check("[…]" not in body, "ocrlayer: a word read a few points high doesn't split its line or leave a false gap")
+                (tmp / "lineends.pdf").write_bytes(line_ends_pdf())
+                r = await page.evaluate(PARSE, ["/lineends.pdf", base])
+                body = " ".join(r["text"].split())
+                glued = [w for w in ("doghad", "warmerthan", "ornamentalcrepe", "inthe", "upthe") if w in body.replace(" ", "|").replace("|", " ") and w in body]
+                check(ENDS_TEXT in body, f"lineends: a line ending a little short of the margin ends its word; a hyphen lost from the text is still joined ({body[:200]!r})")
+                check(not glued, f"lineends: no two words glued at a line's end ({glued})")
                 r = await page.evaluate(BADPAGE, ["/justified.pdf", base])
                 check("unreadable page" in r["err"] and r["made"] >= 1 and r["ended"] == r["made"], f"a page that can't be read stops the import and its worker ({r})")
                 # The OCR repairs, on lines from a real scan, with the book's vocabulary they rely on.

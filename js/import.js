@@ -453,6 +453,16 @@ function marksSheet(tid) {
     return () => toast(marksSaid(r));
   });
 }
+// Short common words (English, French, German): a line ending or starting with one of these ended between two words,
+// never inside a hyphenated one.
+const WHOLE_WORDS = new Set(("a an and are as at be been but by can could did do does each for from had has have he her him his i if in into is it " +
+  "its may me more most much my no nor not of on one or our shall she so some such than that the their them then there these they this " +
+  "all also among another any because become became before being between both even every few first how many other own same second " +
+  "since still though through two under until very whole within without " +
+  "those to too upon us was we were what when where which while who whom whose why will with would you your " +
+  "au aux avec ce ces cette comme dans de des du elle en est et il je la le les leur mais ne nous on ou par pas plus pour qu que qui sa " +
+  "sans se ses son sous sur tout un une " +
+  "als auf aus das dem den der des die du ein eine er es ich im ist mit nicht sich sie und von was wie zu").split(" "));
 async function parsePDF(buf, say) {
   say("Loading the PDF reader…");
   const { pdf, stop: stopWorker } = await pdfOpen(buf);
@@ -633,8 +643,14 @@ async function parsePDF(buf, say) {
     }
     if (lost) {
       const w1 = a.match(/(\p{L}+)$/u), w2 = b.match(/^(\p{Ll}+)/u);
-      // Kept apart only when both halves are words found elsewhere in the book and the joined word is not.
-      if (w1 && w2 && !(!counts.get((w1[1] + w2[1]).toLowerCase()) && (counts.get(w1[1].toLowerCase()) || 0) >= 2 && (counts.get(w2[1]) || 0) >= 2)) return a + b;
+      if (w1 && w2) {
+        const h1 = w1[1].toLowerCase(), h2 = w2[1], known = (w) => (counts.get(w) || 0) >= 2;
+        // Joined when the book has the joined word elsewhere. Kept apart when either half is a common word, which hyphenation
+        // never leaves on its own ("a dog / had", "warmer / than"), or the second half is a word found elsewhere in the book:
+        // what a lost hyphen leaves on the next line ("ered", "phy", "phur") is seldom a word of its own.
+        if (counts.get(h1 + h2)) return a + b;
+        if (!WHOLE_WORDS.has(h1) && !WHOLE_WORDS.has(h2) && !known(h2)) return a + b;
+      }
     }
     return /[—–\/]$/.test(a) ? a + b : a + " " + b;
   };
@@ -763,7 +779,9 @@ async function parsePDF(buf, say) {
       const indented = l.x > left + B * 0.8 && l.x < left + B * 6;
       const prevInd = prev && prev.x > left + B * 0.8 && Math.abs(prev.x - l.x) < B * 0.5;
       const shortPrev = !!last && last.xe < last.right - B * 2.2 && END.test(last.t);
-      const lost = justified && !!last && last.right - last.xe > B * 0.15 && last.right - last.xe < B * 0.9 && /^\p{Ll}/u.test(l.t);
+      // (a hyphen is a quarter to a third of the type size wide: a line that stops less short than that ended its word, as a typeset
+      // book's word-ending lines stop a little short of its hyphen-ending ones; and a hyphen follows a letter)
+      const lost = justified && !!last && last.right - last.xe > B * 0.25 && last.right - last.xe < B * 0.9 && /\p{L}$/u.test(last.t) && /^\p{Ll}/u.test(l.t);
       let start;
       if (!cur) start = !carry || indented || kind !== "p" || shortPrev;
       else start = kind !== (curK === "c" ? "p" : curK) || (prev && prev.y - l.y > lead * 1.5) || (indented && !prevInd) || shortPrev;
