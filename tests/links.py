@@ -105,6 +105,12 @@ async def main():
         }""")
         check(refs["n"] == 17 and not refs["bad"], f"each of the {refs['n']} Ethics citations in Metaphysics finds its own passage ({refs['bad'][:3]})")
         check(not refs["kept"], "an article without xr gets no citation links")
+        std = await page.evaluate("""async () => { const B = (await (await fetch('data/books/classic-spinoza-ethics.json')).json()).content;
+          const d = document.createElement('div'); d.innerHTML = passageLinks('(E1p8s2) and (EIVp37s1; E2d7) and (E3pref) and (E1p17c2) and (E9p1)', 'spinoza-ethics');
+          return [...d.querySelectorAll('[data-passage]')].map((a) => [a.textContent, a.dataset.passageAt, plain(B[passageBlock(B, a.dataset.passageAt)]?.x || '').slice(0, 24)]); }""")
+        want = [["E1p8s2", "I|Proposition|8|Note|2", "Note II.—No doubt it wil"], ["EIVp37s1", "IV|Proposition|37|Note|1", "Note I.—He who, guided b"],
+                ["E2d7", "II|Definition|7||", "VII. By particular thing"], ["E3pref", "III|Preface|||", "Most writers on the emot"], ["E1p17c2", "I|Proposition|17|Corollary|2", "Corollary II.—It follows"]]
+        check([x[:2] for x in std] == [x[:2] for x in want] and all(x[2] for x in std), f"standard references (E1p8s2, EIVp37s1, E2d7, E3pref) link to their passages, E9p1 stays text ({std})")
         got = await page.evaluate("passageLinks('(I, Proposition 5) and (I, and then some) and (see Kant, Proposition 5)', 'spinoza-ethics')")
         check(got.count('data-passage="') == 1 and "(I, and then some)" in got and "(see Kant, Proposition 5)" in got, f"a bracket with anything that isn't a reference stays text ({got})")
         await page.evaluate("go({ screen: 'branches', focus: 'metaphysics' })"); await page.wait_for_timeout(200)

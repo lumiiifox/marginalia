@@ -539,7 +539,7 @@ function classicMentions(id) {
     // citations into the book, in an article that cites it
     const b = src.kind === "branch" && BRANCH.get(src.id), cites = [];
     if (b && styles.some((st) => xrStyles(b.xr).includes(st)))
-      for (const m of src.text.matchAll(/\(([^()]+)\)/g)) if (m[1].split("; ").every((it) => styles.some((st) => PASSAGE_STYLES[st].item.test(it)))) cites.push({ a: m.index, b: m.index + m[0].length });
+      for (const m of src.text.matchAll(/\(([^()]+)\)/g)) if (m[1].split("; ").every((it) => styles.some((st) => PASSAGE_STYLES[st].item.test(canonRef(st, it))))) cites.push({ a: m.index, b: m.index + m[0].length });
     const all = [...hits, ...cites].sort((x, y) => x.a - y.a); if (!all.length) continue;
     out[src.kind].push({ id: src.id, name: src.name, sec: src.sec, count: all.length, snip: rawSnip(src.text, all[0].a, all[0].b) });
   }
@@ -773,7 +773,17 @@ function articleHTML(b, terms) {
 // Citation styles: each names a bundled classic, the form of one reference to it, and how to find that reference's block.
 // An article's `xr` names the styles it uses (one, or a list). Several references in one bracket are joined by "; ".
 const PASSAGE_STYLES = {
-  "spinoza-ethics": { book: "classic-spinoza-ethics", item: /^(?:Part )?(I|II|III|IV|V), ((?:Definition|Axiom|Postulate|Proposition)(?= \d)|Preface|Appendix)(?: (\d+)(?:, (Corollary|Note)(?: (\d+))?)?)?$/, find: spinozaBlock },
+  // canon reads the standard scholarly notation as the same reference: part, then p(roposition), d(efinition), a(xiom), post(ulate),
+  // pref(ace) or app(endix), and after a proposition its c(orollary), s(cholium: the edition's Note) or d(emonstration: its Proof,
+  // found with the proposition). "E1p8s2" is "I, Proposition 8, Note 2"; "EIVp37s1", "E2d7", "E3pref" too.
+  "spinoza-ethics": { book: "classic-spinoza-ethics", item: /^(?:Part )?(I|II|III|IV|V), ((?:Definition|Axiom|Postulate|Proposition)(?= \d)|Preface|Appendix)(?: (\d+)(?:, (Corollary|Note)(?: (\d+))?)?)?$/, find: spinozaBlock,
+    canon: (x) => {
+      const m = x.match(/^E ?([1-5]|IV|V|I{1,3}) ?(?:p(\d+)(?:([csd])(\d*))?|(d|a|post)(\d+)|(pref|app))$/i); if (!m) return x;
+      const part = /^\d$/.test(m[1]) ? toRoman(+m[1]) : m[1].toUpperCase();
+      if (m[2]) { const sub = { c: "Corollary", s: "Note" }[(m[3] || "").toLowerCase()]; return `${part}, Proposition ${m[2]}${sub ? `, ${sub}${m[4] ? " " + m[4] : ""}` : ""}`; }
+      if (m[5]) return `${part}, ${{ d: "Definition", a: "Axiom", post: "Postulate" }[m[5].toLowerCase()]} ${m[6]}`;
+      return `${part}, ${m[7].toLowerCase() === "pref" ? "Preface" : "Appendix"}`;
+    } },
   // Nietzsche, Genealogy of Morality: essay and section, "GM II §12" ("GM Preface §3").
   "nietzsche-genealogy": { book: "classic-nietzsche-genealogy", item: /^GM (Preface|I|II|III) §(\d+)$/,
     find: (B, [part, sec]) => headPath(B, [[2, (t) => t.startsWith({ Preface: "Preface", I: "First Essay", II: "Second Essay", III: "Third Essay" }[part])], [3, (t) => t === sec]]) },
@@ -825,16 +835,18 @@ function headPath(B, steps) {
   }
   return at;
 }
+// A reference as its style writes it, from another notation the style also reads (canon), or as it is.
+const canonRef = (st, x) => (PASSAGE_STYLES[st].canon ? PASSAGE_STYLES[st].canon(x) : x);
 const xrStyles = (xr) => (Array.isArray(xr) ? xr : xr ? [xr] : []).filter((s) => PASSAGE_STYLES[s]);
 function passageLinks(html, xr) {
   const styles = xrStyles(xr); if (!styles.length) return html;
   return html.replace(/\(([^()<>]+)\)/g, (all, inner) => {
     const items = inner.split("; ");
-    const style = styles.find((st) => items.every((x) => PASSAGE_STYLES[st].item.test(x)));
+    const style = styles.find((st) => items.every((x) => PASSAGE_STYLES[st].item.test(canonRef(st, x))));
     if (!style) return all;
     const re = PASSAGE_STYLES[style].item;
     // Each bracket and semicolon stays on the line of the link it belongs to.
-    const btn = (x) => `<button type="button" class="branch-inline-link" data-passage="${esc(style)}" data-passage-at="${esc(x.match(re).slice(1).map((v) => v || "").join("|"))}">${x}</button>`;
+    const btn = (x) => `<button type="button" class="branch-inline-link" data-passage="${esc(style)}" data-passage-at="${esc(canonRef(style, x).match(re).slice(1).map((v) => v || "").join("|"))}">${x}</button>`;
     return items.map((x, k) => `<span class="cite-nb">${k ? "" : "("}${btn(x)}${k === items.length - 1 ? ")" : ";"}</span>`).join(" ");
   });
 }
