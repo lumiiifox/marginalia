@@ -627,6 +627,18 @@ async function parsePDF(buf, say) {
       if (lab[p] == null) lab[p] = "";
     }
   } else { lab = pages.map((_, i) => String(i + 1)); pageSource = "index"; }
+  // A running head that carries the page's own number ("4 CHAPTER ONE: OF SUBSTANCE", "Docile bodies 137") is one even where
+  // it recurs too seldom to be known by repeating (a short chapter, an article).
+  pages.forEach((pg, p) => {
+    const num = lab[p]; if (!/^\d+$/.test(num || "")) return;
+    const E = edgeSet(pg);
+    pg.lines = pg.lines.filter((l, i) => {
+      if (!E.has(i) || !inEdge(l, pg) || l.z >= pg.body * 1.18) return true;
+      const a = l.t.match(/^\s*(\d{1,4})\s+(\S.*)$/), b = l.t.match(/^(.*\S)\s+(\d{1,4})\s*$/);
+      const hit = (a && a[1] === num && a[2].split(/\s+/).length <= 12) || (b && b[2] === num && b[1].split(/\s+/).length <= 12);
+      return !hit;
+    });
+  });
 
   // dehyphenation dictionary
   const counts = new Map(), WORD = /\p{L}+(?:-\p{L}+)*/gu;
@@ -659,7 +671,9 @@ async function parsePDF(buf, say) {
   const byPage = new Map();
   outline.forEach((o) => { if (!byPage.has(o.page)) byPage.set(o.page, []); byPage.get(o.page).push(o); });
   const blocks = [];
-  let cur = null, curK = "p", carry = false, last = null;
+  let cur = null, curK = "p", carry = false, last = null, curList = null; // curList: where a list item's first line starts
+  // a line starting with a list's number or bullet ("3. ", "(a) ", "• ")
+  const PDF_LIST = /^(?:\d{1,3}[.)]|\((?:\d{1,3}|[a-z]|[ivx]{1,5})\)|[•◦▪‣])\s/;
   const flush = () => { if (cur && cur.trim()) blocks.push({ k: curK, x: cur }); cur = null; };
   const END = /[.!?:]["”’)\]]?$/;
   // Front matter (title pages, copyright, contents, dedications) is typeset, not prose: its lines and their spacing are kept.
@@ -705,8 +719,13 @@ async function parsePDF(buf, say) {
         const gap = previous ? Math.max(0, previous.y - line.y - Math.max(previous.z, line.z) * 1.2) : 0;
         const space = Math.min(5, Math.round(gap / Math.max(1, pg.body) * 10) / 10);
         const ratio = line.z / Math.max(1, pg.body);
-        const kind = ratio >= 1.3 ? "h" : "p";
-        blocks.push({ k: "front", x: line.t, size: Math.max(0.78, Math.min(1.65, ratio)), space, heading: kind === "h" });
+        const kind = ratio >= 1.3 ? "h" : "p", size = Math.max(0.78, Math.min(1.65, ratio)), top = blocks[blocks.length - 1];
+        // A line running on in lowercase from the one just above, at its size (an author's note, a copyright notice) continues its
+        // sentence: joined to it, so the sentence wraps as prose on a narrow screen and doesn't break where the printed line did.
+        if (previous && top && top.k === "front" && !top.heading && kind !== "h" && space <= 0.3 && Math.abs(top.size - size) < 0.05 && /^\p{Ll}/u.test(line.t)) {
+          top.x = joinLine(top.x, line.t); previous = line; continue;
+        }
+        blocks.push({ k: "front", x: line.t, size, space, heading: kind === "h" });
         previous = line;
       }
       carry = false; last = null; cur = null;
@@ -750,7 +769,9 @@ async function parsePDF(buf, say) {
       const nx = L[j + 1];
       if (j > i && nx && j + 1 < fnStart && nx.x < left + B * 0.5 && L[j].y - nx.y < pitch * 1.25) j--;
       const run = L.slice(i, j + 1);
-      if (run.length >= 3 || (run.length === 2 && run.some((m) => m.xe < right - B * 1.2))) for (let k = i; k <= j; k++) inQ[k] = true;
+      // (lines hanging under a list item's number are its run-over, never a quote)
+      const hangs = i > 0 && PDF_LIST.test(L[i - 1].t) && L[i].x > L[i - 1].x + B * 0.3 && L[i].x < L[i - 1].x + B * 4;
+      if (!hangs && (run.length >= 3 || (run.length === 2 && run.some((m) => m.xe < right - B * 1.2)))) for (let k = i; k <= j; k++) inQ[k] = true;
       i = Math.max(i + 1, j + 1);
     }
     for (let i = 0; i < fnStart; i++) {
@@ -785,6 +806,11 @@ async function parsePDF(buf, say) {
       let start;
       if (!cur) start = !carry || indented || kind !== "p" || shortPrev;
       else start = kind !== (curK === "c" ? "p" : curK) || (prev && prev.y - l.y > lead * 1.5) || (indented && !prevInd) || shortPrev;
+      // A list item's run-over lines hang under its first, indented: they continue it. The next item's number starts a new one.
+      const lm = PDF_LIST.test(l.t);
+      if (start && cur && curList != null && !lm && !shortPrev && kind === (curK === "c" ? "p" : curK) && !(prev && prev.y - l.y > lead * 1.5) && l.x > curList + B * 0.3 && l.x < curList + B * 4) start = false;
+      if (!start && cur && lm && (curList != null || (last && END.test(last.t)))) start = true;
+      if (start) curList = lm ? l.x : null;
       if (start) { flush(); cur = l.t; curK = kind; }
       else if (!cur) { cur = l.t; curK = "c"; }
       else cur = joinLine(cur, l.t, lost);

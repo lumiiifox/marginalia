@@ -86,6 +86,20 @@ def parttitle():
             '<div style="break-before:page;break-after:page;font-size:16pt;line-height:1.6;padding-top:.2in">PART ONE<br>Torture</div>'
             f'<h1>1. The body of the condemned</h1><p>{BODY * 3}</p></html>', heads)
 
+ITEMS = ["By that which is self-caused I mean that of which the essence involves existence, or that of which the nature is only conceivable as existent.",
+         "A thing is called finite after its kind when it can be limited by another thing of the same nature; a body is called finite because we always conceive another greater body."]
+def listbook():
+    # numbered and bulleted items long enough to run over, their run-over lines hanging under the first
+    items = "".join(f"<li>{t}</li>" for t in ITEMS)
+    return (f'<html lang="en"><style>{CSS} p {{ text-align: justify; }} li {{ margin: 0.3em 0; }}</style><h1>Definitions</h1><p>{BODY * 2}</p>'
+            f'<ol>{items}</ol><p>{BODY}</p><ul>{items}</ul><p>{BODY * 2}</p></html>')
+BIO = ("The author was born in a small town in the north, lectured in universities throughout the world, and wrote often for "
+       "newspapers and reviews in the years before this book.")
+def biopage():
+    # a title page with a short author's note whose printed lines run on in lowercase
+    return (f'<html lang="en"><style>{CSS}</style><div style="break-after:page;padding-top:1in"><div style="font-size:26pt;font-weight:bold">A BOOK</div>'
+            f'<div style="width:3.2in;margin-top:0.6in;font-size:11pt">{BIO}</div></div><h1>Chapter 1</h1>' + f"<p>{BODY * 2}</p>" * 6 + "</html>")
+
 OPENS = "Chapter 2 takes up the question of genealogy where the first left off. "
 def front():
     body = f"<p>{BODY * 2}</p>" * 6
@@ -319,6 +333,24 @@ async def main(paths):
                     check(r["lang"] == "en", f"{name}: the language is worked out as English ({r['lang']})")
                     marks = re.findall(r"\[…\]|\[illegible\]", r["text"])
                     check(not marks, f"{name}: no OCR repairs on a typeset book" + (f" (found {marks[:3]})" if marks else ""))
+                await maker.set_content(listbook())
+                await maker.pdf(path=str(tmp / "listbook.pdf"), prefer_css_page_size=True, margin={"top": "0.8in", "bottom": "0.8in", "left": "0.7in", "right": "0.7in"})
+                r = await page.evaluate(PARSE, ["/listbook.pdf", base])
+                paras = r["text"].split("\n")
+                whole = [x for x in paras if any(x.endswith(t) for t in ITEMS)]
+                # (Chrome draws a bullet as a shape, so the bulleted items have no marker to keep)
+                want = [f"1. {ITEMS[0]}", f"2. {ITEMS[1]}", ITEMS[0], ITEMS[1]]
+                check(whole == want, f"listbook: a list item runs on under its number as one paragraph, its number kept ({[x[:30] for x in whole]})")
+                await maker.set_content(f'<html lang="en"><style>{CSS}</style><p>{BODY * 3}</p><p>{BODY * 3}</p></html>')
+                await maker.pdf(path=str(tmp / "headed.pdf"), prefer_css_page_size=True, display_header_footer=True,
+                    header_template='<div style="font-size:9px;width:100%;padding-left:0.7in"><span class="pageNumber"></span> ON METHOD IN SHORT ESSAYS</div>', footer_template="<span></span>",
+                    margin={"top": "0.8in", "bottom": "0.8in", "left": "0.7in", "right": "0.7in"})
+                r = await page.evaluate(PARSE, ["/headed.pdf", base])
+                check(len(r["labels"]) == 2 and "ON METHOD" not in r["text"], f"headed: a running head carrying the page's number goes, though two pages are too few to know it by repeating ({r['labels']}, {r['text'][:80]!r})")
+                await maker.set_content(biopage())
+                await maker.pdf(path=str(tmp / "bio.pdf"), prefer_css_page_size=True, margin={"top": "0.8in", "bottom": "0.8in", "left": "0.7in", "right": "0.7in"})
+                r = await page.evaluate(PARSE, ["/bio.pdf", base])
+                check(BIO in r["front"], f"bio: an author's note on the title page runs on as one paragraph, its printed lines joined ({r['front']})")
                 html, heads = front()
                 await maker.set_content(html)
                 await maker.pdf(path=str(tmp / "front.pdf"), prefer_css_page_size=True, outline=True, tagged=True)
