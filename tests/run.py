@@ -6,7 +6,7 @@ Each test gets its own port (MG_PORT), so they can run side by side. pdf_import.
 copy that printed_page.py and pdf_highlights.py read from tests/.cache. Exits non-zero if anything fails, and prints the failing
 lines of each test that did.
 """
-import os, subprocess, sys, time
+import os, random, subprocess, sys, time
 from concurrent.futures import ThreadPoolExecutor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -24,7 +24,9 @@ GROUPS = {
     "content": ["study_tools", "links", "in_your_books", "mastery", "density"],
 }
 ALL = sorted(f[:-3] for f in os.listdir(HERE) if f.endswith(".py") and f != "run.py")
-WORKERS = int(os.environ.get("MG_WORKERS", 4))  # more workers means more load: a way to shake out timing flakes
+WORKERS = int(os.environ.get("MG_WORKERS", 4))
+# each run takes its own block of ports, so two checkouts testing at once never reach each other's servers
+BASE = int(os.environ.get("MG_PORT_BASE", 9100 + 100 * random.randrange(0, 40)))  # more workers means more load: a way to shake out timing flakes
 
 
 def run(name, port):
@@ -48,10 +50,10 @@ def main(args):
     first = [n for n in FIRST if n in names or "pdf_highlights" in names or "printed_page" in names]
     last = [n for n in LAST if n in names]
     rest = [n for n in names if n not in first and n not in last]
-    results = [run(n, 9100) for n in first]
+    results = [run(n, BASE) for n in first]
     with ThreadPoolExecutor(WORKERS) as pool:
-        results += list(pool.map(lambda nr: run(nr[1], 9101 + nr[0]), enumerate(rest)))
-    results += [run(n, 9099) for n in last]
+        results += list(pool.map(lambda nr: run(nr[1], BASE + 1 + nr[0]), enumerate(rest)))
+    results += [run(n, BASE + 99) for n in last]
     bad = [r for r in results if not r[1]]
     for name, ok, secs, fails in results:
         print(f"{'ok  ' if ok else 'FAIL'} {name:16} {secs:5.0f}s")
