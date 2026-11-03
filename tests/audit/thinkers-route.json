@@ -2,10 +2,11 @@
  "audit": "thinkers-route",
  "audited": "2026-10-24",
  "mode": "in place",
- "scope": "The thinker cards on the reading route: Aristotle, Spinoza, Nietzsche, Deleuze, Guattari, Land",
+ "scope": "The thinker cards on the reading route: Aristotle, Spinoza, Nietzsche, Deleuze, Guattari, Land; added 2026-11-03: Bergson, Bataille",
  "by": {
   "first_pass": "Claude (Opus 5.5)",
-  "review": "Independent reviewer (Claude subagent, fresh context), 2026-10-24, 25 searches and fetches: Aristotle and Spinoza pass; Nietzsche, Deleuze, Guattari and Land pass after fixes now made (the archived Wicks entry added as a source; a repeated sentence on Deleuze's illness; the Guattari source credited to Adam Shatz; Land's move to Shanghai dated loosely, his essay named, and an unquoted run from Burrows reworded). Guattari's analysis with Lacan is left undated, as sources disagree (Britannica: the 1950s; Universalis: until 1960; other accounts 1962–69)."
+  "review": "Independent reviewer (Claude subagent, fresh context), 2026-10-24, 25 searches and fetches: Aristotle and Spinoza pass; Nietzsche, Deleuze, Guattari and Land pass after fixes now made (the archived Wicks entry added as a source; a repeated sentence on Deleuze's illness; the Guattari source credited to Adam Shatz; Land's move to Shanghai dated loosely, his essay named, and an unquoted run from Burrows reworded). Guattari's analysis with Lacan is left undated, as sources disagree (Britannica: the 1950s; Universalis: until 1960; other accounts 1962–69).",
+  "review_2026_11_03": "Independent reviewer (separate agent, fresh context), 2026-11-03: Bergson passes as drafted; Bataille passes after unconfirmed biographical details were cut and wording brought to Stoekl's."
  },
  "note": "Biographical claims were checked against the sources below; claims marked not-retrieved are the card's standard doctrine, which the cited Stanford entry covers but which was not re-read in this pass. Unsupported details were cut and errors corrected.",
  "cards": {
@@ -147,10 +148,7 @@
    "not_retrieved": [
     "the 2012 date of The Dark Enlightenment"
    ]
-  }
- },
- "pending": {
-  "_note": "Cards drafted or checked for the reading route, awaiting independent review. They move into 'cards', and their ids into VERIFIED_THINKERS, once the review passes.",
+  },
   "bergson": {
    "sources": [
     "SEP “Henri Bergson” (Leonard Lawlor and Valentine Moulard-Leonard), substantive revision 22 October 2025"
@@ -165,7 +163,8 @@
     "severe arthritis from the second half of the 1920s, which eventually forced him to retire from public life; Vichy exemptions offered and refused; died 3 January 1941 at 81",
     "duration as the immediate data of consciousness; quantitative multiplicity 'by means of externalizing one from another', out of a practical or utilitarian interest; qualitative multiplicity organized into a whole, states permeating one another",
     "survival of personal memories, unconscious; the cone 'SAB' symbolizes memory; the vital impulse (élan vital) as an original common impulse; intuition as entering into the thing; closed morality with static religion, open morality with dynamic religion",
-    "influence decreased notably after the Second World War; Deleuze’s 1966 Bergsonism marked the reawakening of interest; multiplicity his most enduring contribution, as Deleuze realized; revitalization due almost entirely to Deleuze"
+    "influence decreased notably after the Second World War; Deleuze’s 1966 Bergsonism marked the reawakening of interest; multiplicity his most enduring contribution, as Deleuze realized; revitalization due almost entirely to Deleuze",
+    "Académie française: the entry says 'The next year' after January 1913, so 1914 is derived; intuition called a method (§3); 'original common impulse' named the vital impulse (élan vital)"
    ],
    "left_out": [
     "Duration and Simultaneity: the entry gives no first-publication year",
@@ -173,29 +172,46 @@
    ],
    "drew_on": "left empty: no source checked for Bergson's own sources",
    "review": {
-    "verdict": "pending",
-    "by": "awaiting independent review (separate agent)"
+    "verdict": "pass",
+    "by": "independent reviewer (separate agent), 2026-11-03",
+    "note": "every sentence re-checked against the SEP entry (revision 22 October 2025) by fresh fetches; 'reached cult-like heights during his lifetime' verbatim; no fixes needed"
    }
   },
   "bataille": {
-   "status": "existing card, not rewritten in this pass; its dates and key works checked",
+   "status": "existing card, re-checked and corrected by the independent reviewer",
    "sources": [
     "Allan Stoekl, “Bataille, Georges (1897–1962)”, Encyclopedia of Philosophy, 2nd ed. (Macmillan, 2005), via encyclopedia.com",
     "Jonathan Maskit, “Bataille, Georges (1897–1962)”, Routledge Encyclopedia of Philosophy (summary)",
-    "Jean Piel, introduction to Bataille, La Part maudite (Éditions de Minuit), extract on the publisher's site"
+    "Camille Morando, “Le corps sans limites ou l’acéphalité”, RACAR 31.1–2 (2006), 81–89",
+    "Luka Trebežnik, Open Theology 10 (2024)",
+    "Jean Piel, introduction to La Part maudite (Minuit), for the 1933 date of “The Notion of Expenditure” (first pass)"
    ],
    "checked": [
-    "1897–1962 (Stoekl; Maskit); born in Billom (Maskit)",
-    "“The Notion of Expenditure”: written for La Critique sociale, 'l'article de 1933' (Piel); Stoekl brackets it [1932]; the card's works list keeps 1933 and its text '1932–33'",
-    "Inner Experience 1943; The Accursed Share 1949; Erotism 1957 (Stoekl)",
-    "Stoekl on Derrida (deconstruction as close following and disarticulation) and on Foucault's counter-discourse"
+    "1897–1962 (Stoekl; Maskit); born in Billom, raised in Reims, much of his adult life in Paris; librarian at the Bibliothèque nationale 1922–1942 (Maskit)",
+    "'loosely associated with and against the surrealists' (Stoekl, verbatim)",
+    "Acéphale: secret society founded by Bataille in 1936, review published with Klossowski and Masson in June 1936; College of Sociology founded 1937 with Leiris and Caillois; Histoire de l'œil, Paris 1928, under the pseudonym Lord Auch (Morando, pp. 81, 83)",
+    "“The Notion of Expenditure”: Stoekl brackets it [1932], Piel 'l'article de 1933'; the card keeps 1933 in the works and '1932–33' in its text",
+    "general economy, 'the extravagant squandering of wealth', a person's 'fundamental tendency was to expend', 'the affirmation of life to the point of the risk of death', Mauss and the potlatch (Stoekl); restricted economy, squandering of energy, surplus destined for sacrifice, festivals, base materialism and cosmic expenditure, the sacred and the interdict, transgression and limits (Trebežnik)",
+    "Inner Experience 1943, the 'ecstatic horror' of God's definitive absence; Erotism 1957, erotic 'communication'; The Accursed Share 1949; at the vanguard of the French reception of Nietzsche and Hegel, 'following and rewriting Alexandre Kojève's Hegel'; Derrida's reading 'may be seen as the model of the deconstructive project'; Foucault's counter-discourse 'clearly owes much to Bataille' (Stoekl)",
+    "drew on Hegel, Nietzsche and Mauss (Maskit); Kojève (Stoekl)"
+   ],
+   "fixed": [
+    "École des Chartes (1918) and archivist-paleographer (1922) cut: found only in Larousse, which names no author",
+    "the review Documents (1929), Contre-Attaque with Breton and the founding of Critique (1946) cut: no academic source reached confirms them (Larousse and a university library's list only)",
+    "'He died in Paris' made 'He died in 1962'; 'in the Auvergne' replaced by Maskit's Billom, Reims and Paris",
+    "the Surrealists sentence given as Stoekl's words, in quotation marks",
+    "'part of the Summa Atheologica' and the sovereignty clause ('the moment freed from servitude to utility') cut: not in the sources reached",
+    "'the basic tendency of human beings, and of societies' made 'a person's fundamental tendency' (Stoekl); 'restricted economy of scarcity' made 'restricted economy'",
+    "'a principal figure in the French reception' made Stoekl's 'at the vanguard'; 'can be seen' made his 'may be seen'",
+    "Larousse (unsigned) replaced among the sources by Maskit (Routledge) and Morando (RACAR)"
    ],
    "not_retrieved": [
-    "École des Chartes and Bibliothèque nationale dates; Documents, Contre-Attaque, Acéphale, the College of Sociology, Critique; Story of the Eye under 'Lord Auch' (not in the parts of Stoekl or Maskit retrieved; the card's Larousse source was not re-read)"
+    "the treatment of sacrifice and festival as the spending of the 'accursed share' is supported by Trebežnik's surplus 'destined for sacrifice'; the term itself not re-read in a source"
    ],
    "review": {
-    "verdict": "pending",
-    "by": "awaiting independent review (separate agent)"
+    "verdict": "pass",
+    "by": "independent reviewer (separate agent), 2026-11-03",
+    "note": "passes after the cuts and corrections above"
    }
   }
  }

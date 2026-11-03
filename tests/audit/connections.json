@@ -2,7 +2,7 @@
  "id": "connections",
  "standard": "connections-2026-10",
  "date": "2026-10-25",
- "note": "Typed connections between thinkers (CONNECTIONS in data/thinkers.js). Each claim, primary-text line and reading checked against its source; quotations checked character for character. 2026-10-26: eight connections along the reading route added; first pass by Claude, independent review by a separate agent that checked every quotation verbatim.",
+ "note": "Typed connections between thinkers (CONNECTIONS in data/thinkers.js). Each claim, primary-text line and reading checked against its source; quotations checked character for character. 2026-10-26: eight connections along the reading route added; first pass by Claude, independent review by a separate agent that checked every quotation verbatim. 2026-11-03: deleuze > bergson and land > bataille added; first pass by Claude, independent review by a separate agent that re-checked every quotation through fresh fetches of each source.",
  "connections": [
   {
    "from": "nietzsche",
@@ -229,11 +229,19 @@
     "same §2: 'Deleuze adopts “multiplicity” from Bergson as the name for such a purely differential field'",
     "SEP 'Henri Bergson' (Lawlor and Moulard-Leonard, substantive revision 22 October 2025), §7 'The revitalization of Bergsonism': 'This revitalization is due almost entirely to Deleuze.'; 'As we have come to understand Deleuze’s own thought better, we can see the overwhelming influence of Bergson.'; 'This concept is at the very heart of Deleuze’s thought, and duration is the model for all of Deleuze’s “becomings.”' (inner double quotes rendered as single inside the app's quotation)",
     "same §7: 'The other aspect that attracted Deleuze, which is indeed connected to the first, is Bergson’s criticism of the concept of negation in Creative Evolution' (paraphrased)",
-    "Craig Lundy, Deleuze Studies 11.2 (2017), deposited accepted version (core.ac.uk/download/82964596.pdf; NTU record irep.ntu.ac.uk/id/eprint/30942), p. 176: 'These three aspects of difference have been drawn by Deleuze from what he refers to as the three stages or efforts of Bergsonism – duration, memory and the élan vital'; p. 180: 'The virtual is not the opposite of the real, it is the opposite of the actual'; 'The virtual and the actual are therefore both real' (page numbers from the deposited copy's markers)"
+    "Craig Lundy, Deleuze Studies 11.2 (2017), deposited accepted version (core.ac.uk/download/82964596.pdf; NTU record irep.ntu.ac.uk/id/eprint/30942), p. 176: 'These three aspects of difference have been drawn by Deleuze from what he refers to as the three stages or efforts of Bergsonism – duration, memory and the élan vital'; p. 180: 'The virtual is not the opposite of the real, it is the opposite of the actual'; 'The virtual and the actual are therefore both real' (page numbers from the deposited copy's markers)",
+    "Lundy p. 176: the stages 'form a whole that progressively emerges as Bergson writes his first three books' (paraphrased); p. 180: the virtual/actual bullets are Lundy's own summary, introduced as the explanation 'as it appears in chapter five of Bergsonism'; page numbers from the copy's '[end of p. N]' markers",
+    "SEP 'Gilles Deleuze' §2: the positive name for the genetic condition is the virtual, 'which Deleuze adopts from the following Bergsonian argument'; 'the virtual ground of those identities must be purely differential' precedes the multiplicity sentence"
    ],
    "review": {
-    "verdict": "pending",
-    "by": "awaiting independent review (separate agent)"
+    "verdict": "pass",
+    "by": "independent reviewer (separate agent), 2026-11-03",
+    "checked": "every quotation re-checked word for word against SEP 'Gilles Deleuze' (revision 3 June 2022), SEP 'Henri Bergson' §7 (revision 22 October 2025) and Lundy's deposited copy (core.ac.uk; NTU record confirms journal, pages and DOI)",
+    "fixes": [
+     "'that serve as the backbone of his later work', the entry's wording outside quotation marks, reworded as 'which it calls the backbone'",
+     "the multiplicity quotation given its context (the virtual ground of actual identities must be purely differential), so 'such a' has a referent",
+     "Lundy's summary placed in chapter five of Bergsonism, as he says"
+    ]
    }
   },
   {
@@ -241,21 +249,33 @@
    "to": [
     "bataille"
    ],
-   "kind": "influence",
+   "kind": "reinterpretation",
    "checked": [
     "Routledge's page for the book (ISBN 9780415056083): title 'The Thirst for Annihilation: Georges Bataille and Virulent Nihilism', 1992; contents include '2. The curse of the sun', '3. Transgression', '7. Fanged noumenon (passion of the cyclone)'",
     "Land's sentence 'Excess or surplus always precedes production, work, seriousness, exchange, and lack' checked only as quoted by Peredrii (2025), p. 26, citing [Land, 1992: 33]; not checked against Land's book",
     "Mackay and Brassier, Editors' Introduction to Fanged Noumena (2011), p. 2: 'Land allied himself to a line of renegade thinkers - Schopenhauer, Nietzsche, Bataille - who mocked and disparaged academicism and wielded philosophy as an implement for exacerbating enigma'",
     "same, p. 32, on 'acceleration' and 'intensification': 'This could be seen as a relapse back into the juridical-dialectical domain of law-and-transgression associated with Bataille, ... and whose mechanisms Land dismantled early on'; then 'Land is not reverting to a dubiously voluntaristic paradigm of transgression' (paraphrased in the reading). Wording checked against a copy of the introduction (labster8.net PDF); the app links the publisher's page",
-    "Bohdan Peredrii, Series Humanitarian Vision 11.1 (2025), 22–29 (Lviv Ivan Franko National University; received 21 Feb 2025, accepted 8 May 2025), abstract: 'Land argues that transgression only partially addresses the problem of the death of God'; 'The transgression must be surpassed through the acceleration of nihilistic processes, which are linked with the dynamics of capital expansion and artificial intelligence (AI)'; 'traces how Bataille’s concepts are transformed in Land’s philosophy into the foundations of accelerationism'"
-   ],
-   "doubts": [
-    "Kind: 'influence' rests on Mackay and Brassier ('allied himself') and on the book being a study of Bataille; Peredrii's 'transformed' and Land's argument that transgression must be surpassed could support 'reinterpretation' instead. For the reviewer to settle.",
-    "Peredrii's article is recent and in a smaller university journal; its peer-review policy was not confirmed on the article page."
+    "Bohdan Peredrii, Series Humanitarian Vision 11.1 (2025), 22–29 (author's affiliation Lviv Ivan Franko National University; journal published by Lviv Polytechnic National University; received 21 Feb 2025, accepted 8 May 2025), abstract: 'Land argues that transgression only partially addresses the problem of the death of God'; 'The transgression must be surpassed through the acceleration of nihilistic processes, which are linked with the dynamics of capital expansion and artificial intelligence (AI)'; 'traces how Bataille’s concepts are transformed in Land’s philosophy into the foundations of accelerationism'",
+    "Mackay and Brassier p. 32, context re-checked in the same copy: ''Acceleration' and 'intensification' are among the most problematic notions in Land's work'; 'he seems to nurture the romantic will to 'go beyond''; 'This could be seen as a relapse'; 'strict adherence to a consistently stratoanalytical perspective'. The app links the co-publisher's page (Sequence Press)",
+    "Peredrii pp. 26–27: Land 'starts with accepting Bataille's ideas of excess' and links excess to capitalism; 'Land, in some sense, radicalizes it' (transgression); the Land quotation on p. 26 in quotation marks, cited [Land, 1992: 33]",
+    "Series Humanitarian Vision: published by Lviv Polytechnic National University; its peer-review page requires two external reviews by experts in the field; indexed in ERIH PLUS (science.lpnu.ua/shv, /shv/peer-review-process)"
    ],
    "review": {
-    "verdict": "pending",
-    "by": "awaiting independent review (separate agent)"
+    "verdict": "pass",
+    "by": "independent reviewer (separate agent), 2026-11-03",
+    "kind": "reinterpretation. Both readings describe Land taking up Bataille's concepts and changing them: Peredrii's article is a study of 'the transformation of the concept of transgression' in Land, who accepts Bataille's excess, ties it to capitalism, radicalizes transgression and would surpass it by acceleration; Mackay and Brassier ally Land with Bataille and say he dismantled early on the law-and-transgression mechanisms associated with Bataille. 'Influence' would record the debt and drop the transformation the sources stress.",
+    "peer_review": "Peredrii kept as a supporting reading: a university journal with a stated process of two external reviews and ERIH PLUS indexing. Mackay and Brassier remain the first reading.",
+    "fixes": [
+     "kind changed from influence to reinterpretation; claim adds that Land ties excess to capitalism and turns transgression toward acceleration (Peredrii)",
+     "Land's sentence now says in its text that it is quoted as Peredrii quotes it, with Peredrii's page",
+     "Mackay and Brassier p. 32 restated: they write that his 'romantic will' could be seen as a relapse (they asked no question), the dismantled mechanisms belong to the law-and-transgression domain, and the stratoanalytical point is theirs",
+     "Peredrii's 'transformed in Land's philosophy' wording put in quotation marks; his 'starts with accepting' excess and 'in some sense radicalizes' added",
+     "the record's 'Lviv Ivan Franko National University' marked as the author's affiliation; the journal is Lviv Polytechnic's"
+    ],
+    "doubtful": [
+     "Land's sentence (p. 33) checked only as Peredrii quotes it; Land's book was not available",
+     "the Mackay and Brassier wording checked in an unofficial copy of the introduction (labster8.net), the only one reachable"
+    ]
    }
   }
  ],
@@ -278,17 +298,17 @@
    ],
    "basis": "SEP 'Henri Bergson' §7 ('the overwhelming influence of Bergson'); SEP 'Gilles Deleuze' §2 (virtual and multiplicity adopted from Bergson)",
    "review": {
-    "verdict": "pending",
-    "by": "awaiting independent review (separate agent)"
+    "verdict": "pass",
+    "by": "independent reviewer (separate agent), 2026-11-03"
    }
   },
   {
    "thinker": "land",
    "added": [],
-   "note": "bataille was already in Land's 'drew on' list; it now rests on the land > bataille connection above",
+   "note": "bataille was already in Land's 'drew on' list; it now rests on the land > bataille connection above (reinterpretation)",
    "review": {
-    "verdict": "pending",
-    "by": "awaiting independent review (separate agent)"
+    "verdict": "pass",
+    "by": "independent reviewer (separate agent), 2026-11-03"
    }
   }
  ]

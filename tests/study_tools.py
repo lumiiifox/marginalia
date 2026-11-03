@@ -1017,7 +1017,7 @@ async def connections(browser):
     check(nz and nz[0]["lines"][:1] == ["In the text"] and "Scholarship" in nz[0]["lines"], f"the primary text comes first, then the scholarship, each labelled ({nz})")
     await page.evaluate("thinkerPanel('land')"); await page.wait_for_timeout(300)
     land = await page.evaluate("[...document.querySelectorAll('.sheet .conn-h')].map((h) => h.textContent)")
-    check(land == ["Reinterprets Deleuze and Guattari", "Criticizes Kant", "Influenced by Bataille"], f"a connection to co-authors names both, from Land's side ({land})")
+    check(land == ["Reinterprets Deleuze and Guattari", "Criticizes Kant", "Reinterprets Bataille"], f"a connection to co-authors names both, from Land's side ({land})")
     await page.evaluate("thinkerPanel('guattari')"); await page.wait_for_timeout(300)
     gu = await page.evaluate("[...document.querySelectorAll('.sheet .conn-h')].map((h) => h.textContent)")
     check(gu == ["Reinterpreted by Land", "Criticizes Freud (with Deleuze)", "Reinterprets Lacan (with Deleuze)"], f"and from each co-author's ({gu})")
