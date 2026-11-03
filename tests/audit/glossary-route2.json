@@ -5,9 +5,8 @@
  "scope": "Glossary entries on the reading route's next two batches (tests/audit/ROUTE_QUEUE.md): Land and accelerationism (hyperstition, accelerationism) and the terms the Spinoza → Deleuze close reading points to (necessity, virtue ethics)",
  "by": {
   "first_pass": "Claude (Opus 5.5), 2026-11-03: every old sentence given a verdict; the entries rewritten from the sources below; every quotation from a web source checked word for word by WebFetch of the source page on 2026-11-03, and every quotation from Peters's Aristotle and Elwes's Spinoza checked character for character against data/books by script (see each term's quotes)",
-  "review": null
+  "review": "Independent reviewer (separate agent, fresh context), 2026-11-03: checked all 45 sentences of the shipped text and all 84 quotations: the 10 from Peters's Aristotle and Elwes's Spinoza by a character-for-character script against data/books (italic markers stripped), all of which matched at the blocks and locators given (NE II.6, II.7, VI.3, VI.5; Peters's notes 155 and 167 for prudence as φρόνησις; Ethics I P33 Note I, IV Def. VIII, IV P18 Note), and the 74 from web sources by 25 WebFetch and 3 WebSearch lookups (direct downloads of these hosts are refused by this session's network policy, so each long sentence was fetched in verbatim fragments and compared with the text, and two tails the tool would not show were confirmed by exact-string queries). No term passed as drafted. Fixed: the accelerationism definition's splice of Mackay and Avanessian's sentence (which also dropped 'nor to await its demise at the hands of its own contradictions') replaced by one continuous quotation and a paraphrase of the alternatives they set aside; the Malign Velocities quotation cut, since it is the publisher's blurb reproduced as the repository's abstract, and Noys's critique given instead as Cunningham reports it, with the Chichester record dropped from the sources; Cunningham's 'early 1990s' for Land and the CCRU confirmed and quoted as his phrase; O'Sullivan's essay placed in Cyclops 2 (2017), pp. 11–44, as Goldsmiths' research listing gives it; second-hand quotations confirmed as marked (the CCRU's list and the Hyperstition website as O'Sullivan quotes them, Noys as Williams and Cunningham quote him); Williams's parenthesis of Noys's instances no longer listed as further items, and his credit of the coinage to Noys added beside Mackay and Avanessian's to Zelazny; Land's dismissal of left accelerationism given with his 'gaining serious momentum'; the Hyperstition website's 'first great task' no longer made O'Sullivan's words, and his 'especially those from the 1990s' restored; Look's Spinoza-and-Hobbes sentence credited to the main Leibniz article as he reports it, with the Cartesian theory restored and his bracket for the precipice given, the Discourse §13 quotation framed as Look frames it, and his own paraphrase of God's choice taken out of 'as Look quotes it'; Kment's reason for nomic necessity being weaker added; Hursthouse and Pettigrove's preamble and 'momentary eclipse' followed more closely and a near-contrastive 'necessary and not sufficient' reworded; Peters's courage passage paraphrased with the deficiency in confidence. Still open, recorded: the necessity definition's first sentence is the app's gloss of Kment's possible-worlds definitions; the page of Mackay and Avanessian's right- and left-accelerationism sentence (p. 44 by the fetch, p. 45 in the first pass) is not shown in the text. Passed after the fixes."
  },
- "review_status": "pending: the independent second review has not been done; the fixes do not ship until it passes",
  "sources": {
   "ATH": {
    "name": "Nafsika Athanassoulis, “Virtue Ethics”, Internet Encyclopedia of Philosophy",
@@ -53,12 +52,8 @@
    "name": "Aristotle, Nicomachean Ethics, trans. F. H. Peters (Standard Ebooks), bundled: data/books/classic-aristotle-ethics.json",
    "src": "data/books/classic-aristotle-ethics.json"
   },
-  "NOY": {
-   "name": "Benjamin Noys, Malign Velocities: Accelerationism and Capitalism (Zero Books, 2014), record and summary in the University of Chichester's repository",
-   "src": "https://eprints.chi.ac.uk/id/eprint/1255/"
-  },
   "OSU": {
-   "name": "“Accelerationism, Hyperstition and Myth-Science”, Goldsmiths Research Online (Simon O'Sullivan, Goldsmiths, University of London)",
+   "name": "Simon O'Sullivan, “Accelerationism, Hyperstition and Myth-Science”, Cyclops 2 (2017), pp. 11–44 (author's copy, Goldsmiths Research Online)",
    "src": "https://eprints-gro.gold.ac.uk/19773/1/Hyperstition_Myth-Science_Cyclops.docx"
   },
   "SE": {
@@ -74,7 +69,7 @@
    "src": "https://www.e-flux.com/journal/46/60063/escape-velocities"
   }
  },
- "note": "Claims the sources consulted did not cover were cut. Land's and the CCRU's positions are reported as theirs. Land's interview, his Jacobite essay and Williams and Srnicek's manifesto are primary texts, quoted for what their authors say; the Hyperstition website and the CCRU's list are quoted as O'Sullivan quotes them, since neither was retrieved directly. Fields r, vs, br and k are unchanged.",
+ "note": "Claims the sources consulted did not cover were cut. Land's and the CCRU's positions are reported as theirs. Land's interview, his Jacobite essay and Williams and Srnicek's manifesto are primary texts, quoted for what their authors say; the Hyperstition website and the CCRU's list are quoted as O'Sullivan quotes them, since neither was retrieved directly. Fields r, vs, br and k are unchanged. Second review: the venue of O'Sullivan's essay is Cyclops 2 (2017), pp. 11–44, as Goldsmiths' research listing gives it; the Malign Velocities summary in the Chichester repository is the publisher's description (it is word for word the Zer0 Books blurb), not scholarship, so it no longer decides any claim.",
  "terms": {
   "accelerationism": {
    "old": [
@@ -92,7 +87,8 @@
      "text": "Benjamin Noys coined the term, in a critical register, in The Persistence of the Negative (2010), for a tendency, including Anti-Oedipus, that answers Marx by turning capitalism against itself, on the principle of “the worse the better”.",
      "accuracy": "overstated",
      "by": "MAA p. 8 n. 1; WIL; CUN",
-     "note": "Mackay and Avanessian: the word was first coined by Roger Zelazny in Lord of Light (1967) and 'taken up as a critical term' by Noys (2010, pp. 4–9); Williams and Cunningham say Noys coined or first named it. Both now stated. The definition, Anti-Oedipus with Lyotard and the mid-1970s Baudrillard, Marx's barrier and 'the worse the better' are Noys as Williams quotes him: kept, credited and quoted."
+     "note": "Mackay and Avanessian: the word was first coined by Roger Zelazny in Lord of Light (1967) and 'taken up as a critical term' by Noys (2010, pp. 4–9); Williams and Cunningham say Noys coined or first named it. Both now stated. The definition, Anti-Oedipus with Lyotard and the mid-1970s Baudrillard, Marx's barrier and 'the worse the better' are Noys as Williams quotes him: kept, credited and quoted.",
+     "review": "second review, 2026-11-03: verdict confirmed; Williams says Noys coined the word, Mackay and Avanessian that Zelazny did and Noys took it up; both now in the text."
     },
     {
      "s": 3,
@@ -121,17 +117,7 @@
    ],
    "new_d": [
     {
-     "text": "A name for positions holding that capitalism's own tendencies should be pushed further. Robin Mackay and Armen Avanessian call accelerationism “a political heresy: the insistence that the only radical political response to capitalism” is “to accelerate its uprooting, alienating, decoding, abstractive tendencies”.",
-     "claims": [
-      {
-       "by": "MAA"
-      }
-     ]
-    }
-   ],
-   "new_text": [
-    {
-     "text": "They note that the word first appeared in Roger Zelazny's science-fiction novel Lord of Light (1967) and was taken up as a critical term by Benjamin Noys in The Persistence of the Negative (2010).",
+     "text": "A name for positions holding that capitalism's own tendencies should be pushed further.",
      "claims": [
       {
        "by": "MAA"
@@ -139,12 +125,36 @@
      ]
     },
     {
-     "text": "Alex Williams reports that for Noys the term covers “certain libertarian post-Marxist positions”, Deleuze and Guattari's Anti-Oedipus, Lyotard's Libidinal Economy and the Baudrillard of the mid-1970s, and quotes him: they answer Marx's claim that “the real barrier of capitalist production is capital itself” by “turning capitalism against itself”, on the principle of “the worse the better”.",
+     "text": "Robin Mackay and Armen Avanessian call accelerationism “a political heresy”: on their account it holds that the only radical political response to capitalism is “to accelerate its uprooting, alienating, decoding, abstractive tendencies”, and it sets aside protest, disruption, critique and waiting for capitalism to fall to its own contradictions.",
+     "claims": [
+      {
+       "by": "MAA"
+      }
+     ],
+     "review": "second review, 2026-11-03: the draft joined two pieces of one sentence with “is”, leaving out “is not to protest, disrupt, or critique, nor to await its demise at the hands of its own contradictions, but” (MAA p. 4); now one continuous quotation, with the alternatives the editors set aside paraphrased."
+    }
+   ],
+   "new_text": [
+    {
+     "text": "They note that the term was first coined by Roger Zelazny in his science-fiction novel Lord of Light (1967) and taken up as a critical term by Benjamin Noys in The Persistence of the Negative (2010); Alex Williams credits Noys with coining it.",
+     "claims": [
+      {
+       "by": "MAA"
+      },
+      {
+       "by": "WIL"
+      }
+     ],
+     "review": "second review, 2026-11-03: MAA fn. 1 says 'initially coined by Roger Zelazny'; Williams's own credit to Noys ('itself coined by Benjamin Noys') added so the disagreement is shown."
+    },
+    {
+     "text": "Williams reports that, as Noys defines it, accelerationism describes “certain libertarian post-Marxist positions”, with Deleuze and Guattari's Anti-Oedipus, Lyotard's Libidinal Economy and Baudrillard's writing of the mid-1970s as instances, and quotes Noys: such thinkers answer Marx's contention that “the real barrier of capitalist production is capital itself” by “turning capitalism against itself”, on the principle of “the worse the better”.",
      "claims": [
       {
        "by": "WIL"
       }
-     ]
+     ],
+     "review": "second review, 2026-11-03: Williams names Anti-Oedipus, Libidinal Economy and the Baudrillard of the mid-1970s in a parenthesis as instances of those positions; the draft listed them as further items. Noys's words are given as Williams quotes them; 'contention' is Williams's word."
     },
     {
      "text": "Anti-Oedipus asks whether the revolutionary path is to withdraw from the world market or to go further, to “accelerate the process”, a phrase Deleuze and Guattari credit to Nietzsche; Williams writes that Nick Land “answered in the affirmative”.",
@@ -158,12 +168,13 @@
      ]
     },
     {
-     "text": "David Cunningham describes a first wave, for which, he writes, Anti-Oedipus may have provided much of the vocabulary and whose most extreme form is Lyotard's Libidinal Economy (1974), and a second in the work of Land and the Cybernetic Culture Research Unit (CCRU) in the UK during the early 1990s; Noys, he reports, calls the result a “Deleuzian Thatcherism”.",
+     "text": "David Cunningham describes a first wave of accelerationism, for which, he writes, Anti-Oedipus may have provided much of the vocabulary and whose most extreme form is Lyotard's Libidinal Economy (1974), and a second in the work of Land and the Cybernetic Culture Research Unit (CCRU), set, in his words, in “the somewhat altered context of the UK during the early 1990s”; Noys, he reports, calls the result a “Deleuzian Thatcherism”.",
      "claims": [
       {
        "by": "CUN"
       }
-     ]
+     ],
+     "review": "second review, 2026-11-03: checked doubtful point (c): Cunningham does write 'in the somewhat altered context of the UK during the early 1990s in the work of Nick Land and the CCRU'; now quoted as his phrase. The CCRU's founding date is in no source consulted, so the entry gives no year of its own. 'Deleuzian Thatcherism' is Noys as Cunningham reports him ('Noys terms the result')."
     },
     {
      "text": "Simon O'Sullivan reads Land's essay “Circuitries” as pitching positive feedback loops against the stabilizing effect of negative ones: “the call is for ever more mutation and deviation from the norm”.",
@@ -208,12 +219,13 @@
      ]
     },
     {
-     "text": "Land, discussing the manifesto, holds that whatever can consistently feed socio-historical acceleration “will necessarily, or by essence, be capital”, so that the prospect of an unambiguous left accelerationism “can be confidently dismissed”.",
+     "text": "Land holds that whatever can consistently feed socio-historical acceleration “will necessarily, or by essence, be capital”, so that the prospect of any unambiguously left accelerationism gaining serious momentum “can be confidently dismissed”.",
      "claims": [
       {
        "by": "LQD"
       }
-     ]
+     ],
+     "review": "second review, 2026-11-03: Land's sentence dismisses the prospect of 'any unambiguously ‘Left-accelerationism’ gaining serious momentum'; the draft dropped 'gaining serious momentum' and 'discussing the manifesto' (the sentence's place in the essay was not confirmed)."
     },
     {
      "text": "Mackay and Avanessian's #Accelerate: The Accelerationist Reader (2014) builds, in Cunningham's words, “a kind of intellectual prehistory” for the manifesto, beginning with Marx's “Fragment on Machines” and Samuel Butler's Erewhon (1872), and its editors set “Land’s consolidated right-accelerationism” against “the burgeoning left-accelerationisms”.",
@@ -227,22 +239,32 @@
      ]
     },
     {
-     "text": "Noys's Malign Velocities (2014) rejects the position and tracks accelerationism “as the symptom of the misery and pain of labour under capitalism”.",
+     "text": "Noys continued his critique in Malign Velocities: Accelerationism and Capitalism (2014).",
      "claims": [
       {
-       "by": "NOY"
+       "by": "MAA"
       }
-     ]
+     ],
+     "review": "second review, 2026-11-03: the draft's quotation 'as the symptom of the misery and pain of labour under capitalism' is the publisher's description of the book (Zer0 Books' page, reproduced as the Chichester repository's abstract), not Noys's or any scholar's; cut. MAA fn. 1: 'Noys continues his meditation on accelerationism in Malign Velocities'. Title as the repository and publisher give it."
+    },
+    {
+     "text": "Cunningham reports Noys's objection that the accelerationist approach, exemplified by Lyotard and Land, seeks to overcome labour's antagonistic relationship to capital by embracing labour's complete integration into the machinic and the abstract, and so affirms its “capture”.",
+     "claims": [
+      {
+       "by": "CUN"
+      }
+     ],
+     "review": "second review, 2026-11-03: CUN: 'For Noys, the failure to recognize this is most apparent ... in the accelerationist approach (exemplified by Lyotard and Land) to the ‘moving contradiction’ of labour’s antagonistic relationship to capital', which embraces 'an absolute integration of labour (variable capital) into the machinic and abstract (constant capital), and hence affirm[s] its ‘capture’'."
     }
    ],
    "quotes": [
     {
-     "q": "a political heresy: the insistence that the only radical political response to capitalism",
-     "checked": "MAA p. 4 (WebFetch of the Urbanomic PDF); the sentence goes on 'is not to protest, disrupt, or critique, but' before the next quotation, which the entry joins with 'is'"
+     "q": "a political heresy",
+     "checked": "MAA p. 4 (second review: WebFetch, the sentence read whole: “Accelerationism is a political heresy: the insistence that the only radical political response to capitalism is not to protest, disrupt, or critique, nor to await its demise at the hands of its own contradictions, but to accelerate its uprooting, alienating, decoding, abstractive tendencies.”)"
     },
     {
      "q": "to accelerate its uprooting, alienating, decoding, abstractive tendencies",
-     "checked": "MAA p. 4; 'the insistence that the only radical political response to capitalism is' precedes it, with 'not to protest, disrupt, or critique, but' between, left out of the paraphrase"
+     "checked": "MAA p. 4; a continuous run ending the editors’ sentence (second review)"
     },
     {
      "q": "certain libertarian post-Marxist positions",
@@ -271,6 +293,10 @@
     {
      "q": "Deleuzian Thatcherism",
      "checked": "CUN"
+    },
+    {
+     "q": "the somewhat altered context of the UK during the early 1990s",
+     "checked": "CUN (second review)"
     },
     {
      "q": "the call is for ever more mutation and deviation from the norm",
@@ -322,15 +348,15 @@
     },
     {
      "q": "Land’s consolidated right-accelerationism",
-     "checked": "MAA p. 45"
+     "checked": "MAA (p. 45 in the first pass, p. 44 in the second review’s fetch); words confirmed by the second review"
     },
     {
      "q": "the burgeoning left-accelerationisms",
-     "checked": "MAA p. 45"
+     "checked": "MAA (p. 45 in the first pass, p. 44 in the second review’s fetch); words confirmed by the second review"
     },
     {
-     "q": "as the symptom of the misery and pain of labour under capitalism",
-     "checked": "NOY (repository summary of the book)"
+     "q": "capture",
+     "checked": "CUN, reporting Noys (second review)"
     }
    ],
    "s": "Deleuze and Guattari, Anti-Oedipus (1972); Noys, The Persistence of the Negative (2010); Land, “Circuitries”, in Fanged Noumena: Collected Writings 1987–2007 (2011); Williams and Srnicek, “#Accelerate: Manifesto for an Accelerationist Politics” (2013); Mackay and Avanessian, eds., #Accelerate: The Accelerationist Reader (2014); Noys, Malign Velocities (2014); Land, “A Quick-and-Dirty Introduction to Accelerationism”",
@@ -340,7 +366,6 @@
     "WIL",
     "SW",
     "OSU",
-    "NOY",
     "LQD"
    ],
    "p": [
@@ -488,20 +513,22 @@
      "paragraph": "starts a new paragraph"
     },
     {
-     "text": "He calls positive feedback loops “another name for hyperstition” and reads Land's essays of the 1990s as “time loops in which the future they predict impacts back on the present”: in “Circuitries” a science-fiction narrative accompanies the theory, and “Meat (or How to Kill Oedipus in Cyberspace)” is “both politico-philosophical treatise and cyberpunk fiction”.",
+     "text": "He calls positive feedback loops “another name for hyperstition” and reads Land's writings, especially those of the 1990s, as “time loops in which the future they predict impacts back on the present”: in “Circuitries” a science-fiction narrative accompanies the theory, and “Meat (or How to Kill Oedipus in Cyberspace)” is “both politico-philosophical treatise and cyberpunk fiction”.",
      "claims": [
       {
        "by": "OSU"
       }
-     ]
+     ],
+     "review": "second review, 2026-11-03: O'Sullivan: 'His writings, especially those from the 1990s'; the draft narrowed this to the 1990s essays. 'Here an explicit Science Fiction narrative accompanies the more theoretical work' is said of 'Circuitries', and 'This essay' of 'Meat (or How to Kill Oedipus in Cyberspace)', both confirmed in context."
     },
     {
-     "text": "He quotes the Hyperstition website, whose list opens with the Numogram, “Rigorous systematic unfolding of the Decimal Labyrinth”, and calls this work “the first great task of hyperstition”; O'Sullivan reads it as “the positing of a deep (and inhuman) numerical reality”.",
+     "text": "He quotes the Hyperstition website, whose list opens with the Numogram, “Rigorous systematic unfolding of the Decimal Labyrinth”, and which calls the excavation of the cartography intrinsic to decimal numeracy “the first great task of hyperstition”; O'Sullivan reads it as “the positing of a deep (and inhuman) numerical reality”.",
      "claims": [
       {
        "by": "OSU"
       }
-     ]
+     ],
+     "review": "second review, 2026-11-03: 'the first great task of hyperstition' is the website's phrase ('The methodical excavation of the occult abstract cartography intrinsic to decimal numeracy ... constitutes the first great task of hyperstition'), as O'Sullivan quotes it; the draft's 'and calls' made O'Sullivan its speaker. The Numogram is item 1 of the website's three aspects."
     },
     {
      "text": "Williams, writing on accelerationism in 2013, glosses hyperstition as “narratives able to effectuate their own reality through the workings of feedback loops”, and Mackay and Avanessian present their #Accelerate: The Accelerationist Reader (2014) as producing accelerationism itself “as a fictional or hyperstitional anticipation of intelligence to come”.",
@@ -603,7 +630,7 @@
     },
     {
      "q": "the first great task of hyperstition",
-     "checked": "OSU, quoting the Hyperstition website"
+     "checked": "OSU, quoting the Hyperstition website's 'Polytics: Elements of Hyperstition' (second review)"
     },
     {
      "q": "the positing of a deep (and inhuman) numerical reality",
@@ -637,7 +664,8 @@
      "text": "A necessary truth or being could not have been otherwise.",
      "accuracy": "supported",
      "by": "KME; SE I P33 Schol. 1",
-     "note": "Restated with Kment's possible-worlds definitions, quoted; necessary being comes in through Spinoza's necessity 'in respect to its essence'."
+     "note": "Restated with Kment's possible-worlds definitions, quoted; necessary being comes in through Spinoza's necessity 'in respect to its essence'.",
+     "review": "second review, 2026-11-03: the definition's first sentence (could not have been false; true and could have been false) is the app's plain gloss of Kment's possible-worlds definitions that follow it; Kment's page has no sentence in these words."
     },
     {
      "s": 2,
@@ -684,12 +712,13 @@
    ],
    "new_text": [
     {
-     "text": "Kment separates several kinds: metaphysical necessity, which on Kit Fine's account is truth “in virtue of the natures of things”; nomic necessity, which can be defined as “the property of being metaphysically necessitated by the laws of nature” and is often assumed to be the weaker of the two; and a prioricity, which he calls epistemic necessity and “an epistemological notion”.",
+     "text": "Kment separates several kinds: metaphysical necessity, which on Kit Fine's account is truth “in virtue of the natures of things”; nomic necessity, which can be defined as “the property of being metaphysically necessitated by the laws of nature” and is often assumed to be the weaker of the two, since whatever is metaphysically necessary is also nomically necessary; and a prioricity, which he calls epistemic necessity and “an epistemological notion”.",
      "claims": [
       {
        "by": "KME"
       }
-     ]
+     ],
+     "review": "second review, 2026-11-03: KME §2: 'It is often assumed that nomic necessity is a weaker form of necessity than metaphysical necessity: it attaches to the laws and to all truths that are metaphysically necessitated by them, so that anything that is metaphysically necessary is also nomically necessary, but not vice versa'; the reason now given. Fine's account confirmed at §1.2 ('Kit Fine (1994) offers an account')."
     },
     {
      "text": "He writes that the idea that all and only the a priori truths are necessary was “thrown into serious doubt” by Hilary Putnam (1972) and Saul Kripke (1980); one of his examples of a necessary truth known a posteriori is “If gold exists, then it has atomic number 79.”",
@@ -725,21 +754,32 @@
      ]
     },
     {
-     "text": "Brandon Look writes that Leibniz's philosophy can be seen as a reaction to, among other things, “the necessitarianism of Spinoza and Hobbes”, and quotes Leibniz recalling that the consideration of possibles that never exist “brought me back from this precipice”.",
+     "text": "Brandon Look recalls the claim of the Stanford Encyclopedia's main article on Leibniz that his philosophy can be seen as a reaction to the Cartesian theory of corporeal substance and to “the necessitarianism of Spinoza and Hobbes”, and quotes Leibniz recalling that the consideration of possibles that never exist “brought me back from this precipice”, which Look's bracket identifies as Spinoza's necessitarianism.",
      "claims": [
       {
        "by": "LOO"
       }
      ],
-     "paragraph": "starts a new paragraph"
+     "paragraph": "starts a new paragraph",
+     "review": "second review, 2026-11-03: Look's sentence begins 'In the main article on Leibniz, it was claimed that Leibniz's philosophy can be seen as a reaction to the Cartesian theory of corporeal substance and the necessitarianism of Spinoza and Hobbes'; the draft made it Look's own claim and replaced the Cartesian theory with 'among other things'. The precipice is glossed in Look's bracket as '[Spinoza's necessitarianism]'."
     },
     {
-     "text": "In the Discourse on Metaphysics (§13), as Look quotes it, a truth “whose contrary implies a contradiction is absolutely necessary”, while a contingent truth is necessary only ex hypothesi and rests on God's free decrees; according to Leibniz, God “surveyed the infinitely many possible worlds, determined which was best” and made it actual.",
+     "text": "In the Discourse on Metaphysics (§13), as Look quotes it, Leibniz distinguishes necessary from contingent truths: the one “whose contrary implies a contradiction is absolutely necessary”, while the other is necessary only ex hypothesi and rests on God's free decrees.",
      "claims": [
       {
        "by": "LOO"
       }
-     ]
+     ],
+     "review": "second review, 2026-11-03: Look introduces the passage as Leibniz distinguishing necessary and contingent truths; in the quotation 'The one whose contrary implies a contradiction is absolutely necessary' and 'The other is necessary only ex hypothesi'. The draft ran Look's own paraphrase of Leibniz ('According to Leibniz, God surveyed ...') on inside 'as Look quotes it'; now a separate sentence credited to Look."
+    },
+    {
+     "text": "Look writes that, according to Leibniz, God “surveyed the infinitely many possible worlds, determined which was best” and made it actual.",
+     "claims": [
+      {
+       "by": "LOO"
+      }
+     ],
+     "review": "second review, 2026-11-03: LOO §5: 'According to Leibniz, God surveyed the infinitely many possible worlds, determined which was best, and instantiated it or made it actual.'"
     }
    ],
    "quotes": [
@@ -813,7 +853,7 @@
     },
     {
      "q": "surveyed the infinitely many possible worlds, determined which was best",
-     "checked": "LOO; the sentence goes on 'and instantiated it or made it actual'"
+     "checked": "LOO §5, Look’s own sentence; it goes on ‘and instantiated it or made it actual’"
     }
    ],
    "s": "Aristotle, Nicomachean Ethics VI.3, VI.5 (Peters trans.); Spinoza, Ethics I, Prop. 33 Schol. (Elwes trans.); Leibniz, Discourse on Metaphysics, §13; Kripke, Naming and Necessity (1980)",
@@ -881,12 +921,13 @@
    ],
    "new_d": [
     {
-     "text": "Ethics centered on character. Rosalind Hursthouse and Glen Pettigrove describe it as the approach in normative ethics “that emphasizes the virtues, or moral character”, beside deontology, which emphasizes duties or rules, and consequentialism, which emphasizes the consequences of actions.",
+     "text": "Ethics centered on character. Rosalind Hursthouse and Glen Pettigrove describe it as one of three major approaches in normative ethics, the one “that emphasizes the virtues, or moral character”, beside deontology, which emphasizes duties or rules, and consequentialism, which emphasizes the consequences of actions.",
      "claims": [
       {
        "by": "HP"
       }
-     ]
+     ],
+     "review": "second review, 2026-11-03: HP preamble: 'Virtue ethics is currently one of three major approaches in normative ethics. It may, initially, be identified as the one that emphasizes the virtues, or moral character, in contrast to the approach that emphasizes duties or rules (deontology) or that emphasizes the consequences of actions (consequentialism).' Restated closer to this."
     }
    ],
    "new_text": [
@@ -924,20 +965,22 @@
      "paragraph": "starts a new paragraph"
     },
     {
-     "text": "His example in the next chapter: “Moderation in the feelings of fear and confidence is courage”; an excess of confidence makes a man foolhardy, and an excess of fear makes him cowardly (II.7). Prudence is Peters's word for phronēsis.",
+     "text": "His example in the next chapter: “Moderation in the feelings of fear and confidence is courage”; the man who exceeds in confidence is foolhardy, and the one who exceeds in fear and falls short in confidence is cowardly (II.7). Prudence is Peters's word for phronēsis.",
      "claims": [
       {
        "by": "NE"
       }
-     ]
+     ],
+     "review": "second review, 2026-11-03: NE II.7 (bundled block 253): 'he that exceeds in confidence is foolhardy, while he that exceeds in fear, but is deficient in confidence, is cowardly'; the draft's paraphrase left out the deficiency in confidence. Peters's notes 155 (VI.8) and 167 give 'prudence (φρόνησις)'."
     },
     {
-     "text": "Hursthouse and Pettigrove add that for Aristotle virtue is necessary for eudaimonia and not sufficient, since external goods are also needed, while for Plato and the Stoics it is both necessary and sufficient.",
+     "text": "Hursthouse and Pettigrove add that for Aristotle virtue is necessary for eudaimonia and external goods, which are a matter of luck, are needed as well, while for Plato and the Stoics virtue is both necessary and sufficient.",
      "claims": [
       {
        "by": "HP"
       }
-     ]
+     ],
+     "review": "second review, 2026-11-03: HP §2.1: 'For Aristotle, virtue is necessary but not sufficient—what is also needed are external goods which are a matter of luck.' Reworded without the 'necessary and not sufficient' construction."
     },
     {
      "text": "Spinoza's Ethics identifies virtue with power: “By virtue (virtus) and power I mean the same thing” (IV, Definition 8); “the foundation of virtue is the endeavour to preserve one’s own being”, and “virtue is to be desired for its own sake” (IV, Proposition 18, Note).",
@@ -957,13 +1000,14 @@
      ]
     },
     {
-     "text": "In the West, Hursthouse and Pettigrove write, the founders of virtue ethics are Plato and Aristotle, and in the East it can be traced back to Mencius and Confucius; it was the dominant approach in Western moral philosophy until at least the Enlightenment, was briefly eclipsed in the nineteenth century, and re-emerged in Anglo-American philosophy in the late 1950s, heralded by Anscombe's “Modern Moral Philosophy” (1958), which “crystallized an increasing dissatisfaction with the forms of deontology and utilitarianism then prevailing”.",
+     "text": "In the West, Hursthouse and Pettigrove write, the founders of virtue ethics are Plato and Aristotle, and in the East it can be traced back to Mencius and Confucius; it was the dominant approach in Western moral philosophy until at least the Enlightenment, suffered a momentary eclipse in the nineteenth century, and re-emerged in Anglo-American philosophy in the late 1950s, heralded by Anscombe's “Modern Moral Philosophy” (1958), which “crystallized an increasing dissatisfaction with the forms of deontology and utilitarianism then prevailing”.",
      "claims": [
       {
        "by": "HP"
       }
      ],
-     "paragraph": "starts a new paragraph"
+     "paragraph": "starts a new paragraph",
+     "review": "second review, 2026-11-03: HP §1 says 'suffered a momentary eclipse during the nineteenth century'; the draft's 'briefly eclipsed' brought to this wording."
     },
     {
      "text": "The Internet Encyclopedia's entry on Alasdair MacIntyre calls After Virtue (1981) his best-known book and reports its argument that “an Aristotelian ethics of virtue may remain possible” without appeal to Aristotle's metaphysics of nature.",
