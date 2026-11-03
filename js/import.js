@@ -1073,6 +1073,19 @@ function parsePlain(src, md) {
   return { title: meta.title || "", author: meta.author || "", blocks };
 }
 
+// A text file's characters, whatever it was saved as: UTF-8 (with or without its mark), UTF-16 (by its mark), or else the
+// Windows encoding older text files use (where é, curly quotes and dashes would otherwise come out as "Ã©" or "�"). An HTML
+// file that names its charset is read in it.
+async function readText(file, html) {
+  const b = new Uint8Array(await file.arrayBuffer());
+  if (b[0] === 0xff && b[1] === 0xfe) return new TextDecoder("utf-16le").decode(b);
+  if (b[0] === 0xfe && b[1] === 0xff) return new TextDecoder("utf-16be").decode(b);
+  if (html) {
+    const cs = new TextDecoder("latin1").decode(b.slice(0, 2048)).match(/<meta[^>]+charset=["']?([\w-]+)/i);
+    if (cs) { try { return new TextDecoder(cs[1].toLowerCase()).decode(b); } catch {} }
+  }
+  try { return new TextDecoder("utf-8", { fatal: true }).decode(b); } catch { return new TextDecoder("windows-1252").decode(b); }
+}
 async function parseFile(file, say) {
   const fname = file.name || "file";
   const ext = (fname.includes(".") ? fname.split(".").pop() : "").toLowerCase();
@@ -1080,9 +1093,9 @@ async function parseFile(file, say) {
   if (ext === "pdf") r = await parsePDF(await file.arrayBuffer(), say);
   else if (ext === "epub") r = await parseEPUB(await file.arrayBuffer(), say);
   else if (ext === "docx") r = await parseDOCX(await file.arrayBuffer(), say);
-  else if (ext === "html" || ext === "htm" || ext === "xhtml") r = parseHTML(await file.text());
-  else if (ext === "md" || ext === "markdown") r = { ...parsePlain(await file.text(), true), kind: "Markdown" };
-  else if (ext === "txt" || ext === "text" || (file.type || "").startsWith("text/")) r = { ...parsePlain(await file.text(), false), kind: "Text" };
+  else if (ext === "html" || ext === "htm" || ext === "xhtml") r = parseHTML(await readText(file, true));
+  else if (ext === "md" || ext === "markdown") r = { ...parsePlain(await readText(file), true), kind: "Markdown" };
+  else if (ext === "txt" || ext === "text" || (file.type || "").startsWith("text/")) r = { ...parsePlain(await readText(file), false), kind: "Text" };
   else throw new UErr("This file type isn't supported. Use PDF, EPUB, Word (.docx), .txt or .md.");
   r.blocks = finalize(r.blocks);
   if (!r.blocks.some((b) => b.k !== "pg")) throw new UErr("No readable text was found in this file.");

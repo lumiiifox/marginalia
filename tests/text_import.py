@@ -12,7 +12,8 @@ Made-up files only, parsed in the page by the app's own parseFile. Checks that:
   5. Markdown: list markers, hard line breaks, footnotes ([^1], [^name]), front matter's title and author, pipe tables, curly
      quotes and dashes (code left alone), a quote's paragraphs;
   6. plain text: verse in a hard-wrapped file keeps its lines, prose is joined, a list is split into its items, table rules go,
-     quotes curl.
+     quotes curl;
+  7. a text file saved as Windows-1252 or UTF-16 reads as written.
 Needs: pip install playwright && playwright install chromium
 """
 import asyncio, os, subprocess, sys, time
@@ -143,6 +144,11 @@ async def main():
             check("1. By that which is self-caused, I mean that of which the essence involves existence." in xs and "2. A thing is called finite after its kind." in xs, f"text: a list is split into its items, run-over lines joined ({[x for x in xs if x[:1].isdigit()]})")
             check(not any("----" in x or "—-" in x for x in xs), "text: a table's rules are left out")
             check("He said “it’s here” — and left." in xs, f"text: quotes curl and a double hyphen is a dash ({[x for x in xs if x.startswith('He said')]})")
+            # 7 encodings: a Windows-encoded file and a UTF-16 one read as they were saved
+            src = "Déjà vu — “the eternal return” of the same, Nietzsche’s thought.\n"
+            for enc, raw in (("windows-1252", list(src.encode("cp1252"))), ("utf-16", list(b"\xff\xfe" + src.encode("utf-16-le")))):
+                got = await page.evaluate("""async ([bytes]) => { const r = await parseFile(new File([new Uint8Array(bytes)], 'old.txt', { type: 'text/plain' }), () => {}); return plain(r.blocks[0].x); }""", [raw])
+                check(got == src.strip(), f"text: a file saved as {enc} reads as written ({got!r})")
             check(not errs, f"no script errors ({errs[:2]})")
             await browser.close()
     finally:
