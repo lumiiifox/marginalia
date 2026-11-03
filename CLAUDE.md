@@ -60,11 +60,12 @@ ideas, or reward doing so? If not, it waits.
 - Content audits: `tests/audit/` (see its README). Every audit gets an independent second review before its fixes ship.
   Audit along the reading route only, in the order of `tests/audit/ROUTE_QUEUE.md`; the rest stays visibly unchecked until a reading
   needs it (owner's decision, 2026-11-01).
-- **Owner approval before content ships** (owner's decision, 2026-11-01, until the workflow has proved itself): a drafted and reviewed
-  batch waits on the `drafts` branch with a summary for the owner, and goes to `main` only once the owner approves. Automatic
-  publishing is reconsidered once the independent review has shown it reliably catches conceptual problems.
-- **One drafts branch.** Unreviewed or unapproved work goes on `drafts` (reset from `main` for each new batch), never on a new
-  branch per batch, so there is nothing to clean up. This session can't delete remote branches.
+- **Content ships once its independent review passes** (owner's decision, 2026-11-03: "don't wait for me, just get it done";
+  supersedes the 2026-11-01 approval step): a drafted batch goes to `main` when the separate reviewer has passed it and the content
+  tests pass, with a summary for the owner afterwards. Open disputes and doubtful claims are recorded in the audit, never shipped as
+  settled.
+- **One drafts branch.** Work in progress that must leave this session goes on `drafts`, never on a new branch per batch, so there
+  is nothing to clean up. This session can't delete remote branches.
 - Tests for a change: content only (`data/`, `tests/audit/`) → `python3 tests/run.py content`; anything in `js/`, `css/`, `index.html`
   or storage → the full `python3 tests/run.py`.
 - This session can't delete remote branches; the repo deletes merged PR branches automatically (if not, tell the owner).
