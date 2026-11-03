@@ -807,14 +807,54 @@ async function parsePDF(buf, say) {
 const BLOCK = new Set("address article aside blockquote body dd details div dl dt fieldset figcaption figure footer form h1 h2 h3 h4 h5 h6 header hr li main nav ol p pre section table tbody thead tfoot tr td th ul".split(" "));
 const SKIP = new Set(["script", "style", "head", "title", "meta", "link", "svg", "img", "picture", "video", "audio"]);
 const ITAL = new Set(["i", "em", "cite", "var", "dfn"]);
+// A line break inside a paragraph (<br>) is kept as " / ", the way verse is quoted, where the lines are short: verse, an
+// address, a title over two lines. Where the lines are a prose paragraph's (an e-book that kept a printed page's line
+// breaks) it is read as a space, and in a heading always.
+const BR_MARK = "\u0006";
+function brLines(x, kind) {
+  if (!x.includes(BR_MARK)) return x;
+  const segs = x.split(BR_MARK).map((t) => t.trim()).filter((t) => plain(t).trim());
+  const lens = segs.map((t) => plain(t).length).sort((a, b) => a - b);
+  const verse = kind !== "h" && segs.length > 1 && lens[lens.length - 1] <= 110 && (segs.length === 2 || lens[lens.length >> 1] < 55);
+  return segs.join(verse ? " / " : " ");
+}
+// A list item's number or bullet ("3. ", "b. ", "iv. ", "• "), as its list shows it; none for a list styled without markers.
+const LIST_MARK = /^\s*(?:[\[(]?(?:\d{1,3}|[a-z]|[ivxlc]{1,6})[.)\]]|[•·◦▪▫‣⁃–—*-])\s/i;
+function listMark(li) {
+  const list = li.parentElement, lt = list ? (list.localName || "").toLowerCase() : "";
+  if (lt !== "ol" && lt !== "ul") return "";
+  if ([list, li].some((e) => /list-style(?:-type)?\s*:\s*none/i.test(e.getAttribute("style") || ""))) return "";
+  if (lt === "ul") { let d = 0; for (let q = list.parentElement; q; q = q.parentElement) if (/^(ul|ol)$/i.test(q.localName || "")) d++; return (d ? "◦" : "•") + " "; }
+  let n = parseInt(list.getAttribute("start"), 10); if (!Number.isFinite(n)) n = 1;
+  for (const c of list.children) {
+    if ((c.localName || "").toLowerCase() !== "li") continue;
+    const v = parseInt(c.getAttribute("value"), 10); if (Number.isFinite(v)) n = v;
+    if (c === li) break; n++;
+  }
+  const t = list.getAttribute("type") || "", alpha = (k) => (k >= 1 && k <= 26 ? String.fromCharCode(96 + k) : String(k));
+  const num = t === "a" ? alpha(n) : t === "A" ? alpha(n).toUpperCase() : t === "i" ? toRoman(n).toLowerCase() : t === "I" ? toRoman(n) : String(n);
+  return num + ". "; // (toRoman is reference.js's)
+}
 function domToBlocks(root, blocks) {
-  let buf = "", kind = "p";
+  let buf = "", kind = "p", lead = "";
   const attr = (el, a) => (el.getAttribute && el.getAttribute(a)) || "";
   const isPB = (el) => /pagebreak/.test(attr(el, "epub:type")) || attr(el, "role") === "doc-pagebreak";
   const pbLabel = (el) => clean(attr(el, "aria-label") || attr(el, "title") || el.textContent || attr(el, "id").replace(/^\D+/, ""));
   const isFn = (el) => /footnote|endnote|rearnote/.test(`${attr(el, "epub:type")} ${attr(el, "role")} ${attr(el, "class")}`);
   const name = (el) => (el.localName || "").toLowerCase();
-  const flush = () => { const x = tidy(buf); if (plain(x)) blocks.push({ k: kind, x }); buf = ""; };
+  // a list item's marker goes before its first words, unless they begin with one already
+  const flush = () => { let x = tidy(brLines(buf, kind)); if (plain(x)) { if (lead && !LIST_MARK.test(plain(x))) x = lead + x; lead = ""; blocks.push({ k: kind, x }); } buf = ""; };
+  const isRef = (el) => /noteref|footnote-?ref|endnote-?ref|fnref/i.test(`${attr(el, "epub:type")} ${attr(el, "role")} ${attr(el, "class")}`);
+  // a table's row as one line, its cells apart
+  const cellText = (nd) => {
+    if (nd.nodeType === 3) return nd.nodeValue;
+    if (nd.nodeType !== 1 || SKIP.has(name(nd))) return "";
+    const tag = name(nd);
+    if (tag === "br") return " ";
+    if (tag === "sup") { const t = nd.textContent.trim(); return /^\d+$/.test(t) ? toSup(t) : t; }
+    const inner = [...nd.childNodes].map(cellText).join("");
+    return ITAL.has(tag) ? I0 + inner + I1 : BLOCK.has(tag) ? ` ${inner} ` : inner;
+  };
   function inl(nd) {
     if (nd.nodeType === 3) { buf += nd.nodeValue; return; }
     if (nd.nodeType !== 1) return;
@@ -822,8 +862,13 @@ function domToBlocks(root, blocks) {
     if (SKIP.has(tag)) return;
     if (isPB(nd)) { const had = !!plain(tidy(buf)), save = kind; flush(); blocks.push({ k: "pg", x: pbLabel(nd) }); kind = had && save === "p" ? "c" : save; return; }
     if (BLOCK.has(tag)) { const save = kind === "c" ? "p" : kind; flush(); walk(nd, save); kind = save; return; }
-    if (tag === "br") { buf += " "; return; }
+    if (tag === "br") { buf += BR_MARK; return; }
     if (tag === "sup") { const t = nd.textContent.trim(); buf += /^\d+$/.test(t) ? toSup(t) : t; return; }
+    // a note reference set as a link ("1" with epub:type="noteref", as many e-books mark them): a superscript, so it can be tapped
+    // a note's link back to its reference ("↩", "Back") is navigation, not text
+    // (in some e-books the link back is the note's number, which stays)
+    if (tag === "a" && (/doc-backlink/.test(attr(nd, "role")) || /footnote-back|backlink|fn-back/i.test(attr(nd, "class"))) && !/^\s*[\[(]?\d{1,3}[\])]?\s*$/.test(nd.textContent)) return;
+    if (tag === "a" && isRef(nd)) { const t = nd.textContent.replace(/[\[\]()\s]/g, ""); if (/^\d{1,3}$/.test(t)) { buf += toSup(t); return; } }
     const it = ITAL.has(tag);
     if (it) buf += I0;
     for (const c of nd.childNodes) inl(c);
@@ -836,12 +881,19 @@ function domToBlocks(root, blocks) {
     if (/^h[1-6]$/.test(tag)) {
       flush(); kind = "h";
       for (const c of el.childNodes) inl(c);
-      const x = tidy(buf); buf = "";
+      const x = tidy(brLines(buf, "h")); buf = "";
       if (plain(x)) blocks.push({ k: "h", x, l: +tag[1] });
       kind = k; return;
     }
     const myK = isFn(el) ? "fn" : tag === "blockquote" ? "q" : k;
+    if (tag === "tr") {
+      flush();
+      const x = tidy([...el.children].filter((c) => /^t[dh]$/.test(name(c))).map((c) => tidy(cellText(c))).filter((t) => plain(t)).join(" · "));
+      if (plain(x)) blocks.push({ k: k === "fn" ? "fn" : k === "q" ? "q" : "p", x });
+      return;
+    }
     flush(); kind = myK;
+    if (tag === "li") lead = listMark(el);
     for (const c of el.childNodes) {
       if (c.nodeType === 1 && BLOCK.has(name(c)) && !isPB(c)) { flush(); walk(c, myK); kind = myK; }
       else inl(c);
@@ -918,41 +970,81 @@ function parseHTML(src) {
 }
 
 /* ---------- parsing: plain text / Markdown ---------- */
+// Typewriter punctuation set as type: straight quotes curled by their place, "--" and "---" as dashes. Code spans (`…`) are left alone.
+function smartQuotes(s) {
+  return s.split(/(`[^`\n]*`)/).map((part, k) => (k % 2 ? part : part
+    .replace(/([^\s-])---?(?=[^\s-])|(?<=\s|^)---?(?=\s)/g, (m, a) => (a ? a + "—" : "—"))
+    .replace(/(^|[\s(\[{—–\/\u0001])"/g, "$1“").replace(/"/g, "”")
+    .replace(/(\p{L}|\d)'(?=\p{L})/gu, "$1’").replace(/'(?=\d0s\b)/g, "’")
+    .replace(/(^|[\s(\[{—–\/\u0001“])'/g, "$1‘").replace(/'/g, "’"))).join("");
+}
+const LIST_LINE = /^\s*(?:([-*+•])|(\d{1,3}[.)]))\s+(.*)$/;
 function parsePlain(src, md) {
   src = src.replace(/^﻿/, "").replace(/\r\n?/g, "\n");
-  const blocks = [];
+  const blocks = [], meta = {};
+  // Markdown's front matter (--- title: … ---): its title and author, never the text
+  if (md) src = src.replace(/^---\n([\s\S]*?)\n(?:---|\.\.\.)\n/, (m, y) => { for (const ln of y.split("\n")) { const kv = ln.match(/^(title|author):\s*["']?(.*?)["']?\s*$/i); if (kv) meta[kv[1].toLowerCase()] = kv[2]; } return ""; });
   const joinP = (a, b) => (/\p{L}-$/u.test(a) && /^\p{Ll}/u.test(b) ? a.slice(0, -1) + b : a + " " + b);
-  const ital = (s) => s.replace(/(^|[\s(“"'])[*_]([^*_\n]+?)[*_](?=[\s).,;:!?”"']|$)/g, `$1${I0}$2${I1}`);
-  const inlineMd = (s) => ital(s.replace(/!\[[^\]]*\]\([^)]*\)/g, "").replace(/\[([^\]]+)\]\([^)]*\)/g, "$1").replace(/\*\*([^*]+)\*\*/g, "$1").replace(/__([^_]+)__/g, "$1").replace(/`([^`]+)`/g, "$1"));
+  const ital = (s) => s.replace(/(^|[\s(“"'‘—–])[*_]([^*_\n]+?)[*_](?=[\s).,;:!?”"'’—–]|$)/g, `$1${I0}$2${I1}`);
+  // Markdown footnotes: [^id] in the text becomes the note's number as a superscript, [^id]: … its note
+  const fnNum = new Map();
+  const noteNo = (id) => { if (!fnNum.has(id)) fnNum.set(id, /^\d{1,3}$/.test(id) ? +id : fnNum.size + 1); return fnNum.get(id); };
+  const inlineMd = (s) => ital(smartQuotes(s.replace(/!\[[^\]]*\]\([^)]*\)/g, "").replace(/\[\^([^\]\s]+)\]/g, (m, id) => toSup(String(noteNo(id))))
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1").replace(/\*\*([^*]+)\*\*/g, "$1").replace(/__([^_]+)__/g, "$1"))).replace(/`([^`]+)`/g, "$1");
   const HEAD = /^(chapter|part|book|section|lecture|essay|preface|foreword|introduction|conclusion|appendix|afterword|notes)\b/i;
+  // a plain text file's usual line length, so that a paragraph of lines much shorter than it reads as verse, line by line
+  const lens = src.split("\n").map((l) => l.trim().length).filter((n) => n).sort((a, b) => a - b);
+  const wrapW = lens.length ? lens[Math.floor(lens.length * 0.9)] : 0;
   for (const chunk of src.split(/\n[ \t]*\n/)) {
-    const lines = chunk.split("\n").map((l) => l.replace(/\s+$/, "")).filter((l) => l.trim());
+    const raw = chunk.split("\n").filter((l) => l.trim() && (md || !/^[\s=+|:-]{4,}$/.test(l))); // (a plain text table's rules)
+    const lines = raw.map((l) => l.replace(/\s+$/, ""));
     if (!lines.length) continue;
     if (md) {
       let acc = "", ak = "p";
       const fl = () => { const x = tidy(inlineMd(acc)); if (plain(x)) blocks.push({ k: ak, x }); acc = ""; ak = "p"; };
-      for (const ln of lines) {
+      // a line ended by a backslash or two spaces breaks there: kept as " / ", as verse is quoted
+      const brk = (k) => /\\$|\s{2,}$/.test(raw[k]);
+      const add = (k, t) => { const clean = t.replace(/\\$/, "").trim(); acc = !acc ? clean : k > 0 && brk(k - 1) ? acc + " / " + clean : joinP(acc, clean); };
+      lines.forEach((ln, k) => {
         const h = ln.match(/^\s{0,3}(#{1,6})\s+(.*?)\s*#*\s*$/);
-        if (h) { fl(); blocks.push({ k: "h", x: tidy(inlineMd(h[2])), l: h[1].length }); continue; }
+        if (h) { fl(); blocks.push({ k: "h", x: tidy(inlineMd(h[2])), l: h[1].length }); return; }
+        const fd = ln.match(/^\s{0,3}\[\^([^\]\s]+)\]:\s*(.*)$/);
+        if (fd) { fl(); ak = "fn"; acc = `${noteNo(fd[1])}. ${fd[2].trim()}`; return; }
+        if (ak === "fn" && /^\s{2,}\S/.test(ln)) { acc = joinP(acc, ln.trim()); return; }
         const q = ln.match(/^\s*>\s?(.*)$/);
-        if (q) { if (ak !== "q") fl(); ak = "q"; acc = acc ? joinP(acc, q[1].trim()) : q[1].trim(); continue; }
-        if (ak === "q") fl();
-        const li = ln.match(/^\s*(?:[-*+]|\d+[.)])\s+(.*)$/);
-        if (li) { fl(); acc = li[1].trim(); continue; }
-        if (/^\s*([-*_])(\s*\1){2,}\s*$/.test(ln)) { fl(); continue; }
-        acc = acc ? joinP(acc, ln.trim()) : ln.trim();
-      }
+        if (q && !q[1].trim()) { fl(); ak = "q"; return; } // an empty quoted line: the quote's next paragraph
+        if (q) { if (ak !== "q") fl(); ak = "q"; add(k, q[1]); return; }
+        // a table: each row a line, its cells apart; the rule under the header row is left out
+        if (/^\s*\|.*\|\s*$/.test(ln)) { fl(); if (!/^\s*\|[\s:|-]+\|\s*$/.test(ln)) { const x = tidy(inlineMd(ln.trim().replace(/^\||\|$/g, "").split("|").map((c) => c.trim()).filter(Boolean).join(" · "))); if (plain(x)) blocks.push({ k: "p", x }); } return; }
+        if (ak === "q" || ak === "fn") fl();
+        const li = ln.match(LIST_LINE);
+        if (li) { fl(); acc = (li[1] ? "• " : li[2].replace(")", ".") + " ") + li[3].trim(); return; }
+        if (/^\s*([-*_])(\s*\1){2,}\s*$/.test(ln)) { fl(); return; }
+        add(k, ln);
+      });
       fl(); continue;
     }
     const one = lines.length === 1 ? lines[0].trim() : null;
     if (one && one.length < 90 && (HEAD.test(one) || /^[IVXLC]+\.?$/.test(one) || (/\p{Lu}{2}/u.test(one) && !/\p{Ll}/u.test(one) && one.split(/\s+/).length <= 10))) {
-      blocks.push({ k: "h", x: one, l: /^(part|book)\b/i.test(one) ? 1 : 2 }); continue;
+      blocks.push({ k: "h", x: smartQuotes(one), l: /^(part|book)\b/i.test(one) ? 1 : 2 }); continue;
+    }
+    // a list: each item its own paragraph, its marker kept, its run-over lines joined to it
+    if (lines.filter((l) => LIST_LINE.test(l)).length >= 2 && LIST_LINE.test(lines[0])) {
+      let cur = "";
+      for (const l of lines) {
+        const m = l.match(LIST_LINE);
+        if (m) { if (cur) blocks.push({ k: "p", x: ital(smartQuotes(cur)) }); cur = (m[1] ? "• " : m[2].replace(")", ".") + " ") + m[3].trim(); }
+        else cur = joinP(cur, l.trim());
+      }
+      if (cur) blocks.push({ k: "p", x: ital(smartQuotes(cur)) });
+      continue;
     }
     const indentedAll = lines.length > 1 && lines.every((l) => /^\s{2,}/.test(l));
-    const x = ital(lines.map((l) => l.trim()).reduce((a, b) => (a ? joinP(a, b) : b), ""));
-    blocks.push({ k: indentedAll ? "q" : "p", x });
+    const verse = lines.length > 1 && wrapW >= 40 && lines.every((l) => l.trim().length <= wrapW * 0.7) && lines.slice(0, -1).every((l) => !/\p{L}-$/u.test(l.trim()));
+    const x = ital(smartQuotes(verse ? lines.map((l) => l.trim()).join(" / ") : lines.map((l) => l.trim()).reduce((a, b) => (a ? joinP(a, b) : b), "")));
+    blocks.push({ k: indentedAll || verse ? "q" : "p", x });
   }
-  return { title: "", author: "", blocks };
+  return { title: meta.title || "", author: meta.author || "", blocks };
 }
 
 async function parseFile(file, say) {
