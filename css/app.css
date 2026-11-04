@@ -850,6 +850,15 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 /* Front matter retains PDF line breaks and measured whitespace without fixed-width pages. */
 .bfront { text-indent: 0 !important; line-height: 1.25; margin-bottom: 0.25em; overflow-wrap: anywhere; }
 .bfront.fronthead { font-weight: 700; line-height: 1.16; }
+/* a book's contents (tocRows): a row a title, dot leader, page; between front-matter pages no page markers */
+.bfront.btoch { font-size: 1.15em !important; margin: 0.4em 0 0.6em !important; }
+.bfront.btoc { font-size: 0.95em !important; margin: 0 !important; line-height: 1.35; }
+.btoc .tocrow { display: flex; align-items: baseline; gap: 0.4em; padding: 0.18em 0; cursor: pointer; }
+.btoc .toct { flex: 0 1 auto; }
+.btoc .tocl { flex: 1 1 1em; min-width: 1em; border-bottom: 1px dotted var(--rule); transform: translateY(-0.28em); }
+.btoc .tocn { flex: 0 0 auto; font-variant-numeric: tabular-nums; color: var(--muted); }
+.btoc .tsp { font-size: 0; } /* a page number OCR split in two ("25 1") drawn whole, its space kept in the text */
+:is(#book, #flipbook) .bpg:has(+ .bfront), :is(#book, #flipbook) .bfront + .bpg { visibility: hidden; margin: 1.4em 0; }
 /* Optional page-by-page reading: CSS columns paginate reflowed text without duplicating blocks.
    layoutPages() sets the width, height and column width in whole pixels, so one page is exactly one step of scrollLeft. */
 #reader.paged-reader { height: 100dvh; overflow: hidden; }
@@ -936,7 +945,8 @@ span.bhid { display: inline; }
 .notetext { font: 17px/1.5 var(--f-text); margin: 4px 0 6px; overflow-wrap: anywhere; }
 .pgm { display: inline-block; text-indent: 0; margin: 0 0 0 0.4em; padding: 0 0 0 0.3em; border-left: 1px solid var(--rule); font: 500 0.58em/1 var(--f-ui);
   letter-spacing: 0.04em; color: var(--muted); vertical-align: 0.15em; user-select: none; -webkit-user-select: none; }
-.bp > .pgm:first-child { margin-left: 0; }
+/* a page marker at the very start of a paragraph draws nothing (the page number below says where you are); it keeps its place */
+:is(.bp, .bq) > .pgm:first-child { display: inline-block; width: 0; margin: 0; padding: 0; border: 0; font-size: 0; overflow: hidden; vertical-align: top; }
 /* Page flip: the turning page is #flipbook, a copy of the section kept laid out but hidden; a turn changes only its angle
    and the two shades, so no text is laid out or cut while it moves. */
 .flip, .undershade { display: none; }

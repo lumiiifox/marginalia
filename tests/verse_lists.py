@@ -8,7 +8,8 @@ Made-up book only, phone-sized screen, Swipe pages. Checks that:
   4. a dash set close to its word never starts a line, and the joiner that keeps it there isn't counted as text;
   5. a chapter title of more than a line or two at heading size is set smaller;
   6. Justified pages are justified at the usual type size and set ragged right at a large one;
-  7. a proposition in the geometric order is set apart, its label in small capitals; a proof's label in italics.
+  7. a proposition in the geometric order is set apart, its label in small capitals; a proof's label in italics;
+  8. a book's contents, one entry a line or run together, are drawn as rows, title and page.
 Needs: pip install playwright && playwright install chromium
 """
 import os
@@ -32,7 +33,8 @@ BOOK = """(v) => (async () => {
     { k: 'p', x: '1. A numbered section, long as a chapter section is: ' + P.repeat(5) },
     { k: 'p', x: 'A great hall—many guests whom we are receiving—among them Irma, whom I immediately take aside, as though to answer her letter, to reproach her—' + P.repeat(2) },
     { k: 'h', l: 1, x: 'A Short Title' },
-    { k: 'p', x: 'PROP. XIII. Substance absolutely infinite is indivisible.' }, { k: 'p', x: 'Proof.—If it could be divided, the parts would retain its nature.' }];
+    { k: 'p', x: 'PROP. XIII. Substance absolutely infinite is indivisible.' }, { k: 'p', x: 'Proof.—If it could be divided, the parts would retain its nature.' },
+    { k: 'front', x: 'second sight 18 anna 1 23 gambling on the future 27 nets 46 digits 5 1 holes 55' }, { k: 'front', x: 'silicon 25 1' }];
   for (let n = 0; n < 30; n++) B.push({ k: 'p', x: P.repeat(3) });
   await put('content', 'v', B);
   await put('texts', 'v', { title: 'Verse', author: 'Test', hasContent: true, total: B.length, pos: 0, status: 'reading', createdAt: 1, updatedAt: 1, sections: [{ id: 'c1', label: 'VI' }] });
@@ -104,6 +106,11 @@ async def main():
         g = await page.evaluate("[R.els[10].className, getComputedStyle(R.els[10]).fontStyle, R.els[10].querySelector('.lead')?.textContent, R.els[11].querySelector('.lead2')?.textContent, getComputedStyle(R.els[11].querySelector('.lead2') || R.els[11]).fontStyle, offsetIn(11, R.els[11].lastChild, R.els[11].lastChild.data.length), plain(R.blocks[11].x).length]")
         check("stmt" in g[0] and g[1] == "italic" and g[2] == "PROP. XIII." and g[3] == "Proof.\u2060—" and g[4] == "italic" and g[5] == g[6],
               f"a proposition is set apart, its label in small capitals, its statement in italics; a proof's label in italics, its text's places unchanged ({g})")
+        # 8 a book's contents: rows, a page number split by OCR read in the contents' order, the text unchanged
+        await page.evaluate("goTo(12)"); await page.wait_for_timeout(300)
+        t = await page.evaluate("[[...R.els[12].querySelectorAll('.tocrow')].map((r) => r.querySelector('.toct').textContent.trim() + '=' + r.dataset.tocpage), R.els[12].textContent === R.blocks[12].x, [...R.els[13].querySelectorAll('.tocrow')].map((r) => r.dataset.tocpage)]")
+        check(t[0] == ["second sight=18", "anna 1=23", "gambling on the future=27", "nets=46", "digits=51", "holes=55"] and t[1] and t[2] == ["251"],
+              f"a book's contents are rows, a split page number read in the contents' order, the text as stored ({t})")
         check(not errs, f"no script errors ({errs[:2]})")
         await browser.close()
 

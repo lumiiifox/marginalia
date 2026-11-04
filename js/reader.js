@@ -317,6 +317,38 @@ const VBR = `<span class="vs"> / </span><br>`;
 // A short paragraph that starts with a list's number or bullet ("3. ", "(a) ", "IV. ", "• ") is set as a list item, hanging;
 // a long numbered section keeps the paragraph's indent.
 const LIST_ITEM = /^\s*(?:\d{1,3}[.)]|\((?:\d{1,3}|[a-z]|[ivx]{1,5})\)|(?:[IVX]|[IVXLC]{2,6})\.|[•◦])\s/;
+// A book's contents as rows, title on the left and page on the right, each opening its page: a front-matter line that is a
+// contents entry ("ada 5"), or several run together in one block ("preamble 3 ada 5 matrices 9 …"). Page numbers rise through
+// the contents, which settles a number OCR split in two: "anna 1 23" is "anna 1" on page 23, "digits 5 1" is "digits" on page 51.
+// The text is drawn as it stands, in spans, so nothing about it changes.
+function tocEntries(x, prev = 0) {
+  if (/[\u0001\u0002]/.test(x)) return null;
+  const toks = x.trim().split(/\s+/), out = []; let title = [];
+  for (let k = 0; k < toks.length;) {
+    if (!/^\d{1,4}$/.test(toks[k])) { title.push(toks[k]); k++; continue; }
+    const nums = []; while (k < toks.length && /^\d{1,4}$/.test(toks[k])) nums.push(toks[k++]);
+    if (!title.some((w) => /\p{L}/u.test(w))) return null;
+    let page = nums.pop();
+    if (nums.length === 1) { const joined = nums[0] + page; if (+joined >= prev && (+page < prev || +joined - prev < +page - prev)) { page = nums[0] + " " + page; nums.length = 0; } }
+    title.push(...nums); out.push({ title: title.join(" "), page }); prev = +page.replace(/\s/g, ""); title = [];
+  }
+  return title.length || !out.length ? null : out;
+}
+// The page the contents had reached before block i (its entries in the blocks above), so a split number further down reads right.
+function tocBefore(i) {
+  for (let j = i - 1, n = 0; j >= 0 && n < 400; j--, n++) {
+    const b = R.blocks[j]; if (!b || b.k === "pg") continue; if (b.k !== "front") break;
+    const e = tocEntries(b.x || "", tocBefore(j)); if (!e) break; return +e[e.length - 1].page.replace(/\s/g, "");
+  }
+  return 0;
+}
+function tocRows(b, i) {
+  const e = tocEntries(b.x || "", tocBefore(i)); if (!e) return "";
+  const single = (j) => R.blocks[j] && R.blocks[j].k === "front" && (tocEntries(R.blocks[j].x || "") || []).length >= 1;
+  if (e.length < 3 && !single(i - 1) && !single(i + 1)) return "";
+  // (each row keeps the text's own spaces: "title " in the title, "page " after the page but the last)
+  return e.map((r, k) => `<span class="tocrow" data-tocpage="${esc(r.page.replace(/\s/g, ""))}" role="button" tabindex="0"><span class="toct">${esc(r.title)} </span><span class="tocl"></span><span class="tocn">${esc(r.page).replace(" ", '<span class="tsp"> </span>')}${k < e.length - 1 ? " " : ""}</span></span>`).join("");
+}
 // A text set out in the geometric order (Spinoza's Ethics): a proposition, definition, axiom or postulate is set apart, its label in
 // small capitals and its statement in italics, as printed editions set them; a proof's, corollary's or note's label in italics.
 // Only the drawing changes: the label is wrapped as it stands.
@@ -392,7 +424,11 @@ function blockHTML(b, i, marks) {
   if (isHidden(b)) return `<div class="bhid" data-i="${i}"></div>`;
   if (b.k === "front" && role !== "text") {
     const size = Math.max(0.78, Math.min(1.65, Number(b.size) || 1));
-    const space = Math.max(0, Math.min(5, Number(b.space) || 0));
+    // (the printed page's spacing, kept to a phone's scale: a title page's gaps would otherwise fill screens)
+    const space = Math.max(0, Math.min(1, Number(b.space) || 0));
+    const toc = !m && tocRows(b, i);
+    if (toc) return `<p class="bfront btoc" data-i="${i}">${toc}</p>`;
+    if (/^(contents|table of contents)$/i.test(plain(b.x || "").trim())) return `<p class="bfront fronthead btoch" data-i="${i}">${inlineHTML(b.x || "", m)}</p>`;
     return `<p class="bfront${b.heading ? " fronthead" : ""}${role === "title" ? " btitle" : ""}" data-i="${i}" style="font-size:${size}em;margin-top:${space}em">${inlineHTML(b.x || "", m)}${marginHTML(m, b.x || "")}</p>`;
   }
   if (b.sth) return paraHTML(i, inlineHTML(bodyOf(b), m), marginHTML(m, b.x || ""), m);
@@ -1186,7 +1222,7 @@ async function removeTermMark(k) {
 }
 $("#book").addEventListener("click", (e) => {
   if (!R.termRanges || !R.termRanges.length || selecting()) return;
-  if (e.target.closest && e.target.closest("mark[data-note], .mnote, a, button, [data-fn]")) return;
+  if (e.target.closest && e.target.closest("mark[data-note], .mnote, a, button, [data-fn], [data-tocpage]")) return;
   const hit = termAt(e.clientX, e.clientY); if (!hit) return;
   e.stopImmediatePropagation(); e.stopPropagation(); e.preventDefault();
   termPanel(hit[0], hit[1]);

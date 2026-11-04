@@ -10,6 +10,9 @@ document.addEventListener("click", (e) => {
   if (fr && S.screen === "reader") { const s = window.getSelection(); if (!s || s.isCollapsed) { const at = fr.closest("[data-i]"); notePanel(at ? +at.dataset.i : currentBlock(), +fr.dataset.fn); return; } }
   const mk = e.target.closest && e.target.closest("mark[data-note], .mnote[data-note]");
   if (mk && S.screen === "reader") { const s = window.getSelection(); if (!s || s.isCollapsed) { noteSheet(mk.dataset.note); return; } }
+  // a contents row opens its page (the reader's own drawing of a book's contents, tocRows)
+  const tp = e.target.closest && e.target.closest("[data-tocpage]");
+  if (tp && S.screen === "reader") { const s = window.getSelection(); if (!s || s.isCollapsed) { const i = blockForPage(tp.dataset.tocpage); if (i >= 0) { jumpTo(i, false, true); syncNav(); } else toast("That page isn't in this book's page numbers."); return; } }
   const b = e.target.closest && e.target.closest("button"); if (!b || b.closest("#sheetroot")) return;
   if (b.id === "addtext") return textSheet(null);
   if (b.id === "back") return back();
