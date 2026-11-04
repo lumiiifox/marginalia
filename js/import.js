@@ -599,8 +599,10 @@ async function parsePDF(buf, say) {
   let common = null;
   const isHead = (t) => {
     if ((hc.get(headKey(t)) || 0) >= 3) return true;
-    const k = skel(t);
-    if (k.length < 5 || t.split(/\s+/).length > 5) return false;
+    const k = skel(headKey(t)); // (in the same form as the heads it is compared with, numbers and numerals left out)
+    // a letter-spaced running head ("s a d i e p l a n t") is one word, however many letters it has
+    const words = t.replace(/\uE000/g, " ").trim().split(/\s+/), spaced = words.length > 2 && words.every((w) => [...w].length <= 1);
+    if (k.length < 5 || (!spaced && words.length > 5)) return false;
     if (!common) { const sc = new Map(); for (const [key, c] of hc) { const sk = skel(key); if (sk.length >= 5) sc.set(sk, (sc.get(sk) || 0) + c); } common = [...sc].filter(([, c]) => c >= 3).map(([sk]) => sk); }
     const max = k.length >= 6 ? 2 : 1;
     return common.some((f) => lev(k, f, max) <= max);

@@ -359,6 +359,13 @@ async def main(paths):
                 body = " ".join(r["text"].split())
                 check(not re.search(r"A vii|B 38|A 2 1|327a", body) and (BODY * 3).strip() in body and r["labels"][:1] == ["1"],
                       f"margins: reference numbers in the margin stay out of the sentences beside them; the page numbers stay ({r['labels'][:3]}, {re.findall(r'.{15}(?:A vii|B 38|327a).{15}', body)[:3]})")
+                # a letter-spaced running head, its letters read a little differently on each page, as OCR reads them
+                heads = ["s a d i e p l a n t", "s a d e p a n t", "s a d i e p l a n t", "s a d i e p l a t n", "s a d i e p l a n t", "s a d e p l a n t", "s a d i e p l a n t", "s a d i e p a n t"]
+                pages = "".join(f'<div style="height:7.15in;break-after:page"><div style="font-size:8pt;word-spacing:1.2em;margin-bottom:0.3in">{h}</div><p>{BODY * 3}</p></div>' for h in heads)
+                await maker.set_content(f'<html lang="en"><style>{CSS} p {{ text-align: justify; }}</style>{pages}</html>')
+                await maker.pdf(path=str(tmp / "spaced.pdf"), prefer_css_page_size=True, margin={"top": "0.4in", "bottom": "0.6in", "left": "0.7in", "right": "0.7in"})
+                r = await page.evaluate(PARSE, ["/spaced.pdf", base])
+                check(not re.search(r"\bs a d|s a d|p l a", r["text"]) and not r["heads"], f"spaced: a letter-spaced running head, misread differently page to page, goes ({r['heads']}, {re.findall(r".{0,12}(?:s a d|p l a).{0,12}", r["text"])[:3]})")
                 await maker.set_content(biopage())
                 await maker.pdf(path=str(tmp / "bio.pdf"), prefer_css_page_size=True, margin={"top": "0.8in", "bottom": "0.8in", "left": "0.7in", "right": "0.7in"})
                 r = await page.evaluate(PARSE, ["/bio.pdf", base])
