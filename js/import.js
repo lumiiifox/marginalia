@@ -693,6 +693,7 @@ async function parsePDF(buf, say) {
   const byPage = new Map();
   outline.forEach((o) => { if (!byPage.has(o.page)) byPage.set(o.page, []); byPage.get(o.page).push(o); });
   const blocks = [];
+  const tocTitles = new Set();
   let cur = null, curK = "p", carry = false, last = null, curList = null; // curList: where a list item's first line starts
   // a line starting with a list's number or bullet ("3. ", "(a) ", "• ")
   const PDF_LIST = /^(?:\d{1,3}[.)]|\((?:\d{1,3}|[a-z]|[ivx]{1,5})\)|[•◦▪‣])\s/;
@@ -744,7 +745,9 @@ async function parsePDF(buf, say) {
         const kind = ratio >= 1.3 ? "h" : "p", size = Math.max(0.78, Math.min(1.65, ratio)), top = blocks[blocks.length - 1];
         // A line running on in lowercase from the one just above, at its size (an author's note, a copyright notice) continues its
         // sentence: joined to it, so the sentence wraps as prose on a narrow screen and doesn't break where the printed line did.
-        if (previous && top && top.k === "front" && !top.heading && kind !== "h" && space <= 0.3 && Math.abs(top.size - size) < 0.05 && /^\p{Ll}/u.test(line.t)) {
+        // a contents entry ("ada 5") names a section, by which a lowercase title is known as a heading in the text (tocTitles)
+        const entry = line.t.match(/^(\p{L}.{0,78}?)[\s.·…]+(\d{1,4})$/u); if (entry) tocTitles.add(norm(entry[1]));
+        if (previous && top && top.k === "front" && !top.heading && kind !== "h" && space <= 0.3 && Math.abs(top.size - size) < 0.05 && /^\p{Ll}/u.test(line.t) && !/\d\s*$/.test(top.x)) {
           top.x = joinLine(top.x, line.t); previous = line; continue;
         }
         blocks.push({ k: "front", x: line.t, size, space, heading: kind === "h" });
@@ -809,7 +812,9 @@ async function parsePDF(buf, say) {
       // has space below it too.
       const above = i > 0 && L[i - 1].y - l.y > pitch * 1.35,
         below = i + 1 < L.length ? l.y - L[i + 1].y > pitch * 1.35 : L.length <= 3 && l.y > pg.y0 + (pg.y1 - pg.y0) * 0.5;
-      if (l.z >= B * 1.18 && words <= 16 && plausible && (headOpen || above || below)) {
+      // (a line set apart that is a title the book's contents lists is a heading, in any case and at any size: "holes", "ada")
+      const listed = words <= 12 && tocTitles.has(norm(l.t)) && (above || below || i === 0) && l.z >= B * 0.9;
+      if ((l.z >= B * 1.18 && words <= 16 && plausible && (headOpen || above || below)) || (listed && !headOpen)) {
         flush(); carry = false; last = null;
         // A second line of the same heading has the same size and follows closely; anything else
         // (a chapter title, then a section title) is a heading of its own.

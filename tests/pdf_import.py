@@ -366,6 +366,15 @@ async def main(paths):
                 await maker.pdf(path=str(tmp / "spaced.pdf"), prefer_css_page_size=True, margin={"top": "0.4in", "bottom": "0.6in", "left": "0.7in", "right": "0.7in"})
                 r = await page.evaluate(PARSE, ["/spaced.pdf", base])
                 check(not re.search(r"\bs a d|s a d|p l a", r["text"]) and not r["heads"], f"spaced: a letter-spaced running head, misread differently page to page, goes ({r['heads']}, {re.findall(r".{0,12}(?:s a d|p l a).{0,12}", r["text"])[:3]})")
+                # titles in lowercase at the body's size, as Zeros + Ones sets them, listed in the book's contents
+                toc = "".join(f'<div>{t} {n}</div>' for t, n in (("preamble", 2), ("ada", 3), ("matrices", 4)))
+                secs = "".join(f'<div style="break-before:page"><div style="margin:0.4in 0 0.3in;font-style:italic">{t}</div><p>{BODY * 6}</p></div>' for t in ("preamble", "ada", "matrices"))
+                await maker.set_content(f'<html lang="en"><style>{CSS} p {{ text-align: justify; }}</style><div style="padding-top:1in"><div style="font-size:16pt;margin-bottom:0.3in">Contents</div>{toc}</div>{secs}</html>')
+                await maker.pdf(path=str(tmp / "lowtitles.pdf"), prefer_css_page_size=True, display_header_footer=True, header_template="<span></span>",
+                    footer_template='<div style="font-size:9px;width:100%;text-align:center"><span class="pageNumber"></span></div>', margin={"top": "0.8in", "bottom": "0.8in", "left": "0.7in", "right": "0.7in"})
+                r = await page.evaluate(PARSE, ["/lowtitles.pdf", base])
+                check(r["heads"] == ["preamble", "ada", "matrices"] and ["preamble 2", "ada 3", "matrices 4"] == [x for x in r["front"] if x[-1:].isdigit()][-3:],
+                      f"lowtitles: lowercase titles the contents lists are headings, and the contents keeps one entry a line ({r['heads']}, {r['front'][:5]})")
                 await maker.set_content(biopage())
                 await maker.pdf(path=str(tmp / "bio.pdf"), prefer_css_page_size=True, margin={"top": "0.8in", "bottom": "0.8in", "left": "0.7in", "right": "0.7in"})
                 r = await page.evaluate(PARSE, ["/bio.pdf", base])
