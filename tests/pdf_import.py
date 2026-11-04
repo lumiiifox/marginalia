@@ -350,6 +350,15 @@ async def main(paths):
                     margin={"top": "0.8in", "bottom": "0.8in", "left": "0.7in", "right": "0.7in"})
                 r = await page.evaluate(PARSE, ["/headed.pdf", base])
                 check(len(r["labels"]) == 2 and "ON METHOD" not in r["text"], f"headed: a running head carrying the page's number goes, though two pages are too few to know it by repeating ({r['labels']}, {r['text'][:80]!r})")
+                # a scholarly edition's margin references (Kant's A and B pages) beside the lines they mark
+                refs = "".join(f'<span style="position:absolute;left:5.6in;top:{0.3 + k * 0.9}in;font-size:8pt">{r}</span>' for k, r in enumerate(["A vii", "B 38", "A 2 1", "327a"]))
+                await maker.set_content(f'<html lang="en"><style>{CSS} body {{ position: relative; }} p {{ width: 5in; text-align: justify; }}</style><div style="position:relative">{refs}<p>{BODY * 3}</p></div><p>{BODY * 3}</p></html>')
+                await maker.pdf(path=str(tmp / "margins.pdf"), prefer_css_page_size=True, display_header_footer=True, header_template="<span></span>",
+                    footer_template='<div style="font-size:9px;width:100%;text-align:center"><span class="pageNumber"></span></div>', margin={"top": "0.8in", "bottom": "0.8in", "left": "0.7in", "right": "0.7in"})
+                r = await page.evaluate(PARSE, ["/margins.pdf", base])
+                body = " ".join(r["text"].split())
+                check(not re.search(r"A vii|B 38|A 2 1|327a", body) and (BODY * 3).strip() in body and r["labels"][:1] == ["1"],
+                      f"margins: reference numbers in the margin stay out of the sentences beside them; the page numbers stay ({r['labels'][:3]}, {re.findall(r'.{15}(?:A vii|B 38|327a).{15}', body)[:3]})")
                 await maker.set_content(biopage())
                 await maker.pdf(path=str(tmp / "bio.pdf"), prefer_css_page_size=True, margin={"top": "0.8in", "bottom": "0.8in", "left": "0.7in", "right": "0.7in"})
                 r = await page.evaluate(PARSE, ["/bio.pdf", base])

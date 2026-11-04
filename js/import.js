@@ -119,6 +119,26 @@ function sourceSpaces(items, ol, OPS) {
   });
   return changed;
 }
+// Reference numbers printed in a scholarly edition's margin (Kant's A and B pages, Stephanus and Bekker numbers: "A vii", "B 75",
+// "327a", "1094a12") are taken out before lines are built, where they would land inside the sentence beside them ("al A viii
+// ways"). One is a short item beside the text column (never at the top or foot of the page, where the page numbers are) that
+// reads as a reference or a piece of one: an optional A or B, then a number or roman numeral as OCR reads it, an optional letter.
+const MARGIN_REF = /^(?:[AB]|IB)?[0-9IVXLCivxlc]{0,6}[a-e]?$/; // (on the item without its spaces; OCR splits "B 38" into "B" and "3 8")
+function dropMarginRefs(items, y0, y1) {
+  const size = (it) => Math.hypot(it.transform[2], it.transform[3]) || it.height || 0;
+  const body = items.filter((it) => it.str.trim().length > 20);
+  if (body.length < 5) return items;
+  const zs = body.map(size).sort((a, b) => a - b), B = zs[zs.length >> 1];
+  const xs = body.map((it) => it.transform[4]).sort((a, b) => a - b), xe = body.map((it) => it.transform[4] + (it.width || 0)).sort((a, b) => a - b);
+  const left = xs[Math.floor(xs.length * 0.1)], right = xe[Math.floor(xe.length * 0.9)], h = y1 - y0;
+  return items.filter((it) => {
+    const t = it.str.trim(), x = it.transform[4], y = it.transform[5];
+    const c = t.replace(/\s+/g, "");
+    if (!c || c.length > 8 || !MARGIN_REF.test(c)) return true;
+    if (y > y1 - h * 0.08 || y < y0 + h * 0.08) return true;
+    return !(x >= right + B * 0.3 || x + (it.width || 0) <= left - B * 0.3);
+  });
+}
 function linesOf(items) {
   const its = [];
   for (const it of items) {
@@ -486,7 +506,7 @@ async function parsePDF(buf, say) {
           if (++spaceCheck.tried === 12 || p === n) spaceCheck.on = spaceCheck.fixed >= 10;
         }
       }
-      pages.push({ lines: linesOf(tc.items), y0: vb[1], y1: vb[3] });
+      pages.push({ lines: linesOf(dropMarginRefs(tc.items, vb[1], vb[3])), y0: vb[1], y1: vb[3] });
       try { const anns = await page.getAnnotations(); if (anns.some((a) => MARK_TYPES.has(a.subtype))) marks.push(...marksOnPage(anns, tc.items).map((m) => ({ ...m, p: p - 1 }))); } catch {}
       page.cleanup();
     }
