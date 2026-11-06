@@ -5,7 +5,7 @@
  "scope": "The last glossary entries on the reading route's queue (tests/audit/ROUTE_QUEUE.md, 'On the way'): ontology, metaphysics, accident, universals, deduction, essentialism, existentialism",
  "by": {
   "first_pass": "Claude (Opus 5.5), first pass, 2026-11-06: every old sentence of d and x (and the s and src fields where they changed) given a verdict; the entries rewritten from the sources below; every quotation from a web source checked word for word by WebFetch of the source page on 2026-11-06 (direct downloads of these hosts are refused by this session's network policy, so each was confirmed as an exact string or in consecutive verbatim fragments), and the two quotations from Jowett's Republic and the count of Part I of Elwes's Ethics checked by script against data/books (see each term's quotes)",
-  "review": "pending"
+  "review": "Independent reviewer (separate agent, fresh context), 2026-11-06: checked all 47 sentences of the seven shipped entries and all 56 quotations against their sources by about 60 WebFetch and 20 WebSearch lookups (each long sentence in verbatim fragments), the Republic quotation and the Ethics' Part I count by script against data/books, and every source's authors against the encyclopedias' own author listings (SEP table of contents and What's New, copyright lines) or PhilPapers' SEP pages. Verdicts: deduction passes as drafted; ontology, metaphysics, accident, universals, essentialism and existentialism pass after fixes. Fixed: six Stanford articles had been credited to one of their authors (the last of the page's author tags): Essential vs. Accidental Properties (Atkins, Correia and Robertson Ishii), Aristotle's Metaphysics (Cohen and Reeve), Properties (Orilia and Paolini Paoletti), Nominalism in Metaphysics (Cowling and Giberman), William of Ockham (Spade, Panaccio and Pelletier) and Simone de Beauvoir (Bergoffen and Burke), corrected in the text, srcName, srcs and sources; an ambiguous 'him' in ontology; Uebel's sentence in metaphysics given the content he reports (Frank on Carnap's critique), with the next sentence's 'They' named; 'this reading of present-in and said-of' in accident stated as Studtmann states it; 'working definition' in essentialism, which is not the article's phrase; Uebel's words in metaphysics quoted (one quotation added, so 56); and 33 section locators in the record (12 claims, 21 quotation checks). Every other credit was confirmed against those listings. Not padding: entry lengths (212–284 words) stay under the earlier audited glossary entries (394–551), and each sentence carries a sourced claim. See each term's review."
  },
  "sources": {
   "MET": {
@@ -57,15 +57,15 @@
    "src": "https://plato.stanford.edu/entries/aristotle-categories/"
   },
   "RI": {
-   "name": "Teresa Robertson Ishii, “Essential vs. Accidental Properties”, Stanford Encyclopedia of Philosophy (substantive revision 21 August 2026)",
+   "name": "Philip Atkins, Fabrice Correia and Teresa Robertson Ishii, “Essential vs. Accidental Properties”, Stanford Encyclopedia of Philosophy (substantive revision 21 August 2026)",
    "src": "https://plato.stanford.edu/entries/essential-accidental/"
   },
   "REE": {
-   "name": "C. D. C. Reeve, “Aristotle’s Metaphysics”, Stanford Encyclopedia of Philosophy (substantive revision 24 January 2025)",
+   "name": "S. Marc Cohen and C. D. C. Reeve, “Aristotle’s Metaphysics”, Stanford Encyclopedia of Philosophy (substantive revision 24 January 2025)",
    "src": "https://plato.stanford.edu/entries/aristotle-metaphysics/"
   },
   "PP": {
-   "name": "Michele Paolini Paoletti, “Properties”, Stanford Encyclopedia of Philosophy (substantive revision 24 November 2025)",
+   "name": "Francesco Orilia and Michele Paolini Paoletti, “Properties”, Stanford Encyclopedia of Philosophy (substantive revision 24 November 2025)",
    "src": "https://plato.stanford.edu/entries/properties/"
   },
   "KLI": {
@@ -73,11 +73,11 @@
    "src": "https://plato.stanford.edu/entries/universals-medieval/"
   },
   "PEL": {
-   "name": "Jenny Pelletier, “William of Ockham”, Stanford Encyclopedia of Philosophy (substantive revision 11 September 2024)",
+   "name": "Paul Vincent Spade, Claude Panaccio and Jenny Pelletier, “William of Ockham”, Stanford Encyclopedia of Philosophy (substantive revision 11 September 2024)",
    "src": "https://plato.stanford.edu/entries/ockham/"
   },
   "GIB": {
-   "name": "Daniel Giberman, “Nominalism in Metaphysics”, Stanford Encyclopedia of Philosophy (2025)",
+   "name": "Sam Cowling and Daniel Giberman, “Nominalism in Metaphysics”, Stanford Encyclopedia of Philosophy (2025)",
    "src": "https://plato.stanford.edu/entries/nominalism-metaphysics/"
   },
   "REP": {
@@ -125,7 +125,7 @@
    "src": "https://plato.stanford.edu/archives/win2011/entries/existentialism/"
   },
   "BUR": {
-   "name": "Megan Burke, “Simone de Beauvoir”, Stanford Encyclopedia of Philosophy (substantive revision 11 January 2023)",
+   "name": "Debra Bergoffen and Megan Burke, “Simone de Beauvoir”, Stanford Encyclopedia of Philosophy (substantive revision 11 January 2023)",
    "src": "https://plato.stanford.edu/entries/beauvoir/"
   },
   "ARO": {
@@ -150,7 +150,7 @@
        "type": "conceptual",
        "evidence": "not-retrieved",
        "accuracy": "supported",
-       "by": "HOF §1",
+       "by": "HOF §3",
        "excerpt": "As a first approximation, ontology is the study of what there is",
        "fix": "quoted and credited"
       }
@@ -168,7 +168,7 @@
        "type": "conceptual",
        "evidence": "no",
        "accuracy": "unverified",
-       "by": "HOF §1",
+       "by": "HOF §3.1",
        "excerpt": "the study of the most general features of what there is",
        "fix": "the list cut; Hofweber's (O3) quoted"
       }
@@ -297,7 +297,7 @@
    ],
    "new_text": [
     {
-     "text": "Aristotle opens Book IV of the Metaphysics with “a science which investigates being as being” (W. D. Ross's translation), and John Palmer, on his modal reading of Parmenides, sees him as “the founder of metaphysics or ontology as a domain of inquiry distinct from theology”.",
+     "text": "Aristotle opens Book IV of the Metaphysics with “a science which investigates being as being” (W. D. Ross's translation), and John Palmer, on his modal reading of Parmenides, sees Parmenides as “the founder of metaphysics or ontology as a domain of inquiry distinct from theology”.",
      "claims": [
       {
        "by": "ROSS"
@@ -342,11 +342,11 @@
    "quotes": [
     {
      "q": "the study of what there is",
-     "checked": "HOF §1 ('As a first approximation, ontology is the study of what there is.')"
+     "checked": "HOF §3 ('As a first approximation, ontology is the study of what there is.')"
     },
     {
      "q": "the study of the most general features of what there is",
-     "checked": "HOF §1, item (O3)"
+     "checked": "HOF §3.1, item (O3)"
     },
     {
      "q": "a science which investigates being as being",
@@ -385,7 +385,13 @@
     "aristotle",
     "quine",
     "heidegger"
-   ]
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-06",
+    "verdict": "pass after fixes",
+    "checked": "All 5 sentences and 7 quotations checked against HOF, ROSS, PAL, MET, BRI, CF, KK and WRA; all quotations exact. Fixed: 'sees him as' made 'sees Parmenides as', since 'him' could be read as Aristotle; locators corrected (Hofweber's first approximation is §3, (O3) §3.1). Quine's slogan confirmed as Casati and Fujikawa's display (8), 'Quine's criterion is more popularized as the following slogan'. Palmer's sentence is conditional on Xenophanes as founder of rational theology; 'sees ... as' is a fair summary of 'qualify him to be seen as'."
+   }
   },
   "metaphysics": {
    "old": [
@@ -547,7 +553,7 @@
      ]
     },
     {
-     "text": "The logical positivists, van Inwagen, Sullivan and Bernstein write, concluded that metaphysical statements are meaningless, since they make no predictions about possible experience; Thomas Uebel discusses Carnap's “purely logical critique of metaphysics” of 1932.",
+     "text": "The logical positivists, van Inwagen, Sullivan and Bernstein write, concluded that metaphysical statements are meaningless, since they make no predictions about possible experience; Thomas Uebel reports Philipp Frank's suggestion (1963) that Carnap's “purely logical critique of metaphysics” of 1932 “was bound to remain ineffective as long as the actual use of metaphysics remained unexamined”.",
      "claims": [
       {
        "by": "MET"
@@ -558,7 +564,7 @@
      ]
     },
     {
-     "text": "They count theories of modality built on possible worlds, such as Kripke's, Plantinga's and Lewis's, as witnesses to “the resurgence of metaphysics in analytical philosophy” in the last third of the twentieth century.",
+     "text": "Van Inwagen, Sullivan and Bernstein count theories of modality built on possible worlds, such as Kripke's, Plantinga's and Lewis's, as witnesses to “the resurgence of metaphysics in analytical philosophy” in the last third of the twentieth century.",
      "claims": [
       {
        "by": "MET"
@@ -605,6 +611,10 @@
      "checked": "UEB §3.1"
     },
     {
+     "q": "was bound to remain ineffective as long as the actual use of metaphysics remained unexamined",
+     "checked": "UEB §3.1, by the reviewer (consecutive verbatim fragments: 'Finally, there is Frank's suggestion (1963) ... that Carnap's purely logical critique of metaphysics in (1932a) was bound to remain ineffective' / 'as long as the actual use of metaphysics remained unexamined.'); Frank is Philipp Frank (UEB §2.1)"
+    },
+    {
      "q": "the resurgence of metaphysics in analytical philosophy",
      "checked": "MET §3.1, end"
     },
@@ -618,11 +628,11 @@
     },
     {
      "q": "metaphysics",
-     "checked": "LAW §2 (Derrida's word, in Lawlor's quotation marks)"
+     "checked": "LAW §5 (Derrida's word, in Lawlor's quotation marks)"
     },
     {
      "q": "destruction",
-     "checked": "LAW §2 (Heidegger's word in Being and Time, as Lawlor gives it)"
+     "checked": "LAW §5 (Heidegger's word in Being and Time, as Lawlor gives it)"
     }
    ],
    "s": "Aristotle, Metaphysics; Kant, Critique of Pure Reason (Axii)",
@@ -640,7 +650,13 @@
     "heidegger",
     "derrida",
     "kripke"
-   ]
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-06",
+    "verdict": "pass after fixes",
+    "checked": "All 7 sentences and 10 quotations checked against MET, ROH, UEB, KK and LAW; all quotations exact (MET's 'fourteen books', 'in all probability, Andronicus of Rhodes' and 'in the last third of the twentieth century' confirmed). Fixed: 'Thomas Uebel discusses Carnap's purely logical critique' said nothing about the critique; replaced by what Uebel reports, Philipp Frank's suggestion (1963) that it 'was bound to remain ineffective as long as the actual use of metaphysics remained unexamined' (UEB §3.1; 14 words, quoted). Lawlor's two claims are in §5 'Deconstruction', not §2; KK's two quotations are under '5. Overcoming Metaphysics', which treats the later Heidegger, so 'later critique' stands. 'They count theories of modality', which after the new Uebel clause could be read as Frank's, now names van Inwagen, Sullivan and Bernstein."
+   }
   },
   "accident": {
    "old": [
@@ -656,7 +672,7 @@
        "type": "conceptual",
        "evidence": "not-retrieved",
        "accuracy": "supported",
-       "by": "RI §1",
+       "by": "RI introduction",
        "excerpt": "a property that it happens to have but that it could lack",
        "fix": "credited, quoted"
       },
@@ -682,7 +698,7 @@
        "type": "historical",
        "evidence": "partly",
        "accuracy": "overstated",
-       "by": "STU §2",
+       "by": "STU §2.1",
        "excerpt": "there are ten: (1) substance; (2) quantity; (3) quality; (4) relatives",
        "fix": "the ten categories given as listed"
       },
@@ -690,7 +706,7 @@
        "type": "historical",
        "evidence": "partly",
        "accuracy": "supported",
-       "by": "STU §2",
+       "by": "STU §2.1",
        "excerpt": "were primary substances not to exist then no other entity would exist",
        "fix": "stated with its line (2b6)"
       }
@@ -708,7 +724,7 @@
        "type": "historical",
        "evidence": "no",
        "accuracy": "unverified",
-       "by": "STU §2",
+       "by": "STU §1.5",
        "excerpt": "by far the orthodox interpretation amongst Aristotle’s Medieval interpreters",
        "fix": "replaced by Studtmann's claim"
       },
@@ -740,7 +756,7 @@
    ],
    "new_d": [
     {
-     "text": "A characteristic that belongs to a thing without being part of what the thing is said to be intrinsically: C. D. C. Reeve's example from Aristotle is that “pallor is an accidental characteristic of a man”.",
+     "text": "A characteristic that belongs to a thing without being part of what the thing is said to be intrinsically: S. Marc Cohen and C. D. C. Reeve's example from Aristotle is that “pallor is an accidental characteristic of a man”.",
      "claims": [
       {
        "by": "REE"
@@ -748,7 +764,7 @@
      ]
     },
     {
-     "text": "In the modal sense Teresa Robertson Ishii sets out, an accidental property of an object is one that it “happens to have but that it could lack”.",
+     "text": "In the modal sense Philip Atkins, Fabrice Correia and Teresa Robertson Ishii set out, an accidental property of an object is one that it “happens to have but that it could lack”.",
      "claims": [
       {
        "by": "RI"
@@ -774,7 +790,7 @@
      ]
     },
     {
-     "text": "Studtmann calls this reading of present-in and said-of “by far the orthodox interpretation amongst Aristotle’s Medieval interpreters”.",
+     "text": "Studtmann calls this reading, on which what is said of a subject is universal and what is present in one is accidental, “by far the orthodox interpretation amongst Aristotle’s Medieval interpreters”.",
      "claims": [
       {
        "by": "STU"
@@ -782,7 +798,7 @@
      ]
     },
     {
-     "text": "Robertson Ishii separates the modal sense from a whatness sense, on which an essential property is one that answers the question of what the object is, and gives an example Kit Fine discusses in “Essence and Modality” (1994): being a member of the set whose sole member is Socrates is modally essential to Socrates without being whatness essential.",
+     "text": "Atkins, Correia and Robertson Ishii separate the modal sense from a whatness sense, on which an essential property is one that answers the question of what the object is, and give an example Kit Fine discusses in “Essence and Modality” (1994): being a member of the set whose sole member is Socrates is modally essential to Socrates without being whatness essential.",
      "claims": [
       {
        "by": "RI"
@@ -798,11 +814,11 @@
     },
     {
      "q": "happens to have but that it could lack",
-     "checked": "RI §1"
+     "checked": "RI, introduction"
     },
     {
      "q": "by far the orthodox interpretation amongst Aristotle’s Medieval interpreters",
-     "checked": "STU §2 (of the characterization of said-of and present-in just given)"
+     "checked": "STU §1.5 (of the characterization of said-of and present-in just given)"
     }
    ],
    "s": "Aristotle, Categories 2, 4–5 (1a24–5, 1b25–2a4, 2b6); Kit Fine, “Essence and Modality” (1994)",
@@ -813,7 +829,13 @@
    ],
    "p": [
     "aristotle"
-   ]
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-06",
+    "verdict": "pass after fixes",
+    "checked": "The first pass credited each Stanford article to one author, the last of the page's author tags; the articles' own author lines (SEP table of contents and What's New, PhilPapers' SEP bibliography pages, the authors' publication lists) name more. Fixed: 'Essential vs. Accidental Properties' (revision of 21 August 2026) is by Philip Atkins, Fabrice Correia and Teresa Robertson Ishii (SEP What's New: 'Philip Atkins, Fabrice Correia, and Teresa Robertson Ishii'; Correia's publication list), and 'Aristotle's Metaphysics' by S. Marc Cohen and C. D. C. Reeve (SEP table of contents); both credits corrected in the text and srcs. 'This reading of present-in and said-of' named a said-of the entry never introduces; it now states the reading as Studtmann does (said-of universal, present-in accidental, §1.5). Bekker locators checked against Studtmann: the ten categories 1b25–2a4 (§2.1, his English names exactly), present-in 1a24–5 (§1, his translation), the dependence of everything else on primary substances 2b6 (§2.1, his paraphrase); chapters 2, 4 and 5 of the Categories are right for these. 'Without being' in two sentences states the source's own distinctions (Aristotle's 'not as a part'; 'modally essential but not whatness essential'), so it was kept."
+   }
   },
   "universals": {
    "old": [
@@ -899,7 +921,7 @@
        "type": "historical",
        "evidence": "no",
        "accuracy": "supported",
-       "by": "KLI §1",
+       "by": "KLI §3",
        "excerpt": "irresistible for his medieval Latin commentators, beginning with Boethius",
        "fix": "Porphyry's three questions given"
       },
@@ -961,7 +983,7 @@
      ]
     },
     {
-     "text": "Realists, in Michele Paolini Paoletti's words, hold that universals “exist as mind-independent entities”; nominalism about universals, as Daniel Giberman states it, is “the thesis that there are no universals”.",
+     "text": "Realists, in the words of Francesco Orilia and Michele Paolini Paoletti, hold that universals “exist as mind-independent entities”; nominalism about universals, as Sam Cowling and Daniel Giberman state it, is “the thesis that there are no universals”.",
      "claims": [
       {
        "by": "PP"
@@ -974,7 +996,7 @@
    ],
    "new_text": [
     {
-     "text": "Paolini Paoletti calls Plato's view, on which universals (Plato's ideas or forms) exist even if uninstantiated, transcendent realism, and the view Aristotle defended “in opposition to his master”, on which they exist only if instantiated by objects, immanent realism.",
+     "text": "Orilia and Paolini Paoletti call Plato's view, on which universals (Plato's ideas or forms) exist even if uninstantiated, transcendent realism, and the view Aristotle defended “in opposition to his master”, on which they exist only if instantiated by objects, immanent realism.",
      "claims": [
       {
        "by": "PP"
@@ -1007,7 +1029,7 @@
      ]
     },
     {
-     "text": "For William of Ockham, Jenny Pelletier writes, everything that exists in the created universe is a singular substance or a singular quality, and “the only real universals are universal concepts in the mind”, natural signs of several things at once.",
+     "text": "For William of Ockham, Paul Vincent Spade, Claude Panaccio and Jenny Pelletier write, everything that exists in the created universe is a singular substance or a singular quality, and “the only real universals are universal concepts in the mind”, natural signs of several things at once.",
      "claims": [
       {
        "by": "PEL"
@@ -1015,7 +1037,7 @@
      ]
     },
     {
-     "text": "Among contemporary views Giberman describes trope theory, on which a trope is “a particular (i.e., non-universal) qualitative nature”, and resemblance nominalism, on which “qualitative classification is governed by primitive resemblance facts”.",
+     "text": "Among contemporary views Cowling and Giberman describe trope theory, on which a trope is “a particular (i.e., non-universal) qualitative nature”, and resemblance nominalism, on which “qualitative classification is governed by primitive resemblance facts”.",
      "claims": [
       {
        "by": "GIB"
@@ -1027,7 +1049,7 @@
    "quotes": [
     {
      "q": "exist as mind-independent entities",
-     "checked": "PP §1"
+     "checked": "PP §1.3"
     },
     {
      "q": "the thesis that there are no universals",
@@ -1035,7 +1057,7 @@
     },
     {
      "q": "in opposition to his master",
-     "checked": "PP §1"
+     "checked": "PP §1.3"
     },
     {
      "q": "in our usual manner: Whenever a number of individuals have a common name, we assume them to have also a corresponding idea or form",
@@ -1043,11 +1065,11 @@
     },
     {
      "q": "situated in bare thoughts alone",
-     "checked": "KLI §1, Klima's translation of Porphyry"
+     "checked": "KLI §3, Klima's translation of Porphyry"
     },
     {
      "q": "irresistible for his medieval Latin commentators, beginning with Boethius",
-     "checked": "KLI §1 ('they certainly proved to be irresistible ...')"
+     "checked": "KLI §3 ('they certainly proved to be irresistible ...')"
     },
     {
      "q": "the existence of real universals in and/or before particular things",
@@ -1083,7 +1105,13 @@
     "plato",
     "aristotle",
     "ockham"
-   ]
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-06",
+    "verdict": "pass after fixes",
+    "checked": "The first pass credited each Stanford article to one author, the last of the page's author tags; the articles' own author lines (SEP table of contents and What's New, PhilPapers' SEP bibliography pages, the authors' publication lists) name more. Fixed: 'Properties' (revision of 24 November 2025) is by Francesco Orilia and Michele Paolini Paoletti (SEP Winter 2025 What's New), 'Nominalism in Metaphysics' (2025) by Sam Cowling and Daniel Giberman (PhilPapers' SEP page; 'New Entry by Sam Cowling and Daniel Giberman on April 21, 2025'), and 'William of Ockham' (2024) by Paul Vincent Spade, Claude Panaccio and Jenny Pelletier ('Revised entry by Paul Vincent Spade, Claude Panaccio, and Jenny Pelletier on September 11, 2024'); credits corrected in the text and srcs. The Republic quotation matches data/books/classic-plato-republic.json block 4026, under the Book X heading (block 4011), character for character. Klima's Porphyry and Boethius quotations are in his §3, the classification and 'rather crude' in §1. 'Natural signs of several things at once' joins Pelletier's §3.3 (concepts are 'natural signs') and §4.2 ('a mental sign of several things at once'); outside the quotation marks, it stands."
+   }
   },
   "deduction": {
    "old": [
@@ -1187,7 +1215,7 @@
        "type": "historical",
        "evidence": "no",
        "accuracy": "supported",
-       "by": "KEN §2",
+       "by": "KEN §1",
        "excerpt": "The main theorem of his dissertation was the completeness theorem for first order logic",
        "fix": "credited"
       }
@@ -1309,11 +1337,11 @@
     },
     {
      "q": "necessary truth preservation in virtue of form",
-     "checked": "BRS §1"
+     "checked": "BRS §3.1"
     },
     {
      "q": "a proud example",
-     "checked": "BRS ('Aristotle’s syllogistic is a proud example.')"
+     "checked": "BRS §2 ('Aristotle’s syllogistic is a proud example.')"
     },
     {
      "q": "every subsequent proposition can be demonstrated using only what precedes it",
@@ -1321,7 +1349,7 @@
     },
     {
      "q": "Every valid logical expression is provable",
-     "checked": "KEN §2, the Completeness Theorem's statement"
+     "checked": "KEN §2.1.2, Theorem 1, the Completeness Theorem's statement"
     },
     {
      "q": "a certain amount of elementary arithmetic can be carried out",
@@ -1344,7 +1372,13 @@
     "aristotle",
     "spinoza",
     "godel"
-   ]
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-06",
+    "verdict": "pass",
+    "checked": "All 8 sentences and 6 quotations checked against DOU, BRS, KEN, RAA, NAD and the bundled Ethics; all exact, and BRS's three authors confirmed by its copyright line. Point (a): the two senses of 'complete' are now right and kept apart: BRS §3.3 defines a complete proof system (every model-theoretically valid argument has a proof), which is the sense of Gödel's completeness theorem as Kennedy states it (§2.1.2, 'Every valid logical expression is provable'); RAA §1.1 defines a complete formal system (each statement or its negation derivable), the sense in which the first incompleteness theorem calls arithmetic systems incomplete. Raatikainen does not himself contrast the two senses; 'another sense of the word' is the entry's own observation, evident from the two definitions it quotes. Only locators corrected (BRS §3.1 and §2, KEN §1). No sentence is padding."
+   }
   },
   "essentialism": {
    "old": [
@@ -1360,7 +1394,7 @@
        "type": "conceptual",
        "evidence": "partly",
        "accuracy": "overstated",
-       "by": "RI §2; HEY §2",
+       "by": "RI §1.3; HEY §2",
        "excerpt": "the doctrine that (at least some) objects have (at least some) essential properties",
        "fix": "two senses, credited"
       }
@@ -1378,7 +1412,7 @@
        "type": "conceptual",
        "evidence": "yes",
        "accuracy": "supported",
-       "by": "RI §2",
+       "by": "RI §1.3",
        "excerpt": "the doctrine that (at least some) objects have (at least some) essential properties",
        "fix": "merged"
       }
@@ -1432,7 +1466,7 @@
        "type": "historical",
        "evidence": "yes",
        "accuracy": "overstated",
-       "by": "RI §3",
+       "by": "RI §1.4",
        "excerpt": "made essentialist claims concerning, for example, cats and water",
        "fix": "'revived' cut"
       }
@@ -1475,7 +1509,7 @@
    ],
    "new_d": [
     {
-     "text": "In metaphysics, in Teresa Robertson Ishii's working definition, “the doctrine that (at least some) objects have (at least some) essential properties”.",
+     "text": "In metaphysics, as Philip Atkins, Fabrice Correia and Teresa Robertson Ishii characterize it, “the doctrine that (at least some) objects have (at least some) essential properties”.",
      "claims": [
       {
        "by": "RI"
@@ -1493,7 +1527,7 @@
    ],
    "new_text": [
     {
-     "text": "Robertson Ishii notes that Saul Kripke (1972/1980) and Hilary Putnam (1975) made essentialist claims about, for example, cats and water, such as that in any possible world “anything that is not composed of molecules of H2O is not water”.",
+     "text": "Atkins, Correia and Robertson Ishii note that Saul Kripke (1972/1980) and Hilary Putnam (1975) made essentialist claims about, for example, cats and water, such as that in any possible world “anything that is not composed of molecules of H2O is not water”.",
      "claims": [
       {
        "by": "RI"
@@ -1537,7 +1571,7 @@
    "quotes": [
     {
      "q": "the doctrine that (at least some) objects have (at least some) essential properties",
-     "checked": "RI §2"
+     "checked": "RI §1.3"
     },
     {
      "q": "an illegitimate generalization about identity",
@@ -1545,7 +1579,7 @@
     },
     {
      "q": "anything that is not composed of molecules of H2O is not water",
-     "checked": "RI §3 (2 a subscript in the source)"
+     "checked": "RI §1.4 (2 a subscript in the source)"
     },
     {
      "q": "another philosophical term of abuse, intended to capture a multitude of sins",
@@ -1575,7 +1609,13 @@
     "spivak",
     "butler",
     "haslanger"
-   ]
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-06",
+    "verdict": "pass after fixes",
+    "checked": "The first pass credited each Stanford article to one author, the last of the page's author tags; the articles' own author lines (SEP table of contents and What's New, PhilPapers' SEP bibliography pages, the authors' publication lists) name more. Fixed: 'Essential vs. Accidental Properties' credited to Philip Atkins, Fabrice Correia and Teresa Robertson Ishii in the text and src; 'working definition' is not the article's phrase (it calls the display 'the characterization of essentialism that was offered at the outset', §1.3), so the sentence now reads 'as ... characterize it'. Point (b) confirmed: Mikkola places Young (§4.1.1 'Gendered social series') and Stoljar (§4.1.2 'Resemblance nominalism') under §4.1 'Gender nominalism', and Haslanger (§4.2.1 'Social subordination and gender') under §4.2 'Neo-gender realism'; Butler's normativity argument is §3.1.2. Heyes's 2016 revision (SEP Summer 2018 archive), §2 'Philosophy and Identity', confirmed for 'another philosophical term of abuse', 'used more loosely to imply, most commonly, an illegitimate generalization about identity', and strategic essentialism cited to Spivak 1990: 1–16, which her bibliography gives as The Post-Colonial Critic: Interviews, Strategies, Dialogues (Routledge)."
+   }
   },
   "existentialism": {
    "old": [
@@ -1609,7 +1649,7 @@
        "type": "historical",
        "evidence": "yes",
        "accuracy": "supported",
-       "by": "AHO §2",
+       "by": "AHO §2.4",
        "excerpt": "arguably the unifying principle of existentialism",
        "fix": "quoted"
       }
@@ -1760,7 +1800,7 @@
      "paragraph": "starts a new paragraph"
     },
     {
-     "text": "In The Second Sex, Megan Burke writes, Beauvoir uses the category of the Inessential Other to designate the situation of women; Camus's absurd, in Ronald Aronson's account, is the situation between our impulse to ask ultimate questions and the impossibility of any adequate answer.",
+     "text": "In The Second Sex, Debra Bergoffen and Megan Burke write, Beauvoir uses the category of the Inessential Other to designate the situation of women; Camus's absurd, in Ronald Aronson's account, is the situation between our impulse to ask ultimate questions and the impossibility of any adequate answer.",
      "claims": [
       {
        "by": "BUR"
@@ -1797,11 +1837,11 @@
     },
     {
      "q": "existence precedes essence",
-     "checked": "AHO §2"
+     "checked": "AHO §2.4"
     },
     {
      "q": "arguably the unifying principle of existentialism",
-     "checked": "AHO §2"
+     "checked": "AHO §2.4"
     },
     {
      "q": "The ‘essence’ of Dasein lies in its existence",
@@ -1813,7 +1853,7 @@
     },
     {
      "q": "came to be seen as precursors of the movement",
-     "checked": "CRO §1"
+     "checked": "CRO, opening paragraphs"
     },
     {
      "q": "leaping",
@@ -1846,7 +1886,13 @@
     "sartre",
     "beauvoir",
     "camus"
-   ]
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-06",
+    "verdict": "pass after fixes",
+    "checked": "All 6 sentences and 11 quotations checked against AHO, CRO (2010 revision, SEP Winter 2011 archive), BUR and ARO; all exact. Fixed: 'Simone de Beauvoir' is by Debra Bergoffen and Megan Burke (SEP table of contents, PhilPapers), credit corrected in the text and srcs. Crowell's archived text confirmed: Kierkegaard and Nietzsche 'came to be seen as precursors of the movement' (opening paragraphs, not §1) and 'in 1946 Heidegger would repudiate the retrospective labelling of his earlier work as existentialism' (§1). Aho gives 'there are no excuses behind us nor justifications before us' as the reason we are condemned to be free (§4), and 'arguably the unifying principle' is §2.4. Aho is the sole author (philosophie.ch bibliography)."
+   }
   }
  }
 }
