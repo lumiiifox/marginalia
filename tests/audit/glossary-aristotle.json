@@ -29,7 +29,7 @@
    "src": "https://plato.stanford.edu/entries/teleology-biology/"
   },
   "ARM": {
-   "name": "C. D. C. Reeve, “Aristotle’s Metaphysics”, Stanford Encyclopedia of Philosophy (substantive revision 24 January 2025)",
+   "name": "S. Marc Cohen and C. D. C. Reeve, “Aristotle’s Metaphysics”, Stanford Encyclopedia of Philosophy (substantive revision 24 January 2025)",
    "src": "https://plato.stanford.edu/entries/aristotle-metaphysics/"
   },
   "BEN": {
@@ -55,7 +55,7 @@
    "name": "Aristotle, Nicomachean Ethics, trans. F. H. Peters, the edition bundled with the app"
   }
  },
- "note": "Aristotle's Nicomachean Ethics and Spinoza's Ethics are quoted from the editions bundled with the app. Claims the sources consulted did not cover were cut, keeping each entry to what was checked.",
+ "note": "Aristotle's Nicomachean Ethics and Spinoza's Ethics are quoted from the editions bundled with the app. Claims the sources consulted did not cover were cut, keeping each entry to what was checked. Corrected 2026-11-06: the SEP's “Aristotle’s Metaphysics” is by S. Marc Cohen and C. D. C. Reeve (SEP table of contents and What's New, as checked by the independent review of glossary-route3); it had been credited to Reeve alone.",
  "terms": {
   "determinism": {
    "old": [
@@ -491,7 +491,7 @@
    ],
    "new_text": [
     {
-     "text": "In the strictest sense, C. D. C. Reeve writes, “a dunamis is the power that a thing has to produce a change”.",
+     "text": "In the strictest sense, S. Marc Cohen and C. D. C. Reeve write, “a dunamis is the power that a thing has to produce a change”.",
      "claims": [
       {
        "by": "ARM"

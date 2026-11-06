@@ -17,7 +17,7 @@
    "src": "https://plato.stanford.edu/entries/spinoza-attributes/"
   },
   "ARM": {
-   "name": "C. D. C. Reeve, “Aristotle’s Metaphysics”, Stanford Encyclopedia of Philosophy (substantive revision 24 January 2025)",
+   "name": "S. Marc Cohen and C. D. C. Reeve, “Aristotle’s Metaphysics”, Stanford Encyclopedia of Philosophy (substantive revision 24 January 2025)",
    "src": "https://plato.stanford.edu/entries/aristotle-metaphysics/"
   },
   "LOC": {
@@ -54,7 +54,7 @@
    "name": "Nietzsche, Beyond Good and Evil, trans. Helen Zimmern, the edition bundled with the app"
   }
  },
- "note": "Spinoza is quoted from the bundled Elwes translation (public domain), so every quotation can be checked against the text in the app and opened there; the earlier Curley quotations ran past the repository's limit for copyrighted text.",
+ "note": "Spinoza is quoted from the bundled Elwes translation (public domain), so every quotation can be checked against the text in the app and opened there; the earlier Curley quotations ran past the repository's limit for copyrighted text. Corrected 2026-11-06: the SEP's “Aristotle’s Metaphysics” is by S. Marc Cohen and C. D. C. Reeve (SEP table of contents and What's New, as checked by the independent review of glossary-route3); it had been credited to Reeve alone.",
  "terms": {
   "substance": {
    "old": [
