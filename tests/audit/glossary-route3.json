@@ -1,0 +1,1852 @@
+{
+ "audit": "glossary-route3",
+ "audited": "2026-11-06",
+ "mode": "in place",
+ "scope": "The last glossary entries on the reading route's queue (tests/audit/ROUTE_QUEUE.md, 'On the way'): ontology, metaphysics, accident, universals, deduction, essentialism, existentialism",
+ "by": {
+  "first_pass": "Claude (Opus 5.5), first pass, 2026-11-06: every old sentence of d and x (and the s and src fields where they changed) given a verdict; the entries rewritten from the sources below; every quotation from a web source checked word for word by WebFetch of the source page on 2026-11-06 (direct downloads of these hosts are refused by this session's network policy, so each was confirmed as an exact string or in consecutive verbatim fragments), and the two quotations from Jowett's Republic and the count of Part I of Elwes's Ethics checked by script against data/books (see each term's quotes)",
+  "review": "pending"
+ },
+ "sources": {
+  "MET": {
+   "name": "Peter van Inwagen, Meghan Sullivan and Sara Bernstein, “Metaphysics”, Stanford Encyclopedia of Philosophy (substantive revision 4 May 2023)",
+   "src": "https://plato.stanford.edu/entries/metaphysics/"
+  },
+  "HOF": {
+   "name": "Thomas Hofweber, “Logic and Ontology”, Stanford Encyclopedia of Philosophy (substantive revision 13 March 2023)",
+   "src": "https://plato.stanford.edu/entries/logic-ontology/"
+  },
+  "BRI": {
+   "name": "Phillip Bricker, “Ontological Commitment”, Stanford Encyclopedia of Philosophy (2014)",
+   "src": "https://plato.stanford.edu/entries/ontological-commitment/"
+  },
+  "CF": {
+   "name": "Filippo Casati and Naoya Fujikawa, “Existence”, Internet Encyclopedia of Philosophy",
+   "src": "https://iep.utm.edu/existenc/"
+  },
+  "PAL": {
+   "name": "John Palmer, “Parmenides”, Stanford Encyclopedia of Philosophy (substantive revision 4 March 2025)",
+   "src": "https://plato.stanford.edu/entries/parmenides/"
+  },
+  "ROSS": {
+   "name": "Aristotle, Metaphysics, trans. W. D. Ross, Book IV (The Internet Classics Archive)",
+   "src": "https://classics.mit.edu/Aristotle/metaphysics.4.iv.html"
+  },
+  "KK": {
+   "name": "W. J. Korab-Karpowicz, “Martin Heidegger”, Internet Encyclopedia of Philosophy",
+   "src": "https://iep.utm.edu/heidegge/"
+  },
+  "WRA": {
+   "name": "Mark Wrathall, “Martin Heidegger”, Stanford Encyclopedia of Philosophy (2025)",
+   "src": "https://plato.stanford.edu/entries/heidegger/"
+  },
+  "ROH": {
+   "name": "Michael Rohlf, “Immanuel Kant”, Stanford Encyclopedia of Philosophy (substantive revision 31 July 2024)",
+   "src": "https://plato.stanford.edu/entries/kant/"
+  },
+  "UEB": {
+   "name": "Thomas Uebel, “Vienna Circle”, Stanford Encyclopedia of Philosophy (substantive revision 7 May 2024)",
+   "src": "https://plato.stanford.edu/entries/vienna-circle/"
+  },
+  "LAW": {
+   "name": "Leonard Lawlor, “Jacques Derrida”, Stanford Encyclopedia of Philosophy (substantive revision 27 August 2021)",
+   "src": "https://plato.stanford.edu/entries/derrida/"
+  },
+  "STU": {
+   "name": "Paul Studtmann, “Aristotle’s Categories”, Stanford Encyclopedia of Philosophy (substantive revision 7 October 2026)",
+   "src": "https://plato.stanford.edu/entries/aristotle-categories/"
+  },
+  "RI": {
+   "name": "Teresa Robertson Ishii, “Essential vs. Accidental Properties”, Stanford Encyclopedia of Philosophy (substantive revision 21 August 2026)",
+   "src": "https://plato.stanford.edu/entries/essential-accidental/"
+  },
+  "REE": {
+   "name": "C. D. C. Reeve, “Aristotle’s Metaphysics”, Stanford Encyclopedia of Philosophy (substantive revision 24 January 2025)",
+   "src": "https://plato.stanford.edu/entries/aristotle-metaphysics/"
+  },
+  "PP": {
+   "name": "Michele Paolini Paoletti, “Properties”, Stanford Encyclopedia of Philosophy (substantive revision 24 November 2025)",
+   "src": "https://plato.stanford.edu/entries/properties/"
+  },
+  "KLI": {
+   "name": "Gyula Klima, “The Medieval Problem of Universals”, Stanford Encyclopedia of Philosophy (substantive revision 27 February 2022)",
+   "src": "https://plato.stanford.edu/entries/universals-medieval/"
+  },
+  "PEL": {
+   "name": "Jenny Pelletier, “William of Ockham”, Stanford Encyclopedia of Philosophy (substantive revision 11 September 2024)",
+   "src": "https://plato.stanford.edu/entries/ockham/"
+  },
+  "GIB": {
+   "name": "Daniel Giberman, “Nominalism in Metaphysics”, Stanford Encyclopedia of Philosophy (2025)",
+   "src": "https://plato.stanford.edu/entries/nominalism-metaphysics/"
+  },
+  "REP": {
+   "name": "Plato, The Republic, trans. Benjamin Jowett (Standard Ebooks), bundled: data/books/classic-plato-republic.json",
+   "src": "data/books/classic-plato-republic.json"
+  },
+  "DOU": {
+   "name": "Igor Douven, “Abduction”, Stanford Encyclopedia of Philosophy (substantive revision 18 June 2025)",
+   "src": "https://plato.stanford.edu/entries/abduction/"
+  },
+  "BRS": {
+   "name": "Jc Beall, Greg Restall and Gil Sagi, “Logical Consequence”, Stanford Encyclopedia of Philosophy (substantive revision 17 May 2024)",
+   "src": "https://plato.stanford.edu/entries/logical-consequence/"
+  },
+  "KEN": {
+   "name": "Juliette Kennedy, “Kurt Gödel”, Stanford Encyclopedia of Philosophy (substantive revision 10 September 2025)",
+   "src": "https://plato.stanford.edu/entries/goedel/"
+  },
+  "RAA": {
+   "name": "Panu Raatikainen, “Gödel’s Incompleteness Theorems”, Stanford Encyclopedia of Philosophy (substantive revision 8 October 2025)",
+   "src": "https://plato.stanford.edu/entries/goedel-incompleteness/"
+  },
+  "NAD": {
+   "name": "Steven Nadler, “Baruch Spinoza”, Stanford Encyclopedia of Philosophy (substantive revision 8 November 2023)",
+   "src": "https://plato.stanford.edu/entries/spinoza/"
+  },
+  "SE": {
+   "name": "Spinoza, Ethics, trans. R. H. M. Elwes, bundled: data/books/classic-spinoza-ethics.json",
+   "src": "data/books/classic-spinoza-ethics.json"
+  },
+  "HEY": {
+   "name": "Cressida Heyes, “Identity Politics”, Stanford Encyclopedia of Philosophy (revision of 23 March 2016, Summer 2018 Edition)",
+   "src": "https://plato.stanford.edu/archives/sum2018/entries/identity-politics/"
+  },
+  "MIK": {
+   "name": "Mari Mikkola, “Feminist Perspectives on Sex and Gender”, Stanford Encyclopedia of Philosophy (substantive revision 18 January 2022)",
+   "src": "https://plato.stanford.edu/entries/feminism-gender/"
+  },
+  "AHO": {
+   "name": "Kevin Aho, “Existentialism”, Stanford Encyclopedia of Philosophy (2023)",
+   "src": "https://plato.stanford.edu/entries/existentialism/"
+  },
+  "CRO": {
+   "name": "Steven Crowell, “Existentialism”, Stanford Encyclopedia of Philosophy (revision of 11 October 2010, Winter 2011 Edition)",
+   "src": "https://plato.stanford.edu/archives/win2011/entries/existentialism/"
+  },
+  "BUR": {
+   "name": "Megan Burke, “Simone de Beauvoir”, Stanford Encyclopedia of Philosophy (substantive revision 11 January 2023)",
+   "src": "https://plato.stanford.edu/entries/beauvoir/"
+  },
+  "ARO": {
+   "name": "Ronald Aronson, “Albert Camus”, Stanford Encyclopedia of Philosophy (substantive revision 13 December 2021)",
+   "src": "https://plato.stanford.edu/entries/camus/"
+  }
+ },
+ "note": "Claims the sources consulted did not cover were cut. Contested readings are credited to the scholar who makes them (Palmer on Parmenides, Korab-Karpowicz on Heidegger, Lawlor on Derrida, Mikkola's grouping of feminist accounts). Two sources are earlier versions of Stanford articles, cited from the SEP archive because the current versions dropped the passages: Heyes's 'Identity Politics' (2016 revision) for the humanities sense of essentialism and strategic essentialism, and Crowell's 'Existentialism' (2010 revision) for Heidegger's and Camus's rejection of the label. Quine's slogan is given in the Internet Encyclopedia's popularized form, since the old wording was not found in any source consulted. Fields r, vs, br and k are unchanged; p follows the thinkers the new text names (accident drops Aquinas; deduction drops Descartes and adds Gödel; metaphysics adds Derrida and Kripke; essentialism drops Aristotle and adds Kripke and Haslanger). The terms wait under pending, outside terms, until the independent review passes, so they stay out of VERIFIED_TERMS (tests/mastery.py reads terms) and keep their Unchecked mark in the app.",
+ "terms": {},
+ "pending": {
+  "ontology": {
+   "old": [
+    {
+     "s": 1,
+     "field": "d",
+     "text": "The study of being: what exists, and what the most general kinds and structures of existing things are.",
+     "accuracy": "supported",
+     "by": "HOF; BRI",
+     "note": "Hofweber's first approximation and his part (O3) of ontology; Bricker's opening. Now in Hofweber's words.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "not-retrieved",
+       "accuracy": "supported",
+       "by": "HOF §1",
+       "excerpt": "As a first approximation, ontology is the study of what there is",
+       "fix": "quoted and credited"
+      }
+     ]
+    },
+    {
+     "s": 2,
+     "field": "d",
+     "text": "Ontology asks which basic categories (substances, properties, events, relations, processes) we need in order to describe reality.",
+     "accuracy": "overstated",
+     "by": "HOF",
+     "note": "No source consulted gives this list or puts the question this way; replaced by Hofweber's (O3).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "no",
+       "accuracy": "unverified",
+       "by": "HOF §1",
+       "excerpt": "the study of the most general features of what there is",
+       "fix": "the list cut; Hofweber's (O3) quoted"
+      }
+     ]
+    },
+    {
+     "s": 3,
+     "field": "x",
+     "text": "The inquiry goes back to Parmenides and to Aristotle's study of “being as being”; the word itself dates from the early seventeenth century, and Christian Wolff made it the standard name for general metaphysics.",
+     "accuracy": "overstated",
+     "by": "PAL; ROSS; MET",
+     "note": "Parmenides as founder is John Palmer's reading (his modal interpretation), now credited. Aristotle's phrase is in Ross's Book IV.1. The Stanford Encyclopedia's metaphysics article places the word's invention 'at about that time', in the seventeenth century, with no 'early'; and it says Wolff distinguished general metaphysics (or ontology) from special metaphysics, not that he made the word the standard name.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "not-retrieved",
+       "accuracy": "contested",
+       "by": "PAL §3.5",
+       "excerpt": "the founder of metaphysics or ontology as a domain of inquiry",
+       "fix": "credited to Palmer's modal reading"
+      },
+      {
+       "type": "historical",
+       "evidence": "not-retrieved",
+       "accuracy": "supported",
+       "by": "ROSS IV.1",
+       "excerpt": "a science which investigates being as being",
+       "fix": "quoted from Ross's translation"
+      },
+      {
+       "type": "historical",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "MET §1",
+       "excerpt": "It was at about that time that the word ‘ontology’ was invented",
+       "fix": "'early' cut; dated as the source dates it"
+      },
+      {
+       "type": "historical",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "MET §1",
+       "excerpt": "He distinguished between ‘general metaphysics’ (or ontology)",
+       "fix": "restated as Wolff's distinction"
+      }
+     ]
+    },
+    {
+     "s": 4,
+     "field": "x",
+     "text": "Quine framed the modern question as what a theory commits us to: “to be is to be the value of a variable.”",
+     "accuracy": "overstated",
+     "by": "BRI; CF",
+     "note": "Quine's criterion of ontological commitment (1948) is as Bricker sets it out. The quoted slogan was not found in any source consulted; Casati and Fujikawa give the popularized slogan as 'To be is to be the value of a bound variable' and call it a popularization of the criterion, so it is now quoted from them and labelled as such.",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "not-retrieved",
+       "accuracy": "supported",
+       "by": "BRI §1.1",
+       "excerpt": "A theory is committed to those and only those entities",
+       "fix": "criterion paraphrased from Bricker's quotation of Quine (1948: 33)"
+      },
+      {
+       "type": "historical",
+       "evidence": "not-retrieved",
+       "accuracy": "unverified",
+       "by": "CF §1",
+       "excerpt": "To be is to be the value of a bound variable",
+       "fix": "slogan given in the Internet Encyclopedia's wording, as a popularization"
+      }
+     ]
+    },
+    {
+     "s": 5,
+     "field": "x",
+     "text": "Heidegger called the difference between being and particular beings the ontological difference, and made the question of the meaning of being his starting point.",
+     "accuracy": "supported",
+     "by": "KK; WRA",
+     "note": "Korab-Karpowicz on the ontological difference; Wrathall gives Being and Time's declared aim. Now credited, with Heidegger's words as Wrathall quotes them.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "not-retrieved",
+       "accuracy": "supported",
+       "by": "KK",
+       "excerpt": "is fundamental for Heidegger",
+       "fix": "credited"
+      },
+      {
+       "type": "historical",
+       "evidence": "not-retrieved",
+       "accuracy": "supported",
+       "by": "WRA",
+       "excerpt": "the concrete working out of the question of the",
+       "fix": "quoted"
+      }
+     ]
+    },
+    {
+     "s": "s",
+     "field": "s",
+     "text": "Aristotle, Metaphysics IV.1; Quine, “On What There Is” (1948); Heidegger, Being and Time (1927), §§1–4",
+     "accuracy": "overstated",
+     "by": "ROSS; BRI; WRA",
+     "note": "IV.1 and Quine 1948 confirmed. The sections §§1–4 were not checked: Wrathall cites the declared aim to SZ 1 (the German pagination), so the line now names the book without sections."
+    },
+    {
+     "s": "src",
+     "field": "src",
+     "text": "Stanford Encyclopedia of Philosophy, “Metaphysics”",
+     "accuracy": "supported",
+     "by": "MET",
+     "note": "The metaphysics article supports only the word's history; Hofweber's article, which defines the field, is now the main source, the others listed in srcs."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "The study of being; as a first approximation, Thomas Hofweber writes, “the study of what there is”, including “the study of the most general features of what there is”.",
+     "claims": [
+      {
+       "by": "HOF"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Aristotle opens Book IV of the Metaphysics with “a science which investigates being as being” (W. D. Ross's translation), and John Palmer, on his modal reading of Parmenides, sees him as “the founder of metaphysics or ontology as a domain of inquiry distinct from theology”.",
+     "claims": [
+      {
+       "by": "ROSS"
+      },
+      {
+       "by": "PAL"
+      }
+     ]
+    },
+    {
+     "text": "The word, Peter van Inwagen, Meghan Sullivan and Sara Bernstein write, was invented at about the seventeenth century “to be a name for the science of being as such”, and Christian Wolff called the study of being as such general metaphysics, or ontology.",
+     "claims": [
+      {
+       "by": "MET"
+      }
+     ]
+    },
+    {
+     "text": "On Quine's criterion of ontological commitment (“On What There Is”, 1948), as Phillip Bricker sets it out, a theory is committed to the entities its bound variables must be capable of referring to if its affirmations are to be true; Filippo Casati and Naoya Fujikawa give the slogan it is popularized as: “To be is to be the value of a bound variable.”",
+     "claims": [
+      {
+       "by": "BRI"
+      },
+      {
+       "by": "CF"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "W. J. Korab-Karpowicz calls the ontological difference, the distinction between being (das Sein) and beings (das Seiende), fundamental for Heidegger, and Mark Wrathall gives Heidegger's declared aim in Being and Time as “the concrete working out of the question of the ‘meaning’ (Sinn) of ‘being’”.",
+     "claims": [
+      {
+       "by": "KK"
+      },
+      {
+       "by": "WRA"
+      }
+     ]
+    }
+   ],
+   "quotes": [
+    {
+     "q": "the study of what there is",
+     "checked": "HOF §1 ('As a first approximation, ontology is the study of what there is.')"
+    },
+    {
+     "q": "the study of the most general features of what there is",
+     "checked": "HOF §1, item (O3)"
+    },
+    {
+     "q": "a science which investigates being as being",
+     "checked": "ROSS, Book IV, Part 1 (first sentence; the page prints THERE in capitals)"
+    },
+    {
+     "q": "the founder of metaphysics or ontology as a domain of inquiry distinct from theology",
+     "checked": "PAL §3.5 'The Modal Interpretation', the section's last sentence; Palmer's own reading"
+    },
+    {
+     "q": "to be a name for the science of being as such",
+     "checked": "MET §1"
+    },
+    {
+     "q": "To be is to be the value of a bound variable.",
+     "checked": "CF §1, display (8), unquoted in the source and introduced as the slogan Quine's criterion 'is more popularized as'"
+    },
+    {
+     "q": "the concrete working out of the question of the ‘meaning’ (Sinn) of ‘being’",
+     "checked": "WRA §2, quoting SZ 1"
+    }
+   ],
+   "s": "Aristotle, Metaphysics IV.1 (Ross trans.); Quine, “On What There Is” (1948); Heidegger, Being and Time (1927)",
+   "src": "HOF",
+   "srcs": [
+    "MET",
+    "PAL",
+    "BRI",
+    "CF",
+    "KK",
+    "WRA",
+    "ROSS"
+   ],
+   "p": [
+    "parmenides",
+    "aristotle",
+    "quine",
+    "heidegger"
+   ]
+  },
+  "metaphysics": {
+   "old": [
+    {
+     "s": 1,
+     "field": "d",
+     "text": "Inquiry into the fundamental nature of reality: being, substance, causation, time, possibility, identity and the relation of mind to world.",
+     "accuracy": "overstated",
+     "by": "MET",
+     "note": "The article opens 'It is not easy to say what metaphysics is.' and offers no such definition; its sections list the problems of the 'new' metaphysics, which the definition now names.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "MET §§1, 3",
+       "excerpt": "It is not easy to say what metaphysics is.",
+       "fix": "restated as Aristotle's subject and the article's list of problems"
+      }
+     ]
+    },
+    {
+     "s": 2,
+     "field": "d",
+     "text": "Aristotle called it “first philosophy”, the study of being as such and of first causes.",
+     "accuracy": "supported",
+     "by": "MET",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "MET §1",
+       "excerpt": "In one place, Aristotle identifies the subject-matter of first philosophy",
+       "fix": "kept, with his other names in the note"
+      }
+     ]
+    },
+    {
+     "s": 3,
+     "field": "x",
+     "text": "The name comes from the ancient editors who placed Aristotle's treatise after the Physics (ta meta ta phusika).",
+     "accuracy": "overstated",
+     "by": "MET",
+     "note": "One editor, 'in all probability, Andronicus of Rhodes', titled the fourteen books; 'Aristotle himself did not know the word.'",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "MET §1",
+       "excerpt": "an editor of his works (in all probability, Andronicus of Rhodes)",
+       "fix": "one editor, named as the source names him"
+      }
+     ]
+    },
+    {
+     "s": 4,
+     "field": "x",
+     "text": "Kant asked whether metaphysics could be a science at all, and confined theoretical knowledge to possible experience; the logical empiricists, Carnap above all, dismissed it as meaningless.",
+     "accuracy": "overstated",
+     "by": "ROH; MET; UEB",
+     "note": "Kant's question and his limit are as Rohlf gives them, now credited. The positivists' verdict is in the metaphysics article; 'Carnap above all' is in no source consulted, so Carnap is named only as the author Uebel discusses.",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "no",
+       "accuracy": "supported",
+       "by": "ROH §3",
+       "excerpt": "decision about the possibility or impossibility of a metaphysics in general",
+       "fix": "credited to Rohlf"
+      },
+      {
+       "type": "historical",
+       "evidence": "no",
+       "accuracy": "supported",
+       "by": "ROH",
+       "excerpt": "transcendent metaphysics",
+       "fix": "credited to Rohlf"
+      },
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "MET §5",
+       "excerpt": "Therefore, they concluded, metaphysical statements are meaningless",
+       "fix": "kept with the reason they gave"
+      },
+      {
+       "type": "historical",
+       "evidence": "no",
+       "accuracy": "overstated",
+       "by": "UEB §3.1",
+       "excerpt": "Carnap’s purely logical critique of metaphysics in (1932a)",
+       "fix": "'above all' cut"
+      }
+     ]
+    },
+    {
+     "s": 5,
+     "field": "x",
+     "text": "It returned in analytic philosophy through modal logic and debates about properties, persistence and causation, while Heidegger and Derrida made the critique of the metaphysical tradition itself a central task.",
+     "accuracy": "overstated",
+     "by": "MET; KK; LAW",
+     "note": "The metaphysics article takes theories of modality as witnesses to the resurgence of metaphysics in analytic philosophy in the last third of the twentieth century; 'returned through ... debates' and 'central task' are in no source consulted. Heidegger's and Derrida's critiques are now given as Korab-Karpowicz and Lawlor state them.",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "MET §3.1",
+       "excerpt": "the resurgence of metaphysics in analytical philosophy",
+       "fix": "restated with the source's dating"
+      },
+      {
+       "type": "interpretive",
+       "evidence": "no",
+       "accuracy": "overstated",
+       "by": "KK; LAW",
+       "excerpt": "metaphysics is nihilism",
+       "fix": "credited to the two scholars, in their terms"
+      }
+     ]
+    },
+    {
+     "s": "s",
+     "field": "s",
+     "text": "Aristotle, Metaphysics; Kant, Prolegomena to Any Future Metaphysics (1783); Carnap, “The Elimination of Metaphysics through Logical Analysis of Language” (1932)",
+     "accuracy": "unverified",
+     "by": "ROH; UEB",
+     "note": "The Prolegomena (1783) is confirmed by Rohlf, but the new text cites the Critique (Axii), which the line now names in its place. Uebel cites Carnap's paper only as 1932a; its title was not retrieved, so the line drops it and the text gives the year."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "The branch of philosophy Aristotle called first philosophy, whose subject he identifies in one place as “being as such” and in another as “first causes”.",
+     "claims": [
+      {
+       "by": "MET"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Peter van Inwagen, Meghan Sullivan and Sara Bernstein write that “Aristotle himself did not know the word”: an editor of his works, in all probability Andronicus of Rhodes, titled the fourteen books Ta meta ta phusika, after the books now called the Physics.",
+     "claims": [
+      {
+       "by": "MET"
+      }
+     ]
+    },
+    {
+     "text": "Michael Rohlf writes that Kant's Critique of Pure Reason seeks a “decision about the possibility or impossibility of a metaphysics in general” (Axii), and that its account makes transcendent metaphysics, a priori knowledge of things in themselves, impossible.",
+     "claims": [
+      {
+       "by": "ROH"
+      }
+     ]
+    },
+    {
+     "text": "The logical positivists, van Inwagen, Sullivan and Bernstein write, concluded that metaphysical statements are meaningless, since they make no predictions about possible experience; Thomas Uebel discusses Carnap's “purely logical critique of metaphysics” of 1932.",
+     "claims": [
+      {
+       "by": "MET"
+      },
+      {
+       "by": "UEB"
+      }
+     ]
+    },
+    {
+     "text": "They count theories of modality built on possible worlds, such as Kripke's, Plantinga's and Lewis's, as witnesses to “the resurgence of metaphysics in analytical philosophy” in the last third of the twentieth century.",
+     "claims": [
+      {
+       "by": "MET"
+      }
+     ]
+    },
+    {
+     "text": "W. J. Korab-Karpowicz summarizes Heidegger's later critique: metaphysics “reduces being to a being”, and “Insofar as being itself is obliterated in it, metaphysics is nihilism.”",
+     "claims": [
+      {
+       "by": "KK"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Leonard Lawlor writes that Derrida speaks of “metaphysics” as if the Western philosophical tradition were uniform, and that he seems to have taken the word deconstruction from Heidegger's use of “destruction” in Being and Time.",
+     "claims": [
+      {
+       "by": "LAW"
+      }
+     ]
+    }
+   ],
+   "quotes": [
+    {
+     "q": "being as such",
+     "checked": "MET §1"
+    },
+    {
+     "q": "first causes",
+     "checked": "MET §1"
+    },
+    {
+     "q": "Aristotle himself did not know the word",
+     "checked": "MET §1"
+    },
+    {
+     "q": "decision about the possibility or impossibility of a metaphysics in general",
+     "checked": "ROH, quoting Axii"
+    },
+    {
+     "q": "purely logical critique of metaphysics",
+     "checked": "UEB §3.1"
+    },
+    {
+     "q": "the resurgence of metaphysics in analytical philosophy",
+     "checked": "MET §3.1, end"
+    },
+    {
+     "q": "reduces being to a being",
+     "checked": "KK, introduced by 'According to Heidegger'; the author's summary, not a quotation of Heidegger"
+    },
+    {
+     "q": "Insofar as being itself is obliterated in it, metaphysics is nihilism.",
+     "checked": "KK, as above"
+    },
+    {
+     "q": "metaphysics",
+     "checked": "LAW §2 (Derrida's word, in Lawlor's quotation marks)"
+    },
+    {
+     "q": "destruction",
+     "checked": "LAW §2 (Heidegger's word in Being and Time, as Lawlor gives it)"
+    }
+   ],
+   "s": "Aristotle, Metaphysics; Kant, Critique of Pure Reason (Axii)",
+   "src": "MET",
+   "srcs": [
+    "ROH",
+    "UEB",
+    "KK",
+    "LAW"
+   ],
+   "p": [
+    "aristotle",
+    "kant",
+    "carnap",
+    "heidegger",
+    "derrida",
+    "kripke"
+   ]
+  },
+  "accident": {
+   "old": [
+    {
+     "s": 1,
+     "field": "d",
+     "text": "A property a thing has and could lose while remaining the same thing, such as Socrates' being seated or pale.",
+     "accuracy": "overstated",
+     "by": "RI; REE",
+     "note": "The definition is the modal sense, now credited to Robertson Ishii in her words; the Socrates examples are in no source consulted, replaced by Reeve's example from Aristotle.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "not-retrieved",
+       "accuracy": "supported",
+       "by": "RI §1",
+       "excerpt": "a property that it happens to have but that it could lack",
+       "fix": "credited, quoted"
+      },
+      {
+       "type": "editorial",
+       "evidence": "no",
+       "accuracy": "unverified",
+       "by": "REE §7",
+       "excerpt": "pallor is an accidental characteristic of a man",
+       "fix": "replaced by Reeve's example"
+      }
+     ]
+    },
+    {
+     "s": 2,
+     "field": "x",
+     "text": "Aristotle lists nine categories of accident (quantity, quality, relation, place, time and others) alongside substance, and holds that accidents exist only in substances.",
+     "accuracy": "overstated",
+     "by": "STU",
+     "note": "Studtmann: Aristotle lists ten categories of being, substance first; what is present in a subject is accidental; were primary substances not to exist no other entity would exist (2b6). 'Nine categories of accident' is not how he puts it (in his four-fold scheme universals in the other categories are present in a subject too, so the categories are of beings); the full list, the definition of present-in and the dependence claim now given with their lines.",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "STU §2",
+       "excerpt": "there are ten: (1) substance; (2) quantity; (3) quality; (4) relatives",
+       "fix": "the ten categories given as listed"
+      },
+      {
+       "type": "historical",
+       "evidence": "partly",
+       "accuracy": "supported",
+       "by": "STU §2",
+       "excerpt": "were primary substances not to exist then no other entity would exist",
+       "fix": "stated with its line (2b6)"
+      }
+     ]
+    },
+    {
+     "s": 3,
+     "field": "x",
+     "text": "The distinction between essential and accidental properties became a staple of scholastic philosophy and returns in modern modal terms: an essential property is one a thing has in every possible world in which it exists.",
+     "accuracy": "overstated",
+     "by": "STU; RI",
+     "note": "'A staple of scholastic philosophy' is in no source consulted; Studtmann says the said-of / present-in reading was the orthodox one among the medieval interpreters, now given instead. The modal definition is supported (Robertson Ishii's existence-conditioned form), and she separates it from the whatness sense, which Fine's example shows can come apart from it; both added.",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "no",
+       "accuracy": "unverified",
+       "by": "STU §2",
+       "excerpt": "by far the orthodox interpretation amongst Aristotle’s Medieval interpreters",
+       "fix": "replaced by Studtmann's claim"
+      },
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "supported",
+       "by": "RI §1",
+       "excerpt": "it is necessary that o has P if o exists",
+       "fix": "kept as the modal sense, with the whatness sense beside it"
+      }
+     ]
+    },
+    {
+     "s": "s",
+     "field": "s",
+     "text": "Aristotle, Categories 4; Metaphysics V.30",
+     "accuracy": "overstated",
+     "by": "STU",
+     "note": "Categories 4 is the list (1b25–2a4); the present-in definition and the dependence claim are Categories 2 and 5 (1a24–5, 2b6), now added. Metaphysics V.30 was not checked and the text no longer relies on it; dropped. Fine (1994) added for the example."
+    },
+    {
+     "s": "src",
+     "field": "src",
+     "text": "Stanford Encyclopedia of Philosophy, “Aristotle”",
+     "accuracy": "not-retrieved",
+     "note": "The general Aristotle article was not consulted; Studtmann's article on the Categories replaces it, with Robertson Ishii and Reeve in srcs."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "A characteristic that belongs to a thing without being part of what the thing is said to be intrinsically: C. D. C. Reeve's example from Aristotle is that “pallor is an accidental characteristic of a man”.",
+     "claims": [
+      {
+       "by": "REE"
+      }
+     ]
+    },
+    {
+     "text": "In the modal sense Teresa Robertson Ishii sets out, an accidental property of an object is one that it “happens to have but that it could lack”.",
+     "claims": [
+      {
+       "by": "RI"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "In the Categories, as Paul Studtmann sets it out, Aristotle divides beings into ten categories: substance, quantity, quality, relatives, somewhere, sometime, being in a position, having, acting and being acted upon (1b25–2a4).",
+     "claims": [
+      {
+       "by": "STU"
+      }
+     ]
+    },
+    {
+     "text": "What is present in a subject, in something without being a part of it and unable to exist separately from it (1a24–5), is accidental, as Socrates' whiteness is; were primary substances not to exist, Aristotle says, no other entity would exist (2b6).",
+     "claims": [
+      {
+       "by": "STU"
+      }
+     ]
+    },
+    {
+     "text": "Studtmann calls this reading of present-in and said-of “by far the orthodox interpretation amongst Aristotle’s Medieval interpreters”.",
+     "claims": [
+      {
+       "by": "STU"
+      }
+     ]
+    },
+    {
+     "text": "Robertson Ishii separates the modal sense from a whatness sense, on which an essential property is one that answers the question of what the object is, and gives an example Kit Fine discusses in “Essence and Modality” (1994): being a member of the set whose sole member is Socrates is modally essential to Socrates without being whatness essential.",
+     "claims": [
+      {
+       "by": "RI"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    }
+   ],
+   "quotes": [
+    {
+     "q": "pallor is an accidental characteristic of a man",
+     "checked": "REE §7"
+    },
+    {
+     "q": "happens to have but that it could lack",
+     "checked": "RI §1"
+    },
+    {
+     "q": "by far the orthodox interpretation amongst Aristotle’s Medieval interpreters",
+     "checked": "STU §2 (of the characterization of said-of and present-in just given)"
+    }
+   ],
+   "s": "Aristotle, Categories 2, 4–5 (1a24–5, 1b25–2a4, 2b6); Kit Fine, “Essence and Modality” (1994)",
+   "src": "STU",
+   "srcs": [
+    "RI",
+    "REE"
+   ],
+   "p": [
+    "aristotle"
+   ]
+  },
+  "universals": {
+   "old": [
+    {
+     "s": 1,
+     "field": "d",
+     "text": "Features that many particular things can share, such as redness or justice.",
+     "accuracy": "supported",
+     "by": "MET; GIB",
+     "note": "Universals are 'in the first instance, properties or qualities or attributes' (MET §2.2), and multiply instantiable (GIB). The examples are the app's own illustrations.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "MET §2.2",
+       "excerpt": "in the first instance, properties or qualities or attributes",
+       "fix": "kept, in the article's terms"
+      },
+      {
+       "type": "editorial",
+       "evidence": "yes",
+       "accuracy": "editorial",
+       "by": "",
+       "excerpt": "",
+       "fix": "illustrations kept"
+      }
+     ]
+    },
+    {
+     "s": 2,
+     "field": "d",
+     "text": "Realists hold that universals exist; nominalists hold that only particulars exist.",
+     "accuracy": "supported",
+     "by": "PP; GIB",
+     "note": "Now in Paolini Paoletti's and Giberman's words: realists take universals to exist as mind-independent entities; nominalism about universals denies there are any.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "PP; GIB",
+       "excerpt": "the thesis that there are no universals",
+       "fix": "quoted and credited"
+      }
+     ]
+    },
+    {
+     "s": 3,
+     "field": "x",
+     "text": "Plato's Forms are the paradigm of realist universals, existing apart from the things that share in them; Aristotle placed universals in particulars.",
+     "accuracy": "supported",
+     "by": "PP; REP",
+     "note": "Paolini Paoletti's transcendent and immanent realism, now credited; the Republic quoted from the bundled Jowett translation.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "not-retrieved",
+       "accuracy": "supported",
+       "by": "PP",
+       "excerpt": "In transcendent realism, put forward by Plato",
+       "fix": "credited"
+      },
+      {
+       "type": "interpretive",
+       "evidence": "not-retrieved",
+       "accuracy": "supported",
+       "by": "PP",
+       "excerpt": "defended by Aristotle in opposition to his master",
+       "fix": "credited"
+      }
+     ]
+    },
+    {
+     "s": 4,
+     "field": "x",
+     "text": "Porphyry's questions set off a long medieval debate: realists held that universals exist, conceptualists that they exist as concepts in the mind, and nominalists, notably Ockham, that only particular things exist and general terms are signs standing for many of them.",
+     "accuracy": "overstated",
+     "by": "KLI; PEL",
+     "note": "Klima gives Porphyry's questions and the threefold classification, which he calls 'rather crude'; realists assert universals 'in and/or before particular things' (stated more exactly than 'exist'), nominalists acknowledge 'only, or primarily, universal words'. Ockham's view is as Pelletier gives it: the only real universals are universal concepts in the mind, natural signs of many things (concepts, where the old text said general terms).",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "no",
+       "accuracy": "supported",
+       "by": "KLI §1",
+       "excerpt": "irresistible for his medieval Latin commentators, beginning with Boethius",
+       "fix": "Porphyry's three questions given"
+      },
+      {
+       "type": "historical",
+       "evidence": "no",
+       "accuracy": "overstated",
+       "by": "KLI §1",
+       "excerpt": "this rather crude classification does not adequately reflect",
+       "fix": "the classification given with Klima's caveat"
+      },
+      {
+       "type": "historical",
+       "evidence": "no",
+       "accuracy": "overstated",
+       "by": "PEL §§3.2, 4",
+       "excerpt": "the only real universals are universal concepts in the mind",
+       "fix": "Ockham's universals as concepts, credited"
+      }
+     ]
+    },
+    {
+     "s": 5,
+     "field": "x",
+     "text": "Contemporary versions include trope theory and resemblance nominalism.",
+     "accuracy": "supported",
+     "by": "GIB",
+     "note": "Now with Giberman's statements of each.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "no",
+       "accuracy": "supported",
+       "by": "GIB",
+       "excerpt": "A trope is a particular (i.e., non-universal) qualitative nature.",
+       "fix": "credited"
+      }
+     ]
+    },
+    {
+     "s": "s",
+     "field": "s",
+     "text": "Plato, Republic V–VII; Aristotle, Categories; Porphyry, Isagoge; Ockham, Summa Logicae",
+     "accuracy": "overstated",
+     "by": "REP; KLI; PEL",
+     "note": "The Republic passage now quoted is in Book X of the bundled edition; V–VII are not cited for any claim of the new text. Aristotle's Categories is not cited for any sentence of the new text; dropped. Porphyry's Isagoge (KLI) and Ockham's Summa of Logic (PEL) kept."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "Properties, qualities or attributes that many particular things can share, such as redness or justice.",
+     "claims": [
+      {
+       "by": "MET"
+      },
+      {
+       "by": "GIB"
+      }
+     ]
+    },
+    {
+     "text": "Realists, in Michele Paolini Paoletti's words, hold that universals “exist as mind-independent entities”; nominalism about universals, as Daniel Giberman states it, is “the thesis that there are no universals”.",
+     "claims": [
+      {
+       "by": "PP"
+      },
+      {
+       "by": "GIB"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Paolini Paoletti calls Plato's view, on which universals (Plato's ideas or forms) exist even if uninstantiated, transcendent realism, and the view Aristotle defended “in opposition to his master”, on which they exist only if instantiated by objects, immanent realism.",
+     "claims": [
+      {
+       "by": "PP"
+      }
+     ]
+    },
+    {
+     "text": "In Jowett's translation of the Republic, Socrates begins an inquiry “in our usual manner: Whenever a number of individuals have a common name, we assume them to have also a corresponding idea or form” (Book X).",
+     "claims": [
+      {
+       "by": "REP"
+      }
+     ]
+    },
+    {
+     "text": "Porphyry's Isagoge left open whether genera and species are real or “situated in bare thoughts alone”, among other questions that, Gyula Klima writes, proved “irresistible for his medieval Latin commentators, beginning with Boethius”.",
+     "claims": [
+      {
+       "by": "KLI"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "In the usual classification of their answers, which Klima calls “rather crude”, realists assert “the existence of real universals in and/or before particular things”, conceptualists allow them only, or primarily, as concepts of the mind, and nominalists acknowledge only, or primarily, universal words.",
+     "claims": [
+      {
+       "by": "KLI"
+      }
+     ]
+    },
+    {
+     "text": "For William of Ockham, Jenny Pelletier writes, everything that exists in the created universe is a singular substance or a singular quality, and “the only real universals are universal concepts in the mind”, natural signs of several things at once.",
+     "claims": [
+      {
+       "by": "PEL"
+      }
+     ]
+    },
+    {
+     "text": "Among contemporary views Giberman describes trope theory, on which a trope is “a particular (i.e., non-universal) qualitative nature”, and resemblance nominalism, on which “qualitative classification is governed by primitive resemblance facts”.",
+     "claims": [
+      {
+       "by": "GIB"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    }
+   ],
+   "quotes": [
+    {
+     "q": "exist as mind-independent entities",
+     "checked": "PP §1"
+    },
+    {
+     "q": "the thesis that there are no universals",
+     "checked": "GIB §1"
+    },
+    {
+     "q": "in opposition to his master",
+     "checked": "PP §1"
+    },
+    {
+     "q": "in our usual manner: Whenever a number of individuals have a common name, we assume them to have also a corresponding idea or form",
+     "checked": "REP, Book X, block 4026, character for character by script (the sentence continues ':—do you understand me?'); Jowett's translation is public domain, so the 15-word limit does not apply"
+    },
+    {
+     "q": "situated in bare thoughts alone",
+     "checked": "KLI §1, Klima's translation of Porphyry"
+    },
+    {
+     "q": "irresistible for his medieval Latin commentators, beginning with Boethius",
+     "checked": "KLI §1 ('they certainly proved to be irresistible ...')"
+    },
+    {
+     "q": "the existence of real universals in and/or before particular things",
+     "checked": "KLI §1 (in and before italic in the source)"
+    },
+    {
+     "q": "rather crude",
+     "checked": "KLI §1 ('this rather crude classification does not adequately reflect the genuine, much more subtle differences of opinion')"
+    },
+    {
+     "q": "the only real universals are universal concepts in the mind",
+     "checked": "PEL §3.2"
+    },
+    {
+     "q": "a particular (i.e., non-universal) qualitative nature",
+     "checked": "GIB"
+    },
+    {
+     "q": "qualitative classification is governed by primitive resemblance facts",
+     "checked": "GIB"
+    }
+   ],
+   "s": "Plato, Republic X (Jowett trans.); Porphyry, Isagoge; Ockham, Summa Logicae",
+   "src": "PP",
+   "srcs": [
+    "KLI",
+    "PEL",
+    "GIB",
+    "MET",
+    "REP"
+   ],
+   "p": [
+    "plato",
+    "aristotle",
+    "ockham"
+   ]
+  },
+  "deduction": {
+   "old": [
+    {
+     "s": 1,
+     "field": "d",
+     "text": "Reasoning in which the conclusion follows necessarily from the premises: if the premises are true, the conclusion cannot be false.",
+     "accuracy": "supported",
+     "by": "DOU; BRS",
+     "note": "Douven: deduction is necessary inference, 'the truth of the premises guarantees the truth of the conclusion'. Kept as it stood.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DOU §1",
+       "excerpt": "the truth of the premises guarantees the truth of the conclusion",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 2,
+     "field": "x",
+     "text": "Deduction is not ampliative: its conclusion makes explicit what the premises already contain, which is the price of its certainty.",
+     "accuracy": "overstated",
+     "by": "DOU",
+     "note": "Douven calls induction and abduction ampliative; 'makes explicit' and 'the price of its certainty' are in no source consulted (and the sentence is a negative definition). Restated as Douven's division of inferences.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DOU §1",
+       "excerpt": "both are ampliative",
+       "fix": "restated positively"
+      },
+      {
+       "type": "editorial",
+       "evidence": "no",
+       "accuracy": "unverified",
+       "by": "",
+       "excerpt": "",
+       "fix": "'the price of its certainty' cut"
+      }
+     ]
+    },
+    {
+     "s": 3,
+     "field": "x",
+     "text": "Inferences that go beyond their premises, such as induction and abduction (inference to the best explanation), can be strong without being certain.",
+     "accuracy": "supported",
+     "by": "DOU",
+     "note": "Douven: non-necessary inferences are standardly grouped into inductive and abductive; induction's conclusion is made likely and not guaranteed. Merged with the sentence before, without the banned 'go beyond'.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DOU §1",
+       "excerpt": "It is standard practice to group non-necessary inferences into inductive and abductive ones",
+       "fix": "merged"
+      }
+     ]
+    },
+    {
+     "s": 4,
+     "field": "x",
+     "text": "Modern logic studies deduction through formal systems.",
+     "accuracy": "supported",
+     "by": "BRS",
+     "note": "Folded into Beall, Restall and Sagi's definitions of soundness and completeness; Aristotle's syllogistic added as their example of schemes, and Spinoza's Ethics, as Nadler describes its order, as a deductive work on the reading route.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "BRS",
+       "excerpt": "A proof system is sound with respect to a model-theoretic semantics",
+       "fix": "merged"
+      }
+     ]
+    },
+    {
+     "s": 5,
+     "field": "x",
+     "text": "A proof system is sound if everything it proves is valid and complete if it proves everything that is valid, and Gödel showed in his 1929 dissertation that first-order logic is complete.",
+     "accuracy": "supported",
+     "by": "BRS; KEN",
+     "note": "Definitions as Beall, Restall and Sagi give them; Kennedy: the completeness theorem was the main theorem of the dissertation (1929). Now credited.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "BRS",
+       "excerpt": "every model-theoretically valid argument has a proof in the system",
+       "fix": "credited"
+      },
+      {
+       "type": "historical",
+       "evidence": "no",
+       "accuracy": "supported",
+       "by": "KEN §2",
+       "excerpt": "The main theorem of his dissertation was the completeness theorem for first order logic",
+       "fix": "credited"
+      }
+     ]
+    },
+    {
+     "s": 6,
+     "field": "x",
+     "text": "His incompleteness theorems, published in 1931, showed by contrast that any consistent formal system in which a certain amount of arithmetic can be carried out is incomplete, and cannot prove its own consistency.",
+     "accuracy": "overstated",
+     "by": "RAA",
+     "note": "The theorems are stated correctly, but 'incomplete' there has another sense (negation-completeness: for every statement, it or its negation is derivable), which the old text ran together with the completeness of a proof system defined in the sentence before. Raatikainen's definition of that sense is now given first.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "overstated",
+       "by": "RAA §1.1",
+       "excerpt": "A formal system is complete if for every statement of the language of the system",
+       "fix": "the second sense of complete defined"
+      },
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "RAA §5",
+       "excerpt": "The article was published in January 1931",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": "srcs",
+     "field": "srcs",
+     "text": "Douven, “Abduction”; Raatikainen, “Gödel's Incompleteness Theorems”",
+     "accuracy": "supported",
+     "note": "Both kept; Kennedy's “Kurt Gödel” and Nadler's “Baruch Spinoza” added for the sentences they decide. The entry had no s line; one naming the Ethics is added."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "Reasoning in which the conclusion follows necessarily from the premises: if the premises are true, the conclusion cannot be false.",
+     "claims": [
+      {
+       "by": "DOU"
+      },
+      {
+       "by": "BRS"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Igor Douven groups induction and abduction (inference to the best explanation) as non-necessary inferences and deduction as necessary inference, in which “the truth of the premises guarantees the truth of the conclusion”; induction and abduction are ampliative, their conclusions adding to what the premises logically contain.",
+     "claims": [
+      {
+       "by": "DOU"
+      }
+     ]
+    },
+    {
+     "text": "Jc Beall, Greg Restall and Gil Sagi characterize logical consequence as “necessary truth preservation in virtue of form”, and note that all presentations of its rules rely on schemes, Aristotle's syllogistic being “a proud example”.",
+     "claims": [
+      {
+       "by": "BRS"
+      }
+     ]
+    },
+    {
+     "text": "Spinoza's Ethics is built deductively: in Steven Nadler's account the first proposition follows from the definitions and axioms of Part One, and “every subsequent proposition can be demonstrated using only what precedes it”.",
+     "claims": [
+      {
+       "by": "NAD"
+      },
+      {
+       "by": "SE"
+      }
+     ]
+    },
+    {
+     "text": "A proof system is sound with respect to a model-theoretic semantics, in Beall, Restall and Sagi's definitions, if every argument that has a proof in it is model-theoretically valid, and complete if every model-theoretically valid argument has a proof in it.",
+     "claims": [
+      {
+       "by": "BRS"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Juliette Kennedy writes that the main theorem of Gödel's dissertation (1929) was the completeness theorem for first-order logic, “Every valid logical expression is provable”.",
+     "claims": [
+      {
+       "by": "KEN"
+      }
+     ]
+    },
+    {
+     "text": "His incompleteness theorems (1931) concern another sense of the word, which Panu Raatikainen states: a formal system is complete if for every statement of its language either the statement or its negation can be derived.",
+     "claims": [
+      {
+       "by": "RAA"
+      }
+     ]
+    },
+    {
+     "text": "The first theorem shows that any consistent formal system within which “a certain amount of elementary arithmetic can be carried out” is incomplete in this sense, and the second that such a system cannot prove its own consistency.",
+     "claims": [
+      {
+       "by": "RAA"
+      }
+     ]
+    }
+   ],
+   "quotes": [
+    {
+     "q": "the truth of the premises guarantees the truth of the conclusion",
+     "checked": "DOU §1 (guarantees italic in the source)"
+    },
+    {
+     "q": "necessary truth preservation in virtue of form",
+     "checked": "BRS §1"
+    },
+    {
+     "q": "a proud example",
+     "checked": "BRS ('Aristotle’s syllogistic is a proud example.')"
+    },
+    {
+     "q": "every subsequent proposition can be demonstrated using only what precedes it",
+     "checked": "NAD §2"
+    },
+    {
+     "q": "Every valid logical expression is provable",
+     "checked": "KEN §2, the Completeness Theorem's statement"
+    },
+    {
+     "q": "a certain amount of elementary arithmetic can be carried out",
+     "checked": "RAA §1.1 (the source writes F in TeX)"
+    },
+    {
+     "q": "(no quotation) Part One opens with definitions and axioms",
+     "checked": "SE by script: Part I has Definitions I–VIII and Axioms I–VII before PROP. I, and PROP. I–XXXVI follow"
+    }
+   ],
+   "s": "Spinoza, Ethics, Part I (Elwes trans.)",
+   "src": "BRS",
+   "srcs": [
+    "DOU",
+    "RAA",
+    "KEN",
+    "NAD"
+   ],
+   "p": [
+    "aristotle",
+    "spinoza",
+    "godel"
+   ]
+  },
+  "essentialism": {
+   "old": [
+    {
+     "s": 1,
+     "field": "d",
+     "text": "The view that a kind of thing, or a social group, has a fixed essence that defines its members.",
+     "accuracy": "overstated",
+     "by": "RI; HEY",
+     "note": "Neither sense in the sources is put this way: in metaphysics Robertson Ishii's working definition (some objects have some essential properties) is about objects, and the humanities' use is, in Heyes's words, looser. Both senses now given in their words.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "RI §2; HEY §2",
+       "excerpt": "the doctrine that (at least some) objects have (at least some) essential properties",
+       "fix": "two senses, credited"
+      }
+     ]
+    },
+    {
+     "s": 2,
+     "field": "x",
+     "text": "In metaphysics, essentialism holds that things have some of their properties necessarily.",
+     "accuracy": "supported",
+     "by": "RI",
+     "note": "Merged into the definition.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "RI §2",
+       "excerpt": "the doctrine that (at least some) objects have (at least some) essential properties",
+       "fix": "merged"
+      }
+     ]
+    },
+    {
+     "s": 3,
+     "field": "x",
+     "text": "In social theory the term is usually critical: it names claims that women, races or nations have fixed natures.",
+     "accuracy": "overstated",
+     "by": "HEY",
+     "note": "Heyes: in the humanities the term implies, most commonly, an illegitimate generalization about identity, and is 'another philosophical term of abuse'; the list of women, races or nations is not in the source. Restated in her words.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "no",
+       "accuracy": "overstated",
+       "by": "HEY §2",
+       "excerpt": "an illegitimate generalization about identity",
+       "fix": "quoted"
+      }
+     ]
+    },
+    {
+     "s": 4,
+     "field": "x",
+     "text": "Spivak's “strategic essentialism” lets marginalized groups mobilize around shared identities while knowing those identities are constructed.",
+     "accuracy": "overstated",
+     "by": "HEY",
+     "note": "Heyes reports the suggestion, citing Spivak (1990: 1–16): acting as if an identity were uniform only for interim political goals, without implying a deeper authenticity. 'Knowing those identities are constructed' is not her gloss; restated.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "no",
+       "accuracy": "overstated",
+       "by": "HEY §2",
+       "excerpt": "Some suggest the deployment of “strategic essentialism”",
+       "fix": "restated as Heyes reports it"
+      }
+     ]
+    },
+    {
+     "s": 5,
+     "field": "x",
+     "text": "Philosophers distinguish essentialism about natural kinds, which Kripke and Putnam revived with claims such as that water is necessarily H2O, from essentialism about social groups.",
+     "accuracy": "overstated",
+     "by": "RI",
+     "note": "Robertson Ishii: Kripke (1972/1980) and Putnam (1975) made essentialist claims about cats and water. 'Revived' and the philosophers' distinction are in no source consulted; restated with her example.",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "overstated",
+       "by": "RI §3",
+       "excerpt": "made essentialist claims concerning, for example, cats and water",
+       "fix": "'revived' cut"
+      }
+     ]
+    },
+    {
+     "s": 6,
+     "field": "x",
+     "text": "Critics of the second, such as Sally Haslanger, analyze gender as a social position of systematic subordination, while Iris Marion Young and Natalie Stoljar account for women as a group without any shared essence: as a series unified by the practical realities its members live with, or as a resemblance class.",
+     "accuracy": "wrong",
+     "by": "MIK",
+     "note": "Mikkola places Haslanger under neo-gender realism, a family of views on which women share something (for Haslanger, a social position), so 'critic' of the essentialist side misplaces her; and Haslanger's gender is a subordinate or a privileged position, women being those subordinated. Young (whom Mikkola calls Iris Young) and Stoljar are her gender nominalists, correctly described; Butler's critique of gender realism, as Mikkola reports it, added.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "wrong",
+       "by": "MIK §4.2.1",
+       "excerpt": "a matter of occupying either a subordinate or a privileged social position",
+       "fix": "Haslanger placed and described as Mikkola has her"
+      },
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "MIK §4.1",
+       "excerpt": "a particular kind of social collective",
+       "fix": "kept, quoted"
+      }
+     ]
+    },
+    {
+     "s": "s",
+     "field": "s",
+     "text": "Spivak, “Subaltern Studies: Deconstructing Historiography” (1985)",
+     "accuracy": "unverified",
+     "by": "HEY",
+     "note": "The 1985 essay was not consulted and no source consulted cites it for the phrase; Heyes cites The Post-Colonial Critic (1990), pp. 1–16, which the line now names, with Kripke."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "In metaphysics, in Teresa Robertson Ishii's working definition, “the doctrine that (at least some) objects have (at least some) essential properties”.",
+     "claims": [
+      {
+       "by": "RI"
+      }
+     ]
+    },
+    {
+     "text": "In the humanities, Cressida Heyes writes, the term is used more loosely, most commonly for “an illegitimate generalization about identity”.",
+     "claims": [
+      {
+       "by": "HEY"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Robertson Ishii notes that Saul Kripke (1972/1980) and Hilary Putnam (1975) made essentialist claims about, for example, cats and water, such as that in any possible world “anything that is not composed of molecules of H2O is not water”.",
+     "claims": [
+      {
+       "by": "RI"
+      }
+     ]
+    },
+    {
+     "text": "Heyes calls the word “another philosophical term of abuse, intended to capture a multitude of sins”, and reports the suggestion of “strategic essentialism”, which she credits to Gayatri Chakravorty Spivak (1990): treating an identity as uniform only for interim political goals, with no claim to any deeper authenticity.",
+     "claims": [
+      {
+       "by": "HEY"
+      }
+     ]
+    },
+    {
+     "text": "Mari Mikkola reports feminist critiques of gender realism, the view that there is something women as women share, among them Judith Butler's that identity categories are always normative and so exclusionary.",
+     "claims": [
+      {
+       "by": "MIK"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Among the gender nominalists, who deny this, she places Iris Young, for whom women make up “a particular kind of social collective”, a series unified by practico-inert realities, and Natalie Stoljar, for whom anyone who resembles a woman paradigm closely enough belongs to the resemblance class woman.",
+     "claims": [
+      {
+       "by": "MIK"
+      }
+     ]
+    },
+    {
+     "text": "Among the neo-gender realists she places Sally Haslanger, for whom gender is “a matter of occupying either a subordinate or a privileged social position”, women being those systematically subordinated along some dimension and marked for it by observed or imagined bodily features.",
+     "claims": [
+      {
+       "by": "MIK"
+      }
+     ]
+    }
+   ],
+   "quotes": [
+    {
+     "q": "the doctrine that (at least some) objects have (at least some) essential properties",
+     "checked": "RI §2"
+    },
+    {
+     "q": "an illegitimate generalization about identity",
+     "checked": "HEY §2 (2016 revision; the 2024 revision drops the passage)"
+    },
+    {
+     "q": "anything that is not composed of molecules of H2O is not water",
+     "checked": "RI §3 (2 a subscript in the source)"
+    },
+    {
+     "q": "another philosophical term of abuse, intended to capture a multitude of sins",
+     "checked": "HEY §2"
+    },
+    {
+     "q": "strategic essentialism",
+     "checked": "HEY §2, citing Spivak (1990: 1–16)"
+    },
+    {
+     "q": "a particular kind of social collective",
+     "checked": "MIK §4.1.1"
+    },
+    {
+     "q": "a matter of occupying either a subordinate or a privileged social position",
+     "checked": "MIK §4.2.1"
+    }
+   ],
+   "s": "Kripke, Naming and Necessity (1972/1980); Spivak, The Post-Colonial Critic (1990), pp. 1–16",
+   "src": "RI",
+   "srcs": [
+    "HEY",
+    "MIK"
+   ],
+   "p": [
+    "kripke",
+    "spivak",
+    "butler",
+    "haslanger"
+   ]
+  },
+  "existentialism": {
+   "old": [
+    {
+     "s": 1,
+     "field": "d",
+     "text": "Philosophy centered on concrete human existence, freedom and responsibility.",
+     "accuracy": "supported",
+     "by": "AHO",
+     "note": "Aho's opening: a movement of mid-twentieth-century France whose generation confronted death, freedom and meaninglessness. Now in his words.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "supported",
+       "by": "AHO intro",
+       "excerpt": "the anxiety-provoking givens of death, freedom, and meaninglessness",
+       "fix": "quoted and credited"
+      }
+     ]
+    },
+    {
+     "s": 2,
+     "field": "d",
+     "text": "Sartre's formula: existence precedes essence.",
+     "accuracy": "supported",
+     "by": "AHO",
+     "note": "Aho calls it 'arguably the unifying principle of existentialism' and traces it to Heidegger's Being and Time; both added.",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AHO §2",
+       "excerpt": "arguably the unifying principle of existentialism",
+       "fix": "quoted"
+      }
+     ]
+    },
+    {
+     "s": 3,
+     "field": "x",
+     "text": "Kierkegaard insisted on the single individual and the leap of faith against Hegel's system, and Nietzsche on the creation of values after the death of God.",
+     "accuracy": "supported",
+     "by": "AHO; CRO",
+     "note": "Aho on Kierkegaard against Hegel and Abraham's leap, and on Nietzsche's master morality; Crowell: both came to be seen as precursors. Now credited.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AHO",
+       "excerpt": "whose scorn was directed primarily at G.W. F. Hegel",
+       "fix": "credited"
+      },
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AHO",
+       "excerpt": "the self-directed power to create their own meanings and values",
+       "fix": "quoted"
+      }
+     ]
+    },
+    {
+     "s": 4,
+     "field": "x",
+     "text": "Sartre argued that human beings have no fixed nature and are condemned to be free, responsible for what they make of themselves.",
+     "accuracy": "supported",
+     "by": "AHO",
+     "note": "Aho: Sartre goes so far as to say there is no human nature; condemned to be free, with Sartre's reason quoted. 'Responsible for what they make of themselves' is not in the new text, which keeps to the two claims quoted.",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AHO",
+       "excerpt": "there is no human nature because there is no aspect of our facticity",
+       "fix": "restated with Sartre's reason"
+      }
+     ]
+    },
+    {
+     "s": 5,
+     "field": "x",
+     "text": "Beauvoir's The Second Sex analyzed how woman is made the Other, and Camus explored the absurd.",
+     "accuracy": "supported",
+     "by": "BUR; ARO",
+     "note": "Burke on the Inessential Other; Aronson on the absurd. Now credited.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "no",
+       "accuracy": "supported",
+       "by": "BUR §7",
+       "excerpt": "the category of the Inessential Other",
+       "fix": "credited"
+      },
+      {
+       "type": "interpretive",
+       "evidence": "no",
+       "accuracy": "supported",
+       "by": "ARO",
+       "excerpt": "is what Camus calls the absurd",
+       "fix": "credited"
+      }
+     ]
+    },
+    {
+     "s": 6,
+     "field": "x",
+     "text": "The label was mostly applied by others, and Heidegger rejected it.",
+     "accuracy": "overstated",
+     "by": "AHO; CRO",
+     "note": "Aho: the word was introduced by Marcel in 1943 and of the major contributors only Sartre and Beauvoir self-identified as existentialists. 'Mostly applied by others' is not said; restated. Heidegger's rejection (1946, of the retrospective label) is in Crowell's earlier version of the Stanford article, which names Camus too; the current version does not discuss it. Camus's denial is also in Aronson.",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "AHO",
+       "excerpt": "only Sartre and Beauvoir explicitly self-identified",
+       "fix": "restated"
+      },
+      {
+       "type": "historical",
+       "evidence": "no",
+       "accuracy": "supported",
+       "by": "CRO",
+       "excerpt": "in 1946 Heidegger would repudiate the retrospective labelling",
+       "fix": "credited to Crowell"
+      }
+     ]
+    },
+    {
+     "s": "s",
+     "field": "s",
+     "text": "Kierkegaard, Fear and Trembling (1843); Sartre, Existentialism Is a Humanism (1946); Beauvoir, The Second Sex (1949)",
+     "accuracy": "supported",
+     "by": "AHO",
+     "note": "Aho cites Fear and Trembling (1843) and Sartre (1946); Being and Time (1927) added for the formula's source. The year of The Second Sex is in no source consulted, so the line gives the title alone."
+    }
+   ],
+   "new_d": [
+    {
+     "text": "An intellectual movement that, in Kevin Aho's words, “exploded on the scene in mid-twentieth-century France”, when a generation was forced to confront “the anxiety-provoking givens of death, freedom, and meaninglessness”.",
+     "claims": [
+      {
+       "by": "AHO"
+      }
+     ]
+    },
+    {
+     "text": "Its formula, “existence precedes essence”, is in Aho's words “arguably the unifying principle of existentialism”.",
+     "claims": [
+      {
+       "by": "AHO"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Aho traces the formula to Being and Time, where Heidegger writes “The ‘essence’ of Dasein lies in its existence”; Sartre goes on to say that there is no human nature, and that we are condemned to be free because “there are no excuses behind us nor justifications before us”.",
+     "claims": [
+      {
+       "by": "AHO"
+      }
+     ]
+    },
+    {
+     "text": "Kierkegaard and Nietzsche, in Steven Crowell's words, “came to be seen as precursors of the movement”: in Aho's account Kierkegaard aimed his scorn at Hegel's system and made Abraham a knight of faith “leaping” into a paradox (Fear and Trembling, 1843), and Nietzsche set against slave morality a master morality of those with “the self-directed power to create their own meanings and values” after the death of God.",
+     "claims": [
+      {
+       "by": "CRO"
+      },
+      {
+       "by": "AHO"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "In The Second Sex, Megan Burke writes, Beauvoir uses the category of the Inessential Other to designate the situation of women; Camus's absurd, in Ronald Aronson's account, is the situation between our impulse to ask ultimate questions and the impossibility of any adequate answer.",
+     "claims": [
+      {
+       "by": "BUR"
+      },
+      {
+       "by": "ARO"
+      }
+     ]
+    },
+    {
+     "text": "The word was “first introduced by Marcel in 1943”, Aho writes, and only Sartre and Beauvoir among the movement's major contributors explicitly called themselves existentialists; Camus “denied being an existentialist” (Aronson), and in 1946 Heidegger rejected the label for his earlier work (Crowell).",
+     "claims": [
+      {
+       "by": "AHO"
+      },
+      {
+       "by": "ARO"
+      },
+      {
+       "by": "CRO"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    }
+   ],
+   "quotes": [
+    {
+     "q": "exploded on the scene in mid-twentieth-century France",
+     "checked": "AHO, first sentence"
+    },
+    {
+     "q": "the anxiety-provoking givens of death, freedom, and meaninglessness",
+     "checked": "AHO, first sentence"
+    },
+    {
+     "q": "existence precedes essence",
+     "checked": "AHO §2"
+    },
+    {
+     "q": "arguably the unifying principle of existentialism",
+     "checked": "AHO §2"
+    },
+    {
+     "q": "The ‘essence’ of Dasein lies in its existence",
+     "checked": "AHO, quoting Being and Time (1927 [1962, 42])"
+    },
+    {
+     "q": "there are no excuses behind us nor justifications before us",
+     "checked": "AHO, quoting Sartre 1946 [2001, 296]"
+    },
+    {
+     "q": "came to be seen as precursors of the movement",
+     "checked": "CRO §1"
+    },
+    {
+     "q": "leaping",
+     "checked": "AHO, '“leaping” (springer) into a paradox', Fear and Trembling (1843 [1985, 84])"
+    },
+    {
+     "q": "the self-directed power to create their own meanings and values",
+     "checked": "AHO"
+    },
+    {
+     "q": "denied being an existentialist",
+     "checked": "ARO ('This essay belongs squarely in the philosophical tradition of existentialism but Camus denied being an existentialist.')"
+    },
+    {
+     "q": "first introduced by Marcel in 1943",
+     "checked": "AHO"
+    }
+   ],
+   "s": "Kierkegaard, Fear and Trembling (1843); Heidegger, Being and Time (1927); Sartre, Existentialism Is a Humanism (1946); Beauvoir, The Second Sex",
+   "src": "AHO",
+   "srcs": [
+    "CRO",
+    "BUR",
+    "ARO"
+   ],
+   "p": [
+    "kierkegaard",
+    "nietzsche",
+    "heidegger",
+    "sartre",
+    "beauvoir",
+    "camus"
+   ]
+  }
+ }
+}
