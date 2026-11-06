@@ -139,7 +139,7 @@ function dropMarginRefs(items, y0, y1) {
     return !(x >= right + B * 0.3 || x + (it.width || 0) <= left - B * 0.3);
   });
 }
-function linesOf(items) {
+function linesOf(items, bold) {
   const its = [];
   for (const it of items) {
     const t = it.transform;
@@ -149,7 +149,7 @@ function linesOf(items) {
       continue;
     }
     // Ligatures resolved here; soft hyphens are kept until the line is assembled, since one ending a line marks a word broken across lines.
-    its.push({ s: it.str.replace(/[ﬀ-ﬆ]/g, (c) => LIG[c]), x: t[4], y: t[5], z: Math.hypot(t[2], t[3]) || it.height || 10, w: it.width || 0 });
+    its.push({ s: it.str.replace(/[ﬀ-ﬆ]/g, (c) => LIG[c]), x: t[4], y: t[5], z: Math.hypot(t[2], t[3]) || it.height || 10, w: it.width || 0, b: !!(bold && bold(it.fontName)) });
   }
   its.sort((a, b) => b.y - a.y || a.x - b.x);
   const lines = [];
@@ -175,7 +175,10 @@ function linesOf(items) {
     const real = L.items.filter((it) => !it.gap);
     if (!real.length) return { t: "" };
     const a = real[0], b = real[real.length - 1];
-    return { t: unmerge(txt.replace(/\s+/g, " ").trim().replace(/[\u00AD\u2010\u2011]$/u, "-").replace(/\u00AD/g, "")), x: a.x, xe: b.x + b.w, y: L.y, z: L.z };
+    // set in bold: nearly all its letters are in a bold face
+    const lets = (it) => (it.s.match(/\p{L}/gu) || []).length, all = real.reduce((n, it) => n + lets(it), 0);
+    const bd = all >= 3 && real.reduce((n, it) => n + (it.b ? lets(it) : 0), 0) >= all * 0.85;
+    return { t: unmerge(txt.replace(/\s+/g, " ").trim().replace(/[\u00AD\u2010\u2011]$/u, "-").replace(/\u00AD/g, "")), x: a.x, xe: b.x + b.w, y: L.y, z: L.z, bd };
   }).filter((l) => l.t);
 }
 // Scanned books often lose the space after a short word ("ofselection", "inDeleuze's", "ofthe").
@@ -349,6 +352,7 @@ async function pdfOpen(buf) {
   catch (e) { stop(); if (e && e.name === "PasswordException") throw new UErr("This PDF is password-protected. Remove the password, then load it again."); throw e; }
   return { pdf, stop };
 }
+const BOLD_FACE = /bold|black|heavy|semibold|demibold|[-,]bd\b|-b$/i, FONT_LOOKS = 40;
 /* ---------- highlights made in another app: Highlight, Underline and Squiggly annotations, with their comments ----------
    The words under each one are read from the page's text items (whole words, line by line), then found in the book's own text. */
 const MARK_TYPES = new Set(["Highlight", "Underline", "Squiggly"]);
@@ -491,7 +495,7 @@ async function parsePDF(buf, say) {
   try { const m = await pdf.getMetadata(); title = clean(m?.info?.Title || ""); author = clean(m?.info?.Author || ""); } catch {}
   if (/^(microsoft|untitled)|\.(pdf|docx?|indd|tex)$/i.test(title)) title = "";
   let labels = null; try { labels = await pdf.getPageLabels(); } catch {}
-  const pages = [], spaceCheck = { tried: 0, fixed: 0, on: false };
+  const pages = [], spaceCheck = { tried: 0, fixed: 0, on: false }, faceBold = new Map(); let fontLooks = 0;
   try {
     for (let p = 1; p <= n; p++) {
       if (p === 1 || p % 10 === 0) { say(`Reading page ${p} of ${n}…`); await new Promise((r) => setTimeout(r, 0)); }
@@ -500,13 +504,22 @@ async function parsePDF(buf, say) {
       const tc = await page.getTextContent();
       // The source's own spaces (sourceSpaces): tried on the first pages with text, and kept up for the whole book only where
       // they change something, since reading a page's glyphs takes longer than reading its text.
+      let ol = null;
       if (spaceCheck.on || spaceCheck.tried < 12) {
         if (tc.items.length) {
-          try { const ol = await page.getOperatorList(); const c = sourceSpaces(tc.items, ol, window.pdfjsLib.OPS); spaceCheck.fixed += c; } catch {}
+          try { ol = await page.getOperatorList(); const c = sourceSpaces(tc.items, ol, window.pdfjsLib.OPS); spaceCheck.fixed += c; } catch {}
           if (++spaceCheck.tried === 12 || p === n) spaceCheck.on = spaceCheck.fixed >= 10;
         }
       }
-      pages.push({ lines: linesOf(dropMarginRefs(tc.items, vb[1], vb[3])), y0: vb[1], y1: vb[3] });
+      // Which faces are bold, by their names ("…+Minion-Bold"): PDF.js names a face only once the page's glyphs are read, so a
+      // page that brings a face not seen before is read for them (at most FONT_LOOKS pages; a face never named counts as regular).
+      const fresh = [...new Set(tc.items.map((it) => it.fontName))].filter((f) => f && !faceBold.has(f));
+      if (fresh.length && fontLooks < FONT_LOOKS) {
+        fontLooks++;
+        try { if (!ol) await page.getOperatorList(); } catch {}
+        for (const f of fresh) { let nm = ""; try { if (page.commonObjs.has(f)) nm = page.commonObjs.get(f).name || ""; } catch {} faceBold.set(f, BOLD_FACE.test(nm)); }
+      }
+      pages.push({ lines: linesOf(dropMarginRefs(tc.items, vb[1], vb[3]), (f) => faceBold.get(f)), y0: vb[1], y1: vb[3] });
       try { const anns = await page.getAnnotations(); if (anns.some((a) => MARK_TYPES.has(a.subtype))) marks.push(...marksOnPage(anns, tc.items).map((m) => ({ ...m, p: p - 1 }))); } catch {}
       page.cleanup();
     }
@@ -572,6 +585,9 @@ async function parsePDF(buf, say) {
   const gaps = [];
   pages.forEach((pg) => { const L = pg.lines, B = pg.body; for (let i = 1; i < L.length; i++) if (near(L[i].z, B) && near(L[i - 1].z, B)) { const d = L[i - 1].y - L[i].y; if (d > B * 0.6 && d < B * 3) gaps.push(d / B); } });
   const leadR = median(gaps) || 1.3; // line spacing, as a multiple of the body size
+  // Bold at the text's size marks a heading only in a book whose text is mostly regular.
+  const sized = pages.flatMap((pg) => pg.lines.filter((l) => near(l.z, pg.body)));
+  const boldOK = sized.length > 0 && sized.filter((l) => l.bd).length <= sized.length * 0.3;
 
   // running heads and folios
   const inEdge = (l, pg) => { const h = pg.y1 - pg.y0; return l.y > pg.y1 - h * 0.13 || l.y < pg.y0 + h * 0.11; };
@@ -817,7 +833,12 @@ async function parsePDF(buf, say) {
         below = i + 1 < L.length ? l.y - L[i + 1].y > pitch * 1.35 : L.length <= 3 && l.y > pg.y0 + (pg.y1 - pg.y0) * 0.5;
       // (a line set apart that is a title the book's contents lists is a heading, in any case and at any size: "holes", "ada")
       const listed = words <= 12 && tocTitles.has(norm(l.t)) && (above || below || i === 0) && l.z >= B * 0.9;
-      if ((l.z >= B * 1.18 && words <= 16 && plausible && (headOpen || above || below)) || (listed && !headOpen)) {
+      // (a short line in bold at the text's own size, set apart or after a finished sentence, in a book whose text is not bold
+      // and which has no outline of its own to give its sections)
+      const boldHead = boldOK && !hasOutline && l.bd && words <= 12 && l.z >= B * 0.9 && l.z < B * 1.18 && (headOpen || /^[^\p{L}]*\p{Lu}|^[\d.IVXLC]+\s/u.test(l.t))
+        && !/[,;]$/.test(l.t) && (headOpen ? prev.bd : (above || below || i === 0 || (!last || END.test(last.t)) && l.xe < right - B * 3))
+        && !(i + 1 < fnStart && L[i + 1].bd && !headOpen && L[i + 1].z < B * 1.18 && l.y - L[i + 1].y < pitch * 1.35 && L[i + 1].xe >= right - B * 3);
+      if ((l.z >= B * 1.18 && words <= 16 && plausible && (headOpen || above || below)) || (listed && !headOpen) || boldHead) {
         flush(); carry = false; last = null;
         // A second line of the same heading has the same size and follows closely; anything else
         // (a chapter title, then a section title) is a heading of its own.
