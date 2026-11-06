@@ -335,8 +335,10 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .book :is(.bp, .bq).li { text-indent: -1.3em; padding-left: 1.3em; } /* a list item: its number hangs, its run-over lines align */
 .bfn { font-size: 0.78em; line-height: 1.5; color: var(--muted); padding-left: 1em; }
 .bp + .bfn, .bq + .bfn, .bh + .bfn { margin-top: 0.9em !important; padding-top: 0.5em; border-top: 1px solid var(--rule); }
-.bpg { display: flex; align-items: center; gap: 8px; margin: 0.5em 0; min-height: 1em; font: 500 13px/1 var(--f-ui); color: var(--muted); user-select: none; -webkit-user-select: none; }
-.bpg::before { content: ""; flex: 1; border-top: 1px dotted var(--rule); }
+/* A page that begins between two paragraphs: its number sits small at the right in a narrow strip, with no rule across the text,
+   so the page reads on as it does where a page begins inside a paragraph (.pgm). The footer says the page too. */
+.bpg { display: block; height: 12px; margin: 0 0 2px; text-align: right; font: 500 11px/12px var(--f-ui); letter-spacing: 0.04em;
+  color: var(--muted); user-select: none; -webkit-user-select: none; }
 .book mark { background: var(--mark); color: inherit; cursor: pointer; box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: 0 1px; }
 .book mark.k-gloss, .note.k-gloss .passage span { background: var(--mk-gloss); }
 .book mark.k-question, .note.k-question .passage span { background: var(--mk-question); }
