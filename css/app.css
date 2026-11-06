@@ -888,6 +888,14 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 /* Verse line by line (isVerse): never justified, a long line's run-over hanging under it */
 #reader :is(#book, #flipbook) .verse { text-align: left !important; text-align-last: auto !important; hyphens: manual !important; -webkit-hyphens: manual !important; word-spacing: normal !important; text-indent: 1.5em hanging each-line; text-wrap: wrap; }
 .book .vs { display: none; }
+/* A table's rows (cells stored with " · " between them): a grid whose columns line up from row to row, ruled between rows. */
+#reader :is(#book, #flipbook) .trow { display: grid; grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); column-gap: 0.9em; margin: 0;
+  padding: 0.3em 0; border-bottom: 1px solid var(--rule); font-size: 0.9em; line-height: 1.35; text-indent: 0 !important; text-align: left !important;
+  text-align-last: auto !important; word-spacing: normal !important; hyphens: auto; -webkit-hyphens: auto; overflow-wrap: anywhere; }
+#reader :is(#book, #flipbook) :not(.trow) + .trow { border-top: 1px solid var(--rule); margin-top: 0.4em; }
+#reader :is(#book, #flipbook) .trow + :not(.trow) { margin-top: 0.4em; }
+.trow .tsep { display: none; }
+.trow > .mnote { grid-column: 1 / -1; }
 /* a page marker with no number at the very start of a book (an unnumbered title page) draws nothing */
 :is(#book, #flipbook) > .bpg:first-child:empty { display: none; }
 #reader.paged-reader :is(#book, #flipbook) .bh { break-after: avoid; break-inside: avoid; text-wrap: balance; }

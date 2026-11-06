@@ -9,7 +9,8 @@ Made-up book only, phone-sized screen, Swipe pages. Checks that:
   5. a chapter title of more than a line or two at heading size is set smaller;
   6. Justified pages are justified at the usual type size and set ragged right at a large one;
   7. a proposition in the geometric order is set apart, its label in small capitals; a proof's label in italics;
-  8. a book's contents, one entry a line or run together, are drawn as rows, title and page.
+  8. a book's contents, one entry a line or run together, are drawn as rows, title and page;
+  9. a table's rows (cells stored with " · " between them) are drawn as a grid, columns lined up, the text unchanged.
 Needs: pip install playwright && playwright install chromium
 """
 import os
@@ -34,7 +35,9 @@ BOOK = """(v) => (async () => {
     { k: 'p', x: 'A great hall—many guests whom we are receiving—among them Irma, whom I immediately take aside, as though to answer her letter, to reproach her—' + P.repeat(2) },
     { k: 'h', l: 1, x: 'A Short Title' },
     { k: 'p', x: 'PROP. XIII. Substance absolutely infinite is indivisible.' }, { k: 'p', x: 'Proof.—If it could be divided, the parts would retain its nature.' },
-    { k: 'front', x: 'second sight 18 anna 1 23 gambling on the future 27 nets 46 digits 5 1 holes 55' }, { k: 'front', x: 'silicon 25 1' }];
+    { k: 'front', x: 'second sight 18 anna 1 23 gambling on the future 27 nets 46 digits 5 1 holes 55' }, { k: 'front', x: 'silicon 25 1' },
+    { k: 'p', x: 'Config 1 · 0: move right, config 1 · 1: move right, config 2' }, { k: 'p', x: 'Config 2 · 0: write 1, move right, config 3 · 1: move right, \u0001config 2\u0002' },
+    { k: 'p', x: 'A sentence with one middle dot · in it stays a paragraph.' }];
   for (let n = 0; n < 30; n++) B.push({ k: 'p', x: P.repeat(3) });
   await put('content', 'v', B);
   await put('texts', 'v', { title: 'Verse', author: 'Test', hasContent: true, total: B.length, pos: 0, status: 'reading', createdAt: 1, updatedAt: 1, sections: [{ id: 'c1', label: 'VI' }] });
@@ -111,6 +114,19 @@ async def main():
         t = await page.evaluate("[[...R.els[12].querySelectorAll('.tocrow')].map((r) => r.querySelector('.toct').textContent.trim() + '=' + r.dataset.tocpage), R.els[12].textContent === R.blocks[12].x, [...R.els[13].querySelectorAll('.tocrow')].map((r) => r.dataset.tocpage)]")
         check(t[0] == ["second sight=18", "anna 1=23", "gambling on the future=27", "nets=46", "digits=51", "holes=55"] and t[1] and t[2] == ["251"],
               f"a book's contents are rows, a split page number read in the contents' order, the text as stored ({t})")
+        # 9 a table's rows: a grid, columns lined up, separators hidden but kept in the text
+        await page.evaluate("goTo(14)"); await page.wait_for_timeout(300)
+        tb = await page.evaluate("""() => { const a = R.els[14], b = R.els[15], c = R.els[16];
+          const xs = (el) => [...el.querySelectorAll('.tc')].map((t) => Math.round(t.getBoundingClientRect().left));
+          const last = [...b.querySelectorAll('.tc')].pop(), tn = last.lastChild.nodeType === 3 ? last.lastChild : last.lastChild.lastChild;
+          const r = document.createRange(); r.setStart(a.querySelector('.tc').firstChild, 0); r.setEnd(a.querySelectorAll('.tc')[1].firstChild, 2);
+          return { cls: [a.className, b.className, c.className], grid: getComputedStyle(a).display, xa: xs(a), xb: xs(b), seps: a.querySelectorAll('.tsep').length,
+                   sepShown: getComputedStyle(a.querySelector('.tsep')).display, em: !!b.querySelector('.tc em'),
+                   end: offsetIn(15, tn, tn.data.length), len: plain(R.blocks[15].x).length, sel: selectionText(r) }; }""")
+        check("trow" in tb["cls"][0] and "trow" in tb["cls"][1] and "trow" not in tb["cls"][2] and tb["grid"] == "grid" and tb["xa"] == tb["xb"] and len(tb["xa"]) == 3,
+              f"a table's rows are drawn as a grid, their columns lined up; a sentence with one middle dot stays a paragraph ({tb['cls']}, {tb['xa']}, {tb['xb']})")
+        check(tb["seps"] == 2 and tb["sepShown"] == "none" and tb["em"] and tb["end"] == tb["len"] and tb["sel"] == "Config 1 · 0:",
+              f"a row's separators are hidden yet kept: italics stay, places are the stored text's, a passage across cells is quoted as stored ({tb})")
         check(not errs, f"no script errors ({errs[:2]})")
         await browser.close()
 

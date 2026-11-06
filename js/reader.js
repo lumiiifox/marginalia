@@ -364,8 +364,22 @@ const isListItem = (b) => (b.k === "p" || b.k === "q") && LIST_ITEM.test(plain(b
 // A word joiner before a dash set close to its word (".rx": drawn, never counted as the text's), so a line never starts with "—".
 const WJ = `<span class="rx">\u2060</span>`;
 const dress = (html, verse) => (verse ? html.replace(/ \/ /g, VBR) : html).replace(/([^\s>]|<\/em>)(?=—)/g, `$1${WJ}`);
-function inlineHTML(x, marks) { return fnRefs(inlineMarks(x, marks)); }
-function inlineMarks(x, marks) {
+// A table's row, stored as its cells joined by " · " (as the importers write a table): a block with two to six short cells, beside
+// another block split into as many, is drawn as a row of a grid, its columns lined up with its neighbours'. The separators stay in
+// the page, hidden, so a passage chosen from a row is quoted as stored and keeps its place.
+const TSEP = " · ";
+const cellsOf = (x) => plain(x || "").split(TSEP);
+function tableCols(blocks, i) {
+  const b = blocks[i];
+  if (!b || !["p", "q"].includes(b.k) || !(b.x || "").includes(TSEP)) return 0;
+  const c = cellsOf(b.x), n = c.length;
+  if (n < 2 || n > 6 || c.some((t) => !t.trim() || t.length > 80)) return 0;
+  const same = (j) => { const o = blocks[j]; return !!o && o.k === b.k && (o.x || "").includes(TSEP) && cellsOf(o.x).length === n; };
+  return same(i - 1) || same(i + 1) ? n : 0;
+}
+function inlineHTML(x, marks, cols) { return fnRefs(inlineMarks(x, marks, cols)); }
+function inlineMarks(x, marks, cols) {
+  if (cols) return `<span class="tc">${inlineMarks(x, marks)}</span>`.replace(/ · /g, `</span><span class="tsep"> · </span><span class="tc">`);
   if (!marks || !marks.length) return dress(esc(x).replace(/\u0001/g, "<em>").replace(/\u0002/g, "</em>"), isVerse(x));
   let raw = x;
   if (marks && marks.length) {
@@ -438,6 +452,8 @@ function blockHTML(b, i, marks) {
     // a chapter title of more than a line or two at heading size ("Of the Interior Beginnings of Voluntary Motions; …") is set smaller
     return `<h2 class="bh l${titleLevel(b)}${plain(html.replace(/<[^>]+>/g, "")).length > 60 ? " long" : ""}" data-i="${i}">${html}${notes}</h2>`;
   }
+  const cols = tableCols(R.blocks, i);
+  if (cols) return `<p class="${b.k === "q" ? "bq" : "bp"} trow" style="--cols:${cols}" data-i="${i}">${inlineHTML(b.x || "", m, cols)}${marginHTML(m, b.x || "")}</p>`;
   const [x0, lead] = leadIn(b, inlineHTML(b.x || "", m)), x = x0 + marginHTML(m, b.x || ""), v = (isVerse(b.x || "") ? " verse" : "") + (lead ? " " + lead : "") + (!lead && isListItem(b) ? " li" : "");
   if (role === "title") return `<p class="btitle" data-i="${i}">${x}</p>`;
   if (role === "text") return `<p class="bp${b.k === "c" ? " cont" : ""}${v}" data-i="${i}">${x}</p>`;
