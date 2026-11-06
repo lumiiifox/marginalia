@@ -1061,4 +1061,6 @@ const VERIFIED_TERMS = ["desiring-production", "body-without-organs", "syntheses
   // Nietzsche on the way to Deleuze and Land (tests/audit/glossary-nietzsche.json)
   "will-to-power", "eternal-recurrence", "ressentiment", "genealogy", "genetic-fallacy",
   // Land and accelerationism, and the terms the Spinoza → Deleuze close reading points to (tests/audit/glossary-route2.json)
-  "hyperstition", "accelerationism", "necessity", "virtue-ethics"];
+  "hyperstition", "accelerationism", "necessity", "virtue-ethics",
+  // the last route terms: being, its kinds, inference and the existentialists (tests/audit/glossary-route3.json)
+  "ontology", "metaphysics", "accident", "universals", "deduction", "essentialism", "existentialism"];

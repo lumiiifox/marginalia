@@ -134,8 +134,7 @@
   }
  },
  "note": "Claims the sources consulted did not cover were cut. Contested readings are credited to the scholar who makes them (Palmer on Parmenides, Korab-Karpowicz on Heidegger, Lawlor on Derrida, Mikkola's grouping of feminist accounts). Two sources are earlier versions of Stanford articles, cited from the SEP archive because the current versions dropped the passages: Heyes's 'Identity Politics' (2016 revision) for the humanities sense of essentialism and strategic essentialism, and Crowell's 'Existentialism' (2010 revision) for Heidegger's and Camus's rejection of the label. Quine's slogan is given in the Internet Encyclopedia's popularized form, since the old wording was not found in any source consulted. Fields r, vs, br and k are unchanged; p follows the thinkers the new text names (accident drops Aquinas; deduction drops Descartes and adds Gödel; metaphysics adds Derrida and Kripke; essentialism drops Aristotle and adds Kripke and Haslanger). The terms wait under pending, outside terms, until the independent review passes, so they stay out of VERIFIED_TERMS (tests/mastery.py reads terms) and keep their Unchecked mark in the app.",
- "terms": {},
- "pending": {
+ "terms": {
   "ontology": {
    "old": [
     {
