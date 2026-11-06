@@ -430,6 +430,23 @@ async def main(paths):
                     const counts = new Map(); for (const w of vocab.toLowerCase().match(/\\p{L}+/gu)) counts.set(w, (counts.get(w) || 0) + 1);
                     return cases.map(([inp, want]) => [ocrRepair([{ k: "p", x: inp }], counts)[0].x, want]); }""", [OCR_CASES, vocab]):
                     check(got == want, f"OCR repair: {want!r}" + ("" if got == want else f" (got {got!r})"))
+                # A paragraph the page's layout split between a quotation and prose is mended; real quotations and verse stay.
+                m = await page.evaluate("""() => [
+                  mendSplits([{ k: "p", x: "Later to be known as Ada Lovelace, she was then Ada" }, { k: "q", x: "Byron, the only child of Annabella." }]),
+                  mendSplits([{ k: "q", x: "We gave no thought to anything at all. Every-" }, { k: "pg", x: "9" }, { k: "p", x: "thing was there for the taking." }]),
+                  mendSplits([{ k: "p", x: "were all at sea. It seems like" }, { k: "pg", x: "4" }, { k: "p", x: "yesterday to me." }]),
+                  mendSplits([{ k: "q", x: "O water, voice of my heart, crying in the sand, / All night long" }, { k: "p", x: "wrote Yeats." }]),
+                  mendSplits([{ k: "q", x: "A real quotation ends here." }, { k: "p", x: "And the text resumes." }]),
+                  mendSplits([{ k: "p", x: "Its title was" }, { k: "pg", x: "5" }, { k: "p", x: "Another paragraph starts." }]),
+                  proseSlashes("In 1833, a teenage girl met a machine which she came to regard “ / as a friend.” It was a futuristic device", [2, 3]),
+                  proseSlashes("Unresting water, there shall never be rest / Till the last moon droop", [1, 1])]""")
+                check(m[0] == [{"k": "p", "x": "Later to be known as Ada Lovelace, she was then Ada Byron, the only child of Annabella."}],
+                      f"a sentence split between paragraph and quotation is one paragraph ({m[0]})")
+                check([b["k"] for b in m[1]] == ["p", "pg", "c"], f"a quotation-looking piece and its prose after a page break are one paragraph across the page ({m[1]})")
+                check([b["k"] for b in m[2]] == ["p", "pg", "c"], f"a paragraph restarted at a page's top mid-sentence continues ({m[2]})")
+                check([b["k"] for b in m[3]] == ["q", "p"] and [b["k"] for b in m[4]] == ["q", "p"] and [b["k"] for b in m[5]] == ["p", "pg", "p"],
+                      f"verse, a finished quotation and a new paragraph at a page's top stay as they are ({m[3]}, {m[4]}, {m[5]})")
+                check(" / " not in m[6] and m[7].count(" / ") == 1, f"a quotation's line breaks are verse only while each part is one printed line ({m[6][:70]!r}, {m[7]!r})")
             check(not errs, "no script errors" + (f": {errs}" if errs else ""))
             await browser.close()
     finally:

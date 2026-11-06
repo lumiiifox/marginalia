@@ -697,7 +697,10 @@ async function parsePDF(buf, say) {
   let cur = null, curK = "p", carry = false, last = null, curList = null; // curList: where a list item's first line starts
   // a line starting with a list's number or bullet ("3. ", "(a) ", "• ")
   const PDF_LIST = /^(?:\d{1,3}[.)]|\((?:\d{1,3}|[a-z]|[ivx]{1,5})\)|[•◦▪‣])\s/;
-  const flush = () => { if (cur && cur.trim()) blocks.push({ k: curK, x: cur }); cur = null; };
+  // segs: the printed lines in each " / "-joined part of the block being built (verse keeps its line breaks only while every
+  // part is one line: a part of two or more lines is prose a page's layout made look like verse)
+  let segs = [1];
+  const flush = () => { if (cur && cur.trim()) blocks.push({ k: curK, x: curK === "q" ? proseSlashes(cur, segs) : cur }); cur = null; segs = [1]; };
   const END = /[.!?:]["”’)\]]?$/;
   // Front matter (title pages, copyright, contents, dedications) is typeset, not prose: its lines and their spacing are kept.
   // Evidence for it, on the opening pages only, before the reading text has begun:
@@ -841,8 +844,8 @@ async function parsePDF(buf, say) {
       if (start) { flush(); cur = l.t; curK = kind; }
       else if (!cur) { cur = l.t; curK = "c"; }
       // verse in a quotation: a line stopping far short of the margin without ending a sentence ends a line of verse, kept as " / "
-      else if (curK === "q" && kind === "q" && last && last.xe < last.right - B * 6 && !/[\p{L}]-$/u.test(last.t)) cur = cur + " / " + l.t;
-      else cur = joinLine(cur, l.t, lost);
+      else if (curK === "q" && kind === "q" && last && last.xe < last.right - B * 6 && !/[\p{L}]-$|[“‘"(]$/u.test(last.t)) { cur = cur + " / " + l.t; segs.push(1); }
+      else { cur = joinLine(cur, l.t, lost); segs[segs.length - 1]++; }
       carry = false; prev = l; last = { t: l.t, xe: l.xe, right };
     }
     carry = !!cur; flush();
@@ -855,7 +858,34 @@ async function parsePDF(buf, say) {
     if (fn) blocks.push({ k: "fn", x: fn });
   });
   flush();
+  mendSplits(blocks, joinLine);
   return { title, author, kind: "PDF", blocks: scanned ? ocrRepair(blocks, counts) : blocks, pageSource, cover, labels: lab, marks, nPages: n };
+}
+
+// A quotation's " / " joints stand for verse lines only while each part is a single printed line; otherwise they are spaces.
+function proseSlashes(x, segs) {
+  return segs.length > 1 && Math.max(...segs) >= 2 ? x.split(" / ").join(" ") : x;
+}
+// A paragraph the page's layout split in two: a piece that stops mid-sentence (no full stop, question or exclamation mark, or
+// colon at its end), then the next piece set as the other kind (a quotation, then a paragraph, or the other way), with a page
+// break between them or not, is one paragraph of prose. Verse (a quotation with " / ") keeps its own block. Across a page break
+// the second piece continues the first ("c"), so the reader draws them as one paragraph with the page's number inside it.
+function mendSplits(B, join = (a, b) => /[\p{L}]-$/u.test(a) ? a.slice(0, -1) + b : a + " " + b) {
+  const MID = /(?:[\p{L}\d,;]|[-–—]|["“‘(])$/u;
+  for (let i = 0; i < B.length; i++) {
+    const a = B[i];
+    if (!a || !["p", "q", "c"].includes(a.k)) continue;
+    let j = i + 1; while (j < B.length && B[j].k === "pg") j++;
+    const b = B[j];
+    if (!b || !["p", "q"].includes(b.k) || !MID.test(plain(a.x || "").trim())) continue;
+    const ak = a.k === "c" ? "p" : a.k;
+    if (ak === "q" && a.x.includes(" / ") || b.k === "q" && b.x.includes(" / ")) continue;
+    if (ak === b.k && !(ak === "p" && j > i + 1 && /^\P{L}*\p{Ll}/u.test(plain(b.x)))) continue;
+    if (a.k === "q") a.k = "p";
+    if (j > i + 1) b.k = "c";
+    else { a.x = join(a.x, b.x); B.splice(j, 1); i--; }
+  }
+  return B;
 }
 
 /* ---------- parsing: EPUB / Word / HTML ---------- */
