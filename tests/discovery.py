@@ -1,9 +1,9 @@
 """Wishlist persistence, migration, safe editing, matching and companion recommendations. Synthetic data only."""
-import asyncio, subprocess, sys, time
+import asyncio, os, subprocess, sys, time
 from pathlib import Path
 from playwright.async_api import async_playwright
 ROOT=Path(__file__).resolve().parent.parent
-PORT=8828
+PORT = int(os.environ.get("MG_PORT", 8828))  # run.py gives each test its own port when they run side by side
 failures=[]
 def check(ok, msg):
     print(('ok   ' if ok else 'FAIL ')+msg)
