@@ -63,6 +63,9 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   meter); Backups and exports. Study (`studyView`, the `study` screen) holds Mastery, Reading paths, Disputations, Puzzles, Quiz yourself
   and Bookplates, each opening as it did from home. `.noteacts.boxed` sets a row of bordered buttons on the text's edge. Tested in
   `tests/smoke.py` (the home screen's order, every way out of it, each Study entry opening).
+- Tap areas (end of css/app.css): button chips, text links (`button.src`), the toast's button, the recommendations' source links and the
+  small summaries get an invisible `::after` layer reaching past what's drawn, so a tap reaches 32px or more with nothing on screen moving;
+  only buttons get one, so a plain label never takes a tap meant for its neighbour. Tested by `tests/tap_targets.py`.
 - Search boxes (`SEARCH_BOXES`: home, a book's notes, glossary, thinkers, the reference list): typing redraws the results 180 ms after the
   last key, and any redraw while a box has the cursor (a save's included) goes through `drawMain`, which replaces everything around the
   box and keeps the box itself, so the cursor, a selection and a word the keyboard is still composing stay put; when the new screen has

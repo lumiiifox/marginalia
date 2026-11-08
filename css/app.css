@@ -1207,3 +1207,13 @@ span.bhid { display: inline; }
 .ckmark { margin: 2px 0 6px; font-size: 13px; color: var(--muted); } /* checked or unchecked (checkMark) */
 .ckmark.ok::before { content: "✓ "; color: color-mix(in srgb, var(--brass) 75%, var(--ink)); font-weight: 700; }
 .ckmark.un::before { content: "○ "; }
+
+/* Tap areas. A finger needs about 32px or more; these controls are drawn smaller (a chip 27px, a text link 17px), so each gets an
+   invisible layer reaching past what's drawn. Nothing on screen moves. Neighbouring chips sit 6px apart, so theirs overlap by 2px at
+   most. tests/tap_targets.py measures them. */
+button.chip, button.src, .toastbtn, .discovery-source, .primer > summary, .earlier > summary, .readqd summary, .optfield > summary { position: relative; }
+button.chip::after, .toastbtn::after, .discovery-source::after { content: ""; position: absolute; inset: -4px -3px; }
+.toastbtn::after { inset: -8px -6px; }
+.discovery-source::after { inset: -5px 0; }
+button.src::after { content: ""; position: absolute; inset: -8px -2px; }
+.primer > summary::after, .earlier > summary::after, .readqd summary::after, .optfield > summary::after { content: ""; position: absolute; inset: -7px 0; }

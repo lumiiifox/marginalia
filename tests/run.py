@@ -19,7 +19,7 @@ GROUPS = {
                "followups", "classics", "printed_page", "editions", "density", "verse_lists"],
     "import": ["pdf_import", "pdf_highlights", "wikisource", "text_import"],
     "reference": ["study_tools", "links", "in_your_books", "density", "mastery"],
-    "look": ["contrast", "smoke", "search_box"],
+    "look": ["contrast", "smoke", "search_box", "tap_targets"],
     # a change to reference content only (data/, tests/audit/): what it can break, in about two minutes
     "content": ["study_tools", "links", "in_your_books", "mastery", "density"],
 }
