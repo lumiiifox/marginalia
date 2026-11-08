@@ -29,7 +29,7 @@ function render(keep) {
   if (reading) { refreshMarks(); return; }
   wakeOff();
   $("#selbar").hidden = true;
-  const views = { wishlist: wishlistView, recommendations: recommendationsView, text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, paths: pathsView, plates: platesView, mastery: masteryView, disputes: disputesView, concord: concordView, compares: comparesView, compare: compareView };
+  const views = { wishlist: wishlistView, recommendations: recommendationsView, text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, paths: pathsView, plates: platesView, mastery: masteryView, study: studyView, disputes: disputesView, concord: concordView, compares: comparesView, compare: compareView };
   drawMain((views[S.screen] || libraryView)(), keep);
 }
 /* Draws the screen. With `keep`, the search box being typed in, everything around the box is replaced and the box itself stays the
@@ -182,14 +182,31 @@ function libraryView() {
   return `<header class="top"><h1 class="mark-leaf">${LEAF_SVG}<span class="sr">Marginalia</span></h1></header>
     ${banner()}<div id="cloud-warning-slot">${cloudBackupWarningHTML()}</div>
     <input class="search" id="q" type="search" placeholder="Search books, notes, glossary" value="${esc(S.q)}" aria-label="Search your books, notes and the glossary">
-    ${searching ? body : `
+    ${searching ? body : `${continueHTML()}
     <section class="home-sec">
       <div class="sec-head"><div><h2>Bookshelf</h2><div class="sub">${S.texts.size} text${S.texts.size === 1 ? "" : "s"}, ${S.notes.size} note${S.notes.size === 1 ? "" : "s"}</div></div><button class="btn primary" id="addtext">Add text</button></div>
       ${body}
-      <div class="noteacts discovery-home"><button class="btn" id="openwishlist">Wishlist · ${S.wishlist.size}</button><button class="linkbtn" id="openrecommendations">Reading recommendations</button></div>
+      <div class="noteacts boxed discovery-home"><button class="btn" id="openwishlist">Wishlist · ${S.wishlist.size}</button><button class="linkbtn" id="openrecommendations">Reading recommendations</button></div>
       ${S.mode === "pending" ? "" : acrossHTML()}
     </section>
     ${S.mode === "pending" ? "" : resurfHTML() + referenceHome() + backupView()}`}`;
+}
+/* Continue reading: the book you read last, at the top of the home screen; one tap opens it at your place. A finished book, an
+   example or a book never opened in the reader doesn't show. Nothing stored: it reads each book's readAt. */
+function continueBook() {
+  let best = null;
+  for (const [id, t] of S.texts) if (!t.example && t.hasContent && t.status !== "finished" && t.readAt && (!best || t.readAt > best[1].readAt)) best = [id, t];
+  return best;
+}
+function continueHTML() {
+  const hit = continueBook(); if (!hit) return "";
+  const [id, t] = hit, pc = progressOf(t), d = Math.floor((Date.now() - t.readAt) / DAY);
+  const when = d < 1 ? "today" : d < 2 ? "yesterday" : d < 14 ? `${d} days ago` : new Date(t.readAt).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  return `<button class="contcard" data-continue="${esc(id)}" aria-label="${esc(`Continue reading ${t.title}`)}">
+    <span class="cc-cover">${coverHTML(t, coverURL(id))}</span>
+    <span class="cc-l">Continue reading</span><span class="cc-t">${esc(t.title)}</span>${t.author ? `<span class="cc-a">${esc(t.author)}</span>` : ""}
+    <span class="cc-m">${pc > 0 ? `${pc}% · ` : ""}last read ${esc(when)}</span>${pc > 0 ? `<span class="rc-meter cc-meter" aria-hidden="true"><i style="width:${pc}%"></i></span>` : ""}
+    <span class="rc-go" aria-hidden="true">›</span></button>`;
 }
 /* ---------- bookplates: marks of reading, worked out from the library each time; nothing is stored and none expire ----------
    Firsts (your first gloss, question, objection, argument, return to a note, summary, draft, comparison), per book (every chapter
@@ -337,7 +354,7 @@ function textView() {
         ${t.example ? `<span class="chip ex">Example</span>` : ""}
       </div>
     </header>
-    <div class="noteacts"><button class="btn" data-companions="${esc(id)}">Companion books</button></div>
+    <div class="noteacts boxed"><button class="btn" data-companions="${esc(id)}">Companion books</button></div>
     ${primerHTML(id, t)}
     ${briefHTML(id, t)}
     ${classicMentionsHTML(id)}

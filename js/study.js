@@ -450,7 +450,26 @@ function referenceHome() {
     ${card("glossary", "Glossary", `${allTerms().length} terms`)}
     ${card("branches", "Branches", `${BRANCHES.filter((b) => b.k === "branch").length} branches, ${BRANCHES.filter((b) => b.k === "tradition").length} traditions`)}
     ${card("thinkers", "Thinkers", `${THINKERS.length} philosophers and theorists`)}
-  </div>${masteryCardHTML()}${typeof PATHS !== "undefined" && PATHS.length ? `<button class="refcard pathcard" id="openpaths"><span class="rc-t">Reading paths</span><span class="rc-s">${PATHS.length} routes through the classics on your shelf, chapter by chapter</span><span class="rc-go" aria-hidden="true">›</span></button>` : ""}${typeof DISPUTES !== "undefined" && DISPUTES.length ? `<button class="refcard pathcard" id="opendisputes"><span class="rc-t">Disputations</span><span class="rc-s">${DISPUTES.length} arguments to answer, then compare with the classic objection</span><span class="rc-go" aria-hidden="true">›</span></button>` : ""}</section>`;
+  </div>${studyCardHTML()}</section>`;
+}
+/* Study: one card on the home screen, with your mastery's meter on it, opening the study screen: Mastery, reading paths,
+   disputations, puzzles, Quiz yourself and bookplates, each opening as before. */
+function studyCardHTML() {
+  const M = S.mastery ? masteryState({ noLoad: true }) : null;
+  const line = M ? (M.got ? `Mastery ${M.pct}% · ${M.mastered} of ${M.items.length} mastered` : `${M.items.length} checked concepts, thinkers, connections and stations to master`) : "";
+  return `<button class="refcard pathcard" id="openstudy"><span class="rc-t">Study</span><span class="rc-s">${line ? `${line}. ` : ""}Reading paths, disputations, puzzles and quizzes</span>${M ? `<span class="rc-meter" aria-hidden="true"><i style="width:${M.pct}%"></i></span>` : ""}<span class="rc-go" aria-hidden="true">›</span></button>`;
+}
+function studyView() {
+  const card = (id, title, sub) => `<button class="refcard pathcard" id="${id}"><span class="rc-t">${title}</span><span class="rc-s">${sub}</span><span class="rc-go" aria-hidden="true">›</span></button>`;
+  const plates = S.notes.size ? bookplates().count : 0;
+  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
+    <header class="gl-head"><div><h1>Study</h1><div class="sub">Practice on checked material, and what you've earned</div></div></header>
+    <div class="studycards">${masteryCardHTML()}
+    ${typeof PATHS !== "undefined" && PATHS.length ? card("openpaths", "Reading paths", `${PATHS.length} routes through the classics on your shelf, chapter by chapter`) : ""}
+    ${typeof DISPUTES !== "undefined" && DISPUTES.length ? card("opendisputes", "Disputations", `${DISPUTES.length} arguments to answer, then compare with the classic objection`) : ""}
+    ${card("puzzles", "Puzzles", "Guess the thinker, connect two thinkers, order of birth")}
+    ${card("quiz", "Quiz yourself", "Ten questions from the glossary and the thinkers' works")}
+    ${card("openplates", "Bookplates", plates ? `${plates} earned from your reading and notes` : "Marks of reading and argument, earned from your notes")}</div>`;
 }
 // Everything in the three reference sections as one searchable list; each row opens its entry, and each group can open its
 // full screen (the glossary's areas and quiz, a branch's questions and reading, the thinkers' timeline).

@@ -324,6 +324,38 @@ async def main():
         cards = await page.evaluate("[...document.querySelectorAll('.refcard[data-ref]')].map((c) => [c.dataset.ref, c.querySelector('.rc-t').textContent])")
         check(not any(h in heads for h in ("Glossary", "Branches", "Thinkers")) and cards == [["glossary", "Glossary"], ["branches", "Branches"], ["thinkers", "Thinkers"]],
               f"the home screen has three buttons: Glossary, Branches, Thinkers ({cards})")
+        # the rest of the home screen: Continue reading first, one Study card, and every way out it had before still there
+        order = await page.evaluate("""(() => { const m = document.querySelector('#main'), at = (s) => { const el = m.querySelector(s); return el ? [...m.querySelectorAll('*')].indexOf(el) : -1; };
+          return { cont: at('.contcard'), shelf: at('.shelf'), study: at('#openstudy'), backup: at('#backup'), gone: ['#openmastery', '#openpaths', '#opendisputes'].filter((x) => m.querySelector(x)),
+            ways: ['#q', '#addtext', '#openwishlist', '#openrecommendations', '.refcard[data-ref=glossary]', '#openstudy', '#backup', '#cloudbackup', '#restore', '#exportbtn'].filter((x) => !m.querySelector(x)) }; })()""")
+        # Continue reading: the book read last, skipping a finished book, an example and one never opened in the reader
+        cont = await page.evaluate("""async () => {
+          const now = Date.now(), book = (id, extra) => put('texts', id, { title: 'Cont ' + id, author: 'A. Writer', hasContent: true, status: 'reading', pos: 5, total: 11, sections: [], createdAt: 1, updatedAt: 1, ...extra });
+          for (const id of [...S.texts.keys()]) { const t = S.texts.get(id); if (t.readAt) await put('texts', id, { ...t, readAt: 0 }); }
+          go({ screen: 'library' }); const none = !document.querySelector('.contcard');
+          await put('content', 'c1', Array.from({ length: 11 }, (_, i) => ({ k: 'p', x: 'Paragraph ' + i + ' of the continued book.' })));
+          await book('c1', { readAt: now - 5000 }); await book('c2', { readAt: now - 10, status: 'finished' }); await book('c3', { readAt: now - 5, example: true }); await book('c4', {});
+          go({ screen: 'library' }); const c = document.querySelector('.contcard');
+          return [none, c?.dataset.continue, c?.querySelector('.cc-m')?.textContent, [...document.querySelector('#main').children].findIndex((x) => x === c) < [...document.querySelector('#main').children].findIndex((x) => x.classList.contains('home-sec'))]; }""")
+        check(cont[0], "with no book opened in the reader there is no Continue reading card")
+        check(cont[1:] == ["c1", "50% · last read today", True], f"Continue reading shows the book read last, unfinished, above the shelf ({cont})")
+        await page.click(".contcard"); await page.wait_for_timeout(500)
+        check(await page.evaluate("[S.screen, S.textId, R.saved]") == ["reader", "c1", 5], "Continue reading opens the book at your place")
+        await page.evaluate("(async () => { for (const id of ['c1', 'c2', 'c3', 'c4']) { await del('texts', id); } await del('content', 'c1'); go({ screen: 'library' }); })()"); await page.wait_for_timeout(200)
+        check(order["study"] > 0 and order["backup"] > order["study"] and not order["gone"], f"Mastery, reading paths and disputations sit behind one Study card, backups below it ({order})")
+        check(not order["ways"], f"every way out of the home screen it had is still there ({order['ways']})")
+        await page.click("#openstudy"); await page.wait_for_timeout(200)
+        study = await page.evaluate("[S.screen, ['#openmastery', '#openpaths', '#opendisputes', '#puzzles', '#quiz', '#openplates'].filter((x) => !document.querySelector('#main ' + x))]")
+        check(study == ["study", []], f"Study lists mastery, reading paths, disputations, puzzles, Quiz yourself and bookplates ({study})")
+        opens = []
+        for sel, want in (("#openmastery", "screen:mastery"), ("#openpaths", "screen:paths"), ("#opendisputes", "screen:disputes"), ("#openplates", "screen:plates"), ("#puzzles", "panel"), ("#quiz", "panel")):
+            await page.evaluate("go({ screen: 'study' })"); await page.wait_for_timeout(100)
+            await page.click(f"#main {sel}"); await page.wait_for_timeout(250)
+            got = await page.evaluate("NAV.overlay ? 'panel' : 'screen:' + S.screen")
+            if got != want: opens.append([sel, got])
+            if got == "panel": await page.evaluate("stepBack()")
+        check(not opens, f"each of them opens as it did from the home screen ({opens})")
+        await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(200)
         rows = "[document.querySelectorAll('.refrow[data-term]').length, document.querySelectorAll('.refrow[data-branch]').length, document.querySelectorAll('.refrow[data-thinker]').length]"
         n = await page.evaluate("[allTerms().length, BRANCHES.length, THINKERS.length]")
         for k, want, title in (("glossary", [n[0], 0, 0], "Glossary"), ("branches", [0, n[1], 0], "Branches"), ("thinkers", [0, 0, n[2]], "Thinkers")):

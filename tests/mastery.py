@@ -141,10 +141,14 @@ async def main():
         scr = await page.evaluate("[document.querySelector('h1').textContent, document.querySelectorAll('.mtile.locked').length, document.querySelectorAll('.mtile:not(.locked)').length, masteryState().items.filter((i) => i.reach).length, document.querySelector('.gl-head .sub').textContent]")
         check(scr[0] == "Mastery" and scr[1] <= 4 and scr[2] == scr[3], f"the collection shows what's within reach and folds the locked ones, one tile a kind ({scr})")
         await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(300)
-        home = await page.evaluate("document.querySelector('#openmastery .rc-s').textContent")
-        check(scr[4].split("%")[0] == home.split("%")[0], f"the home card and the collection agree ({home} / {scr[4]})")
+        home = await page.evaluate("[document.querySelector('#openstudy .rc-s').textContent, document.querySelector('#openstudy .rc-meter i').style.width]")
+        check(scr[4].split("%")[0] == home[0].replace("Mastery ", "").split("%")[0] and home[1] == f"{home[0].replace('Mastery ', '').split('%')[0]}%",
+              f"the home screen's Study card shows the collection's progress, meter and all ({home} / {scr[4]})")
+        await page.click("#openstudy"); await page.wait_for_timeout(200)
+        study = await page.evaluate("document.querySelector('#openmastery .rc-s').textContent")
+        check(scr[4].split("%")[0] == study.split("%")[0], f"the Study screen's Mastery card and the collection agree ({study} / {scr[4]})")
         await page.click("#openmastery"); await page.wait_for_timeout(200)
-        check(await page.evaluate("S.screen") == "mastery", "the home card opens the collection")
+        check(await page.evaluate("S.screen") == "mastery", "the Mastery card opens the collection")
 
         # 7 backup and restore
         data = await page.evaluate("(async () => { let out; const orig = saveFile; saveFile = async (n, t) => { out = JSON.parse(t); return true; }; await exportBackup(); saveFile = orig; return out; })()")

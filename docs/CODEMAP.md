@@ -57,11 +57,17 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - The glossary as the app sees it (`allTerms`, study.js): built-in entries with your own and edited terms, alphabetical (`TERMS_ORDER`).
   Kept in `TERMS_CACHE` until a record in `S.terms` changes (compared by identity each call, so put, delete and restore all show at
   once); each call gets its own copy of the list, the entries frozen. Tested by `terms_cache` in `tests/study_tools.py`.
+- The home screen, top to bottom: search; Continue reading (`continueHTML`, `continueBook`: the unfinished, non-example book with the
+  latest `readAt`, opening the reader at your place via `data-continue`); the bookshelf with Wishlist and Reading recommendations; Across
+  your library; From your margins; term of the day; Glossary, Branches and Thinkers; one Study card (`studyCardHTML`, with the mastery
+  meter); Backups and exports. Study (`studyView`, the `study` screen) holds Mastery, Reading paths, Disputations, Puzzles, Quiz yourself
+  and Bookplates, each opening as it did from home. `.noteacts.boxed` sets a row of bordered buttons on the text's edge. Tested in
+  `tests/smoke.py` (the home screen's order, every way out of it, each Study entry opening).
 - Search boxes (`SEARCH_BOXES`: home, a book's notes, glossary, thinkers, the reference list): typing redraws the results 180 ms after the
   last key, and any redraw while a box has the cursor (a save's included) goes through `drawMain`, which replaces everything around the
   box and keeps the box itself, so the cursor, a selection and a word the keyboard is still composing stay put; when the new screen has
   no box in the same place it is drawn whole and the cursor put back. Tested by `tests/search_box.py`.
-- Views: `render` dispatches to `libraryView`, `textView`, `tagView`, `questionsView`, `draftsView`/`draftView`, `comparesView`/`compareView`, `concordView`, glossary, branches and `thinkersView`. The home screen reaches them through three buttons (`referenceHome`) that open
+- Views: `render` dispatches to `libraryView`, `textView`, `tagView`, `questionsView`, `draftsView`/`draftView`, `comparesView`/`compareView`, `concordView`, glossary, branches and `thinkersView`. The home screen reaches the reference through three buttons (`referenceHome`) that open
   `referenceView`: every term, branch or thinker as one list (`S.rk` picks the group, `S.rq` searches), each row opening its entry
   and each group linking to its full screen.
 - Data: reference content lives in `data/`, loaded by plain `<script>` tags before the app script: `data/glossary.js` (`GLOSSARY`),
