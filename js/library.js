@@ -351,10 +351,10 @@ function textView() {
         ${t.hasContent ? "" : `<button class="btn primary" id="loadfile">Load the book</button>`}
         <select id="status" aria-label="Status">${Object.entries(STATUS).map(([k, v]) => `<option value="${k}" ${(t.status || "reading") === k ? "selected" : ""}>${v}</option>`).join("")}</select>
         <button class="btn" id="more" aria-haspopup="dialog">More</button>
+        <button class="btn" data-companions="${esc(id)}">Companion books</button>
         ${t.example ? `<span class="chip ex">Example</span>` : ""}
       </div>
     </header>
-    <div class="noteacts boxed"><button class="btn" data-companions="${esc(id)}">Companion books</button></div>
     ${primerHTML(id, t)}
     ${briefHTML(id, t)}
     ${classicMentionsHTML(id)}
