@@ -136,9 +136,11 @@ function shelfList(st) {
 }
 // The leaf of the app's icon (tools/build_icons.py draws the icon from the same path).
 const LEAF_SVG = `<svg viewBox="10 17 76 76" aria-hidden="true"><path d="M27.0 75.0 C23 51 42 29 76.0 23.0 C74 53 56 73 27.0 75.0 Z M27.0 75.0 Q50.5 51.5 71.8 27.6 M38.8 62.5 Q43.4 63.4 49.2 62.9 M38.8 62.5 Q37.7 58.4 37.9 52.9 M47.6 53.2 Q52.5 54.0 58.6 53.5 M47.6 53.2 Q46.5 48.8 46.6 43.1 M56.4 43.8 Q60.5 44.6 65.9 44.1 M56.4 43.8 Q55.4 40.1 55.6 35.1 M64.2 35.5 Q66.9 36.2 70.7 35.7 M64.2 35.5 Q63.3 33.2 63.7 29.5 M27.0 75.0 C24.5 78.5 21.5 81.5 16.5 83.5" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const SEARCH_FIRST = 12; // notes a search shows before "Show all"
 function libraryView() {
   const texts = [...S.texts.entries()];
   let body = "";
+  // a search shows its first SEARCH_FIRST notes, newest first, then a button for the rest (S.qAll: the search they were all shown for)
   if (S.q.trim()) {
     const hits = sortNotes([...S.notes.entries()].filter(([, n]) => matches(n, S.q)), null);
     const ql = S.q.trim().toLowerCase();
@@ -149,7 +151,8 @@ function libraryView() {
     const booksHit = bk.length ? `<section class="group"><div class="label">Your books<span class="cnt">${bk.length}</span></div><div class="termhits">${bk.map(([id, t]) => `<button class="termhit" data-open="${esc(id)}"><b>${esc(t.title)}</b><span>${[t.author, `${STATUS[t.status || "reading"] || ""} shelf`].filter(Boolean).map(esc).join(" · ")}</span></button>`).join("")}</div></section>` : "";
     body = `${booksHit}${anyLoaded && S.q.trim().length > 1 ? `<button class="btn searchbooks" id="searchbooks">Search inside your books for “${esc(S.q.trim())}”</button>` : ""}${th.length || who.length ? `<section class="group"><div class="label">In the glossary</div>${who.length ? `<div class="chips">${thinkerChips(who.map((p) => p.id))}</div>` : ""}${th.length ? `<div class="termhits">${th.map((g) => `<button class="termhit" data-term="${esc(g.id)}"><b>${esc(g.t)}</b><span>${esc(g.d.length > 150 ? g.d.slice(0, 150) + "…" : g.d)}</span></button>`).join("")}</div>` : ""}</section>` : ""}
       <section class="group"><div class="label">${hits.length ? `${hits.length} note${hits.length === 1 ? "" : "s"} matching “${esc(S.q)}”` : `Notes matching “${esc(S.q)}”`}</div>
-      <div class="noteslist">${hits.map(([id, n]) => noteHTML(id, n, S.texts.get(n.textId), true)).join("") || `<p class="empty">No notes match. Search looks through passages, your notes and page numbers.</p>`}</div></section>`;
+      <div class="noteslist">${(S.qAll === S.q ? hits : hits.slice(0, SEARCH_FIRST)).map(([id, n]) => noteHTML(id, n, S.texts.get(n.textId), true)).join("") || `<p class="empty">No notes match. Search looks through passages, your notes and page numbers.</p>`}</div>
+      ${S.qAll !== S.q && hits.length > SEARCH_FIRST ? `<button class="btn" id="allhits">Show all ${hits.length} notes</button>` : ""}</section>`;
   } else if (!texts.length && S.mode !== "pending") {
     body = `<p class="empty"><b>No texts yet.</b> Add a book from a PDF, EPUB, Word or text file, then read it here and save passages as you go.</p>`;
   } else {

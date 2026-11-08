@@ -5,7 +5,8 @@ Synthetic data only. Checks that, in each of the five search boxes (home, a book
   2. the box stays the same element while the results change, so the phone keyboard keeps its place;
   3. a word the keyboard is still composing (Android's suggestions) survives a redraw and commits as typed;
   4. a save landing while you type (any redraw) keeps the box and the cursor;
-  5. tapping away before the results are drawn doesn't pull the cursor back into the box.
+  5. tapping away before the results are drawn doesn't pull the cursor back into the box;
+  6. a long list of matching notes shows the newest 12, then all of them on request.
 """
 import os, asyncio, subprocess, sys, time
 from pathlib import Path
@@ -80,6 +81,16 @@ async def main():
         await page.evaluate("document.activeElement.blur()"); await page.wait_for_timeout(350)
         check(await page.evaluate("document.activeElement !== document.querySelector('#q')"), "tapping away before the results are drawn doesn't pull the cursor back")
 
+        # a long result list shows the newest 12 notes, then the rest on request; a new search starts short again
+        await page.evaluate("""(async () => { const now = Date.now(); for (let i = 0; i < 14; i++) await put('notes', 'm' + i, { textId: 't1', kind: 'gloss', gloss: 'attribute number ' + i, links: [], createdAt: now + i, updatedAt: now }); })()""")
+        await page.fill("#q", "attribute"); await page.wait_for_timeout(400)
+        st = await page.evaluate("[document.querySelectorAll('.noteslist .note').length, !!document.querySelector('#allhits'), document.querySelector('.noteslist .note').dataset.nid]")
+        check(st == [12, True, "m13"], f"a long result list shows its newest 12 notes and a button for the rest ({st})")
+        await page.click("#allhits"); await page.wait_for_timeout(200)
+        st = await page.evaluate("[document.querySelectorAll('.noteslist .note').length, !!document.querySelector('#allhits')]")
+        check(st == [14, False], f"Show all shows every match ({st})")
+        await page.fill("#q", "attribute number"); await page.wait_for_timeout(400)
+        check(await page.evaluate("document.querySelectorAll('.noteslist .note').length") == 12, "a new search starts with 12 again")
         check(not errs, f"no script errors ({errs[:2]})")
         await browser.close()
 

@@ -95,6 +95,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "openplates") return go({ screen: "plates" });
   if (b.id === "openmastery") return go({ screen: "mastery" });
   if (b.id === "openstudy") return go({ screen: "study" });
+  if (b.id === "allhits") { S.qAll = S.q; return render(); }
   if (b.dataset.continue) return go({ screen: "reader", textId: b.dataset.continue });
   if (b.dataset.mpath) return go({ screen: "paths" });
   if (b.dataset.path) return go({ screen: "paths", path: b.dataset.path });
