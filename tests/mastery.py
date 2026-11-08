@@ -163,6 +163,21 @@ async def main():
         stored = await page.evaluate("idbGet('mastery', 'thinker:land')")
         check(stored == {"met": 3000}, "restored mastery is saved on the device")
 
+        # the first time Mastery is opened, before the close-reading path's book is loaded: the figures are redrawn once it is,
+        # so they agree with the collection (stations read count only with the book's text at hand)
+        ctx2 = await browser.new_context(viewport={"width": 390, "height": 820})
+        await ctx2.route("**/*", lambda r: r.abort() if "localhost" not in r.request.url else r.continue_())
+        p2 = await ctx2.new_page(); p2.on("pageerror", lambda e: errs.append(str(e)))
+        await p2.goto(URL); await p2.wait_for_function(READY)
+        await p2.evaluate("""async () => { await addClassics(true); const P = PATHS.find((x) => x.kind === 'close'), B = await idbGet('content', P.book), st = closeStations(P)[0];
+          const m = st.refs[0].match(PASSAGE_STYLES[P.style].item), i = PASSAGE_STYLES[P.style].find(B, m.slice(1).map((v) => v || ''));
+          await put('notes', 'cs1', { textId: P.book, kind: 'gloss', gloss: 'read this station', at: i, links: [], createdAt: Date.now(), updatedAt: Date.now() }); }""")
+        await p2.reload(); await p2.wait_for_function(READY)
+        first = await p2.evaluate("(() => { const P = PATHS.find((x) => x.kind === 'close'); return !S.content.get(P.book); })()")
+        await p2.evaluate("go({ screen: 'mastery' })"); await p2.wait_for_timeout(1500)
+        got = await p2.evaluate("[document.querySelector('#main .sub').textContent, masteryState().pct, masteryState().items.filter((it) => it.kind === 'station' && it.s.read).length]")
+        check(first and got[0].startswith(f"{got[1]}%") and got[2] >= 1, f"opened first, before its book loads, Mastery redraws to agree with the collection ({got})")
+        await ctx2.close()
         check(not errs, "no script errors" + (f": {errs}" if errs else ""))
         await browser.close()
 

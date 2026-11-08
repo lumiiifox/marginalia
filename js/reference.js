@@ -314,10 +314,12 @@ function passageSpan(B, i) {
   return [i, j];
 }
 const closeStations = (P) => P.parts.flatMap((part) => part.st);
-let CLOSE_ASKED = false;
+// Books a close-reading path has asked to load, one entry a book, so each path's book is loaded once.
+const CLOSE_ASKED = new Set();
 function closeState(P) {
   const t = S.texts.get(P.book), B = t && S.content.get(P.book);
-  if (t && !B && !CLOSE_ASKED) { CLOSE_ASKED = true; loadContent(P.book).then((x) => { if (x && S.screen === "paths") render(); }).catch(() => {}); }
+  // once loaded, the screens counting the path's stations are drawn again: Reading paths and Mastery
+  if (t && !B && !CLOSE_ASKED.has(P.book)) { CLOSE_ASKED.add(P.book); loadContent(P.book).then((x) => { if (x && (S.screen === "paths" || S.screen === "mastery")) render(); }).catch(() => {}); }
   const out = new Map();
   for (const st of closeStations(P)) {
     const spans = B ? st.refs.map((r) => { const m = r.match(PASSAGE_STYLES[P.style].item); const i = m ? PASSAGE_STYLES[P.style].find(B, m.slice(1).map((v) => v || "")) : -1; return i >= 0 ? passageSpan(B, i) : null; }).filter(Boolean) : [];

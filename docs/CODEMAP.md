@@ -157,7 +157,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   screen, `bookPaths()` for the other paths): each station's `refs` open the book at its passages through `passageLinks` (so your place is kept
   as ← Your place), `says` gives the text's own words, `deleuze` what named scholarship says of Deleuze's reading (sources in `PATH_SRC`), with
   `terms`, questions (`askCloseQuestion`) and the path's typed `conns`. A station is read once a note of yours falls in one of its passages'
-  blocks (`passageSpan`: a proposition with its proof, corollaries and notes; questions added from the path don't count; `closeState`).
+  blocks (`passageSpan`: a proposition with its proof, corollaries and notes; questions added from the path don't count; `closeState`, which loads each path's book once, `CLOSE_ASKED`, and redraws Reading paths or Mastery when it arrives).
   Nothing stored. Now "spinoza-deleuze", all five parts (30 stations); a Deleuze line marked `own` is his own words from a lecture transcript,
   labelled apart from scholarship; every quotation is checked against the bundled text and each station's
   independent review is in `tests/audit/spinoza-deleuze.json`. Tested by `tests/study_tools.py` (`close_reading`).
