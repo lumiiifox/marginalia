@@ -955,9 +955,7 @@ async function pdfDoc(tid) {
   if (PDFV.tid === tid && PDFV.doc) return PDFV.doc;
   const file = idb ? await idbGet("files", tid) : null; if (!file) return null;
   await need("pdf", () => !!window.pdfjsLib); const lib = window.pdfjsLib;
-  let wk = null, pw = null;
-  try { wk = new Worker(URL.createObjectURL(new Blob([`importScripts(${JSON.stringify(LIBS.pdfw[0])});`], { type: "text/javascript" }))); pw = lib.PDFWorker.fromPort({ port: wk }); } catch { wk = null; pw = null; }
-  if (!pw) { try { await need("pdfw", () => !!window.pdfjsWorker); } catch {} try { lib.GlobalWorkerOptions.workerSrc = LIBS.pdfw[0]; } catch {} }
+  const { wk, pw } = await pdfWorker(lib); // checked against its hash (core.js)
   const stop = () => { try { if (pw) pw.destroy(); } catch {} try { if (wk) wk.terminate(); } catch {} };
   let doc;
   try { doc = await lib.getDocument({ data: new Uint8Array(await file.arrayBuffer()), isEvalSupported: false, ...(pw ? { worker: pw } : {}) }).promise; }

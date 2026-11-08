@@ -339,12 +339,7 @@ function ocrRepair(blocks, counts) {
 async function pdfOpen(buf) {
   await need("pdf", () => !!window.pdfjsLib);
   const lib = window.pdfjsLib;
-  let wk = null, pw = null;
-  try {
-    wk = new Worker(URL.createObjectURL(new Blob([`importScripts(${JSON.stringify(LIBS.pdfw[0])});`], { type: "text/javascript" })));
-    pw = lib.PDFWorker.fromPort({ port: wk });
-  } catch { wk = null; pw = null; }
-  if (!pw) { try { await need("pdfw", () => !!window.pdfjsWorker); } catch {} try { lib.GlobalWorkerOptions.workerSrc = LIBS.pdfw[0]; } catch {} }
+  const { wk, pw } = await pdfWorker(lib); // checked against its hash (core.js)
   const stop = () => { try { if (pw) pw.destroy(); } catch {} try { if (wk) wk.terminate(); } catch {} };
   const wkFail = new Promise((_, rej) => { if (wk) wk.addEventListener("error", () => rej(new UErr("Couldn't start the PDF reader. Check your connection and try again."))); });
   let pdf;

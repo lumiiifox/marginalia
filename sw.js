@@ -31,6 +31,8 @@ self.addEventListener("fetch", (e) => {
     const fresh = req.mode === "navigate" ? fetch(req) : fetch(req, { cache: "no-cache" });
     e.respondWith(fresh.then(keep).catch(() => caches.match(req).then((hit) => hit || (req.mode === "navigate" ? caches.match("./index.html") : Response.error()))));
   } else if (/^(cdnjs\.cloudflare\.com|fonts\.googleapis\.com|fonts\.gstatic\.com)$/.test(url.hostname)) {
-    e.respondWith(caches.match(req).then((hit) => hit || fetch(req).then(keep)));
+    // A library checked against its hash is asked for with CORS; a copy saved from before the check (opaque) can't answer that, so it
+    // is fetched again, and the CORS copy replaces it.
+    e.respondWith(caches.match(req).then((hit) => (hit && !(hit.type === "opaque" && req.mode === "cors") ? hit : fetch(req).then(keep))));
   }
 });

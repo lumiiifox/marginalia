@@ -98,7 +98,13 @@ ideas, or reward doing so? If not, it waits.
 - Changing the stored shape of a record: bump `indexedDB.open("marginalia", N)` only when a store is added or needs migration,
   keep old records readable, and update `VALID` so old backups still restore.
 - Keep the app a single static site with no build step. Libraries load from cdnjs; fonts from Google Fonts (the service worker
-  caches only those hosts).
+  caches only those hosts). Every library file carries its SHA-384 in `LIB_SRI` (js/core.js), so a changed copy on the CDN never runs;
+  a new library or version needs its hash there (`tests/integrity.py` checks).
+- **Deployment constraint: the shared origin** (owner's decision, 2026-11-08). The app is served from lumiiifox.github.io, an origin every
+  GitHub Pages project of that account shares, and the automatic backup's GitHub token sits in that origin's `localStorage`. Any page
+  published under lumiiifox.github.io can read it. Until the app moves to an origin of its own (a custom domain, or an account that
+  hosts nothing else), which is the eventual fix, don't publish other Pages projects on that account, keep the token fine-grained and
+  scoped to the one private backup repository, and keep the setup screen's warning.
 - If `sw.js` changes in a way that needs old caches dropped, bump `CACHE`.
 - Every file `index.html` loads must be in `SHELL` in `sw.js` (smoke.py checks), or the app can't open offline. A new file under
   `js/`, `css/` or `data/` needs both its tag in `index.html` and its line in `SHELL`, and a `CACHE` bump.
