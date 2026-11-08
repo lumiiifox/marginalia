@@ -87,6 +87,8 @@ function noteHTML(id, n, t, showSrc) {
   const sec = t?.sections?.find((s) => s.id === n.sectionId);
   const arg = n.kind === "argument" && n.premises && n.premises.length;
   const links = linkedNotes(id, n);
+  // the actions: Show in text and Edit always, and Resolve on an open question; the rest under More (data-noteacts)
+  const resolveBtn = (main) => OPENABLE.has(n.kind) && main === !n.resolved ? `<button class="btn ghost" data-resolve="${esc(id)}">${n.resolved ? "Reopen" : "Resolve"}</button>` : "";
   return `<article class="note k-${esc(n.kind)}${n.resolved ? " resolved" : ""}" data-nid="${esc(id)}">
     <div class="meta">
       ${n.page ? `<span class="pg">${esc(loc(n.page))}</span>` : ""}
@@ -105,11 +107,15 @@ function noteHTML(id, n, t, showSrc) {
     ${links.length ? `<div class="links"><span class="clabel">Linked notes</span>${links.map((x) => { const m = S.notes.get(x); return `<button class="lrow" data-jump="${esc(x)}"><b>${esc(noteWhere(m, m.textId === n.textId))}</b><span>${esc(noteSnippet(m, 80))}</span></button>`; }).join("")}</div>` : ""}
     <div class="noteacts">
       ${t?.hasContent && Number.isInteger(n.at) ? `<button class="btn ghost" data-goto-note="${n.at}" data-tid="${esc(n.textId)}">Show in text</button>` : ""}
-      <button class="btn ghost" data-cite="${esc(id)}">Cite</button>
-      <button class="btn ghost" data-todraft="${esc(id)}">Add to draft</button>
-      ${OPENABLE.has(n.kind) ? `<button class="btn ghost" data-resolve="${esc(id)}">${n.resolved ? "Reopen" : "Mark resolved"}</button>` : ""}
-      <button class="btn ghost" data-followup="${esc(id)}">Follow up</button>
+      ${resolveBtn(true)}
       <button class="btn ghost" data-editnote="${esc(id)}">Edit</button>
+      <button class="btn ghost" data-noteacts aria-expanded="false">More</button>
+      <span class="more-acts">
+        <button class="btn ghost" data-cite="${esc(id)}">Cite</button>
+        <button class="btn ghost" data-todraft="${esc(id)}">Add to draft</button>
+        ${resolveBtn(false)}
+        <button class="btn ghost" data-followup="${esc(id)}">Follow up</button>
+      </span>
     </div>
   </article>`;
 }

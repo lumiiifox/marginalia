@@ -1217,3 +1217,8 @@ button.chip::after, .toastbtn::after, .discovery-source::after { content: ""; po
 .discovery-source::after { inset: -5px 0; }
 button.src::after { content: ""; position: absolute; inset: -8px -2px; }
 .primer > summary::after, .earlier > summary::after, .readqd summary::after, .optfield > summary::after { content: ""; position: absolute; inset: -7px 0; }
+
+/* A note's actions: Show in text, Edit (and Mark resolved on an open question) in one row; Cite, Add to draft and Follow up open
+   under More, so a list of notes is mostly your passages and glosses. */
+.note .more-acts { display: none; }
+.note.acts-open .more-acts { display: contents; }

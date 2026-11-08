@@ -96,6 +96,8 @@ document.addEventListener("click", (e) => {
   if (b.id === "openmastery") return go({ screen: "mastery" });
   if (b.id === "openstudy") return go({ screen: "study" });
   if (b.id === "allhits") { S.qAll = S.q; return render(); }
+  // a note's less used actions open in place, without drawing the screen again
+  if (b.hasAttribute("data-noteacts")) { const open = b.closest(".note").classList.toggle("acts-open"); b.setAttribute("aria-expanded", open); b.textContent = open ? "Less" : "More"; return; }
   if (b.dataset.continue) return go({ screen: "reader", textId: b.dataset.continue });
   if (b.dataset.mpath) return go({ screen: "paths" });
   if (b.dataset.path) return go({ screen: "paths", path: b.dataset.path });

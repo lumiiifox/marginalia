@@ -52,7 +52,14 @@ async def main():
 
         # 1 Follow up from the card
         await page.evaluate("go({ screen: 'text', textId: 'b1' })"); await page.wait_for_timeout(300)
-        await page.click("[data-nid='old'] [data-followup]"); await page.wait_for_selector("#n-fu")
+        # a note's actions: Show in text and Edit in view, the rest under More, opening in place and folding back with Less
+        acts = "(() => { const c = document.querySelector(\"[data-nid='old']\"), seen = (sel) => !!c.querySelector(sel) && c.querySelector(sel).offsetParent !== null; return [seen('[data-editnote]'), seen('[data-cite]'), seen('[data-todraft]'), seen('[data-followup]'), c.querySelector('[data-noteacts]').getAttribute('aria-expanded'), c.querySelector('.noteacts').getBoundingClientRect().height < 50]; })()"
+        check(await page.evaluate(acts) == [True, False, False, False, "false", True], "a note shows Edit in one row of actions, with Cite, Add to draft and Follow up under More")
+        await page.click("[data-nid='old'] [data-noteacts]")
+        check((await page.evaluate(acts))[:5] == [True, True, True, True, "true"], "More opens them in place")
+        await page.click("[data-nid='old'] [data-noteacts]")
+        check((await page.evaluate(acts))[1:5] == [False, False, False, "false"], "Less folds them away again")
+        await page.click("[data-nid='old'] [data-noteacts]"); await page.click("[data-nid='old'] [data-followup]"); await page.wait_for_selector("#n-fu")
         check(await page.evaluate("document.activeElement && document.activeElement.id === 'n-fu'"), "Follow up opens the note's sheet with the follow-up box ready")
         before = await note("old")
         await page.fill("#n-fu", "After Hume: necessity is a habit of mind, so this needs rethinking."); await page.click("button[type=submit]"); await page.wait_for_timeout(400)
@@ -63,7 +70,7 @@ async def main():
               f"saving adds one follow-up, dated now ({fu})")
         check(same and not after.get("was"), "...and leaves the note's passage, words, anchor and place as they were")
         # a second one
-        await page.click("[data-nid='old'] [data-followup]"); await page.wait_for_selector("#n-fu")
+        await page.click("[data-nid='old'] [data-noteacts]"); await page.click("[data-nid='old'] [data-followup]"); await page.wait_for_selector("#n-fu")
         await page.fill("#n-fu", "Reconsidered: Kant's spontaneity."); await page.click("button[type=submit]"); await page.wait_for_timeout(400)
 
         # 2 the card
