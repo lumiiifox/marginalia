@@ -2,14 +2,24 @@
 /* ---------- glossary ---------- */
 const AREAS = { meta: "Metaphysics", know: "Knowledge", logic: "Logic", ethics: "Ethics & politics", aes: "Aesthetics & religion", phen: "Phenomenology & hermeneutics", crit: "Critical theory", mine: "Your terms" };
 // GLOSSARY is in data/glossary.js.
+/* The glossary with your own and edited terms, in alphabetical order. Built once and kept until your terms change: every record in
+   S.terms is compared by identity each call (a saved term is always a new record), so an edit, a delete or a restore shows at once.
+   Each call gets its own copy of the list; the entries are frozen, shared between calls. */
+const TERMS_ORDER = new Intl.Collator(undefined, { sensitivity: "base" });
+const TERMS_CACHE = { map: null, recs: [], list: [] };
 function allTerms() {
-  const out = new Map(GLOSSARY.map((g) => [g.id, { ...g, builtIn: true }]));
-  for (const [id, u] of S.terms) {
-    if (id.startsWith("~")) continue; // settings kept with the glossary, such as your look-up aliases
-    const base = out.get(id);
-    out.set(id, { ...(base || {}), ...u, id, builtIn: !!base, edited: !!base });
+  const recs = [...S.terms];
+  const same = TERMS_CACHE.map === S.terms && recs.length === TERMS_CACHE.recs.length && recs.every(([k, v], i) => TERMS_CACHE.recs[i][0] === k && TERMS_CACHE.recs[i][1] === v);
+  if (!same) {
+    const out = new Map(GLOSSARY.map((g) => [g.id, { ...g, builtIn: true }]));
+    for (const [id, u] of recs) {
+      if (id.startsWith("~")) continue; // settings kept with the glossary, such as your look-up aliases
+      const base = out.get(id);
+      out.set(id, { ...(base || {}), ...u, id, builtIn: !!base, edited: !!base });
+    }
+    Object.assign(TERMS_CACHE, { map: S.terms, recs, list: [...out.values()].map(Object.freeze).sort((x, y) => TERMS_ORDER.compare(x.t, y.t)) });
   }
-  return [...out.values()].sort((x, y) => x.t.localeCompare(y.t, undefined, { sensitivity: "base" }));
+  return TERMS_CACHE.list.slice();
 }
 const reEsc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 function termKeys(g) {

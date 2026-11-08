@@ -295,6 +295,31 @@ async def term_of_day(browser):
     check(store == [] and not errs, f"nothing is stored, and no script errors ({store}{errs})")
     await page.context.close()
 
+async def terms_cache(browser):
+    """allTerms is built once and kept until your terms change: what it gives must always be what a fresh build would give."""
+    page, errs = await fresh(browser)
+    r = await page.evaluate("""async () => {
+      // what allTerms gave before it was kept: built from scratch, in the same order
+      const build = () => { const out = new Map(GLOSSARY.map((g) => [g.id, { ...g, builtIn: true }]));
+        for (const [id, u] of S.terms) { if (id.startsWith('~')) continue; const base = out.get(id); out.set(id, { ...(base || {}), ...u, id, builtIn: !!base, edited: !!base }); }
+        return [...out.values()].sort((x, y) => x.t.localeCompare(y.t, undefined, { sensitivity: 'base' })); };
+      const same = () => JSON.stringify(allTerms()) === JSON.stringify(build());
+      const out = [same()];
+      const g0 = GLOSSARY[0];
+      await put('terms', 'mine-x', { t: 'Ábhidharma test', d: 'my own term', a: 'mine', createdAt: 1, updatedAt: 1 }); out.push(same() && allTerms().some((g) => g.id === 'mine-x'));
+      await put('terms', g0.id, { ...g0, t: 'My wording', createdAt: 1, updatedAt: 1 }); out.push(same() && allTerms().find((g) => g.id === g0.id).t === 'My wording');
+      await put('terms', 'mine-x', { t: 'Renamed test', d: 'changed', a: 'mine', createdAt: 1, updatedAt: 2 }); out.push(same() && allTerms().find((g) => g.id === 'mine-x').t === 'Renamed test');
+      await del('terms', 'mine-x'); out.push(same() && !allTerms().some((g) => g.id === 'mine-x'));
+      // a restore writes the map directly, without put
+      S.terms.set('mine-y', { t: 'Restored test', d: 'from a backup', a: 'mine' }); out.push(same() && allTerms().some((g) => g.id === 'mine-y'));
+      S.terms.clear(); out.push(same() && allTerms().find((g) => g.id === g0.id).t === g0.t);
+      S.terms = new Map([['mine-z', { t: 'New map test', d: 'boot', a: 'mine' }]]); out.push(same());
+      const a = allTerms(); a.length = 0; a.push('junk'); out.push(allTerms().length === GLOSSARY.length + 1); // each call gets its own list
+      return out; }""")
+    check(all(r), f"the glossary list stays right through adding, editing, renaming, deleting and restoring your terms ({r})")
+    check(not errs, f"no script errors ({errs[:2]})")
+    await page.context.close()
+
 SAYSTUB = """(() => { window.__said = []; const real = window.speechSynthesis;
   if (real) { real.speak = (u) => window.__said.push([u.text, u.lang, Math.round(u.rate * 100) / 100]); real.cancel = () => {}; } })()"""
 
@@ -1211,6 +1236,7 @@ async def main():
         browser = await p.chromium.launch()
         await truth_table(browser)
         await term_of_day(browser)
+        await terms_cache(browser)
         await hear_it(browser)
         await anki(browser)
         await lineage(browser)
