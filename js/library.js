@@ -12,7 +12,10 @@ function sortNotes(list, t) {
 const matches = (n, q) => !q || fold([n.passage, n.gloss, n.page, n.original, ...(n.premises || []), n.conclusion, ...fuTexts(n), ...wasTexts(n)].join(" ")).includes(fold(q));
 
 /* ---------- render: library and text ---------- */
-function render() {
+const SEARCH_BOXES = new Set(["q", "tq", "gq", "pq", "rq"]);
+function render(keep) {
+  // a search box you're typing in stays the same element through any redraw, a save's included (drawMain)
+  const typing = document.activeElement; if (!keep && typing && SEARCH_BOXES.has(typing.id)) keep = typing;
   if ((S.screen === "text" || S.screen === "reader") && !S.texts.has(S.textId)) { S.screen = "library"; resetReader(); }
   buildBacklinks();
   if (S.screen === "draft" && !S.drafts.has(S.draftId)) S.screen = "drafts";
@@ -27,7 +30,34 @@ function render() {
   wakeOff();
   $("#selbar").hidden = true;
   const views = { wishlist: wishlistView, recommendations: recommendationsView, text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, paths: pathsView, plates: platesView, mastery: masteryView, disputes: disputesView, concord: concordView, compares: comparesView, compare: compareView };
-  $("#main").innerHTML = (views[S.screen] || libraryView)();
+  drawMain((views[S.screen] || libraryView)(), keep);
+}
+/* Draws the screen. With `keep`, the search box being typed in, everything around the box is replaced and the box itself stays the
+   same element, so the cursor, a selection and a word the keyboard is still composing (Android's suggestions) are untouched. When
+   the new screen has no box in the same place, the screen is drawn whole and the cursor put back where it was. */
+function drawMain(html, keep) {
+  const main = $("#main");
+  if (!keep || !keep.isConnected || !main.contains(keep) || !keep.id) { main.innerHTML = html; return; }
+  const fresh = document.createElement("div"); fresh.innerHTML = html;
+  const twin = fresh.querySelector(`#${CSS.escape(keep.id)}`);
+  const up = (el, top) => { const p = []; for (let x = el; x && x !== top; x = x.parentNode) p.push(x); return p; };
+  const oldPath = up(keep, main), newPath = twin ? up(twin, fresh) : [];
+  const same = twin && oldPath.length === newPath.length && oldPath.every((x, k) => x.tagName === newPath[k].tagName);
+  if (!same) {
+    const at = [keep.selectionStart, keep.selectionEnd, keep.selectionDirection], had = document.activeElement === keep;
+    main.innerHTML = html;
+    const el = $(`#${CSS.escape(keep.id)}`);
+    if (el && had) { el.focus(); try { el.setSelectionRange(Math.min(at[0], el.value.length), Math.min(at[1], el.value.length), at[2]); } catch {} }
+    return;
+  }
+  // from the box up to the screen: at each level the box's line keeps its element and its neighbours are swapped for the new ones
+  for (let k = 0; k < oldPath.length; k++) {
+    const o = oldPath[k], n = newPath[k], op = o.parentNode, np = n.parentNode, before = [], after = [];
+    let seen = false; for (const c of [...np.childNodes]) { if (c === n) seen = true; else (seen ? after : before).push(c); }
+    for (const c of [...op.childNodes]) if (c !== o) c.remove();
+    o.before(...before); o.after(...after);
+    if (k > 0) { for (const a of [...o.attributes]) if (!n.hasAttribute(a.name)) o.removeAttribute(a.name); for (const a of [...n.attributes]) if (o.getAttribute(a.name) !== a.value) o.setAttribute(a.name, a.value); }
+  }
 }
 
 function banner() {

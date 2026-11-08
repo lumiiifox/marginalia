@@ -195,9 +195,9 @@ document.addEventListener("toggle", (e) => {
 }, true);
 let qTimer;
 document.addEventListener("input", (e) => {
-  if (e.target.id !== "q" && e.target.id !== "tq" && e.target.id !== "gq" && e.target.id !== "pq" && e.target.id !== "rq") return;
+  if (!SEARCH_BOXES.has(e.target.id)) return;
   const key = e.target.id; S[key] = e.target.value;
-  clearTimeout(qTimer); qTimer = setTimeout(() => { render(); const el = $("#" + key); if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); } }, 180);
+  clearTimeout(qTimer); qTimer = setTimeout(() => render(), 180); // the box you type in stays as it is, cursor and all (drawMain)
 });
 
 /* ---------- classics: public-domain books that come with the app ----------
