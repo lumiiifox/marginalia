@@ -17,7 +17,7 @@ GROUPS = {
     "storage": ["smoke", "trash", "classics", "printed_page", "mastery", "slow_network"],
     "reader": ["paged_reader", "structure", "comfort", "navigate", "highlights", "notes_lookup", "quotes_language", "pin",
                "followups", "classics", "printed_page", "editions", "density", "verse_lists"],
-    "import": ["pdf_import", "pdf_highlights", "wikisource", "text_import"],
+    "import": ["pdf_import", "pdf_highlights", "wikisource", "text_import", "integrity"],
     "reference": ["study_tools", "links", "in_your_books", "density", "mastery", "discovery"],
     "look": ["contrast", "smoke", "search_box", "tap_targets"],
     # a change to reference content only (data/, tests/audit/): what it can break, in about two minutes

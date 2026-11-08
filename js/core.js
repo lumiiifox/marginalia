@@ -42,7 +42,39 @@ const pct = (a, q) => { const b = [...a].sort((x, y) => x - y); return b[Math.fl
 const wmedian = (pairs) => { const a = [...pairs].sort((x, y) => x[0] - y[0]); const tot = a.reduce((s, p) => s + p[1], 0); let acc = 0; for (const [v, w] of a) { acc += w; if (acc >= tot / 2) return v; } return a.length ? a[a.length - 1][0] : 10; };
 class UErr extends Error {}
 
-function loadScript(src) { return new Promise((res, rej) => { const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = () => rej(new Error("load")); document.head.appendChild(s); }); }
+/* Each library file's SHA-384, as cdnjs served it (checked 2026-11-08). The browser refuses a file whose bytes differ, so a changed
+   copy on the CDN can't run here, where it could read anything the app keeps (the backup token included). A new file or version in
+   LIBS needs its hash here (tests/integrity.py checks every one has one). */
+const LIB_SRI = {
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js": "sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e",
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js": "sha384-SnzOobpRMLXZ52iJvZm/C0fYw0OQemTXzTjIsdsfMcrCtCEe9qgzxTd3RSklO5x2",
+  "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js": "sha384-+mbV2IY1Zk/X1p/nWllGySJSUN8uMs+gUAN10Or95UBH0fpj6GfKgPmgC5EXieXG",
+  "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js": "sha384-wj2H3JPCraDV2eZ/vqVPAvEIkFv7WCZAac4WV7Gt/hfpso4sCcOuARI3O2rRqFV0",
+  "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js": "sha384-/cXAMbzovUIKbBERjPmR3SnPTh8siWr5lsvFYj1Uq4XP0yaJUZJmsh0YXyGv5P0y",
+  "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js": "sha384-nFoSjZIoH3CCp8W639jJyQkuPHinJ2NHe7on1xvlUA7SuGfJAfvMldrsoAVm6ECz",
+  "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.21/mammoth.browser.min.js": "sha384-8A8Qb7xlW4tCcYMx2ApG8MnMmaGhank0NWjO9B7XbbQhCkuurmQWt5OjDwWs4lrg",
+};
+function loadScript(src) {
+  return new Promise((res, rej) => {
+    const s = document.createElement("script"); s.src = src;
+    if (LIB_SRI[src]) { s.integrity = LIB_SRI[src]; s.crossOrigin = "anonymous"; } // fetched with CORS, as a hash check requires
+    s.onload = res; s.onerror = () => rej(new Error("load")); document.head.appendChild(s);
+  });
+}
+/* PDF.js's background worker, from its file checked against its hash (a worker can't carry an integrity attribute, so the file is
+   fetched with one and the worker started from the checked text); { wk, pw }. Without one, PDF.js runs in the page from the same
+   file loaded and checked as a script; if that can't be had either, opening the PDF stops there, so PDF.js never fetches its worker
+   unchecked by itself. */
+async function pdfWorker(lib) {
+  const u = LIBS.pdfw[0];
+  let wk = null, pw = null;
+  try {
+    const r = await fetch(u, { integrity: LIB_SRI[u], mode: "cors", credentials: "omit" });
+    if (r.ok) { wk = new Worker(URL.createObjectURL(new Blob([await r.text()], { type: "text/javascript" }))); pw = lib.PDFWorker.fromPort({ port: wk }); }
+  } catch { try { if (wk) wk.terminate(); } catch {} wk = null; pw = null; }
+  if (!pw) { await need("pdfw", () => !!window.pdfjsWorker, "Couldn't load the PDF reader. Check your connection and try again."); lib.GlobalWorkerOptions.workerSrc = u; }
+  return { wk: pw ? wk : null, pw };
+}
 async function need(key, ok, msg) {
   if (ok()) return;
   for (const u of LIBS[key]) { try { await loadScript(u); if (ok()) return; } catch {} }
