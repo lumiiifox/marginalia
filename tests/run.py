@@ -14,7 +14,7 @@ FIRST = ["pdf_import"]
 # Timing-sensitive tests (a page flip within so many milliseconds, a summary saved as the page turns) run alone at the end, so the other tests can't slow them down.
 LAST = ["paged_reader", "navigate"]
 GROUPS = {
-    "storage": ["smoke", "trash", "classics", "printed_page", "mastery"],
+    "storage": ["smoke", "trash", "classics", "printed_page", "mastery", "slow_network"],
     "reader": ["paged_reader", "structure", "comfort", "navigate", "highlights", "notes_lookup", "quotes_language", "pin",
                "followups", "classics", "printed_page", "editions", "density", "verse_lists"],
     "import": ["pdf_import", "pdf_highlights", "wikisource", "text_import"],
