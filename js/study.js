@@ -891,10 +891,28 @@ const quizTermLink = (g, cls) => (allTerms().some((x) => x.id === g.id) ? `<butt
 const argModes = new Set(["fallacy", "valid", "missing"]);
 const shuffle = (a) => { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
 // A definition with the term's own words blanked out, so it doesn't give the answer away.
+/* A definition with its own term blanked out, for Quiz yourself. The term's names (termKeys) are blanked with their inflections
+   and the words formed from them by a closed list of suffixes (accident → accidental, Dao → Daoists), so the clue never hands
+   over the answer; a single word of a longer name (five letters or more) only with its inflections (commodity → commodities,
+   knowledges → knowledge), so a clue about commodity fetishism can still say what it is about. Anything outside that list
+   stays: "organism" is a different word from "organs". */
+const MASK_INFLECT = "s|es";
+const MASK_DERIVED = "al|ally|ial|ially|ly|ist|ists|istic|ism|isms|ic|ics|ical|ically|ity|ities|ness|ed|ing|er|ers";
+function maskForms(w, derived) {
+  const sfx = derived ? `${MASK_INFLECT}|${MASK_DERIVED}` : MASK_INFLECT, forms = [`${reEsc(w)}(?:${sfx})?`];
+  if (/y$/i.test(w)) forms.push(`${reEsc(w.slice(0, -1))}(?:ies|ied)`); // commodity → commodities
+  if (/e$/i.test(w)) forms.push(`${reEsc(w)}d`, `${reEsc(w.slice(0, -1))}ing`); // cause → caused, causing
+  if (/[^s]s$/i.test(w) && w.length > 4) forms.push(reEsc(w.slice(0, -1))); // questions → question
+  return forms;
+}
 function maskTerm(g) {
-  const words = [...termKeys(g), ...g.t.replace(/\(.*?\)/g, " ").split(/[\s\-–—/]+/).filter((w) => w.length >= 5)];
-  if (!words.length) return g.d;
-  const re = new RegExp(`(^|[^\\p{L}])(${words.map(reEsc).join("|")})(s|es)?(?![\\p{L}])`, "giu");
+  // its names: the keys, the title as the options show it, and the title's bracketed other name ("Dao (the Way)": Dao, the Way)
+  const brackets = [...g.t.matchAll(/\((.*?)\)/g)].map((m) => m[1].trim()), title = g.t.replace(/\s*\(.*?\)\s*/g, " ").trim();
+  const keys = [...new Map([...termKeys(g), title, ...brackets].filter((k) => k.length > 2).map((k) => [k.toLowerCase(), k])).values()], parts = g.t.replace(/\(.*?\)/g, " ").split(/[\s\-–—/]+/).filter((w) => w.length >= 5);
+  const forms = [...keys.flatMap((k) => maskForms(k, true)), ...parts.flatMap((w) => maskForms(w, false))];
+  if (!forms.length) return g.d;
+  forms.sort((a, b) => b.length - a.length); // the longest form first, so "accidentally" is blanked whole
+  const re = new RegExp(`(^|[^\\p{L}])(?:${forms.join("|")})(?![\\p{L}])`, "giu");
   return g.d.replace(re, "$1___");
 }
 const workTitle = (w) => { const y = w.match(/\((?:c\. )?(\d{3,4})/); return w.replace(/\s*\(.*$/, "").trim() + (y ? ` (${y[1]})` : ""); };

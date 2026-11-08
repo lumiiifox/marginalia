@@ -101,7 +101,9 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   an entry's text when it opens, `fillLinks`) (accents ignored; names under five
   letters in exact case; `LINK_FULL_ONLY` names, such as Said and Land, only in full; a name two entries share never links).
 - Quiz yourself (`quizPanel`, from the glossary and the home screen's glossary section): questions made from `allTerms()` definitions
-  (the term blanked out by `maskTerm`) and `THINKERS` key works (`worksOf` leaves out works by other authors); nothing is stored.
+  (the term blanked out by `maskTerm`: its names, title and bracketed other name with their inflections and the words formed from them by
+  `MASK_DERIVED`'s suffixes, accidental, Daoists; a single word of a longer name only with its inflections, so a clue keeps its sense;
+  tested over every entry in `tests/smoke.py`) and `THINKERS` key works (`worksOf` leaves out works by other authors); nothing is stored.
   Argument puzzles (from the Logic branch, `argModes`): Name the fallacy uses each fallacy's `ex` examples, never offering a `FAL_NEAR` pair
   together; Valid or not? (`validQuestion`) makes random arguments, checked by `ttCheck`, about half valid.
   Missing premise (`missingQuestion`): a valid argument less one premise; wrong options each have a counterexample. Put the steps in order

@@ -280,6 +280,23 @@ async def main():
         leaks = await page.evaluate("""() => { quizStart('def', 'all'); let bad = []; for (let r = 0; r < 20; r++) { quizStart('def', 'all');
             for (const q of QZ.qs) { const t = q.g.t.replace(/\\s*\\(.*?\\)\\s*/g, ' ').trim(); if (t.length > 4 && q.prompt.toLowerCase().includes(t.toLowerCase())) bad.push(t); } } return bad; }""")
         check(not leaks, f"a definition never names its own term ({leaks[:3]})")
+        # every entry, not a random draw: no clue keeps its term's name, its bracketed other name or a word formed from either
+        # (accident → accidental, Dao → Daoists), while words that only share letters with the term stay, so the clue keeps its sense
+        masks = await page.evaluate("""() => {
+          const bad = [];
+          for (const g of allTerms().filter((g) => g.d)) {
+            const m = maskTerm(g), names = [g.t.replace(/\\s*\\(.*?\\)\\s*/g, ' ').trim(), ...[...g.t.matchAll(/\\((.*?)\\)/g)].map((x) => x[1].trim())];
+            for (const n of names) if (n.length > 2 && new RegExp(`(^|[^\\\\p{L}])${reEsc(n)}(?![\\\\p{L}])`, 'iu').test(m)) bad.push(`${g.t}: ${n}`);
+          }
+          const of = (t) => maskTerm(allTerms().find((g) => g.t === t));
+          const gone = [['Accident', 'accidental'], ['Dao (the Way)', 'Daoists'], ['Commodity fetishism', 'commodities'], ['Four causes', 'cause'],
+            ['False cause (post hoc)', 'caused'], ['Many questions', 'question'], ['Situated knowledges', 'knowledge']].filter(([t, w]) => new RegExp(`\\\\b${w}\\\\b`, 'i').test(of(t)));
+          const kept = [['Body without organs', 'organism'], ['Moral luck', 'morally'], ['Post-structuralism', 'structuralist']].filter(([t, w]) => !new RegExp(`\\\\b${w}\\\\b`, 'i').test(of(t)));
+          return { bad, gone, kept };
+        }""")
+        check(not masks["bad"], f"no clue in the whole glossary keeps its term's name ({masks['bad'][:3]})")
+        check(not masks["gone"], f"words formed from the term are blanked too ({masks['gone']})")
+        check(not masks["kept"], f"words that only share letters with the term stay in the clue ({masks['kept']})")
         area = await page.evaluate("() => { quizStart('def', 'ethics'); return [...new Set(QZ.qs.map((q) => q.g.a))]; }")
         check(area == ["ethics"], f"a quiz from one area asks only about its terms ({area})")
         work = await page.evaluate("""() => { const bad = []; for (let r = 0; r < 40; r++) { quizStart('work', 'all'); for (const q of QZ.qs) {
