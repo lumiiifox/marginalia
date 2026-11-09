@@ -196,7 +196,9 @@ async def main():
         # One check of the whole state, waited for: the page re-draws while the classics finish loading in the background, so two
         # separate reads could straddle a re-draw (found by running the suite at double load).
         try:
-            await page.wait_for_function("document.querySelector('#main').innerText.includes('In the reference pages') && !!document.querySelector(\"#main .mentions [data-branch='political']\")", timeout=20000)
+            # 45 s: the classics load in the background, and with the whole suite running four at a time on a small machine that can
+            # take longer than 20 s (seen twice); the page itself is ready as soon as they are
+            await page.wait_for_function("document.querySelector('#main').innerText.includes('In the reference pages') && !!document.querySelector(\"#main .mentions [data-branch='political']\")", timeout=45000)
             shown = True
         except Exception:
             shown = False
