@@ -305,10 +305,12 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   its connections), answered (a right answer in `quizPanel`, solving `guessPanel`, a step of `connectPanel` along a connection) and used
   (your notes name it: `termNotes`, `t.termMarks`, `thinkerNotes`); a station has one stage, read (`closeState`). `earn(kind, id, stage)`
   stores `{ met, ans }` times keyed `term:<id>`, `thinker:<id>`, `conn:<from>><to>`; used and read are worked out from notes each time
-  (`masteryStages`). `put` calls `masteryNoteChanged(id)` after a note is saved, which celebrates only what that note itself brings
+  (`masteryStages`). The whole collection is worked out by `masteryState` and kept in `MASTERY_CACHE` (key: `masteryKeyNow`); `put` and
+  `del` drop it whenever a note changes (`notesChanged`, storage.js), so a save works it out once. `put` calls `masteryNoteChanged(id)`
+  after a note is saved, which reads what's used from that same state (`usedNow`) and celebrates only what that note itself brings
   (`USED_SEEN`, set at start). `celebrate` batches what's earned together into one toast (`flushEarned`: pips, a pop, `navigator.vibrate`).
   `withinReach` unlocks an item when something next to it is met (a station when the one before is read); locked ones fold into one tile.
-  Screens: `masteryCardHTML` on the home screen (doesn't load a book to count stations), `masteryView` (`S.screen` "mastery").
+  Screens: `masteryCardHTML` on the Study screen and `studyCardHTML` on home (neither loads a book to count stations), `masteryView` (`S.screen` "mastery").
   Backups carry the store; `planRestore` merges each stage's earlier time (`plan.mastery`), so restoring never takes anything away.
   Tested by `tests/mastery.py`.
 

@@ -112,10 +112,9 @@ function earnConnectionsOf(id) { for (const c of connectionsOf(id)) earn("conn",
 // "Used" and "read" come from your notes: after a note is saved, anything newly used or read is celebrated once.
 let USED_SEEN = null;
 function usedNow() {
-  const ctx = { noLoad: true }, out = new Set();
-  for (const it of masteryItems()) {
-    const s = masteryStages(it, ctx); if (s.used || s.read) out.add(masteryKey(it.kind, it.id));
-  }
+  // read off the collection's worked-out state (kept until a note changes), so a save works it out once for the Study card and this
+  const out = new Set();
+  for (const it of masteryState({ noLoad: true }).items) if (it.s.used || it.s.read) out.add(masteryKey(it.kind, it.id));
   return out;
 }
 function masteryNoteChanged(noteId) {

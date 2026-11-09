@@ -44,15 +44,17 @@ function mapFor(col) {
   if (!m) throw new Error(`No copy in memory for "${col}".`);
   return m;
 }
+// A note changes what's used or read in Mastery: its worked-out state is dropped, so the next look works it out once (js/mastery.js).
+const notesChanged = (col) => { if (col === "notes" && typeof MASTERY_CACHE !== "undefined") MASTERY_CACHE = null; };
 async function put(col, id, data) {
   if (idb) await idbDo(col, (s) => s.put(data, id));
-  mapFor(col).set(id, data);
+  mapFor(col).set(id, data); notesChanged(col);
   if (col !== "content") render();
   if (col === "notes") masteryNoteChanged(id); // a note can make a checked concept "used" (js/mastery.js)
 }
 async function del(col, id) {
   if (idb) await idbDo(col, (s) => s.delete(id));
-  mapFor(col).delete(id);
+  mapFor(col).delete(id); notesChanged(col);
   if (col !== "content") render();
 }
 /* Recently deleted: what you delete is kept for TRASH_DAYS in the "trash" store, as one entry per deletion:

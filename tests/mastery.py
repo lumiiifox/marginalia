@@ -127,6 +127,16 @@ async def main():
         check(u[0].startswith("Mastered: Rhizome") and u[1]["used"], f"a note naming a checked concept makes it used; met, answered and used, it's mastered ({u[0]})")
         await page.evaluate("document.querySelector('#toast').textContent = ''; put('notes', 'n-rh', { textId: 'b1', gloss: 'A rhizome has no centre, again', createdAt: 4, updatedAt: 5 })"); await page.wait_for_timeout(200)
         check(await page.evaluate("document.querySelector('#toast').textContent") == "", "editing that note again celebrates nothing twice")
+        # a save works the collection out once, on the home screen too (its Study card needs it), and a note rewritten with the
+        # same dates still counts what it now names
+        got = await page.evaluate("""async () => {
+          go({ screen: 'library' }); const real = masteryStateFresh; let n = 0; window.masteryStateFresh = (o) => { n++; return real(o); };
+          const g = allTerms().find((x) => VERIFIED_TERMS.includes(x.id) && x.id !== 'rhizome' && /^[a-z ]+$/i.test(x.t) && !masteryStages(masteryItems().find((i) => i.id === x.id)).used);
+          document.querySelector('#toast').textContent = '';
+          await put('notes', 'n-plain', { textId: 'b1', gloss: 'Now about ' + g.t.toLowerCase(), createdAt: 3, updatedAt: 3 });
+          await new Promise((r) => setTimeout(r, 200)); window.masteryStateFresh = real;
+          return [n, masteryStages(masteryItems().find((i) => i.id === g.id)).used, document.querySelector('#toast').textContent.includes(g.t), g.t]; }""")
+        check(got[:3] == [1, True, True], f"saving a note works mastery out once, and a note rewritten with the same dates still counts ({got})")
 
         # 5 a station, read through a note in its passage
         await page.evaluate("addClassics(true)"); await page.wait_for_function("S.texts.has('classic-spinoza-ethics')")
