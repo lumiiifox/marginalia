@@ -312,7 +312,7 @@ const fnRefs = (html) => html.replace(FNREF, (m) => `<span class="fnref" data-fn
 // Verse, stored with " / " between its lines (as verse is quoted): a block whose every part is a line's length is drawn line by
 // line. The slash stays in the page, hidden, so a passage chosen from it is quoted as stored and keeps its place.
 const VERSE_LINE = 110;
-const isVerse = (x) => { const p = plain(x); if (!p.includes(" / ")) return false; const parts = p.split(" / "); return parts.length > 1 && parts.every((t) => t.length <= VERSE_LINE); };
+const isVerse = (x) => { if (!x.includes("/")) return false; /* most paragraphs: no slash at all, so no need to strip them */ const p = plain(x); if (!p.includes(" / ")) return false; const parts = p.split(" / "); return parts.length > 1 && parts.every((t) => t.length <= VERSE_LINE); };
 const VBR = `<span class="vs"> / </span><br>`;
 // A short paragraph that starts with a list's number or bullet ("3. ", "(a) ", "IV. ", "• ") is set as a list item, hanging;
 // a long numbered section keeps the paragraph's indent.
@@ -363,7 +363,7 @@ function leadIn(b, html) {
 const isListItem = (b) => (b.k === "p" || b.k === "q") && LIST_ITEM.test(plain(b.x || "")) && plain(b.x || "").length <= 400;
 // A word joiner before a dash set close to its word (".rx": drawn, never counted as the text's), so a line never starts with "—".
 const WJ = `<span class="rx">\u2060</span>`;
-const dress = (html, verse) => (verse ? html.replace(/ \/ /g, VBR) : html).replace(/([^\s>]|<\/em>)(?=—)/g, `$1${WJ}`);
+const dress = (html, verse) => (!verse && !html.includes("—") ? html : (verse ? html.replace(/ \/ /g, VBR) : html).replace(/([^\s>]|<\/em>)(?=—)/g, `$1${WJ}`));
 // A table's row, stored as its cells joined by " · " (as the importers write a table): a block with two to six short cells, beside
 // another block split into as many, is drawn as a row of a grid, its columns lined up with its neighbours'. The separators stay in
 // the page, hidden, so a passage chosen from a row is quoted as stored and keeps its place.
