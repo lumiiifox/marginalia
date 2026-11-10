@@ -401,15 +401,15 @@ function glossaryView() {
   let body;
   {
     const who = q ? THINKERS.filter((p) => thinkerMatches(p, q)) : [], whoIds = new Set(who.map((p) => p.id));
-    const list = terms.filter((g) => (S.gArea === "all" || g.a === S.gArea) && (!q || fold(g.t).includes(q) || fold(g.d).includes(q) || fold(g.x).includes(q) || (g.p || []).some((id) => whoIds.has(id))));
+    const list = terms.filter((g) => (S.gArea === "all" || g.a === S.gArea) && (!S.gChecked || isCheckedTerm(g)) && (!q || fold(g.t).includes(q) || fold(g.d).includes(q) || fold(g.x).includes(q) || (g.p || []).some((id) => whoIds.has(id))));
     body = `${who.length ? `<div class="tconn">${chipRow("Thinkers", thinkerChips(who.slice(0, 8).map((p) => p.id)))}</div>` : ""}
       <div class="gl-list">${list.map((g) => termHTML(g, tmap)).join("") || `<p class="empty">No terms match.</p>`}</div>`;
   }
   return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
-    <header class="gl-head"><div><h1>Glossary</h1><div class="sub">${terms.length} terms</div></div><div class="gl-acts">${lookedUp().length ? `<button class="btn" id="mywords">Your words</button>` : ""}<button class="btn" id="quiz">Quiz yourself</button><button class="btn primary" id="addterm">Add a term</button></div></header>
+    <header class="gl-head"><div><h1>Glossary</h1><div class="sub">${terms.length} terms, ${terms.filter(isCheckedTerm).length} checked against their sources</div></div><div class="gl-acts">${lookedUp().length ? `<button class="btn" id="mywords">Your words</button>` : ""}<button class="btn" id="quiz">Quiz yourself</button><button class="btn primary" id="addterm">Add a term</button></div></header>
     <p class="hint">Reference definitions with their sources. Tap a thinker, tradition or related term to follow the connections. Each term also lists the passages in your notes that use it, and you can edit any entry or add your own.</p>
     <input class="search" id="gq" type="search" placeholder="Search terms, definitions and thinkers" value="${esc(S.gq)}" aria-label="Search the glossary">
-    <div class="chips">${areas.map((a) => `<button class="chip ${S.gArea === a ? "on" : ""}" data-area="${a}">${a === "all" ? "All" : esc(AREAS[a])}</button>`).join("")}</div>
+    <div class="chips">${areas.map((a) => `<button class="chip ${S.gArea === a ? "on" : ""}" data-area="${a}">${a === "all" ? "All" : esc(AREAS[a])}</button>`).join("")}<button class="chip ${S.gChecked ? "on" : ""}" id="gchecked" aria-pressed="${S.gChecked ? "true" : "false"}">✓ Checked only</button></div>
     ${body}`;
 }
 // Thinkers: everyone in the app's thinker entries, in order of birth or on a timeline; each opens their card.
@@ -422,7 +422,7 @@ function thinkersView() {
     ? `<p class="hint">Each bar is a life, on the scale of its period, so you can see who lived at the same time. Pale bars are approximate dates; a bar that fades runs to the present.</p>${timelineHTML(list)}`
     : `<p class="hint">In order of birth; the last few have no published birth year.</p><div class="gl-list">${list.map(thinkerRow).join("")}</div>`;
   return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
-    <header class="gl-head"><div><h1>Thinkers</h1><div class="sub">${THINKERS.length} philosophers and theorists</div></div><div class="gl-acts"><button class="btn" id="puzzles">Puzzles</button><button class="btn" id="quiz">Who wrote it?</button></div></header>
+    <header class="gl-head"><div><h1>Thinkers</h1><div class="sub">${THINKERS.length} philosophers and theorists, ${THINKERS.filter((p) => isCheckedThinker(p.id)).length} checked against their sources</div></div><div class="gl-acts"><button class="btn" id="puzzles">Puzzles</button><button class="btn" id="quiz">Who wrote it?</button></div></header>
     <p class="hint">Tap a name for their key works, the glossary terms and traditions they belong to, who they drew on and who took them up, and who lived at the same time.</p>
     <input class="search" id="pq" type="search" placeholder="Search names, descriptions and works" value="${esc(S.pq || "")}" aria-label="Search the thinkers">
     ${views}
@@ -447,9 +447,9 @@ function todHTML() {
 function referenceHome() {
   const card = (rk, title, sub) => `<button class="refcard" data-ref="${rk}"><span class="rc-t">${title}</span><span class="rc-s">${sub}</span><span class="rc-go" aria-hidden="true">›</span></button>`;
   return `<section class="home-sec">${todHTML()}<div class="refcards">
-    ${card("glossary", "Glossary", `${allTerms().length} terms`)}
+    ${card("glossary", "Glossary", `${allTerms().length} terms, ${allTerms().filter(isCheckedTerm).length} checked`)}
     ${card("branches", "Branches", `${BRANCHES.filter((b) => b.k === "branch").length} branches, ${BRANCHES.filter((b) => b.k === "tradition").length} traditions`)}
-    ${card("thinkers", "Thinkers", `${THINKERS.length} philosophers and theorists`)}
+    ${card("thinkers", "Thinkers", `${THINKERS.length} philosophers and theorists, ${THINKERS.filter((p) => isCheckedThinker(p.id)).length} checked`)}
   </div>${studyCardHTML()}</section>`;
 }
 /* Study: one card on the home screen, with your mastery's meter on it, opening the study screen: Mastery, reading paths,

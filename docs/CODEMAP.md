@@ -355,4 +355,6 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 
 - Checked and unchecked (`isCheckedTerm`, `isCheckedThinker`, `checkMark`, in study.js): a built-in glossary entry or thinker card says
   whether it passed an audit (`VERIFIED_TERMS`, `VERIFIED_THINKERS`): a ✓ line, or "Unchecked: not yet audited against its sources";
-  an unchecked entry's summary line also says "unchecked". Your own or edited terms carry no mark. Tested by `tests/mastery.py`.
+  an unchecked entry's summary line also says "unchecked". Your own or edited terms carry no mark. The home screen's Glossary and
+  Thinkers cards and the two screens' subtitles count the checked ones; the glossary's ✓ Checked only chip (`#gchecked`, `S.gChecked`,
+  for this sitting, not stored) lists only those. Tested by `tests/mastery.py`.

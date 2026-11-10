@@ -66,6 +66,7 @@ document.addEventListener("click", (e) => {
   if (b.dataset.passage) return openPassage(b.dataset.passage, b.dataset.passageAt);
   if (b.dataset.thinker) return thinkerPanel(b.dataset.thinker);
   if (b.dataset.area) { S.gArea = b.dataset.area; return render(); }
+  if (b.id === "gchecked") { S.gChecked = !S.gChecked; return render(); } // the glossary narrowed to audited entries
   if (b.dataset.tl) { S.tl = b.dataset.tl === "1"; return render(); }
   if (b.id === "addterm") return termSheet(null);
   if (b.id === "quiz") return quizPanel(S.screen === "glossary" ? S.gArea : S.screen === "thinkers" || (S.screen === "reference" && S.rk === "thinkers") ? "thinkers" : "all");
