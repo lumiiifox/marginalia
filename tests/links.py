@@ -212,7 +212,7 @@ async def main():
         check("genealogy" in refs[1] and "foucault" not in refs[1], f"a thinker card links the terms it uses, never its own name ({refs[1]})")
         check(refs[2] == ["genealogy", "rhizome", "hobbes"], f"an article links any glossary term ({refs[2]})")
         await page.evaluate("openTerm('genealogy')"); await page.wait_for_timeout(300)
-        check(await page.locator("details[data-term-id='genealogy'] [data-gx] [data-thinker='nietzsche']").count() == 1, "an open entry shows its links")
+        check(await page.locator("details[data-term-id='genealogy'] [data-gx] [data-thinker='nietzsche']").count() >= 1, "an open entry shows its links")  # once in each paragraph that names him
         # glossary source lines: locators after a bundled classic's title open that passage
         src = await page.evaluate("""(async () => { const out = { bad: [], n: 0, styles: new Set() }, books = {};
           for (const g of GLOSSARY) { if (!g.s) continue; const d = document.createElement('div'); d.innerHTML = sourceLinks(g.s);
