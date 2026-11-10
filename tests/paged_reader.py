@@ -62,7 +62,7 @@ async def swipe(cdp, dx, dy=0, ms=180, hold=0, x0=300, y0=450):
     await asyncio.sleep(0.05)
 
 async def open_book(browser, n, w=412, h=915, reduced=False, turn="slide"):
-    ctx = await browser.new_context(viewport={"width": w, "height": h}, device_scale_factor=2.625, is_mobile=True, has_touch=True, reduced_motion="reduce" if reduced else "no-preference")
+    ctx = await browser.new_context(bypass_csp=True, viewport={"width": w, "height": h}, device_scale_factor=2.625, is_mobile=True, has_touch=True, reduced_motion="reduce" if reduced else "no-preference")
     page = await ctx.new_page(); errs = []
     page.on("pageerror", lambda e: errs.append(str(e)))
     page.on("console", lambda m: m.type == "error" and "Failed to load resource" not in m.text and errs.append(m.text))

@@ -51,7 +51,7 @@ async def main():
                 await maker.set_content(html(pages, word))
                 await maker.pdf(path=str(tmp / f"{name}.pdf"), prefer_css_page_size=True, display_header_footer=True, header_template="<span></span>",
                     footer_template='<div style="font-size:9px;width:100%;text-align:center"><span class="pageNumber"></span></div>', margin={"top": "0.8in", "bottom": "0.8in", "left": "0.7in", "right": "0.7in"})
-            ctx = await browser.new_context(viewport={"width": 412, "height": 915}, device_scale_factor=2, is_mobile=True, has_touch=True, accept_downloads=True)
+            ctx = await browser.new_context(bypass_csp=True, viewport={"width": 412, "height": 915}, device_scale_factor=2, is_mobile=True, has_touch=True, accept_downloads=True)
             page = await ctx.new_page(); errs = []
             page.on("pageerror", lambda e: errs.append(str(e)))
             await page.goto(f"http://localhost:{PORT}/index.html"); await page.wait_for_function(READY)
@@ -141,7 +141,7 @@ async def main():
             check("Couldn't open the kept PDF" in bad["said"] and bad["made"] >= 1 and bad["ended"] == bad["made"], f"a damaged kept PDF says so and lets its worker go ({bad})")
             check(not errs, "no script errors" + (f": {errs[:3]}" if errs else ""))
             # 5 a library from before (storage version 6) opens with everything in it, and gains the store for PDFs
-            ctx2 = await browser.new_context()
+            ctx2 = await browser.new_context(bypass_csp=True)
             await ctx2.route(f"http://localhost:{PORT}/blank.html", lambda r: r.fulfill(status=200, content_type="text/html", body="<p>blank</p>"))
             pg2 = await ctx2.new_page(); await pg2.goto(f"http://localhost:{PORT}/blank.html")
             await pg2.evaluate("""() => new Promise((res, rej) => { const r = indexedDB.open('marginalia', 6);

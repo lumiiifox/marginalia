@@ -56,7 +56,7 @@ async def main():
         browser = await p.chromium.launch()
 
         # 4 first visit: no saved copy, so a slow answer is waited for (here 3 s)
-        ctx = await browser.new_context(viewport={"width": 390, "height": 844}); page = await ctx.new_page()
+        ctx = await browser.new_context(bypass_csp=True, viewport={"width": 390, "height": 844}); page = await ctx.new_page()
         await page.route("**/*", lambda r: r.continue_() if r.request.url.startswith(f"http://localhost:{PORT}") else r.abort())
         STATE["slow"] = 3
         t0 = time.time(); await page.goto(URL, timeout=60000); await page.wait_for_function(READY, timeout=60000)
@@ -92,7 +92,7 @@ async def main():
         await ctx.close()
 
         # 5 offline: the server gone
-        ctx = await browser.new_context(viewport={"width": 390, "height": 844}); page = await ctx.new_page()
+        ctx = await browser.new_context(bypass_csp=True, viewport={"width": 390, "height": 844}); page = await ctx.new_page()
         await page.route("**/*", lambda r: r.continue_() if r.request.url.startswith(f"http://localhost:{PORT}") else r.abort())
         await page.goto(URL); await page.wait_for_function(READY)
         await page.evaluate("navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready)")

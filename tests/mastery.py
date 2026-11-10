@@ -47,7 +47,7 @@ def audit_lists():
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
-        ctx = await browser.new_context(viewport={"width": 390, "height": 820}, has_touch=True)
+        ctx = await browser.new_context(bypass_csp=True, viewport={"width": 390, "height": 820}, has_touch=True)
         await ctx.route("**/*", lambda r: r.abort() if "localhost" not in r.request.url else r.continue_())
         page = await ctx.new_page(); errs = []
         page.on("pageerror", lambda e: errs.append(str(e)))
@@ -184,7 +184,7 @@ async def main():
 
         # the first time Mastery is opened, before the close-reading path's book is loaded: the figures are redrawn once it is,
         # so they agree with the collection (stations read count only with the book's text at hand)
-        ctx2 = await browser.new_context(viewport={"width": 390, "height": 820})
+        ctx2 = await browser.new_context(bypass_csp=True, viewport={"width": 390, "height": 820})
         await ctx2.route("**/*", lambda r: r.abort() if "localhost" not in r.request.url else r.continue_())
         p2 = await ctx2.new_page(); p2.on("pageerror", lambda e: errs.append(str(e)))
         await p2.goto(URL); await p2.wait_for_function(READY)

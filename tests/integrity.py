@@ -38,7 +38,7 @@ async def main():
         browser = await p.chromium.launch()
 
         # 1, 2, 3: changed copies are refused (cdnjs stood in for, so this runs anywhere)
-        ctx = await browser.new_context(viewport={"width": 390, "height": 844}, service_workers="block")
+        ctx = await browser.new_context(bypass_csp=True, viewport={"width": 390, "height": 844}, service_workers="block")
         await ctx.route(re.compile(r"^https://fonts\."), lambda r: r.abort())
         served = []
         async def tampered(route):
@@ -67,7 +67,7 @@ async def main():
 
         # 4: a library the offline copy saved before the checks (opaque) is fetched again with CORS
         good = b"window.JSZip = function JSZip() {}; window.__zipLoads = (window.__zipLoads || 0) + 1;"
-        ctx = await browser.new_context(viewport={"width": 390, "height": 844})
+        ctx = await browser.new_context(bypass_csp=True, viewport={"width": 390, "height": 844})
         await ctx.route(re.compile(r"^https://fonts\."), lambda r: r.abort())
         hits = []
         async def zipfile(route):
@@ -92,7 +92,7 @@ async def main():
         await ctx.close()
 
         # 5: the real files, from cdnjs
-        ctx = await browser.new_context(viewport={"width": 390, "height": 844}, service_workers="block")
+        ctx = await browser.new_context(bypass_csp=True, viewport={"width": 390, "height": 844}, service_workers="block")
         await ctx.route(re.compile(r"^https://fonts\."), lambda r: r.abort())
         page = await ctx.new_page()
         await page.goto(URL); await page.wait_for_function(READY)
