@@ -58,7 +58,7 @@ CASES = [
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
-        page = await browser.new_page(viewport={"width": 390, "height": 844})
+        page = await browser.new_page(bypass_csp=True, viewport={"width": 390, "height": 844})
         errs = []; page.on("pageerror", lambda e: errs.append(str(e)))
         await page.route("https://commons.wikimedia.org/**", lambda r: r.abort())
         await page.goto(URL); await page.wait_for_function(READY)

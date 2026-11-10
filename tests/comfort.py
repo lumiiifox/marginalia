@@ -52,7 +52,7 @@ def check(ok, what):
     if not ok: failures.append(what)
 
 async def open_book(browser, n, rs, init=""):
-    ctx = await browser.new_context(viewport={"width": 412, "height": 915}, device_scale_factor=2.625, is_mobile=True, has_touch=True)
+    ctx = await browser.new_context(bypass_csp=True, viewport={"width": 412, "height": 915}, device_scale_factor=2.625, is_mobile=True, has_touch=True)
     await ctx.add_init_script(WAKE_MOCK + init)
     page = await ctx.new_page(); errs = []
     page.on("pageerror", lambda e: errs.append(str(e)))

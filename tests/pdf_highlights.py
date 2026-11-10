@@ -79,7 +79,7 @@ async def main():
             maker = await browser.new_page(); await maker.set_content(book())
             await maker.pdf(path=str(tmp / "plain.pdf"), prefer_css_page_size=True, display_header_footer=True, header_template="<span></span>",
                 footer_template='<div style="font-size:9px;width:100%;text-align:center"><span class="pageNumber"></span></div>', margin={"top": "0.8in", "bottom": "0.8in", "left": "0.7in", "right": "0.7in"})
-            ctx = await browser.new_context(viewport={"width": 412, "height": 915}, is_mobile=True, has_touch=True)
+            ctx = await browser.new_context(bypass_csp=True, viewport={"width": 412, "height": 915}, is_mobile=True, has_touch=True)
             page = await ctx.new_page(); errs = []
             page.on("pageerror", lambda e: errs.append(str(e)))
             await page.goto(f"http://localhost:{PORT}/index.html"); await page.wait_for_function(READY)

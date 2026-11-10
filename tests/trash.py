@@ -42,7 +42,7 @@ OLD_LIBRARY = """() => new Promise((res, rej) => { const r = indexedDB.open('mar
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
-        ctx = await browser.new_context(viewport={"width": 390, "height": 820}, has_touch=True)
+        ctx = await browser.new_context(bypass_csp=True, viewport={"width": 390, "height": 820}, has_touch=True)
         await ctx.route("**/*", lambda r: r.abort() if "localhost" not in r.request.url else r.continue_())
         page = await ctx.new_page()
         errs = []

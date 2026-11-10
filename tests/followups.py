@@ -41,7 +41,7 @@ def check(ok, what):
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
-        ctx = await browser.new_context(viewport={"width": 412, "height": 915}, device_scale_factor=2.625, is_mobile=True, has_touch=True, accept_downloads=True)
+        ctx = await browser.new_context(bypass_csp=True, viewport={"width": 412, "height": 915}, device_scale_factor=2.625, is_mobile=True, has_touch=True, accept_downloads=True)
         page = await ctx.new_page(); errs = []
         page.on("pageerror", lambda e: errs.append(str(e)))
         page.on("console", lambda m: m.type == "error" and "Failed to load resource" not in m.text and errs.append(m.text))

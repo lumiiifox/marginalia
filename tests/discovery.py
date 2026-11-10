@@ -11,7 +11,7 @@ def check(ok, msg):
 async def main():
     async with async_playwright() as p:
         b=await p.chromium.launch()
-        ctx=await b.new_context(viewport={'width':390,'height':844})
+        ctx=await b.new_context(bypass_csp=True, viewport={'width':390,'height':844})
         await ctx.route('**/*',lambda r:r.continue_() if r.request.url.startswith(f'http://localhost:{PORT}') else r.abort())
         page=await ctx.new_page();errs=[];page.on('pageerror',lambda e:errs.append(str(e)))
         await page.goto(f'http://localhost:{PORT}/manifest.webmanifest')

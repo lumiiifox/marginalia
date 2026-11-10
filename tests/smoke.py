@@ -59,7 +59,7 @@ async def cloud_backups(browser):
     device = "11111111-1111-4111-a111-111111111111"
     path = "marginalia-backups/" + device + ".json"
     config = {"repo": "test/private-notes", "token": "github_pat_fake_test_only", "device": device, "enabledAt": 1}
-    ctx = await browser.new_context(viewport={"width": 390, "height": 820})
+    ctx = await browser.new_context(bypass_csp=True, viewport={"width": 390, "height": 820})
     async def route(r):
         if "api.github.com" not in r.request.url:
             return await (r.continue_() if "localhost" in r.request.url else r.abort())
@@ -161,7 +161,7 @@ async def cloud_backups(browser):
     state['conflict']=False; await page.evaluate('cloudUpload()')
     await page.evaluate('cloudList()')
     check(await page.locator('[data-cloud-file]').count()==1, 'remote chooser lists device manifests, excluding assets')
-    other=await browser.new_context(viewport={'width':1280,'height':900}); await other.route('**/*',route)
+    other=await browser.new_context(bypass_csp=True, viewport={'width':1280,'height':900}); await other.route('**/*',route)
     laptop=await other.new_page(); await laptop.goto(URL); await laptop.wait_for_function(READY)
     await laptop.evaluate('(c)=>cloudSave({...c,device:"22222222-2222-4222-a222-222222222222"})',config)
     await laptop.evaluate('(name)=>cloudReview(cloudConfig(),name)',device+'.json')
@@ -185,7 +185,7 @@ async def cloud_backups(browser):
     await other.close(); await ctx.close()
 
 async def fresh_page(browser, w, h):
-    page = await browser.new_page(viewport={"width": w, "height": h}, accept_downloads=True)
+    page = await browser.new_page(bypass_csp=True, viewport={"width": w, "height": h}, accept_downloads=True)
     errs = []
     page.on("pageerror", lambda e: errs.append(str(e)))
     # Fonts and libraries fail to load without network; only script errors from the app count.
@@ -203,7 +203,16 @@ async def offline(browser):
     shell = re.search(r"const SHELL = (\[[^\]]*\])", (ROOT / "sw.js").read_text(encoding="utf-8")).group(1)
     listed = set(re.findall(r'"\./([^"]+)"', shell))
     check(local and all(f in listed for f in local) and all((ROOT / f).exists() for f in listed), f"every file index.html loads is kept for offline ({[f for f in local if f not in listed]} missing)")
-    ctx = await browser.new_context(viewport={"width": 390, "height": 844}); page = await ctx.new_page(); errs = []
+    # the page's content security policy (tests/csp.py runs the app under it): present before anything loads, and as narrow as it says
+    m = re.search(r'<meta http-equiv="Content-Security-Policy" content="([^"]+)">', html)
+    pol = {d.split()[0]: d.split()[1:] for d in (m.group(1).split(";") if m else []) if d.strip()}
+    check(bool(m) and html.index(m.group(0)) < html.index("<link"), "the page carries its content security policy before anything loads")
+    tags = re.findall(r"<script[^>]*>", html)
+    check(tags and all(" defer" in t for t in tags), f"every script is deferred, so they load together under the policy ({len(tags)} scripts)")
+    check(pol.get("script-src") == ["'self'", "https://cdnjs.cloudflare.com"] and pol.get("object-src") == ["'none'"] and pol.get("default-src") == ["'self'"]
+          and "'unsafe-eval'" not in m.group(1) and all("*" not in h or h == "https://*.wikisource.org" for v in pol.values() for h in v),
+          f"scripts come only from the site and cdnjs, nothing runs from text, and Wikisource's is the only wildcard host ({pol.get('script-src')})")
+    ctx = await browser.new_context(bypass_csp=True, viewport={"width": 390, "height": 844}); page = await ctx.new_page(); errs = []
     page.on("pageerror", lambda e: errs.append(str(e)))
     await page.goto(URL); await page.wait_for_function(READY)
     await page.evaluate("navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready)")
@@ -461,7 +470,7 @@ async def main():
         check(gone == [True, 0] and len(errs) == n, f"a picture that can't load leaves the card without a gap or an error ({gone}, {errs[n:]})")
 
         # holding a book on the shelf (a phone's touch screen): its menu; right-click on a computer
-        ctx = await browser.new_context(viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True)
+        ctx = await browser.new_context(bypass_csp=True, viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True)
         page = await ctx.new_page(); errs = []
         page.on("pageerror", lambda e: errs.append(str(e)))
         await page.route("https://commons.wikimedia.org/**", lambda r: r.abort())

@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- What the page may load and talk to: its own files, the libraries on cdnjs (each checked against its hash), Google Fonts, the
+     pictures on Wikimedia Commons, Wiktionary and Wikisource lookups, and GitHub for automatic backups. Anything else is refused, so
+     text that slipped through into the page could not send the library or the backup token anywhere. tests/smoke.py checks it. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://commons.wikimedia.org https://upload.wikimedia.org; media-src 'self' data: blob:; connect-src 'self' data: blob: https://cdnjs.cloudflare.com https://fonts.googleapis.com https://fonts.gstatic.com https://api.github.com https://*.wikisource.org https://en.wiktionary.org; object-src 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'">
 <title>Marginalia</title>
 <meta name="description" content="A personal reading log and reader.">
 <meta name="theme-color" content="#e4d8c4" media="(prefers-color-scheme: light)">
@@ -50,26 +54,28 @@
 <div id="sheetroot"></div>
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="data/glossary.js"></script>
-<script src="data/thinkers.js"></script>
-<script src="data/branches.js"></script>
-<script src="data/recommendations.js"></script>
-<script src="js/core.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/cite.js"></script>
-<script src="js/import.js"></script>
-<script src="js/library.js"></script>
-<script src="js/writing.js"></script>
-<script src="js/study.js"></script>
-<script src="js/reference.js"></script>
-<script src="js/sheets.js"></script>
-<script src="js/wikisource.js"></script>
-<script src="js/bookmenu.js"></script>
-<script src="js/reader.js"></script>
-<script src="js/structure.js"></script>
-<script src="js/discovery.js"></script>
-<script src="js/mastery.js"></script>
-<script src="js/cloud-backup.js"></script>
-<script src="js/boot.js"></script>
+<!-- defer: with a policy in the page, Chrome stops fetching ahead, so plain scripts would load one at a time (a minute on a slow
+     connection); deferred ones load together and still run in this order. -->
+<script src="data/glossary.js" defer></script>
+<script src="data/thinkers.js" defer></script>
+<script src="data/branches.js" defer></script>
+<script src="data/recommendations.js" defer></script>
+<script src="js/core.js" defer></script>
+<script src="js/storage.js" defer></script>
+<script src="js/cite.js" defer></script>
+<script src="js/import.js" defer></script>
+<script src="js/library.js" defer></script>
+<script src="js/writing.js" defer></script>
+<script src="js/study.js" defer></script>
+<script src="js/reference.js" defer></script>
+<script src="js/sheets.js" defer></script>
+<script src="js/wikisource.js" defer></script>
+<script src="js/bookmenu.js" defer></script>
+<script src="js/reader.js" defer></script>
+<script src="js/structure.js" defer></script>
+<script src="js/discovery.js" defer></script>
+<script src="js/mastery.js" defer></script>
+<script src="js/cloud-backup.js" defer></script>
+<script src="js/boot.js" defer></script>
 </body>
 </html>

@@ -56,6 +56,11 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   browser refuses changed bytes; PDF.js's worker is fetched with its hash and started from the checked text (`pdfWorker`, used by
   `pdfOpen` and `pdfDoc`), else PDF.js runs in the page from the checked worker file, else opening the PDF stops. `sw.js` fetches again a
   library it saved before the checks (opaque), since a CORS request can't use it. Tests that set `LIBS` to local copies carry no hash.
+- Content security policy (the meta tag at the top of index.html): scripts only from the site and cdnjs, workers from the site or a blob
+  (PDF.js's checked worker), styles and fonts from the site and Google Fonts, pictures from Wikimedia Commons, requests to cdnjs, GitHub
+  (automatic backups), Wiktionary and Wikisource; no plugins, no script run from text. Every test but `tests/csp.py` runs with it off
+  (`bypass_csp`), since Playwright's waiting helpers run text as script; csp.py waits from Python and walks every outside call. The
+  scripts in index.html are `defer`red: with a policy in the page Chrome stops fetching ahead, and plain scripts loaded one at a time.
   Tested by `tests/integrity.py` (the real files on GitHub's runners).
 - Citations: `CITE_STYLES`, `citeAt`, `bibEntry`, `bibtex`.
 - Import/parsing:

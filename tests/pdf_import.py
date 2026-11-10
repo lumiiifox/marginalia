@@ -300,7 +300,7 @@ async def main(paths):
         time.sleep(1)
         async with async_playwright() as p:
             browser = await p.chromium.launch()
-            page = await browser.new_page(); errs = []
+            page = await browser.new_page(bypass_csp=True); errs = []
             page.on("pageerror", lambda e: errs.append(str(e)))
             await page.goto(f"http://localhost:{PORT}/index.html"); await page.wait_for_function("typeof idb !== 'undefined' && idb")
             base = f"http://localhost:{PORT}/lib"

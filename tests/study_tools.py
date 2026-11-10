@@ -96,7 +96,7 @@ def check(ok, what):
     if not ok: failures.append(what)
 
 async def fresh(browser):
-    ctx = await browser.new_context(viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True, accept_downloads=True)
+    ctx = await browser.new_context(bypass_csp=True, viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True, accept_downloads=True)
     page = await ctx.new_page(); errs = []
     page.on("pageerror", lambda e: errs.append(str(e)))
     page.on("console", lambda m: m.type == "error" and "Failed to load resource" not in m.text and errs.append(m.text))
@@ -199,7 +199,7 @@ async def custom_paths(browser):
     check(not errs, f'custom paths without script errors: {errs}')
     await page.context.close()
 
-    ctx = await browser.new_context(); pg = await ctx.new_page()
+    ctx = await browser.new_context(bypass_csp=True); pg = await ctx.new_page()
     await pg.goto(f'http://localhost:{PORT}/sw.js')
     await pg.evaluate("""() => new Promise((res,rej) => {
       const r = indexedDB.open('marginalia',8);
@@ -324,7 +324,7 @@ SAYSTUB = """(() => { window.__said = []; const real = window.speechSynthesis;
   if (real) { real.speak = (u) => window.__said.push([u.text, u.lang, Math.round(u.rate * 100) / 100]); real.cancel = () => {}; } })()"""
 
 async def hear_it(browser):
-    ctx = await browser.new_context(viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True)
+    ctx = await browser.new_context(bypass_csp=True, viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True)
     await ctx.add_init_script(SAYSTUB)
     page = await ctx.new_page(); errs = []
     page.on("pageerror", lambda e: errs.append(str(e)))
@@ -343,7 +343,7 @@ async def hear_it(browser):
     check(paren == ["Laozi", "Śaṅkara"], f"bracketed parts are left out ({paren})")
     check(not errs, "no script errors with Hear it" + (f": {errs}" if errs else ""))
     await ctx.close()
-    ctx = await browser.new_context(viewport={"width": 390, "height": 844})
+    ctx = await browser.new_context(bypass_csp=True, viewport={"width": 390, "height": 844})
     await ctx.add_init_script("delete window.speechSynthesis; delete window.SpeechSynthesisUtterance; Object.defineProperty(window, 'speechSynthesis', { value: undefined }); ")
     page = await ctx.new_page()
     await page.goto(URL); await page.wait_for_function(READY)
@@ -363,7 +363,7 @@ ANKISEED = r"""async () => { const now = Date.now();
 
 async def anki(browser):
     page, errs = await fresh(browser)
-    ctx2 = await browser.new_context(viewport={"width": 1000, "height": 800}, accept_downloads=True)  # no touch: the file downloads instead of the share sheet
+    ctx2 = await browser.new_context(bypass_csp=True, viewport={"width": 1000, "height": 800}, accept_downloads=True)  # no touch: the file downloads instead of the share sheet
     await page.context.close()
     page = await ctx2.new_page(); errs = []
     page.on("pageerror", lambda e: errs.append(str(e)))
@@ -805,7 +805,7 @@ async def quizsets(browser):
     check(link.startswith("http://localhost:") and "#set=" in link and await page.inner_text(".mkcount") == "5 chosen", f"five chosen terms make a link ({len(link)} characters)")
     await page.evaluate("MK.picked = new Set(['deontology']); document.querySelector('#mkbox').innerHTML = ''"); await page.click("[data-mklink]"); await page.wait_for_timeout(50)
     check("at least four" in await page.inner_text("#mkout"), "fewer than four is refused")
-    ctx = await browser.new_context(viewport={"width": 390, "height": 844}); p2 = await ctx.new_page(); e2 = []
+    ctx = await browser.new_context(bypass_csp=True, viewport={"width": 390, "height": 844}); p2 = await ctx.new_page(); e2 = []
     p2.on("pageerror", lambda e: e2.append(str(e)))
     await p2.goto(link); await p2.wait_for_function(READY); await p2.wait_for_selector("#quizbox .qz-opt")
     got = await p2.evaluate("[document.querySelector('.sheet h2').textContent, location.hash, QZ.set.terms.map((g) => g.t).sort(), QZ.qs.length, QZ.qs.every((q) => QZ.set.terms.includes(q.g)), document.querySelectorAll('[data-qzmode]').length]")

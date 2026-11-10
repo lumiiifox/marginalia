@@ -107,7 +107,7 @@ async def main():
     try:
         time.sleep(1)
         async with async_playwright() as p:
-            browser = await p.chromium.launch(); ctx = await browser.new_context(service_workers="block")
+            browser = await p.chromium.launch(); ctx = await browser.new_context(bypass_csp=True, service_workers="block")
             page = await ctx.new_page(); errs = []
             page.on("pageerror", lambda e: errs.append(str(e)))
             await page.goto(URL); await page.wait_for_function("typeof idb !== 'undefined' && idb")

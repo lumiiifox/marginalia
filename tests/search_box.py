@@ -36,7 +36,7 @@ BOXES = [("q", "go({ screen: 'library' })"), ("tq", "go({ screen: 'text', textId
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
-        ctx = await browser.new_context(viewport={"width": 390, "height": 844}, service_workers="block")
+        ctx = await browser.new_context(bypass_csp=True, viewport={"width": 390, "height": 844}, service_workers="block")
         await ctx.route("**/*", lambda r: r.continue_() if r.request.url.startswith(f"http://localhost:{PORT}") else r.abort())
         page = await ctx.new_page(); errs = []
         page.on("pageerror", lambda e: errs.append(str(e)))

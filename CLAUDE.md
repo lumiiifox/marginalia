@@ -105,6 +105,9 @@ ideas, or reward doing so? If not, it waits.
   published under lumiiifox.github.io can read it. Until the app moves to an origin of its own (a custom domain, or an account that
   hosts nothing else), which is the eventual fix, don't publish other Pages projects on that account, keep the token fine-grained and
   scoped to the one private backup repository, and keep the setup screen's warning.
+- The page's content security policy (the meta tag at the top of `index.html`) names every host the app may load from or talk to.
+  A new library host, picture source or service needs its line there, or the browser refuses it; `tests/csp.py` runs the app under
+  the policy (every other test turns it off). Never add `'unsafe-eval'` or inline scripts.
 - If `sw.js` changes in a way that needs old caches dropped, bump `CACHE`.
 - Every file `index.html` loads must be in `SHELL` in `sw.js` (smoke.py checks), or the app can't open offline. A new file under
   `js/`, `css/` or `data/` needs both its tag in `index.html` and its line in `SHELL`, and a `CACHE` bump.
