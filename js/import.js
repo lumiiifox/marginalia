@@ -338,13 +338,20 @@ function ocrRepair(blocks, counts) {
 // PDF.js on a PDF, in a background worker so long books don't freeze the page: { pdf, stop }. stop() ends the worker.
 async function pdfOpen(buf) {
   await need("pdf", () => !!window.pdfjsLib);
-  const lib = window.pdfjsLib;
+  const lib = window.pdfjsLib, size = buf.byteLength; // PDF.js hands the bytes to its worker, which empties buf here
   const { wk, pw } = await pdfWorker(lib); // checked against its hash (core.js)
   const stop = () => { try { if (pw) pw.destroy(); } catch {} try { if (wk) wk.terminate(); } catch {} };
   const wkFail = new Promise((_, rej) => { if (wk) wk.addEventListener("error", () => rej(new UErr("Couldn't start the PDF reader. Check your connection and try again."))); });
   let pdf;
   try { pdf = await Promise.race([lib.getDocument({ data: new Uint8Array(buf), isEvalSupported: false, ...(pw ? { worker: pw } : {}) }).promise, wkFail]); }
-  catch (e) { stop(); if (e && e.name === "PasswordException") throw new UErr("This PDF is password-protected. Remove the password, then load it again."); throw e; }
+  catch (e) {
+    stop();
+    if (e && e.name === "PasswordException") throw new UErr("This PDF is password-protected. Remove the password, then load it again.");
+    if (!size) throw new UErr("This file is empty.");
+    if (e && ["InvalidPDFException", "MissingPDFException", "UnexpectedResponseException", "FormatError"].includes(e.name))
+      throw new UErr("This PDF is damaged or incomplete, so it can't be read. If it was downloaded, download it again."); // a cut-off download, or not a PDF at all
+    throw e;
+  }
   return { pdf, stop };
 }
 const BOLD_FACE = /bold|black|heavy|semibold|demibold|[-,]bd\b|-b$/i, FONT_LOOKS = 40;
@@ -1011,7 +1018,8 @@ function resolvePath(base, rel) {
 async function parseEPUB(buf, say) {
   say("Opening the EPUB…");
   await need("zip", () => !!window.JSZip);
-  const zip = await window.JSZip.loadAsync(buf);
+  if (!buf.byteLength) throw new UErr("This file is empty.");
+  let zip; try { zip = await window.JSZip.loadAsync(buf); } catch { throw new UErr("This EPUB is damaged or incomplete, so it can't be read. If it was downloaded, download it again."); }
   const xml = (s) => new DOMParser().parseFromString(s, "application/xml");
   const cf = zip.file("META-INF/container.xml");
   if (!cf) throw new UErr("This EPUB is damaged: its container file is missing.");
@@ -1054,7 +1062,9 @@ async function parseEPUB(buf, say) {
 async function parseDOCX(buf, say) {
   say("Opening the Word file…");
   await need("docx", () => !!window.mammoth);
-  const r = await window.mammoth.convertToHtml({ arrayBuffer: buf });
+  if (!buf.byteLength) throw new UErr("This file is empty.");
+  let r; try { r = await window.mammoth.convertToHtml({ arrayBuffer: buf }); }
+  catch { throw new UErr("This Word file is damaged or incomplete, or isn't a .docx (older .doc files can't be read: save it as .docx first)."); }
   const doc = new DOMParser().parseFromString(r.value, "text/html");
   const blocks = []; domToBlocks(doc.body, blocks);
   return { title: "", author: "", kind: "Word", blocks };
@@ -1159,7 +1169,16 @@ async function readText(file, html) {
     const cs = new TextDecoder("latin1").decode(b.slice(0, 2048)).match(/<meta[^>]+charset=["']?([\w-]+)/i);
     if (cs) { try { return new TextDecoder(cs[1].toLowerCase()).decode(b); } catch {} }
   }
-  try { return new TextDecoder("utf-8", { fatal: true }).decode(b); } catch { return new TextDecoder("windows-1252").decode(b); }
+  let text; try { text = new TextDecoder("utf-8", { fatal: true }).decode(b); } catch { text = new TextDecoder("windows-1252").decode(b); }
+  if (!looksLikeText(text)) throw new UErr("This file doesn't contain readable text. It may be another kind of file with a .txt, .md or .html name.");
+  return text;
+}
+// Text, as against the bytes of an image, archive or program read as if they were characters: those are thick with control codes
+// (and with stray symbols when read as the Windows encoding), which text never is. Checked on the first 20,000 characters.
+function looksLikeText(text) {
+  const t = text.slice(0, 20000); if (!t.length) return true;
+  const ctrl = (t.match(/[\u0000-\u0008\u000b\u000e-\u001f\u007f\ufffd]/g) || []).length;
+  return ctrl / t.length < 0.01;
 }
 async function parseFile(file, say) {
   const fname = file.name || "file";

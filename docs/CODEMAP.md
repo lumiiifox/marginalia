@@ -96,7 +96,14 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   - `parsePlain` (Markdown: front matter's title and author, list markers, hard line breaks as " / ", footnotes `[^n]`, pipe tables,
     quote paragraphs; plain text: verse kept line by line when its lines are much shorter than the file's (`wrapW`), lists split into
     items, table rules dropped; both: `smartQuotes`). Text files are read in the encoding they were saved in (`readText`: UTF-8, UTF-16
-    by its mark, an HTML file's own charset, else Windows-1252). Tested by `tests/text_import.py`.
+    by its mark, an HTML file's own charset, else Windows-1252); bytes that read as control codes are another kind of file and refused
+    (`looksLikeText`). Tested by `tests/text_import.py`.
+  - When an import fails it says why in plain words (`UErr`): an empty file; a PDF, EPUB or Word file that is damaged or cut off (PDF.js's
+    `InvalidPDFException` and kin, JSZip or Mammoth failing); a file that isn't text; an unknown type. Saving a new book
+    (`saveNewText`, wikisource.js) writes its text, record, cover and kept PDF in one transaction, as does replacing a book's text
+    (`fileSheet`), so a save cut off by closing the app or a full disk leaves the whole book or none of it. The same file imported again
+    (`sameText`: as many paragraphs, each of the same kind and words; marked headings and section links ignored) is pointed out when
+    it is read and on Save, and a second Save adds the copy. Tested by `tests/import_failures.py`.
 - The glossary as the app sees it (`allTerms`, study.js): built-in entries with your own and edited terms, alphabetical (`TERMS_ORDER`).
   Kept in `TERMS_CACHE` until a record in `S.terms` changes (compared by identity each call, so put, delete and restore all show at
   once); each call gets its own copy of the list, the entries frozen. Tested by `terms_cache` in `tests/study_tools.py`.
