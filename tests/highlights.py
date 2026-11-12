@@ -174,6 +174,25 @@ async def main():
         await page.evaluate(SELECT, [2, 0, 2, len("First")]); await page.wait_for_timeout(300)
         check(await page.inner_text("#selhl") == "Underline", "after underlining, the button underlines")
         await page.evaluate("getSelection().removeAllRanges()"); await page.wait_for_timeout(300)
+        # an underline inside a highlight, and one running past its end: both drawn, each stretch as it should be
+        b4 = await page.evaluate("plain(R.blocks[3].x)"); h0 = b4.index("A passage begins at the end of this"); h1 = h0 + len("A passage begins at the end of this")
+        await page.evaluate(SELECT, [3, h0, 3, h1]); await page.wait_for_timeout(300)
+        await page.click("#selsw"); await page.wait_for_timeout(200); await page.click("[data-hlpick=pink]"); await page.wait_for_timeout(400)
+        nh = await page.evaluate(newest)
+        u0 = b4.index("begins at"); await page.evaluate(SELECT, [3, u0, 3, u0 + len("begins at")]); await page.wait_for_timeout(300)
+        await page.click("#selsw"); await page.wait_for_timeout(200); await page.click("[data-hlpick=underline]"); await page.wait_for_timeout(400)
+        nu = await page.evaluate(newest)
+        segs = await page.evaluate("[...R.els[3].querySelectorAll('mark')].map((m) => [m.textContent, m.className, m.dataset.note])")
+        mine = [x for x in segs if x[2] in (nh, nu)]
+        check([x[:2] for x in mine] == [["A passage ", "k-passage hl-pink"], ["begins at", "k-passage hl-pink uline"], [" the end of this", "k-passage hl-pink"]] and mine[1][2] == nu,
+              f"an underline inside a pink highlight is drawn on its words, still pink, and a tap there opens the underline ({[x[:2] for x in mine]})")
+        u1 = b4.index("this"); await page.evaluate(SELECT, [3, u1, 3, b4.index("paragraph") + len("paragraph")]); await page.wait_for_timeout(300)
+        await page.click("#selhl"); await page.wait_for_timeout(400)
+        nu2 = await page.evaluate(newest)
+        segs = await page.evaluate("[...R.els[3].querySelectorAll('mark')].map((m) => [m.textContent, m.className])")
+        tail = [x for x in segs if "this" in x[0] or "paragraph" in x[0]]
+        check(tail[0] == ["this", "k-passage hl-pink uline"] and tail[-1][1] == "k-passage hl-underline" and tail[-1][0].endswith("paragraph"),
+              f"an underline running past a highlight's end is drawn over both stretches ({tail})")
         await page.evaluate("localStorage.removeItem('mg-hl'); HL_LAST = 'yellow'")
 
         # 7 backups; Scroll mode

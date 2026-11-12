@@ -381,39 +381,50 @@ function inlineHTML(x, marks, cols) { return fnRefs(inlineMarks(x, marks, cols))
 function inlineMarks(x, marks, cols) {
   if (cols) return `<span class="tc">${inlineMarks(x, marks)}</span>`.replace(/ · /g, `</span><span class="tsep"> · </span><span class="tc">`);
   if (!marks || !marks.length) return dress(esc(x).replace(/\u0001/g, "<em>").replace(/\u0002/g, "</em>"), isVerse(x));
-  let raw = x;
-  if (marks && marks.length) {
-    const map = []; let ps = "";
-    for (let k = 0; k < raw.length; k++) { const c = raw[k]; if (c === I0 || c === I1) continue; map.push(k); ps += c; }
-    const ins = [];
-    for (const [id, p, from, to] of marks) {
-      let s, len;
-      if (Number.isInteger(from)) { s = Math.max(0, Math.min(from, ps.length)); len = Math.min(to, ps.length) - s; }
-      else { // a passage with no place worked out: found by its words
-        const want = p.replace(/\s+/g, " ").trim(); if (!want) continue;
-        s = ps.indexOf(want); len = want.length;
-        for (const cut of [60, 30, 15]) { if (s >= 0 || cut >= want.length) continue; s = ps.indexOf(want.slice(0, cut)); if (s >= 0) len = Math.min(want.length, ps.length - s); }
-      }
-      if (s < 0 || len <= 0) continue;
-      ins.push([map[s], "\u0003" + id + "\u0005"], [map[s + len - 1] + 1, "\u0004"]);
+  // Where each note's words begin and end, as positions in x (its italics marks counted); overlapping notes are all drawn.
+  const map = []; let ps = "";
+  for (let k = 0; k < x.length; k++) { const c = x[k]; if (c === I0 || c === I1) continue; map.push(k); ps += c; }
+  const opens = new Map(), closes = new Map(), at = (m, k, id) => { if (!m.has(k)) m.set(k, []); m.get(k).push(id); };
+  for (const [id, p, from, to] of marks) {
+    let s, len;
+    if (Number.isInteger(from)) { s = Math.max(0, Math.min(from, ps.length)); len = Math.min(to, ps.length) - s; }
+    else { // a passage with no place worked out: found by its words
+      const want = p.replace(/\s+/g, " ").trim(); if (!want) continue;
+      s = ps.indexOf(want); len = want.length;
+      for (const cut of [60, 30, 15]) { if (s >= 0 || cut >= want.length) continue; s = ps.indexOf(want.slice(0, cut)); if (s >= 0) len = Math.min(want.length, ps.length - s); }
     }
-    ins.sort((a, b) => b[0] - a[0]);
-    for (const [pos, str] of ins) raw = raw.slice(0, pos) + str + raw.slice(pos);
+    if (s < 0 || len <= 0) continue;
+    at(opens, map[s], id); at(closes, map[s + len - 1] + 1, id);
   }
-  let out = "", depth = 0, mid = "", before = " ";
+  /* Where notes overlap (an underline inside a highlight, a question inside a passage), one mark is drawn for each stretch: its fill
+     is the innermost note that fills (the last begun), an underline is added if any note there underlines, and a tap opens the
+     innermost note. */
+  const active = [];
+  const tagFor = () => {
+    if (!active.length) return "";
+    const ns = active.map((id) => [id, S.notes.get(id) || {}]), fill = [...ns].reverse().find(([, n]) => hlOf(n) !== "underline"), under = ns.some(([, n]) => hlOf(n) === "underline");
+    const cls = fill ? `k-${fill[1].kind || "passage"}${hlClass(fill[1])}${under ? " uline" : ""}` : "k-passage hl-underline";
+    return `<mark data-note="${esc(active[active.length - 1])}" class="${esc(cls)}">`;
+  };
+  let out = "", tag = "", before = " ";
   const verse = isVerse(x);
-  const open = () => { const n = S.notes.get(mid) || {}; return `<mark data-note="${esc(mid)}" class="k-${esc(n.kind || "passage")}${hlClass(n)}">`; };
-  for (let k = 0; k < raw.length; k++) {
-    const c = raw[k];
-    if (verse && c === " " && raw[k + 1] === "/" && raw[k + 2] === " ") { out += VBR; k += 2; before = " "; continue; }
+  for (let k = 0; k <= x.length; k++) {
+    if (closes.has(k) || opens.has(k)) {
+      for (const id of closes.get(k) || []) { const j = active.lastIndexOf(id); if (j >= 0) active.splice(j, 1); }
+      for (const id of opens.get(k) || []) active.push(id);
+      const next = tagFor();
+      if (next !== tag) { if (tag) out += "</mark>"; out += next; tag = next; }
+    }
+    if (k === x.length) break;
+    const c = x[k];
+    if (verse && c === " " && x[k + 1] === "/" && x[k + 2] === " " && !opens.has(k + 1) && !opens.has(k + 2) && !closes.has(k + 1) && !closes.has(k + 2)) { out += VBR; k += 2; before = " "; continue; }
     if (c === "—" && !/\s/.test(before)) out += WJ;
     if (c.charCodeAt(0) > 5) before = c;
-    if (c === "\u0003") { const e = raw.indexOf("\u0005", k); const id = raw.slice(k + 1, e); k = e; if (!depth) { mid = id; out += open(); } depth++; }
-    else if (c === "\u0004") { depth = Math.max(0, depth - 1); if (!depth) out += "</mark>"; }
-    else if (c === I0) out += depth ? `</mark><em>${open()}` : "<em>";
-    else if (c === I1) out += depth ? `</mark></em>${open()}` : "</em>";
+    if (c === I0) out += tag ? `</mark><em>${tag}` : "<em>";
+    else if (c === I1) out += tag ? `</mark></em>${tag}` : "</em>";
     else out += esc(c);
   }
+  if (tag) out += "</mark>";
   return out;
 }
 // Your notes on a passage, shown under the paragraph where the passage starts (Aa → Your notes).

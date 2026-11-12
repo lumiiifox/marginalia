@@ -34,7 +34,9 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   A text's `pdfLabels` are its PDF pages' labels, used to find the PDF page for a printed page number.
 - Highlight colours and underlining (`HL`, `hlOf`, `hlClass` in core.js; a note's optional `hl`): a passage note is highlighted
   yellow unless `hl` names pink, orange or grey, or `underline` (drawn as a brass underline; Highlight's button then reads Underline,
-  and an Underline or Squiggly annotation from a PDF comes in underlined, `under` in `marksOnPage`); other kinds keep their kind's colour, so `hl` is drawn only on a passage (and kept if the kind changes back). In
+  and an Underline or Squiggly annotation from a PDF comes in underlined, `under` in `marksOnPage`). Overlapping notes are all drawn
+  (`inlineMarks`): each stretch gets one mark whose fill is the innermost filling note, `uline` added where any note underlines, and
+  a tap there opens the innermost note. Other kinds keep their kind's colour, so `hl` is drawn only on a passage (and kept if the kind changes back). In
   the selection bar, Highlight uses the last colour chosen (`HL_LAST`, localStorage `mg-hl`) and the swatch beside it (`#selsw`)
   shows the four (`#selpal`, `data-hlpick`, the bar's `picking` class); Edit note has the same choice for a passage (`#n-hl`).
   Drawn on the text's marks, Your notes rows, note cards and draft items; `VALID.notes` takes it as a string. Tested by
