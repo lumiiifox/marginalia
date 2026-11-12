@@ -154,10 +154,6 @@ function failMsg(e) {
   if (e && (e.name === "QuotaExceededError" || /quota/i.test(e.message || ""))) return `This device is out of storage space for the app. Empty Recently deleted${S.trash.size ? ` (${S.trash.size} item${S.trash.size === 1 ? "" : "s"}, at the foot of the home screen)` : ""} or free up space on the device, then try again.`;
   return `Couldn't save (${(e && (e.name || e.message)) || "unknown error"}).`;
 }
-async function saveContent(tid, blocks, say) {
-  say("Saving the text…");
-  await put("content", tid, blocks);
-}
 async function loadContent(tid) {
   if (S.content.has(tid)) return S.content.get(tid);
   if (!idb) return null;

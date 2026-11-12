@@ -104,9 +104,32 @@ async function saveCover(tid, cover) {
   if (cover.blob) await put("covers", tid, cover.blob); else await del("covers", tid);
 }
 
+/* A new book is written in one step (content, record, cover, kept PDF), so an import cut off by closing the app or a full disk leaves
+   either the whole book or nothing: never a text without its book, or a book whose text never arrived. */
+async function saveNewText(tid, data, blocks, coverBlob, pdf) {
+  if (!idb) { if (pdf) throw new UErr("This browser isn't letting the app save, so the PDF can't be kept."); S.content.set(tid, blocks); if (coverBlob) S.covers.set(tid, coverBlob); S.texts.set(tid, data); render(); return; }
+  const stores = ["content", "texts", ...(coverBlob ? ["covers"] : []), ...(pdf ? ["files"] : [])];
+  await idbTx(stores, (st) => { st("content").put(blocks, tid); if (coverBlob) st("covers").put(coverBlob, tid); if (pdf) st("files").put(pdf, tid); st("texts").put(data, tid); });
+  S.content.set(tid, blocks); if (coverBlob) S.covers.set(tid, coverBlob); S.texts.set(tid, data); render();
+}
+/* The book already in the library with the same text as these blocks (the same file imported again), or null: the same number of
+   paragraphs, then every paragraph's kind and words alike. Headings you marked and section links don't count, so a copy you've
+   edited is still found. */
+async function sameText(blocks) {
+  const key = (bs) => JSON.stringify(bs.map((b) => [b.k, plain(b.x || "")]));
+  let mine = null;
+  for (const [tid, t] of S.texts) {
+    if (!t.hasContent || t.total !== blocks.length) continue;
+    const theirs = await loadContent(tid); if (!theirs || theirs.length !== blocks.length) continue;
+    mine = mine || key(blocks);
+    if (key(theirs) === mine) return tid;
+  }
+  return null;
+}
 function textSheet(id) {
   const t = id ? S.texts.get(id) : {};
   let parsed = null; const auto = {};
+  const dup = { r: null, of: undefined, ok: null }; // a file already in the library (sameText), and whether you've been told
   const cover = { blob: undefined, auto: false, current: id ? coverURL(id) : null };
   openSheet(`<h2>${id ? "Edit text" : "Add a text"}</h2>
     ${id ? "" : fileField()}
@@ -140,12 +163,17 @@ function textSheet(id) {
     if (!fd.get("lang")) delete data.lang; // worked out from the text
     if (id && (t.status || "reading") !== data.status) delete data.rank; // another shelf: its front
     if (parsed) {
+      // the same file again: said once, and saving again adds the second copy
+      const twin = dup.of !== undefined && dup.r === parsed ? dup.of : await sameText(parsed.blocks);
+      if (twin && S.texts.has(twin) && dup.ok !== parsed) { dup.ok = parsed; return `You already have this file as “${S.texts.get(twin).title}”. Save again to add a second copy.`; }
       linkHeadings(parsed.blocks, parsed.sections, sections);
-      const prog = $("#f-prog"); const say = (m) => { if (prog) prog.textContent = m; };
-      await saveContent(tid, parsed.blocks, say);
+      const prog = $("#f-prog"); if (prog) prog.textContent = "Saving the text…";
       Object.assign(data, { hasContent: true, source: { name: parsed.name, kind: parsed.kind, pages: parsed.pages }, pos: 0, total: parsed.blocks.length });
-      if (parsed.file && fd.get("keeppdf")) { await keepPdf(tid, parsed.file); data.pdfLabels = parsed.labels; }
+      const keep = !!(parsed.file && fd.get("keeppdf"));
+      if (keep) data.pdfLabels = parsed.labels;
       if (!fd.get("lang")) data.lang = parsed.lang;
+      await saveNewText(tid, data, parsed.blocks, cover.blob || null, keep ? parsed.file : null);
+      return () => { go({ screen: "text", textId: tid }); if (parsed.marks && parsed.marks.length) offerMarks(tid, parsed.marks, parsed.nPages); };
     }
     await saveCover(tid, cover);
     // A section taken off the list stops being a chapter in the text: its title stays, as a heading.
@@ -164,7 +192,11 @@ function textSheet(id) {
     wireCover(root, cover, getT);
     if (id) return;
     wireFile(root, (r) => {
-      parsed = r; if (!r) return;
+      parsed = r; dup.r = r; dup.of = undefined; if (!r) return;
+      sameText(r.blocks).then((of) => {
+        if (dup.r !== r) return; dup.of = of;
+        const p = $("#f-prog", root); if (of && p) p.textContent += ` You already have this file, as “${S.texts.get(of).title}”.`;
+      }).catch(() => {});
       const fill = (sel, key, val) => { const el = $(sel, root); if (el && (!el.value.trim() || el.value === auto[key])) { el.value = val; auto[key] = val; } };
       fill("#f-title", "title", r.title);
       if (r.author) fill("#f-author", "author", r.author);
@@ -189,13 +221,18 @@ function fileSheet(tid) {
     const cur = S.texts.get(tid) || t;
     const sections = cur.sections && cur.sections.length ? cur.sections : parsed.sections.map((s) => ({ ...s, done: false }));
     linkHeadings(parsed.blocks, parsed.sections, sections);
-    const prog = $("#f-prog"); const say = (m) => { if (prog) prog.textContent = m; };
-    await saveContent(tid, parsed.blocks, say);
-    if (parsed.cover && !S.covers.has(tid)) await put("covers", tid, parsed.cover);
+    const prog = $("#f-prog"); if (prog) prog.textContent = "Saving the text…";
+    const cover = parsed.cover && !S.covers.has(tid) ? parsed.cover : null, keep = !!(parsed.file && fd.get("keeppdf"));
     const next = { ...cur, sections, hasContent: true, source: { name: parsed.name, kind: parsed.kind, pages: parsed.pages }, pos: 0, total: parsed.blocks.length, updatedAt: Date.now() };
-    delete next.pdfLabels; await dropPdf(tid);
-    if (parsed.file && fd.get("keeppdf")) { await keepPdf(tid, parsed.file); next.pdfLabels = parsed.labels; }
-    await put("texts", tid, next);
+    delete next.pdfLabels; if (keep) next.pdfLabels = parsed.labels;
+    // the new text, its record and its PDF change together, so a replacement cut off halfway leaves the old version whole
+    if (!idb && keep) throw new UErr("This browser isn't letting the app save, so the PDF can't be kept.");
+    if (idb) await idbTx(["content", "texts", "files", ...(cover ? ["covers"] : [])], (st) => {
+      st("content").put(parsed.blocks, tid); if (keep) st("files").put(parsed.file, tid); else st("files").delete(tid);
+      if (cover) st("covers").put(cover, tid); st("texts").put(next, tid);
+    });
+    if (PDFV.tid === tid) closePdf();
+    S.content.set(tid, parsed.blocks); if (cover) S.covers.set(tid, cover); S.texts.set(tid, next); render();
   },
   (root) => wireFile(root, (r) => { parsed = r; }));
 }

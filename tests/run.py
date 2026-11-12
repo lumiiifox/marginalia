@@ -17,7 +17,7 @@ GROUPS = {
     "storage": ["smoke", "trash", "classics", "printed_page", "mastery", "slow_network"],
     "reader": ["paged_reader", "structure", "comfort", "navigate", "highlights", "notes_lookup", "quotes_language", "pin",
                "followups", "classics", "printed_page", "editions", "density", "verse_lists"],
-    "import": ["pdf_import", "pdf_highlights", "wikisource", "text_import", "integrity", "csp"],
+    "import": ["pdf_import", "pdf_highlights", "wikisource", "text_import", "integrity", "csp", "import_failures"],
     "reference": ["study_tools", "links", "in_your_books", "density", "mastery", "discovery"],
     "look": ["contrast", "smoke", "search_box", "tap_targets", "csp"],
     # a change to reference content only (data/, tests/audit/): what it can break, in about two minutes
@@ -47,7 +47,7 @@ def main(args):
     unknown = [n for n in names if n not in ALL]
     if unknown:
         sys.exit(f"No such test: {', '.join(unknown)}. Tests: {', '.join(ALL)}. Groups: {', '.join(GROUPS)}.")
-    first = [n for n in FIRST if n in names or "pdf_highlights" in names or "printed_page" in names or "csp" in names]
+    first = [n for n in FIRST if n in names or "pdf_highlights" in names or "printed_page" in names or "csp" in names or "import_failures" in names]
     last = [n for n in LAST if n in names]
     rest = [n for n in names if n not in first and n not in last]
     results = [run(n, BASE) for n in first]
