@@ -33,7 +33,7 @@
    "src": "https://plato.stanford.edu/entries/deleuze/"
   },
   "FAL": {
-   "name": "Internet Encyclopedia of Philosophy, “Fallacies”",
+   "name": "Bradley Dowden, “Fallacies”, Internet Encyclopedia of Philosophy",
    "src": "https://iep.utm.edu/fallacy/"
   },
   "BGE": {
@@ -47,28 +47,18 @@
   "WIL": {
    "name": "Dale Wilkerson, “Friedrich Nietzsche (1844–1900)”, Internet Encyclopedia of Philosophy",
    "src": "https://iep.utm.edu/nietzsch/"
+  },
+  "WRA": {
+   "name": "Mark Wrathall, “Martin Heidegger”, Stanford Encyclopedia of Philosophy (first published 31 January 2025)",
+   "src": "https://plato.stanford.edu/entries/heidegger/"
+  },
+  "KEL": {
+   "name": "Mark Kelly, “Foucault, Michel”, Internet Encyclopedia of Philosophy",
+   "src": "https://iep.utm.edu/foucault/"
   }
  },
  "note": "Claims the sources consulted did not cover were cut. Nietzsche is quoted from the editions bundled with the app wherever the passage is in them; the Gay Science and Zarathustra are not bundled, so passages from them are given as the cited scholar quotes or describes them.",
  "unread": [
-  {
-   "source": "Stanford Encyclopedia of Philosophy, “Max Scheler” (Steinbock)",
-   "part": "the page's last 1,365 characters",
-   "why": "WebFetch stops at 100,000 characters",
-   "terms": [
-    "ressentiment"
-   ],
-   "effect": "No mention of Scheler's work on ressentiment was found in what was read; the sentence on Scheler was cut."
-  },
-  {
-   "source": "Internet Encyclopedia of Philosophy, “Foucault, Michel”",
-   "part": "the whole page",
-   "why": "the fetch's permission request went unanswered in the unattended run",
-   "terms": [
-    "genealogy"
-   ],
-   "effect": "Herkunft and Entstehung were cut; Foucault's genealogy rests on Oksala (SEP) and Aylesworth (SEP)."
-  },
   {
    "source": "Internet Encyclopedia of Philosophy, “Friedrich Nietzsche”",
    "part": "its bibliography (sections 9b to 9e)",
@@ -81,21 +71,21 @@
   },
   {
    "source": "FAL",
-   "part": "the page's last 19,471 characters, including the author's byline",
-   "why": "WebFetch stops at 100,000 characters",
+   "part": "characters 39,963 to 100,000, the alphabetical list of fallacies",
+   "why": "the second read went to the article's end only",
    "terms": [
     "genetic-fallacy"
    ],
-   "effect": "The genetic fallacy section was read in full; the article's author is not credited."
+   "effect": "The genetic fallacy section was read in full in the first pass; no claim rests on the unread stretch."
   },
   {
-   "source": "Stanford Encyclopedia of Philosophy, “Martin Heidegger” (Wheeler, Winter 2023 edition)",
-   "part": "the page's last 18,798 characters",
-   "why": "WebFetch stops at 100,000 characters",
+   "source": "WRA",
+   "part": "characters 39,946 to 80,000 (sections before 5, on Being and Time and the turn)",
+   "why": "the read began at 80,000, where the sections on metaphysics and technology start",
    "terms": [
     "will-to-power"
    ],
-   "effect": "Heidegger's reading of Nietzsche as the culmination of Western metaphysics was not found in what was read, and was cut; Heidegger is credited only as Anderson places him."
+   "effect": "None expected: the Nietzsche reading sits in section 5; an earlier mention would be missed."
   }
  ],
  "terms": {
@@ -202,7 +192,25 @@
     "spinoza",
     "heidegger",
     "deleuze"
-   ]
+   ],
+   "revision": {
+    "date": "2026-11-12",
+    "why": "Heidegger's reading of Nietzsche was cut in the first pass because the Heidegger page then consulted (Wheeler, 2023) was cut off; Wrathall's current entry, read from 80,000 characters to its end, gives it.",
+    "added": [
+     {
+      "text": "Mark Wrathall reports that Heidegger counted Nietzsche among the chief metaphysical thinkers and took the will to power and the eternal recurrence as articulating the technological age, in which, on Heidegger's account, metaphysics attains its “final and consummate form”.",
+      "claims": [
+       {
+        "by": "WRA"
+       }
+      ]
+     }
+    ],
+    "by": {
+     "first_pass": "Claude (Opus 5.5), the page read through a fetching agent",
+     "review": "Independent reviewer (separate agent, fresh context), 2026-11-12: read Wrathall from 80,000 characters, Kelly in full and the Fallacies article's end (7 lookups); quotations verbatim and under 15 words, claims supported and credited, no contrastive construction, Dowden confirmed as the author; fixed as asked: an unquoted run of Wrathall ('metaphysics, Heidegger insists, reaches its') reworded; passed after the fix."
+    }
+   }
   },
   "eternal-recurrence": {
    "old": [
@@ -656,7 +664,25 @@
     "nietzsche",
     "foucault",
     "deleuze"
-   ]
+   ],
+   "revision": {
+    "date": "2026-11-12",
+    "why": "The Internet Encyclopedia's Foucault page was never fetched in the first pass; read in full now. It has no Herkunft or Entstehung (so their cut stands) and it confirms the History of Madness as archaeology.",
+    "added": [
+     {
+      "text": "Mark Kelly, writing for the Internet Encyclopedia, calls it “a Nietzschean form of history”, though “rather more meticulously historical than anything Nietzsche ever attempted”, whose purpose is to show how our present situation came about; he files the History of Madness under Foucault's earlier archaeology.",
+      "claims": [
+       {
+        "by": "KEL"
+       }
+      ]
+     }
+    ],
+    "by": {
+     "first_pass": "Claude (Opus 5.5), the page read through a fetching agent",
+     "review": "Independent reviewer (separate agent, fresh context), 2026-11-12: read Wrathall from 80,000 characters, Kelly in full and the Fallacies article's end (7 lookups); quotations verbatim and under 15 words, claims supported and credited, no contrastive construction, Dowden confirmed as the author; fixed as asked: an unquoted run of Wrathall ('metaphysics, Heidegger insists, reaches its') reworded; passed after the fix."
+    }
+   }
   },
   "genetic-fallacy": {
    "old": [
@@ -752,7 +778,14 @@
     "nietzsche",
     "foucault",
     "freud"
-   ]
+   ],
+   "revision": {
+    "date": "2026-11-12",
+    "why": "The article's author, Bradley Dowden, read from its Author Information block, is now credited (on every glossary entry citing the article).",
+    "by": {
+     "review": "Independent reviewer (separate agent, fresh context), 2026-11-12: read Wrathall from 80,000 characters, Kelly in full and the Fallacies article's end (7 lookups); quotations verbatim and under 15 words, claims supported and credited, no contrastive construction, Dowden confirmed as the author; fixed as asked: an unquoted run of Wrathall ('metaphysics, Heidegger insists, reaches its') reworded; passed after the fix."
+    }
+   }
   }
  },
  "unread_resolved": [
@@ -761,6 +794,30 @@
    "part": "§6.1's last part, §6.2, §6.3",
    "date": "2026-11-12",
    "how": "read from offset 95,000 of the current page by a fetching agent; the page's date line was not seen in that read"
+  },
+  {
+   "source": "Stanford Encyclopedia of Philosophy, “Max Scheler” (Steinbock)",
+   "part": "the page's last 1,365 characters",
+   "date": "2026-11-12",
+   "how": "read in full: the page never mentions ressentiment, so the cut of the Scheler sentence stands"
+  },
+  {
+   "source": "KEL",
+   "part": "the whole page",
+   "date": "2026-11-12",
+   "how": "read in full: no Herkunft or Entstehung, so their cut stands; Kelly's account of genealogy added to the entry"
+  },
+  {
+   "source": "FAL",
+   "part": "the end of the page",
+   "date": "2026-11-12",
+   "how": "read: the author is Bradley Dowden, now credited"
+  },
+  {
+   "source": "Stanford Encyclopedia of Philosophy, “Martin Heidegger” (Wheeler, Winter 2023 edition)",
+   "part": "the page's last 18,798 characters",
+   "date": "2026-11-12",
+   "how": "superseded: the current entry is Mark Wrathall's (2025), read from 80,000 characters to its end"
   }
  ]
 }
