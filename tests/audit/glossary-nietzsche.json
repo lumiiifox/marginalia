@@ -43,20 +43,14 @@
   "GM": {
    "name": "Nietzsche, The Genealogy of Morals, trans. Horace B. Samuel (Standard Ebooks), bundled: data/books/classic-nietzsche-genealogy.json",
    "src": "data/books/classic-nietzsche-genealogy.json"
+  },
+  "WIL": {
+   "name": "Dale Wilkerson, “Friedrich Nietzsche (1844–1900)”, Internet Encyclopedia of Philosophy",
+   "src": "https://iep.utm.edu/nietzsch/"
   }
  },
  "note": "Claims the sources consulted did not cover were cut. Nietzsche is quoted from the editions bundled with the app wherever the passage is in them; the Gay Science and Zarathustra are not bundled, so passages from them are given as the cited scholar quotes or describes them.",
  "unread": [
-  {
-   "source": "AND",
-   "part": "§6.1 The Will to Power (its last part), §6.2 Perspectivism, §6.3 The Eternal Recurrence of the Same",
-   "why": "WebFetch stops at 100,000 characters of the page; reading on from that point reached only part of §6.1",
-   "terms": [
-    "eternal-recurrence",
-    "will-to-power"
-   ],
-   "effect": "Eternal recurrence rests on Kirwin (IEP) without Anderson's survey of the readings; cosmological readings (such as Loeb's) are left unstated. Anderson's list of will-to-power readings comes from the part of §6.1 that was read."
-  },
   {
    "source": "Stanford Encyclopedia of Philosophy, “Max Scheler” (Steinbock)",
    "part": "the page's last 1,365 characters",
@@ -77,13 +71,13 @@
   },
   {
    "source": "Internet Encyclopedia of Philosophy, “Friedrich Nietzsche”",
-   "part": "the page's last 22,076 characters",
+   "part": "its bibliography (sections 9b to 9e)",
    "why": "WebFetch stops at 100,000 characters",
    "terms": [
     "eternal-recurrence",
     "will-to-power"
    ],
-   "effect": "Used only as background; no claim in the entries rests on it."
+   "effect": "Read in full on 2026-11-12 except the bibliography; Dale Wilkerson's account of the attempted proofs now supports a sentence in eternal recurrence."
   },
   {
    "source": "FAL",
@@ -319,7 +313,158 @@
    "p": [
     "nietzsche",
     "deleuze"
-   ]
+   ],
+   "revision": {
+    "date": "2026-11-12",
+    "why": "The first pass could not read Anderson's §6.3, so the entry rested on Kirwin alone and stated her report of agreement without the readings that dispute it.",
+    "old": [
+     {
+      "text": "Nietzsche's thought that one's life, with every pain and joy in it, might return endlessly in the same order. In his published works it serves mainly as a test: could one affirm one's life if told it would recur forever?",
+      "accuracy": "contested",
+      "by": "AND",
+      "note": "'In his published works it serves mainly as a test' takes the practical reading as settled; Anderson reports it as an influential line since Nehamas (1985), around which he sees an emerging consensus, disputed by Loeb. Restated with the dispute named."
+     },
+     {
+      "text": "The Gay Science §341 brings it in with a question, quoted here as Claire Kirwin quotes it: what if “a demon were to steal into your loneliest loneliness” and told you that your life would return to you in every detail?",
+      "accuracy": "supported",
+      "by": "KIR",
+      "note": "Kept."
+     },
+     {
+      "text": "Kirwin writes that some notes Nietzsche left unpublished treat it as “a cosmological thesis”, with time cyclical, while the published works stress it as “a sort of test of affirmation”; she reports that it is “generally agreed” that he was not claiming everything will actually recur forever.",
+      "accuracy": "contested",
+      "by": "KIR; AND",
+      "note": "Kirwin's words are quoted rightly, but her report of general agreement stood alone; now set beside Anderson's survey and Loeb's cosmological reading, and her cosmological-thesis and test-of-affirmation phrases replaced by Anderson's survey of readings and Wilkerson's remark on the Nachlass proofs."
+     },
+     {
+      "text": "In Kirwin's account, Thus Spoke Zarathustra makes it the chief doctrine its hero teaches, and Zarathustra himself struggles to will it sincerely.",
+      "accuracy": "supported",
+      "by": "KIR",
+      "note": "Kept, with Nietzsche's own description from Ecce Homo as Anderson reports it."
+     },
+     {
+      "text": "R. Lanier Anderson discusses it with amor fati, the love of one's fate: Book IV of The Gay Science opens with “Amor fati: let that be my love henceforth!” (§276), and he notes that the book closes by first introducing the thought of eternal recurrence (§341).",
+      "accuracy": "supported",
+      "by": "AND",
+      "note": "Kept."
+     },
+     {
+      "text": "Deleuze reads the eternal return as a return of difference: in the Stanford entry's words, repetition is “the return of the differential genetic condition of real experience”. See syntheses of time.",
+      "accuracy": "supported",
+      "by": "DEL",
+      "note": "Kept."
+     }
+    ],
+    "new_d": [
+     {
+      "text": "Nietzsche's thought that everything that happens, one's own life included, returns again and again in exactly the same order. Whether he meant it as a claim about time or as a test of whether one can affirm one's life is disputed.",
+      "claims": [
+       {
+        "by": "AND"
+       }
+      ]
+     }
+    ],
+    "new_text": [
+     {
+      "text": "The Gay Science §341 brings it in with a question, quoted here as Claire Kirwin quotes it: what if “a demon were to steal into your loneliest loneliness” and told you that your life would return to you in every detail?",
+      "claims": [
+       {
+        "by": "KIR"
+       }
+      ]
+     },
+     {
+      "text": "In Ecce Homo Nietzsche calls it the “fundamental conception” of Thus Spoke Zarathustra, as R. Lanier Anderson reports, and in Kirwin's account Zarathustra himself struggles to will it sincerely.",
+      "claims": [
+       {
+        "by": "AND"
+       },
+       {
+        "by": "KIR"
+       }
+      ]
+     },
+     {
+      "text": "Anderson notes that the published statements of it are hypothetical (§341), elliptical, or highly metaphorical (Zarathustra III), so readers have had to decide what kind of thought it is.",
+      "claims": [
+       {
+        "by": "AND"
+       }
+      ]
+     },
+     {
+      "text": "Most of its early readers took it as a cosmological hypothesis about time or fate: Simmel, Heidegger, Löwith and Jaspers.",
+      "claims": [
+       {
+        "by": "AND"
+       }
+      ]
+     },
+     {
+      "text": "Since Alexander Nehamas's work of 1985 an influential group of readers has taken it as a “practical thought experiment designed to test whether one's life has been good”; Anderson lists Maudemarie Clark, Bernard Reginster and himself among its holders, and Clark likens it to a spouse asking whether one would marry again.",
+      "claims": [
+       {
+        "by": "AND"
+       }
+      ]
+     },
+     {
+      "text": "Paul Loeb, building on Alistair Moles, has defended a cosmological reading, which Anderson presents as pushback against an emerging consensus.",
+      "claims": [
+       {
+        "by": "AND"
+       }
+      ]
+     },
+     {
+      "text": "Anderson records that problems have also been raised for the cosmological thesis, and he grants that “Skeptics like Loeb are correct to insist” that a practical reading must show how the thought's particular features (the past recurring, in every detail, eternally) make any difference to how one judges one's life.",
+      "claims": [
+       {
+        "by": "AND"
+       }
+      ]
+     },
+     {
+      "text": "Kirwin, writing for the Internet Encyclopedia, reports that it is “generally agreed” that Nietzsche did not assert that everything will actually recur, and Dale Wilkerson notes that the attempted proofs in his notebooks “seem to present no serious challenge to a linear conception of time”.",
+      "claims": [
+       {
+        "by": "KIR"
+       },
+       {
+        "by": "WIL"
+       }
+      ]
+     },
+     {
+      "text": "Anderson discusses it with amor fati, the love of one's fate: Book IV of The Gay Science opens with “Amor fati: let that be my love henceforth!” (§276), and he notes that the book closes by first introducing the thought of eternal recurrence (§341).",
+      "claims": [
+       {
+        "by": "AND"
+       }
+      ]
+     },
+     {
+      "text": "Deleuze reads the eternal return as a return of difference: in the Stanford entry's words, repetition is “the return of the differential genetic condition of real experience”. See syntheses of time.",
+      "claims": [
+       {
+        "by": "DEL"
+       }
+      ]
+     }
+    ],
+    "s": "Nietzsche, The Gay Science (1882), §§276, 341; Thus Spoke Zarathustra III; Ecce Homo",
+    "src": "AND",
+    "srcs": [
+     "KIR",
+     "WIL",
+     "DEL"
+    ],
+    "by": {
+     "first_pass": "Claude (Opus 5.5): Anderson's §6.3 read through a fetching agent from offset 95,000 of the current page, Wilkerson's IEP entry read in full but for its bibliography",
+     "review": "Independent reviewer (separate agent, fresh context), 2026-11-12: checked every new sentence and quotation against Anderson §§3.2.2, 6.3 and bibliography, Kirwin, Wilkerson §7 and the Deleuze entry (13 lookups); no wrong quotation, name or contrastive construction; fixed as asked: 'main line' brought to Anderson's 'influential line' (worded as 'an influential group of readers' so his phrase isn't copied unquoted), two unquoted runs of Anderson and Kirwin reworded, Anderson's concession to Loeb and the problems raised for the cosmological thesis added for balance, two old-sentence notes corrected; passed after the fixes."
+    }
+   }
   },
   "ressentiment": {
    "old": [
@@ -609,5 +754,13 @@
     "freud"
    ]
   }
- }
+ },
+ "unread_resolved": [
+  {
+   "source": "AND",
+   "part": "§6.1's last part, §6.2, §6.3",
+   "date": "2026-11-12",
+   "how": "read from offset 95,000 of the current page by a fetching agent; the page's date line was not seen in that read"
+  }
+ ]
 }
