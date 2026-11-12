@@ -386,7 +386,7 @@ function marksOnPage(anns, items) {
       if (line.length) lines.push(line.sort((p, q) => p[0] - q[0]).map((p) => p[1]).join(" "));
     }
     const text = lines.join("\n").trim(), comment = clean((a.contentsObj && a.contentsObj.str) || (typeof a.contents === "string" ? a.contents : "") || "");
-    if (text) out.push({ text, comment });
+    if (text) out.push({ text, comment, ...(a.subtype === "Highlight" ? {} : { under: true }) }); // an underline or squiggle stays one
   }
   return out;
 }
@@ -447,6 +447,7 @@ async function addMarks(tid, marks, pages) {
     if (have.has(key)) { dup++; continue; } have.add(key);
     const xa = plain(B[A.a].x || ""), xb = plain(B[A.b].x || "");
     const note = { textId: tid, kind: "passage", passage, gloss: m.comment || "", page: pgs[A.a] || "", at: A.a, anchor: { ...A, pre: xa.slice(Math.max(0, A.ao - 32), A.ao), suf: xb.slice(A.bo, A.bo + 32) }, createdAt: now + k, updatedAt: now + k };
+    if (m.under) note.hl = "underline";
     const sec = placeIn(B, t, A.a).sec; if (sec) note.sectionId = sec;
     add.push([gid() + k, note]);
   }

@@ -32,8 +32,9 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - Storage: `STORES`, `idbOpen`, `put`, `del`, `idbTx`. Backup export and restore follow. The `trash` and `trashlist` stores (version 8) are Recently deleted: every delete of a book, note, draft or comparison goes through `trashAndRemove`, filing the removed records as one entry in `trash` and its summary in `trashlist` (on a full device nothing is removed: `noRoom` asks, and only a confirmed Delete permanently runs `removeForGood`). Only `trashlist` is read at start (`loadTrash`, which also clears entries past `TRASH_DAYS`). `restoreTrash` puts back only records missing from the library (`putBackMissing`), never over one that came back another way. Neither store is backed up. The `files` store (version 7) holds
   original PDFs kept for the printed page, by text id; it is never loaded at start and never backed up (`keepPdf`, `pdfDoc`).
   A text's `pdfLabels` are its PDF pages' labels, used to find the PDF page for a printed page number.
-- Highlight colours (`HL`, `hlOf`, `hlClass` in core.js; a note's optional `hl`): a passage note is yellow unless `hl` names pink,
-  orange or grey; other kinds keep their kind's colour, so `hl` is drawn only on a passage (and kept if the kind changes back). In
+- Highlight colours and underlining (`HL`, `hlOf`, `hlClass` in core.js; a note's optional `hl`): a passage note is highlighted
+  yellow unless `hl` names pink, orange or grey, or `underline` (drawn as a brass underline; Highlight's button then reads Underline,
+  and an Underline or Squiggly annotation from a PDF comes in underlined, `under` in `marksOnPage`); other kinds keep their kind's colour, so `hl` is drawn only on a passage (and kept if the kind changes back). In
   the selection bar, Highlight uses the last colour chosen (`HL_LAST`, localStorage `mg-hl`) and the swatch beside it (`#selsw`)
   shows the four (`#selpal`, `data-hlpick`, the bar's `picking` class); Edit note has the same choice for a passage (`#n-hl`).
   Drawn on the text's marks, Your notes rows, note cards and draft items; `VALID.notes` takes it as a string. Tested by

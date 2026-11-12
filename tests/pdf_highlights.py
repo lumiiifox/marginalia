@@ -117,6 +117,8 @@ async def main():
             check(got == want, f"one passage note each, in the book's own words ({got} / {want})")
             check([n["page"] for n in notes] == ["1", "2", "3"] and [n["sec"] for n in notes] == ["Chapter 1", "Chapter 2", "Chapter 3"], f"each on its page and in its chapter ({[(n['page'], n['sec']) for n in notes]})")
             check([n["gloss"] for n in notes] == ["", "", "Compare with chapter 1."] and all(n["kind"] == "passage" for n in notes), "the underline's comment becomes your note")
+            hls = await page.evaluate(f"notesFor('{tid}').map(([, n]) => [n.page, n.hl || '']).sort()")
+            check(hls == [["1", ""], ["2", ""], ["3", "underline"]], f"an underline in the PDF comes in underlined, highlights as highlights ({hls})")
             check(all(n["placed"] for n in notes), "each is placed exactly in the reader")
             await page.wait_for_timeout(400)
             check("Added 3 highlights as notes." in await page.inner_text("#toast"), "and says so")

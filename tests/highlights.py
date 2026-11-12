@@ -164,6 +164,16 @@ async def main():
         check(hid, "the colour choice is offered for a plain highlight only")
         check(await page.evaluate("VALID.notes({ textId: 'h', passage: 'x', hl: 'pink' })") and not await page.evaluate("VALID.notes({ textId: 'h', passage: 'x', hl: 3 })"),
               "a backup accepts a highlight's colour and refuses a broken one")
+        # underlining: one of the choices, drawn as a line under the words, and then what the button does
+        a11 = x9.index("that is the point")
+        await page.evaluate(SELECT, [2, a11, 2, a11 + len("that is the point")]); await page.wait_for_timeout(300)
+        await page.click("#selsw"); await page.wait_for_timeout(200); await page.click("[data-hlpick=underline]"); await page.wait_for_timeout(400)
+        nid11 = await page.evaluate(newest)
+        u = await page.evaluate(f"(() => {{ const m = document.querySelector(`#book mark[data-note='{nid11}']`), cs = getComputedStyle(m); return [S.notes.get('{nid11}').hl, m.className, cs.textDecorationLine, cs.backgroundColor, document.querySelector('#toast').textContent.startsWith('Underlined.')]; }})()")
+        check(u[:3] == ["underline", "k-passage hl-underline", "underline"] and u[3] in ("rgba(0, 0, 0, 0)", "transparent") and u[4], f"Underline marks the words with a line under them, no fill, and says Underlined ({u})")
+        await page.evaluate(SELECT, [2, 0, 2, len("First")]); await page.wait_for_timeout(300)
+        check(await page.inner_text("#selhl") == "Underline", "after underlining, the button underlines")
+        await page.evaluate("getSelection().removeAllRanges()"); await page.wait_for_timeout(300)
         await page.evaluate("localStorage.removeItem('mg-hl'); HL_LAST = 'yellow'")
 
         # 7 backups; Scroll mode

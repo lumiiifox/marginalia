@@ -1436,7 +1436,7 @@ function checkSel() {
   $("#selmore").hidden = !isPaged();
   $("#selsave").textContent = "Add a note";
   $("#sellook").hidden = !(R.sel.text.length <= 48 && R.sel.text.split(/\s+/).length <= 4);
-  bar.classList.remove("picking"); $("#selsw i").className = `sw-${HL_LAST}`; bar.hidden = false; drawTrail(); drawCarry();
+  bar.classList.remove("picking"); $("#selsw i").className = `sw-${HL_LAST}`; $("#selsw i").textContent = HL_LAST === "underline" ? "U" : ""; $("#selhl").textContent = HL_LAST === "underline" ? "Underline" : "Highlight"; bar.hidden = false; drawTrail(); drawCarry();
 }
 function selAnchor(s) {
   if (!R.blocks || !Number.isInteger(s.si) || !Number.isInteger(s.ej) || !markable(R.blocks[s.i]) || !markable(R.blocks[s.j])) return null;
