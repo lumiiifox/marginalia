@@ -55,6 +55,20 @@ async def choose(page, name, data, mime="text/plain"):
     return await page.evaluate("[document.querySelector('#f-prog').textContent, document.querySelector('#f-prog').classList.contains('bad')]")
 
 
+async def reopen(page):
+    """Close the app and open it again. A reload can be cut off by the step back the sheet takes as it closes (history.back), which
+    happens on its own schedule; then the app is simply opened again."""
+    for _ in range(3):
+        try:
+            await page.reload(); break
+        except Exception as e:
+            if "ERR_ABORTED" not in str(e): raise
+            await page.wait_for_timeout(200)
+    else:
+        await page.goto(URL)
+    await page.wait_for_function(READY)
+
+
 async def save(page):
     await page.click("#sheetroot button[type=submit]")
     await page.wait_for_function("!document.querySelector('#sheetroot form[data-busy]')", timeout=30000)
@@ -151,7 +165,7 @@ async def main():
             await choose(page, f"Closed {delay}.txt", para(4000, f"long {delay}").encode())  # each its own text, so none is a repeat
             await page.click("#sheetroot button[type=submit]")
             await page.wait_for_timeout(delay)
-            await page.reload(); await page.wait_for_function(READY)
+            await reopen(page)
             orphans = await page.evaluate(ORPHANS)
             whole = await page.evaluate(f"""(async () => {{ const t = [...S.texts.values()].find((x) => x.title === 'Closed {delay}'); if (!t) return 'none';
               const id = [...S.texts.keys()].find((k) => S.texts.get(k) === t); const c = await idbGet('content', id); return c && c.length === t.total ? 'whole' : 'broken'; }})()""")
