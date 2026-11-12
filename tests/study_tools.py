@@ -276,12 +276,12 @@ async def truth_table(browser):
 
 async def term_of_day(browser):
     page, errs = await fresh(browser)
-    r = await page.evaluate("""(() => { const n = GLOSSARY.length, d0 = dayNumber(new Date(2026, 9, 18));
+    r = await page.evaluate("""(() => { const n = VERIFIED_TERMS.length, d0 = dayNumber(new Date(2026, 9, 18));
       const ids = []; for (let d = d0 - (d0 % n); d < d0 - (d0 % n) + n; d++) ids.push(termOfDay(d).id);
       const next = []; for (let d = d0 - (d0 % n) + n; d < d0 - (d0 % n) + 2 * n; d++) next.push(termOfDay(d).id);
-      return [n, new Set(ids).size, ids.every((id) => GLOSSARY.some((g) => g.id === id)), ids.join() !== next.join(), termOfDay(d0).id === termOfDay(dayNumber(new Date(2026, 9, 18, 23, 59))).id,
+      return [n, new Set(ids).size, ids.every((id) => VERIFIED_TERMS.includes(id)), ids.join() !== next.join(), termOfDay(d0).id === termOfDay(dayNumber(new Date(2026, 9, 18, 23, 59))).id,
         termOfDay(d0).id !== termOfDay(d0 + 1).id]; })()""")
-    check(r[1] == r[0] and r[2] and r[3] and r[4] and r[5], f"every glossary entry comes up once in each round of days, the same all day, a new order each round ({r})")
+    check(r[1] == r[0] and r[2] and r[3] and r[4] and r[5], f"every checked glossary entry, and only those, comes up once in each round of days, the same all day, a new order each round ({r})")
     await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(200)
     tod = await page.evaluate("[document.querySelector('.tod .rc-t')?.textContent, termOfDay().t, document.querySelector('.tod').nextElementSibling.className]")
     check(tod[0] == tod[1] and tod[2] == "refcards", f"the home screen shows today's term above the glossary, branches and thinkers ({tod})")

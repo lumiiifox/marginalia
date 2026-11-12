@@ -431,12 +431,14 @@ function thinkersView() {
 // Term of the day: one of the glossary's own entries a day, in an order shuffled once per round so every term comes up before any
 // repeats. Worked out from the date, so nothing is stored and every device shows the same term.
 const dayNumber = (d = new Date()) => Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / DAY);
+// Drawn only from the entries that passed an audit (VERIFIED_TERMS): the home screen puts it in front of you every day.
+const TOD_POOL = () => GLOSSARY.filter((g) => VERIFIED_TERMS.includes(g.id));
 function termOfDay(day = dayNumber()) {
-  const n = GLOSSARY.length; if (!n) return null;
+  const pool = TOD_POOL(), n = pool.length; if (!n) return null;
   let seed = Math.floor(day / n) + 1;
   const rnd = () => { seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
-  const order = [...GLOSSARY.keys()]; for (let i = n - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
-  const base = GLOSSARY[order[day % n]];
+  const order = [...pool.keys()]; for (let i = n - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
+  const base = pool[order[day % n]];
   return allTerms().find((g) => g.id === base.id) || base; // your edit of it, if you made one
 }
 function todHTML() {

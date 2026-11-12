@@ -174,8 +174,8 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - Quiz sets to share (`setMaker`, from Quiz yourself; `setLink`, `readSet`): chosen terms travel in a `#set=` link as base64url JSON (built-in ids,
   and your own or edited terms in full, within `SET_LIMITS`); `openFromHash` at start and on `hashchange` opens the quiz with `QZ.set`, or a
   `#path=` link's reading path, then cleans the address. Nothing stored.
-- Term of the day (`termOfDay`, `todHTML`, above the home screen's three buttons): one of `GLOSSARY` a day by `dayNumber`, in an order shuffled once per
-  round so every entry comes up before any repeats; your edit of it if you made one. Nothing is stored.
+- Term of the day (`termOfDay`, `todHTML`, above the home screen's three buttons): one of the checked entries (`TOD_POOL`: `GLOSSARY` in `VERIFIED_TERMS`) a day by
+  `dayNumber`, in an order shuffled once per round so every one comes up before any repeats; your edit of it if you made one. Nothing is stored.
 - Hear it (`sayBtn`, `sayIt`, `CAN_SAY`): on a glossary term and a thinker's card, the phone's own voice (Web Speech API, English) says the name;
   no button where the device has no voice.
 - Flashcards for Anki (Export → `ankiRows`, `ankiFile`): tab-separated text with Anki's import headers (2.1.54+), HTML fields made safe by
