@@ -183,6 +183,9 @@ async def main():
         await page.click("#selsw"); await page.wait_for_timeout(200); await page.click("[data-hlpick=underline]"); await page.wait_for_timeout(400)
         nu = await page.evaluate(newest)
         segs = await page.evaluate("[...R.els[3].querySelectorAll('mark')].map((m) => [m.textContent, m.className, m.dataset.note])")
+        look = await page.evaluate("""[...R.els[3].querySelectorAll('mark')].filter((m) => /hl-pink/.test(m.className)).map((m) => { const cs = getComputedStyle(m); return [m.textContent, cs.backgroundColor, cs.textDecorationLine]; })""")
+        check(len({bg for _, bg, _ in look}) == 1 and look[0][1] not in ("rgba(0, 0, 0, 0)", "transparent") and [d for _, _, d in look] == ["none", "underline", "none"],
+              f"where they overlap the words keep the highlight's fill and gain the line, as they look on screen ({look})")
         mine = [x for x in segs if x[2] in (nh, nu)]
         check([x[:2] for x in mine] == [["A passage ", "k-passage hl-pink"], ["begins at", "k-passage hl-pink uline"], [" the end of this", "k-passage hl-pink"]] and mine[1][2] == nu,
               f"an underline inside a pink highlight is drawn on its words, still pink, and a tap there opens the underline ({[x[:2] for x in mine]})")

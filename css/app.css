@@ -350,7 +350,9 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .book mark.hl-pink, .note.hl-pink .passage span { background: var(--hl-pink); }
 .book mark.hl-orange, .note.hl-orange .passage span { background: var(--hl-orange); }
 .book mark.hl-grey, .note.hl-grey .passage span { background: var(--hl-grey); }
-.book mark.uline, .book mark.hl-underline, .note.hl-underline .passage span { background: none; text-decoration: underline; text-decoration-color: var(--brass); text-decoration-thickness: 2px; text-underline-offset: 3px; text-decoration-skip-ink: none; }
+.book mark.hl-underline, .note.hl-underline .passage span { background: none; }
+/* the line itself: on an underline alone, and on any highlight an underline crosses (uline), whose fill stays */
+.book mark.uline, .book mark.hl-underline, .note.hl-underline .passage span { text-decoration: underline; text-decoration-color: var(--brass); text-decoration-thickness: 2px; text-underline-offset: 3px; text-decoration-skip-ink: none; }
 .sw-yellow { --sw: var(--mark); } .sw-pink { --sw: var(--hl-pink); } .sw-orange { --sw: var(--hl-orange); } .sw-grey { --sw: var(--hl-grey); }
 .selbar .selsw i.sw-underline, .selbar .swatch i.sw-underline, .hlopt i.sw-underline { background: none; border: 0; border-radius: 0; width: auto; height: auto; font: 500 17px/1 var(--f-text); color: var(--ink);
   text-decoration: underline; text-decoration-color: var(--brass); text-decoration-thickness: 2px; text-underline-offset: 3px; }
