@@ -13,7 +13,7 @@
   --link: #2c5244;
   --brass: #9c7533;
   --mark: rgba(224, 172, 52, 0.38);
-  --mk-gloss: rgba(86, 150, 104, 0.26); --mk-question: rgba(70, 120, 196, 0.24); --mk-objection: rgba(196, 82, 58, 0.24); --mk-argument: rgba(132, 92, 176, 0.24);
+  --mk-gloss: rgba(86, 150, 104, 0.26); --mk-question: rgba(70, 120, 196, 0.24); --mk-objection: rgba(196, 82, 58, 0.24); --mk-argument: rgba(132, 92, 176, 0.24); --hl-pink: rgba(222, 96, 150, 0.26); --hl-orange: rgba(236, 140, 50, 0.32); --hl-grey: rgba(120, 108, 96, 0.24);
   --warn: #9a3b2a;
   --s1: #2f5446; --s2: #8a3a2a; --s3: #34507a; --s4: #6a4a78; --s-own: #8a6424; /* sides of a comparison */
   --veil: rgba(43, 33, 25, 0.5);
@@ -29,7 +29,7 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --wood: #2a2019; --paper: #1f1914; --field: #2a221b; --ink: #ede3d3; --muted: #ad9a82; --rule: #46382b;
-    --leather: #3a6552; --leather-ink: #f1ebe0; --link: #9cc4ae; --brass: #c9a25f; --mark: rgba(201, 162, 95, 0.3); --warn: #e29c84; --mk-gloss: rgba(110, 180, 130, 0.26); --mk-question: rgba(110, 155, 225, 0.26); --mk-objection: rgba(225, 110, 85, 0.26); --mk-argument: rgba(170, 130, 215, 0.26); --veil: rgba(0, 0, 0, 0.6);
+    --leather: #3a6552; --leather-ink: #f1ebe0; --link: #9cc4ae; --brass: #c9a25f; --mark: rgba(201, 162, 95, 0.3); --warn: #e29c84; --mk-gloss: rgba(110, 180, 130, 0.26); --mk-question: rgba(110, 155, 225, 0.26); --mk-objection: rgba(225, 110, 85, 0.26); --mk-argument: rgba(170, 130, 215, 0.26); --hl-pink: rgba(235, 120, 170, 0.28); --hl-orange: rgba(240, 160, 80, 0.3); --hl-grey: rgba(190, 180, 168, 0.22); --veil: rgba(0, 0, 0, 0.6);
     --plank: #4a2d18; --plank-hi: #5e3a20; --plank-edge: #3a2210; --plank-edge-lo: #24150a; --shelf-shade: rgba(0, 0, 0, 0.55);
     --s1: #82b89c; --s2: #e39a82; --s3: #97b5e3; --s4: #c9a4dd; --s-own: #d4ae69;
     --paper-shadow: 0 1px 0 rgba(0, 0, 0, 0.3), 0 12px 24px -16px rgba(0, 0, 0, 0.8);
@@ -39,7 +39,7 @@
 }
 :root[data-theme="dark"] {
   --wood: #2a2019; --paper: #1f1914; --field: #2a221b; --ink: #ede3d3; --muted: #ad9a82; --rule: #46382b;
-  --leather: #3a6552; --leather-ink: #f1ebe0; --link: #9cc4ae; --brass: #c9a25f; --mark: rgba(201, 162, 95, 0.3); --warn: #e29c84; --mk-gloss: rgba(110, 180, 130, 0.26); --mk-question: rgba(110, 155, 225, 0.26); --mk-objection: rgba(225, 110, 85, 0.26); --mk-argument: rgba(170, 130, 215, 0.26); --veil: rgba(0, 0, 0, 0.6);
+  --leather: #3a6552; --leather-ink: #f1ebe0; --link: #9cc4ae; --brass: #c9a25f; --mark: rgba(201, 162, 95, 0.3); --warn: #e29c84; --mk-gloss: rgba(110, 180, 130, 0.26); --mk-question: rgba(110, 155, 225, 0.26); --mk-objection: rgba(225, 110, 85, 0.26); --mk-argument: rgba(170, 130, 215, 0.26); --hl-pink: rgba(235, 120, 170, 0.28); --hl-orange: rgba(240, 160, 80, 0.3); --hl-grey: rgba(190, 180, 168, 0.22); --veil: rgba(0, 0, 0, 0.6);
   --plank: #4a2d18; --plank-hi: #5e3a20; --plank-edge: #3a2210; --plank-edge-lo: #24150a; --shelf-shade: rgba(0, 0, 0, 0.55);
   --s1: #82b89c; --s2: #e39a82; --s3: #97b5e3; --s4: #c9a4dd; --s-own: #d4ae69;
   --paper-shadow: 0 1px 0 rgba(0, 0, 0, 0.3), 0 12px 24px -16px rgba(0, 0, 0, 0.8);
@@ -346,6 +346,19 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .book mark.k-question, .note.k-question .passage span { background: var(--mk-question); }
 .book mark.k-objection, .note.k-objection .passage span { background: var(--mk-objection); }
 .book mark.k-argument, .note.k-argument .passage span { background: var(--mk-argument); }
+/* a passage's own colour (hl), chosen when highlighting; yellow is --mark */
+.book mark.hl-pink, .note.hl-pink .passage span { background: var(--hl-pink); }
+.book mark.hl-orange, .note.hl-orange .passage span { background: var(--hl-orange); }
+.book mark.hl-grey, .note.hl-grey .passage span { background: var(--hl-grey); }
+.sw-yellow { --sw: var(--mark); } .sw-pink { --sw: var(--hl-pink); } .sw-orange { --sw: var(--hl-orange); } .sw-grey { --sw: var(--hl-grey); }
+.selbar .selsw i, .selbar .swatch i, .hlopt i { display: inline-block; width: 18px; height: 18px; border-radius: 50%; background: linear-gradient(var(--sw), var(--sw)), var(--paper); border: 1px solid color-mix(in srgb, var(--ink) 30%, transparent); vertical-align: middle; }
+.selbar .selsw, .selbar .swatch { background: var(--paper); min-width: 44px; padding-left: 10px; padding-right: 10px; }
+.selbar .selpal { display: none; gap: 8px; }
+.selbar.picking .selpal { display: contents; }
+.selbar.picking > .btn { display: none; }
+.hlpick { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.hlopt { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; font: 400 15px/1.2 var(--f-ui); }
+.hlopt i { margin-right: 2px; }
 .book .flash { animation: flash 2.2s ease-out both; }
 @media (prefers-reduced-motion: reduce) { .book .flash { animation: none; background: color-mix(in srgb, var(--brass) 22%, transparent); } }
 @keyframes flash { from { background: color-mix(in srgb, var(--brass) 38%, transparent); } to { background: transparent; } }

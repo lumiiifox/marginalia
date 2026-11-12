@@ -28,7 +28,7 @@ function draftItemHTML(it, k, last) {
   const n = S.notes.get(it.id);
   if (!n) return `<div class="ditem dmissing"><p class="hint">This note was deleted.</p>${ctl}</div>`;
   const t = S.texts.get(n.textId);
-  return `<div class="ditem dnote k-${esc(n.kind)}">
+  return `<div class="ditem dnote k-${esc(n.kind)}${hlClass(n)}">
       <div class="meta"><button class="src" data-jump="${esc(it.id)}">${esc(noteWhere(n, false))}</button><span class="chip k-${esc(n.kind)}">${esc(KINDS[n.kind] || "Note")}</span></div>
       ${n.passage ? `<p class="passage"><span>${esc(n.passage)}</span></p>` : ""}
       ${n.original ? `<p class="orig"><span class="olabel">Original</span> ${esc(n.original)}</p>` : ""}

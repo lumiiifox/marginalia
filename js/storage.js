@@ -292,7 +292,7 @@ const VALID = {
       && Object.entries(v.days).every(([k, d]) => DAY_KEY.test(k) && Array.isArray(d) && d.length === 2 && d.every((x) => Number.isInteger(x) && x >= 0))))
     && (v.conc === undefined || (isObj(v.conc) && isS(v.conc.label) && v.conc.label.length <= 60 && Array.isArray(v.conc.pairs) && v.conc.pairs.length <= CONC_MAX
       && v.conc.pairs.every((q) => Array.isArray(q) && q.length === 2 && q.every((x) => isS(x) && x.length > 0 && x.length <= 12)))),
-  notes: (v) => isObj(v) && isS(v.textId) && optStr(v.kind) && ["passage", "gloss", "original", "conclusion", "sectionId"].every((k) => optStr(v[k]))
+  notes: (v) => isObj(v) && isS(v.textId) && optStr(v.kind) && ["passage", "gloss", "original", "conclusion", "sectionId", "hl"].every((k) => optStr(v[k]))
     && (v.page === undefined || isS(v.page) || typeof v.page === "number") && optArr(v.links, isS) && optArr(v.premises, isS) && (v.at === undefined || Number.isInteger(v.at))
     && (v.anchor === undefined || (isObj(v.anchor) && ["a", "ao", "b", "bo"].every((k) => Number.isInteger(v.anchor[k])) && optStr(v.anchor.pre) && optStr(v.anchor.suf)))
     && optArr(v.followups, (x) => isObj(x) && isS(x.id) && Number.isFinite(x.at) && isS(x.x)) && optNum(v.wordAt)

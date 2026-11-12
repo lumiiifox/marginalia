@@ -254,6 +254,7 @@ function noteSheet(nid, preset, focus) {
     ${(t.sections || []).length ? `<div class="field"><label for="n-sec">Section</label><select id="n-sec" name="sectionId"><option value="">None</option>${t.sections.map((s) => `<option value="${esc(s.id)}" ${n.sectionId === s.id ? "selected" : ""}>${esc(s.label)}</option>`).join("")}</select></div>` : ""}
     <div class="field"><label for="n-passage">Passage, word for word</label><textarea id="n-passage" class="verbatim" name="passage">${esc(n.passage)}</textarea><span class="hint">${preset && preset.passage ? "Taken from the text. Fix any stray characters from the file." : "Copy exactly from the page. Keep your interpretation in the next box."}</span></div>
     <details class="optfield"${n.original ? " open" : ""}><summary>Original wording</summary><textarea id="n-orig" name="original" rows="3" aria-label="Original wording">${esc(n.original)}</textarea><span class="hint">For translations: the passage or a key term in the original language, such as Aufhebung or dispositif.</span></details>
+    <div class="field" id="n-hl"${(n.kind || "passage") === "passage" ? "" : " hidden"}><span class="flabel">Highlight colour</span><div class="hlpick">${Object.entries(HL).map(([k, v]) => `<label class="hlopt"><input type="radio" name="hl" value="${k}" ${(hlOf(n) || "yellow") === k ? "checked" : ""}><i class="sw-${k}"></i>${v}</label>`).join("")}</div></div>
     <div class="argfields" id="n-arg"${n.kind === "argument" ? "" : " hidden"}>
       <div class="field"><label for="n-prem">Premises, one per line</label><textarea id="n-prem" name="premises" rows="4" placeholder="Each thing strives to persevere in its being.">${esc((n.premises || []).join("\n"))}</textarea></div>
       <div class="field"><label for="n-conc">Conclusion</label><input id="n-conc" name="conclusion" value="${esc(n.conclusion)}"></div>
@@ -275,6 +276,7 @@ function noteSheet(nid, preset, focus) {
     const data = { ...(nid ? n : { createdAt: Date.now() }), textId: tid, page: fd.get("page").trim(), kind, sectionId: fd.get("sectionId") || "", passage, gloss, updatedAt: Date.now() };
     if (kind === "argument") { data.premises = premises; data.conclusion = conclusion; } else { delete data.premises; delete data.conclusion; }
     if (original) data.original = original; else delete data.original;
+    const hl = fd.get("hl"); if (kind === "passage" && HL[hl]) { if (hl === "yellow") delete data.hl; else data.hl = hl; } // other kinds keep theirs, for a passage again
     const keep = links.filter((x) => S.notes.has(x));
     if (keep.length) data.links = keep; else delete data.links;
     if (Number.isInteger(n.at)) data.at = n.at;
@@ -301,7 +303,7 @@ function noteSheet(nid, preset, focus) {
   },
   (root) => {
     const kindSel = $("#n-kind", root), argBox = $("#n-arg", root);
-    kindSel.addEventListener("change", () => { argBox.hidden = kindSel.value !== "argument"; });
+    kindSel.addEventListener("change", () => { argBox.hidden = kindSel.value !== "argument"; $("#n-hl", root).hidden = kindSel.value !== "passage"; });
     // linking: search all notes, tap to link, tap a chip to unlink
     const box = $("#n-links", root), q = $("#n-linkq", root), res = $("#n-linkres", root);
     const draw = () => {

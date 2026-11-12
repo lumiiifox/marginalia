@@ -41,6 +41,13 @@ const median = (a) => { if (!a.length) return 0; const b = [...a].sort((x, y) =>
 const pct = (a, q) => { const b = [...a].sort((x, y) => x - y); return b[Math.floor(q * (b.length - 1))]; };
 const wmedian = (pairs) => { const a = [...pairs].sort((x, y) => x[0] - y[0]); const tot = a.reduce((s, p) => s + p[1], 0); let acc = 0; for (const [v, w] of a) { acc += w; if (acc >= tot / 2) return v; } return a.length ? a[a.length - 1][0] : 10; };
 class UErr extends Error {}
+/* Highlight colours (a note's `hl`): a plain highlight, a passage, is yellow unless you choose another; the other kinds keep their
+   own colours (gloss green, question blue, objection red, argument purple), so `hl` shows only on a passage. The colour you choose
+   last is the next highlight's (localStorage mg-hl, this device only). */
+const HL = { yellow: "Yellow", pink: "Pink", orange: "Orange", grey: "Grey" };
+const hlOf = (n) => (n && (!n.kind || n.kind === "passage") && HL[n.hl] && n.hl !== "yellow" ? n.hl : "");
+const hlClass = (n) => (hlOf(n) ? ` hl-${hlOf(n)}` : "");
+let HL_LAST = (() => { try { const v = localStorage.getItem("mg-hl"); return HL[v] ? v : "yellow"; } catch { return "yellow"; } })();
 
 /* Each library file's SHA-384, as cdnjs served it (checked 2026-11-08). The browser refuses a file whose bytes differ, so a changed
    copy on the CDN can't run here, where it could read anything the app keeps (the backup token included). A new file or version in
