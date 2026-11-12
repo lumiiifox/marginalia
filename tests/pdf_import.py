@@ -302,7 +302,7 @@ async def main(paths):
             browser = await p.chromium.launch()
             page = await browser.new_page(bypass_csp=True); errs = []
             page.on("pageerror", lambda e: errs.append(str(e)))
-            await page.goto(f"http://localhost:{PORT}/index.html"); await page.wait_for_function("typeof idb !== 'undefined' && idb")
+            await page.goto(f"http://localhost:{PORT}/index.html"); await page.wait_for_function("typeof idb !== 'undefined' && idb && S.mode === 'ready'")
             base = f"http://localhost:{PORT}/lib"
             if paths:
                 for i, path in enumerate(paths):
