@@ -45,10 +45,13 @@ ideas, or reward doing so? If not, it waits.
 
 ## How changes ship
 
-- **Pull request** (branch + PR, owner merges) for anything touching stored data: the IndexedDB schema or `idbOpen` upgrade
+- **Pull request** (branch + PR) for anything touching stored data: the IndexedDB schema or `idbOpen` upgrade
   code, the `STORES` list, the shape of records in any store, backup (`version` in the export), restore (`VALID`, `planRestore`,
   merging), cloud backup, or `sw.js` caching. A mistake there can stop the app from opening the owner's library. The PR's
   description says in plain words what changes for the owner and what could go wrong.
+- **Claude merges its own pull requests** (owner's decision, 2026-11-12: "you have permission to merge all things going forward"),
+  only once CI has passed on the PR's current head and there is no conflict, and checks the run on `main` after merging. The PR
+  stays the record of what changed and why; the owner can still read it, overrule it or ask for it to be reverted.
 - **Direct push to `main`** for everything else: interface, styling, reader behaviour, reference content, exports, tests.
 - One logical change per commit, with a plain message saying what changed for the reader.
 - A pull request carries a finished change: a working feature, a fix, or an audited piece of content. No PRs for plans, research
