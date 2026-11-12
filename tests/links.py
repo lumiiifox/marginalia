@@ -189,6 +189,9 @@ async def main():
         await page.click(".sheet [data-classic='classic-hobbes-leviathan']")
         await page.wait_for_function("S.screen === 'text' && S.textId === 'classic-hobbes-leviathan'", timeout=20000)
         check(True, "a title on a thinker card opens the book's page, adding a deleted classic back first")
+        await page.wait_for_timeout(1500)  # long enough for a second, slower add-back to land, which a double tap-handling made
+        pages = await page.evaluate("NAV.stack.filter((v) => v.screen === 'text' && v.textId === 'classic-hobbes-leviathan').length")
+        check(pages == 1, f"one tap opens it once, so one Back returns ({pages} entries for the book's page)")
         rows = await page.evaluate("""(() => { const m = classicMentions('classic-nietzsche-genealogy'); return [m.branch.map((x) => x.id), m.thinker.map((x) => x.id), m.term.map((x) => x.id),
           !!document.querySelector('.group .mentions') || null]; })()""")
         check("ethics" in rows[0] and "epistemology" in rows[0] and "nietzsche" in rows[1] and "ressentiment" in rows[2], f"a classic's page lists the articles, cards and entries that name or cite it ({rows[:3]})")
@@ -200,9 +203,10 @@ async def main():
             # take longer than 20 s (seen twice); the page itself is ready as soon as they are
             await page.wait_for_function("document.querySelector('#main').innerText.includes('In the reference pages') && !!document.querySelector(\"#main .mentions [data-branch='political']\")", timeout=45000)
             shown = True
-        except Exception:
-            shown = False
-        check(shown, "the book's page shows them")
+        except Exception as e:  # say why, and what was on screen: this check has failed under load without saying either
+            shown = False; why = str(e).splitlines()[0][:160]
+            state = await page.evaluate("[S.screen, S.textId, S.texts.has('classic-plato-republic'), document.querySelector('#main').innerText.includes('In the reference pages'), document.querySelectorAll('#main .mentions [data-branch]').length]")
+        check(shown, "the book's page shows them" + ("" if shown else f" ({why}; screen, book, Republic in library, heading, article rows: {state})"))
         refs = await page.evaluate("""(() => {
           const d = document.createElement('div'), ids = (html) => { d.innerHTML = html; return [...d.querySelectorAll('button')].map((b) => b.dataset.term || b.dataset.thinker || b.dataset.classic); };
           const g = GLOSSARY.find((x) => x.id === 'genealogy');
@@ -211,7 +215,8 @@ async def main():
         check("nietzsche" in refs[0] and "genealogy" not in refs[0], f"a glossary entry links the thinkers it names, never itself ({refs[0]})")
         check("genealogy" in refs[1] and "foucault" not in refs[1], f"a thinker card links the terms it uses, never its own name ({refs[1]})")
         check(refs[2] == ["genealogy", "rhizome", "hobbes"], f"an article links any glossary term ({refs[2]})")
-        await page.evaluate("openTerm('genealogy')"); await page.wait_for_timeout(300)
+        await page.evaluate("openTerm('genealogy')")
+        await page.wait_for_selector("details[data-term-id='genealogy'] [data-gx] [data-thinker='nietzsche']", timeout=15000)  # filled when the entry opens
         check(await page.locator("details[data-term-id='genealogy'] [data-gx] [data-thinker='nietzsche']").count() >= 1, "an open entry shows its links")  # once in each paragraph that names him
         # glossary source lines: locators after a bundled classic's title open that passage
         src = await page.evaluate("""(async () => { const out = { bad: [], n: 0, styles: new Set() }, books = {};
