@@ -371,10 +371,10 @@ function textView() {
     ${spreadHTML(id, t)}
     ${paceHTML(id, t)}
     ${densityHTML(id, t)}
-    ${secs.length ? `<section class="group"><div><div class="label">Sections</div><p class="hint">Tick a section once you have read it. Tap its name to see its notes.</p></div><div class="sections">
+    ${secs.length ? `<section class="group"><div><div class="label">Sections</div><p class="hint">Tick a section once you have read it. Tap its name to see its notes, or › to read it from its start.</p></div><div class="sections">
       ${secs.map((s) => `<div class="sec ${s.done ? "done" : ""} ${S.sec === s.id ? "sel" : ""}">
         <input type="checkbox" id="chk-${esc(s.id)}" data-tick="${esc(s.id)}" ${s.done ? "checked" : ""} aria-label="Mark ${esc(s.label)} as read">
-        <button data-sec="${esc(s.id)}">${esc(s.label)}</button><span class="n">${sums[s.id] ? `<span class="hassum" title="Has a summary">¶</span> ` : ""}${counts.get(s.id) || 0}</span></div>`).join("")}
+        <button data-sec="${esc(s.id)}">${esc(s.label)}</button><span class="n">${sums[s.id] ? `<span class="hassum" title="Has a summary">¶</span> ` : ""}${counts.get(s.id) || 0}</span>${t.hasContent ? `<button class="secgo" data-readsec="${esc(s.id)}" aria-label="Read ${esc(s.label)} from its start">›</button>` : ""}</div>`).join("")}
     </div></section>` : ""}
     ${secName ? `<section class="group"><div class="notesbar"><div class="label">Summary of ${esc(secName)}</div><button class="btn" id="editsummary">${sum ? "Edit" : "Write summary"}</button></div>
       ${sum ? `<div class="paperpanel summary"><p>${esc(sum)}</p></div>` : `<p class="hint">Put the section's argument in your own words, in a few sentences. Summaries go into the Markdown export.</p>`}</section>` : ""}

@@ -193,13 +193,15 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .coverctl .hint.bad { color: var(--warn); }
 
 .sections { display: grid; }
-.sec { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 11px 16px; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); }
+.sec { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 12px; padding: 11px 16px; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); }
 .sec:first-child { border-top: 0; }
 .sec input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--leather); }
 .sec button { text-align: left; background: none; border: 0; padding: 0; min-width: 0; font: 400 16px/1.3 var(--f-text); }
 .sec.done button { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--rule); }
 .sec.sel { background: color-mix(in srgb, var(--leather) 10%, transparent); }
 .sec .n { font-size: 13px; color: var(--muted); }
+.sec .secgo { display: grid; place-items: center; min-width: 44px; min-height: 44px; margin: -11px -12px -11px -4px; font: 400 26px/1 var(--f-text); color: var(--link); text-decoration: none; } /* read the section (readSection) */
+.sec.done .secgo { color: var(--link); text-decoration: none; }
 
 .notesbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
 .note { display: grid; gap: 8px; padding: 16px 0; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); min-width: 0; }

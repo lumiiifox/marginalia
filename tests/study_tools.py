@@ -909,6 +909,14 @@ async def primers(browser):
     check(st == [True, ["what-can-we-know"], 3], f"a classic you haven't started shows its primer open, with its path and words ({st})")
     await page.evaluate("put('texts', 'classic-hume-enquiry', { ...S.texts.get('classic-hume-enquiry'), pos: 40 })"); await page.wait_for_timeout(200)
     check(await page.evaluate("document.querySelector('details.primer').open") is False, "once you've started, it's folded")
+    # a section's › opens the reader at its first line, and your place stays
+    sec = await page.evaluate("""(async () => { const B = await loadContent('classic-hume-enquiry'); const t = S.texts.get('classic-hume-enquiry');
+      const s = t.sections.find((x) => stepRange(B, [x.id]) && stepRange(B, [x.id])[0] > 100); return s ? [s.id, stepRange(B, [s.id])[0]] : null; })()""")
+    await page.click(f".sec [data-readsec='{sec[0]}']")
+    await page.wait_for_function("S.screen === 'reader' && R.blocks", timeout=15000); await page.wait_for_timeout(600)
+    got = await page.evaluate("[currentBlock(), R.visiting, S.texts.get('classic-hume-enquiry').pos]")
+    check(abs(got[0] - sec[1]) <= 3 and got[1] is True and got[2] == 40, f"a section's › opens the reader at its start, your place kept to go back to ({sec}, {got})")
+    await page.evaluate("back()"); await page.wait_for_timeout(400)
     await page.click(".primer summary"); await page.click(".primer [data-path]"); await page.wait_for_timeout(300)
     check(await page.evaluate("S.screen") == "paths", "its path chip opens the path")
     await page.evaluate("put('texts', 'own', { title: 'Own', sections: [], createdAt: 1, updatedAt: 1 }).then(() => go({ screen: 'text', textId: 'own' }))"); await page.wait_for_timeout(200)

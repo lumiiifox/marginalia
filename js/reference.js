@@ -578,6 +578,15 @@ async function readStep(tid, secs) {
   if (t.pos >= r[0] && t.pos < r[1]) return go({ screen: "reader", textId: tid }); // already inside them: carry on from your place
   return go({ screen: "reader", textId: tid, at: r[0] });
 }
+// A section of the book's contents, opened in the reader at its first line (the book page's ›). Your reading place stays where it
+// was, and the reader offers the way back to it, as for any jump.
+async function readSection(tid, sec) {
+  if (!S.texts.has(tid)) return;
+  const B = await loadContent(tid); if (!B) return toast("This book's text isn't on this device.");
+  const r = stepRange(B, [sec]);
+  if (!r) return toast("This section isn't marked in the text, so it can't be opened at its start. In the reader, select its title and choose Edit to mark it.");
+  go({ screen: "reader", textId: tid, at: r[0] });
+}
 async function readdClassic(id) {
   if (S.texts.has(id)) return render();
   try {

@@ -200,7 +200,9 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   the truth table on its example (`TT_TERMS` maps an entry to one of `TT_EXAMPLES`), and `ttExampleOf` offers the entry back from the table.
 - Reading paths (`PATHS` at the end of `data/branches.js`; `pathsView`, the `paths` screen, from the home screen and a branch's entry via `pathsFor`):
   steps through the classics by book id and section ids. `readStep` opens the reader at the step's first chapter (`stepRange`), or at your place
-  when you're inside it; a step is done when its sections are ticked. A deleted classic comes back with `readdClassic`, which uses `putClassic`
+  when you're inside it; a step is done when its sections are ticked. On a book's page each section's › (`readSection`, `data-readsec`)
+  opens the reader at that section's first line through the same `stepRange`, your place kept as for any jump; a section not marked
+  in the text says how to mark it. (Inside the reader, Contents in ☰ lists the headings, `tocPanel`.) A deleted classic comes back with `readdClassic`, which uses `putClassic`
   (also what `addClassics` uses). `CLASSIC_TITLES` names books not in the library; the tests check it against `data/books/`.
   Each step's `q` are questions to read it with (`readQsHTML`): folded on the path, and in Where you left off while your place is inside the
   step's chapters (`stepAt`); `askQuestion` turns one into an ordinary Question note on the book, once.

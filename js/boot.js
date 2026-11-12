@@ -144,6 +144,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "editnext") return nextSheet(S.textId);
   if (b.id === "exporttag") return saveFile(`tag-${slug(S.tag)}.md`, quoteBankMarkdown(`#${S.tag}`, taggedWith(S.tag)), "text/markdown").catch(() => toast("Couldn't export."));
   if (b.id === "exportquestions") return saveFile(`open-questions-${stamp()}.md`, quoteBankMarkdown("Open questions", questionNotes().filter(([, n]) => !n.resolved)), "text/markdown").catch(() => toast("Couldn't export."));
+  if (b.dataset.readsec) return readSection(S.textId, b.dataset.readsec);
   if (b.dataset.sec) { S.sec = S.sec === b.dataset.sec ? "all" : b.dataset.sec; return render(); }
   if (b.dataset.kind) { S.kind = b.dataset.kind; return render(); }
   // drafts
