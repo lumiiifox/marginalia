@@ -153,15 +153,26 @@ async def main():
         check(bar == [False, "sw-pink"] and await page.evaluate(f"S.notes.get('{nid10}').hl") == "pink", f"the next selection shows the usual choices, its swatch pink, and Highlight uses pink ({bar})")
         await page.evaluate(f"put('notes', '{nid10}', {{ ...S.notes.get('{nid10}'), kind: 'question' }})"); await page.wait_for_timeout(400)
         cls = await page.evaluate(f"document.querySelector(`#book mark[data-note='{nid10}']`)?.className")
-        check(cls == "k-question", f"marked as a question, it takes the question's colour ({cls})")
+        check(cls == "k-question hl-pink", f"marked as a question, a colour you chose stays ({cls})")
+        await page.evaluate(f"put('notes', '{nid2}', {{ ...S.notes.get('{nid2}'), kind: 'question' }})"); await page.wait_for_timeout(400)
+        cls = await page.evaluate(f"document.querySelector(`#book mark[data-note='{nid2}']`)?.className")
+        check(cls == "k-question", f"a plain yellow highlight marked as a question takes the question's blue ({cls})")
         await page.evaluate(f"noteSheet('{nid9}')"); await page.wait_for_selector("#n-hl")
         await page.check("#n-hl input[value=orange]"); await page.click("#sheetroot button[type=submit]"); await page.wait_for_timeout(500)
         cls = await page.evaluate(f"[S.notes.get('{nid9}').hl, document.querySelector(`#book mark[data-note='{nid9}']`)?.className]")
         check(cls == ["orange", "k-passage hl-orange"], f"Edit note changes a highlight's colour ({cls})")
         await page.evaluate(f"noteSheet('{nid9}')"); await page.wait_for_selector("#n-hl")
-        await page.select_option("#n-kind", "gloss"); hid = await page.evaluate("document.querySelector('#n-hl').hidden")
+        await page.select_option("#n-kind", "gloss"); kept = await page.evaluate("[document.querySelector('#n-hl').hidden, document.querySelector('#n-hl input:checked').value]")
         await page.evaluate("closeOverlay()"); await page.wait_for_timeout(300)
-        check(hid, "the colour choice is offered for a plain highlight only")
+        await page.evaluate(f"noteSheet('{nid2}')"); await page.wait_for_selector("#n-hl")
+        await page.select_option("#n-kind", "objection"); moved = await page.evaluate("document.querySelector('#n-hl input:checked').value")
+        await page.evaluate("closeOverlay()"); await page.wait_for_timeout(300)
+        check(kept == [False, "orange"] and moved == "red", f"every kind offers the colours; a chosen colour stays when the kind changes, a kind's own colour follows it ({kept}, {moved})")
+        # every colour reads easily: dark ink on a bright fill, 7:1 or better, in this theme
+        ratios = await page.evaluate("""(() => { const lum = (c) => { const [r, g, b] = c.match(/[\\d.]+/g).slice(0, 3).map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
+          const out = []; for (const c of Object.keys(HL).filter((k) => k !== 'underline')) { const m = document.createElement('mark'); m.className = 'k-passage hl-' + c; m.textContent = 'x'; R.els[3].appendChild(m);
+            const cs = getComputedStyle(m), a = lum(cs.backgroundColor), b = lum(cs.color); out.push([c, Math.round(((Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)) * 10) / 10]); m.remove(); } return out; })()""")
+        check(len(ratios) == 9 and all(r >= 7 for _, r in ratios), f"nine colours, each with text at 7:1 or better ({ratios})")
         check(await page.evaluate("VALID.notes({ textId: 'h', passage: 'x', hl: 'pink' })") and not await page.evaluate("VALID.notes({ textId: 'h', passage: 'x', hl: 3 })"),
               "a backup accepts a highlight's colour and refuses a broken one")
         # underlining: one of the choices, drawn as a line under the words, and then what the button does

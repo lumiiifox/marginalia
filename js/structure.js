@@ -264,7 +264,7 @@ async function quickHighlight(hl) {
   try { window.getSelection().removeAllRanges(); } catch {}
   const id = gid(), note = { textId: R.tid, kind: "passage", passage: s.text, page: s.page, sectionId: s.sec, at: s.i, gloss: "", createdAt: Date.now(), updatedAt: Date.now() };
   if (s.anchor) note.anchor = s.anchor;
-  if (HL[hl] && hl !== "yellow") note.hl = hl;
+  if (HL[hl] && hl !== KIND_HL.passage) note.hl = hl;
   try {
     await put("notes", id, note);
     const t = S.texts.get(R.tid); if (t) put("texts", R.tid, { ...t, activeAt: Date.now() }).catch(() => {});

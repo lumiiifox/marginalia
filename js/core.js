@@ -41,11 +41,12 @@ const median = (a) => { if (!a.length) return 0; const b = [...a].sort((x, y) =>
 const pct = (a, q) => { const b = [...a].sort((x, y) => x - y); return b[Math.floor(q * (b.length - 1))]; };
 const wmedian = (pairs) => { const a = [...pairs].sort((x, y) => x[0] - y[0]); const tot = a.reduce((s, p) => s + p[1], 0); let acc = 0; for (const [v, w] of a) { acc += w; if (acc >= tot / 2) return v; } return a.length ? a[a.length - 1][0] : 10; };
 class UErr extends Error {}
-/* How a passage is marked (a note's `hl`): highlighted yellow unless you choose pink, orange or grey, or underlined; the other kinds
-   keep their own colours (gloss green, question blue, objection red, argument purple), so `hl` shows only on a passage. What you
-   choose last is the next mark's (localStorage mg-hl, this device only). */
-const HL = { yellow: "Yellow", pink: "Pink", orange: "Orange", grey: "Grey", underline: "Underline" };
-const hlOf = (n) => (n && (!n.kind || n.kind === "passage") && HL[n.hl] && n.hl !== "yellow" ? n.hl : "");
+/* How a note is marked on the text (its `hl`): one of nine bright colours, or underlined. Each kind has a colour of its own
+   (KIND_HL: passage yellow, gloss green, question blue, objection red, argument purple), used until you choose another; `hl` is kept
+   only when it differs from the kind's. What you choose last is the next highlight's (localStorage mg-hl, this device only). */
+const HL = { yellow: "Yellow", orange: "Orange", red: "Red", pink: "Pink", purple: "Purple", blue: "Blue", teal: "Teal", green: "Green", grey: "Grey", underline: "Underline" };
+const KIND_HL = { passage: "yellow", gloss: "green", question: "blue", objection: "red", argument: "purple" };
+const hlOf = (n) => (n && HL[n.hl] && n.hl !== KIND_HL[n.kind || "passage"] ? n.hl : "");
 const hlClass = (n) => (hlOf(n) ? ` hl-${hlOf(n)}` : "");
 let HL_LAST = (() => { try { const v = localStorage.getItem("mg-hl"); return HL[v] ? v : "yellow"; } catch { return "yellow"; } })();
 
