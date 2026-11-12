@@ -249,7 +249,7 @@ function saveSel() {
   endCarry();
   noteSheet(null, { passage: s.text, page: s.page, sectionId: s.sec, at: s.i, kind: "passage", ...(s.anchor ? { anchor: s.anchor } : {}) });
 }
-["mousedown", "pointerdown"].forEach((ev) => ["#selsave", "#selhl", "#sellook", "#seledit", "#selmore", "#selpin"].forEach((id) => $(id).addEventListener(ev, (e) => e.preventDefault())));
+["mousedown", "pointerdown"].forEach((ev) => [...["#selsave", "#selhl", "#sellook", "#seledit", "#selmore", "#selpin", "#selsw", "#selpalx"].map((id) => $(id)), ...document.querySelectorAll("#selpal [data-hlpick]")].forEach((el) => el.addEventListener(ev, (e) => e.preventDefault())));
 // The selected words, leaving out any of your notes shown in the margin.
 function selectionText(r) {
   const frag = r.cloneContents();
@@ -258,12 +258,13 @@ function selectionText(r) {
   return (blocks ? [...frag.childNodes].map((x) => x.textContent).join(" ") : frag.textContent).replace(/\s+/g, " ").trim();
 }
 // One tap: save the selection as a passage, no sheet. Tap the highlight later to add a note.
-async function quickHighlight() {
+async function quickHighlight(hl) {
   const s = R.sel; if (!s || !R.tid) return;
-  $("#selbar").hidden = true; endCarry();
+  $("#selbar").hidden = true; $("#selbar").classList.remove("picking"); endCarry();
   try { window.getSelection().removeAllRanges(); } catch {}
   const id = gid(), note = { textId: R.tid, kind: "passage", passage: s.text, page: s.page, sectionId: s.sec, at: s.i, gloss: "", createdAt: Date.now(), updatedAt: Date.now() };
   if (s.anchor) note.anchor = s.anchor;
+  if (HL[hl] && hl !== "yellow") note.hl = hl;
   try {
     await put("notes", id, note);
     const t = S.texts.get(R.tid); if (t) put("texts", R.tid, { ...t, activeAt: Date.now() }).catch(() => {});

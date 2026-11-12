@@ -89,7 +89,7 @@ function noteHTML(id, n, t, showSrc) {
   const links = linkedNotes(id, n);
   // the actions: Show in text and Edit always, and Resolve on an open question; the rest under More (data-noteacts)
   const resolveBtn = (main) => OPENABLE.has(n.kind) && main === !n.resolved ? `<button class="btn ghost" data-resolve="${esc(id)}">${n.resolved ? "Reopen" : "Resolve"}</button>` : "";
-  return `<article class="note k-${esc(n.kind)}${n.resolved ? " resolved" : ""}" data-nid="${esc(id)}">
+  return `<article class="note k-${esc(n.kind)}${hlClass(n)}${n.resolved ? " resolved" : ""}" data-nid="${esc(id)}">
     <div class="meta">
       ${n.page ? `<span class="pg">${esc(loc(n.page))}</span>` : ""}
       ${n.page && t && t.conc && concLabel(t, n.page) ? `<span class="pg2">${esc(concLabel(t, n.page))}</span>` : ""}

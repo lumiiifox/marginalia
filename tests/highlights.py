@@ -8,7 +8,9 @@ Made-up book only, phone-sized touch screen. Selects text as a reader does and c
      unmarked and Your notes says so;
   5. Highlight's toast offers Question, Objection and Undo;
   6. Continue on next page carries a selection over a page turn into one passage;
-  7. backups accept anchors and refuse broken ones; Scroll mode marks the same words.
+  7. backups accept anchors and refuse broken ones; Scroll mode marks the same words;
+  8. colours: the swatch beside Highlight shows yellow, pink, orange and grey; the colour chosen is stored on the note, drawn on the
+     words and used for the next highlight; a note of another kind keeps its kind's colour; Edit note changes a passage's colour.
 Needs: pip install playwright && playwright install chromium
 """
 import os
@@ -133,6 +135,36 @@ async def main():
         await page.evaluate(SELECT, [endb + 2, 0, endb + 2, 9]); await page.wait_for_timeout(300)
         await page.click("#selmore"); await page.wait_for_timeout(300); await page.click("#selcarryx"); await page.wait_for_timeout(200)
         check(await page.evaluate("R.selCarry") is None and not await page.locator("#selcarry").is_visible(), "Cancel drops a carried selection")
+
+        # 8 colours: the swatch opens the colours, a colour highlights in it and is the next highlight's; a kind keeps its own colour
+        x9 = await page.evaluate("plain(R.blocks[2].x)"); a9 = x9.index("break down")
+        await page.evaluate(SELECT, [2, a9, 2, a9 + len("break down")]); await page.wait_for_timeout(300)
+        await page.click("#selsw"); await page.wait_for_timeout(200)
+        shown = await page.evaluate("[getComputedStyle(document.querySelector('#selhl')).display, getComputedStyle(document.querySelector('[data-hlpick=pink]')).display]")
+        check(shown[0] == "none" and shown[1] != "none", f"the swatch shows the colours in place of the other choices ({shown})")
+        await page.click("[data-hlpick=pink]"); await page.wait_for_timeout(400)
+        nid9 = await page.evaluate(newest)
+        got = await page.evaluate(f"[S.notes.get('{nid9}').hl, document.querySelector(`#book mark[data-note='{nid9}']`)?.className, localStorage.getItem('mg-hl')]")
+        check(got == ["pink", "k-passage hl-pink", "pink"], f"a pink highlight is stored pink, drawn pink, and remembered ({got})")
+        await page.evaluate(SELECT, [2, 0, 2, len("First")]); await page.wait_for_timeout(300)
+        bar = await page.evaluate("[document.querySelector('#selbar').classList.contains('picking'), document.querySelector('#selsw i').className]")
+        await page.click("#selhl"); await page.wait_for_timeout(400)
+        nid10 = await page.evaluate(newest)
+        check(bar == [False, "sw-pink"] and await page.evaluate(f"S.notes.get('{nid10}').hl") == "pink", f"the next selection shows the usual choices, its swatch pink, and Highlight uses pink ({bar})")
+        await page.evaluate(f"put('notes', '{nid10}', {{ ...S.notes.get('{nid10}'), kind: 'question' }})"); await page.wait_for_timeout(400)
+        cls = await page.evaluate(f"document.querySelector(`#book mark[data-note='{nid10}']`)?.className")
+        check(cls == "k-question", f"marked as a question, it takes the question's colour ({cls})")
+        await page.evaluate(f"noteSheet('{nid9}')"); await page.wait_for_selector("#n-hl")
+        await page.check("#n-hl input[value=orange]"); await page.click("#sheetroot button[type=submit]"); await page.wait_for_timeout(500)
+        cls = await page.evaluate(f"[S.notes.get('{nid9}').hl, document.querySelector(`#book mark[data-note='{nid9}']`)?.className]")
+        check(cls == ["orange", "k-passage hl-orange"], f"Edit note changes a highlight's colour ({cls})")
+        await page.evaluate(f"noteSheet('{nid9}')"); await page.wait_for_selector("#n-hl")
+        await page.select_option("#n-kind", "gloss"); hid = await page.evaluate("document.querySelector('#n-hl').hidden")
+        await page.evaluate("closeOverlay()"); await page.wait_for_timeout(300)
+        check(hid, "the colour choice is offered for a plain highlight only")
+        check(await page.evaluate("VALID.notes({ textId: 'h', passage: 'x', hl: 'pink' })") and not await page.evaluate("VALID.notes({ textId: 'h', passage: 'x', hl: 3 })"),
+              "a backup accepts a highlight's colour and refuses a broken one")
+        await page.evaluate("localStorage.removeItem('mg-hl'); HL_LAST = 'yellow'")
 
         # 7 backups; Scroll mode
         ok = await page.evaluate("VALID.notes(S.notes.get('" + nid6 + "'))")

@@ -49,7 +49,10 @@ document.addEventListener("click", (e) => {
   if (b.id === "rnav-pair") return pairPanel();
   if (b.dataset.navnotes) return navNotesOpen(+b.dataset.navnotes);
   if (b.id === "selsave") return saveSel();
-  if (b.id === "selhl") return quickHighlight();
+  if (b.id === "selhl") return quickHighlight(HL_LAST);
+  if (b.id === "selsw") return $("#selbar").classList.add("picking"); // the colours, in place of the other choices
+  if (b.id === "selpalx") return $("#selbar").classList.remove("picking");
+  if (b.dataset.hlpick) { HL_LAST = b.dataset.hlpick; try { localStorage.setItem("mg-hl", HL_LAST); } catch {} return quickHighlight(HL_LAST); }
   if (b.id === "selpin") return pinSel();
   if (b.id === "selmore") return carrySel();
   if (b.id === "selcarryx") return endCarry();

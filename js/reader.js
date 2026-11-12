@@ -402,7 +402,7 @@ function inlineMarks(x, marks, cols) {
   }
   let out = "", depth = 0, mid = "", before = " ";
   const verse = isVerse(x);
-  const open = () => `<mark data-note="${esc(mid)}" class="k-${esc((S.notes.get(mid) || {}).kind || "passage")}">`;
+  const open = () => { const n = S.notes.get(mid) || {}; return `<mark data-note="${esc(mid)}" class="k-${esc(n.kind || "passage")}${hlClass(n)}">`; };
   for (let k = 0; k < raw.length; k++) {
     const c = raw[k];
     if (verse && c === " " && raw[k + 1] === "/" && raw[k + 2] === " ") { out += VBR; k += 2; before = " "; continue; }
@@ -520,7 +520,7 @@ function marksByBlock(tid) {
   }
   return m;
 }
-const sigOf = (l) => (l ? l.map(([id, p, f, t, first]) => { const n = S.notes.get(id) || {}; return [id, p, f, t, first ? 1 : 0, n.kind, n.gloss, n.conclusion, n.original, n.resolved ? 1 : 0].join("\u0006"); }).sort().join("|") : "");
+const sigOf = (l) => (l ? l.map(([id, p, f, t, first]) => { const n = S.notes.get(id) || {}; return [id, p, f, t, first ? 1 : 0, n.kind, n.gloss, n.conclusion, n.original, n.resolved ? 1 : 0, n.hl].join("\u0006"); }).sort().join("|") : "");
 
 function resetReader() {
   if (R.tid && R.blocks) SESS.set(R.tid, { visiting: R.visiting, home: R.home, trail: [...R.trail], landed: R.landed, landedAt: R.landedAt });
@@ -1395,7 +1395,7 @@ function tocBody(tab) {
     const all = notesFor(R.tid).filter(([, n]) => Number.isInteger(n.at) && n.at < B.length).sort(([, a], [, b]) => a.at - b.at || (a.createdAt || 0) - (b.createdAt || 0));
     const list = scope === "chapter" ? all.filter(([, n]) => (R.secAt[n.at] || "") === sec) : all;
     const seg = sec ? `<div class="seg nscope">${[["chapter", "This chapter"], ["book", "Whole book"]].map(([v, l]) => `<button class="segb${v === scope ? " on" : ""}" data-keep="1" data-nscope="${v}">${l}</button>`).join("")}</div>` : "";
-    const row = ([id, n]) => `<button class="tocitem nitem k-${esc(n.kind || "passage")}" data-goto="${n.at}" data-quiet=""><span><span class="nk">${esc(KINDS[n.kind] || "Passage")}${n.resolved ? ", resolved" : ""}${n.passage && !placed(id, n, B) ? `<em class="nlost"> · not found in the text</em>` : ""}</span>${esc(noteSnippet(n, 110))}</span><span class="tp">${R.pageAt[n.at] ? esc(loc(R.pageAt[n.at])) : n.page ? esc(loc(n.page)) : ""}</span></button>`;
+    const row = ([id, n]) => `<button class="tocitem nitem k-${esc(n.kind || "passage")}${hlClass(n)}" data-goto="${n.at}" data-quiet=""><span><span class="nk">${esc(KINDS[n.kind] || "Passage")}${n.resolved ? ", resolved" : ""}${n.passage && !placed(id, n, B) ? `<em class="nlost"> · not found in the text</em>` : ""}</span>${esc(noteSnippet(n, 110))}</span><span class="tp">${R.pageAt[n.at] ? esc(loc(R.pageAt[n.at])) : n.page ? esc(loc(n.page)) : ""}</span></button>`;
     return seg + (list.length ? `<div class="toc">${list.map(row).join("")}</div>` : `<p class="empty">${scope === "chapter" ? "No notes in this chapter yet." : "No notes placed in this book yet."} Select words and choose Highlight or Add a note.</p>`);
   }
   const names = new Map((S.texts.get(R.tid)?.sections || []).map((x) => [x.id, x.label])), hidden = B.filter((b) => b.st === "hide").length;
@@ -1436,7 +1436,7 @@ function checkSel() {
   $("#selmore").hidden = !isPaged();
   $("#selsave").textContent = "Add a note";
   $("#sellook").hidden = !(R.sel.text.length <= 48 && R.sel.text.split(/\s+/).length <= 4);
-  bar.hidden = false; drawTrail(); drawCarry();
+  bar.classList.remove("picking"); $("#selsw i").className = `sw-${HL_LAST}`; bar.hidden = false; drawTrail(); drawCarry();
 }
 function selAnchor(s) {
   if (!R.blocks || !Number.isInteger(s.si) || !Number.isInteger(s.ej) || !markable(R.blocks[s.i]) || !markable(R.blocks[s.j])) return null;
