@@ -16,3 +16,9 @@ claim in it an assessment:
 
 Every audit gets an independent second review before its fixes ship; `by` at the top says who did each pass.
 
+What couldn't be read is recorded too (from 2026-11-12; `glossary-nietzsche.json` filled in after the fact): a glossary audit lists in
+`unread` each source, or part of one, that was consulted and not read in full (a page cut off by the fetching tool, a request that
+failed), with `part`, `why`, the `terms` it bears on and its `effect` on them: what was cut or left resting on another source. An
+empty list says every source was read in full. A gap that leaves a reading unrepresented belongs here, so the next pass knows where
+to look; the reviewer checks the list too.
+

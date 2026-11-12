@@ -46,6 +46,64 @@
   }
  },
  "note": "Claims the sources consulted did not cover were cut. Nietzsche is quoted from the editions bundled with the app wherever the passage is in them; the Gay Science and Zarathustra are not bundled, so passages from them are given as the cited scholar quotes or describes them.",
+ "unread": [
+  {
+   "source": "AND",
+   "part": "§6.1 The Will to Power (its last part), §6.2 Perspectivism, §6.3 The Eternal Recurrence of the Same",
+   "why": "WebFetch stops at 100,000 characters of the page; reading on from that point reached only part of §6.1",
+   "terms": [
+    "eternal-recurrence",
+    "will-to-power"
+   ],
+   "effect": "Eternal recurrence rests on Kirwin (IEP) without Anderson's survey of the readings; cosmological readings (such as Loeb's) are left unstated. Anderson's list of will-to-power readings comes from the part of §6.1 that was read."
+  },
+  {
+   "source": "Stanford Encyclopedia of Philosophy, “Max Scheler” (Steinbock)",
+   "part": "the page's last 1,365 characters",
+   "why": "WebFetch stops at 100,000 characters",
+   "terms": [
+    "ressentiment"
+   ],
+   "effect": "No mention of Scheler's work on ressentiment was found in what was read; the sentence on Scheler was cut."
+  },
+  {
+   "source": "Internet Encyclopedia of Philosophy, “Foucault, Michel”",
+   "part": "the whole page",
+   "why": "the fetch's permission request went unanswered in the unattended run",
+   "terms": [
+    "genealogy"
+   ],
+   "effect": "Herkunft and Entstehung were cut; Foucault's genealogy rests on Oksala (SEP) and Aylesworth (SEP)."
+  },
+  {
+   "source": "Internet Encyclopedia of Philosophy, “Friedrich Nietzsche”",
+   "part": "the page's last 22,076 characters",
+   "why": "WebFetch stops at 100,000 characters",
+   "terms": [
+    "eternal-recurrence",
+    "will-to-power"
+   ],
+   "effect": "Used only as background; no claim in the entries rests on it."
+  },
+  {
+   "source": "FAL",
+   "part": "the page's last 19,471 characters, including the author's byline",
+   "why": "WebFetch stops at 100,000 characters",
+   "terms": [
+    "genetic-fallacy"
+   ],
+   "effect": "The genetic fallacy section was read in full; the article's author is not credited."
+  },
+  {
+   "source": "Stanford Encyclopedia of Philosophy, “Martin Heidegger” (Wheeler, Winter 2023 edition)",
+   "part": "the page's last 18,798 characters",
+   "why": "WebFetch stops at 100,000 characters",
+   "terms": [
+    "will-to-power"
+   ],
+   "effect": "Heidegger's reading of Nietzsche as the culmination of Western metaphysics was not found in what was read, and was cut; Heidegger is credited only as Anderson places him."
+  }
+ ],
  "terms": {
   "will-to-power": {
    "old": [

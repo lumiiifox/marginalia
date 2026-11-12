@@ -65,6 +65,13 @@ async def main():
         check(sorted(lists[0]) == sorted(terms), f"VERIFIED_TERMS are exactly the audited glossary entries ({sorted(set(lists[0]) ^ set(terms))})")
         reviewed = [f.name for f in sorted((ROOT / "tests/audit").glob("glossary-*.json")) if not json.load(open(f)).get("by", {}).get("review")]
         check(not reviewed, f"every glossary audit records its independent review ({reviewed})")
+        def gaps_ok(d):
+            u = d.get("unread")
+            return isinstance(u, list) and all(isinstance(g, dict) and all(isinstance(g.get(k), str) and g[k] for k in ("source", "part", "why", "effect"))
+                                               and isinstance(g.get("terms"), list) and set(g["terms"]) <= set(d["terms"]) for g in u)
+        recent = {f.name: json.load(open(f)) for f in sorted((ROOT / "tests/audit").glob("glossary-*.json"))}
+        missing = [n for n, d in recent.items() if (d.get("audited", "") >= "2026-11-12" or "unread" in d) and not gaps_ok(d)]
+        check(not missing, f"every glossary audit since 2026-11-12 lists what it couldn't read, each gap with its part, reason, terms and effect ({missing})")
         check(sorted(lists[1]) == sorted(thinkers), "VERIFIED_THINKERS are exactly the audited thinker cards")
         conns = json.load(open(ROOT / "tests/audit/connections.json"))["connections"]
         check(lists[2] == len(conns), f"every connection in the app has its review ({lists[2]} and {len(conns)})")  # each one counts toward mastery
