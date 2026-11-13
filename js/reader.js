@@ -1447,7 +1447,75 @@ function checkSel() {
   $("#selmore").hidden = !isPaged();
   $("#selsave").textContent = "Add a note";
   $("#sellook").hidden = !(R.sel.text.length <= 48 && R.sel.text.split(/\s+/).length <= 4);
-  bar.classList.remove("picking"); $("#selsw i").className = `sw-${HL_LAST}`; $("#selsw i").textContent = HL_LAST === "underline" ? "U" : ""; $("#selhl").textContent = HL_LAST === "underline" ? "Underline" : "Highlight"; bar.hidden = false; drawTrail(); drawCarry();
+  bar.classList.remove("picking"); $("#selsw i").className = `sw-${HL_LAST}`; $("#selsw i").textContent = HL_LAST === "underline" ? "U" : ""; $("#selhl").textContent = HL_LAST === "underline" ? "Underline" : "Highlight"; bar.hidden = false; placeSelbar(r); drawTrail(); drawCarry();
+}
+/* Whole sentence: the selection grows to the sentence (or sentences) it touches, so a long-press on any word and one tap select it;
+   tapped again, it takes in the next sentence, from the next paragraph when this one is done. Sentences end at . ! ? or …, with any
+   closing quotes or brackets, before a space or the paragraph's end; common abbreviations (cf., e.g., p., a single initial) don't. */
+const SKIP_TEXT = ".mnote, .pgm, .bjoin, .bhid, .rx"; // what offsetIn leaves out: the words of the text are the rest
+function textNodesOf(el) {
+  const out = []; let at = +el.dataset.o || 0;
+  const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.parentElement && n.parentElement.closest(SKIP_TEXT) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) });
+  for (let n; (n = w.nextNode());) { out.push([n, at]); at += n.length; }
+  return { nodes: out, end: at };
+}
+function pointIn(el, off) {
+  const { nodes } = textNodesOf(el);
+  for (const [n, at] of nodes) if (off <= at + n.length) return [n, Math.max(0, off - at)];
+  const last = nodes[nodes.length - 1]; return last ? [last[0], last[0].length] : [el, 0];
+}
+const ABBR = /(?:\b(?:e\.g|i\.e|cf|viz|vs|Mr|Mrs|Dr|St|pp?|vol|ch|sect|ed|trans|fig|no)|\b[A-Z])\.$/i;
+const SENT_END = /[.!?…]+["”’)\]]*(?=\s|$)/g;
+function sentenceEnd(t, from) { // the end of the sentence running at from
+  SENT_END.lastIndex = Math.max(0, from);
+  for (let m; (m = SENT_END.exec(t));) { const e = m.index + m[0].length; if (m[0][0] === "." && ABBR.test(t.slice(Math.max(0, m.index - 6), m.index + 1))) continue; return e; }
+  return t.length;
+}
+function sentenceStart(t, at) { // where the sentence holding position at begins
+  let s = 0; SENT_END.lastIndex = 0;
+  for (let m; (m = SENT_END.exec(t)) && m.index + m[0].length <= at;) {
+    if (m[0][0] === "." && ABBR.test(t.slice(Math.max(0, m.index - 6), m.index + 1))) continue;
+    s = m.index + m[0].length; while (s < t.length && /\s/.test(t[s])) s++;
+  }
+  return Math.min(s, at);
+}
+function selectSentence() {
+  const sel = window.getSelection(); if (!sel || !sel.rangeCount || !R.blocks) return;
+  const r = sel.getRangeAt(0), elOf = (n) => (n.nodeType === 1 ? n : n.parentElement)?.closest("[data-i]");
+  let A = elOf(r.startContainer), B = elOf(r.endContainer); if (!A || !B) return;
+  const i = +A.dataset.i, j = +B.dataset.i, ta = plain(R.blocks[i].x || ""), tb = plain(R.blocks[j].x || "");
+  const so = offsetIn(i, r.startContainer, r.startOffset), eo = offsetIn(j, r.endContainer, r.endOffset); if (so == null || eo == null) return;
+  const s = sentenceStart(ta, so); let e = sentenceEnd(tb, Math.max(s && i === j ? s : 0, eo - 1));
+  if (s === so && e === eo) { // already whole sentences: take in the next one
+    let k = j, t = tb, from = eo;
+    while (from >= t.length) { // this paragraph is done: the next one with words
+      k++; while (k < R.blocks.length && (!R.els[k] || !plain(R.blocks[k].x || "").trim() || R.blocks[k].k === "pg")) k++;
+      if (k >= R.blocks.length || !R.els[k]) return toast("That's the end of what's on screen.");
+      t = plain(R.blocks[k].x || ""); from = 0; B = R.els[k];
+    }
+    while (from < t.length && /\s/.test(t[from])) from++;
+    e = sentenceEnd(t, from);
+  }
+  const lo = Math.max(+B.dataset.o || 0, Math.min(e, textNodesOf(B).end)); // a paragraph split over pages: this page's part
+  const a = pointIn(A, Math.max(+A.dataset.o || 0, s)), b = pointIn(B, lo), nr = document.createRange();
+  try { nr.setStart(a[0], a[1]); nr.setEnd(b[0], b[1]); } catch { return; }
+  sel.removeAllRanges(); sel.addRange(nr);
+  clearTimeout(selT); checkSel(); // the bar and R.sel follow at once
+}
+// Copy: the selected words, as the reader reads them (your margin notes and page numbers left out), to paste anywhere.
+async function copySel() {
+  const t = R.sel && R.sel.text; if (!t) return;
+  try { await navigator.clipboard.writeText(t); toast("Copied."); }
+  catch { try { document.execCommand("copy") ? toast("Copied.") : toast("Couldn't copy. Use your phone's own Copy instead."); } catch { toast("Couldn't copy. Use your phone's own Copy instead."); } }
+}
+// The bar goes where it hides none of the selected words: at the foot of the screen, or at the top when the selection runs low.
+function placeSelbar(r) {
+  const bar = $("#selbar"), rects = [...r.getClientRects()].filter((x) => x.width && x.height && x.right > 0 && x.left < window.innerWidth); // on this page
+  if (!rects.length) return;
+  const top = Math.min(...rects.map((x) => x.top)), bottom = Math.max(...rects.map((x) => x.bottom)), h = bar.getBoundingClientRect().height || 140;
+  const head = $(".rbar").getBoundingClientRect().bottom || 0, low = bottom > window.innerHeight - h - 8;
+  bar.classList.toggle("attop", low && top - head > h * 0.6);
+  bar.style.setProperty("--bar-top", Math.max(0, head) + "px");
 }
 function selAnchor(s) {
   if (!R.blocks || !Number.isInteger(s.si) || !Number.isInteger(s.ej) || !markable(R.blocks[s.i]) || !markable(R.blocks[s.j])) return null;

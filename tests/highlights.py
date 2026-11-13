@@ -11,7 +11,8 @@ Made-up book only, phone-sized touch screen. Selects text as a reader does and c
   7. backups accept anchors and refuse broken ones; Scroll mode marks the same words;
   8. colours: the swatch beside Highlight shows yellow, pink, orange and grey; the colour chosen is stored on the note, drawn on the
      words and used for the next highlight; a note of another kind keeps its kind's colour; Edit note changes a passage's colour.
-Needs: pip install playwright && playwright install chromium
+Needs: pip install playwright && playwright install chromium;
+  9. Whole sentence grows a selection to its sentence, and the next with another tap; Copy copies the selection.
 """
 import os
 import asyncio, subprocess, sys, time
@@ -208,6 +209,29 @@ async def main():
         check(tail[0] == ["this", "k-passage hl-pink uline"] and tail[-1][1] == "k-passage hl-underline" and tail[-1][0].endswith("paragraph"),
               f"an underline running past a highlight's end is drawn over both stretches ({tail})")
         await page.evaluate("localStorage.removeItem('mg-hl'); HL_LAST = 'yellow'")
+
+        # 9 Whole sentence and Copy: a long-press on one word, then one tap, selects its sentence; again, the next; Copy copies it
+        await page.evaluate("getSelection().removeAllRanges()"); await page.wait_for_timeout(300)
+        k9 = await page.evaluate("R.els.findIndex((el, k) => el && /^Paragraph \\d+\\. Everywhere/.test(plain(R.blocks[k].x || '')) && el.getBoundingClientRect().left >= 0 && el.getBoundingClientRect().right <= innerWidth)")
+        t9 = await page.evaluate(f"plain(R.blocks[{k9}].x)"); w9 = t9.index("necessary")
+        await page.evaluate(SELECT, [k9, w9, k9, w9 + len("necessary")]); await page.wait_for_timeout(300)
+        await page.click("#selsent"); await page.wait_for_timeout(300)
+        one = await page.evaluate("[getSelection().toString().replace(/\\s+/g, ' ').trim(), R.sel.text]")
+        first = t9[t9.index("Everywhere"):t9.index("connections.") + len("connections.")]
+        check(one == [first, first], f"Whole sentence selects the sentence the word is in, and only it ({one[0]!r})")
+        await page.click("#selsent"); await page.wait_for_timeout(300)
+        two = await page.evaluate("getSelection().toString().replace(/\\s+/g, ' ').trim()")
+        check(two.startswith(first) and two.count("Everywhere") == 2 and two.endswith("connections."), f"tapped again, it takes in the next sentence ({two[-60:]!r})")
+        await page.evaluate("window.__copied = null; navigator.clipboard.writeText = async (t) => { window.__copied = t; }")
+        await page.click("#selcopy"); await page.wait_for_timeout(300)
+        check(await page.evaluate("window.__copied") == two and "Copied." in await page.inner_text("#toast"), "Copy puts the selected sentences on the clipboard and says so")
+        ab = await page.evaluate("[sentenceEnd('See cf. Hume, p. 12, on this. Then more.', 0), sentenceStart('Mr. Hume wrote. Then he left.', 20), sentenceEnd('He said “so it is.” Then.', 0)]")
+        check(ab == [len("See cf. Hume, p. 12, on this."), len("Mr. Hume wrote. "), len("He said “so it is.”")], f"abbreviations don't end a sentence; a closing quote is part of it ({ab})")
+        # the bar never covers the selected words
+        cover = await page.evaluate("""(() => { const b = document.querySelector('#selbar').getBoundingClientRect(), rs = [...getSelection().getRangeAt(0).getClientRects()].filter((x) => x.width);
+          return rs.filter((x) => x.bottom > b.top + 2 && x.top < b.bottom - 2 && x.right > b.left && x.left < b.right).length; })()""")
+        check(cover == 0, f"the bar sits clear of the selected words ({cover} lines under it)")
+        await page.evaluate("getSelection().removeAllRanges()"); await page.wait_for_timeout(300)
 
         # 7 backups; Scroll mode
         ok = await page.evaluate("VALID.notes(S.notes.get('" + nid6 + "'))")

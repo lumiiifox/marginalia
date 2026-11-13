@@ -43,6 +43,11 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   stretch gets one mark whose fill is the innermost filling note, `uline` added where any note underlines, and a tap there opens the
   innermost note. Drawn on the text's marks, Your notes rows, note cards and draft items; `VALID.notes` takes `hl` as a string.
   Tested by `tests/highlights.py`.
+- Selecting in the reader: the bar's Whole sentence (`selectSentence`, `sentenceStart`, `sentenceEnd`, `ABBR`; `pointIn` and
+  `textNodesOf` turn a block's offsets back into a place in its text) grows the selection to the sentence it touches, and again to the
+  next, from the next paragraph when this one ends; a paragraph split over pages is taken up to this page's end. Copy (`copySel`)
+  puts `R.sel.text` on the clipboard. The bar moves to the top of the screen when the selection runs low (`placeSelbar`, `attop`).
+  Tested by `tests/highlights.py`.
 - Highlights from a PDF (`readPdfMarks`, `marksOnPage`, `findMark`, `addMarks`; offered after a PDF import by `offerMarks`, and from a book's More →
   `marksSheet`): Highlight, Underline and Squiggly annotations become passage notes with the book's own words and an `anchor`, the comment as
   the gloss; `bookIndex` matches typographic variants, `findMark` prefers the mark's own page. `pdfOpen` starts PDF.js for both this and `parsePDF`.

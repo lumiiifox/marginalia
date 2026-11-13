@@ -249,7 +249,7 @@ function saveSel() {
   endCarry();
   noteSheet(null, { passage: s.text, page: s.page, sectionId: s.sec, at: s.i, kind: "passage", ...(s.anchor ? { anchor: s.anchor } : {}) });
 }
-["mousedown", "pointerdown"].forEach((ev) => [...["#selsave", "#selhl", "#sellook", "#seledit", "#selmore", "#selpin", "#selsw", "#selpalx"].map((id) => $(id)), ...document.querySelectorAll("#selpal [data-hlpick]")].forEach((el) => el.addEventListener(ev, (e) => e.preventDefault())));
+["mousedown", "pointerdown"].forEach((ev) => [...["#selsave", "#selhl", "#sellook", "#seledit", "#selmore", "#selpin", "#selsw", "#selpalx", "#selsent", "#selcopy"].map((id) => $(id)), ...document.querySelectorAll("#selpal [data-hlpick]")].forEach((el) => el.addEventListener(ev, (e) => e.preventDefault())));
 // The selected words, leaving out any of your notes shown in the margin.
 function selectionText(r) {
   const frag = r.cloneContents();
