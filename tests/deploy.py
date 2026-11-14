@@ -55,6 +55,10 @@ async def main():
             r = await page.evaluate("({ marker: !!document.querySelector('#deploy-marker'), newfile: !!window.NEW_FILE, core2: !!window.CORE_V2 })")
             check(ok and r == {"marker": True, "newfile": True, "core2": True}, f"opened within the ten minutes the browser may keep a page, the app runs the new page with the new scripts ({ok}, {r})")
             check(any(l.startswith("/index.html") for l in LOG), f"the page itself is checked with the server ({LOG[:4]})")
+            # the new service worker's saved copy is the new version, not files from the browser's HTTP cache
+            await page.evaluate("navigator.serviceWorker.getRegistration().then((r) => r && r.update())"); await page.wait_for_timeout(2500)
+            saved = await page.evaluate("caches.keys().then(async (ks) => { const c = await caches.open(ks.find((k) => k.includes('v8')) || ks[0]); const r = await c.match('js/core.js'); return r ? (await r.text()).includes('CORE_V2') : null; })")
+            check(saved is True, f"the saved copy for offline is the new version ({saved})")
             check(not errs, f"no script errors ({errs[:3]})")
             await br.close()
     finally:

@@ -346,7 +346,8 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   loads comes from the saved copy, so one opening never mixes versions, and a late answer is dropped so the saved copy stays one whole
   version. A file of an opening whose page came fresh waits `FILE_WAIT`. The first visit, with nothing saved, waits as long as it takes.
   The page and the files are all asked for with `cache: "no-cache"`, so the browser's HTTP cache (GitHub Pages lets it keep a page ten
-  minutes) never pairs an old page with new scripts after a deploy; a server error is not taken over a saved copy.
+  minutes) never pairs an old page with new scripts after a deploy; a server error is not taken over a saved copy. Installing fetches the
+  saved copy with `cache: "reload"`, so it is one whole new version.
   Tested by `tests/slow_network.py` (a server that holds its answers), `tests/deploy.py` (a deploy within the ten minutes) and the
   offline check in `tests/smoke.py`.
 - Navigation (`NAV`, `go`, `back`, `histBack`, the `popstate` handler in sheets.js): every step adds a history entry, so the phone's back
