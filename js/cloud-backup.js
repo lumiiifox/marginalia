@@ -135,6 +135,8 @@ async function cloudUploadLocked(includeReading) {
       if (!Object.hasOwn(data.texts, id)) continue;
       const text = JSON.stringify({ kind, value }), hash = await cloudHash(text), objectPath = cloudAssetPath(hash);
       assets[kind][id] = hash;
+      // the last backup's manifest already names this object, and a manifest is written only after its objects: nothing to ask GitHub
+      if (previous?.assets?.[kind]?.[id] === hash) continue;
       if (!await cloudMeta(c, objectPath, branch)) {
         try { await cloudWrite(c, objectPath, text, branch); }
         catch (e) {
