@@ -196,10 +196,10 @@ document.addEventListener("change", (e) => {
   if (e.target.id === "restore") { const f = e.target.files && e.target.files[0]; e.target.value = ""; if (f) importBackup(f); return; }
   if (S.screen !== "text") return;
   const t = S.texts.get(S.textId);
-  if (e.target.id === "status" && t) { const rec = { ...t, status: e.target.value, updatedAt: Date.now() }; delete rec.rank; put("texts", S.textId, rec).catch(() => {}); } // to the front of its new shelf
+  if (e.target.id === "status" && t) { const rec = { ...t, status: e.target.value, updatedAt: Date.now() }; delete rec.rank; put("texts", S.textId, rec).catch(saveFailed); } // to the front of its new shelf
   if (e.target.dataset && e.target.dataset.tick && t) {
     const sections = t.sections.map((s) => (s.id === e.target.dataset.tick ? { ...s, done: e.target.checked } : s));
-    put("texts", S.textId, { ...t, sections, updatedAt: Date.now() }).catch(() => {});
+    put("texts", S.textId, { ...t, sections, updatedAt: Date.now() }).catch(saveFailed);
   }
 });
 document.addEventListener("toggle", (e) => {

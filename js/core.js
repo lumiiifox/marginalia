@@ -88,3 +88,7 @@ async function need(key, ok, msg) {
   for (const u of LIBS[key]) { try { await loadScript(u); if (ok()) return; } catch {} }
   throw new UErr(msg || "Couldn't load the file reader. Check your connection and try again.");
 }
+// A save made in passing (your reading place, a status, a ticked chapter) that fails says so, at most once a minute: on a full phone
+// every page turn would otherwise fail without a word.
+let SAVE_FAILED_AT = 0;
+const saveFailed = (e) => { if (Date.now() - SAVE_FAILED_AT > 60000) { SAVE_FAILED_AT = Date.now(); toast(failMsg(e)); } };

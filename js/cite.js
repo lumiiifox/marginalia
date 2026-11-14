@@ -62,7 +62,7 @@ function citeParts(t, fmt) {
   const E = fmt === "html" ? esc : (x) => String(x ?? "");
   const I = (x) => (fmt === "html" ? `<i>${esc(x)}</i>` : fmt === "md" ? `*${x}*` : x);
   const { names, editors } = creatorsOf(t);
-  return { E, I, names, editors, title: (t && t.title) || "Untitled", edition: (t && t.edition) || "", publisher: (t && t.publisher) || "", year: (t && t.year) || "", orig: (t && t.orig) || "" };
+  return { E, I, names, editors, title: (t && t.title) || "Untitled", edition: (t && t.edition) || "", publisher: (t && t.publisher) || "", year: t && /\d/.test(t.year || "") ? t.year : "" /* a year with no digits (a placeholder left in a record) is no year */, orig: (t && t.orig) || "" };
 }
 function inTextNames(names) { const f = names.map(familyName); return f.length >= 3 ? `${f[0]} et al.` : f.join(" and "); }
 // A citation for one place in a text. style: note (full or short), ad, mla.

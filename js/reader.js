@@ -204,20 +204,23 @@ const pgMark = (i) => (R.blocks[i].k === "pg" ? `<span class="pgm" data-i="${i}"
 const bodyOf = (b) => (b.sth ? splitAt(b.x, b.sth)[1] : b.x || "");
 // A paragraph's element. A title glued to its start is drawn as a heading above it; a glued running head is left out
 // (data-o says how many characters of the block come before the text shown, for selections).
-function paraHTML(L, html, notes, marks) {
-  const b = R.blocks[L], cls = `bp${b.k === "c" ? " cont" : ""}`;
+function paraHTML(L, html, notes, marks, extra = "") {
+  const b = R.blocks[L], base = b.k === "fn" ? "bfn" : b.k === "q" || (!b.st && roleOf(b) === "quote") ? "bq" : "bp", cls = `${base}${b.k === "c" ? " cont" : ""}${extra}`;
   if (!b.sth) return `<p class="${cls}" data-i="${L}">${html}${notes}</p>`;
   if (b.st === "hide") return `<p class="${cls}" data-i="${L}" data-o="${Number(b.sth) || 0}">${html}${notes}</p>`;
   return `<div class="bsplit" data-i="${L}"><h2 class="bh l${titleLevel(b)}">${inlineHTML(splitAt(b.x, b.sth)[0], marks)}</h2><p class="bp cont">${html}${notes}</p></div>`;
 }
 function groupHTML(L, marks, grp = R.grp) {
   const B = R.blocks, g = grp.get(L), m = (i) => marks.get(i);
-  let html = g.pre.map(pgMark).join("") + inlineHTML(bodyOf(B[L]), m(L)), notes = marginHTML(m(L), B[L].x || ""), prev = bodyOf(B[L]);
+  // a paragraph running over a printed page keeps what kind it is: a list item's hanging number, verse, a proposition's lead-in
+  const [first, lead] = B[L].sth ? [inlineHTML(bodyOf(B[L]), m(L)), ""] : leadIn(B[L], inlineHTML(bodyOf(B[L]), m(L)));
+  const extra = (isVerse(B[L].x || "") ? " verse" : "") + (lead ? " " + lead : "") + (!lead && isListItem(B[L]) ? " li" : "");
+  let html = g.pre.map(pgMark).join("") + first, notes = marginHTML(m(L), B[L].x || ""), prev = bodyOf(B[L]);
   for (const i of g.parts) {
     if (betweenPages(B[i])) { html += pgMark(i); continue; }
     html += `${glueAfter(prev)}<span class="bjoin" data-i="${i}"${B[i].sth ? ` data-o="${Number(B[i].sth) || 0}"` : ""}>${inlineHTML(bodyOf(B[i]), m(i))}</span>`; notes += marginHTML(m(i), B[i].x || ""); prev = bodyOf(B[i]);
   }
-  return paraHTML(L, html, notes, m(L));
+  return paraHTML(L, html, notes, m(L), extra);
 }
 // Chapters start on a fresh page in Swipe pages, and so does a title page and whatever follows it; the rest of the
 // page before stays blank. A printed page marker or a part title just before a chapter title goes with it.
@@ -293,7 +296,8 @@ function layoutPages() {
   const book = $("#book"), reader = $("#reader");
   if (RS.flow !== "pages") { ["--page-w", "--page-h", "--col-w", "--col-gap"].forEach((k) => book.style.removeProperty(k)); R.pageW = 0; return; }
   const w = Math.floor(reader.getBoundingClientRect().width || window.innerWidth);
-  const barBottom = immersive() ? 0 : $(".rbar").getBoundingClientRect().bottom;
+  // the page starts below the toolbar, or with the toolbar hidden at the reader's top (below the notch, on a phone that has one)
+  const barBottom = immersive() ? reader.getBoundingClientRect().top : $(".rbar").getBoundingClientRect().bottom;
   const h = Math.floor(window.innerHeight - Math.max(0, barBottom) - PINH); // the pinned passage, if any, sits below the page
   if (w < 200 || h < 200) return; // the reader isn't on screen yet
   book.style.setProperty("--page-w", w + "px");
@@ -382,7 +386,15 @@ function tableCols(blocks, i) {
   const same = (j) => { const o = blocks[j]; return !!o && o.k === b.k && (o.x || "").includes(TSEP) && cellsOf(o.x).length === n; };
   return same(i - 1) || same(i + 1) ? n : 0;
 }
-function inlineHTML(x, marks, cols) { return fnRefs(inlineMarks(x, marks, cols)); }
+function inlineHTML(x, marks, cols) { return fnRefs(inlineMarks(balanceItalics(x), marks, cols)); }
+// Italics opened in one block and closed in the next (a dream account running over a printed page) are closed at the block's end
+// and opened again at the next one's start, so each block draws the same alone (after a highlight) as in the whole book.
+function balanceItalics(x) {
+  if (!x || (x.indexOf(I0) < 0 && x.indexOf(I1) < 0)) return x;
+  let depth = 0, lead = 0;
+  for (const c of x) { if (c === I0) depth++; else if (c === I1) { if (depth) depth--; else lead++; } }
+  return lead || depth ? I0.repeat(lead) + x + I1.repeat(depth) : x;
+}
 function inlineMarks(x, marks, cols) {
   if (cols) return `<span class="tc">${inlineMarks(x, marks)}</span>`.replace(/ · /g, `</span><span class="tsep"> · </span><span class="tc">`);
   if (!marks || !marks.length) return dress(esc(x).replace(/\u0001/g, "<em>").replace(/\u0002/g, "</em>"), isVerse(x));
@@ -466,7 +478,8 @@ function blockHTML(b, i, marks) {
     let html = inlineHTML(b.x || "", m), notes = marginHTML(m, b.x || ""), prev = b.x;
     for (const k of titleTail(R.blocks, i)) { const mk = marks && marks.get(k), x = R.blocks[k].x || ""; html += `${glueAfter(prev)}<span class="bjoin" data-i="${k}">${inlineHTML(x, mk)}</span>`; notes += marginHTML(mk, x); prev = x; }
     // a chapter title of more than a line or two at heading size ("Of the Interior Beginnings of Voluntary Motions; …") is set smaller
-    return `<h2 class="bh l${titleLevel(b)}${plain(html.replace(/<[^>]+>/g, "")).length > 60 ? " long" : ""}" data-i="${i}">${html}${notes}</h2>`;
+    const words = plain(html.replace(/<[^>]+>/g, "")).trim();
+    return `<h2 class="bh l${titleLevel(b)}${words.length > 60 ? " long" : ""}${/^([0-9]{1,4}|[IVXLCDM]{1,7})\.?$/.test(words) && titleLevel(b) >= 3 ? " num" : ""}" data-i="${i}">${html}${notes}</h2>`;
   }
   const cols = tableCols(R.blocks, i);
   if (cols) return `<p class="${b.k === "q" ? "bq" : "bp"} trow" style="--cols:${cols}" data-i="${i}">${inlineHTML(b.x || "", m, cols)}${marginHTML(m, b.x || "")}</p>`;
@@ -539,10 +552,11 @@ function marksByBlock(tid) {
 const sigOf = (l) => (l ? l.map(([id, p, f, t, first]) => { const n = S.notes.get(id) || {}; return [id, p, f, t, first ? 1 : 0, n.kind, n.gloss, n.conclusion, n.original, n.resolved ? 1 : 0, n.hl].join("\u0006"); }).sort().join("|") : "");
 
 function resetReader() {
+  if (PDFV.doc) closePdf(); // the printed pages' PDF and its worker go with the book (on a phone they hold a lot of memory)
   if (R.tid && R.blocks) SESS.set(R.tid, { visiting: R.visiting, home: R.home, trail: [...R.trail], landed: R.landed, landedAt: R.landedAt });
   if (R.flip) { cancelAnimationFrame(R.flip.raf); R.flip = null; for (const el of [$("#flip"), $("#undershade")]) el.classList.remove("on"); }
   const tw = $("#flipbook"); if (tw) { tw.innerHTML = ""; tw.dataset.key = ""; }
-  $("#rnav").hidden = true; R.dragging = false; R.selCarry = null; drawCarry();
+  $("#rnav").hidden = true; R.dragging = false; R.selCarry = null; R.scrollSpot = null; drawCarry();
   R.visiting = false; R.home = null; R.trail = []; R.pagedSpot = null; R.win = null; FIND.on = false; FIND.hits = []; FIND.k = -1; paintFind(); R.termHits = null; R.termRanges = []; if (window.CSS && CSS.highlights) CSS.highlights.delete("term"); const tr = $("#rtrail"); if (tr) tr.hidden = true;
   R.sumPrev = null; R.tid = null; R.blocks = null; R.els = []; R.tops = []; R.sig = new Map(); R.saved = -1; R.sel = null; R.beat = 0; R.paceMs = 0; R.paceW = 0; $("#book").innerHTML = ""; $("#selbar").hidden = true; }
 
@@ -766,6 +780,7 @@ function chapterEndCheck(i) {
     { label: "Don't ask", run: () => { RS.sum = "off"; saveRS(); toast("You won't be asked. Reading settings can turn it back on."); } }]);
 }
 function updatePg() {
+  if (!isPaged() && !R.resizing && R.blocks) R.scrollSpot = currentSpot(); // where a turn of the phone puts you back (structure.js)
   const i = currentBlock(), p = R.pageAt[i], left = immersive() ? pagesLeft(i) : "";
   chapterEndCheck(i);
   const other = p ? concLabel(S.texts.get(R.tid), p) : "";
@@ -849,14 +864,14 @@ function savePos(force) {
   if (!R.blocks || !R.tid) return;
   paceTick();
   const t = S.texts.get(R.tid);
-  const flush = () => { if (t && force && ((R.paceMs || 0) >= 1000 || R.paceW)) put("texts", R.tid, withPace(R.saved >= 0 ? { ...t, pos: R.saved, posF: R.savedF || 0 } : { ...t })).catch(() => {}); };
+  const flush = () => { if (t && force && ((R.paceMs || 0) >= 1000 || R.paceW)) put("texts", R.tid, withPace(R.saved >= 0 ? { ...t, pos: R.saved, posF: R.savedF || 0 } : { ...t })).catch(saveFailed); };
   if (R.visiting) return flush();
   const atEnd = isPaged() ? R.win[1] >= R.blocks.length && currentPage() >= lastPage() : window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60;
   const sp = atEnd ? { i: R.blocks.length - 1, f: 0 } : currentSpot();
   if (sp.i === R.saved && Math.abs(sp.f - (R.savedF || 0)) < 0.005) return flush();
   paceRead(R.saved, sp.i);
   R.saved = sp.i; R.savedF = sp.f;
-  if (t) put("texts", R.tid, withPace({ ...t, pos: sp.i, posF: sp.f, total: R.blocks.length, readAt: Date.now() })).catch(() => {});
+  if (t) put("texts", R.tid, withPace({ ...t, pos: sp.i, posF: sp.f, total: R.blocks.length, readAt: Date.now() })).catch(saveFailed);
 }
 /* jumps and the way back */
 const pgLabel = (i) => (R.pageAt[i] ? loc(R.pageAt[i]).replace(/^(pp?\.) /, "$1\u00a0") : ""); // "p. 45" stays on one line
@@ -891,7 +906,7 @@ function readFromHere(auto) {
 function undoPlace(b) {
   const t = S.texts.get(R.tid); if (!t || !R.blocks || R.tid !== S.textId) return;
   Object.assign(R, { visiting: true, home: b.home ?? b.pos, trail: b.trail.length ? b.trail : [{ i: b.pos, f: b.posF || 0 }], saved: b.pos, savedF: b.posF || 0, landedAt: Date.now(), landedY: readY() });
-  put("texts", R.tid, { ...t, pos: b.pos, posF: b.posF || 0 }).catch(() => {});
+  put("texts", R.tid, { ...t, pos: b.pos, posF: b.posF || 0 }).catch(saveFailed);
   drawTrail(); toast(`Your place is back at ${pgLabel(b.pos) || "where it was"}.`);
 }
 // While looking around, reading on well past where you landed, for a while, makes it your place.
@@ -992,40 +1007,67 @@ function pdfPageFor(t, i) {
   if (hits.length) return hits.reduce((a, p) => (Math.abs(p - ord) < Math.abs(a - ord) ? p : a));
   return Math.max(0, Math.min(Math.max(0, labels.length - 1), ord));
 }
+// The page is drawn sharp for the screen, up to about 12 million pixels (a 3× zoom on a sharp phone screen would ask for far more,
+// and a phone runs out of memory); a draw still going when the next is asked for is stopped, and each page's working data is let go.
+const PP_MAX_PX = 12e6;
 async function drawPdfPage(canvas, doc, p, width) {
-  const page = await doc.getPage(p + 1), v1 = page.getViewport({ scale: 1 }), dpr = Math.min(3, window.devicePixelRatio || 1);
+  const page = await doc.getPage(p + 1), v1 = page.getViewport({ scale: 1 });
+  let dpr = Math.min(3, window.devicePixelRatio || 1);
+  const area = (d) => (width * d) * (width * d * v1.height / v1.width);
+  while (dpr > 1 && area(dpr) > PP_MAX_PX) dpr -= 0.25;
   const vp = page.getViewport({ scale: (width / v1.width) * dpr });
+  if (canvas._task) { try { canvas._task.cancel(); } catch {} }
   canvas.width = Math.floor(vp.width); canvas.height = Math.floor(vp.height);
   canvas.style.width = `${width}px`; canvas.style.height = `${Math.floor(vp.height / dpr)}px`;
-  await page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+  const task = canvas._task = page.render({ canvasContext: canvas.getContext("2d"), viewport: vp });
+  try { await task.promise; } catch (e) { if (e && e.name === "RenderingCancelledException") return; throw e; }
+  finally { if (canvas._task === task) canvas._task = null; try { page.cleanup(); } catch {} }
 }
 // Draws the PDF page for block i into box; returns false when the PDF isn't kept.
 async function printedInto(box, tid, i, opts = {}) {
   const t = S.texts.get(tid); if (!t) return false;
-  box.innerHTML = `<p class="hint">Opening the PDF…</p>`;
+  const ask = (box._ask = (box._ask || 0) + 1); // a later request supersedes this one
+  if (!box.querySelector("canvas")) box.innerHTML = `<p class="hint">Opening the PDF…</p>`;
   let doc; try { doc = await pdfDoc(tid); } catch { box.innerHTML = `<p class="hint bad">Couldn't open the kept PDF.</p>`; return true; }
+  if (ask !== box._ask) return true;
   if (!doc) { box.innerHTML = `<p class="hint">The PDF isn't kept on this device. <button type="button" class="linkbtn" data-keep="1" id="pp-keep">Keep the original PDF</button></p>`; return false; }
   const p = Math.max(0, Math.min(doc.numPages - 1, opts.page ?? pdfPageFor(t, i)));
-  const where = `${t.pdfLabels && t.pdfLabels[p] ? loc(t.pdfLabels[p]) + " · " : ""}page ${p + 1} of ${doc.numPages} in the PDF`;
-  box.innerHTML = `<p class="hint ppwhere">${esc(where)}</p><div class="ppwrap"><canvas></canvas></div>`;
+  const where = `${t.pdfLabels && t.pdfLabels[p] ? loc(t.pdfLabels[p]) + " · " : ""}page ${p + 1} of ${doc.numPages} in the PDF${opts.zoom > 1 ? ` · ${opts.zoom}× size` : ""}`;
+  if (!box.querySelector("canvas")) box.innerHTML = `<p class="hint ppwhere"></p><div class="ppwrap"><canvas role="img"></canvas></div>`;
+  $(".ppwhere", box).textContent = where;
+  const canvas = $("canvas", box); canvas.setAttribute("aria-label", `The printed page: ${where}`);
+  $(".ppwrap", box).classList.toggle("dim", ppDark());
+  box.dataset.page = p; box.dataset.pages = doc.numPages;
   const w = Math.max(200, Math.floor(box.clientWidth || 360) * (opts.zoom || 1));
-  await drawPdfPage($("canvas", box), doc, p, w);
-  box.dataset.page = p;
+  await drawPdfPage(canvas, doc, p, w);
   return true;
 }
+// In the dark theme the printed page is shown dark too (its colours turned round), unless you ask for it as printed.
+const ppDark = () => { let v = null; try { v = localStorage.getItem("mg-ppdark"); } catch {} return v ? v === "1" : document.documentElement.dataset.theme === "dark" || (!document.documentElement.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches); };
+const PP_ZOOMS = [1, 1.5, 2, 3];
 function printedPagePanel(i = currentBlock()) {
   const tid = R.tid; if (!tid) return;
-  let page = null, zoom = 1;
+  const st = { page: null, zoom: 1 }; // where the panel is: set at the tap, so quick taps each count
   openPanel(`<h2>Printed page</h2><div id="ppbox" class="ppbox"></div>
-    <div class="ppbar"><button class="btn" data-keep="1" id="pp-prev" aria-label="Previous page">‹</button><button class="btn" data-keep="1" id="pp-zoom">Zoom in</button><button class="btn" data-keep="1" id="pp-next" aria-label="Next page">›</button></div>`,
+    <div class="ppbar" hidden><button class="btn" data-keep="1" id="pp-prev" aria-label="Previous page">‹</button>
+      <button class="btn" data-keep="1" id="pp-out" aria-label="Smaller">−</button><button class="btn" data-keep="1" id="pp-in" aria-label="Larger">+</button>
+      <button class="btn" data-keep="1" id="pp-dark">${ppDark() ? "Light page" : "Dark page"}</button>
+      <button class="btn" data-keep="1" id="pp-next" aria-label="Next page">›</button></div>`,
   (b) => {
     const box = $("#ppbox"); if (!box) return;
     if (b.id === "pp-keep") { closeOverlay().then(() => keepPdfSheet(tid)); return; }
-    const cur = +box.dataset.page || 0;
-    if (b.id === "pp-prev") page = Math.max(0, cur - 1); else if (b.id === "pp-next") page = cur + 1; else if (b.id === "pp-zoom") { zoom = zoom === 1 ? 2 : 1; b.textContent = zoom === 1 ? "Zoom in" : "Fit the screen"; page = cur; } else return;
-    printedInto(box, tid, i, { page, zoom });
+    const cur = st.page ?? (+box.dataset.page || 0), last = Math.max(0, (+box.dataset.pages || 1) - 1), z = PP_ZOOMS.indexOf(st.zoom);
+    if (b.id === "pp-prev") st.page = Math.max(0, cur - 1);
+    else if (b.id === "pp-next") st.page = Math.min(last, cur + 1);
+    else if (b.id === "pp-in") { st.zoom = PP_ZOOMS[Math.min(PP_ZOOMS.length - 1, z + 1)]; st.page = cur; }
+    else if (b.id === "pp-out") { st.zoom = PP_ZOOMS[Math.max(0, z - 1)]; st.page = cur; }
+    else if (b.id === "pp-dark") { const dark = !ppDark(); try { localStorage.setItem("mg-ppdark", dark ? "1" : "0"); } catch {} b.textContent = dark ? "Light page" : "Dark page"; $(".ppwrap", box)?.classList.toggle("dim", dark); return; }
+    else return;
+    $("#pp-out").disabled = st.zoom === PP_ZOOMS[0]; $("#pp-in").disabled = st.zoom === PP_ZOOMS[PP_ZOOMS.length - 1];
+    printedInto(box, tid, i, { page: st.page, zoom: st.zoom });
   });
-  printedInto($("#ppbox"), tid, i);
+  $("#pp-out").disabled = true;
+  printedInto($("#ppbox"), tid, i).then((kept) => { const bar = $(".ppbar"); if (bar) bar.hidden = !kept; });
 }
 // Keep the PDF of a book already in the library: it is read once more so its pages can be matched to the book's.
 function keepPdfSheet(tid) {
@@ -1496,14 +1538,17 @@ function selectSentence() {
   let A = elOf(r.startContainer), B = elOf(r.endContainer); if (!A || !B) return;
   const i = +A.dataset.i, j = +B.dataset.i, ta = plain(R.blocks[i].x || ""), tb = plain(R.blocks[j].x || "");
   const so = offsetIn(i, r.startContainer, r.startOffset), eo = offsetIn(j, r.endContainer, r.endOffset); if (so == null || eo == null) return;
-  const s = sentenceStart(ta, so); let e = sentenceEnd(tb, Math.max(s && i === j ? s : 0, eo - 1));
+  let s = sentenceStart(ta, so), e = sentenceEnd(tb, Math.max(s && i === j ? s : 0, eo - 1));
   if (s === so && e === eo) { // already whole sentences: take in the next one
-    let k = j, t = tb, from = eo;
+    let k = j, t = tb, from = eo, note = false;
     while (from >= t.length) { // this paragraph is done: the next one with words
-      k++; while (k < R.blocks.length && (!R.els[k] || !plain(R.blocks[k].x || "").trim() || R.blocks[k].k === "pg")) k++;
-      if (k >= R.blocks.length || !R.els[k]) return toast("That's the end of what's on screen.");
+      k++; while (k < R.blocks.length && (!R.els[k] || !plain(R.blocks[k].x || "").trim() || R.blocks[k].k === "pg" || R.blocks[k].k === "fn" || isHidden(R.blocks[k]))) { note ||= R.blocks[k].k === "fn"; k++; }
+      if (k >= R.blocks.length) return toast("That's the end of the book.");
+      if (!R.els[k]) return toast("That's the end of what's on screen.");
       t = plain(R.blocks[k].x || ""); from = 0; B = R.els[k];
     }
+    // a footnote lies between: one selection would take its words in too, so the next sentence is selected on its own
+    if (note) { A = B; s = 0; toast("A note lies between, so the next sentence is selected on its own."); }
     while (from < t.length && /\s/.test(t[from])) from++;
     e = sentenceEnd(t, from);
   }
