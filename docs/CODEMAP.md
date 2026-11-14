@@ -51,7 +51,8 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - Selecting in the reader: the bar's Whole sentence (`selectSentence`, `sentenceStart`, `sentenceEnd`, `ABBR`; `pointIn` and
   `textNodesOf` turn a block's offsets back into a place in its text) grows the selection to the sentence it touches, and again to the
   next, from the next paragraph when this one ends; a paragraph split over pages is taken up to this page's end; past a footnote the
-  next sentence is selected on its own (one selection would take the note's words in), and at the book's end it says so. Copy (`copySel`)
+  next sentence is selected on its own (one selection would take the note's words in), unless the two are one paragraph drawn whole
+  over a printed page; a sentence running on over a printed page is taken to its end there; at the book's end it says so. Copy (`copySel`)
   puts `R.sel.text` on the clipboard. The bar moves to the top of the screen when the selection runs low (`placeSelbar`, `attop`).
   Tested by `tests/highlights.py`.
 - Highlights from a PDF (`readPdfMarks`, `marksOnPage`, `findMark`, `addMarks`; offered after a PDF import by `offerMarks`, and from a book's More →
@@ -103,7 +104,9 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
     the page's own number is a running head however seldom it recurs, generated `headed`, roman numbers too (`romanVal`; a page after a
     roman-numbered one carries the count on); a footnote that recurs word for word ("3. Ibid., 30.") is never a running foot (`noteLine`);
     a line's end is joined reading its last 120 characters only (`joinLine`), keeping a compound's hyphen when the word before already has
-    one or is self-, non- or quasi- (`KEEP_PREFIX`), a suspended hyphen's space ("pre- and post-war") and a range's hyphen ("1670-1677");
+    one or is self-, non- or quasi- (`KEEP_PREFIX`) and the second half is a word the book uses on its own (so "Merleau-Pon-/ty" and
+    "self-/ish" join), a suspended hyphen's space only before a conjunction and a compound ("pre- and post-war") or, in German, "und" and
+    a noun, and a range's hyphen ("1670-1677");
     all tested by `tests/pdf_book.py`; a letter-spaced running head ("s a d i e p l a
     n t") counts as one word when matched loosely, compared in the same form as the recurring heads (generated `spaced`); a title the
     book's contents lists (`tocTitles`, from front lines "title 12") is a heading wherever a line set apart reads as it, in any case and
@@ -348,7 +351,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   offline check in `tests/smoke.py`.
 - Navigation (`NAV`, `go`, `back`, `histBack`, the `popstate` handler in sheets.js): every step adds a history entry, so the phone's back
   button steps back through the app. A sheet you have typed in isn't closed by one Back, Escape or tap beside it (`sheetGuard`; the form's
-  `data-dirty`): the first says your words aren't saved, the second leaves them; Cancel leaves them at once. The browser's Forward can't
+  `data-dirty`, set by typing in a text field, not a search box): the first says your words aren't saved, the second leaves them; Cancel leaves them at once. The browser's Forward can't
   go forward again, so the history is put back where the app is and the next Back still works. Tested by `tests/reader_details.py`.
 - A save made in passing (reading place, status, a ticked chapter, last active) that fails says so, at most once a minute (`saveFailed`, core.js).
 - Reader settings live in `localStorage` under `mg-reader`; other small preferences use `mg-*` keys (`mg-dict`: Wiktionary definitions kept for offline).

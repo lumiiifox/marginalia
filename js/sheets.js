@@ -88,7 +88,7 @@ function openSheet(html, onSubmit, onOpen) {
   const form = $("form", root);
   $("#cancel", root).onclick = () => { if (!form.dataset.busy) closeOverlay(); }; // a save under way finishes first
   $(".veil", root).addEventListener("click", (e) => { if (e.target.classList.contains("veil") && !form.dataset.busy && !sheetGuard()) closeOverlay(); });
-  form.addEventListener("input", (e) => { if (e.target.matches("textarea, input:not([type]), input[type=text], input[type=search], input[type=url]")) { form.dataset.dirty = "1"; delete form.dataset.warned; } });
+  form.addEventListener("input", (e) => { if (e.target.matches("textarea, input:not([type]), input[type=text], input[type=url]")) /* (a search isn't words to keep) */ { form.dataset.dirty = "1"; delete form.dataset.warned; } });
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const btn = $("button[type=submit]", form), cancel = $("#cancel", form); btn.disabled = cancel.disabled = true; form.dataset.busy = "1";

@@ -205,7 +205,7 @@ const bodyOf = (b) => (b.sth ? splitAt(b.x, b.sth)[1] : b.x || "");
 // A paragraph's element. A title glued to its start is drawn as a heading above it; a glued running head is left out
 // (data-o says how many characters of the block come before the text shown, for selections).
 function paraHTML(L, html, notes, marks, extra = "") {
-  const b = R.blocks[L], base = b.k === "fn" ? "bfn" : b.k === "q" || (!b.st && roleOf(b) === "quote") ? "bq" : "bp", cls = `${base}${b.k === "c" ? " cont" : ""}${extra}`;
+  const b = R.blocks[L], role = roleOf(b), base = b.k === "fn" ? "bfn" : role === "quote" || (b.k === "q" && role !== "text") ? "bq" : "bp", cls = `${base}${b.k === "c" ? " cont" : ""}${extra}`;
   if (!b.sth) return `<p class="${cls}" data-i="${L}">${html}${notes}</p>`;
   if (b.st === "hide") return `<p class="${cls}" data-i="${L}" data-o="${Number(b.sth) || 0}">${html}${notes}</p>`;
   return `<div class="bsplit" data-i="${L}"><h2 class="bh l${titleLevel(b)}">${inlineHTML(splitAt(b.x, b.sth)[0], marks)}</h2><p class="bp cont">${html}${notes}</p></div>`;
@@ -1010,8 +1010,9 @@ function pdfPageFor(t, i) {
 // The page is drawn sharp for the screen, up to about 12 million pixels (a 3× zoom on a sharp phone screen would ask for far more,
 // and a phone runs out of memory); a draw still going when the next is asked for is stopped, and each page's working data is let go.
 const PP_MAX_PX = 12e6;
-async function drawPdfPage(canvas, doc, p, width) {
+async function drawPdfPage(canvas, doc, p, width, current = () => true) {
   const page = await doc.getPage(p + 1), v1 = page.getViewport({ scale: 1 });
+  if (!current()) return; // a later tap asked for another page while this one was being fetched
   let dpr = Math.min(3, window.devicePixelRatio || 1);
   const area = (d) => (width * d) * (width * d * v1.height / v1.width);
   while (dpr > 1 && area(dpr) > PP_MAX_PX) dpr -= 0.25;
@@ -1039,7 +1040,7 @@ async function printedInto(box, tid, i, opts = {}) {
   $(".ppwrap", box).classList.toggle("dim", ppDark());
   box.dataset.page = p; box.dataset.pages = doc.numPages;
   const w = Math.max(200, Math.floor(box.clientWidth || 360) * (opts.zoom || 1));
-  await drawPdfPage(canvas, doc, p, w);
+  await drawPdfPage(canvas, doc, p, w, () => ask === box._ask);
   return true;
 }
 // In the dark theme the printed page is shown dark too (its colours turned round), unless you ask for it as printed.
@@ -1539,10 +1540,19 @@ function selectSentence() {
   const i = +A.dataset.i, j = +B.dataset.i, ta = plain(R.blocks[i].x || ""), tb = plain(R.blocks[j].x || "");
   const so = offsetIn(i, r.startContainer, r.startOffset), eo = offsetIn(j, r.endContainer, r.endOffset); if (so == null || eo == null) return;
   let s = sentenceStart(ta, so), e = sentenceEnd(tb, Math.max(s && i === j ? s : 0, eo - 1));
+  // a sentence running on over a printed page (the next block continues this paragraph) is taken to its end there
+  const leadOf = (x) => (R.lead && R.lead.get(x)) ?? x;
+  if (e >= tb.length && !/[.!?…]["”’)\]]*\s*$/.test(tb)) {
+    let k = j + 1, note = false;
+    while (k < R.blocks.length && (R.blocks[k].k === "pg" || R.blocks[k].k === "fn" || isHidden(R.blocks[k]))) { note ||= R.blocks[k].k === "fn"; k++; }
+    if (k < R.blocks.length && R.blocks[k].k === "c" && R.els[k] && (!note || leadOf(k) === leadOf(j))) { B = R.els[k]; e = sentenceEnd(plain(R.blocks[k].x || ""), 0); }
+  }
   if (s === so && e === eo) { // already whole sentences: take in the next one
     let k = j, t = tb, from = eo, note = false;
     while (from >= t.length) { // this paragraph is done: the next one with words
       k++; while (k < R.blocks.length && (!R.els[k] || !plain(R.blocks[k].x || "").trim() || R.blocks[k].k === "pg" || R.blocks[k].k === "fn" || isHidden(R.blocks[k]))) { note ||= R.blocks[k].k === "fn"; k++; }
+      // a paragraph drawn whole over a printed page (Swipe pages) has its note after it, not between its parts
+      if (note && k < R.blocks.length && leadOf(k) === leadOf(j)) note = false;
       if (k >= R.blocks.length) return toast("That's the end of the book.");
       if (!R.els[k]) return toast("That's the end of what's on screen.");
       t = plain(R.blocks[k].x || ""); from = 0; B = R.els[k];

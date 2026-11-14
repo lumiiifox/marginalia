@@ -32,6 +32,7 @@ BOOK = """async (flow) => {
   B.push({ k: 'p', x: 'PROP. IV. Nothing can be destroyed except by a cause' }, { k: 'pg', x: '4' }, { k: 'c', x: 'external to itself.' });
   B.push({ k: 'p', x: 'He dreamt: \\u0001I was walking along a road' }, { k: 'pg', x: '5' }, { k: 'c', x: 'and came to the sea.\\u0002 Then he woke.' });
   B.push({ k: 'p', x: 'The last sentence before a note.¹' }, { k: 'fn', x: '¹ See the Scholium to Proposition 9.' }, { k: 'p', x: 'A new paragraph begins here. It goes on.' });
+  B.push({ k: 'p', x: 'Split sentence starts here and' }, { k: 'pg', x: '6' }, { k: 'fn', x: '² A note at the foot of page five.' }, { k: 'c', x: 'ends over the page. Next one.' });
   B.push({ k: 'h', l: 3, x: '12' }, { k: 'p', x: 'An aphorism of one line.' }, { k: 'h', l: 3, x: '13' }, { k: 'p', x: 'Another aphorism.' });
   for (let n = 0; n < 60; n++) B.push({ k: 'p', x: 'Later ' + n + '. ' + long.repeat(2) });
   B.push({ k: 'p', x: 'The very last sentence of the book.' });
@@ -69,6 +70,14 @@ async def main():
         await page.evaluate("selectSentence()"); await page.wait_for_timeout(200); await page.evaluate("selectSentence()"); await page.wait_for_timeout(200)
         got = await page.evaluate("getSelection().toString().replace(/\\s+/g, ' ').trim()")
         check(got == "A new paragraph begins here.", f"Whole sentence passes over a footnote: the next sentence is selected on its own, without the note's words ({got!r})")
+        await page.evaluate("getSelection().removeAllRanges()")
+
+        # in Swipe pages a paragraph running over a printed page, its note after it, is one sentence on screen
+        k = await page.evaluate(f"({AT})('Split sentence starts')")
+        await page.evaluate(f"""(() => {{ const el = R.els[{k}], t = el.firstChild, r = document.createRange(); r.setStart(t, 2); r.setEnd(t, 8); getSelection().removeAllRanges(); getSelection().addRange(r); }})()""")
+        await page.wait_for_timeout(300); await page.evaluate("selectSentence()"); await page.wait_for_timeout(200)
+        got = await page.evaluate("getSelection().toString().replace(/\\s+/g, ' ').trim()")
+        check(got.startswith("Split sentence starts") and got.endswith("ends over the page."), f"a sentence running over a printed page with its note after is taken whole ({got!r})")
         await page.evaluate("getSelection().removeAllRanges()")
 
         # 6 number headings take little room
@@ -128,6 +137,10 @@ async def main():
         check(kept[0] and "aren't saved" in kept[1], f"Back on a sheet you typed in keeps it open and says your words aren't saved ({kept[1]!r})")
         await page.evaluate("history.back()"); await page.wait_for_timeout(500)
         check(not await page.evaluate("!!document.querySelector('#sheetroot form')") and await page.evaluate("S.notes.get('nd').gloss") == "first", "Back again leaves it, unsaved")
+        await page.evaluate("noteSheet('nd')"); await page.wait_for_timeout(400)
+        await page.fill("#n-linkq", "Spinoza"); await page.wait_for_timeout(200)
+        await page.evaluate("history.back()"); await page.wait_for_timeout(500)
+        check(not await page.evaluate("!!document.querySelector('#sheetroot form')"), "a search typed in a sheet isn't words to keep: one Back closes it")
         await page.evaluate("go({ screen: 'glossary' })"); await page.wait_for_timeout(300)
         await page.evaluate("history.back()"); await page.wait_for_timeout(400)
         await page.evaluate("history.forward()"); await page.wait_for_timeout(500)

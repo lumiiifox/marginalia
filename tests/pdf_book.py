@@ -39,9 +39,10 @@ def book():
              page(rh=("vii", "PREFACE"), body=f"<p>{FILL * 3}</p>"), page(fo="viii", body=f"<p>{FILL * 3}</p>")]
     breaks = ("Spinoza's argument for self-<br>understanding begins in the second part. Heidegger's Being-in-the-<br>world "
               "is a different thing. The Ethics was written in 1670-<br>1677, and pre-<br>and post-war readers took it up. "
-              "A long word that is simply broken is philo-<br>sophical in the ordinary way. ")
+              "A long word that is simply broken is philo-<br>sophical in the ordinary way. Without the slight-<br>est doubt, "
+              "Merleau-Pon-<br>ty read it, and Alexan-<br>der too, though he was self-<br>ish about it. ")
     for k in range(8):
-        body = f'<p>{breaks if k == 2 else ""}{FILL * 2}<sup>{k + 1}</sup></p><p>{FILL}</p>'
+        body = f'<p>{breaks if k == 2 else ""}{FILL * 2}<sup>{k + 1}</sup></p><p>{FILL}{"Our world is known, and the world is ours, through our understanding of it, an understanding that grows. " if k == 5 else ""}</p>'
         pages.append(page(rh=("THE ATTRIBUTES", "") if k % 2 else ("", "SPINOZA AND EXPRESSION"), fo=str(k + 1), body=body, fns=[f"{k + 1}. Ibid., {30 + k}."]))
     return f'<html><head><meta charset="utf-8"><style>{CSS}</style></head><body>{"".join(pages)}</body></html>'
 
@@ -73,7 +74,8 @@ async def main():
             await page.evaluate(f"LIBS.pdf = ['http://localhost:{PORT}/lib/pdf.js']; LIBS.pdfw = ['http://localhost:{PORT}/lib/pdf.worker.js']")
             r = await page.evaluate(PARSE, "book.pdf")
             text = " ".join(x for k, x in r["blocks"] if k != "pg")
-            for want in ["self-understanding", "Being-in-the-world", "1670-1677", "pre- and post-war", "philosophical in the ordinary way"]:
+            for want in ["self-understanding", "Being-in-the-world", "1670-1677", "pre- and post-war", "philosophical in the ordinary way",
+                         "slightest doubt", "Merleau-Ponty read", "Alexander too", "selfish about"]:
                 check(want in text, f"a line's end: {want!r}")
             fns = [x for k, x in r["blocks"] if k == "fn" and "Ibid." in x]
             check(len(fns) == 8, f"recurring footnotes (Ibid.) stay footnotes, all eight ({len(fns)})")

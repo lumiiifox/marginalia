@@ -497,10 +497,11 @@ function romanVal(x) {
   if (!/^[ivxlcdm]{1,7}$/i.test(x || "")) return 0;
   const v = { i: 1, v: 5, x: 10, l: 50, c: 100, d: 500, m: 1000 }; let t = 0; const s = x.toLowerCase();
   for (let i = 0; i < s.length; i++) { const a = v[s[i]], b = v[s[i + 1]] || 0; t += a < b ? -a : a; }
-  return toRoman(t).toLowerCase() === s ? t : 0;
+  return romanStr(t) === s ? t : 0;
 }
-// a roman numeral in the case of another (toRoman is reference.js's, in capitals)
-const romanLike = (n, like) => (/[a-z]/.test(like || "") ? toRoman(n).toLowerCase() : toRoman(n));
+// a roman numeral, in the case of another
+function romanStr(n) { let out = ""; for (const [v, r] of [[1000, "m"], [900, "cm"], [500, "d"], [400, "cd"], [100, "c"], [90, "xc"], [50, "l"], [40, "xl"], [10, "x"], [9, "ix"], [5, "v"], [4, "iv"], [1, "i"]]) while (n >= v) { out += r; n -= v; } return out; }
+const romanLike = (n, like) => (/[a-z]/.test(like || "") ? romanStr(n) : romanStr(n).toUpperCase());
 async function parsePDF(buf, say) {
   say("Loading the PDF reader…");
   const { pdf, stop: stopWorker } = await pdfOpen(buf);
@@ -693,7 +694,8 @@ async function parsePDF(buf, say) {
     pg.lines = pg.lines.filter((l, i) => {
       if (!E.has(i) || !inEdge(l, pg) || l.z >= pg.body * 1.18) return true;
       const a = l.t.match(/^\s*(\d{1,4}|[ivxlcdm]{1,7})\s+(\S.*)$/i), b = l.t.match(/^(.*\S)\s+(\d{1,4}|[ivxlcdm]{1,7})\s*$/i);
-      const same = (x) => x.toLowerCase() === num.toLowerCase();
+      const same = (x) => x === num; // (a roman number in its own case: "I" at a line's start is a word)
+      if (noteLine(l.t)) return true; // "3 Ibid., 30." on page 3 is a note
       const hit = (a && same(a[1]) && a[2].split(/\s+/).length <= 12) || (b && same(b[2]) && b[1].split(/\s+/).length <= 12);
       return !hit;
     });
@@ -717,8 +719,12 @@ async function parsePDF(buf, say) {
       const ch = counts.get((m[1] + "-" + nx[1]).toLowerCase()) || 0, cj = counts.get((m[1] + nx[1]).toLowerCase()) || 0;
       if (ch > cj || /^\p{Lu}/u.test(nx[1])) return a + b;
       if (!cj) {
-        if (WHOLE_WORDS.has(nx[1].toLowerCase()) || /^(und|oder|bis)$/i.test(nx[1])) return a + " " + b; // "pre- and post-war", "Natur- und Geisteswissenschaften"
-        if (/[\p{L}]-\p{L}+-$/u.test(tail) || KEEP_PREFIX.has(m[1].toLowerCase())) return a + b; // "Being-in-the-/world", "self-/understanding"
+        // a suspended hyphen: a conjunction, then the compound it shares a part with ("pre- and post-war"), or in German a noun
+        // ("Natur- und Geisteswissenschaften"); a word ending in "-der" or "-est" broken over a line is no such thing
+        if (/^(?:and|or|nor)\s+\p{L}+-\p{L}/u.test(b) || /^(?:und|oder|bis)\s+\p{Lu}/u.test(b)) return a + " " + b;
+        // a compound: the second half is a word the book uses on its own ("Being-in-the-/world", "self-/understanding"),
+        // never the rest of a broken word ("Merleau-Pon-/ty", "self-/ish")
+        if ((/[\p{L}]-\p{L}+-$/u.test(tail) || KEEP_PREFIX.has(m[1].toLowerCase())) && (counts.get(nx[1].toLowerCase()) || 0) > 0) return a + b;
       }
       return a.slice(0, -1) + b;
     }

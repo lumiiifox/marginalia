@@ -166,11 +166,12 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .refcards { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 .refgroup { display: grid; gap: 12px; margin-top: 22px; }
 .reflist { display: grid; background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 0 14px; }
-.refrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 10px; row-gap: 2px; text-align: left; background: none; border: 0; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); padding: 11px 0; }
+.refrow { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; column-gap: 10px; row-gap: 2px; text-align: left; background: none; border: 0; border-top: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); padding: 11px 0; }
 .refrow:first-child { border-top: 0; }
 .refrow .rr-n { font: 500 17px/1.3 var(--f-text); color: var(--link); }
-.refrow .rr-t { font-size: 12.5px; color: var(--muted); align-self: baseline; white-space: nowrap; }
-.refrow .rr-d { grid-column: 1 / -1; font-size: 14px; color: var(--muted); }
+.refrow .rr-t { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+.refrow .rr-d { flex-basis: 100%; font-size: 14px; color: var(--muted); }
+.refrow .rr-n { flex: 1 1 12ch; } /* the area goes below a name too long to share its line */
 .sec-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
 .sec-head h2, .gl-head h1 { font: 700 28px/1.1 var(--f-text); }
 .gl-head h1 { font-size: 32px; }
@@ -323,6 +324,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .book p { margin: 0; }
 /* a title, tag or name with no spaces (a URL, a_long_tag) breaks rather than widening the screen, which a phone would zoom out to show */
 #main { overflow-wrap: anywhere; }
+#main .refrow .rr-n { overflow-wrap: break-word; } /* a term's name beside its area: whole words, the area moving below if need be */
 .bp { text-indent: 1.4em; }
 .bp.cont, .bh + .bp, .bq + .bp, .book > .bp:first-child, .bpg:first-child + .bp { text-indent: 0; }
 .bh { font-family: var(--f-text); font-weight: 700; line-height: 1.2; margin: 2.2em 0 0.9em; }
