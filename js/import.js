@@ -492,6 +492,15 @@ const WHOLE_WORDS = new Set(("a an and are as at be been but by can could did do
   "au aux avec ce ces cette comme dans de des du elle en est et il je la le les leur mais ne nous on ou par pas plus pour qu que qui sa " +
   "sans se ses son sous sur tout un une " +
   "als auf aus das dem den der des die du ein eine er es ich im ist mit nicht sich sie und von was wie zu").split(" "));
+// A roman page number's value (0 if it isn't one).
+function romanVal(x) {
+  if (!/^[ivxlcdm]{1,7}$/i.test(x || "")) return 0;
+  const v = { i: 1, v: 5, x: 10, l: 50, c: 100, d: 500, m: 1000 }; let t = 0; const s = x.toLowerCase();
+  for (let i = 0; i < s.length; i++) { const a = v[s[i]], b = v[s[i + 1]] || 0; t += a < b ? -a : a; }
+  return toRoman(t).toLowerCase() === s ? t : 0;
+}
+// a roman numeral in the case of another (toRoman is reference.js's, in capitals)
+const romanLike = (n, like) => (/[a-z]/.test(like || "") ? toRoman(n).toLowerCase() : toRoman(n));
 async function parsePDF(buf, say) {
   say("Loading the PDF reader…");
   const { pdf, stop: stopWorker } = await pdfOpen(buf);
@@ -560,6 +569,7 @@ async function parsePDF(buf, say) {
   stopWorker();
 
   say("Rebuilding paragraphs…");
+  await new Promise((r) => setTimeout(r, 0)); // the message is drawn before the work that follows it
   const all = pages.flatMap((pg) => pg.lines);
   if (all.reduce((a, l) => a + l.t.length, 0) / n < 40) throw new UErr("This PDF has no text layer, so it's a scanned image. Run OCR on it first (OCRmyPDF or Acrobat), then load it again.");
   // A scan read by OCR shows itself in its text: unreadable characters, digits and commas inside words,
@@ -618,7 +628,10 @@ async function parsePDF(buf, say) {
     return row[b.length];
   };
   let common = null;
+  // A footnote that recurs word for word ("3. Ibid., 30.") is a note, never a running foot, however often it comes.
+  const noteLine = (t) => /^\s*(?:[¹²³⁴⁵⁶⁷⁸⁹⁰]+|\d{1,3}[.)]?|[*†‡§])\s*(?:ibid|id\.|op\. ?cit|loc\. ?cit|cf\.|see )/i.test(t);
   const isHead = (t) => {
+    if (noteLine(t)) return false;
     if ((hc.get(headKey(t)) || 0) >= 3) return true;
     const k = skel(headKey(t)); // (in the same form as the heads it is compared with, numbers and numerals left out)
     // a letter-spaced running head ("s a d i e p l a n t") is one word, however many letters it has
@@ -628,7 +641,7 @@ async function parsePDF(buf, say) {
     const max = k.length >= 6 ? 2 : 1;
     return common.some((f) => lev(k, f, max) <= max);
   };
-  pages.forEach((pg) => edgeSet(pg).forEach((i) => { const l = pg.lines[i]; if (!inEdge(l, pg)) return; const k = headKey(l.t); if (k.replace(/[#\s]/g, "").length >= 3) hc.set(k, (hc.get(k) || 0) + 1); }));
+  pages.forEach((pg) => edgeSet(pg).forEach((i) => { const l = pg.lines[i]; if (!inEdge(l, pg) || noteLine(l.t)) return; const k = headKey(l.t); if (k.replace(/[#\s]/g, "").length >= 3) hc.set(k, (hc.get(k) || 0) + 1); }));
   const printed = new Array(n).fill(null);
   pages.forEach((pg, p) => {
     const E = edgeSet(pg);
@@ -669,16 +682,19 @@ async function parsePDF(buf, say) {
       }
       if (lab[p] == null) lab[p] = "";
     }
+    // front matter numbered in roman numerals: a page between two of them, or after one, carries on the count
+    for (let p = 1; p < n; p++) if (!lab[p] && romanVal(lab[p - 1])) lab[p] = romanLike(romanVal(lab[p - 1]) + 1, lab[p - 1]);
   } else { lab = pages.map((_, i) => String(i + 1)); pageSource = "index"; }
   // A running head that carries the page's own number ("4 CHAPTER ONE: OF SUBSTANCE", "Docile bodies 137") is one even where
   // it recurs too seldom to be known by repeating (a short chapter, an article).
   pages.forEach((pg, p) => {
-    const num = lab[p]; if (!/^\d+$/.test(num || "")) return;
+    const num = lab[p]; if (!/^\d+$/.test(num || "") && !romanVal(num)) return;
     const E = edgeSet(pg);
     pg.lines = pg.lines.filter((l, i) => {
       if (!E.has(i) || !inEdge(l, pg) || l.z >= pg.body * 1.18) return true;
-      const a = l.t.match(/^\s*(\d{1,4})\s+(\S.*)$/), b = l.t.match(/^(.*\S)\s+(\d{1,4})\s*$/);
-      const hit = (a && a[1] === num && a[2].split(/\s+/).length <= 12) || (b && b[2] === num && b[1].split(/\s+/).length <= 12);
+      const a = l.t.match(/^\s*(\d{1,4}|[ivxlcdm]{1,7})\s+(\S.*)$/i), b = l.t.match(/^(.*\S)\s+(\d{1,4}|[ivxlcdm]{1,7})\s*$/i);
+      const same = (x) => x.toLowerCase() === num.toLowerCase();
+      const hit = (a && same(a[1]) && a[2].split(/\s+/).length <= 12) || (b && same(b[2]) && b[1].split(/\s+/).length <= 12);
       return !hit;
     });
   });
@@ -687,17 +703,27 @@ async function parsePDF(buf, say) {
   const counts = new Map(), WORD = /\p{L}+(?:-\p{L}+)*/gu;
   all.forEach((l) => { const ws = l.t.match(WORD) || []; const cut = /\p{L}-$/u.test(l.t); ws.forEach((w, i) => { if (i === 0 || (cut && i === ws.length - 1)) return; const k = w.toLowerCase(); counts.set(k, (counts.get(k) || 0) + 1); }); });
   // lost: the line ended where a hyphen would have been printed but the text has none (see the page loop).
+  // A line's end is read from its last few words only: a paragraph grows a line at a time, and testing the whole of it on every
+  // line made a long paragraph cost the square of its length (seconds, on a phone, for a book of long paragraphs).
+  const KEEP_PREFIX = new Set(["self", "non", "quasi"]);
   const joinLine = (a, b, lost) => {
-    a = a.replace(/[­‐‑]$/u, "-");
-    const m = a.match(/(\p{L}+)-$/u);
+    if (/[­‐‑]/u.test(a[a.length - 1] || "")) a = a.slice(0, -1) + "-";
+    const tail = a.slice(-120);
+    if (/\d-$/.test(tail) && /^\d/.test(b)) return a + b; // 1670-/1677
+    const m = tail.match(/(\p{L}+)-$/u);
     if (m) {
       const nx = b.match(/^(\p{L}+)/u);
       if (!nx) return a + b;
       const ch = counts.get((m[1] + "-" + nx[1]).toLowerCase()) || 0, cj = counts.get((m[1] + nx[1]).toLowerCase()) || 0;
-      return ch > cj || /^\p{Lu}/u.test(nx[1]) ? a + b : a.slice(0, -1) + b;
+      if (ch > cj || /^\p{Lu}/u.test(nx[1])) return a + b;
+      if (!cj) {
+        if (WHOLE_WORDS.has(nx[1].toLowerCase()) || /^(und|oder|bis)$/i.test(nx[1])) return a + " " + b; // "pre- and post-war", "Natur- und Geisteswissenschaften"
+        if (/[\p{L}]-\p{L}+-$/u.test(tail) || KEEP_PREFIX.has(m[1].toLowerCase())) return a + b; // "Being-in-the-/world", "self-/understanding"
+      }
+      return a.slice(0, -1) + b;
     }
     if (lost) {
-      const w1 = a.match(/(\p{L}+)$/u), w2 = b.match(/^(\p{Ll}+)/u);
+      const w1 = tail.match(/(\p{L}+)$/u), w2 = b.match(/^(\p{Ll}+)/u);
       if (w1 && w2) {
         const h1 = w1[1].toLowerCase(), h2 = w2[1], known = (w) => (counts.get(w) || 0) >= 2;
         // Joined when the book has the joined word elsewhere. Kept apart when either half is a common word, which hyphenation
@@ -707,7 +733,7 @@ async function parsePDF(buf, say) {
         if (!WHOLE_WORDS.has(h1) && !WHOLE_WORDS.has(h2) && !known(h2)) return a + b;
       }
     }
-    return /[—–\/]$/.test(a) ? a + b : a + " " + b;
+    return /[—–\/]$/.test(tail) ? a + b : a + " " + b;
   };
 
   const hasOutline = outline.length > 0;
