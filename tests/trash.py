@@ -175,6 +175,20 @@ async def main():
         bk = await page.evaluate("""(async () => { let out; const orig = saveFile; saveFile = async (n, t) => { out = JSON.parse(t); return true; }; await exportBackup(); saveFile = orig; return Object.keys(out); })()""")
         check("trash" not in bk, "backups leave Recently deleted out")
 
+        # 7 two saves to one record at once: the second starts from the first, even while a backup holds storage
+        race = await page.evaluate("""(async () => {
+          const id = 'race'; await put('texts', id, { title: 'Race', sections: [{ id: 'a', label: 'A' }, { id: 'b', label: 'B' }] });
+          const tick = (sid) => { const t = S.texts.get(id); return put('texts', id, { ...t, sections: t.sections.map((x) => x.id === sid ? { ...x, done: true } : x) }); };
+          const snap = backupData(); const p1 = tick('a'); const p2 = tick('b'); await Promise.all([p1, p2, snap]);
+          const db = await idbGet('texts', id);
+          return [S.texts.get(id).sections.map((x) => !!x.done), db.sections.map((x) => !!x.done)]; })()""")
+        check(race == [[True, True], [True, True]], f"two ticks made while the first is still saving both stay ({race})")
+        failed = await page.evaluate("""(async () => {
+          const orig = idbDo; idbDo = async () => { throw new Error('disk'); };
+          let threw = false; try { await put('texts', 'race', { title: 'Lost' }); } catch (e) { threw = true; }
+          idbDo = orig; return [threw, S.texts.get('race').title]; })()""")
+        check(failed == [True, "Race"], f"a save that fails leaves the copy in memory as it was ({failed})")
+
         check(not errs, "no script errors" + (f": {errs}" if errs else ""))
         await browser.close()
 

@@ -305,7 +305,7 @@ async function dropBook(cancel) {
     if (x === d.id && st !== from) { rec.status = st; rec.updatedAt = now; }
     if (rec.rank !== cur.rank || rec.status !== cur.status) changed.push([x, rec, cur]);
   });
-  const put3 = async (pairs) => { await idbTx(["texts"], (s) => pairs.forEach(([x, rec]) => s("texts").put(rec, x))); pairs.forEach(([x, rec]) => S.texts.set(x, rec)); render(); };
+  const put3 = async (pairs) => { if (idb) await idbTx(["texts"], (s) => pairs.forEach(([x, rec]) => s("texts").put(rec, x))); pairs.forEach(([x, rec]) => S.texts.set(x, rec)); render(); };
   try {
     await put3(changed.map(([x, rec]) => [x, rec]));
     toast(st !== from ? `Moved to ${STATUS[st]}.` : "Moved.", { label: "Undo", run: () => {
