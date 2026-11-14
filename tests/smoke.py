@@ -70,6 +70,7 @@ async def cloud_backups(browser):
             return await r.fulfill(json={"id": 123, "private": state["private"], "visibility": "private" if state["private"] else "public", "default_branch": "main"})
         key = urlsplit(url).path.split('/contents/')[1]
         old = state['files'].get(key)
+        if r.request.method == "GET" and '/objects/' in key: state.setdefault('object_gets', []).append(key)
         if r.request.method == "PUT":
             body = r.request.post_data_json
             if state['conflict'] or (state['fail_asset'] and '/objects/' in key):
@@ -115,11 +116,12 @@ async def cloud_backups(browser):
     check('classic-spinoza-ethics' not in data['assets']['content'] and 'classic-spinoza-ethics' not in data['assets']['covers'] and len(state['writes'])==3, 'bundled classic text and cover produce zero asset uploads')
     check('other-tab' in data['notes'] and data['notes']['remote-note']['gloss']=='Différence — 日本語', 'snapshot keeps Unicode and other-tab edits')
     check(config['token'] not in ''.join(raw for _,raw in state['writes']), 'credentials stay out of every uploaded file')
-    count = len(state['writes'])
+    count = len(state['writes']); state['object_gets'] = []
     await page.evaluate("S.textId='remote-book'; S.screen='reader'")
     for i in range(12):
         await page.evaluate("async (i) => { await put('texts','remote-book',{...S.texts.get('remote-book'),pos:i,readAt:100+i,days:{'2026-10-25':[i*300,i*1000]}}); await cloudUpload(); }", i)
     check(len(state['writes'])==count, 'twelve checks during an hour of reading upload zero bytes and create zero commits')
+    check(state['object_gets']==[], f"and ask GitHub nothing about book texts and covers the last backup already lists ({len(state['object_gets'])} requests)")
     await page.evaluate("put('notes','remote-note',{...S.notes.get('remote-note'),gloss:'Updated note',updatedAt:3})")
     await page.evaluate('cloudUpload()')
     delta=state['writes'][count:]
