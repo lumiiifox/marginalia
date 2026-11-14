@@ -46,9 +46,13 @@ function mapFor(col) {
 }
 // A note changes what's used or read in Mastery: its worked-out state is dropped, so the next look works it out once (js/mastery.js).
 const notesChanged = (col) => { if (col === "notes" && typeof MASTERY_CACHE !== "undefined") MASTERY_CACHE = null; };
+// The copy in memory changes first, so a second save made while the first is still being written (a tick, then another
+// tick; a bookmark, then Back) starts from the first one's result instead of overwriting it. If the write fails, the copy goes back.
 async function put(col, id, data) {
-  if (idb) await idbDo(col, (s) => s.put(data, id));
-  mapFor(col).set(id, data); notesChanged(col);
+  const m = mapFor(col), had = m.has(id), prev = m.get(id);
+  m.set(id, data); notesChanged(col);
+  if (idb) try { await idbDo(col, (s) => s.put(data, id)); }
+  catch (err) { if (m.get(id) === data) { if (had) m.set(id, prev); else m.delete(id); } throw err; }
   if (col !== "content") render();
   if (col === "notes") masteryNoteChanged(id); // a note can make a checked concept "used" (js/mastery.js)
 }
@@ -460,11 +464,13 @@ function withCritiques(base, other) {
   if (!add.length) return base;
   return { ...base, critiques: [...(base.critiques || []), ...add].sort((a, b) => a.at - b.at) };
 }
+// The shelf place stays as it is on this device, whichever copy of the book wins.
+const keepRank = (v, cur) => { if (!cur || v.rank === cur.rank) return v; const out = { ...v }; if (cur.rank === undefined) delete out.rank; else out.rank = cur.rank; return out; };
 async function applyRestore(plan, theirs) {
   const take = (st) => st === "new" || st === "older" || (theirs && (st === "newer" || st === "conflict"));
   const ops = [];
   for (const [store] of RESTORE_KINDS) for (const r of plan.rows[store]) {
-    if (take(r.st)) ops.push([store, r.id, store === "texts" ? withReading(r.v, r.cur) : store === "notes" ? withThoughts(r.v, r.cur) : store === "drafts" ? withCritiques(r.v, r.cur) : r.v]);
+    if (take(r.st)) ops.push([store, r.id, store === "texts" ? keepRank(withReading(r.v, r.cur), r.cur) : store === "notes" ? withThoughts(r.v, r.cur) : store === "drafts" ? withCritiques(r.v, r.cur) : r.v]);
     else if (store === "drafts" && r.cur) { const m = withCritiques(r.cur, r.v); if (m !== r.cur) ops.push([store, r.id, m, "merged"]); } // the backup's critiques join this device's draft
     else if (store === "notes" && r.cur) { const m = withThoughts(r.cur, r.v); if (m !== r.cur) ops.push([store, r.id, m, "merged"]); } // the backup's follow-ups join this device's note
     else if (store === "texts" && r.cur) { const m = withReading(r.cur, r.v); if (m !== r.cur) ops.push([store, r.id, m, "pos"]); } // a later reading position travels on its own

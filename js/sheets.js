@@ -76,19 +76,19 @@ function openSheet(html, onSubmit, onOpen) {
   root.innerHTML = `<div class="veil"><form class="sheet" novalidate>${html}<div class="err" id="err"></div>
     <div class="formacts"><button type="button" class="btn" id="cancel">Cancel</button><button class="btn primary" type="submit">Save</button></div></form></div>`;
   const form = $("form", root);
-  $("#cancel", root).onclick = () => closeOverlay();
+  $("#cancel", root).onclick = () => { if (!form.dataset.busy) closeOverlay(); }; // a save under way finishes first
   $(".veil", root).addEventListener("click", (e) => { if (e.target.classList.contains("veil") && !form.dataset.busy) closeOverlay(); });
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const btn = $("button[type=submit]", form); btn.disabled = true; form.dataset.busy = "1";
+    const btn = $("button[type=submit]", form), cancel = $("#cancel", form); btn.disabled = cancel.disabled = true; form.dataset.busy = "1";
     try {
       const out = await onSubmit(new FormData(form));
-      if (typeof out === "string") { $("#err", root).textContent = out; btn.disabled = false; delete form.dataset.busy; return; }
+      if (typeof out === "string") { $("#err", root).textContent = out; btn.disabled = cancel.disabled = false; delete form.dataset.busy; return; }
       delete form.dataset.busy;
       await closeOverlay();
       if (typeof out === "function") out(); // e.g. open the text you just added
     }
-    catch (err) { $("#err", root).textContent = err instanceof UErr ? err.message : failMsg(err); btn.disabled = false; delete form.dataset.busy; }
+    catch (err) { $("#err", root).textContent = err instanceof UErr ? err.message : failMsg(err); btn.disabled = cancel.disabled = false; delete form.dataset.busy; }
   });
   if (onOpen) onOpen($(".veil", root)); // listeners added here are dropped with the sheet
   const first = $("input:not([type=file]), textarea, select", form); if (first && !onOpen) first.focus();
