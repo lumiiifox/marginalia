@@ -215,6 +215,11 @@ function editSelectedParagraph() {
       if (value === initial) return;
       const next = R.blocks.slice();
       next[i] = { ...original, x: value };
+      if (original.sth) { // a title or running head glued to the paragraph: the cut moves with the words around it
+        const head = original.x.slice(0, original.sth), body = original.x.slice(original.sth).trimEnd();
+        if (body && value.endsWith(body) && value.length > body.length) next[i].sth = value.length - body.length;
+        else if (!value.startsWith(head)) { delete next[i].sth; delete next[i].st; }
+      }
       const t = S.texts.get(tid);
       if (!t) return "This text is no longer available.";
       const metadata = { ...t, updatedAt: Date.now() };
@@ -370,7 +375,7 @@ let downSel = false;
 $("#book").addEventListener("pointerdown", () => { downSel = selecting(); }, true);
 $("#book").addEventListener("click", (e) => {
   if (!isPaged() || !R.blocks || downSel || selecting()) return;
-  if (e.target.closest && e.target.closest("mark[data-note], .mnote, a, button, [data-fn]")) return;
+  if (e.target.closest && e.target.closest("mark[data-note], .mnote, a, button, [data-fn], [data-tocpage]")) return;
   const x = e.clientX / window.innerWidth;
   if (x < 0.28) turnPage(-1); else if (x > 0.72) turnPage(1); else if (immersive()) showBars(!$("#reader").classList.contains("bars-on"));
 });

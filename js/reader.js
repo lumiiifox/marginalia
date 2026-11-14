@@ -50,10 +50,15 @@ function navNoteGroups() {
   for (const x of list) { const g = groups[groups.length - 1]; if (g && x.px - g.first < NAVNOTE_PX) g.notes.push(x); else groups.push({ first: x.px, notes: [x] }); }
   return groups.map((g) => { const px = g.notes.reduce((a, x) => a + x.px, 0) / g.notes.length; return { notes: g.notes, left: (100 * px) / w }; });
 }
-function drawNavNotes() {
+function drawNavNotes(cur = currentBlock()) {
   const box = $("#rnav-notes"); if (!box) return;
-  const groups = R.blocks ? navNoteGroups() : [], cur = currentBlock();
-  R.navGroups = groups; box.hidden = !groups.length; $("#rnav").classList.toggle("has-notes", !!groups.length);
+  // worked out again only when the notes, the text drawn or the slider's width change (it runs on every scroll frame)
+  const key = R.blocks ? [R.tid, R.ver, S.notes.size, R.blocks.length, box.parentElement.clientWidth].join("|") : "";
+  if (key !== R.navKey) { R.navKey = key; R.navGroups = R.blocks ? navNoteGroups() : []; }
+  const groups = R.navGroups;
+  const here = groups.findIndex((g) => cur >= g.notes[0].i - 1 && cur <= g.notes[g.notes.length - 1].i + 1), drawn = key + "|" + here;
+  if (drawn === R.navDrawn) return; R.navDrawn = drawn;
+  box.hidden = !groups.length; $("#rnav").classList.toggle("has-notes", !!groups.length);
   box.innerHTML = groups.map((g, k) => {
     const a = g.notes[0].i, b = g.notes[g.notes.length - 1].i, here = cur >= a - 1 && cur <= b + 1, many = g.notes.length > 1;
     const where = [R.pageAt[a] ? loc(R.pageAt[a]) : "", many && R.pageAt[b] && R.pageAt[b] !== R.pageAt[a] ? `to ${loc(R.pageAt[b])}` : ""].filter(Boolean).join(" ");
@@ -76,7 +81,7 @@ function syncNav(i = currentBlock()) {
   const total = R.cum[R.blocks.length] || 1, v = Math.round((1000 * R.cum[i]) / total);
   if (!R.dragging) $("#rnav-r").value = v;
   $("#rnav-where").textContent = navLabel(i); $("#rnav-pct").textContent = `${Math.round(v / 10)}%`;
-  drawNavNotes();
+  drawNavNotes(i);
 }
 // The first block of a printed page: an exact label (roman numerals too), or the last numbered page before the number.
 function blockForPage(want) {
@@ -244,8 +249,8 @@ function rerenderBlock(i, marks) {
   if (!R.els[L]) return;
   const tmp = document.createElement("div"); tmp.innerHTML = joined ? groupHTML(L, marks) : blockHTML(R.blocks[L], L, marks);
   const el = tmp.firstElementChild; R.els[L].replaceWith(el); R.els[L] = el;
-  if (R.chap && R.chap.has(L) && RS.flow === "pages") el.classList.add("chap");
   el.querySelectorAll("[data-i]").forEach((x) => { R.els[+x.dataset.i] = x; });
+  if (R.chap && RS.flow === "pages" && [...R.chap].some((j) => j === L || (R.els[j] && el.contains(R.els[j])))) el.classList.add("chap");
   R.dirty = true; R.ver = (R.ver || 0) + 1;
   if (FIND.on) paintFind();
   paintTerms();
@@ -862,6 +867,7 @@ function jumpTo(i, centre = true, quiet = false) {
   if (!R.visiting) { savePos(); R.visiting = true; R.home = R.saved >= 0 ? R.saved : here.i; }
   const same = last && last.i === here.i && Math.abs(last.f - here.f) < 0.05;
   if (here.i !== i && !same) { R.trail.push(here); if (R.trail.length > 30) R.trail.splice(1, 1); } // the first stop, your place, always stays
+  if (R.selCarry) endCarry(); // a passage carried over a page ends where it was: a jump goes somewhere else
   goTo(i, centre); landed(i); if (!quiet) flash(i); drawTrail();
 }
 function trailBack() {
@@ -1198,8 +1204,9 @@ function paintTerms() {
   if (can) { const hl = new Highlight(...R.termRanges.map(([r]) => r)); hl.priority = -1; CSS.highlights.set("term", hl); }
 }
 // The term under a tap, if any: [term id, the index of your link or undefined].
-function termAt(x, y) {
-  for (const [r, id, mark] of R.termRanges || []) for (const q of r.getClientRects()) if (x >= q.left - 2 && x <= q.right + 2 && y >= q.top - 2 && y <= q.bottom + 2) return [id, mark];
+function termAt(x, y, target) {
+  const blk = target && target.closest ? target.closest("#book > *") : null; if (!blk) return null;
+  for (const [r, id, mark] of R.termRanges || []) if (r.intersectsNode(blk)) for (const q of r.getClientRects()) if (x >= q.left - 2 && x <= q.right + 2 && y >= q.top - 2 && y <= q.bottom + 2) return [id, mark];
   return null;
 }
 function termPanel(id, mark) {
@@ -1248,7 +1255,7 @@ async function removeTermMark(k) {
 $("#book").addEventListener("click", (e) => {
   if (!R.termRanges || !R.termRanges.length || selecting()) return;
   if (e.target.closest && e.target.closest("mark[data-note], .mnote, a, button, [data-fn], [data-tocpage]")) return;
-  const hit = termAt(e.clientX, e.clientY); if (!hit) return;
+  const hit = termAt(e.clientX, e.clientY, e.target); if (!hit) return;
   e.stopImmediatePropagation(); e.stopPropagation(); e.preventDefault();
   termPanel(hit[0], hit[1]);
 }, true);
@@ -1455,7 +1462,7 @@ function checkSel() {
 const SKIP_TEXT = ".mnote, .pgm, .bjoin, .bhid, .rx"; // what offsetIn leaves out: the words of the text are the rest
 function textNodesOf(el) {
   const out = []; let at = +el.dataset.o || 0;
-  const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.parentElement && n.parentElement.closest(SKIP_TEXT) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) });
+  const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, { acceptNode: (n) => { const c = n.parentElement && n.parentElement.closest(SKIP_TEXT); return c && c !== el && el.contains(c) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT; } });
   for (let n; (n = w.nextNode());) { out.push([n, at]); at += n.length; }
   return { nodes: out, end: at };
 }

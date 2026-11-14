@@ -227,6 +227,9 @@ async def main():
         check(await page.evaluate("window.__copied") == two and "Copied." in await page.inner_text("#toast"), "Copy puts the selected sentences on the clipboard and says so")
         ab = await page.evaluate("[sentenceEnd('See cf. Hume, p. 12, on this. Then more.', 0), sentenceStart('Mr. Hume wrote. Then he left.', 20), sentenceEnd('He said “so it is.” Then.', 0)]")
         check(ab == [len("See cf. Hume, p. 12, on this."), len("Mr. Hume wrote. "), len("He said “so it is.”")], f"abbreviations don't end a sentence; a closing quote is part of it ({ab})")
+        cont = await page.evaluate("""(() => { const d = document.createElement('div'); d.innerHTML = '<span class="bjoin" data-o="5">Second sentence here.<span class="mnote">n</span></span>';
+          document.body.append(d); const r = textNodesOf(d.firstChild); d.remove(); return [r.nodes.map(([n]) => n.data), r.end]; })()""")
+        check(cont == [["Second sentence here."], 26], f"a paragraph continued from the page before has words to select, its note marks left out ({cont})")
         # the bar never covers the selected words
         cover = await page.evaluate("""(() => { const b = document.querySelector('#selbar').getBoundingClientRect(), rs = [...getSelection().getRangeAt(0).getClientRects()].filter((x) => x.width);
           return rs.filter((x) => x.bottom > b.top + 2 && x.top < b.bottom - 2 && x.right > b.left && x.left < b.right).length; })()""")
