@@ -282,7 +282,7 @@ async function quickHighlight(hl) {
   if (HL[hl] && hl !== KIND_HL.passage) note.hl = hl;
   try {
     await put("notes", id, note);
-    const t = S.texts.get(R.tid); if (t) put("texts", R.tid, { ...t, activeAt: Date.now() }).catch(() => {});
+    const t = S.texts.get(R.tid); if (t) put("texts", R.tid, { ...t, activeAt: Date.now() }).catch(saveFailed);
     // the toast offers the kinds you'd mark straight away, and Undo; tap the highlight later for the rest
     const kind = (k, label) => ({ label, run: async () => { const n = S.notes.get(id); if (!n) return; try { await put("notes", id, { ...n, kind: k, updatedAt: Date.now() }); toast(`Marked as ${label.toLowerCase()}.`, { label: "Undo", run: () => { const m = S.notes.get(id); if (m) put("notes", id, { ...m, kind: "passage", updatedAt: Date.now() }).catch((e) => toast(failMsg(e))); } }); } catch (e) { toast(failMsg(e)); } } });
     toast(hl === "underline" ? "Underlined." : "Highlighted.", [kind("question", "Question"), kind("objection", "Objection"), { label: "Undo", run: () => del("notes", id).then(() => toast("Highlight removed.")).catch((e) => toast(failMsg(e))) }]);
@@ -296,9 +296,19 @@ window.addEventListener("scroll", () => {
   clearTimeout(posT); posT = setTimeout(settle, 1500);
 }, { passive: true });
 let resizeT;
+let lastW = window.innerWidth;
 window.addEventListener("resize", () => {
   R.dirty = true;
-  if (!isPaged() || !R.blocks) return;
+  const turned = window.innerWidth !== lastW; lastW = window.innerWidth;
+  if (!isPaged()) {
+    // Scroll: a turn of the phone rewraps every paragraph above, so the place is put back where it was before the turn (the toolbar
+    // and keyboard coming and going change only the height, and leave the place alone)
+    if (!R.blocks || S.screen !== "reader" || !turned) return;
+    const sp = R.scrollSpot || currentSpot(); R.resizing = true;
+    clearTimeout(resizeT); resizeT = setTimeout(() => { R.resizing = false; if (!isPaged() && R.blocks) { goToSpot(sp); R.scrollSpot = sp; } }, 150);
+    return;
+  }
+  if (!R.blocks) return;
   if (R.flip) doneFlip(R.flip.commit === true);
   const sp = R.pagedSpot || currentSpot(); // taken before the new size changes the pages
   clearTimeout(resizeT); resizeT = setTimeout(() => { if (!isPaged()) return; layoutPages(); goToSpot(sp); }, 150);

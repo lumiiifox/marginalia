@@ -59,7 +59,10 @@ async function back() { if (stepBack()) await histBack(); }
 window.addEventListener("popstate", (e) => {
   if (popWaiter) { popWaiter(); return; }
   if ($("#sheetroot form[data-busy]")) { try { history.pushState({ mg: depth() }, ""); } catch {} return; } // don't abandon a save in progress
+  if (sheetGuard()) { try { history.pushState({ mg: depth() }, ""); } catch {} return; } // words typed and not saved: Back once more leaves them
   const target = e.state && typeof e.state.mg === "number" ? e.state.mg : 0;
+  // the browser's Forward: the app can't go forward again, so the history is put back where the app is, and the next Back works
+  if (target > depth()) { try { history.go(depth() - target); } catch {} return; }
   for (let guard = 0; depth() > target && guard < 20; guard++) if (!stepBack()) break;
 });
 function openOverlay() {
@@ -68,6 +71,13 @@ function openOverlay() {
   try { history.pushState({ mg: depth() }, ""); } catch {}
 }
 async function closeOverlay() { if (NAV.overlay) await back(); else $("#sheetroot").innerHTML = ""; }
+// A sheet you have typed in isn't closed by one Back, Escape or tap beside it: the first says your words aren't saved, the second
+// leaves them. (Cancel leaves them at once: that is what it's for.)
+function sheetGuard() {
+  const f = $("#sheetroot form[data-dirty]"); if (!f || f.dataset.warned) return false;
+  f.dataset.warned = "1"; toast("Your words aren't saved yet. Go back again to leave them, or tap Save.");
+  return true;
+}
 
 /* ---------- sheets ---------- */
 function openSheet(html, onSubmit, onOpen) {
@@ -77,7 +87,8 @@ function openSheet(html, onSubmit, onOpen) {
     <div class="formacts"><button type="button" class="btn" id="cancel">Cancel</button><button class="btn primary" type="submit">Save</button></div></form></div>`;
   const form = $("form", root);
   $("#cancel", root).onclick = () => { if (!form.dataset.busy) closeOverlay(); }; // a save under way finishes first
-  $(".veil", root).addEventListener("click", (e) => { if (e.target.classList.contains("veil") && !form.dataset.busy) closeOverlay(); });
+  $(".veil", root).addEventListener("click", (e) => { if (e.target.classList.contains("veil") && !form.dataset.busy && !sheetGuard()) closeOverlay(); });
+  form.addEventListener("input", (e) => { if (e.target.matches("textarea, input:not([type]), input[type=text], input[type=search], input[type=url]")) { form.dataset.dirty = "1"; delete form.dataset.warned; } });
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const btn = $("button[type=submit]", form), cancel = $("#cancel", form); btn.disabled = cancel.disabled = true; form.dataset.busy = "1";
@@ -109,7 +120,7 @@ document.addEventListener("keydown", (e) => {
     const dir = { ArrowRight: 1, PageDown: 1, " ": 1, ArrowLeft: -1, PageUp: -1 }[e.key];
     if (dir && !e.altKey && !e.ctrlKey && !e.metaKey) { e.preventDefault(); turnPage(e.shiftKey && e.key === " " ? -1 : dir); return; }
   }
-  if (e.key === "Escape" && $("#sheetroot").innerHTML && !$("#sheetroot form[data-busy]")) closeOverlay();
+  if (e.key === "Escape" && $("#sheetroot").innerHTML && !$("#sheetroot form[data-busy]") && !sheetGuard()) closeOverlay();
   if ((e.key === "Enter" || e.key === " ") && e.target.matches && e.target.matches(".mnote[data-note]")) { e.preventDefault(); noteSheet(e.target.dataset.note); }
   if ((e.key === "Enter" || e.key === " ") && e.target.matches && e.target.matches("#book [data-fn]")) { e.preventDefault(); const at = e.target.closest("[data-i]"); notePanel(at ? +at.dataset.i : currentBlock(), +e.target.dataset.fn); }
 });

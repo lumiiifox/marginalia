@@ -309,7 +309,7 @@ function noteSheet(nid, preset, focus) {
     delete data.example;
     await put("notes", nid || gid(), data);
     const cur = S.texts.get(tid);
-    if (cur) put("texts", tid, { ...cur, activeAt: Date.now() }).catch(() => {});
+    if (cur) put("texts", tid, { ...cur, activeAt: Date.now() }).catch(saveFailed);
   },
   (root) => {
     const kindSel = $("#n-kind", root), argBox = $("#n-arg", root);

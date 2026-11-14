@@ -32,6 +32,11 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - Storage: `STORES`, `idbOpen`, `put`, `del`, `idbTx`. `put` changes the copy in memory before writing, so two saves of one record in quick succession build on each other; a failed write puts the old copy back. Restore keeps a book's shelf place (`keepRank`) whichever copy wins. Backup export and restore follow. The `trash` and `trashlist` stores (version 8) are Recently deleted: every delete of a book, note, draft or comparison goes through `trashAndRemove`, filing the removed records as one entry in `trash` and its summary in `trashlist` (on a full device nothing is removed: `noRoom` asks, and only a confirmed Delete permanently runs `removeForGood`). Only `trashlist` is read at start (`loadTrash`, which also clears entries past `TRASH_DAYS`). `restoreTrash` puts back only records missing from the library (`putBackMissing`), never over one that came back another way. Neither store is backed up. The `files` store (version 7) holds
   original PDFs kept for the printed page, by text id; it is never loaded at start and never backed up (`keepPdf`, `pdfDoc`).
   A text's `pdfLabels` are its PDF pages' labels, used to find the PDF page for a printed page number.
+  The printed page panel (`printedPagePanel`, `printedInto`, `drawPdfPage`) keeps its page and size in the panel (`st`), set at the tap, so
+  quick taps each count; a request superseded by a later one stops (`box._ask`, the render task cancelled); sizes 1×, 1.5×, 2× and 3×
+  (`PP_ZOOMS`), drawn sharp up to `PP_MAX_PX`; each page's working data is let go (`page.cleanup`), and the PDF closes when you leave the
+  book (`resetReader` → `closePdf`). In the dark theme the page is shown dark (`.ppwrap.dim`, colours turned round), changed with Dark
+  page / Light page and kept in `mg-ppdark`. Tested by `tests/printed_page.py`.
 - Highlight colours and underlining (`HL`, `KIND_HL`, `hlOf`, `hlClass` in core.js; a note's optional `hl`): nine bright colours
   (yellow, orange, red, pink, purple, blue, teal, green, grey, the `--hc-*` tokens, the same in both themes, each with dark ink
   `--on-mark` at 7:1 or better) and `underline` (a 3px line, `--uline`). Each kind has its own colour (`KIND_HL`: passage yellow, gloss
@@ -42,10 +47,11 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   annotation from a PDF comes in underlined (`under` in `marksOnPage`). Overlapping notes are all drawn (`inlineMarks`): each
   stretch gets one mark whose fill is the innermost filling note, `uline` added where any note underlines, and a tap there opens the
   innermost note. Drawn on the text's marks, Your notes rows, note cards and draft items; `VALID.notes` takes `hl` as a string.
-  Tested by `tests/highlights.py`.
+  Tested by `tests/highlights.py` and `tests/reader_details.py`.
 - Selecting in the reader: the bar's Whole sentence (`selectSentence`, `sentenceStart`, `sentenceEnd`, `ABBR`; `pointIn` and
   `textNodesOf` turn a block's offsets back into a place in its text) grows the selection to the sentence it touches, and again to the
-  next, from the next paragraph when this one ends; a paragraph split over pages is taken up to this page's end. Copy (`copySel`)
+  next, from the next paragraph when this one ends; a paragraph split over pages is taken up to this page's end; past a footnote the
+  next sentence is selected on its own (one selection would take the note's words in), and at the book's end it says so. Copy (`copySel`)
   puts `R.sel.text` on the clipboard. The bar moves to the top of the screen when the selection runs low (`placeSelbar`, `attop`).
   Tested by `tests/highlights.py`.
 - Highlights from a PDF (`readPdfMarks`, `marksOnPage`, `findMark`, `addMarks`; offered after a PDF import by `offerMarks`, and from a book's More →
@@ -94,7 +100,11 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
     verse, joined by " / ", kept only while every part is one printed line (`proseSlashes`, `segs`); a paragraph the layout split
     between quotation and prose, a piece ending mid-sentence then the other kind, with a page break between or not, is mended into one
     paragraph, verse excepted (`mendSplits`, after the pages; checked directly in `tests/pdf_import.py`); a top or bottom line carrying
-    the page's own number is a running head however seldom it recurs, generated `headed`; a letter-spaced running head ("s a d i e p l a
+    the page's own number is a running head however seldom it recurs, generated `headed`, roman numbers too (`romanVal`; a page after a
+    roman-numbered one carries the count on); a footnote that recurs word for word ("3. Ibid., 30.") is never a running foot (`noteLine`);
+    a line's end is joined reading its last 120 characters only (`joinLine`), keeping a compound's hyphen when the word before already has
+    one or is self-, non- or quasi- (`KEEP_PREFIX`), a suspended hyphen's space ("pre- and post-war") and a range's hyphen ("1670-1677");
+    all tested by `tests/pdf_book.py`; a letter-spaced running head ("s a d i e p l a
     n t") counts as one word when matched loosely, compared in the same form as the recurring heads (generated `spaced`); a title the
     book's contents lists (`tocTitles`, from front lines "title 12") is a heading wherever a line set apart reads as it, in any case and
     at any size, and a contents entry is never joined to the next (generated `lowtitles`); on front pages a line running on in lowercase
@@ -320,12 +330,24 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   whether or not the book links terms by itself. Checked by `VALID.texts`; a restore keeps both copies' links (`withTermMarks`, in `withReading`).
 - How text is set (`inlineMarks`, `blockHTML`): verse stored with " / " between its lines (`isVerse`, every part a line's length, `VERSE_LINE`) is drawn line by line (`VBR`: the slash hidden in `.vs`, then a `<br>`; `.verse` hangs a long line's run-over), so positions and quoted passages keep the slash; a short paragraph starting with a list's number or bullet hangs (`isListItem`, `.li`); a joiner before a close-set dash (`WJ` in `.rx`, skipped by `offsetIn`, `rangeFor` and `selectionText` like other drawn-only text) keeps a line from starting with it; a chapter title over 60 characters is `.long`, set smaller; a text in the geometric order (`leadIn`: "PROP. XIII.", "DEFINITION I.", "Proof.—", "Corollary II.—") sets a statement apart (`.stmt`: label in small capitals, statement in italics) and a proof's or note's label in italics (`.part`), wrapping the label as it stands; Justified pages narrow word spaces a little and fall back to ragged right, hyphenated, below about 40 characters a line (`.short-lines`). Tested by `tests/verse_lists.py`.
 - Front matter in the reader: a book's contents are drawn as rows, title, dot leader and page, each opening its page (`tocEntries`, `tocRows`, `tocBefore`: page numbers rise through the contents, which settles numbers OCR split in two; `data-tocpage` → `blockForPage`); a title page's printed gaps are kept to at most 1em; page markers between front pages draw only a gap; a page marker at a paragraph's very start draws nothing. A page beginning between two paragraphs (`.bpg`) shows its number small at the right in a 12px strip, with no rule across the text. A table's rows (cells joined by " · ", as the HTML, EPUB and Markdown importers write them) are drawn as a grid when two to six short cells sit beside a block with as many (`tableCols`, `TSEP`, `.trow`, `.tc`, `.tsep`): columns line up, the separators stay in the page hidden, so offsets and quotations are the stored text's. Tested by `tests/verse_lists.py`. Tested by `tests/verse_lists.py`.
-- Swipe pages (`layoutPages`): CSS columns, one a page; a column is no wider than the Aa reading width (`MEASURE` × type size), centred by `--col-gap`, so one page is one screen (`pageStride`) at any width.
+- A paragraph running over a printed page (`groupHTML`, `paraHTML`'s `extra`) keeps its kind in Swipe pages: a list item's hang, verse,
+  a proposition's lead-in, a quotation or note. Italics opened in one block and closed in the next are closed and reopened at the
+  block's edges when drawn (`balanceItalics`), so each block draws the same alone (after a highlight) as in the whole book; emphasis inside
+  italics is roman (`em em`). A heading that is only a number (an aphorism's) is `.num`, with a line's room around it.
+- Turning the phone in Scroll mode puts the place back where it was (`R.scrollSpot`, kept by `updatePg`; the resize handler in
+  structure.js acts only when the width changes, so the toolbar coming and going leaves the place alone). Tested by `tests/reader_details.py`.
+- Swipe pages (`layoutPages`): with the toolbar hidden a page runs from the reader's top (below a notch) and its foot clears the page
+  count and the phone's gesture bar (`env(safe-area-inset-bottom)`). CSS columns, one a page; a column is no wider than the Aa reading width (`MEASURE` × type size), centred by `--col-gap`, so one page is one screen (`pageStride`) at any width.
 - Opening offline and on a weak connection (`sw.js`): the app's own files are fetched fresh when the connection answers. With a saved copy,
   an opening waits `PAGE_WAIT` for the page itself; if it doesn't come, the opening is marked in `SAVED` (by its client id) and every file it
   loads comes from the saved copy, so one opening never mixes versions, and a late answer is dropped so the saved copy stays one whole
   version. A file of an opening whose page came fresh waits `FILE_WAIT`. The first visit, with nothing saved, waits as long as it takes.
   Tested by `tests/slow_network.py` (a server that holds its answers) and the offline check in `tests/smoke.py`.
+- Navigation (`NAV`, `go`, `back`, `histBack`, the `popstate` handler in sheets.js): every step adds a history entry, so the phone's back
+  button steps back through the app. A sheet you have typed in isn't closed by one Back, Escape or tap beside it (`sheetGuard`; the form's
+  `data-dirty`): the first says your words aren't saved, the second leaves them; Cancel leaves them at once. The browser's Forward can't
+  go forward again, so the history is put back where the app is and the next Back still works. Tested by `tests/reader_details.py`.
+- A save made in passing (reading place, status, a ticked chapter, last active) that fails says so, at most once a minute (`saveFailed`, core.js).
 - Reader settings live in `localStorage` under `mg-reader`; other small preferences use `mg-*` keys (`mg-dict`: Wiktionary definitions kept for offline).
 - A text's `lang` (optional, e.g. "fr") sets the reader's `lang` for hyphenation; without it the language is guessed from the text (`guessLang`).
 - Book structure the owner marks in the reader (Edit → chapter title, heading, running head, title page, block quote, plain text) is stored on
