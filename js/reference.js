@@ -552,10 +552,15 @@ function classicMentions(id) {
   out.thinker.sort((a, b) => b.count - a.count); out.term.sort((a, b) => b.count - a.count);
   return out;
 }
+// Worked out once per book until the glossary changes: the book page redraws on every tick and note.
+const CLASSIC_MENTIONS = new Map();
 function classicMentionsHTML(id) {
   if (!CLASSIC_NAMES[id]) return "";
-  const html = mentionsHTML(classicMentions(id)); if (!html) return "";
-  return `<section class="group">${html.replace('<div class="label">Mentioned in</div>', '<div class="label">In the reference pages</div><p class="hint">Where the articles, thinker cards and glossary name this book or cite its passages.</p>')}</section>`;
+  let sig = String(S.terms.size); for (const x of S.terms.values()) sig += "|" + (x.updatedAt || 0);
+  const hit = CLASSIC_MENTIONS.get(id); if (hit && hit.sig === sig) return hit.out;
+  const html = mentionsHTML(classicMentions(id));
+  const out = html ? `<section class="group">${html.replace('<div class="label">Mentioned in</div>', '<div class="label">In the reference pages</div><p class="hint">Where the articles, thinker cards and glossary name this book or cite its passages.</p>')}</section>` : "";
+  CLASSIC_MENTIONS.set(id, { sig, out }); return out;
 }
 // Whether your place in the book is inside a step's chapters (known once the book's text has been loaded).
 function progressIn(st) {

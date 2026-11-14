@@ -45,7 +45,8 @@ function mapFor(col) {
   return m;
 }
 // A note changes what's used or read in Mastery: its worked-out state is dropped, so the next look works it out once (js/mastery.js).
-const notesChanged = (col) => { if (col === "notes" && typeof MASTERY_CACHE !== "undefined") MASTERY_CACHE = null; };
+let NOTES_VER = 0; // goes up on every change to a note, so what is worked out from the notes (study.js notesSig) is worked out again
+const notesChanged = (col) => { if (col === "notes") { NOTES_VER++; if (typeof MASTERY_CACHE !== "undefined") MASTERY_CACHE = null; if (typeof NOTES_SIG !== "undefined") NOTES_SIG = null; } };
 // The copy in memory changes first, so a second save made while the first is still being written (a tick, then another
 // tick; a bookmark, then Back) starts from the first one's result instead of overwriting it. If the write fails, the copy goes back.
 async function put(col, id, data) {
@@ -96,13 +97,13 @@ async function trashAndRemove(kind, title, items) {
     }
     S.trash.set(tid, sum);
   }
-  items.forEach(([store, id]) => { if (store !== "files") mapFor(store).delete(id); });
+  items.forEach(([store, id]) => { if (store !== "files") mapFor(store).delete(id); }); notesChanged("notes");
   return tid;
 }
 // Deleting for good, only once the person has chosen it in noRoom.
 async function removeForGood(items) {
   await idbTx([...new Set(items.map((x) => x[0]))], (st) => items.forEach(([store, id]) => st(store).delete(id)));
-  items.forEach(([store, id]) => { if (store !== "files") mapFor(store).delete(id); });
+  items.forEach(([store, id]) => { if (store !== "files") mapFor(store).delete(id); }); notesChanged("notes");
   for (const [store, id] of items) if (store === "texts") { if (PDFV.tid === id) closePdf(); SESS.delete(id); }
   render(); toast("Deleted for good.");
 }
@@ -143,7 +144,7 @@ async function restoreTrash(tid) {
     toast("This note's book was deleted too. Restore the book first."); return false;
   }
   const { back, kept } = await putBackMissing(tid, e.items);
-  back.forEach(([store, id, v]) => { if (store !== "files") mapFor(store).set(id, v); });
+  back.forEach(([store, id, v]) => { if (store !== "files") mapFor(store).set(id, v); }); notesChanged("notes");
   S.trash.delete(tid); render();
   const said = e.kind === "text" ? `“${e.title}” is back on its shelf${back.some(([st]) => st === "notes") ? ", with its notes" : ""}.` : e.kind === "note" ? "Note restored." : e.kind === "draft" ? "Draft restored." : e.kind === "path" ? "Reading path restored." : e.kind === "wish" ? "Wishlist book restored." : "Comparison restored.";
   const k = kept.filter(([st]) => ["texts", "notes", "drafts", "compares", "paths", "wishlist"].includes(st)).length;
@@ -483,7 +484,7 @@ async function applyRestore(plan, theirs) {
   if (idb && ops.length) await idbTx([...new Set(ops.map((o) => o[0]))], (st) => ops.forEach(([store, id, v]) => st(store).put(v, id)));
   PACE.clear(); // reading time is read again from the restored books
   if (pinBack) { PIN = { ...plan.pin, open: false }; savePin(); }
-  ops.forEach(([store, id, v]) => (store === "content" ? S.content : mapFor(store)).set(id, v));
+  ops.forEach(([store, id, v]) => (store === "content" ? S.content : mapFor(store)).set(id, v)); notesChanged("notes");
   render();
   const n = (store) => ops.filter((o) => o[0] === store && !o[3]).length;
   const parts = RESTORE_KINDS.map(([s, one, many]) => (n(s) ? `${n(s)} ${n(s) === 1 ? one : many}` : "")).filter(Boolean);

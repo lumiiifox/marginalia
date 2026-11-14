@@ -65,7 +65,7 @@ async function commitStructure(tid, blocks, sections, notes) {
     st("content").put(blocks, tid); st("texts").put(data, tid);
     for (const [id, n] of notes) st("notes").put(n, id);
   });
-  S.content.set(tid, blocks); S.texts.set(tid, data); for (const [id, n] of notes) S.notes.set(id, n);
+  S.content.set(tid, blocks); S.texts.set(tid, data); for (const [id, n] of notes) S.notes.set(id, n); notesChanged("notes");
   if (R.tid === tid && R.blocks) {
     const spot = currentSpot();
     R.blocks = blocks; Object.assign(R, sectionIndex(blocks)); R.chunks = chunkStarts(blocks); R.pagedSpot = null;

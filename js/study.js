@@ -26,8 +26,23 @@ function termKeys(g) {
   const keys = g.edited || !g.builtIn ? [g.t.replace(/\s*\(.*?\)\s*/g, " ").trim()] : g.k || [g.t.replace(/\s*\(.*?\)\s*/g, " ").trim()];
   return keys.filter((k) => k.length > 2);
 }
+// A cheap stamp of the notes, worked out once per turn of the event loop: a glossary redraw asks for every entry's notes.
+let NOTES_SIG = null;
+function notesSig() {
+  if (NOTES_SIG === null) {
+    let u = 0, a = 0; for (const n of S.notes.values()) { u = (u + (n.updatedAt || n.createdAt || 0) % 1e9) % 1e15; a += Number.isInteger(n.at) ? n.at + 1 : 0; }
+    NOTES_SIG = `${NOTES_VER}|${S.notes.size}|${u}|${a}`; queueMicrotask(() => { NOTES_SIG = null; });
+  }
+  return NOTES_SIG;
+}
+const TERM_NOTES = new Map(); // entry's names → { sig, list }
 function termNotes(g) {
   const keys = termKeys(g); if (!keys.length) return [];
+  const k = keys.join("\u0001"), sig = notesSig(), hit = TERM_NOTES.get(k);
+  if (hit && hit.sig === sig) return hit.list.slice();
+  const list = termNotesFresh(keys); TERM_NOTES.set(k, { sig, list }); return list.slice();
+}
+function termNotesFresh(keys) {
   const re = new RegExp(`(^|[^\\p{L}])(${keys.map(reEsc).join("|")})(s|es)?(?![\\p{L}])`, "iu");
   return [...S.notes.entries()].filter(([, n]) => re.test(n.passage || "") || re.test(n.gloss || "")).sort(([, a], [, b]) => (b.createdAt || 0) - (a.createdAt || 0));
 }
@@ -229,6 +244,11 @@ function rawSnip(text, a, b) {
   return `${esc(pre)}<mark>${esc(text.slice(a, b))}</mark>${esc(post)}`;
 }
 // Where the needles occur: { branch: [...], thinker: [...], term: [...] }, each { id, name, sec, count, snip }.
+// Entries' texts folded once each (folding all of them took most of the time "Mentioned in" needed); an edited entry is a new text.
+const TERM_FOLD = new Map();
+const termFold = (text) => { let f = TERM_FOLD.get(text); if (f === undefined) { f = linkFold(text); TERM_FOLD.set(text, f); } return f; };
+// "Mentioned in" for an open entry, kept until the glossary changes: a redraw while typing doesn't work it out again.
+const MENTIONS_HTML = new Map();
 function mentionsOf(needles, self) {
   const out = { branch: [], thinker: [], term: [] };
   if (!needles.length) return out;
@@ -238,7 +258,7 @@ function mentionsOf(needles, self) {
     out[src.kind].push({ id: src.id, name: src.name, sec: src.sec, count: hits.length, snip: mentionSnip(src.text, src.f, hits[0]) });
   };
   mentionSources().forEach(look);
-  for (const g of allTerms()) { const text = [g.d, g.x].filter(Boolean).join("\n\n"); look({ kind: "term", id: g.id, name: g.t, text, f: linkFold(text) }); }
+  for (const g of allTerms()) { const text = [g.d, g.x].filter(Boolean).join("\n\n"); look({ kind: "term", id: g.id, name: g.t, text, f: termFold(text) }); }
   out.thinker.sort((a, b) => b.count - a.count); out.term.sort((a, b) => b.count - a.count);
   return out;
 }
@@ -265,7 +285,11 @@ function fillMentions(d) {
   const box = d.querySelector(":scope > .tbody > [data-mentions]"); if (!box || box.dataset.done) return;
   const g = allTerms().find((x) => x.id === box.dataset.mentions); if (!g) return;
   box.dataset.done = "1";
-  box.innerHTML = mentionsHTML(mentionsOf(termNeedles(g), { kind: "term", id: g.id }));
+  let sig = String(S.terms.size); for (const x of S.terms.values()) sig += "|" + (x.updatedAt || 0);
+  const hit = MENTIONS_HTML.get(g.id);
+  if (hit && hit.sig === sig) { box.innerHTML = hit.html; return; }
+  const html = mentionsHTML(mentionsOf(termNeedles(g), { kind: "term", id: g.id }));
+  MENTIONS_HTML.set(g.id, { sig, html }); box.innerHTML = html;
 }
 // Your notes whose passage or gloss names a thinker, newest first (the same form as a term's "In your notes").
 function thinkerNotes(needles) {

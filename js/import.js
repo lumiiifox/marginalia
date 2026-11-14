@@ -455,6 +455,7 @@ async function addMarks(tid, marks, pages) {
   if (add.length) {
     if (idb) await idbTx(["notes"], (st) => { for (const [id, n] of add) st("notes").put(n, id); });
     for (const [id, n] of add) S.notes.set(id, n);
+    notesChanged("notes");
     render();
   }
   return { added: add.length, missed, dup };
