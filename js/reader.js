@@ -53,7 +53,7 @@ function navNoteGroups() {
 function drawNavNotes(cur = currentBlock()) {
   const box = $("#rnav-notes"); if (!box) return;
   // worked out again only when the notes, the text drawn or the slider's width change (it runs on every scroll frame)
-  const key = R.blocks ? [R.tid, R.ver, S.notes.size, R.blocks.length, box.parentElement.clientWidth].join("|") : "";
+  const key = R.blocks ? [R.tid, R.ver, NOTES_VER, R.blocks.length, box.parentElement.clientWidth].join("|") : "";
   if (key !== R.navKey) { R.navKey = key; R.navGroups = R.blocks ? navNoteGroups() : []; }
   const groups = R.navGroups;
   const here = groups.findIndex((g) => cur >= g.notes[0].i - 1 && cur <= g.notes[g.notes.length - 1].i + 1), drawn = key + "|" + here;

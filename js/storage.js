@@ -52,7 +52,7 @@ const notesChanged = (col) => { if (col === "notes") { NOTES_VER++; if (typeof M
 async function put(col, id, data) {
   const m = mapFor(col), had = m.has(id), prev = m.get(id);
   m.set(id, data); notesChanged(col);
-  if (col !== "content") render();
+  if (col !== "content") try { render(); } catch (e) { setTimeout(() => { throw e; }); } // a fault in drawing is reported, and the save still goes ahead
   if (idb) try { await idbDo(col, (s) => s.put(data, id)); }
   catch (err) { if (m.get(id) === data) { if (had) m.set(id, prev); else m.delete(id); notesChanged(col); if (col !== "content") render(); } throw err; }
   if (col === "notes") masteryNoteChanged(id); // a note can make a checked concept "used" (js/mastery.js)

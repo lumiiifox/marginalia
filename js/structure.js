@@ -194,6 +194,17 @@ function hideSheet(range, more) {
   });
 }
 // Edit the whole paragraph containing the start of the selection, preserving block indices.
+// Where a glued title ends in a corrected paragraph: the break between words whose text before it is closest to the old title
+// (so a typo fixed in the title, the body or both keeps the title whole). 0 when nothing there resembles the title any more.
+function glueCut(head, value) {
+  const dist = (a, b) => { let prev = Array.from({ length: b.length + 1 }, (_, j) => j); for (let i = 1; i <= a.length; i++) { const cur = [i]; for (let j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); prev = cur; } return prev[b.length]; };
+  let best = 0, bestD = Infinity;
+  for (let k = 1; k <= Math.min(value.length - 1, head.length * 2 + 20); k++) {
+    if (!/\s/.test(value[k]) || /\s/.test(value[k - 1])) continue; // the end of a word
+    const d = dist(head, value.slice(0, k).trim()); if (d < bestD) { bestD = d; best = k; }
+  }
+  return bestD <= Math.max(2, head.length / 3) ? best : 0;
+}
 function editSelectedParagraph() {
   const s = R.sel, tid = R.tid;
   if (!s || !tid || !R.blocks) return;
@@ -216,9 +227,8 @@ function editSelectedParagraph() {
       const next = R.blocks.slice();
       next[i] = { ...original, x: value };
       if (original.sth) { // a title or running head glued to the paragraph: the cut moves with the words around it
-        const head = original.x.slice(0, original.sth), body = original.x.slice(original.sth).trimEnd();
-        if (body && value.endsWith(body) && value.length > body.length) next[i].sth = value.length - body.length;
-        else if (!value.startsWith(head)) { delete next[i].sth; delete next[i].st; }
+        const px = plain(original.x), head = px.slice(0, original.sth).trim(), cut = glueCut(head, value); // sth counts plain characters
+        if (cut > 0) next[i].sth = cut; else { delete next[i].sth; delete next[i].st; }
       }
       const t = S.texts.get(tid);
       if (!t) return "This text is no longer available.";

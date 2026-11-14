@@ -184,6 +184,21 @@ async def main():
         rm = await page.evaluate(f"idbGet('content', 's').then((B) => ({{ s: B[{g}].s || null, st: B[{g}].st, secs: S.texts.get('s').sections.length }}))")
         check(rm == {"s": None, "st": "heading", "secs": 1}, f"removing a line stops that chapter being a section in the text; its title stays as a heading ({rm})")
 
+        # correcting words in a paragraph with its title glued on keeps the title whole, italics in it or not
+        for title in ["CHAPTR ONE", "\u0001On\u0002 CHAPTR ONE"]:
+            cut = await page.evaluate("""async (title) => {
+              const body = ' The story begins here, and it is so-called long enough to read.';
+              await put('content', 'g', [{ k: 'p', x: title + body, st: 'chapter', sth: plain(title).length }]);
+              await put('texts', 'g', { title: 'G', hasContent: true, total: 1, pos: 0, status: 'reading', createdAt: 1, updatedAt: 1, sections: [] });
+              go({ screen: 'reader', textId: 'g' }); for (let k = 0; k < 40 && !(R.tid === 'g' && R.blocks); k++) await new Promise((r) => setTimeout(r, 100));
+              R.sel = { text: 'story', i: 0, j: 0, si: 15, ej: 20, page: '', sec: '' }; editSelectedParagraph(); }""", title)
+            await page.wait_for_selector("#edit-paragraph")
+            v = await page.input_value("#edit-paragraph")
+            await page.fill("#edit-paragraph", v.replace("CHAPTR", "CHAPTER").replace("so-called", "so called")); await page.click("#sheetroot button[type=submit]"); await page.wait_for_timeout(500)
+            got = await page.evaluate("[R.blocks[0].st, plain(R.blocks[0].x).slice(0, R.blocks[0].sth)]")
+            check(got == ["chapter", plain_title := title.replace("\u0001", "").replace("\u0002", "").replace("CHAPTR", "CHAPTER")], f"a glued title corrected along with its paragraph stays whole ({got})")
+            await page.evaluate("back()"); await page.wait_for_timeout(300)
+
         check(not errs, "no script errors" + (f": {errs[:3]}" if errs else ""))
         await page.evaluate("go({ screen: 'reader', textId: 's' })"); await page.wait_for_timeout(600)
         await page.evaluate(f"goTo({g})"); await page.wait_for_timeout(300); await page.screenshot(path="/tmp/structure-chapter.png")
