@@ -1244,6 +1244,7 @@ async function addTermMark(s, id) {
   paintTerms();
   const g = allTerms().find((x) => x.id === id);
   toast(`Linked to ${g ? g.t : "the glossary"}.`);
+  masteryMarkChanged(id);
 }
 async function removeTermMark(k) {
   const t = S.texts.get(R.tid), list = termMarksOf(t); if (!t || !list[k]) return;

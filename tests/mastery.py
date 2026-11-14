@@ -203,6 +203,24 @@ async def main():
         await p2.evaluate("go({ screen: 'mastery' })"); await p2.wait_for_timeout(1500)
         got = await p2.evaluate("[document.querySelector('#main .sub').textContent, masteryState().pct, masteryState().items.filter((it) => it.kind === 'station' && it.s.read).length]")
         check(first and got[0].startswith(f"{got[1]}%") and got[2] >= 1, f"opened first, before its book loads, Mastery redraws to agree with the collection ({got})")
+        # a path's own question, added to your questions, uses nothing; linking a passage to an entry does, and says so
+        asked = await p2.evaluate("""async () => {
+          const P = bookPaths().find((x) => x.id === 'how-to-live'), k = P.steps.findIndex((st) => (st.q || []).some((q) => /Aristotle/.test(q)));
+          const i = P.steps[k].q.findIndex((q) => /Aristotle/.test(q)), st = P.steps[k];
+          const it = masteryItems().find((x) => x.kind === 'thinker' && x.id === 'aristotle'); if (!it) return 'no item';
+          const before = masteryStages(it).used; await askQuestion(`${P.id}|${k}|${i}`); await new Promise((r) => setTimeout(r, 100));
+          const q = [...S.notes.values()].find((n) => n.kind === 'question' && n.gloss === st.q[i]);
+          return [before, !!q, masteryStages(it).used, document.querySelector('#toast').textContent.includes('Used')]; }""")
+        check(asked == [False, True, False, False], f"a path's question added to your questions earns nothing ({asked})")
+        linked = await p2.evaluate("""async () => {
+          const g = masteryItems().find((x) => x.kind === 'term' && !masteryStages(x).used); if (!g) return 'none';
+          const tid = 'classic-spinoza-ethics', t = S.texts.get(tid);
+          await put('texts', tid, { ...t, termMarks: [{ id: g.id, at: 0, passage: 'linked words', createdAt: Date.now() }], updatedAt: Date.now() });
+          masteryMarkChanged(g.id); await new Promise((r) => setTimeout(r, 50));
+          const toast1 = document.querySelector('#toast').textContent; document.querySelector('#toast').textContent = '';
+          await put('notes', 'zz', { textId: tid, kind: 'gloss', gloss: 'zzz qqq unrelated', createdAt: Date.now(), updatedAt: Date.now() }); await new Promise((r) => setTimeout(r, 50));
+          return [toast1.includes('Used') && toast1.includes(g.name), document.querySelector('#toast').textContent.includes('Used')]; }""")
+        check(linked == [True, False], f"linking a passage to an entry is celebrated then, and an unrelated note later is not ({linked})")
         await ctx2.close()
         check(not errs, "no script errors" + (f": {errs}" if errs else ""))
         await browser.close()

@@ -501,6 +501,7 @@ function referenceView() {
 }
 function openTerm(id) {
   earn("term", id, "met");
+  if (S.gChecked && !allTerms().some((g) => g.id === id && isCheckedTerm(g))) S.gChecked = false; // "Checked only" would hide the entry you asked for
   go({ screen: "glossary", gs: { gOpen: [id], gq: "", gArea: "all" }, scrollTo: id });
 }
 // Thinkers whose names appear in a book's author field, so a book can link to its author's card.
@@ -1094,7 +1095,7 @@ function setMaker() {
     <div id="mkbox">${list()}</div>
     <div class="noteacts"><button class="btn primary" data-keep="1" data-mklink="1">Make the link</button></div>
     <div id="mkout"></div>`, (b) => {
-    if (b.dataset.mkall) shown().forEach((g) => MK.picked.add(g.id));
+    if (b.dataset.mkall) shown().slice(0, 80).forEach((g) => MK.picked.add(g.id)); // the ones on screen, as the button says
     else if (b.dataset.mkclear) MK.picked.clear();
     else if (b.dataset.mklink) {
       const chosen = terms().filter((g) => MK.picked.has(g.id));

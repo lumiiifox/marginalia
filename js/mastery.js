@@ -34,15 +34,23 @@ function masteryItems() {
   }
   return out;
 }
+// A question a reading path wrote for you ("Add to my questions") is the path's words, not yours: it doesn't make anything "used".
+function pathQuestions() {
+  const out = new Set();
+  for (const P of allPaths()) { for (const st of P.steps || []) for (const q of st.q || []) out.add(q); if (P.parts) for (const st of closeStations(P)) for (const q of st.q || []) out.add(q); }
+  return out;
+}
+const ownNote = (n, asked) => !(n.kind === "question" && !String(n.passage || "").trim() && asked.has(n.gloss));
 // Which stages an item has reached: { met, ans, used, read } as booleans. `ctx` caches note lookups for one drawing.
 function masteryStages(item, ctx = {}) {
   const rec = S.mastery.get(masteryKey(item.kind, item.id)) || {}, out = { met: !!rec.met, ans: !!rec.ans, used: false, read: false };
-  if (item.kind === "term") out.used = termNotes(item.g).length > 0 || [...S.texts.values()].some((t) => (t.termMarks || []).some((m) => m.id === item.id));
+  const asked = ctx.asked || (ctx.asked = pathQuestions());
+  if (item.kind === "term") out.used = termNotes(item.g).some(([, n]) => ownNote(n, asked)) || [...S.texts.values()].some((t) => (t.termMarks || []).some((m) => m.id === item.id));
   else if (item.kind === "thinker") {
     // every note folded once per drawing, then each thinker's names looked for in them (what thinkerNotes does, note by note)
     // Folding a note is the slow part, so only notes whose plain lowercase text holds one of the names (accents stripped) are folded.
     const plainOf = (x) => x.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
-    const raw = ctx.raw || (ctx.raw = [...S.notes.values()].map((n) => { const x = [n.passage, n.gloss].filter(Boolean).join("\n"); return [x, plainOf(x)]; }));
+    const raw = ctx.raw || (ctx.raw = [...S.notes.values()].filter((n) => ownNote(n, asked)).map((n) => { const x = [n.passage, n.gloss].filter(Boolean).join("\n"); return [x, plainOf(x)]; }));
     const needles = thinkerNeedles(item.p), names = [...new Set([item.p.n, item.p.sn])].map(plainOf);
     out.used = needles.length > 0 && raw.some(([x, low]) => names.some((nm) => low.includes(nm)) && findNeedles(linkFold(x), needles).length);
   }
@@ -124,9 +132,17 @@ function masteryNoteChanged(noteId) {
     const it = masteryItems().find((x) => masteryKey(x.kind, x.id) === key);
     if (!it) continue;
     // only what this note itself brings: a station's passage it falls in, a term or thinker it names
-    const mine = it.kind === "station" ? n.textId === it.P.book && (closeState(it.P).out.get(it.st.id)?.notes || []).some(([id]) => id === noteId) : it.kind === "term" ? termNotes(it.g).some(([id]) => id === noteId) || (S.texts.get(n.textId)?.termMarks || []).some((m) => m.id === it.id) : thinkerNotes(thinkerNeedles(it.p)).some(([id]) => id === noteId);
+    const mine = it.kind === "station" ? n.textId === it.P.book && (closeState(it.P).out.get(it.st.id)?.notes || []).some(([id]) => id === noteId) : it.kind === "term" ? termNotes(it.g).some(([id]) => id === noteId) : thinkerNotes(thinkerNeedles(it.p)).some(([id]) => id === noteId);
     if (mine) celebrate(it, it.kind === "station" ? "read" : "used");
   }
+  USED_SEEN = now;
+}
+// Linking a passage to a glossary entry uses it: celebrated when the link is what made it used.
+function masteryMarkChanged(termId) {
+  if (!S.mastery || S.mode !== "ready") return;
+  MASTERY_CACHE = null;
+  const now = usedNow(), key = masteryKey("term", termId);
+  if (USED_SEEN && !USED_SEEN.has(key) && now.has(key)) { const it = masteryItems().find((x) => masteryKey(x.kind, x.id) === key); if (it) celebrate(it, "used"); }
   USED_SEEN = now;
 }
 // The instant part: a toast that pops, the stage pips, and a short buzz where the phone allows it. Things earned together (a card

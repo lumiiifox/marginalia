@@ -250,7 +250,7 @@ function draftDoc(d, style) {
   };
   for (const it of d.items || []) {
     if (it.t === "h") { blocks.push({ k: "h", x: it.x }); continue; }
-    if (it.t === "p") { blocks.push({ k: "p", x: it.x }); continue; }
+    if (it.t === "p") { if (!String(it.x || "").startsWith(GUIDE)) blocks.push({ k: "p", x: it.x }); continue; } // a template's guide lines stay out of the essay
     const n = S.notes.get(it.id); if (!n) continue;
     if (n.passage) {
       const c = cite(n.textId, n.page);

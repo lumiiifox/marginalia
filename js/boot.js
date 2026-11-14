@@ -65,7 +65,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "openbranches") return go({ screen: "branches" });
   if (b.id === "openthinkers") { if (S.screen === "reference") S.tl = true; return go({ screen: "thinkers" }); }
   if (b.dataset.ref) { S.rq = ""; return go({ screen: "reference", rk: b.dataset.ref }); }
-  if (b.dataset.rk) { S.rk = b.dataset.rk; return render(); }
+  if (b.dataset.rk) { S.rk = b.dataset.rk; const top = NAV.stack[NAV.stack.length - 1]; if (top && top.screen === "reference") top.rk = S.rk; return render(); } // Back returns to this tab
   if (b.dataset.era && !b.closest("#book")) { S.tl = true; S.pq = ""; return go({ screen: "thinkers", era: b.dataset.era }); }
   if (b.dataset.garea) { S.gArea = b.dataset.garea; S.gq = ""; S.gOpen = new Set(); return go({ screen: "glossary" }); }
   if (b.id === "openglossary") { S.gq = ""; S.gArea = "all"; return go({ screen: "glossary" }); }
@@ -107,7 +107,7 @@ document.addEventListener("click", (e) => {
   // a note's less used actions open in place, without drawing the screen again
   if (b.hasAttribute("data-noteacts")) { const open = b.closest(".note").classList.toggle("acts-open"); b.setAttribute("aria-expanded", open); b.textContent = open ? "Less" : "More"; return; }
   if (b.dataset.continue) return go({ screen: "reader", textId: b.dataset.continue });
-  if (b.dataset.mpath) return go({ screen: "paths" });
+  if (b.dataset.mpath) return go({ screen: "paths", path: b.dataset.mpath });
   if (b.dataset.path) return go({ screen: "paths", path: b.dataset.path });
   if (b.dataset.pathread) { const [tid, sec] = b.dataset.pathread.split("|"); return readStep(tid, sec ? sec.split(",") : []); }
   if (b.dataset.pathadd) return readdClassic(b.dataset.pathadd);
