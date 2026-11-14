@@ -43,9 +43,12 @@ self.addEventListener("fetch", (e) => {
       const saved = await caches.match(req).then((hit) => hit || (page ? caches.match("./index.html") : null));
       if (!page && SAVED.has(e.clientId)) return saved || fetch(req, { cache: "no-cache" });
       // a late answer is not kept: the saved copy stays one whole version until an opening fetches it all fresh
-      const net = (page ? fetch(req) : fetch(req, { cache: "no-cache" })).catch(() => null);
+      // the page too is checked with the server: from the browser's HTTP cache (GitHub Pages lets it keep a page ten minutes) an
+      // old page would run with new scripts after a deploy
+      const net = (page ? fetch(req.url, { cache: "no-cache", credentials: "same-origin" }) : fetch(req, { cache: "no-cache" })).catch(() => null);
       const res = saved ? await within(net, page ? PAGE_WAIT : FILE_WAIT) : await net;
-      if (res) return keep(res);
+      // a server error (GitHub Pages down) is not an answer while a saved copy can open the app
+      if (res && (res.ok || !saved)) return keep(res);
       if (saved) { if (page && e.resultingClientId) SAVED.add(e.resultingClientId); return saved; }
       return Response.error();
     })());
