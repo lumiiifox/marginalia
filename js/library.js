@@ -149,8 +149,8 @@ function libraryView() {
   // a search shows its first SEARCH_FIRST notes, newest first, then a button for the rest (S.qAll: the search they were all shown for)
   if (S.q.trim()) {
     const hits = sortNotes([...S.notes.entries()].filter(([, n]) => matches(n, S.q)), null);
-    const ql = S.q.trim().toLowerCase();
-    const th = allTerms().filter((g) => g.t.toLowerCase().includes(ql)).slice(0, 6);
+    const ql = fold(S.q.trim());
+    const th = allTerms().filter((g) => fold(g.t).includes(ql)).slice(0, 6); // accents ignored, as for notes and books
     const fq = fold(S.q.trim()), who = fq.length > 2 ? THINKERS.filter((p) => thinkerMatches(p, fq)).slice(0, 6) : [];
     const anyLoaded = [...S.texts.values()].some((t) => t.hasContent);
     const fb = fold(S.q.trim()), bk = texts.filter(([, t]) => fold(`${t.title} ${t.author || ""}`).includes(fb)).slice(0, 8);
@@ -165,7 +165,7 @@ function libraryView() {
     const per = shelfPer();
     // Two books with the same title (two translations, a PDF and an EPUB) each say which they are, under the title.
     const same = new Map(); for (const [, t] of S.texts) { const k = norm(t.title || ""); same.set(k, (same.get(k) || 0) + 1); }
-    const which = (t) => (same.get(norm(t.title || "")) > 1 ? [t.author, t.edition, t.year].filter(Boolean).join(", ") || [t.kind, t.createdAt ? `added ${new Date(t.createdAt).toLocaleDateString()}` : ""].filter(Boolean).join(", ") : "");
+    const which = (t) => (same.get(norm(t.title || "")) > 1 ? [t.author, t.edition, t.year].filter(Boolean).join(", ") || [t.source && t.source.kind, t.createdAt ? `added ${new Date(t.createdAt).toLocaleDateString()}` : ""].filter(Boolean).join(", ") : "");
     body = Object.keys(STATUS).map((st) => {
       const books = shelfList(st);
       if (!books.length) return "";

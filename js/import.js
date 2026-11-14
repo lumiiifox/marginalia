@@ -63,7 +63,8 @@ function makeSections(blocks) {
 }
 function linkHeadings(blocks, parsedSecs, finalSecs) {
   const byLabel = new Map(finalSecs.map((s) => [norm(s.label), s.id]));
-  const idMap = new Map(parsedSecs.map((p) => [p.id, byLabel.get(norm(p.label))]));
+  const kept = new Set(finalSecs.map((s) => s.id)); // a section renamed before saving keeps its id
+  const idMap = new Map(parsedSecs.map((p) => [p.id, kept.has(p.id) ? p.id : byLabel.get(norm(p.label))]));
   blocks.forEach((b) => { if (b.s) { const id = idMap.get(b.s); if (id) b.s = id; else delete b.s; } });
 }
 
@@ -1008,6 +1009,7 @@ function domToBlocks(root, blocks) {
       else inl(c);
     }
     flush(); kind = k;
+    if (tag === "li") lead = ""; // an item with no words (a picture) doesn't pass its number to what follows
   }
   walk(root, "p");
 }
@@ -1107,17 +1109,22 @@ function parsePlain(src, md) {
   // a plain text file's usual line length, so that a paragraph of lines much shorter than it reads as verse, line by line
   const lens = src.split("\n").map((l) => l.trim().length).filter((n) => n).sort((a, b) => a - b);
   const wrapW = lens.length ? lens[Math.floor(lens.length * 0.9)] : 0;
-  for (const chunk of src.split(/\n[ \t]*\n/)) {
+  // lines far longer than any printed line are paragraphs on their own (Word's plain text, phone notes): each line its own chunk
+  const perLine = !md && wrapW > 150;
+  for (const chunk of perLine ? src.split("\n") : src.split(/\n[ \t]*\n/)) {
     const raw = chunk.split("\n").filter((l) => l.trim() && (md || !/^[\s=+|:-]{4,}$/.test(l))); // (a plain text table's rules)
     const lines = raw.map((l) => l.replace(/\s+$/, ""));
     if (!lines.length) continue;
     if (md) {
-      let acc = "", ak = "p";
-      const fl = () => { const x = tidy(inlineMd(acc)); if (plain(x)) blocks.push({ k: ak, x }); acc = ""; ak = "p"; };
+      let acc = "", ak = "p", accN = 0;
+      const fl = () => { const x = tidy(inlineMd(acc)); if (plain(x)) blocks.push({ k: ak, x }); acc = ""; ak = "p"; accN = 0; };
       // a line ended by a backslash or two spaces breaks there: kept as " / ", as verse is quoted
       const brk = (k) => /\\$|\s{2,}$/.test(raw[k]);
-      const add = (k, t) => { const clean = t.replace(/\\$/, "").trim(); acc = !acc ? clean : k > 0 && brk(k - 1) ? acc + " / " + clean : joinP(acc, clean); };
+      const add = (k, t) => { accN++; const clean = t.replace(/\\$/, "").trim(); acc = !acc ? clean : k > 0 && brk(k - 1) ? acc + " / " + clean : joinP(acc, clean); };
       lines.forEach((ln, k) => {
+        // a line underlined with === or --- is a heading (level 1 or 2)
+        const se = ln.match(/^\s{0,3}(=+|-+)\s*$/);
+        if (se && ak === "p" && accN === 1) { blocks.push({ k: "h", x: tidy(inlineMd(acc)), l: se[1][0] === "=" ? 1 : 2 }); acc = ""; accN = 0; return; }
         const h = ln.match(/^\s{0,3}(#{1,6})\s+(.*?)\s*#*\s*$/);
         if (h) { fl(); blocks.push({ k: "h", x: tidy(inlineMd(h[2])), l: h[1].length }); return; }
         const fd = ln.match(/^\s{0,3}\[\^([^\]\s]+)\]:\s*(.*)$/);
@@ -1137,7 +1144,8 @@ function parsePlain(src, md) {
       fl(); continue;
     }
     const one = lines.length === 1 ? lines[0].trim() : null;
-    if (one && one.length < 90 && (HEAD.test(one) || /^[IVXLC]+\.?$/.test(one) || (/\p{Lu}{2}/u.test(one) && !/\p{Ll}/u.test(one) && one.split(/\s+/).length <= 10))) {
+    const headLine = HEAD.test(one || "") && (/^\S+[.:]?$/.test(one) || /^\S+\s+([IVXLCDM]+|\d+|[A-Z])\b/.test(one) || (!/[.!?,;]$/.test(one) && one.split(/\s+/).length <= 8));
+    if (one && one.length < 90 && (headLine || /^[IVXLC]+\.?$/.test(one) || (/\p{Lu}{2}/u.test(one) && !/\p{Ll}/u.test(one) && one.split(/\s+/).length <= 10))) {
       blocks.push({ k: "h", x: smartQuotes(one), l: /^(part|book)\b/i.test(one) ? 1 : 2 }); continue;
     }
     // a list: each item its own paragraph, its marker kept, its run-over lines joined to it

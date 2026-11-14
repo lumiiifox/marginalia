@@ -821,7 +821,10 @@ function scrollToEl(el, f, off) {
 const PACE_GAP = 120000, PACE_JUMP = 3000, PACE = new Map();
 const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 const paceDays = (tid) => { if (!PACE.has(tid)) PACE.set(tid, { ...((S.texts.get(tid) || {}).days || {}) }); return PACE.get(tid); };
-function wordCum(B) { const c = [0]; for (let i = 0; i < B.length; i++) c.push(c[i] + (B[i].k === "pg" || isHidden(B[i]) ? 0 : (plain(B[i].x || "").match(/\S+/g) || []).length)); return c; }
+// Words before each block, kept per text (the book page asks on every redraw); a changed text is a new array, so it's counted afresh.
+const WORDCUM = new WeakMap();
+function wordCum(B) { const hit = WORDCUM.get(B); if (hit && hit.length === B.length + 1) return hit; const c = wordCumFresh(B); WORDCUM.set(B, c); return c; }
+function wordCumFresh(B) { const c = [0]; for (let i = 0; i < B.length; i++) c.push(c[i] + (B[i].k === "pg" || isHidden(B[i]) ? 0 : (plain(B[i].x || "").match(/\S+/g) || []).length)); return c; }
 function paceTick() {
   const now = Date.now();
   if (R.beat) R.paceMs = (R.paceMs || 0) + Math.min(Math.max(0, now - R.beat), PACE_GAP);

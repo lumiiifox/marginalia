@@ -50,7 +50,11 @@ async function wsFile(lang, page, say) {
     return `<h${lv}>${esc(name)}</h${lv}>${html}`;
   };
   const prose = (html) => [...new DOMParser().parseFromString(`<body>${html}</body>`, "text/html").body.querySelectorAll("p, blockquote, dd, .poem")].reduce((k, e) => k + e.textContent.trim().split(/\s+/).filter(Boolean).length, 0);
-  if (!queue.length) parts.push(body);
+  // the main page's own prose (a preface, an introduction) comes first, even when it also links to the work's parts;
+  // a paragraph that is mostly links is the contents, already fetched as the parts
+  const ownWords = [...new DOMParser().parseFromString(`<body>${body}</body>`, "text/html").body.querySelectorAll("p, blockquote, dd, .poem")]
+    .reduce((k, e) => { const all = e.textContent.trim().length, linked = [...e.querySelectorAll("a")].reduce((n, x) => n + x.textContent.trim().length, 0); return linked * 2 > all ? k : k + e.textContent.trim().split(/\s+/).filter(Boolean).length; }, 0);
+  if (!queue.length || ownWords >= 120) parts.push(body);
   while (queue.length && n < WS_MAX) {
     const [t, lv] = queue.shift(); n++;
     say(`Fetching ${n} of ${n + queue.length}: ${t.slice(main.title.length + 1)}…`);

@@ -149,6 +149,17 @@ async def main():
             for enc, raw in (("windows-1252", list(src.encode("cp1252"))), ("utf-16", list(b"\xff\xfe" + src.encode("utf-16-le")))):
                 got = await page.evaluate("""async ([bytes]) => { const r = await parseFile(new File([new Uint8Array(bytes)], 'old.txt', { type: 'text/plain' }), () => {}); return plain(r.blocks[0].x); }""", [raw])
                 check(got == src.strip(), f"text: a file saved as {enc} reads as written ({got!r})")
+            # 8 shapes from other tools: one paragraph per line; Markdown's underlined headings; a sentence that starts like a heading; an empty list item
+            para = "This paragraph was written in a word processor and saved as plain text, so it sits on one long line of its own with no breaks. "
+            got = await page.evaluate(PARSE, ["word.txt", "\n".join(f"{k}. {para}" for k in range(40))])
+            check(len([b for b in got["blocks"] if b[0] == "p"]) == 40, f"text: one paragraph per long line, without blank lines, stays 40 paragraphs ({len(got['blocks'])})")
+            got = await page.evaluate(PARSE, ["setext.md", "Chapter One\n===========\n\nSome text.\n\nChapter Two\n-----------\n\nMore text.\n"])
+            check([b for b in got["blocks"] if b[0] == "h"] == [["h", "Chapter One"], ["h", "Chapter Two"]], f"markdown: a line underlined with === or --- is a heading ({got['blocks']})")
+            wrapped = "A paragraph wrapped at about seventy characters, as plain text files are,\nrunning on to a second line so the file has a usual line length.\n\n"
+            got = await page.evaluate(PARSE, ["head.txt", wrapped + "Part of the difficulty lies here.\n\n" + wrapped + "Chapter 2.\n\n" + wrapped])
+            check(["p", "Part of the difficulty lies here."] in got["blocks"] and ["h", "Chapter 2."] in got["blocks"], f"text: a sentence beginning with Part is a paragraph; Chapter 2. is a heading ({got['blocks'][1:4]})")
+            got = await page.evaluate(PARSE, ["list.html", "<html><body><ol><li><img src='x.png'></li></ol><p>A paragraph after the list.</p></body></html>"])
+            check(["p", "A paragraph after the list."] in got["blocks"], f"html: an item with no words passes no number to the next paragraph ({got['blocks']})")
             check(not errs, f"no script errors ({errs[:2]})")
             await browser.close()
     finally:
