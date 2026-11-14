@@ -275,7 +275,7 @@ function syllabusHTML(P) {
       </div></li>`;
   }).join("");
   return `<section class="path syllabus" data-path-id="${esc(P.id)}">
-    <nav class="syllabus-nav" aria-label="Reading path"><button class="linkbtn" id="allpaths">Back to paths</button>${pathActions(P)}</nav>
+    <nav class="syllabus-nav" aria-label="Reading path"><button class="btn ghost backbtn" id="allpaths">← Reading paths</button>${pathActions(P)}</nav>
     <header class="syllabus-title"><h1>${esc(P.n)}</h1>${P.d ? P.d.split(/\n\s*\n/).map((p) => `<p>${esc(p)}</p>`).join("") : ""}</header>
     ${P.steps.length ? `<div class="syllabus-layout"><details class="syllabus-outline" data-pathoutline="${esc(P.id)}"${state.outline === false ? "" : " open"}><summary>Path outline</summary><ol>${outline}</ol></details><div class="syllabus-assignments"><h2>Readings</h2><ol class="psteps">${readings}</ol></div></div>` : `<div class="syllabus-empty"><h2>Your inquiry starts here</h2><p>Add books, choose chapters, and arrange them around your questions.</p><button class="btn primary" data-pathedit="${esc(P.id)}">Add a reading</button></div>`}
     ${P.next ? `<footer class="syllabus-next"><h2>Further reading</h2><p>${esc(P.next)}</p>${P.ws ? `<button class="btn" data-wsfind="${esc(P.ws.lang)}|${esc(P.ws.q)}">Find it on Wikisource</button>` : ""}</footer>` : ""}
@@ -285,9 +285,9 @@ function syllabusHTML(P) {
 }
 function pathsView() {
   const list = allPaths(), P = list.find((p) => p.id === S.pathFocus);
-  if (P) return P.kind === "close" ? `<button class="linkbtn" id="allpaths">Back to paths</button>${closePathHTML(P, termMap())}` : syllabusHTML(P);
+  if (P) return P.kind === "close" ? `<div><button class="btn ghost backbtn" id="allpaths">← Reading paths</button></div>${closePathHTML(P, termMap())}` : syllabusHTML(P);
   const group = (paths, label) => paths.length ? `<section class="path-catalogue"><h2>${label}</h2>${paths.map((P) => `<section class="path path-entry" data-path-id="${esc(P.id)}"><div class="sec-head"><h3><button class="path-title-link" data-path="${esc(P.id)}">${esc(P.n)}</button></h3>${P.custom ? pathActions(P) : ""}</div><div class="sub">${P.kind === "close" ? "Close reading" : `${P.steps.length} readings`}</div><p>${esc(P.d || "Arrange readings around your own questions.")}</p></section>`).join("")}</section>` : "";
-  return `<button class="linkbtn path-back" id="back">Back</button><header class="paths-title"><h1>Reading paths</h1><p>Reading sequences shaped around a question.</p><div class="noteacts"><button class="btn primary" id="newpath">Create a reading path</button><button class="linkbtn" id="importpath">Import a path</button></div></header>${group(list.filter((p) => p.custom), "Your paths")}${group(list.filter((p) => !p.custom), "From the reference library")}`;
+  return `<div><button class="btn ghost backbtn" id="back">← Back</button></div><header class="paths-title"><h1>Reading paths</h1><p>Reading sequences shaped around a question.</p><div class="noteacts"><button class="btn primary" id="newpath">Create a reading path</button><button class="linkbtn" id="importpath">Import a path</button></div></header>${group(list.filter((p) => p.custom), "Your paths")}${group(list.filter((p) => !p.custom), "From the reference library")}`;
 }
 // The toggle event arrives a task later, so a render in between would reopen the outline: record the new state on the click itself.
 document.addEventListener("click", (e) => {

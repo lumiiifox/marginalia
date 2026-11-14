@@ -85,7 +85,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .hint { font-size: 14px; color: var(--muted); margin: 0; }
 .hint.bad { color: var(--warn); }
 
-.chip { display: inline-flex; align-items: center; gap: 4px; font: 500 13px/1 var(--f-ui); border: 1px solid var(--rule); border-radius: 6px; padding: 6px 9px; color: var(--muted); background: color-mix(in srgb, var(--paper) 72%, transparent); }
+.chip { display: inline-flex; align-items: center; gap: 4px; font: 500 14.5px/1 var(--f-ui); border: 1px solid var(--rule); border-radius: 6px; padding: 8px 11px; color: var(--muted); background: color-mix(in srgb, var(--paper) 72%, transparent); }
 .chip.on { background: var(--leather); color: var(--leather-ink); border-color: transparent; }
 .chip.k-objection { color: var(--warn); }
 .chip.k-question { color: var(--link); }
@@ -1041,7 +1041,6 @@ span.bhid { display: inline; }
 /* Reading paths: a scholarly syllabus with a navigable outline. */
 .path-mode .wrap { max-width: 1040px; padding: 22px 24px 80px; gap: 32px; }
 .path-mode .linkbtn { min-height: 44px; text-align: left; }
-.path-back { justify-self: start; }
 .paths-title h1, .syllabus-title h1 { font: 700 29px/1.12 var(--f-text); letter-spacing: -.025em; overflow-wrap: anywhere; }
 .paths-title > p { font: 400 16.5px/1.5 var(--f-text); color: var(--muted); margin: 6px 0 18px; max-width: 46ch; }
 .paths-title .noteacts { margin-left: 0; gap: 8px 22px; align-items: center; }
@@ -1064,6 +1063,7 @@ span.bhid { display: inline; }
 .syllabus { padding: 0; margin: 0; border: 0; background: transparent; }
 .syllabus-nav { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 24px; }
 .syllabus-nav .linkbtn { font-size: 17px; }
+.backbtn { padding-left: 0; } /* a screen's way back, the same on every screen: "← Back" at the top left */
 .syllabus-title { margin-bottom: 22px; }
 .syllabus-title > p { font: 400 18px/1.4 var(--f-text); color: var(--muted); margin: 18px 0 12px; overflow-wrap: anywhere; max-width: 65ch; }
 .syllabus-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
@@ -1237,7 +1237,7 @@ span.bhid { display: inline; }
 .ckmark.ok::before { content: "✓ "; color: color-mix(in srgb, var(--brass) 75%, var(--ink)); font-weight: 700; }
 .ckmark.un::before { content: "○ "; }
 
-/* Tap areas. A finger needs about 32px or more; these controls are drawn smaller (a chip 27px, a text link 17px), so each gets an
+/* Tap areas. A finger needs about 32px or more; these controls are drawn smaller (a chip 31px, a text link 17px), so each gets an
    invisible layer reaching past what's drawn. Nothing on screen moves. Neighbouring chips sit 6px apart, so theirs overlap by 2px at
    most. tests/tap_targets.py measures them. */
 button.chip, button.src, .toastbtn, .discovery-source, .primer > summary, .earlier > summary, .readqd summary, .optfield > summary { position: relative; }

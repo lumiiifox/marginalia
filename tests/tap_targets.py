@@ -32,7 +32,7 @@ MEASURE = """(sel) => {
   const own = (el, at) => at && (at === el || el.contains(at));
   const out = [];
   for (const el of [...document.querySelectorAll(sel)].slice(0, 6)) {
-    const r = el.getBoundingClientRect(); if (!r.width || !r.height || r.bottom < 0 || r.top > innerHeight) continue;
+    const r = el.getBoundingClientRect(); if (!r.width || !r.height || r.top < 16 || r.bottom > innerHeight - 16) continue; // cut off by the screen's edge: the browser finds nothing past it
     const cx = Math.min(r.left + r.width / 2, innerWidth - 2), cy = r.top + r.height / 2;
     if (!own(el, document.elementFromPoint(cx, cy))) continue; // covered by something else here (a sheet): skip
     const reach = (dx, dy) => { let k = 0; while (k < 60 && own(el, document.elementFromPoint(cx + dx * (k + 1), cy + dy * (k + 1)))) k++; return k; };
