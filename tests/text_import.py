@@ -151,13 +151,21 @@ async def main():
                 check(got == src.strip(), f"text: a file saved as {enc} reads as written ({got!r})")
             # 8 shapes from other tools: one paragraph per line; Markdown's underlined headings; a sentence that starts like a heading; an empty list item
             para = "This paragraph was written in a word processor and saved as plain text, so it sits on one long line of its own with no breaks. "
-            got = await page.evaluate(PARSE, ["word.txt", "\n".join(f"{k}. {para}" for k in range(40))])
+            got = await page.evaluate(PARSE, ["word.txt", "\n".join(f"Paragraph {k}: {para}{para}" for k in range(40))])
             check(len([b for b in got["blocks"] if b[0] == "p"]) == 40, f"text: one paragraph per long line, without blank lines, stays 40 paragraphs ({len(got['blocks'])})")
             got = await page.evaluate(PARSE, ["setext.md", "Chapter One\n===========\n\nSome text.\n\nChapter Two\n-----------\n\nMore text.\n"])
             check([b for b in got["blocks"] if b[0] == "h"] == [["h", "Chapter One"], ["h", "Chapter Two"]], f"markdown: a line underlined with === or --- is a heading ({got['blocks']})")
             wrapped = "A paragraph wrapped at about seventy characters, as plain text files are,\nrunning on to a second line so the file has a usual line length.\n\n"
             got = await page.evaluate(PARSE, ["head.txt", wrapped + "Part of the difficulty lies here.\n\n" + wrapped + "Chapter 2.\n\n" + wrapped])
             check(["p", "Part of the difficulty lies here."] in got["blocks"] and ["h", "Chapter 2."] in got["blocks"], f"text: a sentence beginning with Part is a paragraph; Chapter 2. is a heading ({got['blocks'][1:4]})")
+            got = await page.evaluate(PARSE, ["head2.txt", wrapped + "Chapter One.\n\n" + wrapped + "Introduction to the Second Edition.\n\n" + wrapped + "Book I was given by my aunt.\n\n" + wrapped])
+            hs = [b[1] for b in got["blocks"] if b[0] == "h"]
+            check(hs == ["Chapter One.", "Introduction to the Second Edition."], f"text: a heading may end in a period; a sentence beginning Book I is no heading ({hs})")
+            poem = "Tyger Tyger, burning bright,\nIn the forests of the night;\nWhat immortal hand or eye,\nCould frame thy fearful symmetry?"
+            got = await page.evaluate(PARSE, ["poem.txt", "\n".join([f"Paragraph {k}: {para}{para}" for k in range(10)] + [poem] + [f"Paragraph {k}: {para}{para}" for k in range(10, 20)])])
+            check(["q", poem.replace("\n", " / ")] in got["blocks"] and len([b for b in got["blocks"] if b[0] == "p"]) == 20, f"text: in a file of one-line paragraphs, a poem's short lines stay one verse block ({[b for b in got['blocks'] if b[0] != 'p']})")
+            got = await page.evaluate(PARSE, ["list.md", "- an item\ncontinued here\n---\n\nAfter.\n"])
+            check(not [b for b in got["blocks"] if b[0] == "h"], f"markdown: a list item with a continued line is never an underlined heading ({got['blocks']})")
             got = await page.evaluate(PARSE, ["list.html", "<html><body><ol><li><img src='x.png'></li></ol><p>A paragraph after the list.</p></body></html>"])
             check(["p", "A paragraph after the list."] in got["blocks"], f"html: an item with no words passes no number to the next paragraph ({got['blocks']})")
             check(not errs, f"no script errors ({errs[:2]})")

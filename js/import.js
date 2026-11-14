@@ -1112,7 +1112,12 @@ function parsePlain(src, md) {
   const wrapW = lens.length ? lens[Math.floor(lens.length * 0.9)] : 0;
   // lines far longer than any printed line are paragraphs on their own (Word's plain text, phone notes): each line its own chunk
   const perLine = !md && wrapW > 150;
-  for (const chunk of perLine ? src.split("\n") : src.split(/\n[ \t]*\n/)) {
+  // in such a file a run of three or more short lines (a poem, an address) stays together, to be read as verse
+  const lineChunks = (text) => { const out = []; let run = [];
+    const end = () => { if (run.length >= 3) out.push(run.join("\n")); else out.push(...run); run = []; };
+    for (const l of text.split("\n")) { if (!l.trim()) { end(); continue; } if (l.trim().length < 80) run.push(l); else { end(); out.push(l); } }
+    end(); return out; };
+  for (const chunk of perLine ? lineChunks(src) : src.split(/\n[ \t]*\n/)) {
     const raw = chunk.split("\n").filter((l) => l.trim() && (md || !/^[\s=+|:-]{4,}$/.test(l))); // (a plain text table's rules)
     const lines = raw.map((l) => l.replace(/\s+$/, ""));
     if (!lines.length) continue;
@@ -1138,14 +1143,18 @@ function parsePlain(src, md) {
         if (/^\s*\|.*\|\s*$/.test(ln)) { fl(); if (!/^\s*\|[\s:|-]+\|\s*$/.test(ln)) { const x = tidy(inlineMd(ln.trim().replace(/^\||\|$/g, "").split("|").map((c) => c.trim()).filter(Boolean).join(" · "))); if (plain(x)) blocks.push({ k: "p", x }); } return; }
         if (ak === "q" || ak === "fn") fl();
         const li = ln.match(LIST_LINE);
-        if (li) { fl(); acc = (li[1] ? "• " : li[2].replace(")", ".") + " ") + li[3].trim(); return; }
+        if (li) { fl(); acc = (li[1] ? "• " : li[2].replace(")", ".") + " ") + li[3].trim(); accN = 2; return; } // (a list item is never an underlined heading)
         if (/^\s*([-*_])(\s*\1){2,}\s*$/.test(ln)) { fl(); return; }
         add(k, ln);
       });
       fl(); continue;
     }
     const one = lines.length === 1 ? lines[0].trim() : null;
-    const headLine = HEAD.test(one || "") && (/^\S+[.:]?$/.test(one) || /^\S+\s+([IVXLCDM]+|\d+|[A-Z])\b/.test(one) || (!/[.!?,;]$/.test(one) && one.split(/\s+/).length <= 8));
+    // a heading's words after the first are capitalised, numbers or small joining words ("Chapter One.", "Notes on the Translation.");
+    // a sentence that happens to begin with Part or Book has ordinary lowercase words ("Part of the difficulty lies here.")
+    const hw = (one || "").replace(/[.:;!?,]+$/, "").split(/\s+/), SMALLW = /^(of|the|to|on|and|in|a|an|for|by|with|at|from|or)$/i;
+    const titled = hw.slice(1).every((w) => /^[“"‘'(]?[\p{Lu}\d]/u.test(w) || SMALLW.test(w.replace(/[:,;]$/, "")));
+    const headLine = HEAD.test(one || "") && hw.length <= 10 && (hw.length === 1 || titled || (!/[.!?,;]$/.test(one) && hw.length <= 8));
     if (one && one.length < 90 && (headLine || /^[IVXLC]+\.?$/.test(one) || (/\p{Lu}{2}/u.test(one) && !/\p{Ll}/u.test(one) && one.split(/\s+/).length <= 10))) {
       blocks.push({ k: "h", x: smartQuotes(one), l: /^(part|book)\b/i.test(one) ? 1 : 2 }); continue;
     }

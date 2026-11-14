@@ -54,7 +54,13 @@ async function wsFile(lang, page, say) {
   // a paragraph that is mostly links is the contents, already fetched as the parts
   const ownWords = [...new DOMParser().parseFromString(`<body>${body}</body>`, "text/html").body.querySelectorAll("p, blockquote, dd, .poem")]
     .reduce((k, e) => { const all = e.textContent.trim().length, linked = [...e.querySelectorAll("a")].reduce((n, x) => n + x.textContent.trim().length, 0); return linked * 2 > all ? k : k + e.textContent.trim().split(/\s+/).filter(Boolean).length; }, 0);
-  if (!queue.length || ownWords >= 120) parts.push(body);
+  if (!queue.length) parts.push(body);
+  else if (ownWords >= 120) { // the prose only: lines that are mostly links (the contents, fetched as the parts) are left out
+    const d = new DOMParser().parseFromString(`<body>${body}</body>`, "text/html");
+    for (const e of d.body.querySelectorAll("li, dd, dt, tr, p")) { const all = e.textContent.trim().length, linked = [...e.querySelectorAll("a")].reduce((n, x) => n + x.textContent.trim().length, 0); if (all && linked * 2 > all) e.remove(); }
+    d.body.querySelectorAll("ul, ol, dl, table").forEach((x) => { if (!x.textContent.trim()) x.remove(); });
+    parts.push(d.body.innerHTML);
+  }
   while (queue.length && n < WS_MAX) {
     const [t, lv] = queue.shift(); n++;
     say(`Fetching ${n} of ${n + queue.length}: ${t.slice(main.title.length + 1)}…`);
