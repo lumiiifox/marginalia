@@ -1,0 +1,1934 @@
+{
+ "audit": "glossary-dr",
+ "audited": "2026-11-14",
+ "mode": "in place",
+ "scope": "Difference and Repetition along the reading route (tests/audit/ROUTE_QUEUE.md): the new entries representation and repetition, and re-reads of difference-in-itself, syntheses-of-time, virtual-actual and univocity against the book",
+ "by": {
+  "draft": "ChatGPT (collaborator, off the codebase) drafted representation and repetition and challenged the four existing entries, 2026-11-14; every claim and page it gave was checked here against the book, and its drafts were rewritten for the app",
+  "first_pass": "Claude (Opus 5.5), first pass, 2026-11-14: every sentence of the four existing entries given a verdict against DR; every page and quotation in the six entries checked against the text of the owner's copy of DR and of Hughes's guide (word for word, by script, for every quotation); the Hughes bibliographic record and the Ramírez 2019 article CGPT proposed checked on the web (the entry still rests on Ramírez's 2023 Stoa article, kept from the earlier audit)",
+  "review": "Independent reviewer (separate agent, fresh context), 2026-11-14: located every cited page of DR (about 70 pages, including notes pp. 327–328 and Patton's preface) and Hughes (about 25 pages) by script against running heads; checked all 39 quotations verbatim and under 15 words; spot-checked 12 SEP claims verbatim by WebFetch; scanned for contrastive negation. Verdicts: univocity and difference-in-itself pass; syntheses-of-time, virtual-actual, representation and repetition pass after fixes. Required fixes, all applied: Bergson's credit located in ch. 4 n. 23 (p. 327), not p. 212; A Thousand Plateaus named as Deleuze and Guattari's own book; representation's account of resemblance and individual difference rewritten from pp. 30–31, 34, 38; the unread Williams book no longer described; the pure past's virtual coexistence moved to p. 83; 'aborted cogito' credited to Ricoeur via DR p. 110. Three old verdicts softened (difference-in-itself 3 and 5, syntheses-of-time 8) and two unread gaps added, on the reviewer's findings. Not re-checked: the SEP Scotus article and Ramírez's Stoa article (kept from glossary-dg.json). Re-check of the fixes by the same reviewer, 2026-11-14: all six correct and the four new quotations verbatim at their pages; one more fix asked and made (Hughes's pp. 86–88 marked as his in Repetition). Verdict: all six pass."
+ },
+ "sources": {
+  "DR": {
+   "name": "Gilles Deleuze, Difference and Repetition (1968), trans. Paul Patton (Columbia University Press, 1994), the owner's imported copy, read for every page cited (not committed: the book is under copyright)"
+  },
+  "HUG": {
+   "name": "Joe Hughes, Deleuze's Difference and Repetition: A Reader's Guide (Continuum, 2009), the owner's imported copy, read for every page cited",
+   "src": "https://openlibrary.org/books/OL48626396M"
+  },
+  "SEP": {
+   "name": "Daniel W. Smith, John Protevi and Daniela Voss, “Gilles Deleuze”, Stanford Encyclopedia of Philosophy (substantive revision 2022)",
+   "src": "https://plato.stanford.edu/entries/deleuze/"
+  },
+  "SCO": {
+   "name": "Stanford Encyclopedia of Philosophy, “John Duns Scotus” (Summer 2006 edition)",
+   "src": "https://plato.stanford.edu/archives/sum2006/entries/duns-scotus/"
+  },
+  "RAM": {
+   "name": "Celeste Florencia Ramírez, “Inmanencia, univocidad y expresión”, Stoa 28 (2023)",
+   "src": "https://aacademica.org/celeste.ramirez/5.pdf"
+  },
+  "CGPT": {
+   "name": "ChatGPT's draft and challenges of 2026-11-14 (relayed by the owner): a collaborator's draft, checked here against DR and HUG like any other; not a source for any claim"
+  }
+ },
+ "note": "The book is under copyright and stays out of the repository; quotations are under 15 words. Interpretations beyond the text are credited by name (Hughes, the Stanford authors, Ramírez, Badiou via the SEP). Where Hughes disagrees with a reading the text supports, both are given and the question left open.",
+ "disputes": [
+  "Pure past and virtual: Deleuze speaks of virtual coexistence between the levels of a pure past (DR p. 83); Hughes argues the Deleuzian virtual of ch. 4 appears only after the third synthesis (Hughes pp. 111–112). Both recorded in Repetition; not settled.",
+  "Order of the syntheses: Hughes argues for Deleuze's order and reports, in one sentence, that James Williams and many others put the third synthesis first (Hughes p. 78). Williams not read; CGPT's 'explicitly disputes' overstated Hughes's engagement and was cut.",
+  "Degrees of power: in DR p. 40; Hughes quotes a 1974 seminar for it and questions whether univocity yields equal participation in being (Hughes pp. 57–59). Recorded in Univocity.",
+  "Badiou on univocity and the One: reported from SEP §6.2, left open.",
+  "Hughes reads DR as Kant rewritten through Husserl (his ch. 1 title, 'Context: Kant meets Husserl'); his readings are credited to him by name throughout."
+ ],
+ "unread": [
+  {
+   "source": "SEP",
+   "part": "the last part of the Stanford 'Gilles Deleuze' page (about 27,000 of 127,000 characters: the later sections and bibliography)",
+   "why": "the reviewer's fetch was cut off there; Claude's pass relied on the claims checked in glossary-dg.json and the reviewer's spot checks",
+   "terms": [
+    "difference-in-itself",
+    "syntheses-of-time",
+    "virtual-actual",
+    "univocity"
+   ],
+   "effect": "none known: every SEP claim the entries cite was spot-checked verbatim by the reviewer"
+  },
+  {
+   "source": "DR and HUG",
+   "part": "the books outside the pages cited",
+   "why": "read at the cited pages and their surroundings, not cover to cover, for this pass",
+   "terms": [
+    "representation",
+    "repetition",
+    "difference-in-itself",
+    "syntheses-of-time",
+    "virtual-actual",
+    "univocity"
+   ],
+   "effect": "a passage elsewhere that qualifies a cited one could have been missed"
+  },
+  {
+   "source": "Hyppolite",
+   "part": "Jean Hyppolite, Genesis and Structure of Hegel's Phenomenology of Spirit and Logic and Existence",
+   "why": "not available; known only through Hughes pp. 46–50",
+   "terms": [
+    "representation"
+   ],
+   "effect": "Hyppolite's reading is reported as Hughes gives it and marked unread in the entry"
+  },
+  {
+   "source": "Williams",
+   "part": "James Williams, Gilles Deleuze's Difference and Repetition (2003) and Gilles Deleuze's Philosophy of Time (2011)",
+   "why": "not available",
+   "terms": [
+    "repetition",
+    "syntheses-of-time"
+   ],
+   "effect": "Williams's ordering of the syntheses rests on Hughes's one-sentence report (p. 78), marked so in the entries"
+  },
+  {
+   "source": "Deleuze",
+   "part": "Deleuze, Bergsonism (1966) and Expressionism in Philosophy: Spinoza (1968)",
+   "why": "not available",
+   "terms": [
+    "virtual-actual",
+    "univocity"
+   ],
+   "effect": "claims about these books stay credited to the SEP"
+  },
+  {
+   "source": "Badiou",
+   "part": "Badiou, Deleuze: The Clamor of Being (1997)",
+   "why": "not available",
+   "terms": [
+    "univocity"
+   ],
+   "effect": "reported from SEP §6.2"
+  },
+  {
+   "source": "Somers-Hall",
+   "part": "Henry Somers-Hall, Deleuze's Difference and Repetition (2013)",
+   "why": "read by Claude earlier in the session, but no page of it is cited, so nothing here rests on it",
+   "terms": [
+    "difference-in-itself"
+   ],
+   "effect": "listed as further reading only"
+  },
+  {
+   "source": "Ramírez 2019",
+   "part": "doi.org resolution of 10.32870/sincronia.axxiii.n76.9b19",
+   "why": "the resolver refused the fetch; the DOI was read printed in the article's PDF on Redalyc",
+   "terms": [
+    "univocity"
+   ],
+   "effect": "none: the 2019 article is recorded, not cited"
+  }
+ ],
+ "terms": {
+  "difference-in-itself": {
+   "old": [
+    {
+     "s": 1,
+     "field": "d",
+     "accuracy": "overstated",
+     "by": "DR pp. 40–41; CGPT",
+     "note": "'Apart from identity' hides the book's constructive task: identity is produced by difference, a secondary principle (pp. 40–41).",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "DR pp. 40–41; CGPT",
+       "fix": "d rewritten: difference comes before identity and explains its production"
+      }
+     ]
+    },
+    {
+     "s": 2,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR p. xi",
+     "note": "Patton's Translator's Preface: 'Deleuze's principal thesis for the Doctorat D'Etat'. 'Primary' is a near-synonym; the translator's word is now used.",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR p. xi",
+       "fix": "credited to Patton's preface"
+      }
+     ]
+    },
+    {
+     "s": 3,
+     "field": "x",
+     "accuracy": "partly",
+     "by": "SEP; DR pp. 28, 40–41, 182–184, 222; CGPT",
+     "note": "Credited to the SEP, which says these things (reviewer's check), but it merges three locations in the book, and the SEP's lightning (a difference of electrical potential) is a different use from DR's: lightning illustrates unilateral distinction (p. 28); differential relations are ch. 4 (pp. 182–184); difference as sufficient reason of phenomena is ch. 5 (p. 222). Identity as produced is pp. 40–41.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "partly",
+       "accuracy": "partly",
+       "by": "SEP; DR pp. 28, 40–41, 182–184, 222; CGPT",
+       "fix": "split: lightning at p. 28, identity as secondary at pp. 40–41, sufficient reason left to ch. 5's sentence"
+      }
+     ]
+    },
+    {
+     "s": 4,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR pp. 29, 34",
+     "note": "The four forms are on p. 29 and p. 34 (and pp. 137, 262).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR pp. 29, 34",
+       "fix": "located in DR"
+      }
+     ]
+    },
+    {
+     "s": 5,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP; DR pp. 30, 32",
+     "note": "Credited to the SEP, which does give animal divided into rational and irrational (reviewer's check). Deleuze's own example is animals with feet and animals with wings (p. 30); p. 32 has only 'the difference \"rational\"'. Replaced by the book's example.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP; DR pp. 30, 32",
+       "fix": "Deleuze's own example, p. 30"
+      }
+     ]
+    },
+    {
+     "s": 6,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR pp. 49–52, 59–69, 263",
+     "note": "Contradiction as the greatest difference only in relation to the identical: DR p. 263 states it, and p. 49 says infinite representation keeps the principle of identity. Simulacrum and the overturning of Platonism: pp. 59, 67–69; p. 68 credits Plato as the first to show its direction (CGPT's point, confirmed).",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR pp. 49–52, 59–69, 263",
+       "fix": "IEP credit replaced by the page; Plato's own role added"
+      }
+     ]
+    },
+    {
+     "s": 7,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR p. 167",
+     "note": "The eight postulates are listed on p. 167.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR p. 167",
+       "fix": "page added"
+      }
+     ]
+    },
+    {
+     "s": 8,
+     "field": "x",
+     "accuracy": "partly",
+     "by": "DR pp. 139–146, 164–167",
+     "note": "Encounter pp. 139–145; Deleuze names Kant's sublime himself (p. 146), so the SEP comparison is replaced by the text. The 'fractured self' clause belongs to ch. 2 (pp. 85–89) and is left to Syntheses of time. Learning (pp. 164–167) added at CGPT's suggestion, checked.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "partly",
+       "accuracy": "partly",
+       "by": "DR pp. 139–146, 164–167",
+       "fix": "rewritten from the pages"
+      }
+     ]
+    },
+    {
+     "s": 9,
+     "field": "x",
+     "accuracy": "partly",
+     "by": "DR pp. 1–3, 13, 23–27; CGPT",
+     "note": "Generality and laws pp. 1–3; 'difference without a concept' pp. 13, 23. The Introduction goes on to give it positive content (internal difference, the Idea, pp. 24–27), which the sentence stopped short of.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "partly",
+       "by": "DR pp. 1–3, 13, 23–27; CGPT",
+       "fix": "qualified with pp. 24–27"
+      }
+     ]
+    },
+    {
+     "s": 10,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR pp. 41, 90–94",
+     "note": "",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR pp. 41, 90–94",
+       "fix": "pages added"
+      }
+     ]
+    },
+    {
+     "s": 11,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR pp. 222, 237; SEP §3",
+     "note": "Temperature and pressure p. 222; division changes nature p. 237; convection is the SEP's example and stays credited to it.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR pp. 222, 237; SEP §3",
+       "fix": "located; difference/diversity (p. 222) and individuation before differenciation (pp. 246–250) added at CGPT's suggestion, checked"
+      }
+     ]
+    },
+    {
+     "s": 12,
+     "field": "x",
+     "accuracy": "editorial",
+     "by": "glossary-dg.json",
+     "note": "Further reading, kept as audited before.",
+     "claims": [
+      {
+       "type": "editorial",
+       "evidence": "no",
+       "accuracy": "editorial",
+       "by": "glossary-dg.json",
+       "fix": "kept"
+      }
+     ]
+    }
+   ],
+   "new_d": [
+    {
+     "text": "Deleuze's project in Difference and Repetition (1968): a concept of difference that comes before identity and explains how identities are produced, freed from its subordination to representation.",
+     "claims": [
+      {
+       "by": "DR pp. 28–29, 40–41"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Difference and Repetition was Deleuze's principal thesis for the Doctorat d'État (Paul Patton, Translator's Preface).",
+     "claims": [
+      {
+       "by": "DR p. xi"
+      }
+     ]
+    },
+    {
+     "text": "Its first chapter opens with lightning, which distinguishes itself from a black sky that does not distinguish itself from it: difference as a one-sided distinction (p. 28).",
+     "claims": [
+      {
+       "by": "DR p. 28"
+      }
+     ]
+    },
+    {
+     "text": "Identity, for Deleuze, is a second principle, produced by what differs (pp. 40–41).",
+     "claims": [
+      {
+       "by": "DR pp. 40–41"
+      }
+     ]
+    },
+    {
+     "text": "Pages of Difference and Repetition are from Paul Patton's translation (1994).",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ]
+    },
+    {
+     "text": "Representation subordinates difference to identity in the concept, opposition between predicates, analogy in judgement and resemblance in perception (pp. 29, 34; see Representation).",
+     "claims": [
+      {
+       "by": "DR pp. 29, 34"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "In Aristotle's division of a genus by specific differences, Deleuze's example is animals with feet and animals with wings (p. 30): difference counts only inside an identical concept.",
+     "claims": [
+      {
+       "by": "DR p. 30"
+      }
+     ]
+    },
+    {
+     "text": "Deleuze rejects Hegel's contradiction, which in his reading is the greatest difference only in relation to the identical (pp. 49–52, 263), and against Plato's models and copies he sets the simulacrum, calling for an overturning of Platonism that Plato himself, he argues, was the first to point toward (pp. 59–69).",
+     "claims": [
+      {
+       "by": "DR pp. 49–52, 59–69, 263"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The third chapter lists eight postulates of the dogmatic image of thought, among them the good nature of thought, common sense and recognition (p. 167).",
+     "claims": [
+      {
+       "by": "DR p. 167"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Thought begins, on Deleuze's account, with an encounter with something that forces it to think (pp. 139–145); he takes Kant's sublime as the case in which the faculties work in discord (p. 146), and he gives learning, the encounter with a problem, the place that knowledge held in the dogmatic image (pp. 164–167).",
+     "claims": [
+      {
+       "by": "DR pp. 139–146, 164–167"
+      }
+     ]
+    },
+    {
+     "text": "Repetition, Deleuze argues, belongs to another order from generality, which is the order of laws (pp. 1–3), and he calls it difference without a concept (pp. 13, 23), a formula the rest of the Introduction fills out with internal difference and the Idea (pp. 24–27).",
+     "claims": [
+      {
+       "by": "DR pp. 1–3, 13, 23–27"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Repetition for itself, following his reading of the eternal return, is the return of what differs (pp. 41, 90–94).",
+     "claims": [
+      {
+       "by": "DR pp. 41, 90–94"
+      }
+     ]
+    },
+    {
+     "text": "Chapter 5 opens by calling difference “that by which the given is given” (p. 222), and sets it apart from diversity, which is what is given.",
+     "claims": [
+      {
+       "by": "DR p. 222"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Differences of temperature, pressure and potential are among its examples (p. 222); an intensive quantity “may be divided, but not without changing its nature” (p. 237); and individuation precedes the differenciation of species and parts in principle (pp. 246–250).",
+     "claims": [
+      {
+       "by": "DR pp. 222, 237, 246–250"
+      }
+     ]
+    },
+    {
+     "text": "The Stanford Encyclopedia article's example of a process driven by intensive differences is convection.",
+     "claims": [
+      {
+       "by": "SEP §3"
+      }
+     ]
+    },
+    {
+     "text": "Guides include Joe Hughes's Deleuze's Difference and Repetition: A Reader's Guide (2009), James Williams's critical introduction and guide (2003) and Henry Somers-Hall's Edinburgh guide (2013).",
+     "claims": [
+      {
+       "by": "kept from glossary-dg.json"
+      }
+     ]
+    }
+   ],
+   "quotes": [
+    {
+     "q": "that by which the given is given",
+     "checked": "DR p. 222, the chapter's second sentence"
+    },
+    {
+     "q": "may be divided, but not without changing its nature",
+     "checked": "DR p. 237 ('An intensive quantity may be divided, but not without changing its nature.')"
+    }
+   ],
+   "s": "Difference and Repetition (1968), trans. Paul Patton (1994), Introduction, ch. 1, “Difference in Itself”, ch. 3, “The Image of Thought”, and ch. 5, “Asymmetrical Synthesis of the Sensible”",
+   "src": "SEP",
+   "srcs": [
+    "HUG"
+   ],
+   "p": [
+    "deleuze",
+    "aristotle",
+    "plato",
+    "hegel",
+    "nietzsche"
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-14",
+    "verdict": "pass",
+    "fixed": "none to the text; old verdicts 3 and 5 corrected"
+   }
+  },
+  "syntheses-of-time": {
+   "old": [
+    {
+     "s": 1,
+     "field": "d",
+     "accuracy": "overstated",
+     "by": "DR pp. 88–94, 114; CGPT",
+     "note": "The eternal return is placed in the third time of the third synthesis's series (p. 90), and the third synthesis is the empty form of time; the old short made the eternal return the synthesis itself. 'Passive' is kept in the long text with p. 114.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "DR pp. 88–94, 114; CGPT",
+       "fix": "short rewritten"
+      }
+     ]
+    },
+    {
+     "s": 2,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR p. 114",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR p. 114",
+       "fix": "p. 114 quoted"
+      }
+     ]
+    },
+    {
+     "s": 3,
+     "field": "x",
+     "accuracy": "partly",
+     "by": "DR pp. 70–94; CGPT",
+     "note": "The pairing is right, but it rested on the IEP article, which is anonymous and calls the second synthesis active in §4c, against DR p. 81 (memory's active synthesis rests on a passive one).",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "partly",
+       "accuracy": "partly",
+       "by": "DR pp. 70–94; CGPT",
+       "fix": "replaced by the book; IEP dropped from this entry's sources"
+      }
+     ]
+    },
+    {
+     "s": 4,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR pp. 70–71",
+     "note": "Hume's thesis is quoted at the chapter's opening (p. 70).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR pp. 70–71",
+       "fix": "restated in Deleuze's terms; passive character quoted from p. 71 (CGPT's point)"
+      }
+     ]
+    },
+    {
+     "s": 5,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR pp. 73–78",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR pp. 73–78",
+       "fix": "pages and quotation"
+      }
+     ]
+    },
+    {
+     "s": 6,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR p. 79",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR p. 79",
+       "fix": "page added"
+      }
+     ]
+    },
+    {
+     "s": 7,
+     "field": "x",
+     "accuracy": "partly",
+     "by": "DR pp. 81–85",
+     "note": "Bergson's paradoxes are pp. 81–83; 'a past which was never present' p. 85. The paradoxes (contemporaneity, coexistence, pre-existence) added; Eros and Mnemosyne p. 85.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "partly",
+       "by": "DR pp. 81–85",
+       "fix": "rewritten from the pages"
+      }
+     ]
+    },
+    {
+     "s": 8,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "IEP; DR p. 85; CGPT",
+     "note": "Credited to the IEP, whose evaluation it is; the article is anonymous, so the judgement has no named scholar behind it. DR's example is Combray (p. 85).",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "IEP; DR p. 85; CGPT",
+       "fix": "replaced by Deleuze's example, quoted"
+      }
+     ]
+    },
+    {
+     "s": 9,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR pp. 88–89",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR pp. 88–89",
+       "fix": "pages added"
+      }
+     ]
+    },
+    {
+     "s": 10,
+     "field": "x",
+     "accuracy": "overstated",
+     "by": "DR pp. 88–90; CGPT",
+     "note": "Too compressed: the eternal return belongs to the third time of the series only (p. 90), after order and totality are distinguished, and neither condition nor agent returns.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "DR pp. 88–90; CGPT",
+       "fix": "rewritten"
+      }
+     ]
+    },
+    {
+     "s": 11,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §2",
+     "note": "The SEP authors' synthesis; kept with their credit, the 18-word quotation cut to 'a site of self-awareness' (the rule is under 15 words).",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §2",
+       "fix": "quotation shortened"
+      }
+     ]
+    },
+    {
+     "s": 12,
+     "field": "x",
+     "accuracy": "overstated",
+     "by": "DR pp. 96, 113; CGPT",
+     "note": "Binding makes possible the value of pleasure as a principle (p. 96), not pleasure itself; Thanatos as the desexualisation of Eros (p. 113) is Deleuze's revision of Freud.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "DR pp. 96, 113; CGPT",
+       "fix": "both quoted from the text"
+      }
+     ]
+    },
+    {
+     "s": 13,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "glossary-dg.json",
+     "note": "The book was not read, so the description 'a full study' is cut (reviewer's point); Hughes's report of Williams's order (Hughes p. 78) added with its limits.",
+     "claims": [
+      {
+       "type": "editorial",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "glossary-dg.json",
+       "fix": "reduced to the title, marked unread"
+      }
+     ]
+    }
+   ],
+   "new_d": [
+    {
+     "text": "The three syntheses of time in chapter 2 of Difference and Repetition: habit, which founds the living present; memory, which grounds its passing in the pure past; and the empty form of time, in whose third time Deleuze places the eternal return.",
+     "claims": [
+      {
+       "by": "DR pp. 79, 88–90"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "The second chapter of Difference and Repetition, “Repetition for Itself”, sets out three passive syntheses of time, which, Deleuze writes, “must be understood as constitutive of the unconscious” (p. 114).",
+     "claims": [
+      {
+       "by": "DR pp. 70–114"
+      }
+     ]
+    },
+    {
+     "text": "Pages of Difference and Repetition are from Paul Patton's translation (1994).",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ]
+    },
+    {
+     "text": "The first starts from Hume's thesis that repetition changes nothing in the object repeated and something in the mind that contemplates it, and contracts successive instants into a living present (pp. 70–71).",
+     "claims": [
+      {
+       "by": "DR pp. 70–71"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The synthesis is passive: it “occurs in the mind which contemplates, prior to all memory and all reflection” (p. 71).",
+     "claims": [
+      {
+       "by": "DR p. 71"
+      }
+     ]
+    },
+    {
+     "text": "Its contractions are the work of contemplative souls (pp. 73–76), and “Selves are larval subjects” (p. 78).",
+     "claims": [
+      {
+       "by": "DR pp. 73–78"
+      }
+     ]
+    },
+    {
+     "text": "Habit is the foundation of time, and memory its ground (p. 79).",
+     "claims": [
+      {
+       "by": "DR p. 79"
+      }
+     ]
+    },
+    {
+     "text": "The second synthesis is the pure past, which Deleuze develops from Bergson's paradoxes: the past is contemporaneous with the present it was, the whole past coexists with each present, and it pre-exists the passing present (pp. 81–83).",
+     "claims": [
+      {
+       "by": "DR pp. 81–83"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Memory's active reproduction of former presents rests on “another (transcendental) passive synthesis” peculiar to memory itself (p. 81).",
+     "claims": [
+      {
+       "by": "DR p. 81"
+      }
+     ]
+    },
+    {
+     "text": "Deleuze pairs it with Eros and Mnemosyne, and his example is Proust's Combray, which reappears “in the form of a past which was never present” (p. 85).",
+     "claims": [
+      {
+       "by": "DR p. 85"
+      }
+     ]
+    },
+    {
+     "text": "The third synthesis is the pure and empty form of time, in which time is “out of joint” (pp. 88–89): a caesura orders it into a before and an after, and the I is fractured.",
+     "claims": [
+      {
+       "by": "DR pp. 88–89"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Deleuze distinguishes the order, the totality and the series of time, and places the eternal return in the third time of the series alone, the future, which brings back neither the condition nor the agent (pp. 88–90).",
+     "claims": [
+      {
+       "by": "DR pp. 88–90"
+      }
+     ]
+    },
+    {
+     "text": "The Stanford Encyclopedia article describes the syntheses of habit as bodily, desiring and unconscious contractions, and subjects as patterns of syntheses that fold in on themselves, producing “a site of self-awareness”.",
+     "claims": [
+      {
+       "by": "SEP §2"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "In the same chapter Deleuze turns to Freud: binding excitations makes possible “the value taken on by pleasure as a principle” (p. 96), and in his revision of Freud, Thanatos is “completely indistinguishable from the desexualisation of Eros” (p. 113).",
+     "claims": [
+      {
+       "by": "DR pp. 96, 113"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Joe Hughes reads the three syntheses as a genesis running from sensibility toward thought (Hughes, pp. 86–88), and notes that James Williams and many others read the third as operating before the first (Hughes, p. 78).",
+     "claims": [
+      {
+       "by": "HUG pp. 78, 86–88"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Williams has also written Gilles Deleuze's Philosophy of Time (2011), which has not been read for this entry.",
+     "claims": [
+      {
+       "by": "bibliographic; marked unread"
+      }
+     ]
+    }
+   ],
+   "quotes": [
+    {
+     "q": "must be understood as constitutive of the unconscious",
+     "checked": "DR p. 114 ('It is these three syntheses which must be understood as constitutive of the unconscious.')"
+    },
+    {
+     "q": "occurs in the mind which contemplates, prior to all memory and all reflection",
+     "checked": "DR p. 71 (12 words)"
+    },
+    {
+     "q": "Selves are larval subjects",
+     "checked": "DR p. 78"
+    },
+    {
+     "q": "another (transcendental) passive synthesis",
+     "checked": "DR p. 81 ('can be grounded only by another (transcendental) passive synthesis which is peculiar to memory itself')"
+    },
+    {
+     "q": "in the form of a past which was never present",
+     "checked": "DR p. 85 ('Combray reappears in the form of a past which was never present')"
+    },
+    {
+     "q": "out of joint",
+     "checked": "DR p. 88, quoting Hamlet ('time is out of joint')"
+    },
+    {
+     "q": "a site of self-awareness",
+     "checked": "SEP §2 (kept from the entry's previous audit; the longer quotation, 18 words, cut to stay under 15)"
+    },
+    {
+     "q": "the value taken on by pleasure as a principle",
+     "checked": "DR p. 96"
+    },
+    {
+     "q": "completely indistinguishable from the desexualisation of Eros",
+     "checked": "DR p. 113 ('Thanatos is completely indistinguishable from the desexualisation of Eros')"
+    }
+   ],
+   "s": "Difference and Repetition (1968), trans. Paul Patton (1994), ch. 2, “Repetition for Itself”",
+   "src": "SEP",
+   "srcs": [
+    "HUG"
+   ],
+   "p": [
+    "deleuze",
+    "hume",
+    "bergson",
+    "freud",
+    "nietzsche"
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-14",
+    "verdict": "pass after fixes",
+    "fixed": "Williams's unread book no longer described"
+   }
+  },
+  "virtual-actual": {
+   "old": [
+    {
+     "s": 1,
+     "field": "d",
+     "accuracy": "partly",
+     "by": "DR pp. 208–212, 327",
+     "note": "Bergson is credited by Deleuze in ch. 4, n. 23 (p. 327); 'real conditions of genesis' undersold that the virtual is a part of the real object (p. 209).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "partly",
+       "by": "DR pp. 208–212, 327",
+       "fix": "short rewritten from pp. 208–212"
+      }
+     ]
+    },
+    {
+     "s": 2,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §3; DR pp. 208–209",
+     "note": "The Bergsonism claim stays credited to the SEP; the virtual's reality is now quoted from DR.",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §3; DR pp. 208–209",
+       "fix": "quoted"
+      }
+     ]
+    },
+    {
+     "s": 3,
+     "field": "x",
+     "accuracy": "overstated",
+     "by": "DR pp. 88, 211–212; CGPT",
+     "note": "A blanket rule about every ground: DR p. 88 describes a ground that borrows the characteristics of what it grounds. The book's own point is the virtual/possible contrast (pp. 211–212): actualization proceeds without resemblance.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "DR pp. 88, 211–212; CGPT",
+       "fix": "replaced by the virtual/possible distinction"
+      }
+     ]
+    },
+    {
+     "s": 4,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §3",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §3",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 5,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR pp. 182–183, 203–205",
+     "note": "The three conditions (p. 183) spelled out; phonemes pp. 203–205 with Deleuze's questions to Saussure and Trubetzkoy (p. 204).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR pp. 182–183, 203–205",
+       "fix": "expanded from the pages"
+      }
+     ]
+    },
+    {
+     "s": 6,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR pp. 207, 209–211",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR pp. 207, 209–211",
+       "fix": "pages added; the gloss now follows p. 207"
+      }
+     ]
+    },
+    {
+     "s": 7,
+     "field": "x",
+     "accuracy": "contested",
+     "by": "SEP; CGPT",
+     "note": "A pairing the SEP makes in its account of the later books; it does not belong to the 1968 book's own vocabulary. Not re-checked for this pass.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "no",
+       "accuracy": "contested",
+       "by": "SEP; CGPT",
+       "fix": "cut from this book-specific entry"
+      }
+     ]
+    },
+    {
+     "s": 8,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR pp. 246–247; SEP §3",
+     "note": "Simondon is named by Deleuze (p. 246); individuation precedes differenciation in principle (p. 247). The crystal model stays credited to the SEP.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR pp. 246–247; SEP §3",
+       "fix": "located"
+      }
+     ]
+    },
+    {
+     "s": 9,
+     "field": "x",
+     "accuracy": "overstated",
+     "by": "SEP §4.2",
+     "note": "The later vocabulary is the SEP's account of A Thousand Plateaus; the quotation 'Nothing ever instantiates ...' ran to 17 words, over the 15-word rule.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "SEP §4.2",
+       "fix": "kept as later reception; long quotation cut"
+      }
+     ]
+    },
+    {
+     "s": 10,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §3",
+     "note": "Reception, kept in the paragraph on later work and readers.",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §3",
+       "fix": "kept"
+      }
+     ]
+    }
+   ],
+   "new_d": [
+    {
+     "text": "Deleuze's distinction, which he credits to Bergson, between the virtual, the real structure of a thing as an Idea of differential relations and singularities, and the actual qualities and parts in which that structure is embodied.",
+     "claims": [
+      {
+       "by": "DR pp. 208–212"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "“The virtual is fully real in so far as it is virtual”, Deleuze writes, and it must be defined as “strictly a part of the real object” (pp. 208–209): every object has a virtual part and an actual part.",
+     "claims": [
+      {
+       "by": "DR pp. 208–209"
+      }
+     ]
+    },
+    {
+     "text": "He separates the virtual from the possible: the possible is realized, and the real is supposed to resemble it, while the virtual is actualized by difference, divergence and creation (pp. 211–212).",
+     "claims": [
+      {
+       "by": "DR pp. 211–212"
+      }
+     ]
+    },
+    {
+     "text": "In a note he names Bergson as the author who “pushes furthest the critique of the possible” (ch. 4, n. 23, p. 327), and the Stanford Encyclopedia article notes that he had developed virtuality and multiplicity in Bergsonism (1966).",
+     "claims": [
+      {
+       "by": "DR p. 327 (ch. 4, n. 23)"
+      },
+      {
+       "by": "SEP §3"
+      }
+     ]
+    },
+    {
+     "text": "Pages of Difference and Repetition are from Paul Patton's translation (1994).",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ]
+    },
+    {
+     "text": "An Idea, Deleuze's name for a virtual structure, is “an n-dimensional, continuous, defined multiplicity” (p. 182).",
+     "claims": [
+      {
+       "by": "DR p. 182"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Three conditions define it: elements with neither sensible form nor conceptual signification, reciprocal relations that determine them, and the actualization of such a relation in diverse spatio-temporal relationships, its elements incarnated in a variety of terms and forms (p. 183).",
+     "claims": [
+      {
+       "by": "DR p. 183"
+      }
+     ]
+    },
+    {
+     "text": "Multiplicity, the Stanford article explains, designates the multiple as a substantive.",
+     "claims": [
+      {
+       "by": "SEP §3"
+      }
+     ]
+    },
+    {
+     "text": "The differential elements of a language are its phonemes, and Deleuze asks why Saussure calls linguistic differences negative and why Trubetzkoy makes difference presuppose opposition (pp. 203–205).",
+     "claims": [
+      {
+       "by": "DR pp. 203–205"
+      }
+     ]
+    },
+    {
+     "text": "Deleuze distinguishes differentiation, the determination of the Idea's virtual content, from differenciation, its actualization in species and qualities and in distinct parts and extensities, and joins them as different/ciation (pp. 207, 209–211).",
+     "claims": [
+      {
+       "by": "DR pp. 207, 209–211"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Between the two lies intensity: individuation is intensive, Gilbert Simondon has shown that it presupposes a prior metastable state, and individuation precedes differenciation in principle (pp. 246–247).",
+     "claims": [
+      {
+       "by": "DR pp. 246–247"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The Stanford article takes Simondon's supersaturated solution, metastable before it crystallizes, as a simple model.",
+     "claims": [
+      {
+       "by": "SEP §3"
+      }
+     ]
+    },
+    {
+     "text": "Deleuze's later work with Guattari, and readers after them, take the distinction into other books.",
+     "claims": [
+      {
+       "by": "editorial"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "In the Stanford article's account of Deleuze and Guattari's A Thousand Plateaus, the virtual is called the Earth, the intensive consistency and the actual the system of the strata.",
+     "claims": [
+      {
+       "by": "SEP §4.2"
+      }
+     ]
+    },
+    {
+     "text": "The article names Brian Massumi and Manuel DeLanda, author of Intensive Science and Virtual Philosophy (2002), among those who bring Deleuze's ontology together with dynamical systems theory.",
+     "claims": [
+      {
+       "by": "SEP §3"
+      }
+     ]
+    }
+   ],
+   "quotes": [
+    {
+     "q": "The virtual is fully real in so far as it is virtual",
+     "checked": "DR p. 208"
+    },
+    {
+     "q": "pushes furthest the critique of the possible",
+     "checked": "DR p. 327, ch. 4 n. 23 ('Bergson is the author who pushes furthest the critique of the possible')"
+    },
+    {
+     "q": "strictly a part of the real object",
+     "checked": "DR p. 209 ('the virtual must be defined as strictly a part of the real object')"
+    },
+    {
+     "q": "an n-dimensional, continuous, defined multiplicity",
+     "checked": "DR p. 182"
+    }
+   ],
+   "s": "Difference and Repetition (1968), trans. Paul Patton (1994), ch. 4, “Ideas and the Synthesis of Difference”, and ch. 5, “Asymmetrical Synthesis of the Sensible”; Bergsonism (1966)",
+   "src": "SEP",
+   "srcs": [],
+   "p": [
+    "deleuze",
+    "bergson"
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-14",
+    "verdict": "pass after fixes",
+    "fixed": "Bergson credit to n. 23; later books named as Deleuze and Guattari's"
+   }
+  },
+  "univocity": {
+   "old": [
+    {
+     "s": 1,
+     "field": "d",
+     "accuracy": "partly",
+     "by": "DR pp. 35–42",
+     "note": "The three thinkers are moments in Deleuze's reconstruction (pp. 39–41), with different roles.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "partly",
+       "by": "DR pp. 35–42",
+       "fix": "short rewritten"
+      }
+     ]
+    },
+    {
+     "s": 2,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SCO",
+     "note": "Sourced to the Stanford Scotus article in the previous audit. CGPT asked to narrow it to Deleuze's reconstruction; the claim already rests on medieval scholarship, so it stays.",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SCO",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 3,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SCO",
+     "note": "As above.",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SCO",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 4,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR p. 35",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR p. 35",
+       "fix": "now quoted from p. 35"
+      }
+     ]
+    },
+    {
+     "s": 5,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR p. 36; SEP §2",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR p. 36; SEP §2",
+       "fix": "quoted from p. 36, plus 'of all its individuating differences'"
+      }
+     ]
+    },
+    {
+     "s": 6,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR pp. 39–41",
+     "note": "The three moments are in the text; credit moves from Protevi's outline to the pages. Spinoza's demand that substance be said of the modes and degrees of power (p. 40) added at CGPT's suggestion, checked.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR pp. 39–41",
+       "fix": "rewritten from the pages"
+      }
+     ]
+    },
+    {
+     "s": 7,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "DR p. xi; SEP §§1–2",
+     "note": "The title: Patton's preface names the secondary thesis Expressionism in Philosophy: Spinoza (French Spinoza et le problème de l'expression); the entry's English title was a translation of the French one. 'Degrees of power' is in DR p. 40, so it is now quoted from there.",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "DR p. xi; SEP §§1–2",
+       "fix": "title corrected; SEP quotation kept"
+      }
+     ]
+    },
+    {
+     "s": 8,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §2",
+     "note": "The SEP authors' terms, credited to them. CGPT asked for a textual basis in DR; it remains the article's distinction, as stated.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §2",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 9,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "RAM",
+     "note": "From the 2023 Stoa article read in the previous audit. CGPT supplied a different article (Sincronía 76, 2019, pp. 181–189, doi 10.32870/sincronia.axxiii.n76.9b19, confirmed in the PDF on Redalyc; CGPT's page range 181–192 is wrong): its p. 187 argues that univocal being admits no distinction of genus or species, or it would not escape analogy. It supports the same reading and is recorded, not added.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "RAM",
+       "fix": "kept; source now listed on the entry"
+      }
+     ]
+    },
+    {
+     "s": 10,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §6.2",
+     "note": "Attributed reception; Badiou's book not read. The dispute is left open in the text.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §6.2",
+       "fix": "kept, marked open"
+      }
+     ]
+    }
+   ],
+   "new_d": [
+    {
+     "text": "The thesis that being is said in one and the same sense of everything of which it is said; in Difference and Repetition Deleuze reconstructs its history through Duns Scotus, Spinoza and Nietzsche and makes it the basis of a philosophy of difference.",
+     "claims": [
+      {
+       "by": "DR pp. 35–42"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Medieval philosophers debated how terms apply to God and to creatures: Thomas Aquinas held that we can predicate only analogically, and John Duns Scotus that certain predicates apply univocally, with exactly the same meaning, to both.",
+     "claims": [
+      {
+       "by": "SCO (kept)"
+      }
+     ]
+    },
+    {
+     "text": "Since all our concepts come from creatures, Scotus argued, without univocity we could not talk about God at all.",
+     "claims": [
+      {
+       "by": "SCO (kept)"
+      }
+     ]
+    },
+    {
+     "text": "“There has only ever been one ontological proposition: Being is univocal”, Deleuze declares (p. 35).",
+     "claims": [
+      {
+       "by": "DR p. 35"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Being is “said in a single and same sense of everything of which it is said”, and what it is said of differs: it is said of difference itself (p. 36).",
+     "claims": [
+      {
+       "by": "DR p. 36"
+      }
+     ]
+    },
+    {
+     "text": "What matters in univocity, he writes, is that being is said in that one sense “of all its individuating differences or intrinsic modalities” (p. 36), and the Stanford Encyclopedia article calls univocity the key to a philosophy of difference.",
+     "claims": [
+      {
+       "by": "DR p. 36"
+      },
+      {
+       "by": "SEP §2"
+      }
+     ]
+    },
+    {
+     "text": "Pages of Difference and Repetition are from Paul Patton's translation (1994).",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ]
+    },
+    {
+     "text": "Univocal being keeps a hierarchy of its own beside the equality of being: one that considers beings “from the point of view of power”, asking whether a being goes to the limit of what it can do (p. 37).",
+     "claims": [
+      {
+       "by": "DR p. 37"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "It also demands that individuating difference come before generic and specific differences (p. 38).",
+     "claims": [
+      {
+       "by": "DR p. 38"
+      }
+     ]
+    },
+    {
+     "text": "Deleuze tells its history in three moments (pp. 39–41).",
+     "claims": [
+      {
+       "by": "DR pp. 39–41"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Scotus thought univocal being and neutralized it in an abstract concept.",
+     "claims": [
+      {
+       "by": "DR p. 39"
+      }
+     ]
+    },
+    {
+     "text": "Spinoza made it an object of pure affirmation, identified with a single substance, and from his account follows “a determination of modes as degrees of power” (p. 40).",
+     "claims": [
+      {
+       "by": "DR p. 40"
+      }
+     ]
+    },
+    {
+     "text": "Spinoza's substance still appears independent of the modes, and Deleuze demands a reversal, “Substance must itself be said of the modes and only of the modes” (p. 40), which Nietzsche's eternal return carries out, making identity “a secondary power” (p. 41).",
+     "claims": [
+      {
+       "by": "DR pp. 40–41"
+      }
+     ]
+    },
+    {
+     "text": "Deleuze's secondary thesis was Expressionism in Philosophy: Spinoza (1968) (Patton, Translator's Preface), and the Stanford article describes the result of his reading as “a Spinozism minus substance, a purely modal or differential universe”.",
+     "claims": [
+      {
+       "by": "DR p. xi"
+      },
+      {
+       "by": "SEP §§1–2"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The article defines puissance as immanent power, the power to act, and links pouvoir to transcendent power.",
+     "claims": [
+      {
+       "by": "SEP §2 (kept)"
+      }
+     ]
+    },
+    {
+     "text": "Joe Hughes follows Deleuze's account of degrees of power, which he quotes from a 1974 seminar, and then asks whether univocity really reduces everything to equal participation in being and a capacity to be affected; he stresses that univocal being is said of a pre-individual world of individuating factors (Hughes, pp. 57–59).",
+     "claims": [
+      {
+       "by": "HUG pp. 57–59"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Celeste Ramírez reads univocity against the vertical, transcendent hierarchy of genera and species.",
+     "claims": [
+      {
+       "by": "RAM (kept)"
+      }
+     ]
+    },
+    {
+     "text": "Alain Badiou's Deleuze: The Clamor of Being (1997) argued, as the Stanford article reports, that Deleuze is at bottom a philosopher of the One, and criticized his vitalism; this entry leaves that dispute open.",
+     "claims": [
+      {
+       "by": "SEP §6.2"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    }
+   ],
+   "quotes": [
+    {
+     "q": "There has only ever been one ontological proposition: Being is univocal",
+     "checked": "DR p. 35"
+    },
+    {
+     "q": "said in a single and same sense of everything of which it is said",
+     "checked": "DR p. 36 (13 words)"
+    },
+    {
+     "q": "of all its individuating differences or intrinsic modalities",
+     "checked": "DR p. 36"
+    },
+    {
+     "q": "from the point of view of power",
+     "checked": "DR p. 37"
+    },
+    {
+     "q": "a determination of modes as degrees of power",
+     "checked": "DR p. 40"
+    },
+    {
+     "q": "Substance must itself be said of the modes and only of the modes",
+     "checked": "DR p. 40 (13 words)"
+    },
+    {
+     "q": "a secondary power",
+     "checked": "DR p. 41"
+    },
+    {
+     "q": "a Spinozism minus substance, a purely modal or differential universe",
+     "checked": "SEP §2 (kept from the previous audit)"
+    }
+   ],
+   "s": "Difference and Repetition (1968), trans. Paul Patton (1994), ch. 1, “Difference in Itself”; Expressionism in Philosophy: Spinoza (1968), trans. Martin Joughin (1990)",
+   "src": "SEP",
+   "srcs": [
+    "SCO",
+    "HUG",
+    "RAM"
+   ],
+   "p": [
+    "deleuze",
+    "spinoza",
+    "nietzsche",
+    "aristotle"
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-14",
+    "verdict": "pass",
+    "fixed": "optional: seminar wording, p. 37"
+   }
+  },
+  "representation": {
+   "new_d": [
+    {
+     "text": "Deleuze's name, in Difference and Repetition (1968), for the way of thinking that makes difference intelligible only by relating it to identity: identity in the concept, opposition in the predicate, analogy in judgement and resemblance in perception.",
+     "claims": [
+      {
+       "by": "DR p. 262"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Deleuze calls these four forms “the four shackles of mediation” (p. 29), and in the Conclusion “the four iron collars of representation” (p. 262).",
+     "claims": [
+      {
+       "by": "DR pp. 29, 262"
+      }
+     ]
+    },
+    {
+     "text": "In chapter 3 he lists them again, “identity with regard to concepts”, “opposition with regard to the determination of concepts”, “analogy with regard to judgement” and “resemblance with regard to objects”, and ties them to recognition, the form of the Same (pp. 137–138).",
+     "claims": [
+      {
+       "by": "DR pp. 137–138"
+      }
+     ]
+    },
+    {
+     "text": "Pages of Difference and Repetition are from Paul Patton's translation (1994).",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ]
+    },
+    {
+     "text": "In Deleuze's reading of Aristotle, specific difference divides a genus into species, as animals with feet and animals with wings divide the genus animal (p. 30), so difference counts only inside an identical concept.",
+     "claims": [
+      {
+       "by": "DR p. 30"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The large genera are related by analogy in judgement and the small units, the species, by a perception of resemblances (p. 34), while individual difference is too small to count (pp. 30–31); univocal being, Deleuze argues, demands that individuating difference precede generic, specific and even individual differences (p. 38).",
+     "claims": [
+      {
+       "by": "DR pp. 30–31, 34, 38"
+      }
+     ]
+    },
+    {
+     "text": "Leibniz and Hegel, he argues, carry representation into the infinite and make it orgiastic: Leibniz through vice-diction and a technique for the infinitely small, Hegel through contradiction and a technique for the infinitely large (pp. 42–52, 262–263).",
+     "claims": [
+      {
+       "by": "DR pp. 42–52, 262–263"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Both still keep identity in charge, on his account: infinite representation stays bound to the convergence of series in Leibniz and to the monocentring of circles in Hegel (p. 49).",
+     "claims": [
+      {
+       "by": "DR p. 49"
+      }
+     ]
+    },
+    {
+     "text": "Joe Hughes's Reader's Guide (2009) takes representation to be the object, with its qualities and its extension, and reads Deleuze's critique as radical in the sense that it must show how what it criticizes was produced (Hughes, pp. 1–3).",
+     "claims": [
+      {
+       "by": "HUG pp. 1–3"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Hughes traces Deleuze's engagement with Hegel largely to Jean Hyppolite, who read the Phenomenology of Spirit as the genetic development of consciousness through determinate negation, and he sets this against Deleuze's claim that contradiction is less profound than difference (Hughes, pp. 46–50); Hyppolite's own books have not been read for this entry.",
+     "claims": [
+      {
+       "by": "HUG pp. 46–50"
+      }
+     ]
+    },
+    {
+     "text": "Deleuze's alternative runs through univocity, in which being is said of individuating differences (pp. 35–42); the eternal return, in which identity becomes “a secondary power” (p. 41); the simulacrum, with which Plato, on Deleuze's reading, was the first to show the direction in which Platonism could be overturned (pp. 59–69); and the Ideas of chapter 4, whose differential relations are actualized in qualities and parts (pp. 182–184, 207–212).",
+     "claims": [
+      {
+       "by": "DR pp. 35–42, 41, 59–69, 182–184, 207–212"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    }
+   ],
+   "quotes": [
+    {
+     "q": "the four shackles of mediation",
+     "checked": "DR p. 29 ('These forms are like the four heads or the four shackles of mediation.')"
+    },
+    {
+     "q": "the four iron collars of representation",
+     "checked": "DR p. 262, the Conclusion's first page, followed by 'identity in the concept, opposition in the predicate, analogy in judgement and resemblance in perception'"
+    },
+    {
+     "q": "identity with regard to concepts",
+     "checked": "DR p. 137"
+    },
+    {
+     "q": "opposition with regard to the determination of concepts",
+     "checked": "DR p. 137"
+    },
+    {
+     "q": "analogy with regard to judgement",
+     "checked": "DR p. 137"
+    },
+    {
+     "q": "resemblance with regard to objects",
+     "checked": "DR p. 137"
+    },
+    {
+     "q": "a secondary power",
+     "checked": "DR p. 41 ('Returning is thus the only identity, but identity as a secondary power')"
+    }
+   ],
+   "s": "Difference and Repetition (1968), trans. Paul Patton (1994), ch. 1, “Difference in Itself”, ch. 3, “The Image of Thought”, ch. 4, “Ideas and the Synthesis of Difference”, and the Conclusion",
+   "src": "HUG",
+   "srcs": [],
+   "p": [
+    "deleuze",
+    "aristotle",
+    "plato",
+    "leibniz",
+    "hegel"
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-14",
+    "verdict": "pass after fixes",
+    "fixed": "resemblance and individual difference rewritten from pp. 30–31, 34, 38; ch. 4 added to the source line"
+   }
+  },
+  "repetition": {
+   "new_d": [
+    {
+     "text": "Deleuze's term, in Difference and Repetition (1968), for the recurrence of what is singular and cannot be replaced, set against generality, in which one particular can be exchanged for another.",
+     "claims": [
+      {
+       "by": "DR pp. 1–3"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "The book opens by separating repetition from generality: generality belongs to the order of laws and to exchange or substitution, where one particular can take another's place, and repetition concerns singularities that cannot be exchanged (pp. 1–3).",
+     "claims": [
+      {
+       "by": "DR pp. 1–3"
+      }
+     ]
+    },
+    {
+     "text": "Festivals, Deleuze writes, “repeat an ‘unrepeatable’” (p. 1).",
+     "claims": [
+      {
+       "by": "DR p. 1"
+      }
+     ]
+    },
+    {
+     "text": "Pages of Difference and Repetition are from Paul Patton's translation (1994).",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ]
+    },
+    {
+     "text": "He calls repetition “difference without a concept” (pp. 13, 23) and distinguishes two forms (pp. 23–25).",
+     "claims": [
+      {
+       "by": "DR pp. 13, 23–25"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Bare repetition is the repetition of the same, occurrences that differ only externally, under one identical concept; covered or clothed repetition forms itself “in masking and disguising itself” (p. 24).",
+     "claims": [
+      {
+       "by": "DR pp. 23–24"
+      }
+     ]
+    },
+    {
+     "text": "The two depend on each other: the clothed is “the singular subject” of the bare, and the bare is “only the external envelope” (p. 24).",
+     "claims": [
+      {
+       "by": "DR p. 24"
+      }
+     ]
+    },
+    {
+     "text": "In chapter 2 repetition takes three forms in time: habit contracts instants into a living present (pp. 70–79), memory grounds the passing present in a pure past whose levels coexist virtually (pp. 79–85), and the third synthesis is the empty form of time, ordered by a caesura into a before and an after (pp. 88–90).",
+     "claims": [
+      {
+       "by": "DR pp. 70–90"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The eternal return, Deleuze writes, concerns “only the third time of the series” (p. 90), the future, and brings back neither the condition nor the agent.",
+     "claims": [
+      {
+       "by": "DR p. 90"
+      }
+     ]
+    },
+    {
+     "text": "With it, “repetition is, for itself, difference in itself” (p. 94).",
+     "claims": [
+      {
+       "by": "DR p. 94"
+      }
+     ]
+    },
+    {
+     "text": "The Conclusion sets the bare, the clothed and the repetition of the eternal return side by side, and reads Nietzsche's Zarathustra as a drama of a selective return (pp. 296–300).",
+     "claims": [
+      {
+       "by": "DR pp. 296–300"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Joe Hughes reads repetition as what explains representation (Hughes, p. 27) and the three syntheses as a genesis running from sensibility toward thought (Hughes, pp. 86–88).",
+     "claims": [
+      {
+       "by": "HUG pp. 27, 86–88"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "On his reading the third synthesis is a failed synthesis of recognition, in which the cogito becomes what Deleuze, after Paul Ricoeur, calls an “aborted cogito” (p. 110), and the eternal return appears only in the third time, after it (Hughes, pp. 115–116, 124–125).",
+     "claims": [
+      {
+       "by": "HUG pp. 115–116, 124–125"
+      },
+      {
+       "by": "DR p. 110"
+      }
+     ]
+    },
+    {
+     "text": "Hughes notes in one sentence that James Williams and many others read the third synthesis as operating before the first, and argues for the order Deleuze gives (Hughes, p. 78); Williams's own books have not been read for this entry.",
+     "claims": [
+      {
+       "by": "HUG p. 78"
+      }
+     ]
+    },
+    {
+     "text": "Deleuze speaks of “virtual coexistence between the levels of a pure past” (p. 83); Hughes argues that the virtual of chapter 4 appears only after the third synthesis, so the pure past should not be equated with it (Hughes, pp. 111–112), and this entry leaves that question open.",
+     "claims": [
+      {
+       "by": "DR p. 83"
+      },
+      {
+       "by": "HUG pp. 111–112"
+      }
+     ]
+    }
+   ],
+   "quotes": [
+    {
+     "q": "in masking and disguising itself",
+     "checked": "DR p. 24 ('covered repetition, which forms itself in covering itself, in masking and disguising itself')"
+    },
+    {
+     "q": "virtual coexistence between the levels of a pure past",
+     "checked": "DR p. 83"
+    },
+    {
+     "q": "repeat an ‘unrepeatable’",
+     "checked": "DR p. 1 ('This is the apparent paradox of festivals: they repeat an 'unrepeatable'.')"
+    },
+    {
+     "q": "difference without a concept",
+     "checked": "DR p. 13 ('Repetition thus appears as difference without a concept') and p. 23 ('In every case repetition is difference without a concept.')"
+    },
+    {
+     "q": "the singular subject",
+     "checked": "DR p. 24 ('One is the singular subject, the interiority and the heart of the other')"
+    },
+    {
+     "q": "only the external envelope",
+     "checked": "DR p. 24 ('The other is only the external envelope, the abstract effect.')"
+    },
+    {
+     "q": "only the third time of the series",
+     "checked": "DR p. 90"
+    },
+    {
+     "q": "repetition is, for itself, difference in itself",
+     "checked": "DR p. 94"
+    },
+    {
+     "q": "aborted cogito",
+     "checked": "DR p. 110 ('Paul Ricoeur aptly named an 'aborted cogito''); Hughes p. 124 uses it in quotation marks"
+    }
+   ],
+   "s": "Difference and Repetition (1968), trans. Paul Patton (1994), Introduction, ch. 2, “Repetition for Itself”, and the Conclusion",
+   "src": "HUG",
+   "srcs": [],
+   "p": [
+    "deleuze",
+    "hume",
+    "bergson",
+    "freud",
+    "nietzsche"
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-14",
+    "verdict": "pass after fixes",
+    "fixed": "p. 83 for virtual coexistence; 'aborted cogito' credited to Ricoeur (DR p. 110)"
+   }
+  }
+ },
+ "summary": "Six entries on Difference and Repetition checked against the book: two new (representation, repetition) and four re-read. Every quotation is verbatim; the book corrected the earlier, encyclopedia-based text in several places (Deleuze's own example of specific difference, the IEP's 'active' second synthesis, Bergson's credit, the secondary thesis's English title), and Hughes's disagreements with the text are given as open disputes."
+}

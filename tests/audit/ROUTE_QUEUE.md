@@ -14,11 +14,7 @@ owner's own imported copies; quotations from them stay under 15 words, and a quo
 read is marked so in `unread`. Entries already checked from the encyclopedias are re-read against the books as the reading reaches
 them, and any that the primary text shows to be too smooth are re-audited.
 
-### Difference and Repetition (next)
-
-representation, repetition (new entries); then re-reading difference-in-itself, syntheses-of-time, virtual-actual, univocity
-
-### Anti-Oedipus
+### Anti-Oedipus (next)
 
 re-reading desiring-production, body-without-organs, syntheses-unconscious, schizoanalysis, coding-decoding
 
@@ -31,4 +27,5 @@ re-reading rhizome, assemblage, deterritorialization, plane-of-immanence, minor-
 The 15 Deleuze and Guattari entries and structuralism (glossary-dg.json); Spinoza's metaphysics (glossary-spinoza.json); the ancient and
 early modern ground (glossary-aristotle.json); Kant and Hegel (glossary-kant-hegel.json); Nietzsche (glossary-nietzsche.json); Land and
 accelerationism, and the terms the Spinoza → Deleuze close reading points to (glossary-route2.json); ontology, metaphysics, accident,
-universals, deduction, essentialism and existentialism (glossary-route3.json).
+universals, deduction, essentialism and existentialism (glossary-route3.json). Difference and Repetition, read in the book itself: representation and repetition (new), and difference-in-itself,
+syntheses-of-time, virtual-actual and univocity re-read (glossary-dr.json, superseding their records in glossary-dg.json).
