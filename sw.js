@@ -14,7 +14,8 @@ const PAGE_WAIT = 3000, FILE_WAIT = 8000;
 const SAVED = new Set();
 
 self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  // the saved copy is fetched from the site itself, never from the browser's HTTP cache, so it is one whole version
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL.map((u) => new Request(u, { cache: "reload" })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", (e) => {
