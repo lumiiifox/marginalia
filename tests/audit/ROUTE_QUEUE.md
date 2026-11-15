@@ -14,9 +14,16 @@ owner's own imported copies; quotations from them stay under 15 words, and a quo
 read is marked so in `unread`. Entries already checked from the encyclopedias are re-read against the books as the reading reaches
 them, and any that the primary text shows to be too smooth are re-audited.
 
-### A Thousand Plateaus (next)
+### Waiting for books
 
-re-reading rhizome, assemblage, deterritorialization, plane-of-immanence, minor-literature
+What Is Philosophy? (plane-of-immanence) and Kafka: Toward a Minor Literature (minor-literature, and the Kafka sentences of
+rhizome and deterritorialization): both entries stay audited from the encyclopedias and A Thousand Plateaus until the owner imports
+the books (glossary-atp.json, `unread`).
+
+### Next: back to Land
+
+The Deleuze books are read; the route returns to Land, whose entries (glossary-route2.json) are re-read against his own texts as the
+owner imports them.
 
 ## Audited
 
@@ -25,4 +32,6 @@ early modern ground (glossary-aristotle.json); Kant and Hegel (glossary-kant-heg
 accelerationism, and the terms the Spinoza → Deleuze close reading points to (glossary-route2.json); ontology, metaphysics, accident,
 universals, deduction, essentialism and existentialism (glossary-route3.json). Difference and Repetition, read in the book itself: representation and repetition (new), and difference-in-itself,
 syntheses-of-time, virtual-actual and univocity re-read (glossary-dr.json, superseding their records in glossary-dg.json). Anti-Oedipus, read in the book itself: desiring-production, body-without-organs, syntheses-unconscious,
-schizoanalysis and coding-decoding re-read (glossary-ao.json, likewise superseding glossary-dg.json).
+schizoanalysis and coding-decoding re-read (glossary-ao.json, likewise superseding glossary-dg.json). A Thousand Plateaus, read in the book itself: rhizome, assemblage,
+deterritorialization, plane-of-immanence and minor-literature re-read, and the A Thousand Plateaus sentences of body-without-organs and
+coding-decoding re-checked (glossary-atp.json, likewise superseding glossary-dg.json).
