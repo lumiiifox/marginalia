@@ -1,0 +1,1948 @@
+{
+ "audit": "glossary-ao",
+ "audited": "2026-11-15",
+ "mode": "in place",
+ "scope": "Anti-Oedipus along the reading route (tests/audit/ROUTE_QUEUE.md): re-reads of desiring-production, body-without-organs, syntheses-unconscious, schizoanalysis and coding-decoding against the book",
+ "by": {
+  "draft": "ChatGPT (collaborator, off the codebase) set three conditions for this batch on 2026-11-15: joint authorship, passages for any link to Difference and Repetition, separate sources for Land; it drafted no entry text",
+  "first_pass": "Claude (Opus 5.5), first pass, 2026-11-15: every sentence of the five entries given a verdict against AO; every page and quotation checked against the text of the owner's copy (quotations by script, pages located by script from running heads and fixed by hand where heads are damaged); Buchanan's guide read for the Difference and Repetition connection",
+  "review": "Independent reviewer (separate agent, fresh context), 2026-11-15: located every cited page of AO by hand against the raw running heads (correcting the page helper where heads are damaged), checked every quotation verbatim and under 15 words, read Buchanan pp. 50–51 and 135–136 and DR pp. 71, 79, re-checked the SEP claims by WebFetch, and opened the Open Library record (correct: Buchanan, Continuum 2008). Verdicts: desiring-production and body-without-organs pass; syntheses-unconscious, schizoanalysis and coding-decoding pass after fixes. Required fixes, all applied: two translators' notes in the English edition do name Difference and Repetition (pp. 393, 395); the passive-synthesis link to DR now cites DR pp. 71, 79; the Bateson clause restated without contrastive negation, with p. 79; Reich's faults restated as the book puts them ('not sufficiently formulated', 'seemed to him', pp. 118–119); reterritorialization on Oedipus cited to pp. 263–266; the 'accelerate the process' words given as the authors' answer (p. 240) to their question (p. 239); 'rather than exchange' rewritten from pp. 142, 144; the unread list completed. Optional suggestions also applied (Buchanan pp. 50–51, his 'two Deleuzes thesis', the afterward at pp. 127–129, machine names credited to the book's section titles, and three style points). Re-check of the fixes by the same reviewer, 2026-11-15: all correct; one more fix asked and made (a comma splice in the Bateson sentence, with p. 79 added). Verdict: all five pass."
+ },
+ "sources": {
+  "AO": {
+   "name": "Gilles Deleuze and Félix Guattari, Anti-Oedipus (1972), trans. Robert Hurley, Mark Seem and Helen R. Lane (Viking 1977; University of Minnesota Press reprint, same pagination), the owner's imported copy, read for every page cited (not committed: the book is under copyright)"
+  },
+  "BUC": {
+   "name": "Ian Buchanan, Deleuze and Guattari's Anti-Oedipus: A Reader's Guide (Continuum, 2008), the owner's imported copy, read for every page cited",
+   "src": "https://openlibrary.org/books/OL17975301M"
+  },
+  "SEP": {
+   "name": "Daniel W. Smith, John Protevi and Daniela Voss, “Gilles Deleuze”, Stanford Encyclopedia of Philosophy (substantive revision 2022)",
+   "src": "https://plato.stanford.edu/entries/deleuze/"
+  },
+  "AO1": {
+   "name": "John Protevi, notes on Anti-Oedipus, part one",
+   "src": "https://www.protevi.com/john/DG/AO1.html"
+  },
+  "AO2": {
+   "name": "John Protevi, notes on Anti-Oedipus, part two",
+   "src": "https://www.protevi.com/john/DG/PDF/Anti-Oedipus_Part_2.pdf"
+  },
+  "HAI": {
+   "name": "Asad Haider, “Why do people fight for their servitude as if it were their salvation?”, Verso blog (2018)",
+   "src": "https://www.versobooks.com/blogs/news/3844-why-do-people-fight-for-their-servitude-as-if-it-were-their-salvation"
+  },
+  "BLK": {
+   "name": "“Lost and Found Radio”, Blackbird 10.1 (2011)",
+   "src": "https://www.blackbird.vcu.edu/v10n1/gallery/porter_j/radio_page.shtml"
+  },
+  "ATP6": {
+   "name": "A Thousand Plateaus, trans. Massumi (1987), plateau 6, pp. 149–166 (as audited in glossary-dg.json)"
+  },
+  "DOW": {
+   "name": "Garin Dowd, “Is critique et clinique schizoanalytic?”, in Deleuze and the Schizoanalysis of Literature (2015)",
+   "src": "https://uwl-9.eprints-hosting.org/id/eprint/1110/2/Dowd_Deleuze_and_Schizoanalysis_EXTRACT.pdf"
+  },
+  "ADV": {
+   "name": "Helton Adverse, “Foucault, o fascismo e a ‘vida não fascista’”, Revista Reflexões 19 (2021)",
+   "src": "https://revistareflexoes.com.br/wp-content/uploads/2021/09/5.1-Helton-Adverse-modelo-aaa.pdf"
+  },
+  "CGPT": {
+   "name": "ChatGPT's guidance of 2026-11-15 for this batch (joint authorship; links to Difference and Repetition need passages; Land needs his own sources): a collaborator's note, not a source for any claim"
+  }
+ },
+ "note": "The book is under copyright and stays out of the repository; quotations are under 15 words. Claims are credited to Deleuze and Guattari jointly; readings beyond the text are credited by name (the Stanford authors, Protevi, Buchanan, Dowd). Two quotations kept from the previous audit ran to 16 words and were cut.",
+ "disputes": [
+  "Continuity between Difference and Repetition and Anti-Oedipus: Buchanan argues the passive syntheses of AO rest on DR's three syntheses of time (Buchanan pp. 50–51) and rejects the 'two Deleuzes' reading he attributes to Badiou and Žižek (pp. 135–136). Deleuze and Guattari's text never names DR or its syntheses of time; two translators' notes in the English edition do (pp. 393, 395). Recorded in Syntheses of the unconscious as Buchanan's reading; Badiou's and Žižek's own texts not read.",
+  "Joint authorship: every claim about AO is credited to Deleuze and Guattari together; Buchanan's attribution of the book's 'backbone' to Deleuze's earlier work is his reading, so credited.",
+  "Accelerationism: the AO passage on 'accelerating the process' (pp. 239–240) is now quoted in Coding, overcoding, decoding; Land's and later readings of it are not described here and need their own sources."
+ ],
+ "unread": [
+  {
+   "source": "Badiou and Žižek",
+   "part": "Badiou's Deleuze: The Clamor of Being and Žižek's Organs without Bodies",
+   "why": "not available",
+   "terms": [
+    "syntheses-unconscious"
+   ],
+   "effect": "the 'two Deleuzes' position appears only as Buchanan reports it"
+  },
+  {
+   "source": "AO and BUC",
+   "part": "the books outside the pages cited",
+   "why": "searched and read around the cited pages, not cover to cover; page numbers were located by script from running heads, several of which are damaged in the copy's text layer",
+   "terms": [
+    "desiring-production",
+    "body-without-organs",
+    "syntheses-unconscious",
+    "schizoanalysis",
+    "coding-decoding"
+   ],
+   "effect": "a qualifying passage elsewhere could have been missed; pages next to a damaged head (e.g. 139, 329, 379–380) were fixed by hand"
+  },
+  {
+   "source": "A Thousand Plateaus",
+   "part": "plateau 6 and the SEP's later-work claims",
+   "why": "not re-read for this batch; kept from glossary-dg.json",
+   "terms": [
+    "body-without-organs",
+    "syntheses-unconscious",
+    "coding-decoding"
+   ],
+   "effect": "these sentences rest on the earlier audit"
+  },
+  {
+   "source": "kept web sources",
+   "part": "Protevi's notes (AO1, AO2), Dowd, Adverse, Blackbird, Haider, and the last part of the SEP page",
+   "why": "not re-read for this batch",
+   "terms": [
+    "desiring-production",
+    "body-without-organs",
+    "syntheses-unconscious",
+    "schizoanalysis",
+    "coding-decoding"
+   ],
+   "effect": "sentences marked (kept) rest on glossary-dg.json; the reviewer re-checked the SEP claims cited in the first 100k characters"
+  },
+  {
+   "source": "Anti-Oedipus in French",
+   "part": "L'Anti-Oedipe (1972)",
+   "why": "not available",
+   "terms": [
+    "syntheses-unconscious"
+   ],
+   "effect": "the claim that the authors never name Difference and Repetition is checked in the English text only"
+  }
+ ],
+ "terms": {
+  "desiring-production": {
+   "old": [
+    {
+     "s": 1,
+     "field": "d",
+     "accuracy": "supported",
+     "by": "AO pp. 1–8, 26–29",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 1–8, 26–29",
+       "fix": "pages added"
+      }
+     ]
+    },
+    {
+     "s": 2,
+     "field": "x",
+     "accuracy": "overstated",
+     "by": "AO p. 1",
+     "note": "The quotation is exact (p. 1) but runs to 16 words, over the 15-word rule.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "AO p. 1",
+       "fix": "quotation cut to 8 words"
+      }
+     ]
+    },
+    {
+     "s": 3,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §4.1",
+     "note": "The Stanford authors' reading, credited to them.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §4.1",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 4,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO p. 5",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO p. 5",
+       "fix": "page added"
+      }
+     ]
+    },
+    {
+     "s": 5,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO pp. 8, 31",
+     "note": "Technical machines work only if not out of order: p. 31.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 8, 31",
+       "fix": "pages added"
+      }
+     ]
+    },
+    {
+     "s": 6,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO p. 25",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO p. 25",
+       "fix": "page added"
+      }
+     ]
+    },
+    {
+     "s": 7,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO pp. 26–28",
+     "note": "Previously credited to Protevi's notes; the book says it (p. 26 fixed subject, p. 27 needs, p. 28 lack). 'The set of passive syntheses' (p. 26) added.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 26–28",
+       "fix": "credited to the book"
+      }
+     ]
+    },
+    {
+     "s": 8,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO p. 29",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO p. 29",
+       "fix": "credited to the book"
+      }
+     ]
+    },
+    {
+     "s": 9,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO p. 29",
+     "note": "Spinoza 'saw so clearly', Reich 'rediscovered' (p. 29).",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO p. 29",
+       "fix": "page added; Reich's verb now the book's"
+      }
+     ]
+    },
+    {
+     "s": 10,
+     "field": "x",
+     "accuracy": "partly",
+     "by": "AO p. 41",
+     "note": "The energies were credited to Protevi's notes; the book gives them itself (p. 41).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "partly",
+       "by": "AO p. 41",
+       "fix": "credited to the book"
+      }
+     ]
+    },
+    {
+     "s": 11,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §4.1",
+     "note": "",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §4.1",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 12,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO pp. 2–5",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 2–5",
+       "fix": "pages added"
+      }
+     ]
+    },
+    {
+     "s": 13,
+     "field": "x",
+     "accuracy": "partly",
+     "by": "SEP §4.1; AO pp. 5, 379",
+     "note": "Credited to the SEP, but the book says it (p. 5 the artificial schizophrenic; p. 379 entity vs process).",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "partly",
+       "accuracy": "partly",
+       "by": "SEP §4.1; AO pp. 5, 379",
+       "fix": "replaced by the book's own statements"
+      }
+     ]
+    },
+    {
+     "s": 14,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "glossary-dg.json",
+     "note": "Further reading, kept.",
+     "claims": [
+      {
+       "type": "editorial",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "glossary-dg.json",
+       "fix": "kept"
+      }
+     ]
+    }
+   ],
+   "new_d": [
+    {
+     "text": "Deleuze and Guattari's name, in Anti-Oedipus (1972), for desire as a process of production: an unconscious made of machines that couple flows and cut them, at work directly in natural and social production.",
+     "claims": [
+      {
+       "by": "AO pp. 1–8, 26–29"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Anti-Oedipus opens with machines everywhere: “The breast is a machine that produces milk”, and the mouth is a machine coupled to it (p. 1).",
+     "claims": [
+      {
+       "by": "AO p. 1"
+      }
+     ]
+    },
+    {
+     "text": "The Stanford Encyclopedia article by Daniel Smith, John Protevi and Daniela Voss calls desiring-production the book's key term, a “universal primary process” beneath the natural, social and psychological realms, and stresses that no subject stands behind it and that this desire is purely positive, with no lack to make up.",
+     "claims": [
+      {
+       "by": "SEP §4.1 (kept)"
+      }
+     ]
+    },
+    {
+     "text": "Pages of Anti-Oedipus are from the translation by Robert Hurley, Mark Seem and Helen R. Lane (1977).",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ]
+    },
+    {
+     "text": "Desiring-machines are binary machines, one machine always coupled to another, and they link in series under the formula “and then” (p. 5).",
+     "claims": [
+      {
+       "by": "AO p. 5"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "They “work only when they break down, and by continually breaking down” (p. 8), while technical machines work only if they are not out of order (p. 31).",
+     "claims": [
+      {
+       "by": "AO pp. 8, 31"
+      }
+     ]
+    },
+    {
+     "text": "The fourth section, “A Materialist Psychiatry”, sets this against the logic of desire as lack, which, the authors argue, the Platonic logic of desire sets up by making us choose between production and acquisition (p. 25).",
+     "claims": [
+      {
+       "by": "AO p. 25"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Desire, they write, “is the set of passive syntheses that engineer partial objects, flows, and bodies” (p. 26); what is missing in desire is a fixed subject (p. 26), needs derive from desire (p. 27), and lack is created and organized through social production (p. 28).",
+     "claims": [
+      {
+       "by": "AO pp. 26–28"
+      }
+     ]
+    },
+    {
+     "text": "Social production, on this account, is desiring-production under determinate conditions, and libido needs no mediation to invest the productive forces (p. 29).",
+     "claims": [
+      {
+       "by": "AO p. 29"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Hence what the authors call the fundamental problem of political philosophy, which Spinoza saw and Wilhelm Reich rediscovered, is why people fight for their servitude as though it were their salvation (p. 29).",
+     "claims": [
+      {
+       "by": "AO p. 29"
+      },
+      {
+       "by": "HAI (kept)"
+      }
+     ]
+    },
+    {
+     "text": "Desiring-production works through three syntheses, connective, disjunctive and conjunctive, which the authors tie to three energies, libido, numen and voluptas (p. 41).",
+     "claims": [
+      {
+       "by": "AO p. 41"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The Stanford article likens desiring-production to Spinoza's natura naturans and Nietzsche's will to power.",
+     "claims": [
+      {
+       "by": "SEP §4.1 (kept)"
+      }
+     ]
+    },
+    {
+     "text": "The book begins with a schizophrenic's walk, Lenz's stroll as Büchner reconstructed it, and with nature lived as a process of production (pp. 2–3), in which man and nature “are not like two opposite terms confronting each other” (pp. 4–5).",
+     "claims": [
+      {
+       "by": "AO pp. 2–5"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Stopping the process, or prolonging it indefinitely, produces what the authors call the artificial schizophrenic of the asylum (p. 5), and they distinguish the schizophrenic as a clinical entity from schizophrenia as a process (p. 379).",
+     "claims": [
+      {
+       "by": "AO pp. 5, 379"
+      }
+     ]
+    },
+    {
+     "text": "Book-length guides include Eugene Holland's Deleuze and Guattari's Anti-Oedipus: Introduction to Schizoanalysis (1999) and Ian Buchanan's Deleuze and Guattari's Anti-Oedipus: A Reader's Guide (2008).",
+     "claims": [
+      {
+       "by": "kept from glossary-dg.json"
+      }
+     ]
+    }
+   ],
+   "quotes": [
+    {
+     "q": "The breast is a machine that produces milk",
+     "checked": "AO p. 1 (the previous entry quoted the whole 16-word sentence, over the 15-word rule; now cut)"
+    },
+    {
+     "q": "universal primary process",
+     "checked": "SEP §4.1 (kept)"
+    },
+    {
+     "q": "and then",
+     "checked": "AO p. 5"
+    },
+    {
+     "q": "work only when they break down, and by continually breaking down",
+     "checked": "AO p. 8"
+    },
+    {
+     "q": "is the set of passive syntheses that engineer partial objects, flows, and bodies",
+     "checked": "AO p. 26 (13 words)"
+    },
+    {
+     "q": "are not like two opposite terms confronting each other",
+     "checked": "AO pp. 4–5, across the page break"
+    }
+   ],
+   "s": "Anti-Oedipus (1972), trans. Robert Hurley, Mark Seem and Helen R. Lane (1977), ch. 1, sec. 1, “Desiring-Production” (pp. 1–8), sec. 4, “A Materialist Psychiatry” (pp. 22–35), and sec. 5, “The Machines” (pp. 36–41)",
+   "src": "SEP",
+   "srcs": [
+    "AO1",
+    "HAI"
+   ],
+   "p": [
+    "deleuze",
+    "guattari",
+    "nietzsche",
+    "spinoza"
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-15",
+    "verdict": "pass"
+   }
+  },
+  "body-without-organs": {
+   "old": [
+    {
+     "s": 1,
+     "field": "d",
+     "accuracy": "supported",
+     "by": "AO pp. 8–12; ATP6",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 8–12; ATP6",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 2,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "BLK",
+     "note": "",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "BLK",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 3,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §3.2",
+     "note": "",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §3.2",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 4,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO pp. 9–16",
+     "note": "",
+     "claims": [
+      {
+       "type": "editorial",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 9–16",
+       "fix": "pages added"
+      }
+     ]
+    },
+    {
+     "s": 5,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO pp. 7–8",
+     "note": "'Third term in the linear series' (p. 7); 'moment' was the entry's word.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 7–8",
+       "fix": "pages added"
+      }
+     ]
+    },
+    {
+     "s": 6,
+     "field": "x",
+     "accuracy": "overstated",
+     "by": "AO pp. 8, 329",
+     "note": "'Its model is the catatonic body' compresses two passages: p. 8 says only that death 'is not without a model' and mentions a catatonic body produced in a hydrotherapy tub; p. 329 says the body without organs is the model of death, a model given by catatonic schizophrenia.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "AO pp. 8, 329",
+       "fix": "rewritten from pp. 8 and 329"
+      }
+     ]
+    },
+    {
+     "s": 7,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO pp. 9–11",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 9–11",
+       "fix": "pages added"
+      }
+     ]
+    },
+    {
+     "s": 8,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO pp. 11–18",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 11–18",
+       "fix": "pages added"
+      }
+     ]
+    },
+    {
+     "s": 9,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO p. 10",
+     "note": "The book's list is earth, tyrant, capital (p. 10); 'despot' was the SEP's word.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO p. 10",
+       "fix": "the book's word"
+      }
+     ]
+    },
+    {
+     "s": 10,
+     "field": "x",
+     "accuracy": "overstated",
+     "by": "AO p. 10",
+     "note": "Exact, but 16 words in one run, over the 15-word rule.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "AO p. 10",
+       "fix": "split into two shorter quotations"
+      }
+     ]
+    },
+    {
+     "s": 11,
+     "field": "x",
+     "accuracy": "partly",
+     "by": "AO p. 19",
+     "note": "The book says the intensities are all positive in relation to zero intensity, and calls the body an egg (p. 19).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "partly",
+       "by": "AO p. 19",
+       "fix": "restated from p. 19"
+      }
+     ]
+    },
+    {
+     "s": 12,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "ATP6",
+     "note": "",
+     "claims": [
+      {
+       "type": "editorial",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "ATP6",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 13,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "ATP6; SEP §4.2",
+     "note": "",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "ATP6; SEP §4.2",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 14,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "ATP6",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "ATP6",
+       "fix": "kept"
+      }
+     ]
+    }
+   ],
+   "new_d": [
+    {
+     "text": "A phrase Deleuze and Guattari take from Antonin Artaud: in Anti-Oedipus the unproductive surface on which desiring-production is recorded; in A Thousand Plateaus a field of intensities beneath the organism's organization.",
+     "claims": [
+      {
+       "by": "AO pp. 8–12"
+      },
+      {
+       "by": "ATP6 (kept)"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "The phrase comes from Antonin Artaud's To Have Done with the Judgment of God, a radio work made for French radio in late 1947 whose broadcast was cancelled before it aired.",
+     "claims": [
+      {
+       "by": "BLK (kept)"
+      }
+     ]
+    },
+    {
+     "text": "In The Logic of Sense (1969), the Stanford Encyclopedia article notes, Deleuze drew on Artaud to name a life of intensities in motion the body without organs.",
+     "claims": [
+      {
+       "by": "SEP §3.2 (kept)"
+      }
+     ]
+    },
+    {
+     "text": "Anti-Oedipus gives it the second section of its first chapter (pp. 9–16).",
+     "claims": [
+      {
+       "by": "AO pp. 9–16"
+      }
+     ]
+    },
+    {
+     "text": "Pages of Anti-Oedipus are from the translation by Robert Hurley, Mark Seem and Helen R. Lane (1977).",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ]
+    },
+    {
+     "text": "It forms as the third term of the connective synthesis, where production stops for a moment and “an enormous undifferentiated object” appears (p. 7): “the unproductive, the sterile, the unengendered, the unconsumable” (p. 8).",
+     "claims": [
+      {
+       "by": "AO pp. 7–8"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The death instinct, the authors write, is its name (p. 8), and they later call the body without organs the model of death, a model given by catatonic schizophrenia (p. 329).",
+     "claims": [
+      {
+       "by": "AO pp. 8, 329"
+      }
+     ]
+    },
+    {
+     "text": "It belongs to antiproduction and is perpetually reinserted into the process of production (p. 8), and it experiences the desiring-machines as “an over-all persecution apparatus” (p. 9).",
+     "claims": [
+      {
+       "by": "AO pp. 8–9"
+      }
+     ]
+    },
+    {
+     "text": "By repulsion it pushes the machines away, which the authors call the paranoiac machine (p. 9); by attraction it draws them to itself, so that production seems to come from it, which they call the miraculating machine (p. 11).",
+     "claims": [
+      {
+       "by": "AO pp. 9–11"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "It becomes the surface on which production is recorded, the site of the disjunctive synthesis (pp. 11–12), and a celibate machine joins attraction and repulsion, producing a subject as a residue beside the machines (pp. 17–18).",
+     "claims": [
+      {
+       "by": "AO pp. 11–12, 17–18"
+      }
+     ]
+    },
+    {
+     "text": "Society has a full body too, the socius, on which production is recorded and from which it seems to come: the earth, the tyrant, capital (p. 10).",
+     "claims": [
+      {
+       "by": "AO p. 10"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "“Capital is indeed the body without organs of the capitalist”, the authors write, “or rather of the capitalist being” (p. 10).",
+     "claims": [
+      {
+       "by": "AO p. 10"
+      }
+     ]
+    },
+    {
+     "text": "The intensities that fill it are all positive in relation to the zero intensity of the full body, and the authors call it an egg, crossed by thresholds and gradients (p. 19).",
+     "claims": [
+      {
+       "by": "AO p. 19"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "A Thousand Plateaus titles its sixth plateau “November 28, 1947: How Do You Make Yourself a Body without Organs?”.",
+     "claims": [
+      {
+       "by": "ATP6 (kept)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "There the body without organs is the enemy of the organism, a stratum that organizes the organs, and the Stanford article glosses it as “the reservoir of potentials for different patterns of bodily affect”.",
+     "claims": [
+      {
+       "by": "ATP6 pp. 158–159 (kept)"
+      },
+      {
+       "by": "SEP §4.2 (kept)"
+      }
+     ]
+    },
+    {
+     "text": "The authors treat it as a practice and an experiment, and warn that wild destratification leaves emptied bodies or totalitarian and fascist ones.",
+     "claims": [
+      {
+       "by": "ATP6 pp. 149–163 (kept)"
+      }
+     ]
+    }
+   ],
+   "quotes": [
+    {
+     "q": "an enormous undifferentiated object",
+     "checked": "AO p. 7"
+    },
+    {
+     "q": "the unproductive, the sterile, the unengendered, the unconsumable",
+     "checked": "AO p. 8"
+    },
+    {
+     "q": "an over-all persecution apparatus",
+     "checked": "AO p. 9"
+    },
+    {
+     "q": "Capital is indeed the body without organs of the capitalist",
+     "checked": "AO p. 10 (the previous entry quoted 16 words in one run; now split into two quotations of 10 and 6)"
+    },
+    {
+     "q": "or rather of the capitalist being",
+     "checked": "AO p. 10"
+    },
+    {
+     "q": "November 28, 1947: How Do You Make Yourself a Body without Organs?",
+     "checked": "title of ATP plateau 6 (kept)"
+    },
+    {
+     "q": "the reservoir of potentials for different patterns of bodily affect",
+     "checked": "SEP §4.2 (kept)"
+    }
+   ],
+   "s": "Anti-Oedipus (1972), trans. Robert Hurley, Mark Seem and Helen R. Lane (1977), ch. 1, secs. 1–3 (pp. 1–22); A Thousand Plateaus (1980), trans. Brian Massumi (1987), plateau 6, “November 28, 1947: How Do You Make Yourself a Body without Organs?”",
+   "src": "SEP",
+   "srcs": [
+    "AO1",
+    "BLK"
+   ],
+   "p": [
+    "deleuze",
+    "guattari"
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-15",
+    "verdict": "pass"
+   }
+  },
+  "syntheses-unconscious": {
+   "old": [
+    {
+     "s": 1,
+     "field": "d",
+     "accuracy": "supported",
+     "by": "AO pp. 68–113",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 68–113",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 2,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO p. 75",
+     "note": "Credited to Protevi's notes; the book makes the Kant comparison itself (p. 75).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO p. 75",
+       "fix": "credited to the book"
+      }
+     ]
+    },
+    {
+     "s": 3,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §4.1",
+     "note": "",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §4.1",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 4,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO pp. 5, 41",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 5, 41",
+       "fix": "pages added"
+      }
+     ]
+    },
+    {
+     "s": 5,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO pp. 70–74",
+     "note": "'Complete objects and the parents': the book says complete objects and global persons (pp. 70–74).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 70–74",
+       "fix": "'persons' for 'parents'"
+      }
+     ]
+    },
+    {
+     "s": 6,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO pp. 12–13, 41",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 12–13, 41",
+       "fix": "pages added"
+      }
+     ]
+    },
+    {
+     "s": 7,
+     "field": "x",
+     "accuracy": "overstated",
+     "by": "AO pp. 76–80",
+     "note": "The old sentence equated the exclusive use with the double bind as Bateson's term; the authors adopt his term but argue against him that it is oedipalizing, not schizophrenizing (p. 79).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "overstated",
+       "by": "AO pp. 76–80",
+       "fix": "the disagreement with Bateson stated"
+      }
+     ]
+    },
+    {
+     "s": 8,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO pp. 16–17, 41",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 16–17, 41",
+       "fix": "pages added"
+      }
+     ]
+    },
+    {
+     "s": 9,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO pp. 100–111",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 100–111",
+       "fix": "pages added"
+      }
+     ]
+    },
+    {
+     "s": 10,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO pp. 114–115, 128–129",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 114–115, 128–129",
+       "fix": "pages added"
+      }
+     ]
+    },
+    {
+     "s": 11,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §4.2",
+     "note": "",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §4.2",
+       "fix": "kept"
+      }
+     ]
+    }
+   ],
+   "new_d": [
+    {
+     "text": "The three processes that make up desiring-production in Anti-Oedipus, connective, disjunctive and conjunctive, each with an immanent, legitimate use and a transcendent, illegitimate use that produces Oedipus.",
+     "claims": [
+      {
+       "by": "AO pp. 68–113"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Deleuze and Guattari borrow the terms of Kant's critique: as Kant sought criteria immanent to understanding to tell legitimate from illegitimate uses of the syntheses, they denounce the illegitimate uses in psychoanalysis, whose metaphysics, they write, is Oedipus (p. 75).",
+     "claims": [
+      {
+       "by": "AO p. 75"
+      }
+     ]
+    },
+    {
+     "text": "The Stanford Encyclopedia article describes psychoanalysis as the transcendent use, which posits a subject behind the syntheses, and schizoanalysis as the study of their immanent use; subjects are among the products of the syntheses.",
+     "claims": [
+      {
+       "by": "SEP §4.1 (kept)"
+      }
+     ]
+    },
+    {
+     "text": "Pages of Anti-Oedipus are from the translation by Robert Hurley, Mark Seem and Helen R. Lane (1977).",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ]
+    },
+    {
+     "text": "The connective synthesis is the production of production, with the formula “and then” (p. 5), and its energy is libido (p. 41).",
+     "claims": [
+      {
+       "by": "AO pp. 5, 41"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Used legitimately it is partial and nonspecific; used illegitimately it is global and specific, referring partial objects to complete objects and to persons, which the authors call the first paralogism, extrapolation (pp. 70–74).",
+     "claims": [
+      {
+       "by": "AO pp. 70–74"
+      }
+     ]
+    },
+    {
+     "text": "The disjunctive synthesis is the production of recording on the body without organs, with the formula “either … or … or” (p. 12), and its energy is numen (pp. 13, 41).",
+     "claims": [
+      {
+       "by": "AO pp. 12–13, 41"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Used inclusively it affirms its terms across their distance; used exclusively and restrictively it forces a choice between fixed terms, and the authors take Gregory Bateson's term double bind for this second paralogism: where Bateson saw a schizophrenizing situation, they find one that is oedipalizing par excellence (pp. 76–80; Bateson, p. 79).",
+     "claims": [
+      {
+       "by": "AO pp. 76–80"
+      },
+      {
+       "by": "AO p. 79 (Bateson)"
+      }
+     ]
+    },
+    {
+     "text": "The conjunctive synthesis is the production of consumption, with the formula “so it's …” (p. 17), and its energy is voluptas (pp. 16–17, 41); in it a subject is born as a residue beside the machines (p. 17).",
+     "claims": [
+      {
+       "by": "AO pp. 16–17, 41"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Its legitimate use is nomadic and polyvocal and its illegitimate use segregative and biunivocal, setting up one-to-one relations between the figures of the social field and the parents, which the authors call the third paralogism, application (pp. 100–111).",
+     "claims": [
+      {
+       "by": "AO pp. 100–111"
+      }
+     ]
+    },
+    {
+     "text": "Two further paralogisms follow: displacement, which concludes from the prohibition what is prohibited, while repression offers desire a falsified image of what it represses (pp. 114–115), and the afterward, which treats the actual factors of an illness as coming after family conflicts (pp. 127–129).",
+     "claims": [
+      {
+       "by": "AO pp. 114–115, 127–129"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The book calls its syntheses passive: desire is “the set of passive syntheses” (p. 26), the term Deleuze had used in Difference and Repetition (1968) for the syntheses of time that found the present and the past (Patton's translation, pp. 71, 79).",
+     "claims": [
+      {
+       "by": "AO p. 26"
+      },
+      {
+       "by": "DR p. 71 ('this synthesis must be given a name: passive synthesis'), p. 79 (memory as 'this more profound passive synthesis')"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Ian Buchanan argues that Anti-Oedipus's concept of passive synthesis rests on those three syntheses of time (Buchanan, pp. 50–51), and that the book's theoretical backbone was built by Deleuze in his earlier work, against the “two Deleuzes thesis” he ascribes to Alain Badiou and Slavoj Žižek (pp. 135–136).",
+     "claims": [
+      {
+       "by": "BUC pp. 50–51, 135–136"
+      }
+     ]
+    },
+    {
+     "text": "The continuity is Buchanan's reading: Deleuze and Guattari's text never names Difference and Repetition or its syntheses of time, and only two translators' notes in the English edition point to it (pp. 393, 395).",
+     "claims": [
+      {
+       "by": "AO pp. 393, 395 (translators' notes to ch. 4, nn. 4 and 39); whole text searched for the title, living present, pure past, Mnemosyne, habitus and syntheses of time: no occurrence in the authors' text"
+      }
+     ]
+    },
+    {
+     "text": "In A Thousand Plateaus, the Stanford article explains, the results of these paralogisms become strata: the organism totalizes the connective synthesis of production, signifiance flattens the disjunctive synthesis of recording, and the subject reifies the conjunctive synthesis of consummation.",
+     "claims": [
+      {
+       "by": "SEP §4.2 (kept)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    }
+   ],
+   "quotes": [
+    {
+     "q": "and then",
+     "checked": "AO p. 5"
+    },
+    {
+     "q": "either … or … or",
+     "checked": "AO p. 12 ('The \"either ... or . . . or\" of the schizophrenic')"
+    },
+    {
+     "q": "so it's …",
+     "checked": "AO p. 17 ('the conjunctive synthesis \"so it's . . . ,\"')"
+    },
+    {
+     "q": "the set of passive syntheses",
+     "checked": "AO p. 26"
+    },
+    {
+     "q": "two Deleuzes thesis",
+     "checked": "BUC p. 136 ('the 'two Deleuzes thesis'')"
+    }
+   ],
+   "s": "Anti-Oedipus (1972), trans. Robert Hurley, Mark Seem and Helen R. Lane (1977), ch. 1 (pp. 1–50) and ch. 2, secs. 3–8 (pp. 68–130)",
+   "src": "SEP",
+   "srcs": [
+    "BUC",
+    "AO2",
+    "AO1"
+   ],
+   "p": [
+    "deleuze",
+    "guattari",
+    "kant"
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-15",
+    "verdict": "pass after fixes"
+   }
+  },
+  "schizoanalysis": {
+   "old": [
+    {
+     "s": 1,
+     "field": "d",
+     "accuracy": "partly",
+     "by": "AO p. 109",
+     "note": "'Materialist psychiatry' is the book's phrase for its project (p. 22); schizoanalysis it calls 'transcendental and materialist analysis' (p. 109).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "partly",
+       "by": "AO p. 109",
+       "fix": "short says 'materialist analysis'"
+      }
+     ]
+    },
+    {
+     "s": 2,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §4.1; AO p. 109",
+     "note": "",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §4.1; AO p. 109",
+       "fix": "book quotation added"
+      }
+     ]
+    },
+    {
+     "s": 3,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §4.1",
+     "note": "",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §4.1",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 4,
+     "field": "x",
+     "accuracy": "partly",
+     "by": "SEP §4.1; AO pp. 5, 35, 136, 379",
+     "note": "Credited to the SEP; the book says it.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "partly",
+       "accuracy": "partly",
+       "by": "SEP §4.1; AO pp. 5, 35, 136, 379",
+       "fix": "credited to the book"
+      }
+     ]
+    },
+    {
+     "s": 5,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO",
+     "note": "",
+     "claims": [
+      {
+       "type": "editorial",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO",
+       "fix": "pages added"
+      }
+     ]
+    },
+    {
+     "s": 6,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO p. 24",
+     "note": "The factory/theater contrast was credited to Protevi; it is the book's (p. 24, again p. 55).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO p. 24",
+       "fix": "credited to the book"
+      }
+     ]
+    },
+    {
+     "s": 7,
+     "field": "x",
+     "accuracy": "wrong",
+     "by": "AO pp. 118–119",
+     "note": "Reich is called 'the true founder' of a materialist psychiatry (p. 118), not its 'father'; the 'two consequences' were unspecified.",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "no",
+       "accuracy": "wrong",
+       "by": "AO pp. 118–119",
+       "fix": "corrected; the two faults stated from pp. 118–119"
+      }
+     ]
+    },
+    {
+     "s": 8,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO pp. 342–366; DOW",
+     "note": "Dowd's summary matches the book's four theses (pp. 342, 343, 356, 366); the book is now cited, with the destructive and positive tasks and the absence of a political program (p. 380).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 342–366; DOW",
+       "fix": "expanded from the book"
+      }
+     ]
+    },
+    {
+     "s": 9,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO pp. xii–xiii",
+     "note": "",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. xii–xiii",
+       "fix": "pages added"
+      }
+     ]
+    },
+    {
+     "s": 10,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO p. xii",
+     "note": "",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO p. xii",
+       "fix": "page added"
+      }
+     ]
+    },
+    {
+     "s": 11,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "kept",
+     "note": "",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "kept",
+       "fix": "kept"
+      }
+     ]
+    }
+   ],
+   "new_d": [
+    {
+     "text": "The critical practice proposed in Anti-Oedipus: a materialist analysis that traces how desire invests the social field directly, set against the Oedipal reductions of psychoanalysis.",
+     "claims": [
+      {
+       "by": "AO pp. 109, 342–356"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Anti-Oedipus calls its practice schizoanalysis, “at once a transcendental and a materialist analysis” (p. 109), and the Stanford Encyclopedia article describes it as a “materialist psychoanalysis” that studies the immanent use of the syntheses of desire.",
+     "claims": [
+      {
+       "by": "AO p. 109"
+      },
+      {
+       "by": "SEP §4.1 (kept)"
+      }
+     ]
+    },
+    {
+     "text": "Its target is what the article calls the “familial or ‘Oedipal’ patterning of desire” in psychoanalysis, which posits an original investment in family figures.",
+     "claims": [
+      {
+       "by": "SEP §4.1 (kept)"
+      }
+     ]
+    },
+    {
+     "text": "The unconscious, the authors write, poses only problems of use (p. 109).",
+     "claims": [
+      {
+       "by": "AO p. 109"
+      }
+     ]
+    },
+    {
+     "text": "Pages of Anti-Oedipus are from the translation by Robert Hurley, Mark Seem and Helen R. Lane (1977).",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ]
+    },
+    {
+     "text": "Schizophrenia as a process is desiring-production at the limit of social production (p. 35), and the authors distinguish it from the schizophrenic as a clinical entity produced when the process is interrupted (pp. 5, 136, 379).",
+     "claims": [
+      {
+       "by": "AO pp. 5, 35, 136, 379"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The critique of psychoanalysis runs through the second chapter, “Psychoanalysis and Familialism: The Holy Family”.",
+     "claims": [
+      {
+       "by": "AO pp. 51–137"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The great discovery of psychoanalysis, the authors write, was the production of desire, after which a classical theater was substituted for the unconscious as a factory (p. 24).",
+     "claims": [
+      {
+       "by": "AO p. 24"
+      }
+     ]
+    },
+    {
+     "text": "Social repression delegates psychic repression to the family (p. 119), and Wilhelm Reich, whom the authors call the true founder of a materialist psychiatry, is credited with showing how psychic repression depends on social repression (p. 118); but, not having sufficiently formulated the concept of desiring-production, he took the desire in revolutionary investment to coincide with economic rationality, and reactionary mass investments to derive from ideology (pp. 118–119).",
+     "claims": [
+      {
+       "by": "AO pp. 118–119"
+      }
+     ]
+    },
+    {
+     "text": "The fourth chapter, “Introduction to Schizoanalysis”, sets out a destructive task and two positive ones (pp. 311, 322, 340), and four theses: every investment is social (p. 342), unconscious investments of desire must be told apart from preconscious investments of interest (p. 343), the libidinal investment of the social field comes before familial investments (p. 356), and social investment has two poles, a paranoiac, fascisizing one and a schizoid, revolutionary one (p. 366).",
+     "claims": [
+      {
+       "by": "AO pp. 311–366"
+      },
+      {
+       "by": "DOW (kept)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Schizoanalysis as such, the authors add, has no political program to propose (p. 380).",
+     "claims": [
+      {
+       "by": "AO p. 380"
+      }
+     ]
+    },
+    {
+     "text": "Michel Foucault's preface to the English translation calls the book “an Introduction to the Non-Fascist Life” and names three adversaries: the political ascetics, among them the bureaucrats of the revolution, the technicians of desire, and fascism, including the fascism in all of us (pp. xii–xiii).",
+     "claims": [
+      {
+       "by": "AO pp. xii–xiii"
+      },
+      {
+       "by": "ADV (kept)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "He also warns against reading it as “the new theoretical reference” (p. xii).",
+     "claims": [
+      {
+       "by": "AO p. xii"
+      }
+     ]
+    },
+    {
+     "text": "Guattari's working notes for the book were later published as The Anti-Oedipus Papers.",
+     "claims": [
+      {
+       "by": "kept from glossary-dg.json"
+      }
+     ]
+    }
+   ],
+   "quotes": [
+    {
+     "q": "at once a transcendental and a materialist analysis",
+     "checked": "AO p. 109"
+    },
+    {
+     "q": "materialist psychoanalysis",
+     "checked": "SEP §4.1 (kept)"
+    },
+    {
+     "q": "familial or ‘Oedipal’ patterning of desire",
+     "checked": "SEP §4.1 (kept)"
+    },
+    {
+     "q": "an Introduction to the Non-Fascist Life",
+     "checked": "AO p. xiii, Foucault's preface"
+    },
+    {
+     "q": "the new theoretical reference",
+     "checked": "AO p. xii, Foucault's preface"
+    }
+   ],
+   "s": "Anti-Oedipus (1972), trans. Robert Hurley, Mark Seem and Helen R. Lane (1977), Michel Foucault's preface, ch. 2 (pp. 51–137) and ch. 4, “Introduction to Schizoanalysis” (pp. 273–382)",
+   "src": "SEP",
+   "srcs": [
+    "AO2",
+    "DOW",
+    "ADV"
+   ],
+   "p": [
+    "deleuze",
+    "guattari",
+    "foucault"
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-15",
+    "verdict": "pass after fixes"
+   }
+  },
+  "coding-decoding": {
+   "old": [
+    {
+     "s": 1,
+     "field": "d",
+     "accuracy": "supported",
+     "by": "AO pp. 33, 139–140, 199",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 33, 139–140, 199",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 2,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO p. 139",
+     "note": "",
+     "claims": [
+      {
+       "type": "editorial",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO p. 139",
+       "fix": "the chapter's opening statement added"
+      }
+     ]
+    },
+    {
+     "s": 3,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §4.1",
+     "note": "",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §4.1",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 4,
+     "field": "x",
+     "accuracy": "partly",
+     "by": "AO pp. 142–145",
+     "note": "Credited to the SEP; the book's own account is marking bodies (pp. 142, 144) in a system of cruelty (pp. 144–145).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "partly",
+       "by": "AO pp. 142–145",
+       "fix": "rewritten from the book"
+      }
+     ]
+    },
+    {
+     "s": 5,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO p. 188",
+     "note": "The book says the graphism is independent of the voice (p. 188).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO p. 188",
+       "fix": "credited to the book"
+      }
+     ]
+    },
+    {
+     "s": 6,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO pp. 199–206",
+     "note": "",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 199–206",
+       "fix": "rewritten from the book"
+      }
+     ]
+    },
+    {
+     "s": 7,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §4.1; AO pp. 33, 139",
+     "note": "",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §4.1; AO pp. 33, 139",
+       "fix": "the book's statements added"
+      }
+     ]
+    },
+    {
+     "s": 8,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "AO pp. 263–266",
+     "note": "Reterritorialization is named on p. 266; pp. 263–265 speak of application (reviewer's point).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "AO pp. 263–266",
+       "fix": "credited to the book, pp. 263–266"
+      }
+     ]
+    },
+    {
+     "s": 9,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §4.2",
+     "note": "",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §4.2",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 10,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §4.2",
+     "note": "Continuation of the previous sentence (the split falls inside it).",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §4.2",
+       "fix": "kept"
+      }
+     ]
+    }
+   ],
+   "new_d": [
+    {
+     "text": "In Anti-Oedipus, the ways social machines register flows of desire: territorial societies code them, despotic states overcode those codes, and capitalism decodes them and binds them with an axiomatic.",
+     "claims": [
+      {
+       "by": "AO pp. 139–140, 199, 33"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "The third chapter of Anti-Oedipus, “Savages, Barbarians, Civilized Men”, is a history of social machines, and it begins with their task: to code desire is the business of the socius (p. 139).",
+     "claims": [
+      {
+       "by": "AO p. 139"
+      }
+     ]
+    },
+    {
+     "text": "The book's sections name three: the primitive territorial machine, the barbarian despotic machine and the civilized capitalist machine (pp. 145, 192, 222), and the Stanford Encyclopedia article describes the full body, the socius, of each, on which production is recorded and which seems to be its cause: the earth, the body of the despot, capital.",
+     "claims": [
+      {
+       "by": "AO pp. 145, 192, 222"
+      },
+      {
+       "by": "SEP §4.1 (kept)"
+      },
+      {
+       "by": "AO p. 10"
+      }
+     ]
+    },
+    {
+     "text": "Pages of Anti-Oedipus are from the translation by Robert Hurley, Mark Seem and Helen R. Lane (1977).",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ]
+    },
+    {
+     "text": "The territorial machine is a socius of inscription, whose essential activity, the authors argue, is marking bodies, with exchange a secondary activity (pp. 142, 144): tattooing, excising, incising, scarifying (p. 144), in a system of cruelty and a theater of cruelty (pp. 144–145, 189).",
+     "claims": [
+      {
+       "by": "AO pp. 142–145, 189"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Its graphism is independent of the voice (p. 188).",
+     "claims": [
+      {
+       "by": "AO p. 188"
+      },
+      {
+       "by": "SEP §4.1 (kept)"
+      }
+     ]
+    },
+    {
+     "text": "Overcoding, in the authors' words, is the operation that constitutes the essence of the State (p. 199): the despot subordinates graphism to the voice, writing appears (pp. 202–205), and the signifier emerges as the deterritorialized sign, through a biunivocalization of the old codes (pp. 205–206).",
+     "claims": [
+      {
+       "by": "AO pp. 199–206"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Capitalism is the only social machine built on decoded flows, putting an axiomatic of abstract quantities in the form of money in the place of codes (p. 139); it is born of the encounter of decoded flows of money-capital and of “free” labor (p. 33).",
+     "claims": [
+      {
+       "by": "AO pp. 33, 139"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The social axiomatic is applied to private persons in the restricted family, and Oedipus becomes the private territoriality that answers capitalism's reterritorializations (pp. 263–266).",
+     "claims": [
+      {
+       "by": "AO pp. 263–266"
+      }
+     ]
+    },
+    {
+     "text": "At the end of the section on the civilized capitalist machine the authors ask whether the revolutionary path is to withdraw from the world market or to go further in the movement of decoding and deterritorialization (p. 239), and answer: go further, “to ‘accelerate the process,’ as Nietzsche put it” (p. 240).",
+     "claims": [
+      {
+       "by": "AO pp. 239–240"
+      }
+     ]
+    },
+    {
+     "text": "A Thousand Plateaus continues this history: the Stanford article describes the state as an “apparatus of capture” “living vampirically off of labor”, a sign of the authors' basically Marxist perspective, and the war machine as the form that “reterritorializes on deterritorialization itself”.",
+     "claims": [
+      {
+       "by": "SEP §4.2 (kept)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    }
+   ],
+   "quotes": [
+    {
+     "q": "to ‘accelerate the process,’ as Nietzsche put it",
+     "checked": "AO p. 240 ('to \"accelerate the process,\" as Nietzsche put it'; inner quotation marks as in the text)"
+    },
+    {
+     "q": "apparatus of capture",
+     "checked": "SEP §4.2 (kept)"
+    },
+    {
+     "q": "living vampirically off of labor",
+     "checked": "SEP §4.2 (kept)"
+    },
+    {
+     "q": "reterritorializes on deterritorialization itself",
+     "checked": "SEP §4.2 (kept)"
+    },
+    {
+     "q": "free",
+     "checked": "AO p. 33 ('the \"free worker\"')"
+    }
+   ],
+   "s": "Anti-Oedipus (1972), trans. Robert Hurley, Mark Seem and Helen R. Lane (1977), ch. 3, “Savages, Barbarians, Civilized Men” (pp. 139–271)",
+   "src": "SEP",
+   "srcs": [
+    "AO1"
+   ],
+   "p": [
+    "deleuze",
+    "guattari",
+    "marx"
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-15",
+    "verdict": "pass after fixes"
+   }
+  }
+ },
+ "summary": "Five Anti-Oedipus entries re-read against the book: page numbers added throughout, credit moved from the encyclopedia and Protevi's notes to the book where the book says it, two over-long quotations cut, Reich's title corrected ('true founder'), the double-bind and Reich passages restated as the book has them, and the link to Difference and Repetition's passive syntheses given as Ian Buchanan's reading."
+}

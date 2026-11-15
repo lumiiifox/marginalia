@@ -106,1295 +106,6 @@
  },
  "note": "Primary texts were checked where a copy could be read: Anti-Oedipus preface and pp. 1–24, A Thousand Plateaus front matter and Introduction, “What Is a Minor Literature?” (Brinkley's translation). Protevi's outlines marked 'do not cite' were used only to locate passages and are not cited; one entry's old source with that mark, and unattributed reading notes, were dropped.",
  "terms": {
-  "desiring-production": {
-   "old": [
-    {
-     "s": 1,
-     "text": "Deleuze and Guattari's name, in Anti-Oedipus (1972), for desire as a process of production: an unconscious made of machines that couple flows and cut them, at work directly in natural and social production.",
-     "accuracy": "supported",
-     "by": "SEP §4.1; AO1"
-    },
-    {
-     "s": 2,
-     "text": "Anti-Oedipus opens by multiplying the unconscious.",
-     "accuracy": "unverified",
-     "note": "No source frames the opening as multiplying the unconscious."
-    },
-    {
-     "s": 3,
-     "text": "In place of a single id, Deleuze and Guattari describe machines working everywhere: machines that produce flows and machines that interrupt them, coupled to one another and to the body.",
-     "accuracy": "supported",
-     "by": "AOT p. 1; AO1",
-     "note": "Reduced to the book's own opening image."
-    },
-    {
-     "s": 4,
-     "text": "The Stanford Encyclopedia article by Daniel Smith, John Protevi and Daniela Voss describes desiring-production as the book's key term, a universal primary process underlying natural, social and psychological reality alike, and stresses two features of it: no subject stands behind the production, and the desire at work is purely positive, organized around no lack.",
-     "accuracy": "supported",
-     "by": "SEP §4.1",
-     "note": "The key term, a universal primary process, no subject behind it, purely positive."
-    },
-    {
-     "s": 5,
-     "text": "A desiring-machine is binary: a flow and a break in it, as the mouth cuts the flow of milk from the breast.",
-     "accuracy": "supported",
-     "by": "AOT p. 1; AO1",
-     "note": "The mouth is coupled to the breast, a milk-producing machine; 'cuts' is the entry's gloss, dropped."
-    },
-    {
-     "s": 6,
-     "text": "Each break supplies a new flow for the next machine, so that machines link into chains within bodies and between bodies, nature and society, under the formula “and … and then”.",
-     "accuracy": "unverified",
-     "note": "Chains within and between bodies, nature and society: not confirmed; the formula kept."
-    },
-    {
-     "s": 7,
-     "text": "John Protevi's notes on the first chapter stress a feature the authors return to often: desiring-machines run only by breaking down, constantly, which sets them apart from technical machines, which work only when they are in order.",
-     "accuracy": "supported",
-     "by": "AOT ch. 1 sec. 2; AO1",
-     "note": "Desiring-machines work only when they break down; technical machines only when in order."
-    },
-    {
-     "s": 8,
-     "text": "The fourth section, “A Materialist Psychiatry”, sets this account against the tradition that defines desire by lack, running in the book's telling from Plato to Lacan.",
-     "accuracy": "overstated",
-     "by": "AOT pp. 24–25",
-     "note": "The book traces the logic of desire as lack to Plato; 'to Lacan' not confirmed in the pages read."
-    },
-    {
-     "s": 9,
-     "text": "For Deleuze and Guattari desire produces the real through passive syntheses of partial objects, flows and bodies, and what desire lacks is a fixed subject.",
-     "accuracy": "unverified",
-     "note": "'Passive syntheses of partial objects, flows and bodies' not confirmed."
-    },
-    {
-     "s": 10,
-     "text": "Desire is a machine, and its object is another machine connected to it.",
-     "accuracy": "unverified",
-     "note": "Not found in the pages read."
-    },
-    {
-     "s": 11,
-     "text": "Lack is created, planned and organized within social production, and needs are counterproducts of desire.",
-     "accuracy": "supported",
-     "by": "AO1",
-     "note": "Lack created, planned and organized in social production; needs as counterproducts."
-    },
-    {
-     "s": 12,
-     "text": "The same production runs through society: social production is desiring-production under determinate conditions, and the social field is invested by desire directly, with no need for sublimation or symbolic mediation.",
-     "accuracy": "overstated",
-     "by": "AO1",
-     "note": "Under determinate conditions confirmed; 'no need of mediation' confirmed, 'sublimation' and 'symbolic mediation' not."
-    },
-    {
-     "s": 13,
-     "text": "Hence the question the authors call the fundamental problem of political philosophy, which they take from Spinoza and Wilhelm Reich: why people fight for their servitude as if it were their salvation, and how desire can come to desire its own repression.",
-     "accuracy": "supported",
-     "by": "AO1; HAI",
-     "note": "The fundamental problem; Spinoza's question, which Reich took up; 'desire its own repression' not confirmed and cut."
-    },
-    {
-     "s": 14,
-     "text": "Desiring-production works through three syntheses, which the book treats in turn: the connective synthesis of production, the disjunctive synthesis of recording on the body without organs, and the conjunctive synthesis of consumption, in which a subject is produced as a residue alongside the machines.",
-     "accuracy": "supported",
-     "by": "SEP §4.1"
-    },
-    {
-     "s": 15,
-     "text": "The authors name the corresponding energies libido, numen and voluptas.",
-     "accuracy": "supported",
-     "by": "AO1"
-    },
-    {
-     "s": 16,
-     "text": "They compare desiring-production to Spinoza's natura naturans and Nietzsche's will to power.",
-     "accuracy": "supported",
-     "by": "SEP §4.1",
-     "note": "The Stanford article makes the comparison."
-    },
-    {
-     "s": 17,
-     "text": "The model for the whole account is the schizophrenic's stroll with which the book begins, Büchner's Lenz walking in the mountains among machines of sky, earth and body, living nature as a process of production before any split between man and nature.",
-     "accuracy": "supported",
-     "by": "AOT pp. 1–4",
-     "note": "The stroll, Lenz as Büchner reconstructed him; man and nature not two opposite terms."
-    },
-    {
-     "s": 18,
-     "text": "Clinical schizophrenia, on their reading, is the result of this process being blocked.",
-     "accuracy": "supported",
-     "by": "SEP §4.1"
-    },
-    {
-     "s": 19,
-     "text": "Book-length guides to these chapters include Eugene Holland's Deleuze and Guattari's Anti-Oedipus: Introduction to Schizoanalysis (1999) and Ian Buchanan's Deleuze and Guattari's Anti-Oedipus: A Reader's Guide (2008).",
-     "accuracy": "supported",
-     "by": "PBIB; CAT"
-    }
-   ],
-   "new_d": null,
-   "new_text": [
-    [
-     {
-      "text": "Anti-Oedipus opens with machines everywhere: “The breast is a machine that produces milk, and the mouth a machine coupled to it.”",
-      "claims": [
-       {
-        "by": "AOT p. 1",
-        "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
-       }
-      ]
-     },
-     {
-      "text": "The Stanford Encyclopedia article by Daniel Smith, John Protevi and Daniela Voss calls desiring-production the book's key term, a “universal primary process” beneath the natural, social and psychological realms, and stresses that no subject stands behind it and that this desire is purely positive, with no lack to make up.",
-      "claims": [
-       {
-        "by": "SEP §4.1",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "Desiring-machines are binary, a flow and a break in it, and they link in series under the formula “and then”.",
-      "claims": [
-       {
-        "by": "AOT pp. 1–5",
-        "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
-       },
-       {
-        "by": "AO1 I.D",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       }
-      ]
-     },
-     {
-      "text": "They “work only when they break down, and by continually breaking down”, which sets them apart from technical machines, which need to be in order to work.",
-      "claims": [
-       {
-        "by": "AOT ch. 1 sec. 2",
-        "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
-       },
-       {
-        "by": "AO1 I.D",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "The fourth section, “A Materialist Psychiatry”, sets this against the logic of desire as lack, which the authors trace to Plato's choice between production and acquisition.",
-      "claims": [
-       {
-        "by": "AOT pp. 24–25",
-        "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
-       },
-       {
-        "by": "AO1 IV",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       }
-      ]
-     },
-     {
-      "text": "What is missing in desire, on their account, is a fixed subject; lack is produced and organized by social production itself, and needs derive from desire.",
-      "claims": [
-       {
-        "by": "AO1 IV.B",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "Social production, on this account, is desiring-production under determinate conditions, and libido invests production with no need of mediation.",
-      "claims": [
-       {
-        "by": "AO1 IV.C",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       }
-      ]
-     },
-     {
-      "text": "Hence what the authors call the fundamental problem of political philosophy, a question Spinoza asked and Wilhelm Reich took up again: why people fight to stay in servitude.",
-      "claims": [
-       {
-        "by": "AO1 IV.C",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       },
-       {
-        "by": "HAI",
-        "source": "Asad Haider, “Why do people fight for their servitude as if it were their salvation?”, Verso blog (2018)"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "Desiring-production works through three syntheses, connective, disjunctive and conjunctive, whose energies Protevi's notes give as libido, numen and voluptas.",
-      "claims": [
-       {
-        "by": "SEP §4.1",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       },
-       {
-        "by": "AO1 III",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       }
-      ]
-     },
-     {
-      "text": "The Stanford article likens desiring-production to Spinoza's natura naturans and Nietzsche's will to power.",
-      "claims": [
-       {
-        "by": "SEP §4.1",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "The book begins with a schizophrenic's walk, Lenz's stroll as Büchner reconstructed it, and with nature lived as a process of production, in which man and nature “are not like two opposite terms confronting each other”.",
-      "claims": [
-       {
-        "by": "AOT pp. 1–4",
-        "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
-       }
-      ]
-     },
-     {
-      "text": "Clinical schizophrenia, on the Stanford article's reading, results when the process of desiring-production is interrupted or blocked.",
-      "claims": [
-       {
-        "by": "SEP §4.1",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     },
-     {
-      "text": "Book-length guides include Eugene Holland's Deleuze and Guattari's Anti-Oedipus: Introduction to Schizoanalysis (1999) and Ian Buchanan's Deleuze and Guattari's Anti-Oedipus: A Reader's Guide (2008).",
-      "claims": [
-       {
-        "by": "PBIB",
-        "source": "John Protevi, Deleuze and Guattari bibliography"
-       },
-       {
-        "by": "CAT",
-        "source": "library and publisher records of the book (title, publisher, year)"
-       }
-      ]
-     }
-    ]
-   ],
-   "s": "Anti-Oedipus (1972), trans. Robert Hurley, Mark Seem and Helen R. Lane (1977), ch. 1, sec. 1, “Desiring-Production” (pp. 1–8) and sec. 4, “A Materialist Psychiatry” (pp. 22–35)",
-   "src": "SEP",
-   "srcs": [
-    "AO1",
-    "HAI"
-   ]
-  },
-  "body-without-organs": {
-   "old": [
-    {
-     "s": 1,
-     "text": "A phrase Deleuze and Guattari take from Antonin Artaud: in Anti-Oedipus the unproductive surface on which desiring-production is recorded; in A Thousand Plateaus a field of intensities beneath the organism's organization.",
-     "accuracy": "supported",
-     "by": "SEP §§3.2, 4.2; AO1"
-    },
-    {
-     "s": 2,
-     "text": "The phrase comes from Antonin Artaud's radio work To Have Done with the Judgment of God, recorded in November 1947.",
-     "accuracy": "overstated",
-     "by": "BLK",
-     "note": "Made for French radio in late 1947 and cancelled before its February 1948 broadcast; a recording date is not given."
-    },
-    {
-     "s": 3,
-     "text": "Deleuze had already used it in The Logic of Sense (1969), where, as the Stanford Encyclopedia article notes, it names the risings and fallings of intensity in an infant's experience.",
-     "accuracy": "overstated",
-     "by": "SEP §3.2",
-     "note": "The rising and falling intensities are Daniel Stern's image of infant experience; the body without organs names a life of intensities in motion."
-    },
-    {
-     "s": 4,
-     "text": "Deleuze and Guattari make it one of the basic concepts of Anti-Oedipus.",
-     "accuracy": "supported",
-     "by": "AO1"
-    },
-    {
-     "s": 5,
-     "text": "In the first chapter the body without organs appears as the third moment of the connective synthesis.",
-     "accuracy": "supported",
-     "by": "AO1"
-    },
-    {
-     "s": 6,
-     "text": "Production stops for a moment and an enormous undifferentiated object forms, unproductive and sterile, the element of antiproduction within production itself.",
-     "accuracy": "supported",
-     "by": "AOT ch. 1 sec. 2; AO1",
-     "note": "Quoted."
-    },
-    {
-     "s": 7,
-     "text": "The organized organism, the body arranged by machines, is felt as persecution, and the authors connect this full body with the death instinct and take catatonia as its clinical model.",
-     "accuracy": "supported",
-     "by": "AOT ch. 1 sec. 2",
-     "note": "The death instinct, catatonia, the persecution apparatus."
-    },
-    {
-     "s": 8,
-     "text": "It is then constantly reinserted into production.",
-     "accuracy": "supported",
-     "by": "AO1"
-    },
-    {
-     "s": 9,
-     "text": "Two relations follow.",
-     "accuracy": "editorial"
-    },
-    {
-     "s": 10,
-     "text": "By repulsion the body without organs pushes the machines away, which the authors call the paranoiac machine.",
-     "accuracy": "supported",
-     "by": "AO1"
-    },
-    {
-     "s": 11,
-     "text": "By attraction it draws them onto itself, so that production seems to emanate from it, which they call the miraculating machine.",
-     "accuracy": "supported",
-     "by": "AO1"
-    },
-    {
-     "s": 12,
-     "text": "It becomes the surface on which production is recorded, the site of the disjunctive synthesis, and the opposition of repulsion and attraction is reconciled in a celibate machine, where a subject is produced in the conjunctive synthesis.",
-     "accuracy": "supported",
-     "by": "AO1"
-    },
-    {
-     "s": 13,
-     "text": "The same structure appears in society.",
-     "accuracy": "editorial"
-    },
-    {
-     "s": 14,
-     "text": "Social production has its own full body, the socius, which falls back on production, records it and appropriates its surplus, so that production appears to come from it: the earth in territorial societies, the body of the despot in states, capital under capitalism.",
-     "accuracy": "overstated",
-     "by": "AO1; SEP §4.1",
-     "note": "Earth, despot, capital confirmed; 'appropriates its surplus' not confirmed."
-    },
-    {
-     "s": 15,
-     "text": "Protevi's notes record the authors' formula that capital is the body without organs of the capitalist.",
-     "accuracy": "supported",
-     "by": "AOT ch. 1 sec. 2",
-     "note": "Quoted from the book."
-    },
-    {
-     "s": 16,
-     "text": "Intensity runs through all of this.",
-     "accuracy": "editorial"
-    },
-    {
-     "s": 17,
-     "text": "The body without organs is zero intensity, and the subject passes through the states that attraction and repulsion produce on it, bands of intensity, thresholds and gradients; the authors liken it to an egg crossed by axes and gradients, the egg as embryology describes it before organs form.",
-     "accuracy": "supported",
-     "by": "AO1; AOT ch. 1 sec. 3",
-     "note": "Zero intensity, bands, thresholds, gradients; the egg. 'As embryology describes it' not confirmed."
-    },
-    {
-     "s": 18,
-     "text": "A Thousand Plateaus devotes its sixth plateau to the question of how one makes oneself a body without organs, dated by the day of Artaud's recording.",
-     "accuracy": "overstated",
-     "by": "ATP6",
-     "note": "The plateau's title carries the date; that it is the day of the recording is not confirmed."
-    },
-    {
-     "s": 19,
-     "text": "There the body without organs is opposed to the organism, one of the strata that organize bodies, and the Stanford Encyclopedia article glosses it as a reservoir of potentials for different patterns of bodily affect.",
-     "accuracy": "supported",
-     "by": "ATP6; SEP §4.2",
-     "note": "The enemy of the organism, a stratum; SEP's gloss now quoted."
-    },
-    {
-     "s": 20,
-     "text": "The authors present it as a practice of experimentation and warn that hasty destratification can produce emptied or cancerous bodies, so the experiment requires caution.",
-     "accuracy": "overstated",
-     "by": "ATP6",
-     "note": "Emptied bodies and totalitarian or fascist ones; 'cancerous' replaced by the wording checked."
-    }
-   ],
-   "new_d": null,
-   "new_text": [
-    [
-     {
-      "text": "The phrase comes from Antonin Artaud's To Have Done with the Judgment of God, a radio work made for French radio in late 1947 whose broadcast was cancelled before it aired.",
-      "claims": [
-       {
-        "by": "BLK",
-        "source": "“Lost and Found Radio”, Blackbird 10.1 (2011)"
-       }
-      ]
-     },
-     {
-      "text": "In The Logic of Sense (1969), the Stanford Encyclopedia article notes, Deleuze drew on Artaud to name a life of intensities in motion the body without organs.",
-      "claims": [
-       {
-        "by": "SEP §3.2",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     },
-     {
-      "text": "Anti-Oedipus gives it a section of its first chapter.",
-      "claims": [
-       {
-        "by": "AO1 II",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "There it is the third moment of the connective synthesis: production stops, and “an enormous undifferentiated object” forms, “the unproductive, the sterile, the unengendered, the unconsumable”.",
-      "claims": [
-       {
-        "by": "AOT ch. 1 sec. 2",
-        "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
-       },
-       {
-        "by": "AO1 I.D",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       }
-      ]
-     },
-     {
-      "text": "Its name, the authors write, is the death instinct, and its model is the catatonic body; it experiences the desiring-machines as “an over-all persecution apparatus”, and it is constantly put back into production as antiproduction.",
-      "claims": [
-       {
-        "by": "AOT ch. 1 sec. 2",
-        "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
-       },
-       {
-        "by": "AO1 I.D",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "By repulsion it pushes the machines away, which the authors call the paranoiac machine; by attraction it draws them to itself, so that production seems to come from it, which they call the miraculating machine.",
-      "claims": [
-       {
-        "by": "AO1 II",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       }
-      ]
-     },
-     {
-      "text": "It becomes the surface on which production is recorded, the site of the disjunctive synthesis, and a celibate machine joins attraction and repulsion, producing a subject as a residue beside the machines.",
-      "claims": [
-       {
-        "by": "AO1 II–III",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "Society has a full body too, the socius, on which production is recorded and from which it seems to come: the earth, the despot, capital.",
-      "claims": [
-       {
-        "by": "AO1 II",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       },
-       {
-        "by": "SEP §4.1",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     },
-     {
-      "text": "“Capital is indeed the body without organs of the capitalist, or rather of the capitalist being.”",
-      "claims": [
-       {
-        "by": "AOT ch. 1 sec. 2",
-        "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "The body without organs is zero intensity, and the states a subject passes through on it are bands of intensity, thresholds and gradients; the authors call it an egg.",
-      "claims": [
-       {
-        "by": "AO1 III",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       },
-       {
-        "by": "AOT ch. 1 sec. 3",
-        "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "A Thousand Plateaus titles its sixth plateau “November 28, 1947: How Do You Make Yourself a Body without Organs?”.",
-      "claims": [
-       {
-        "by": "ATP6",
-        "source": "A Thousand Plateaus, plateau 6, pp. 149–166, checked against John Protevi's classroom outline (marked not for citation, so not cited)"
-       }
-      ]
-     },
-     {
-      "text": "There the body without organs is the enemy of the organism, a stratum that organizes the organs, and the Stanford article glosses it as “the reservoir of potentials for different patterns of bodily affect”.",
-      "claims": [
-       {
-        "by": "ATP6 pp. 158–159",
-        "source": "A Thousand Plateaus, plateau 6, pp. 149–166, checked against John Protevi's classroom outline (marked not for citation, so not cited)"
-       },
-       {
-        "by": "SEP §4.2",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     },
-     {
-      "text": "The authors treat it as a practice and an experiment, and warn that wild destratification leaves emptied bodies or totalitarian and fascist ones.",
-      "claims": [
-       {
-        "by": "ATP6 pp. 149–163",
-        "source": "A Thousand Plateaus, plateau 6, pp. 149–166, checked against John Protevi's classroom outline (marked not for citation, so not cited)"
-       }
-      ]
-     }
-    ]
-   ],
-   "s": "Anti-Oedipus (1972), trans. Robert Hurley, Mark Seem and Helen R. Lane (1977), ch. 1, sec. 2, “The Body without Organs” (pp. 9–16); A Thousand Plateaus (1980), trans. Brian Massumi (1987), plateau 6, “November 28, 1947: How Do You Make Yourself a Body without Organs?”",
-   "src": "SEP",
-   "srcs": [
-    "AO1",
-    "BLK"
-   ]
-  },
-  "syntheses-unconscious": {
-   "old": [
-    {
-     "s": 1,
-     "text": "The three processes that make up desiring-production in Anti-Oedipus, connective, disjunctive and conjunctive, each with an immanent, legitimate use and a transcendent, illegitimate use that produces Oedipus.",
-     "accuracy": "supported",
-     "by": "SEP §4.1; AO2"
-    },
-    {
-     "s": 2,
-     "text": "Deleuze and Guattari model their analysis on Kant's critique of reason.",
-     "accuracy": "supported",
-     "by": "AO2 III.F"
-    },
-    {
-     "s": 3,
-     "text": "Kant distinguished legitimate uses of the syntheses of consciousness from illegitimate, transcendent uses that generate illusions.",
-     "accuracy": "unverified",
-     "note": "Kant's own distinction not checked against a source here."
-    },
-    {
-     "s": 4,
-     "text": "Anti-Oedipus does the same for the unconscious: each synthesis of desire has an immanent use, which the authors study under the name of schizoanalysis, and a transcendent use, which psychoanalysis imposes when it posits a subject or a family behind the syntheses.",
-     "accuracy": "supported",
-     "by": "SEP §4.1"
-    },
-    {
-     "s": 5,
-     "text": "The Stanford Encyclopedia article stresses that subjects are products of the syntheses and never their agents.",
-     "accuracy": "supported",
-     "by": "SEP §4.1"
-    },
-    {
-     "s": 6,
-     "text": "The connective synthesis is the production of production, with the formula “and … and then”: machines couple flows and break them, and the energy at work is libido.",
-     "accuracy": "supported",
-     "by": "AOT ch. 1; AO1"
-    },
-    {
-     "s": 7,
-     "text": "Its legitimate use is partial and nonspecific, linking partial objects in open chains.",
-     "accuracy": "overstated",
-     "by": "AO2 III.C",
-     "note": "Partial confirmed; 'open chains' not."
-    },
-    {
-     "s": 8,
-     "text": "Its illegitimate use is global and specific: it refers partial objects to complete objects and whole persons, mother and father, and fixes a sex.",
-     "accuracy": "supported",
-     "by": "AO2 III.C–D"
-    },
-    {
-     "s": 9,
-     "text": "The authors call this the paralogism of extrapolation.",
-     "accuracy": "supported",
-     "by": "AO2 III.D"
-    },
-    {
-     "s": 10,
-     "text": "The disjunctive synthesis is the production of recording on the body without organs, with the formula “either … or … or”, and its energy is numen.",
-     "accuracy": "supported",
-     "by": "AOT ch. 1; AO1"
-    },
-    {
-     "s": 11,
-     "text": "Used inclusively and without restriction, it lets the subject pass through every position in a system of permutations.",
-     "accuracy": "unverified",
-     "note": "Every position in a system of permutations: not confirmed."
-    },
-    {
-     "s": 12,
-     "text": "Used exclusively and restrictively, it forces a choice between fixed terms, either man or woman, either parent or child, and the authors name this the paralogism of the double bind, borrowing Gregory Bateson's term.",
-     "accuracy": "overstated",
-     "by": "AO2 IV.A, IV.C",
-     "note": "Exclusive, restrictive either/or and the double bind confirmed; the examples not."
-    },
-    {
-     "s": 13,
-     "text": "The conjunctive synthesis is the production of consumption, with the formula “so it's …”, and its energy is voluptas.",
-     "accuracy": "supported",
-     "by": "AOT ch. 1 sec. 3; AO1"
-    },
-    {
-     "s": 14,
-     "text": "Here a subject is born as a residue beside the machines, defined by the states it passes through.",
-     "accuracy": "supported",
-     "by": "AO1"
-    },
-    {
-     "s": 15,
-     "text": "Its legitimate use is nomadic and polyvocal; its illegitimate use is segregative and biunivocal, fixing one-to-one relations between figures of the social field and the parents of the family triangle, which the authors call the paralogism of application.",
-     "accuracy": "supported",
-     "by": "AO2 V.I, V.L"
-    },
-    {
-     "s": 16,
-     "text": "Two further paralogisms complete the critique.",
-     "accuracy": "editorial"
-    },
-    {
-     "s": 17,
-     "text": "Displacement, discussed in the section on social and psychic repression, has the law forbid something and the subject conclude that it desired what was forbidden, so that Oedipus becomes a product of repression.",
-     "accuracy": "overstated",
-     "by": "AO2 VII.B",
-     "note": "Displacement as a falsified image of what is repressed; the entry's account of the law reworded."
-    },
-    {
-     "s": 18,
-     "text": "The paralogism of the afterward, in the section on neurosis and psychosis, treats actual factors as mere after-effects of earlier family problems.",
-     "accuracy": "supported",
-     "by": "AO2 VIII.E"
-    },
-    {
-     "s": 19,
-     "text": "Protevi's notes give the section and page ranges for each, and the reading notes from Duke University give the pages where the paralogisms are named.",
-     "accuracy": "wrong",
-     "note": "The Duke reading notes name no author; dropped as a source."
-    },
-    {
-     "s": 20,
-     "text": "A Thousand Plateaus later restates the three syntheses as strata.",
-     "accuracy": "supported",
-     "by": "SEP §4.2"
-    },
-    {
-     "s": 21,
-     "text": "The Stanford Encyclopedia article identifies the organism, signifiance and subjectification as the physiological, semiotic and psychological registers that the syntheses of production, recording and consumption had covered in the earlier book.",
-     "accuracy": "supported",
-     "by": "SEP §4.2"
-    }
-   ],
-   "new_d": null,
-   "new_text": [
-    [
-     {
-      "text": "Deleuze and Guattari borrow the terms of Kant's critique: each synthesis of desire has an immanent use and a transcendent one.",
-      "claims": [
-       {
-        "by": "AO2 III.F, VI.E",
-        "source": "John Protevi, notes on Anti-Oedipus, part two"
-       }
-      ]
-     },
-     {
-      "text": "The Stanford Encyclopedia article describes psychoanalysis as the transcendent use, which posits a subject behind the syntheses, and schizoanalysis as the study of their immanent use; subjects are among the products of the syntheses.",
-      "claims": [
-       {
-        "by": "SEP §4.1",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "The connective synthesis is the production of production, with the formula “and then”, and its energy is libido.",
-      "claims": [
-       {
-        "by": "AOT ch. 1",
-        "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
-       },
-       {
-        "by": "AO1 I.D, III",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       }
-      ]
-     },
-     {
-      "text": "Used legitimately it is partial and nonspecific; used illegitimately it is global and specific, referring partial objects to complete objects and to the parents, which the authors call the paralogism of extrapolation.",
-      "claims": [
-       {
-        "by": "AO2 III.C–D",
-        "source": "John Protevi, notes on Anti-Oedipus, part two"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "The disjunctive synthesis is the production of recording on the body without organs, with the formula “either … or … or”, and its energy is numen.",
-      "claims": [
-       {
-        "by": "AOT ch. 1",
-        "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
-       },
-       {
-        "by": "AO1 III",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       }
-      ]
-     },
-     {
-      "text": "Used inclusively it keeps its terms open; used exclusively and restrictively it forces a choice between fixed terms, the double bind, a term the authors take from Gregory Bateson.",
-      "claims": [
-       {
-        "by": "AO2 IV.A, IV.C",
-        "source": "John Protevi, notes on Anti-Oedipus, part two"
-       },
-       {
-        "by": "AO79",
-        "source": "Anti-Oedipus, ch. 2, p. 79, on Bateson's double bind, confirmed by the second reviewer"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "The conjunctive synthesis is the production of consumption, with the formula “so it's …”, and its energy is voluptas; in it a subject is born as a residue beside the machines.",
-      "claims": [
-       {
-        "by": "AOT ch. 1 sec. 3",
-        "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
-       },
-       {
-        "by": "AO1 III",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       }
-      ]
-     },
-     {
-      "text": "Its legitimate use is nomadic and polyvocal and its illegitimate use segregative and biunivocal, setting up one-to-one relations between the figures of the social field and the parents, which the authors call the paralogism of application.",
-      "claims": [
-       {
-        "by": "AO2 V.I, V.L",
-        "source": "John Protevi, notes on Anti-Oedipus, part two"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "Two further paralogisms follow: displacement, in the section on social and psychic repression, by which repression offers desire a falsified image of what it represses, and a fifth, in the section on neurosis and psychosis, which treats actual factors as after-effects of family problems.",
-      "claims": [
-       {
-        "by": "AO2 VII.B, VIII.E",
-        "source": "John Protevi, notes on Anti-Oedipus, part two"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "In A Thousand Plateaus, the Stanford article explains, the results of these paralogisms become strata: the organism totalizes the connective synthesis of production, signifiance flattens the disjunctive synthesis of recording, and the subject reifies the conjunctive synthesis of consummation.",
-      "claims": [
-       {
-        "by": "SEP §4.2",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     }
-    ]
-   ],
-   "s": "Anti-Oedipus (1972), trans. Robert Hurley, Mark Seem and Helen R. Lane (1977), ch. 2, secs. 3–8 (pp. 68–130)",
-   "src": "AO2",
-   "srcs": [
-    "SEP",
-    "AO1"
-   ]
-  },
-  "schizoanalysis": {
-   "old": [
-    {
-     "s": 1,
-     "text": "The critical practice proposed in Anti-Oedipus: a materialist psychiatry that traces how desire invests the social field directly, set against the Oedipal reductions of psychoanalysis.",
-     "accuracy": "supported",
-     "by": "SEP §4.1; DOW"
-    },
-    {
-     "s": 2,
-     "text": "Schizoanalysis is the name Deleuze and Guattari give to the practice developed in Anti-Oedipus, which they also call materialist psychiatry.",
-     "accuracy": "supported",
-     "by": "SEP §4.1; AO1"
-    },
-    {
-     "s": 3,
-     "text": "It treats the unconscious as an aggregate of productive processes of desire and studies the immanent use of the syntheses of the unconscious.",
-     "accuracy": "unverified"
-    },
-    {
-     "s": 4,
-     "text": "Its starting points are schizophrenia and the transformations capitalism has produced in society, and its target is what the authors regard as the reactionary tendency of psychoanalysis to reduce all desire to the family.",
-     "accuracy": "unverified"
-    },
-    {
-     "s": 5,
-     "text": "Schizophrenia matters to it as a process.",
-     "accuracy": "editorial"
-    },
-    {
-     "s": 6,
-     "text": "The schizophrenic process reveals the universal primary production of desire; the clinical schizophrenic, on the Stanford Encyclopedia article's reading, is what results when that process is blocked.",
-     "accuracy": "supported",
-     "by": "SEP §4.1"
-    },
-    {
-     "s": 7,
-     "text": "Ronald Bogue's summary, adapted in Protevi's outline, presents the schizophrenic id as a better guide to social desire than the neurotic ego, and treats the individual as a heterogeneous aggregate of parts in social and natural machines.",
-     "accuracy": "wrong",
-     "note": "Protevi's outline after Bogue is marked 'do not cite'; dropped."
-    },
-    {
-     "s": 8,
-     "text": "The critique of psychoanalysis runs through the second chapter.",
-     "accuracy": "supported",
-     "by": "AO2"
-    },
-    {
-     "s": 9,
-     "text": "Freud discovered desiring-production, the authors argue, and then replaced the factory with a theater, staging desire in the family triangle of daddy, mommy and me.",
-     "accuracy": "supported",
-     "by": "AOT p. 24; AO2 I.C"
-    },
-    {
-     "s": 10,
-     "text": "Social repression delegates the repression of desire to the family, and psychic repression makes social repression itself desired.",
-     "accuracy": "overstated",
-     "by": "AO2 VII.G",
-     "note": "The family is the agent social repression delegates; 'makes social repression desired' not confirmed."
-    },
-    {
-     "s": 11,
-     "text": "Wilhelm Reich is credited with seeing how social repression works through sexual repression and criticized for failing to carry the analysis of desire far enough.",
-     "accuracy": "supported",
-     "by": "AO2 VII.F",
-     "note": "Called the true father of materialist psychiatry and faulted for two consequences."
-    },
-    {
-     "s": 12,
-     "text": "The fourth chapter, “Introduction to Schizoanalysis”, gives the practice its tasks: a destructive task of clearing away Oedipus, the ego and the superego, and positive tasks of discovering a person's desiring-machines and distinguishing the interests of classes from the unconscious libidinal investments of groups.",
-     "accuracy": "unverified",
-     "note": "The destructive and positive tasks are not confirmed in a citable source read."
-    },
-    {
-     "s": 13,
-     "text": "It sets out theses including that every investment of desire is social, that group desire can diverge from class interest, and that investments of the social field oscillate between a paranoiac, fascisizing pole and a schizoid, revolutionary pole.",
-     "accuracy": "overstated",
-     "by": "DOW",
-     "note": "Dowd's summary of the theses: every investment social, libidinal investment of the social field first, the two poles."
-    },
-    {
-     "s": 14,
-     "text": "Michel Foucault's preface to the English translation suggests that the book could be called an Introduction to the Non-Fascist Life, and names its adversaries as the bureaucrats of the revolution, the poor technicians of desire, and fascism, including the fascism in ourselves.",
-     "accuracy": "supported",
-     "by": "AOT preface; ADV; SEP §4"
-    },
-    {
-     "s": 15,
-     "text": "He warns against reading it as a new theoretical reference.",
-     "accuracy": "supported",
-     "by": "AOT preface",
-     "note": "“the new theoretical reference”"
-    },
-    {
-     "s": 16,
-     "text": "Guattari's own clinical work at the La Borde clinic continued alongside the collaboration, and The Anti-Oedipus Papers (2004 in French) collect his working notes for the book.",
-     "accuracy": "overstated",
-     "by": "CAT",
-     "note": "The papers confirmed; La Borde not checked and cut."
-    }
-   ],
-   "new_d": null,
-   "new_text": [
-    [
-     {
-      "text": "Anti-Oedipus calls its practice schizoanalysis, and the Stanford Encyclopedia article describes it as a “materialist psychoanalysis” that studies the immanent use of the syntheses of desire.",
-      "claims": [
-       {
-        "by": "SEP §4.1",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     },
-     {
-      "text": "Its target is what the article calls the “familial or ‘Oedipal’ patterning of desire” in psychoanalysis, which posits an original investment in family figures.",
-      "claims": [
-       {
-        "by": "SEP §4.1",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "The schizophrenic process, on the article's reading, is desiring-production itself, and the clinical schizophrenic is what results when that process is interrupted or blocked.",
-      "claims": [
-       {
-        "by": "SEP §4.1",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "The critique of psychoanalysis runs through the second chapter, “Psychoanalysis and Familialism: The Holy Family”.",
-      "claims": [
-       {
-        "by": "AO2 title",
-        "source": "John Protevi, notes on Anti-Oedipus, part two"
-       }
-      ]
-     },
-     {
-      "text": "The great discovery of psychoanalysis, the authors write, was the production of desire, and Protevi's notes trace how Freud then moved from the factory to the classical theater as the model of the unconscious.",
-      "claims": [
-       {
-        "by": "AOT ch. 1 sec. 4",
-        "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
-       },
-       {
-        "by": "AO2 I.C",
-        "source": "John Protevi, notes on Anti-Oedipus, part two"
-       }
-      ]
-     },
-     {
-      "text": "Social repression delegates psychic repression to the family, and Wilhelm Reich, whom the authors call the true father of materialist psychiatry, is credited with showing how psychic repression depends on social repression, then faulted for two consequences of his approach.",
-      "claims": [
-       {
-        "by": "AO2 VII.F–G",
-        "source": "John Protevi, notes on Anti-Oedipus, part two"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "The fourth chapter, “Introduction to Schizoanalysis”, closes with a set of theses, which Garin Dowd summarizes: every investment is “molar and social”, the libidinal investment of the social field comes before familial investments, and a schizophrenic, revolutionary pole challenges the paranoid one.",
-      "claims": [
-       {
-        "by": "DOW",
-        "source": "Garin Dowd, “Is critique et clinique schizoanalytic?”, in Deleuze and the Schizoanalysis of Literature (2015)"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "Michel Foucault's preface to the English translation calls the book “an Introduction to the Non-Fascist Life” and names three adversaries: the political ascetics, among them the bureaucrats of the revolution, the technicians of desire, and fascism, including the fascism in all of us.",
-      "claims": [
-       {
-        "by": "AOT preface",
-        "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
-       },
-       {
-        "by": "ADV",
-        "source": "Helton Adverse, “Foucault, o fascismo e a ‘vida não fascista’”, Revista Reflexões 19 (2021)"
-       },
-       {
-        "by": "SEP §4",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     },
-     {
-      "text": "He also warns against reading it as “the new theoretical reference”.",
-      "claims": [
-       {
-        "by": "AOT preface",
-        "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
-       }
-      ]
-     },
-     {
-      "text": "Guattari's working notes for the book were later published as The Anti-Oedipus Papers.",
-      "claims": [
-       {
-        "by": "CAT",
-        "source": "library and publisher records of the book (title, publisher, year)"
-       }
-      ]
-     }
-    ]
-   ],
-   "s": "Anti-Oedipus (1972), trans. Robert Hurley, Mark Seem and Helen R. Lane (1977), Michel Foucault's preface, ch. 2 (pp. 51–137) and ch. 4, “Introduction to Schizoanalysis”",
-   "src": "SEP",
-   "srcs": [
-    "AO2",
-    "DOW",
-    "ADV"
-   ]
-  },
-  "coding-decoding": {
-   "old": [
-    {
-     "s": 1,
-     "text": "In Anti-Oedipus, the ways social machines register flows of desire: territorial societies code them, despotic states overcode those codes, and capitalism decodes them and binds them with an axiomatic.",
-     "accuracy": "supported",
-     "by": "SEP §4.1"
-    },
-    {
-     "s": 2,
-     "text": "The third chapter of Anti-Oedipus is a universal history of social machines, taking its title from the old ethnographic sequence savages, barbarians, civilized men.",
-     "accuracy": "supported",
-     "by": "SEP §4.1",
-     "note": "Title kept; 'universal history' and 'old ethnographic sequence' not confirmed."
-    },
-    {
-     "s": 3,
-     "text": "Every society has a full body, the socius, which records production and appears as its cause, and every society must code flows of desire, ordering what flows, where, and with what marks.",
-     "accuracy": "supported",
-     "by": "AO1; SEP §4.1"
-    },
-    {
-     "s": 4,
-     "text": "The Stanford Encyclopedia article distinguishes three forms: the territorial or primitive machine, the despotic or imperial machine, and the capitalist machine.",
-     "accuracy": "supported",
-     "by": "SEP §4.1"
-    },
-    {
-     "s": 5,
-     "text": "The territorial machine credits production to the earth.",
-     "accuracy": "supported",
-     "by": "SEP §4.1"
-    },
-    {
-     "s": 6,
-     "text": "It codes flows by marking bodies, through initiation, scarring and tattooing, a system the authors describe in terms drawn from Nietzsche's account of cruelty and debt in the second essay of On the Genealogy of Morals.",
-     "accuracy": "overstated",
-     "by": "SEP §4.1",
-     "note": "Marking bodies in initiation and a theater of cruelty confirmed; the Nietzsche reference not confirmed in a citable source read."
-    },
-    {
-     "s": 7,
-     "text": "Kinship works through filiation and alliance, and debt sets flows moving between groups.",
-     "accuracy": "unverified"
-    },
-    {
-     "s": 8,
-     "text": "Its signs, the Stanford article notes, are not yet signifiers.",
-     "accuracy": "supported",
-     "by": "SEP §4.1"
-    },
-    {
-     "s": 9,
-     "text": "The despotic machine arrives from outside and overcodes the territorial codes, tracing all production to the body of the despot.",
-     "accuracy": "supported",
-     "by": "SEP §4.1",
-     "note": "'From outside' not confirmed."
-    },
-    {
-     "s": 10,
-     "text": "Flows are deterritorialized from the earth and reterritorialized on the despot; debt becomes infinite, owed to the sovereign; and the signifier appears as a deterritorialized sign that flattens the many lines of the old codes into one-to-one correspondences.",
-     "accuracy": "overstated",
-     "by": "SEP §4.1",
-     "note": "Infinite debt not confirmed."
-    },
-    {
-     "s": 11,
-     "text": "The authors speak of an Urstaat, a primordial state that every later state recalls.",
-     "accuracy": "unverified"
-    },
-    {
-     "s": 12,
-     "text": "Capitalism decodes and deterritorializes.",
-     "accuracy": "supported",
-     "by": "SEP §4.1"
-    },
-    {
-     "s": 13,
-     "text": "It arises from the meeting of two decoded flows, money capital and labor freed from the land, which Marx described as primitive accumulation, and in place of codes it sets an axiomatic: simple rules for conjoining abstract quantities of labor and capital.",
-     "accuracy": "overstated",
-     "by": "SEP §4.1",
-     "note": "Flows of labor and capital confirmed; Marx's primitive accumulation not."
-    },
-    {
-     "s": 14,
-     "text": "Its representations coordinate flows and need no belief: capitalist ideology, in the book's image, is a motley painting of everything that has ever been believed.",
-     "accuracy": "unverified"
-    },
-    {
-     "s": 15,
-     "text": "Protevi's notes describe the result as a socius pushed toward its own limit, a body without organs crossed by unleashed flows.",
-     "accuracy": "unverified",
-     "note": "Not found in Protevi's notes as read."
-    },
-    {
-     "s": 16,
-     "text": "Capitalism, on this account, produces schizophrenia as its exterior limit and constantly pushes that limit back.",
-     "accuracy": "unverified"
-    },
-    {
-     "s": 17,
-     "text": "It reterritorializes decoded flows on artificial territorialities: the family and Oedipus, nations, races and genders, the bureaucracies of government and the forces of law and order.",
-     "accuracy": "overstated",
-     "by": "SEP §4.1",
-     "note": "Reterritorialized on persons, family members; the rest of the list not confirmed."
-    },
-    {
-     "s": 18,
-     "text": "The neurotic, the pervert and the schizophrenic mark three ways of meeting this limit.",
-     "accuracy": "unverified"
-    },
-    {
-     "s": 19,
-     "text": "A passage near the end of the chapter, asking whether the way forward is to go still further in the movement of the market (pp. 239–40), later became a touchstone for accelerationism.",
-     "accuracy": "overstated",
-     "by": "WIL",
-     "note": "Moved to Deterritorialization; 'touchstone' not in the source."
-    },
-    {
-     "s": 20,
-     "text": "A Thousand Plateaus continues this history in its plateaus on the war machine and the apparatus of capture.",
-     "accuracy": "supported",
-     "by": "SEP §4.2"
-    },
-    {
-     "s": 21,
-     "text": "The Stanford article describes the state there as an apparatus of capture living vampirically off labor, a perspective it calls Marxist, and the war machine as a form that reterritorializes on deterritorialization itself.",
-     "accuracy": "supported",
-     "by": "SEP §4.2",
-     "note": "Now quoted."
-    }
-   ],
-   "new_d": null,
-   "new_text": [
-    [
-     {
-      "text": "The third chapter of Anti-Oedipus, “Savages, Barbarians, Civilized Men”, is a history of social machines.",
-      "claims": [
-       {
-        "by": "SEP §4.1",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     },
-     {
-      "text": "The Stanford Encyclopedia article distinguishes three: the territorial machine of tribal societies, the despotic machine of empires and the capitalist machine, each with a full body, the socius, on which production is recorded and which seems to be its cause: the earth, the body of the despot, capital.",
-      "claims": [
-       {
-        "by": "SEP §4.1",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       },
-       {
-        "by": "AO1 II",
-        "source": "John Protevi, notes on Anti-Oedipus, part one"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "The territorial machine traces material flows onto the earth and codes them by marking bodies in initiation ceremonies, in what the article calls a theater of cruelty.",
-      "claims": [
-       {
-        "by": "SEP §4.1",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     },
-     {
-      "text": "Its signs, the article notes, do not map onto a voice and are not yet signifiers.",
-      "claims": [
-       {
-        "by": "SEP §4.1",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "Empires overcode these codes and trace all production back to the despot, and the signifier appears through a “flattening” or “bi-univocalization” of the codes.",
-      "claims": [
-       {
-        "by": "SEP §4.1",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "Capitalism, in the article's words, is “the radical decoding and deterritorialization of the material flows”: it brings together freed flows of labor and capital and puts an axiomatic in the place of codes.",
-      "claims": [
-       {
-        "by": "SEP §4.1",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     },
-     {
-      "text": "Its decoded flows are reterritorialized on persons, that is, on members of the family.",
-      "claims": [
-       {
-        "by": "SEP §4.1",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     }
-    ],
-    [
-     {
-      "text": "A Thousand Plateaus continues this history: the Stanford article describes the state as an “apparatus of capture” “living vampirically off of labor”, a sign of the authors' basically Marxist perspective, and the war machine as the form that “reterritorializes on deterritorialization itself”.",
-      "claims": [
-       {
-        "by": "SEP §4.2",
-        "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
-       }
-      ]
-     }
-    ]
-   ],
-   "s": "Anti-Oedipus (1972), trans. Robert Hurley, Mark Seem and Helen R. Lane (1977), ch. 3, “Savages, Barbarians, Civilized Men”",
-   "src": "SEP",
-   "srcs": [
-    "AO1"
-   ]
-  },
   "deterritorialization": {
    "old": [
     {
@@ -2512,7 +1223,7 @@
   "new_sentences": 143
  },
  "superseded": {
-  "note": "Re-audited against Difference and Repetition itself on 2026-11-14; the current record is in glossary-dr.json. Kept here as the record of the first, encyclopedia-based audit.",
+  "note": "Re-audited against the books themselves: the Difference and Repetition entries on 2026-11-14 (glossary-dr.json) and the Anti-Oedipus entries on 2026-11-15 (glossary-ao.json). Kept here as the record of the first, encyclopedia-based audit.",
   "terms": {
    "difference-in-itself": {
     "old": [
@@ -3447,6 +2158,1295 @@
      "DRO",
      "SCO",
      "RAM"
+    ]
+   },
+   "desiring-production": {
+    "old": [
+     {
+      "s": 1,
+      "text": "Deleuze and Guattari's name, in Anti-Oedipus (1972), for desire as a process of production: an unconscious made of machines that couple flows and cut them, at work directly in natural and social production.",
+      "accuracy": "supported",
+      "by": "SEP §4.1; AO1"
+     },
+     {
+      "s": 2,
+      "text": "Anti-Oedipus opens by multiplying the unconscious.",
+      "accuracy": "unverified",
+      "note": "No source frames the opening as multiplying the unconscious."
+     },
+     {
+      "s": 3,
+      "text": "In place of a single id, Deleuze and Guattari describe machines working everywhere: machines that produce flows and machines that interrupt them, coupled to one another and to the body.",
+      "accuracy": "supported",
+      "by": "AOT p. 1; AO1",
+      "note": "Reduced to the book's own opening image."
+     },
+     {
+      "s": 4,
+      "text": "The Stanford Encyclopedia article by Daniel Smith, John Protevi and Daniela Voss describes desiring-production as the book's key term, a universal primary process underlying natural, social and psychological reality alike, and stresses two features of it: no subject stands behind the production, and the desire at work is purely positive, organized around no lack.",
+      "accuracy": "supported",
+      "by": "SEP §4.1",
+      "note": "The key term, a universal primary process, no subject behind it, purely positive."
+     },
+     {
+      "s": 5,
+      "text": "A desiring-machine is binary: a flow and a break in it, as the mouth cuts the flow of milk from the breast.",
+      "accuracy": "supported",
+      "by": "AOT p. 1; AO1",
+      "note": "The mouth is coupled to the breast, a milk-producing machine; 'cuts' is the entry's gloss, dropped."
+     },
+     {
+      "s": 6,
+      "text": "Each break supplies a new flow for the next machine, so that machines link into chains within bodies and between bodies, nature and society, under the formula “and … and then”.",
+      "accuracy": "unverified",
+      "note": "Chains within and between bodies, nature and society: not confirmed; the formula kept."
+     },
+     {
+      "s": 7,
+      "text": "John Protevi's notes on the first chapter stress a feature the authors return to often: desiring-machines run only by breaking down, constantly, which sets them apart from technical machines, which work only when they are in order.",
+      "accuracy": "supported",
+      "by": "AOT ch. 1 sec. 2; AO1",
+      "note": "Desiring-machines work only when they break down; technical machines only when in order."
+     },
+     {
+      "s": 8,
+      "text": "The fourth section, “A Materialist Psychiatry”, sets this account against the tradition that defines desire by lack, running in the book's telling from Plato to Lacan.",
+      "accuracy": "overstated",
+      "by": "AOT pp. 24–25",
+      "note": "The book traces the logic of desire as lack to Plato; 'to Lacan' not confirmed in the pages read."
+     },
+     {
+      "s": 9,
+      "text": "For Deleuze and Guattari desire produces the real through passive syntheses of partial objects, flows and bodies, and what desire lacks is a fixed subject.",
+      "accuracy": "unverified",
+      "note": "'Passive syntheses of partial objects, flows and bodies' not confirmed."
+     },
+     {
+      "s": 10,
+      "text": "Desire is a machine, and its object is another machine connected to it.",
+      "accuracy": "unverified",
+      "note": "Not found in the pages read."
+     },
+     {
+      "s": 11,
+      "text": "Lack is created, planned and organized within social production, and needs are counterproducts of desire.",
+      "accuracy": "supported",
+      "by": "AO1",
+      "note": "Lack created, planned and organized in social production; needs as counterproducts."
+     },
+     {
+      "s": 12,
+      "text": "The same production runs through society: social production is desiring-production under determinate conditions, and the social field is invested by desire directly, with no need for sublimation or symbolic mediation.",
+      "accuracy": "overstated",
+      "by": "AO1",
+      "note": "Under determinate conditions confirmed; 'no need of mediation' confirmed, 'sublimation' and 'symbolic mediation' not."
+     },
+     {
+      "s": 13,
+      "text": "Hence the question the authors call the fundamental problem of political philosophy, which they take from Spinoza and Wilhelm Reich: why people fight for their servitude as if it were their salvation, and how desire can come to desire its own repression.",
+      "accuracy": "supported",
+      "by": "AO1; HAI",
+      "note": "The fundamental problem; Spinoza's question, which Reich took up; 'desire its own repression' not confirmed and cut."
+     },
+     {
+      "s": 14,
+      "text": "Desiring-production works through three syntheses, which the book treats in turn: the connective synthesis of production, the disjunctive synthesis of recording on the body without organs, and the conjunctive synthesis of consumption, in which a subject is produced as a residue alongside the machines.",
+      "accuracy": "supported",
+      "by": "SEP §4.1"
+     },
+     {
+      "s": 15,
+      "text": "The authors name the corresponding energies libido, numen and voluptas.",
+      "accuracy": "supported",
+      "by": "AO1"
+     },
+     {
+      "s": 16,
+      "text": "They compare desiring-production to Spinoza's natura naturans and Nietzsche's will to power.",
+      "accuracy": "supported",
+      "by": "SEP §4.1",
+      "note": "The Stanford article makes the comparison."
+     },
+     {
+      "s": 17,
+      "text": "The model for the whole account is the schizophrenic's stroll with which the book begins, Büchner's Lenz walking in the mountains among machines of sky, earth and body, living nature as a process of production before any split between man and nature.",
+      "accuracy": "supported",
+      "by": "AOT pp. 1–4",
+      "note": "The stroll, Lenz as Büchner reconstructed him; man and nature not two opposite terms."
+     },
+     {
+      "s": 18,
+      "text": "Clinical schizophrenia, on their reading, is the result of this process being blocked.",
+      "accuracy": "supported",
+      "by": "SEP §4.1"
+     },
+     {
+      "s": 19,
+      "text": "Book-length guides to these chapters include Eugene Holland's Deleuze and Guattari's Anti-Oedipus: Introduction to Schizoanalysis (1999) and Ian Buchanan's Deleuze and Guattari's Anti-Oedipus: A Reader's Guide (2008).",
+      "accuracy": "supported",
+      "by": "PBIB; CAT"
+     }
+    ],
+    "new_d": null,
+    "new_text": [
+     [
+      {
+       "text": "Anti-Oedipus opens with machines everywhere: “The breast is a machine that produces milk, and the mouth a machine coupled to it.”",
+       "claims": [
+        {
+         "by": "AOT p. 1",
+         "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
+        }
+       ]
+      },
+      {
+       "text": "The Stanford Encyclopedia article by Daniel Smith, John Protevi and Daniela Voss calls desiring-production the book's key term, a “universal primary process” beneath the natural, social and psychological realms, and stresses that no subject stands behind it and that this desire is purely positive, with no lack to make up.",
+       "claims": [
+        {
+         "by": "SEP §4.1",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "Desiring-machines are binary, a flow and a break in it, and they link in series under the formula “and then”.",
+       "claims": [
+        {
+         "by": "AOT pp. 1–5",
+         "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
+        },
+        {
+         "by": "AO1 I.D",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        }
+       ]
+      },
+      {
+       "text": "They “work only when they break down, and by continually breaking down”, which sets them apart from technical machines, which need to be in order to work.",
+       "claims": [
+        {
+         "by": "AOT ch. 1 sec. 2",
+         "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
+        },
+        {
+         "by": "AO1 I.D",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "The fourth section, “A Materialist Psychiatry”, sets this against the logic of desire as lack, which the authors trace to Plato's choice between production and acquisition.",
+       "claims": [
+        {
+         "by": "AOT pp. 24–25",
+         "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
+        },
+        {
+         "by": "AO1 IV",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        }
+       ]
+      },
+      {
+       "text": "What is missing in desire, on their account, is a fixed subject; lack is produced and organized by social production itself, and needs derive from desire.",
+       "claims": [
+        {
+         "by": "AO1 IV.B",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "Social production, on this account, is desiring-production under determinate conditions, and libido invests production with no need of mediation.",
+       "claims": [
+        {
+         "by": "AO1 IV.C",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        }
+       ]
+      },
+      {
+       "text": "Hence what the authors call the fundamental problem of political philosophy, a question Spinoza asked and Wilhelm Reich took up again: why people fight to stay in servitude.",
+       "claims": [
+        {
+         "by": "AO1 IV.C",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        },
+        {
+         "by": "HAI",
+         "source": "Asad Haider, “Why do people fight for their servitude as if it were their salvation?”, Verso blog (2018)"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "Desiring-production works through three syntheses, connective, disjunctive and conjunctive, whose energies Protevi's notes give as libido, numen and voluptas.",
+       "claims": [
+        {
+         "by": "SEP §4.1",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        },
+        {
+         "by": "AO1 III",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        }
+       ]
+      },
+      {
+       "text": "The Stanford article likens desiring-production to Spinoza's natura naturans and Nietzsche's will to power.",
+       "claims": [
+        {
+         "by": "SEP §4.1",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "The book begins with a schizophrenic's walk, Lenz's stroll as Büchner reconstructed it, and with nature lived as a process of production, in which man and nature “are not like two opposite terms confronting each other”.",
+       "claims": [
+        {
+         "by": "AOT pp. 1–4",
+         "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
+        }
+       ]
+      },
+      {
+       "text": "Clinical schizophrenia, on the Stanford article's reading, results when the process of desiring-production is interrupted or blocked.",
+       "claims": [
+        {
+         "by": "SEP §4.1",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      },
+      {
+       "text": "Book-length guides include Eugene Holland's Deleuze and Guattari's Anti-Oedipus: Introduction to Schizoanalysis (1999) and Ian Buchanan's Deleuze and Guattari's Anti-Oedipus: A Reader's Guide (2008).",
+       "claims": [
+        {
+         "by": "PBIB",
+         "source": "John Protevi, Deleuze and Guattari bibliography"
+        },
+        {
+         "by": "CAT",
+         "source": "library and publisher records of the book (title, publisher, year)"
+        }
+       ]
+      }
+     ]
+    ],
+    "s": "Anti-Oedipus (1972), trans. Robert Hurley, Mark Seem and Helen R. Lane (1977), ch. 1, sec. 1, “Desiring-Production” (pp. 1–8) and sec. 4, “A Materialist Psychiatry” (pp. 22–35)",
+    "src": "SEP",
+    "srcs": [
+     "AO1",
+     "HAI"
+    ]
+   },
+   "body-without-organs": {
+    "old": [
+     {
+      "s": 1,
+      "text": "A phrase Deleuze and Guattari take from Antonin Artaud: in Anti-Oedipus the unproductive surface on which desiring-production is recorded; in A Thousand Plateaus a field of intensities beneath the organism's organization.",
+      "accuracy": "supported",
+      "by": "SEP §§3.2, 4.2; AO1"
+     },
+     {
+      "s": 2,
+      "text": "The phrase comes from Antonin Artaud's radio work To Have Done with the Judgment of God, recorded in November 1947.",
+      "accuracy": "overstated",
+      "by": "BLK",
+      "note": "Made for French radio in late 1947 and cancelled before its February 1948 broadcast; a recording date is not given."
+     },
+     {
+      "s": 3,
+      "text": "Deleuze had already used it in The Logic of Sense (1969), where, as the Stanford Encyclopedia article notes, it names the risings and fallings of intensity in an infant's experience.",
+      "accuracy": "overstated",
+      "by": "SEP §3.2",
+      "note": "The rising and falling intensities are Daniel Stern's image of infant experience; the body without organs names a life of intensities in motion."
+     },
+     {
+      "s": 4,
+      "text": "Deleuze and Guattari make it one of the basic concepts of Anti-Oedipus.",
+      "accuracy": "supported",
+      "by": "AO1"
+     },
+     {
+      "s": 5,
+      "text": "In the first chapter the body without organs appears as the third moment of the connective synthesis.",
+      "accuracy": "supported",
+      "by": "AO1"
+     },
+     {
+      "s": 6,
+      "text": "Production stops for a moment and an enormous undifferentiated object forms, unproductive and sterile, the element of antiproduction within production itself.",
+      "accuracy": "supported",
+      "by": "AOT ch. 1 sec. 2; AO1",
+      "note": "Quoted."
+     },
+     {
+      "s": 7,
+      "text": "The organized organism, the body arranged by machines, is felt as persecution, and the authors connect this full body with the death instinct and take catatonia as its clinical model.",
+      "accuracy": "supported",
+      "by": "AOT ch. 1 sec. 2",
+      "note": "The death instinct, catatonia, the persecution apparatus."
+     },
+     {
+      "s": 8,
+      "text": "It is then constantly reinserted into production.",
+      "accuracy": "supported",
+      "by": "AO1"
+     },
+     {
+      "s": 9,
+      "text": "Two relations follow.",
+      "accuracy": "editorial"
+     },
+     {
+      "s": 10,
+      "text": "By repulsion the body without organs pushes the machines away, which the authors call the paranoiac machine.",
+      "accuracy": "supported",
+      "by": "AO1"
+     },
+     {
+      "s": 11,
+      "text": "By attraction it draws them onto itself, so that production seems to emanate from it, which they call the miraculating machine.",
+      "accuracy": "supported",
+      "by": "AO1"
+     },
+     {
+      "s": 12,
+      "text": "It becomes the surface on which production is recorded, the site of the disjunctive synthesis, and the opposition of repulsion and attraction is reconciled in a celibate machine, where a subject is produced in the conjunctive synthesis.",
+      "accuracy": "supported",
+      "by": "AO1"
+     },
+     {
+      "s": 13,
+      "text": "The same structure appears in society.",
+      "accuracy": "editorial"
+     },
+     {
+      "s": 14,
+      "text": "Social production has its own full body, the socius, which falls back on production, records it and appropriates its surplus, so that production appears to come from it: the earth in territorial societies, the body of the despot in states, capital under capitalism.",
+      "accuracy": "overstated",
+      "by": "AO1; SEP §4.1",
+      "note": "Earth, despot, capital confirmed; 'appropriates its surplus' not confirmed."
+     },
+     {
+      "s": 15,
+      "text": "Protevi's notes record the authors' formula that capital is the body without organs of the capitalist.",
+      "accuracy": "supported",
+      "by": "AOT ch. 1 sec. 2",
+      "note": "Quoted from the book."
+     },
+     {
+      "s": 16,
+      "text": "Intensity runs through all of this.",
+      "accuracy": "editorial"
+     },
+     {
+      "s": 17,
+      "text": "The body without organs is zero intensity, and the subject passes through the states that attraction and repulsion produce on it, bands of intensity, thresholds and gradients; the authors liken it to an egg crossed by axes and gradients, the egg as embryology describes it before organs form.",
+      "accuracy": "supported",
+      "by": "AO1; AOT ch. 1 sec. 3",
+      "note": "Zero intensity, bands, thresholds, gradients; the egg. 'As embryology describes it' not confirmed."
+     },
+     {
+      "s": 18,
+      "text": "A Thousand Plateaus devotes its sixth plateau to the question of how one makes oneself a body without organs, dated by the day of Artaud's recording.",
+      "accuracy": "overstated",
+      "by": "ATP6",
+      "note": "The plateau's title carries the date; that it is the day of the recording is not confirmed."
+     },
+     {
+      "s": 19,
+      "text": "There the body without organs is opposed to the organism, one of the strata that organize bodies, and the Stanford Encyclopedia article glosses it as a reservoir of potentials for different patterns of bodily affect.",
+      "accuracy": "supported",
+      "by": "ATP6; SEP §4.2",
+      "note": "The enemy of the organism, a stratum; SEP's gloss now quoted."
+     },
+     {
+      "s": 20,
+      "text": "The authors present it as a practice of experimentation and warn that hasty destratification can produce emptied or cancerous bodies, so the experiment requires caution.",
+      "accuracy": "overstated",
+      "by": "ATP6",
+      "note": "Emptied bodies and totalitarian or fascist ones; 'cancerous' replaced by the wording checked."
+     }
+    ],
+    "new_d": null,
+    "new_text": [
+     [
+      {
+       "text": "The phrase comes from Antonin Artaud's To Have Done with the Judgment of God, a radio work made for French radio in late 1947 whose broadcast was cancelled before it aired.",
+       "claims": [
+        {
+         "by": "BLK",
+         "source": "“Lost and Found Radio”, Blackbird 10.1 (2011)"
+        }
+       ]
+      },
+      {
+       "text": "In The Logic of Sense (1969), the Stanford Encyclopedia article notes, Deleuze drew on Artaud to name a life of intensities in motion the body without organs.",
+       "claims": [
+        {
+         "by": "SEP §3.2",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      },
+      {
+       "text": "Anti-Oedipus gives it a section of its first chapter.",
+       "claims": [
+        {
+         "by": "AO1 II",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "There it is the third moment of the connective synthesis: production stops, and “an enormous undifferentiated object” forms, “the unproductive, the sterile, the unengendered, the unconsumable”.",
+       "claims": [
+        {
+         "by": "AOT ch. 1 sec. 2",
+         "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
+        },
+        {
+         "by": "AO1 I.D",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        }
+       ]
+      },
+      {
+       "text": "Its name, the authors write, is the death instinct, and its model is the catatonic body; it experiences the desiring-machines as “an over-all persecution apparatus”, and it is constantly put back into production as antiproduction.",
+       "claims": [
+        {
+         "by": "AOT ch. 1 sec. 2",
+         "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
+        },
+        {
+         "by": "AO1 I.D",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "By repulsion it pushes the machines away, which the authors call the paranoiac machine; by attraction it draws them to itself, so that production seems to come from it, which they call the miraculating machine.",
+       "claims": [
+        {
+         "by": "AO1 II",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        }
+       ]
+      },
+      {
+       "text": "It becomes the surface on which production is recorded, the site of the disjunctive synthesis, and a celibate machine joins attraction and repulsion, producing a subject as a residue beside the machines.",
+       "claims": [
+        {
+         "by": "AO1 II–III",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "Society has a full body too, the socius, on which production is recorded and from which it seems to come: the earth, the despot, capital.",
+       "claims": [
+        {
+         "by": "AO1 II",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        },
+        {
+         "by": "SEP §4.1",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      },
+      {
+       "text": "“Capital is indeed the body without organs of the capitalist, or rather of the capitalist being.”",
+       "claims": [
+        {
+         "by": "AOT ch. 1 sec. 2",
+         "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "The body without organs is zero intensity, and the states a subject passes through on it are bands of intensity, thresholds and gradients; the authors call it an egg.",
+       "claims": [
+        {
+         "by": "AO1 III",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        },
+        {
+         "by": "AOT ch. 1 sec. 3",
+         "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "A Thousand Plateaus titles its sixth plateau “November 28, 1947: How Do You Make Yourself a Body without Organs?”.",
+       "claims": [
+        {
+         "by": "ATP6",
+         "source": "A Thousand Plateaus, plateau 6, pp. 149–166, checked against John Protevi's classroom outline (marked not for citation, so not cited)"
+        }
+       ]
+      },
+      {
+       "text": "There the body without organs is the enemy of the organism, a stratum that organizes the organs, and the Stanford article glosses it as “the reservoir of potentials for different patterns of bodily affect”.",
+       "claims": [
+        {
+         "by": "ATP6 pp. 158–159",
+         "source": "A Thousand Plateaus, plateau 6, pp. 149–166, checked against John Protevi's classroom outline (marked not for citation, so not cited)"
+        },
+        {
+         "by": "SEP §4.2",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      },
+      {
+       "text": "The authors treat it as a practice and an experiment, and warn that wild destratification leaves emptied bodies or totalitarian and fascist ones.",
+       "claims": [
+        {
+         "by": "ATP6 pp. 149–163",
+         "source": "A Thousand Plateaus, plateau 6, pp. 149–166, checked against John Protevi's classroom outline (marked not for citation, so not cited)"
+        }
+       ]
+      }
+     ]
+    ],
+    "s": "Anti-Oedipus (1972), trans. Robert Hurley, Mark Seem and Helen R. Lane (1977), ch. 1, sec. 2, “The Body without Organs” (pp. 9–16); A Thousand Plateaus (1980), trans. Brian Massumi (1987), plateau 6, “November 28, 1947: How Do You Make Yourself a Body without Organs?”",
+    "src": "SEP",
+    "srcs": [
+     "AO1",
+     "BLK"
+    ]
+   },
+   "syntheses-unconscious": {
+    "old": [
+     {
+      "s": 1,
+      "text": "The three processes that make up desiring-production in Anti-Oedipus, connective, disjunctive and conjunctive, each with an immanent, legitimate use and a transcendent, illegitimate use that produces Oedipus.",
+      "accuracy": "supported",
+      "by": "SEP §4.1; AO2"
+     },
+     {
+      "s": 2,
+      "text": "Deleuze and Guattari model their analysis on Kant's critique of reason.",
+      "accuracy": "supported",
+      "by": "AO2 III.F"
+     },
+     {
+      "s": 3,
+      "text": "Kant distinguished legitimate uses of the syntheses of consciousness from illegitimate, transcendent uses that generate illusions.",
+      "accuracy": "unverified",
+      "note": "Kant's own distinction not checked against a source here."
+     },
+     {
+      "s": 4,
+      "text": "Anti-Oedipus does the same for the unconscious: each synthesis of desire has an immanent use, which the authors study under the name of schizoanalysis, and a transcendent use, which psychoanalysis imposes when it posits a subject or a family behind the syntheses.",
+      "accuracy": "supported",
+      "by": "SEP §4.1"
+     },
+     {
+      "s": 5,
+      "text": "The Stanford Encyclopedia article stresses that subjects are products of the syntheses and never their agents.",
+      "accuracy": "supported",
+      "by": "SEP §4.1"
+     },
+     {
+      "s": 6,
+      "text": "The connective synthesis is the production of production, with the formula “and … and then”: machines couple flows and break them, and the energy at work is libido.",
+      "accuracy": "supported",
+      "by": "AOT ch. 1; AO1"
+     },
+     {
+      "s": 7,
+      "text": "Its legitimate use is partial and nonspecific, linking partial objects in open chains.",
+      "accuracy": "overstated",
+      "by": "AO2 III.C",
+      "note": "Partial confirmed; 'open chains' not."
+     },
+     {
+      "s": 8,
+      "text": "Its illegitimate use is global and specific: it refers partial objects to complete objects and whole persons, mother and father, and fixes a sex.",
+      "accuracy": "supported",
+      "by": "AO2 III.C–D"
+     },
+     {
+      "s": 9,
+      "text": "The authors call this the paralogism of extrapolation.",
+      "accuracy": "supported",
+      "by": "AO2 III.D"
+     },
+     {
+      "s": 10,
+      "text": "The disjunctive synthesis is the production of recording on the body without organs, with the formula “either … or … or”, and its energy is numen.",
+      "accuracy": "supported",
+      "by": "AOT ch. 1; AO1"
+     },
+     {
+      "s": 11,
+      "text": "Used inclusively and without restriction, it lets the subject pass through every position in a system of permutations.",
+      "accuracy": "unverified",
+      "note": "Every position in a system of permutations: not confirmed."
+     },
+     {
+      "s": 12,
+      "text": "Used exclusively and restrictively, it forces a choice between fixed terms, either man or woman, either parent or child, and the authors name this the paralogism of the double bind, borrowing Gregory Bateson's term.",
+      "accuracy": "overstated",
+      "by": "AO2 IV.A, IV.C",
+      "note": "Exclusive, restrictive either/or and the double bind confirmed; the examples not."
+     },
+     {
+      "s": 13,
+      "text": "The conjunctive synthesis is the production of consumption, with the formula “so it's …”, and its energy is voluptas.",
+      "accuracy": "supported",
+      "by": "AOT ch. 1 sec. 3; AO1"
+     },
+     {
+      "s": 14,
+      "text": "Here a subject is born as a residue beside the machines, defined by the states it passes through.",
+      "accuracy": "supported",
+      "by": "AO1"
+     },
+     {
+      "s": 15,
+      "text": "Its legitimate use is nomadic and polyvocal; its illegitimate use is segregative and biunivocal, fixing one-to-one relations between figures of the social field and the parents of the family triangle, which the authors call the paralogism of application.",
+      "accuracy": "supported",
+      "by": "AO2 V.I, V.L"
+     },
+     {
+      "s": 16,
+      "text": "Two further paralogisms complete the critique.",
+      "accuracy": "editorial"
+     },
+     {
+      "s": 17,
+      "text": "Displacement, discussed in the section on social and psychic repression, has the law forbid something and the subject conclude that it desired what was forbidden, so that Oedipus becomes a product of repression.",
+      "accuracy": "overstated",
+      "by": "AO2 VII.B",
+      "note": "Displacement as a falsified image of what is repressed; the entry's account of the law reworded."
+     },
+     {
+      "s": 18,
+      "text": "The paralogism of the afterward, in the section on neurosis and psychosis, treats actual factors as mere after-effects of earlier family problems.",
+      "accuracy": "supported",
+      "by": "AO2 VIII.E"
+     },
+     {
+      "s": 19,
+      "text": "Protevi's notes give the section and page ranges for each, and the reading notes from Duke University give the pages where the paralogisms are named.",
+      "accuracy": "wrong",
+      "note": "The Duke reading notes name no author; dropped as a source."
+     },
+     {
+      "s": 20,
+      "text": "A Thousand Plateaus later restates the three syntheses as strata.",
+      "accuracy": "supported",
+      "by": "SEP §4.2"
+     },
+     {
+      "s": 21,
+      "text": "The Stanford Encyclopedia article identifies the organism, signifiance and subjectification as the physiological, semiotic and psychological registers that the syntheses of production, recording and consumption had covered in the earlier book.",
+      "accuracy": "supported",
+      "by": "SEP §4.2"
+     }
+    ],
+    "new_d": null,
+    "new_text": [
+     [
+      {
+       "text": "Deleuze and Guattari borrow the terms of Kant's critique: each synthesis of desire has an immanent use and a transcendent one.",
+       "claims": [
+        {
+         "by": "AO2 III.F, VI.E",
+         "source": "John Protevi, notes on Anti-Oedipus, part two"
+        }
+       ]
+      },
+      {
+       "text": "The Stanford Encyclopedia article describes psychoanalysis as the transcendent use, which posits a subject behind the syntheses, and schizoanalysis as the study of their immanent use; subjects are among the products of the syntheses.",
+       "claims": [
+        {
+         "by": "SEP §4.1",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "The connective synthesis is the production of production, with the formula “and then”, and its energy is libido.",
+       "claims": [
+        {
+         "by": "AOT ch. 1",
+         "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
+        },
+        {
+         "by": "AO1 I.D, III",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        }
+       ]
+      },
+      {
+       "text": "Used legitimately it is partial and nonspecific; used illegitimately it is global and specific, referring partial objects to complete objects and to the parents, which the authors call the paralogism of extrapolation.",
+       "claims": [
+        {
+         "by": "AO2 III.C–D",
+         "source": "John Protevi, notes on Anti-Oedipus, part two"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "The disjunctive synthesis is the production of recording on the body without organs, with the formula “either … or … or”, and its energy is numen.",
+       "claims": [
+        {
+         "by": "AOT ch. 1",
+         "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
+        },
+        {
+         "by": "AO1 III",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        }
+       ]
+      },
+      {
+       "text": "Used inclusively it keeps its terms open; used exclusively and restrictively it forces a choice between fixed terms, the double bind, a term the authors take from Gregory Bateson.",
+       "claims": [
+        {
+         "by": "AO2 IV.A, IV.C",
+         "source": "John Protevi, notes on Anti-Oedipus, part two"
+        },
+        {
+         "by": "AO79",
+         "source": "Anti-Oedipus, ch. 2, p. 79, on Bateson's double bind, confirmed by the second reviewer"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "The conjunctive synthesis is the production of consumption, with the formula “so it's …”, and its energy is voluptas; in it a subject is born as a residue beside the machines.",
+       "claims": [
+        {
+         "by": "AOT ch. 1 sec. 3",
+         "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
+        },
+        {
+         "by": "AO1 III",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        }
+       ]
+      },
+      {
+       "text": "Its legitimate use is nomadic and polyvocal and its illegitimate use segregative and biunivocal, setting up one-to-one relations between the figures of the social field and the parents, which the authors call the paralogism of application.",
+       "claims": [
+        {
+         "by": "AO2 V.I, V.L",
+         "source": "John Protevi, notes on Anti-Oedipus, part two"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "Two further paralogisms follow: displacement, in the section on social and psychic repression, by which repression offers desire a falsified image of what it represses, and a fifth, in the section on neurosis and psychosis, which treats actual factors as after-effects of family problems.",
+       "claims": [
+        {
+         "by": "AO2 VII.B, VIII.E",
+         "source": "John Protevi, notes on Anti-Oedipus, part two"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "In A Thousand Plateaus, the Stanford article explains, the results of these paralogisms become strata: the organism totalizes the connective synthesis of production, signifiance flattens the disjunctive synthesis of recording, and the subject reifies the conjunctive synthesis of consummation.",
+       "claims": [
+        {
+         "by": "SEP §4.2",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      }
+     ]
+    ],
+    "s": "Anti-Oedipus (1972), trans. Robert Hurley, Mark Seem and Helen R. Lane (1977), ch. 2, secs. 3–8 (pp. 68–130)",
+    "src": "AO2",
+    "srcs": [
+     "SEP",
+     "AO1"
+    ]
+   },
+   "schizoanalysis": {
+    "old": [
+     {
+      "s": 1,
+      "text": "The critical practice proposed in Anti-Oedipus: a materialist psychiatry that traces how desire invests the social field directly, set against the Oedipal reductions of psychoanalysis.",
+      "accuracy": "supported",
+      "by": "SEP §4.1; DOW"
+     },
+     {
+      "s": 2,
+      "text": "Schizoanalysis is the name Deleuze and Guattari give to the practice developed in Anti-Oedipus, which they also call materialist psychiatry.",
+      "accuracy": "supported",
+      "by": "SEP §4.1; AO1"
+     },
+     {
+      "s": 3,
+      "text": "It treats the unconscious as an aggregate of productive processes of desire and studies the immanent use of the syntheses of the unconscious.",
+      "accuracy": "unverified"
+     },
+     {
+      "s": 4,
+      "text": "Its starting points are schizophrenia and the transformations capitalism has produced in society, and its target is what the authors regard as the reactionary tendency of psychoanalysis to reduce all desire to the family.",
+      "accuracy": "unverified"
+     },
+     {
+      "s": 5,
+      "text": "Schizophrenia matters to it as a process.",
+      "accuracy": "editorial"
+     },
+     {
+      "s": 6,
+      "text": "The schizophrenic process reveals the universal primary production of desire; the clinical schizophrenic, on the Stanford Encyclopedia article's reading, is what results when that process is blocked.",
+      "accuracy": "supported",
+      "by": "SEP §4.1"
+     },
+     {
+      "s": 7,
+      "text": "Ronald Bogue's summary, adapted in Protevi's outline, presents the schizophrenic id as a better guide to social desire than the neurotic ego, and treats the individual as a heterogeneous aggregate of parts in social and natural machines.",
+      "accuracy": "wrong",
+      "note": "Protevi's outline after Bogue is marked 'do not cite'; dropped."
+     },
+     {
+      "s": 8,
+      "text": "The critique of psychoanalysis runs through the second chapter.",
+      "accuracy": "supported",
+      "by": "AO2"
+     },
+     {
+      "s": 9,
+      "text": "Freud discovered desiring-production, the authors argue, and then replaced the factory with a theater, staging desire in the family triangle of daddy, mommy and me.",
+      "accuracy": "supported",
+      "by": "AOT p. 24; AO2 I.C"
+     },
+     {
+      "s": 10,
+      "text": "Social repression delegates the repression of desire to the family, and psychic repression makes social repression itself desired.",
+      "accuracy": "overstated",
+      "by": "AO2 VII.G",
+      "note": "The family is the agent social repression delegates; 'makes social repression desired' not confirmed."
+     },
+     {
+      "s": 11,
+      "text": "Wilhelm Reich is credited with seeing how social repression works through sexual repression and criticized for failing to carry the analysis of desire far enough.",
+      "accuracy": "supported",
+      "by": "AO2 VII.F",
+      "note": "Called the true father of materialist psychiatry and faulted for two consequences."
+     },
+     {
+      "s": 12,
+      "text": "The fourth chapter, “Introduction to Schizoanalysis”, gives the practice its tasks: a destructive task of clearing away Oedipus, the ego and the superego, and positive tasks of discovering a person's desiring-machines and distinguishing the interests of classes from the unconscious libidinal investments of groups.",
+      "accuracy": "unverified",
+      "note": "The destructive and positive tasks are not confirmed in a citable source read."
+     },
+     {
+      "s": 13,
+      "text": "It sets out theses including that every investment of desire is social, that group desire can diverge from class interest, and that investments of the social field oscillate between a paranoiac, fascisizing pole and a schizoid, revolutionary pole.",
+      "accuracy": "overstated",
+      "by": "DOW",
+      "note": "Dowd's summary of the theses: every investment social, libidinal investment of the social field first, the two poles."
+     },
+     {
+      "s": 14,
+      "text": "Michel Foucault's preface to the English translation suggests that the book could be called an Introduction to the Non-Fascist Life, and names its adversaries as the bureaucrats of the revolution, the poor technicians of desire, and fascism, including the fascism in ourselves.",
+      "accuracy": "supported",
+      "by": "AOT preface; ADV; SEP §4"
+     },
+     {
+      "s": 15,
+      "text": "He warns against reading it as a new theoretical reference.",
+      "accuracy": "supported",
+      "by": "AOT preface",
+      "note": "“the new theoretical reference”"
+     },
+     {
+      "s": 16,
+      "text": "Guattari's own clinical work at the La Borde clinic continued alongside the collaboration, and The Anti-Oedipus Papers (2004 in French) collect his working notes for the book.",
+      "accuracy": "overstated",
+      "by": "CAT",
+      "note": "The papers confirmed; La Borde not checked and cut."
+     }
+    ],
+    "new_d": null,
+    "new_text": [
+     [
+      {
+       "text": "Anti-Oedipus calls its practice schizoanalysis, and the Stanford Encyclopedia article describes it as a “materialist psychoanalysis” that studies the immanent use of the syntheses of desire.",
+       "claims": [
+        {
+         "by": "SEP §4.1",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      },
+      {
+       "text": "Its target is what the article calls the “familial or ‘Oedipal’ patterning of desire” in psychoanalysis, which posits an original investment in family figures.",
+       "claims": [
+        {
+         "by": "SEP §4.1",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "The schizophrenic process, on the article's reading, is desiring-production itself, and the clinical schizophrenic is what results when that process is interrupted or blocked.",
+       "claims": [
+        {
+         "by": "SEP §4.1",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "The critique of psychoanalysis runs through the second chapter, “Psychoanalysis and Familialism: The Holy Family”.",
+       "claims": [
+        {
+         "by": "AO2 title",
+         "source": "John Protevi, notes on Anti-Oedipus, part two"
+        }
+       ]
+      },
+      {
+       "text": "The great discovery of psychoanalysis, the authors write, was the production of desire, and Protevi's notes trace how Freud then moved from the factory to the classical theater as the model of the unconscious.",
+       "claims": [
+        {
+         "by": "AOT ch. 1 sec. 4",
+         "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
+        },
+        {
+         "by": "AO2 I.C",
+         "source": "John Protevi, notes on Anti-Oedipus, part two"
+        }
+       ]
+      },
+      {
+       "text": "Social repression delegates psychic repression to the family, and Wilhelm Reich, whom the authors call the true father of materialist psychiatry, is credited with showing how psychic repression depends on social repression, then faulted for two consequences of his approach.",
+       "claims": [
+        {
+         "by": "AO2 VII.F–G",
+         "source": "John Protevi, notes on Anti-Oedipus, part two"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "The fourth chapter, “Introduction to Schizoanalysis”, closes with a set of theses, which Garin Dowd summarizes: every investment is “molar and social”, the libidinal investment of the social field comes before familial investments, and a schizophrenic, revolutionary pole challenges the paranoid one.",
+       "claims": [
+        {
+         "by": "DOW",
+         "source": "Garin Dowd, “Is critique et clinique schizoanalytic?”, in Deleuze and the Schizoanalysis of Literature (2015)"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "Michel Foucault's preface to the English translation calls the book “an Introduction to the Non-Fascist Life” and names three adversaries: the political ascetics, among them the bureaucrats of the revolution, the technicians of desire, and fascism, including the fascism in all of us.",
+       "claims": [
+        {
+         "by": "AOT preface",
+         "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
+        },
+        {
+         "by": "ADV",
+         "source": "Helton Adverse, “Foucault, o fascismo e a ‘vida não fascista’”, Revista Reflexões 19 (2021)"
+        },
+        {
+         "by": "SEP §4",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      },
+      {
+       "text": "He also warns against reading it as “the new theoretical reference”.",
+       "claims": [
+        {
+         "by": "AOT preface",
+         "source": "Anti-Oedipus, trans. Hurley, Seem and Lane (1977), preface and ch. 1, read in full for pp. 1–24"
+        }
+       ]
+      },
+      {
+       "text": "Guattari's working notes for the book were later published as The Anti-Oedipus Papers.",
+       "claims": [
+        {
+         "by": "CAT",
+         "source": "library and publisher records of the book (title, publisher, year)"
+        }
+       ]
+      }
+     ]
+    ],
+    "s": "Anti-Oedipus (1972), trans. Robert Hurley, Mark Seem and Helen R. Lane (1977), Michel Foucault's preface, ch. 2 (pp. 51–137) and ch. 4, “Introduction to Schizoanalysis”",
+    "src": "SEP",
+    "srcs": [
+     "AO2",
+     "DOW",
+     "ADV"
+    ]
+   },
+   "coding-decoding": {
+    "old": [
+     {
+      "s": 1,
+      "text": "In Anti-Oedipus, the ways social machines register flows of desire: territorial societies code them, despotic states overcode those codes, and capitalism decodes them and binds them with an axiomatic.",
+      "accuracy": "supported",
+      "by": "SEP §4.1"
+     },
+     {
+      "s": 2,
+      "text": "The third chapter of Anti-Oedipus is a universal history of social machines, taking its title from the old ethnographic sequence savages, barbarians, civilized men.",
+      "accuracy": "supported",
+      "by": "SEP §4.1",
+      "note": "Title kept; 'universal history' and 'old ethnographic sequence' not confirmed."
+     },
+     {
+      "s": 3,
+      "text": "Every society has a full body, the socius, which records production and appears as its cause, and every society must code flows of desire, ordering what flows, where, and with what marks.",
+      "accuracy": "supported",
+      "by": "AO1; SEP §4.1"
+     },
+     {
+      "s": 4,
+      "text": "The Stanford Encyclopedia article distinguishes three forms: the territorial or primitive machine, the despotic or imperial machine, and the capitalist machine.",
+      "accuracy": "supported",
+      "by": "SEP §4.1"
+     },
+     {
+      "s": 5,
+      "text": "The territorial machine credits production to the earth.",
+      "accuracy": "supported",
+      "by": "SEP §4.1"
+     },
+     {
+      "s": 6,
+      "text": "It codes flows by marking bodies, through initiation, scarring and tattooing, a system the authors describe in terms drawn from Nietzsche's account of cruelty and debt in the second essay of On the Genealogy of Morals.",
+      "accuracy": "overstated",
+      "by": "SEP §4.1",
+      "note": "Marking bodies in initiation and a theater of cruelty confirmed; the Nietzsche reference not confirmed in a citable source read."
+     },
+     {
+      "s": 7,
+      "text": "Kinship works through filiation and alliance, and debt sets flows moving between groups.",
+      "accuracy": "unverified"
+     },
+     {
+      "s": 8,
+      "text": "Its signs, the Stanford article notes, are not yet signifiers.",
+      "accuracy": "supported",
+      "by": "SEP §4.1"
+     },
+     {
+      "s": 9,
+      "text": "The despotic machine arrives from outside and overcodes the territorial codes, tracing all production to the body of the despot.",
+      "accuracy": "supported",
+      "by": "SEP §4.1",
+      "note": "'From outside' not confirmed."
+     },
+     {
+      "s": 10,
+      "text": "Flows are deterritorialized from the earth and reterritorialized on the despot; debt becomes infinite, owed to the sovereign; and the signifier appears as a deterritorialized sign that flattens the many lines of the old codes into one-to-one correspondences.",
+      "accuracy": "overstated",
+      "by": "SEP §4.1",
+      "note": "Infinite debt not confirmed."
+     },
+     {
+      "s": 11,
+      "text": "The authors speak of an Urstaat, a primordial state that every later state recalls.",
+      "accuracy": "unverified"
+     },
+     {
+      "s": 12,
+      "text": "Capitalism decodes and deterritorializes.",
+      "accuracy": "supported",
+      "by": "SEP §4.1"
+     },
+     {
+      "s": 13,
+      "text": "It arises from the meeting of two decoded flows, money capital and labor freed from the land, which Marx described as primitive accumulation, and in place of codes it sets an axiomatic: simple rules for conjoining abstract quantities of labor and capital.",
+      "accuracy": "overstated",
+      "by": "SEP §4.1",
+      "note": "Flows of labor and capital confirmed; Marx's primitive accumulation not."
+     },
+     {
+      "s": 14,
+      "text": "Its representations coordinate flows and need no belief: capitalist ideology, in the book's image, is a motley painting of everything that has ever been believed.",
+      "accuracy": "unverified"
+     },
+     {
+      "s": 15,
+      "text": "Protevi's notes describe the result as a socius pushed toward its own limit, a body without organs crossed by unleashed flows.",
+      "accuracy": "unverified",
+      "note": "Not found in Protevi's notes as read."
+     },
+     {
+      "s": 16,
+      "text": "Capitalism, on this account, produces schizophrenia as its exterior limit and constantly pushes that limit back.",
+      "accuracy": "unverified"
+     },
+     {
+      "s": 17,
+      "text": "It reterritorializes decoded flows on artificial territorialities: the family and Oedipus, nations, races and genders, the bureaucracies of government and the forces of law and order.",
+      "accuracy": "overstated",
+      "by": "SEP §4.1",
+      "note": "Reterritorialized on persons, family members; the rest of the list not confirmed."
+     },
+     {
+      "s": 18,
+      "text": "The neurotic, the pervert and the schizophrenic mark three ways of meeting this limit.",
+      "accuracy": "unverified"
+     },
+     {
+      "s": 19,
+      "text": "A passage near the end of the chapter, asking whether the way forward is to go still further in the movement of the market (pp. 239–40), later became a touchstone for accelerationism.",
+      "accuracy": "overstated",
+      "by": "WIL",
+      "note": "Moved to Deterritorialization; 'touchstone' not in the source."
+     },
+     {
+      "s": 20,
+      "text": "A Thousand Plateaus continues this history in its plateaus on the war machine and the apparatus of capture.",
+      "accuracy": "supported",
+      "by": "SEP §4.2"
+     },
+     {
+      "s": 21,
+      "text": "The Stanford article describes the state there as an apparatus of capture living vampirically off labor, a perspective it calls Marxist, and the war machine as a form that reterritorializes on deterritorialization itself.",
+      "accuracy": "supported",
+      "by": "SEP §4.2",
+      "note": "Now quoted."
+     }
+    ],
+    "new_d": null,
+    "new_text": [
+     [
+      {
+       "text": "The third chapter of Anti-Oedipus, “Savages, Barbarians, Civilized Men”, is a history of social machines.",
+       "claims": [
+        {
+         "by": "SEP §4.1",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      },
+      {
+       "text": "The Stanford Encyclopedia article distinguishes three: the territorial machine of tribal societies, the despotic machine of empires and the capitalist machine, each with a full body, the socius, on which production is recorded and which seems to be its cause: the earth, the body of the despot, capital.",
+       "claims": [
+        {
+         "by": "SEP §4.1",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        },
+        {
+         "by": "AO1 II",
+         "source": "John Protevi, notes on Anti-Oedipus, part one"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "The territorial machine traces material flows onto the earth and codes them by marking bodies in initiation ceremonies, in what the article calls a theater of cruelty.",
+       "claims": [
+        {
+         "by": "SEP §4.1",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      },
+      {
+       "text": "Its signs, the article notes, do not map onto a voice and are not yet signifiers.",
+       "claims": [
+        {
+         "by": "SEP §4.1",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "Empires overcode these codes and trace all production back to the despot, and the signifier appears through a “flattening” or “bi-univocalization” of the codes.",
+       "claims": [
+        {
+         "by": "SEP §4.1",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "Capitalism, in the article's words, is “the radical decoding and deterritorialization of the material flows”: it brings together freed flows of labor and capital and puts an axiomatic in the place of codes.",
+       "claims": [
+        {
+         "by": "SEP §4.1",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      },
+      {
+       "text": "Its decoded flows are reterritorialized on persons, that is, on members of the family.",
+       "claims": [
+        {
+         "by": "SEP §4.1",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      }
+     ],
+     [
+      {
+       "text": "A Thousand Plateaus continues this history: the Stanford article describes the state as an “apparatus of capture” “living vampirically off of labor”, a sign of the authors' basically Marxist perspective, and the war machine as the form that “reterritorializes on deterritorialization itself”.",
+       "claims": [
+        {
+         "by": "SEP §4.2",
+         "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)"
+        }
+       ]
+      }
+     ]
+    ],
+    "s": "Anti-Oedipus (1972), trans. Robert Hurley, Mark Seem and Helen R. Lane (1977), ch. 3, “Savages, Barbarians, Civilized Men”",
+    "src": "SEP",
+    "srcs": [
+     "AO1"
     ]
    }
   }
