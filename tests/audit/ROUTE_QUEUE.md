@@ -16,9 +16,8 @@ them, and any that the primary text shows to be too smooth are re-audited.
 
 ### Waiting for books
 
-Kafka: Toward a Minor Literature (minor-literature, and the Kafka sentences of rhizome and deterritorialization): the entry stays
-audited from the Brinkley translation, De Balsi and A Thousand Plateaus until the owner imports the book (glossary-atp.json, `unread`).
-"Immanence: A Life" (one sentence of plane-of-immanence) likewise (glossary-wip.json, `unread`).
+"Immanence: A Life" (one sentence of plane-of-immanence) stays resting on the IEP until the owner imports the essay
+(glossary-wip.json, `unread`).
 
 ### Next: back to Land
 
@@ -35,4 +34,6 @@ syntheses-of-time, virtual-actual and univocity re-read (glossary-dr.json, super
 schizoanalysis and coding-decoding re-read (glossary-ao.json, likewise superseding glossary-dg.json). A Thousand Plateaus, read in the book itself: rhizome, assemblage,
 deterritorialization, plane-of-immanence and minor-literature re-read, and the A Thousand Plateaus sentences of body-without-organs and
 coding-decoding re-checked (glossary-atp.json, likewise superseding glossary-dg.json). What Is Philosophy?, read in the book itself: plane-of-immanence
-re-read, and two sentences of deterritorialization from it (glossary-wip.json, superseding plane-of-immanence's record in glossary-atp.json).
+re-read, and two sentences of deterritorialization from it (glossary-wip.json, superseding plane-of-immanence's record in glossary-atp.json). Kafka: Toward a Minor Literature, read in the book itself:
+minor-literature re-read, and the Kafka sentences of rhizome and deterritorialization (glossary-kaf.json, superseding minor-literature's record
+in glossary-atp.json).
