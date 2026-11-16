@@ -1,0 +1,708 @@
+{
+ "audit": "glossary-wip",
+ "audited": "2026-11-16",
+ "mode": "in place",
+ "scope": "What Is Philosophy? along the reading route: plane-of-immanence re-read against the book (superseding its record in glossary-atp.json), and two sentences of deterritorialization added or given pages from it (under rechecked; that entry stays audited in glossary-atp.json)",
+ "by": {
+  "draft": "Claude (Opus 5.5); no ChatGPT draft for this batch",
+  "first_pass": "Claude (Opus 5.5), first pass, 2026-11-16: every sentence of plane-of-immanence given a verdict; every page and quotation from What Is Philosophy? checked against the copy the owner supplied (quotations by script against undamaged runs of the scanned text; pages located by script from the scan's spreads)",
+  "review": "Independent reviewer (separate agent, fresh context), 2026-11-16: confirmed the page locator's mapping by hand (chapter openings and the repeated spread in ch. 6), then checked every What Is Philosophy? quotation, page and paraphrase in plane-of-immanence and in the two deterritorialization sentences, the old-sentence verdicts, the disputes, the unread list, the s fields and the move of the superseded record. Required fixes, all applied: three runs copied from the book without quotation marks (pp. 27, 88, 118) quoted or reworded; the p. 5 qualification of 'the art of forming… concepts' added; a dangling 'his' fixed (p. 64); the p. 51 reading made two-sided (the book leans toward a new plane for each great philosopher and qualifies it on p. 57), with the old verdicts set to partly and the dispute no longer called settled; a missing record for an old page note added; both s fields completed (chs. 5 and 7). Optional suggestions applied: the Stanford fragments merged, the claim that the book never names Difference and Repetition limited to its text, the 'metaphor' search limited to the scan's text layer. Re-check by the same reviewer, 2026-11-16: entries correct; two bookkeeping fixes asked (an old note and a misfiled quotation) and made. Verdict: pass."
+ },
+ "sources": {
+  "ATP": {
+   "name": "Gilles Deleuze and Félix Guattari, A Thousand Plateaus (1980), trans. Brian Massumi (University of Minnesota Press, 1987; eleventh printing 2005), the owner's imported copy, read for every page cited (not committed: the book is under copyright)"
+  },
+  "AO": {
+   "name": "Gilles Deleuze and Félix Guattari, Anti-Oedipus (1972), trans. Robert Hurley, Mark Seem and Helen R. Lane (Viking 1977; University of Minnesota Press reprint, same pagination), the owner's imported copy, read for every page cited (not committed)"
+  },
+  "SEP": {
+   "name": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Smith, Protevi and Voss)",
+   "src": "https://plato.stanford.edu/entries/deleuze/"
+  },
+  "IEP": {
+   "name": "Internet Encyclopedia of Philosophy, “Gilles Deleuze”",
+   "src": "https://iep.utm.edu/deleuze/"
+  },
+  "KAF": {
+   "name": "Deleuze and Guattari, “What Is a Minor Literature?”, trans. Robert Brinkley, Mississippi Review 11.3 (1983)",
+   "src": "https://iberian-connections.yale.edu/wp-content/uploads/2019/08/minorliterature.pdf"
+  },
+  "DEB": {
+   "name": "Sara De Balsi, “Écriture translingue et littérature mineure”, Revue Malice",
+   "src": "https://cielam.univ-amu.fr/print/pdf/node/3814"
+  },
+  "WIL": {
+   "name": "“Escape Velocities”, e-flux Journal 46 (2013) (Alex Williams)",
+   "src": "https://www.e-flux.com/journal/46/60063/escape-velocities"
+  },
+  "MUS": {
+   "name": "Martin Müller and Carolin Schurr, “Assemblage thinking and actor-network theory”, Transactions of the Institute of British Geographers (2016)",
+   "src": "https://research.birmingham.ac.uk/files/26874611/Mu_ller_Schurr_2016_Assemblage_thinking_and_actor_network_theory_Transactions_of_the_Institute_of_British_Geographers.pdf"
+  },
+  "PUA": {
+   "name": "Jasbir Puar, “‘I would rather be a cyborg than a goddess’: Intersectionality, Assemblage, and Affective Politics”, transversal (2011)",
+   "src": "https://www.transversal.at/pdf/journal-text/541/"
+  },
+  "TAB": {
+   "name": "Pachilla and Spinelli, “The deleuzo-guattarian concept of agencement and its reception in Manuel DeLanda”, Tábano 25 (2025)",
+   "src": "https://erevistas.uca.edu.ar/index.php/TAB/en/article/view/5117"
+  },
+  "CAT": {
+   "name": "library and publisher records of the book (title, publisher, year)"
+  },
+  "WIP": {
+   "name": "Gilles Deleuze and Félix Guattari, What Is Philosophy? (1991), trans. Hugh Tomlinson and Graham Burchell (Columbia University Press, 1994), the copy the owner supplied, read for every page cited (not committed: the book is under copyright)"
+  }
+ },
+ "note": "The book is under copyright and stays out of the repository; quotations are under 15 words. Claims about the book are credited to Deleuze and Guattari jointly; readings beyond it are credited by name. Sentences marked (kept) were not re-read and rest on glossary-dg.json.",
+ "disputes": [
+  "Concept and truth: the IEP says the concept 'has no relationship to truth, which is an external determination'; What Is Philosophy? says a concept always has 'the truth that falls to it', according to the conditions of its creation (p. 27) and that philosophy is not inspired by truth (p. 82). Both are stated in Plane of immanence; how far they differ is left open.",
+  "Conceptual personae and subjects: the Stanford article says a conceptual persona is not a subject, since thinking is not subjective; the book calls the personae 'the real subjects of his philosophy' and 'the becoming or the subject of a philosophy' (p. 64), while also saying the one who says 'I' is always a third person (p. 65). The article's sense of 'subject' may be the psychological one the book also rejects; both are quoted, each credited.",
+  "One plane per philosopher: the IEP and the previous entry said each philosopher must create a plane; the book asks whether each great philosopher does (p. 51) and records philosophers working on a master's plane (p. 57). The book leans toward it (p. 51) and qualifies it (p. 57); the entry states both pages.",
+  "Difference and Repetition: the IEP links the plane of immanence to that book's image of thought; the text of What Is Philosophy? does not name it (searched; the scan's notes are damaged, and the back cover's author note does name it). Recorded as the IEP's reading."
+ ],
+ "unread": [
+  {
+   "source": "“Immanence: A Life”",
+   "part": "the essay (1995)",
+   "why": "not available",
+   "terms": [
+    "plane-of-immanence"
+   ],
+   "effect": "its mention rests on the IEP"
+  },
+  {
+   "source": "What Is Philosophy?",
+   "part": "the book outside the pages cited, and the notes",
+   "why": "searched and read around the cited pages, not cover to cover; the owner's copy is a scanned text whose layer is damaged and drops words in places (on p. 5 'the discipline that involves concepts' lacks a word), so quotations were taken only from undamaged runs; pages are located by script from the spreads of the scan, with chapter openings and a repeated spread in ch. 6 corrected by hand",
+   "terms": [
+    "plane-of-immanence"
+   ],
+   "effect": "a qualifying passage elsewhere could have been missed; the same holds for the two sentences added to deterritorialization"
+  },
+  {
+   "source": "kept web sources",
+   "part": "the Stanford and IEP articles",
+   "why": "not re-read for this batch",
+   "terms": [
+    "plane-of-immanence"
+   ],
+   "effect": "sentences marked (kept) rest on glossary-dg.json"
+  },
+  {
+   "source": "What Is Philosophy? in French",
+   "part": "Qu'est-ce que la philosophie? (1991)",
+   "why": "not available",
+   "terms": [
+    "plane-of-immanence"
+   ],
+   "effect": "the passages are checked in the English translation only"
+  }
+ ],
+ "terms": {
+  "plane-of-immanence": {
+   "old": [
+    {
+     "s": 1,
+     "field": "d",
+     "accuracy": "partly",
+     "by": "WIP pp. 37, 41, 51, 57",
+     "note": "The book leans toward a new plane for each great philosopher and calls those who do not renew the image functionaries (p. 51), and qualifies this with philosophers working on a master's plane (p. 57); 'each philosopher must' stated as a rule what the book asks and qualifies.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "partly",
+       "by": "WIP pp. 37, 41, 51, 57",
+       "fix": "restated from pp. 37 and 41; pp. 51 and 57 given in the text"
+      }
+     ]
+    },
+    {
+     "s": 2,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "WIP pp. vii, 2, 118, 164",
+     "note": "The quotation is on p. 2; 'final collaboration' rested on the IEP and is now dated by the translators' introduction (p. vii).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "WIP pp. vii, 2, 118, 164",
+       "fix": "pages added"
+      }
+     ]
+    },
+    {
+     "s": 3,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §4.3 (kept); WIP p. 206",
+     "note": "Rests on glossary-dg.json; the web source was not re-read for this batch.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §4.3 (kept); WIP p. 206",
+       "fix": "kept; the book's conclusion added (p. 206)"
+      }
+     ]
+    },
+    {
+     "s": 4,
+     "field": "x",
+     "accuracy": "partly",
+     "by": "IEP §7 (kept); WIP pp. 15, 19–20, 22, 27",
+     "note": "Credited to the IEP; the book says the concept has components and is a multiplicity (p. 15), inseparable components (pp. 19–20), not a proposition (p. 22), and it has the truth that falls to it from the conditions of its creation (p. 27), which the IEP's 'no relationship to truth' does not report.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "partly",
+       "accuracy": "partly",
+       "by": "IEP §7 (kept); WIP pp. 15, 19–20, 22, 27",
+       "fix": "the book's account given first; the IEP's phrase kept beside p. 27"
+      }
+     ]
+    },
+    {
+     "s": 5,
+     "field": "x",
+     "accuracy": "partly",
+     "by": "WIP pp. 35, 51, 57",
+     "note": "As for the definition: the book leans toward it (p. 51) and qualifies it (p. 57).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "partly",
+       "accuracy": "partly",
+       "by": "WIP pp. 35, 51, 57",
+       "fix": "restated from pp. 35, 51, 57"
+      }
+     ]
+    },
+    {
+     "s": 6,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "IEP §§4.d, 7 (kept)",
+     "note": "Rests on glossary-dg.json; the web source was not re-read for this batch. The text of What Is Philosophy? does not name Difference and Repetition (searched; the back cover's author note names it).",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "IEP §§4.d, 7 (kept)",
+       "fix": "kept; the book's silence stated"
+      }
+     ]
+    },
+    {
+     "s": 7,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "WIP pp. 61–63",
+     "note": "The Idiot as Descartes's persona is in the book (pp. 61–62); the IEP's phrase on the personae's force is replaced by the book's account (p. 63).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "WIP pp. 61–63",
+       "fix": "credited to the book"
+      }
+     ]
+    },
+    {
+     "s": 8,
+     "field": "x",
+     "accuracy": "contested",
+     "by": "SEP §4.3 (kept); WIP p. 64",
+     "note": "The Stanford article says a conceptual persona is not a subject; the book calls the personae 'the real subjects of his philosophy' and 'the becoming or the subject of a philosophy' (p. 64). Stated as settled, the article's reading hid the book's words.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "partly",
+       "accuracy": "contested",
+       "by": "SEP §4.3 (kept); WIP p. 64",
+       "fix": "both stated, each credited"
+      }
+     ]
+    },
+    {
+     "s": 9,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "WIP pp. 45, 47",
+     "note": "Credited to the IEP; the book says it (p. 45) and adds that transcendence enters when the movement of the infinite stops (p. 47).",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "WIP pp. 45, 47",
+       "fix": "credited to the book"
+      }
+     ]
+    },
+    {
+     "s": 10,
+     "field": "x",
+     "accuracy": "partly",
+     "by": "WIP pp. 48, 60; IEP §3.d (kept)",
+     "note": "Credited to the Stanford article as Deleuze's view; the jointly signed book calls Spinoza 'the prince of philosophers' (p. 48) and 'the Christ of philosophers' (p. 60).",
+     "claims": [
+      {
+       "type": "historical",
+       "evidence": "partly",
+       "accuracy": "partly",
+       "by": "WIP pp. 48, 60; IEP §3.d (kept)",
+       "fix": "credited to the book, jointly"
+      }
+     ]
+    },
+    {
+     "s": 11,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "ATP pp. 254, 266",
+     "note": "Read in the A Thousand Plateaus batch.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "ATP pp. 254, 266",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 12,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "ATP pp. 253–254",
+     "note": "Read in the A Thousand Plateaus batch.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "ATP pp. 253–254",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 13,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "ATP p. 266",
+     "note": "Read in the A Thousand Plateaus batch.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "ATP p. 266",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 14,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "ATP p. 281",
+     "note": "Read in the A Thousand Plateaus batch.",
+     "claims": [
+      {
+       "type": "conceptual",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "ATP p. 281",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 15,
+     "field": "x",
+     "accuracy": "editorial",
+     "by": "editorial (page note)",
+     "note": "Page note for A Thousand Plateaus.",
+     "claims": [
+      {
+       "type": "editorial",
+       "evidence": "no",
+       "accuracy": "editorial",
+       "by": "editorial (page note)",
+       "fix": "kept"
+      }
+     ]
+    },
+    {
+     "s": 16,
+     "field": "x",
+     "accuracy": "supported",
+     "by": "SEP §4.3 (kept); WIP p. 118",
+     "note": "The book's own statement (p. 118) now precedes the article's reading.",
+     "claims": [
+      {
+       "type": "interpretive",
+       "evidence": "yes",
+       "accuracy": "supported",
+       "by": "SEP §4.3 (kept); WIP p. 118",
+       "fix": "book added"
+      }
+     ]
+    }
+   ],
+   "new_d": [
+    {
+     "text": "In What Is Philosophy? (1991), the plane a philosophy lays out as the presupposition of its concepts: the image thought gives itself of what it means to think, which Deleuze and Guattari call the absolute ground of philosophy.",
+     "claims": [
+      {
+       "by": "WIP pp. 37, 41"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "What Is Philosophy?, published in 1991, a year before Guattari's death (translators' introduction, p. vii), calls philosophy “the art of forming, inventing, and fabricating concepts” (p. 2), then says it is not simply such an art, since concepts are not necessarily forms, discoveries or products; its object is to create concepts that are always new (p. 5).",
+     "claims": [
+      {
+       "by": "WIP pp. vii, 2, 5"
+      }
+     ]
+    },
+    {
+     "text": "Science creates functions on a plane of reference (p. 118), and art creates blocs of sensation, compounds of percepts and affects (p. 164).",
+     "claims": [
+      {
+       "by": "WIP pp. 118, 164"
+      }
+     ]
+    },
+    {
+     "text": "“Thought, in all its modes,” the Stanford Encyclopedia article adds, “struggles with chaos against opinion”; the book's conclusion calls the struggle with chaos the instrument of a deeper struggle against opinion (p. 206).",
+     "claims": [
+      {
+       "by": "SEP §4.3 (kept)"
+      },
+      {
+       "by": "WIP p. 206"
+      }
+     ]
+    },
+    {
+     "text": "Pages of What Is Philosophy? are from the translation by Hugh Tomlinson and Graham Burchell (1994).",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ]
+    },
+    {
+     "text": "Every concept, the first chapter holds, has components and is defined by them: it is a multiplicity, and there are no simple concepts (p. 15).",
+     "claims": [
+      {
+       "by": "WIP p. 15"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Its components are “distinct, heterogeneous, and yet not separable”, and their inseparability defines the concept's consistency (pp. 19–20).",
+     "claims": [
+      {
+       "by": "WIP pp. 19–20"
+      }
+     ]
+    },
+    {
+     "text": "The concept is not a proposition (p. 22), and it always has “the truth that falls to it”, according to the conditions of its creation (p. 27); the Internet Encyclopedia of Philosophy says it “has no relationship to truth, which is an external determination”.",
+     "claims": [
+      {
+       "by": "WIP pp. 22, 27"
+      },
+      {
+       "by": "IEP §7 (kept)"
+      }
+     ]
+    },
+    {
+     "text": "Concepts are created on a plane, which the second chapter calls a plane of consistency or, more accurately, “the plane of immanence of concepts, the planomenon” (p. 35).",
+     "claims": [
+      {
+       "by": "WIP p. 35"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Concepts and plane are strictly correlative, and yet the plane is neither a concept nor the concept of all concepts (p. 35).",
+     "claims": [
+      {
+       "by": "WIP p. 35"
+      }
+     ]
+    },
+    {
+     "text": "It is “the image thought gives itself of what it means to think” (p. 37); it is prephilosophical, presupposed by philosophy and instituted by it (pp. 40–41); and it acts like a sieve, a section of chaos (p. 42).",
+     "claims": [
+      {
+       "by": "WIP pp. 37, 40–42"
+      }
+     ]
+    },
+    {
+     "text": "The authors ask whether every great philosopher lays out a new plane, and cannot imagine a great philosopher who has not changed what it means to think (p. 51).",
+     "claims": [
+      {
+       "by": "WIP p. 51"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Those who do not renew the image of thought they deny the name of philosopher and call functionaries (p. 51); yet philosophers can create new concepts for a long time on the plane of an earlier philosopher they take as their master, as the neo-Platonists did with Plato, extending that plane until it is doubtful whether it is still the same one (p. 57).",
+     "claims": [
+      {
+       "by": "WIP pp. 51, 57"
+      }
+     ]
+    },
+    {
+     "text": "The question of what thought presupposes, the IEP notes, is the one Difference and Repetition had treated under the image of thought; the text of What Is Philosophy? does not name that book.",
+     "claims": [
+      {
+       "by": "IEP §§4.d, 7 (kept)"
+      },
+      {
+       "by": "WIP (searched)"
+      }
+     ]
+    },
+    {
+     "text": "Conceptual personae carry out the movements of a philosopher's plane and take part in creating the concepts (p. 63).",
+     "claims": [
+      {
+       "by": "WIP p. 63"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Descartes's is the Idiot, the private thinker who says “I” and lays out the plane (pp. 61–62).",
+     "claims": [
+      {
+       "by": "WIP pp. 61–62"
+      }
+     ]
+    },
+    {
+     "text": "The philosopher, the authors write, is only the envelope of his conceptual personae, “the real subjects of his philosophy” (p. 64); the Stanford article writes that “a conceptual persona is not a subject, for thinking is not subjective.”",
+     "claims": [
+      {
+       "by": "WIP p. 64"
+      },
+      {
+       "by": "SEP §4.3 (kept)"
+      }
+     ]
+    },
+    {
+     "text": "Immanence, the authors write, “is immanent only to itself”; whenever it is interpreted as immanent to something, that something reintroduces the transcendent (p. 45), and transcendence enters as soon as the movement of the infinite is stopped (p. 47).",
+     "claims": [
+      {
+       "by": "WIP pp. 45, 47"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Spinoza, who knew that immanence was immanent only to itself, is “the prince of philosophers” (p. 48) and “the Christ of philosophers”, who drew up the purest plane (p. 60); Deleuze's essay “Immanence: A Life” returns to the theme.",
+     "claims": [
+      {
+       "by": "WIP pp. 48, 60"
+      },
+      {
+       "by": "IEP §3.d (kept)"
+      }
+     ]
+    },
+    {
+     "text": "A Thousand Plateaus already speaks of a plane of immanence.",
+     "claims": [
+      {
+       "by": "ATP pp. 254, 266"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Its tenth plateau, in the sections it calls “Memories of a Spinozist”, describes a fixed plane on which things are distinguished only by speed and slowness, “a plane of immanence or univocality opposed to analogy” (pp. 253–254).",
+     "claims": [
+      {
+       "by": "ATP pp. 253–254"
+      }
+     ]
+    },
+    {
+     "text": "The authors call it the plane of consistency or composition, as opposed to the plan(e) of organization or development, and “necessarily a plane of immanence and univocality”; on it there is no distinction between the natural and the artificial, and it never has a dimension supplementary to what happens on it (p. 266).",
+     "claims": [
+      {
+       "by": "ATP p. 266"
+      }
+     ]
+    },
+    {
+     "text": "The plane of organization and development they call the plane of transcendence (p. 281).",
+     "claims": [
+      {
+       "by": "ATP p. 281"
+      }
+     ]
+    },
+    {
+     "text": "Pages of A Thousand Plateaus are from Brian Massumi's translation (1987).",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ]
+    },
+    {
+     "text": "Philosophy, the authors write, keeps the infinite and gives the virtual consistency through concepts; science gives up the infinite and gives the virtual a reference that actualizes it through functions (p. 118).",
+     "claims": [
+      {
+       "by": "WIP p. 118"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The Stanford article reads this as philosophy mapping the forces of a system as pure potentials, while science explains why one road was taken.",
+     "claims": [
+      {
+       "by": "SEP §4.3 (kept)"
+      }
+     ]
+    }
+   ],
+   "quotes": [
+    {
+     "q": "the art of forming, inventing, and fabricating concepts",
+     "checked": "WIP p. 2"
+    },
+    {
+     "q": "Thought, in all its modes,",
+     "checked": "SEP §4.3 (kept)"
+    },
+    {
+     "q": "struggles with chaos against opinion",
+     "checked": "SEP §4.3 (kept)"
+    },
+    {
+     "q": "distinct, heterogeneous, and yet not separable",
+     "checked": "WIP p. 19"
+    },
+    {
+     "q": "has no relationship to truth, which is an external determination",
+     "checked": "IEP §7 (kept)"
+    },
+    {
+     "q": "the plane of immanence of concepts, the planomenon",
+     "checked": "WIP p. 35"
+    },
+    {
+     "q": "the image thought gives itself of what it means to think",
+     "checked": "WIP p. 37"
+    },
+    {
+     "q": "I",
+     "checked": "WIP p. 61"
+    },
+    {
+     "q": "the real subjects of his philosophy",
+     "checked": "WIP p. 64"
+    },
+    {
+     "q": "a conceptual persona is not a subject, for thinking is not subjective.",
+     "checked": "SEP §4.3 (kept; the article capitalizes the first word)"
+    },
+    {
+     "q": "the truth that falls to it",
+     "checked": "WIP p. 27"
+    },
+    {
+     "q": "is immanent only to itself",
+     "checked": "WIP p. 45"
+    },
+    {
+     "q": "the prince of philosophers",
+     "checked": "WIP p. 48"
+    },
+    {
+     "q": "the Christ of philosophers",
+     "checked": "WIP p. 60"
+    },
+    {
+     "q": "Immanence: A Life",
+     "checked": "title (IEP, kept)"
+    },
+    {
+     "q": "Memories of a Spinozist",
+     "checked": "section title, ATP pp. 253, 256"
+    },
+    {
+     "q": "a plane of immanence or univocality opposed to analogy",
+     "checked": "ATP p. 254"
+    },
+    {
+     "q": "necessarily a plane of immanence and univocality",
+     "checked": "ATP p. 266"
+    }
+   ],
+   "s": "What Is Philosophy? (1991), trans. Hugh Tomlinson and Graham Burchell (1994), Introduction, chs. 1–3, 5 and 7, and Conclusion; “Immanence: A Life” (1995); A Thousand Plateaus (1980), trans. Brian Massumi (1987), plateau 10 (pp. 253–282)",
+   "src": "SEP",
+   "srcs": [
+    "IEP"
+   ],
+   "p": [
+    "deleuze",
+    "guattari",
+    "spinoza"
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-16",
+    "verdict": "pass after fixes"
+   }
+  }
+ },
+ "rechecked": {
+  "deterritorialization": [
+   {
+    "old": "(new paragraph)",
+    "new": "What Is Philosophy? carries the terms into philosophy itself: deterritorialization is relative when it concerns the earth's historical relationship with territories, its geological relationship with eras and catastrophes, or its astronomical relationship with the cosmos, and absolute “when the earth passes into the pure plane of immanence of a Being-thought” (p. 88); philosophy, the authors write, is reterritorialized on the concept (p. 101).",
+    "accuracy": "supported",
+    "by": "WIP pp. 88, 101",
+    "note": "Added from the book's fourth chapter, 'Geophilosophy'. Quotation 'when the earth passes into the pure plane of immanence of a Being-thought' checked, WIP p. 88 (13 words).",
+    "fix": "added"
+   },
+   {
+    "old": "The Stanford article classes deterritorialization among philosophy's concepts, which the authors keep apart in kind from the functions of science, and notes that they repeatedly insist such concepts are no metaphors.",
+    "new": "The Stanford article classes deterritorialization among philosophy's concepts, which the authors keep apart in kind from the functions of science (pp. 117–118), and notes that they repeatedly insist such concepts are no metaphors.",
+    "accuracy": "supported",
+    "by": "WIP pp. 117–118; SEP §4.3 (kept)",
+    "note": "The concept/function distinction is in the book (pp. 117–118). The word 'metaphor' does not occur in What Is Philosophy? (searched in the scan's text layer); the 'no metaphors' claim rests on the article.",
+    "fix": "pages added"
+   }
+  ]
+ },
+ "summary": "Plane of immanence read in What Is Philosophy?: page numbers throughout and Deleuze and Guattari credited for what the book says (Spinoza as 'the prince' and 'the Christ of philosophers', the Idiot, immanence immanent only to itself). The claim that every philosopher must lay out a plane of their own is restated as the book has it, a question it leans toward (p. 51) and qualifies (p. 57); the book's 'real subjects' is set beside the Stanford article's 'not a subject', and its 'truth that falls to' a concept beside the IEP's 'no relationship to truth'. Deterritorialization gains the book's relative and absolute deterritorialization (p. 88)."
+}

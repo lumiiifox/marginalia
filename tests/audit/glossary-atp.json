@@ -60,24 +60,6 @@
  ],
  "unread": [
   {
-   "source": "What Is Philosophy?",
-   "part": "the whole book (trans. Tomlinson and Burchell 1994), chs. 1–3 above all",
-   "why": "not available: the owner has not imported it",
-   "terms": [
-    "plane-of-immanence"
-   ],
-   "effect": "every sentence on What Is Philosophy? rests on the encyclopedias as audited in glossary-dg.json; only the A Thousand Plateaus paragraph is read in a primary text"
-  },
-  {
-   "source": "“Immanence: A Life”",
-   "part": "the essay (1995)",
-   "why": "not available",
-   "terms": [
-    "plane-of-immanence"
-   ],
-   "effect": "its mention rests on the Stanford and IEP articles"
-  },
-  {
    "source": "Kafka: Toward a Minor Literature",
    "part": "the book in Dana Polan's translation (1986), including ch. 1 on the burrow",
    "why": "not available; the earlier audit read ch. 3 in Robert Brinkley's translation (Mississippi Review 1983), whose pages differ",
@@ -96,7 +78,6 @@
     "rhizome",
     "assemblage",
     "deterritorialization",
-    "plane-of-immanence",
     "minor-literature"
    ],
    "effect": "a qualifying passage elsewhere could have been missed, here and in the rechecked sentences of body-without-organs and coding-decoding; the authors' notes were not consulted"
@@ -109,7 +90,6 @@
     "rhizome",
     "assemblage",
     "deterritorialization",
-    "plane-of-immanence",
     "minor-literature"
    ],
    "effect": "sentences marked (kept) rest on glossary-dg.json, and the Stanford glosses in the rechecked sentences of body-without-organs and coding-decoding on glossary-ao.json"
@@ -1261,394 +1241,6 @@
     "verdict": "pass after fixes"
    }
   },
-  "plane-of-immanence": {
-   "old": [
-    {
-     "s": 1,
-     "field": "d",
-     "accuracy": "supported",
-     "by": "IEP §7 (kept)",
-     "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
-     "claims": [
-      {
-       "type": "conceptual",
-       "evidence": "yes",
-       "accuracy": "supported",
-       "by": "IEP §7 (kept)",
-       "fix": "kept"
-      }
-     ]
-    },
-    {
-     "s": 2,
-     "field": "x",
-     "accuracy": "supported",
-     "by": "IEP/SEP (kept)",
-     "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
-     "claims": [
-      {
-       "type": "interpretive",
-       "evidence": "yes",
-       "accuracy": "supported",
-       "by": "IEP/SEP (kept)",
-       "fix": "kept"
-      }
-     ]
-    },
-    {
-     "s": 3,
-     "field": "x",
-     "accuracy": "supported",
-     "by": "IEP/SEP (kept)",
-     "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
-     "claims": [
-      {
-       "type": "interpretive",
-       "evidence": "yes",
-       "accuracy": "supported",
-       "by": "IEP/SEP (kept)",
-       "fix": "kept"
-      }
-     ]
-    },
-    {
-     "s": 4,
-     "field": "x",
-     "accuracy": "supported",
-     "by": "IEP/SEP (kept)",
-     "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
-     "claims": [
-      {
-       "type": "interpretive",
-       "evidence": "yes",
-       "accuracy": "supported",
-       "by": "IEP/SEP (kept)",
-       "fix": "kept"
-      }
-     ]
-    },
-    {
-     "s": 5,
-     "field": "x",
-     "accuracy": "supported",
-     "by": "IEP/SEP (kept)",
-     "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
-     "claims": [
-      {
-       "type": "interpretive",
-       "evidence": "yes",
-       "accuracy": "supported",
-       "by": "IEP/SEP (kept)",
-       "fix": "kept"
-      }
-     ]
-    },
-    {
-     "s": 6,
-     "field": "x",
-     "accuracy": "supported",
-     "by": "IEP/SEP (kept)",
-     "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
-     "claims": [
-      {
-       "type": "interpretive",
-       "evidence": "yes",
-       "accuracy": "supported",
-       "by": "IEP/SEP (kept)",
-       "fix": "kept"
-      }
-     ]
-    },
-    {
-     "s": 7,
-     "field": "x",
-     "accuracy": "supported",
-     "by": "IEP/SEP (kept)",
-     "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
-     "claims": [
-      {
-       "type": "interpretive",
-       "evidence": "yes",
-       "accuracy": "supported",
-       "by": "IEP/SEP (kept)",
-       "fix": "kept"
-      }
-     ]
-    },
-    {
-     "s": 8,
-     "field": "x",
-     "accuracy": "supported",
-     "by": "IEP/SEP (kept)",
-     "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
-     "claims": [
-      {
-       "type": "interpretive",
-       "evidence": "yes",
-       "accuracy": "supported",
-       "by": "IEP/SEP (kept)",
-       "fix": "kept"
-      }
-     ]
-    },
-    {
-     "s": 9,
-     "field": "x",
-     "accuracy": "supported",
-     "by": "IEP/SEP (kept)",
-     "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
-     "claims": [
-      {
-       "type": "interpretive",
-       "evidence": "yes",
-       "accuracy": "supported",
-       "by": "IEP/SEP (kept)",
-       "fix": "kept"
-      }
-     ]
-    },
-    {
-     "s": 10,
-     "field": "x",
-     "accuracy": "supported",
-     "by": "IEP/SEP (kept)",
-     "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
-     "claims": [
-      {
-       "type": "interpretive",
-       "evidence": "yes",
-       "accuracy": "supported",
-       "by": "IEP/SEP (kept)",
-       "fix": "kept"
-      }
-     ]
-    },
-    {
-     "s": 11,
-     "field": "x",
-     "accuracy": "supported",
-     "by": "IEP/SEP (kept)",
-     "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
-     "claims": [
-      {
-       "type": "interpretive",
-       "evidence": "yes",
-       "accuracy": "supported",
-       "by": "IEP/SEP (kept)",
-       "fix": "kept"
-      }
-     ]
-    }
-   ],
-   "new_d": [
-    {
-     "text": "In What Is Philosophy? (1991), the field on which a philosophy creates its concepts; each philosopher, Deleuze and Guattari hold, must lay out a plane of their own.",
-     "claims": [
-      {
-       "by": "IEP §7 (kept)"
-      }
-     ]
-    }
-   ],
-   "new_text": [
-    {
-     "text": "What Is Philosophy? (1991), the final collaboration between Deleuze and Guattari, calls philosophy “the art of forming, inventing, and fabricating concepts”; science creates functions on a plane of reference, and art creates compounds of percepts and affects, blocs of sensation.",
-     "claims": [
-      {
-       "by": "IEP §7 (kept)"
-      },
-      {
-       "by": "SEP §4.3 (kept)"
-      }
-     ]
-    },
-    {
-     "text": "“Thought, in all its modes,” the Stanford article adds, “struggles with chaos against opinion.”",
-     "claims": [
-      {
-       "by": "SEP §4.3 (kept)"
-      }
-     ]
-    },
-    {
-     "text": "A concept, on the Internet Encyclopedia of Philosophy's account, is an assemblage of components that must stay coherent with one another, a multiplicity, distinct from a proposition, and it “has no relationship to truth, which is an external determination”.",
-     "claims": [
-      {
-       "by": "IEP §7 (kept)"
-      }
-     ],
-     "paragraph": "starts a new paragraph"
-    },
-    {
-     "text": "Concepts exist on the plane of immanence, and each philosopher must create such a plane.",
-     "claims": [
-      {
-       "by": "IEP §7 (kept)"
-      }
-     ]
-    },
-    {
-     "text": "The question of what thought presupposes, the IEP notes, is the one Difference and Repetition had treated under the image of thought.",
-     "claims": [
-      {
-       "by": "IEP §§4.d, 7 (kept)"
-      }
-     ]
-    },
-    {
-     "text": "Conceptual personae are “the figures of thought that give concepts their specific force”, and the IEP names the Idiot as Descartes's implicit persona.",
-     "claims": [
-      {
-       "by": "IEP §7 (kept)"
-      }
-     ],
-     "paragraph": "starts a new paragraph"
-    },
-    {
-     "text": "“A conceptual persona is not a subject,” the Stanford article explains, “for thinking is not subjective.”",
-     "claims": [
-      {
-       "by": "SEP §4.3 (kept)"
-      }
-     ]
-    },
-    {
-     "text": "The plane of immanence is opposed to transcendence, and the IEP explains that insisting that immanence be immanent to something is what brings transcendence back and arrests thought.",
-     "claims": [
-      {
-       "by": "IEP §7 (kept)"
-      }
-     ],
-     "paragraph": "starts a new paragraph"
-    },
-    {
-     "text": "For Deleuze, the Stanford article notes, Spinoza was the “prince” or even the “Christ” of philosophers, and Deleuze's essay “Immanence: A Life” returns to the theme.",
-     "claims": [
-      {
-       "by": "SEP §2 (kept)"
-      },
-      {
-       "by": "IEP §3.d (kept)"
-      }
-     ]
-    },
-    {
-     "text": "A Thousand Plateaus already speaks of a plane of immanence.",
-     "claims": [
-      {
-       "by": "ATP pp. 254, 266"
-      }
-     ],
-     "paragraph": "starts a new paragraph"
-    },
-    {
-     "text": "Its tenth plateau, in the sections it calls “Memories of a Spinozist”, describes a fixed plane on which things are distinguished only by speed and slowness, “a plane of immanence or univocality opposed to analogy” (pp. 253–254).",
-     "claims": [
-      {
-       "by": "ATP pp. 253–254"
-      }
-     ]
-    },
-    {
-     "text": "The authors call it the plane of consistency or composition, as opposed to the plan(e) of organization or development, and “necessarily a plane of immanence and univocality”; on it there is no distinction between the natural and the artificial, and it never has a dimension supplementary to what happens on it (p. 266).",
-     "claims": [
-      {
-       "by": "ATP p. 266"
-      }
-     ]
-    },
-    {
-     "text": "The plane of organization and development they call the plane of transcendence (p. 281).",
-     "claims": [
-      {
-       "by": "ATP p. 281"
-      }
-     ]
-    },
-    {
-     "text": "Pages of A Thousand Plateaus are from Brian Massumi's translation (1987).",
-     "claims": [
-      {
-       "by": "editorial (page note)"
-      }
-     ]
-    },
-    {
-     "text": "In its account of What Is Philosophy?, the Stanford article says philosophy gives consistency to the virtual, mapping the forces of a system as pure potentials, while science tracks how the virtual is actualized and explains why one road was taken.",
-     "claims": [
-      {
-       "by": "SEP §4.3 (kept)"
-      }
-     ],
-     "paragraph": "starts a new paragraph"
-    }
-   ],
-   "quotes": [
-    {
-     "q": "the art of forming, inventing, and fabricating concepts",
-     "checked": "IEP §7 (kept)"
-    },
-    {
-     "q": "Thought, in all its modes,",
-     "checked": "SEP §4.3 (kept)"
-    },
-    {
-     "q": "struggles with chaos against opinion.",
-     "checked": "SEP §4.3 (kept)"
-    },
-    {
-     "q": "has no relationship to truth, which is an external determination",
-     "checked": "IEP §7 (kept)"
-    },
-    {
-     "q": "the figures of thought that give concepts their specific force",
-     "checked": "IEP §7 (kept)"
-    },
-    {
-     "q": "A conceptual persona is not a subject,",
-     "checked": "SEP §4.3 (kept)"
-    },
-    {
-     "q": "for thinking is not subjective.",
-     "checked": "SEP §4.3 (kept)"
-    },
-    {
-     "q": "prince",
-     "checked": "SEP §2 (kept)"
-    },
-    {
-     "q": "Christ",
-     "checked": "SEP §2 (kept)"
-    },
-    {
-     "q": "Memories of a Spinozist",
-     "checked": "section title, ATP pp. 253, 256"
-    },
-    {
-     "q": "a plane of immanence or univocality opposed to analogy",
-     "checked": "ATP p. 254"
-    },
-    {
-     "q": "necessarily a plane of immanence and univocality",
-     "checked": "ATP p. 266 ('It is necessarily a plane of immanence and univocality')"
-    }
-   ],
-   "s": "What Is Philosophy? (1991), trans. Hugh Tomlinson and Graham Burchell (1994), chs. 1–3; “Immanence: A Life” (1995); A Thousand Plateaus (1980), trans. Brian Massumi (1987), plateau 10 (pp. 253–282)",
-   "src": "SEP",
-   "srcs": [
-    "IEP"
-   ],
-   "p": [
-    "deleuze",
-    "guattari",
-    "spinoza"
-   ],
-   "review": {
-    "by": "Independent reviewer (separate agent, fresh context)",
-    "date": "2026-11-15",
-    "verdict": "pass"
-   }
-  },
   "minor-literature": {
    "old": [
     {
@@ -2016,5 +1608,398 @@
    }
   ]
  },
- "summary": "Five glossary entries read in A Thousand Plateaus: page numbers throughout; Rhizome and Deterritorialization rebuilt from the book (the Authors' Note's 'to a certain extent' replaces 'in any order'; negative, relative and absolute deterritorialization from the conclusion; Anti-Oedipus credited for what it says); Assemblage gains the book's two axes, unverified before; Plane of immanence and Minor literature gain their A Thousand Plateaus passages, the rest kept for want of What Is Philosophy? and the Kafka book. In Body without organs the two dangers of destratification are kept apart; in Coding, overcoding, decoding the book gives reterritorializing on deterritorialization itself to the nomad (p. 381), the Stanford article to the war machine."
+ "summary": "Five glossary entries read in A Thousand Plateaus: page numbers throughout; Rhizome and Deterritorialization rebuilt from the book (the Authors' Note's 'to a certain extent' replaces 'in any order'; negative, relative and absolute deterritorialization from the conclusion; Anti-Oedipus credited for what it says); Assemblage gains the book's two axes, unverified before; Plane of immanence and Minor literature gain their A Thousand Plateaus passages, the rest kept for want of What Is Philosophy? and the Kafka book. In Body without organs the two dangers of destratification are kept apart; in Coding, overcoding, decoding the book gives reterritorializing on deterritorialization itself to the nomad (p. 381), the Stanford article to the war machine.",
+ "superseded": {
+  "note": "Re-audited against What Is Philosophy? on 2026-11-16 (glossary-wip.json). Kept here as the record of the A Thousand Plateaus batch.",
+  "terms": {
+   "plane-of-immanence": {
+    "old": [
+     {
+      "s": 1,
+      "field": "d",
+      "accuracy": "supported",
+      "by": "IEP §7 (kept)",
+      "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
+      "claims": [
+       {
+        "type": "conceptual",
+        "evidence": "yes",
+        "accuracy": "supported",
+        "by": "IEP §7 (kept)",
+        "fix": "kept"
+       }
+      ]
+     },
+     {
+      "s": 2,
+      "field": "x",
+      "accuracy": "supported",
+      "by": "IEP/SEP (kept)",
+      "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
+      "claims": [
+       {
+        "type": "interpretive",
+        "evidence": "yes",
+        "accuracy": "supported",
+        "by": "IEP/SEP (kept)",
+        "fix": "kept"
+       }
+      ]
+     },
+     {
+      "s": 3,
+      "field": "x",
+      "accuracy": "supported",
+      "by": "IEP/SEP (kept)",
+      "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
+      "claims": [
+       {
+        "type": "interpretive",
+        "evidence": "yes",
+        "accuracy": "supported",
+        "by": "IEP/SEP (kept)",
+        "fix": "kept"
+       }
+      ]
+     },
+     {
+      "s": 4,
+      "field": "x",
+      "accuracy": "supported",
+      "by": "IEP/SEP (kept)",
+      "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
+      "claims": [
+       {
+        "type": "interpretive",
+        "evidence": "yes",
+        "accuracy": "supported",
+        "by": "IEP/SEP (kept)",
+        "fix": "kept"
+       }
+      ]
+     },
+     {
+      "s": 5,
+      "field": "x",
+      "accuracy": "supported",
+      "by": "IEP/SEP (kept)",
+      "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
+      "claims": [
+       {
+        "type": "interpretive",
+        "evidence": "yes",
+        "accuracy": "supported",
+        "by": "IEP/SEP (kept)",
+        "fix": "kept"
+       }
+      ]
+     },
+     {
+      "s": 6,
+      "field": "x",
+      "accuracy": "supported",
+      "by": "IEP/SEP (kept)",
+      "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
+      "claims": [
+       {
+        "type": "interpretive",
+        "evidence": "yes",
+        "accuracy": "supported",
+        "by": "IEP/SEP (kept)",
+        "fix": "kept"
+       }
+      ]
+     },
+     {
+      "s": 7,
+      "field": "x",
+      "accuracy": "supported",
+      "by": "IEP/SEP (kept)",
+      "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
+      "claims": [
+       {
+        "type": "interpretive",
+        "evidence": "yes",
+        "accuracy": "supported",
+        "by": "IEP/SEP (kept)",
+        "fix": "kept"
+       }
+      ]
+     },
+     {
+      "s": 8,
+      "field": "x",
+      "accuracy": "supported",
+      "by": "IEP/SEP (kept)",
+      "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
+      "claims": [
+       {
+        "type": "interpretive",
+        "evidence": "yes",
+        "accuracy": "supported",
+        "by": "IEP/SEP (kept)",
+        "fix": "kept"
+       }
+      ]
+     },
+     {
+      "s": 9,
+      "field": "x",
+      "accuracy": "supported",
+      "by": "IEP/SEP (kept)",
+      "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
+      "claims": [
+       {
+        "type": "interpretive",
+        "evidence": "yes",
+        "accuracy": "supported",
+        "by": "IEP/SEP (kept)",
+        "fix": "kept"
+       }
+      ]
+     },
+     {
+      "s": 10,
+      "field": "x",
+      "accuracy": "supported",
+      "by": "IEP/SEP (kept)",
+      "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
+      "claims": [
+       {
+        "type": "interpretive",
+        "evidence": "yes",
+        "accuracy": "supported",
+        "by": "IEP/SEP (kept)",
+        "fix": "kept"
+       }
+      ]
+     },
+     {
+      "s": 11,
+      "field": "x",
+      "accuracy": "supported",
+      "by": "IEP/SEP (kept)",
+      "note": "Rests on glossary-dg.json; not re-read for this batch. What Is Philosophy? is not available.",
+      "claims": [
+       {
+        "type": "interpretive",
+        "evidence": "yes",
+        "accuracy": "supported",
+        "by": "IEP/SEP (kept)",
+        "fix": "kept"
+       }
+      ]
+     }
+    ],
+    "new_d": [
+     {
+      "text": "In What Is Philosophy? (1991), the field on which a philosophy creates its concepts; each philosopher, Deleuze and Guattari hold, must lay out a plane of their own.",
+      "claims": [
+       {
+        "by": "IEP §7 (kept)"
+       }
+      ]
+     }
+    ],
+    "new_text": [
+     {
+      "text": "What Is Philosophy? (1991), the final collaboration between Deleuze and Guattari, calls philosophy “the art of forming, inventing, and fabricating concepts”; science creates functions on a plane of reference, and art creates compounds of percepts and affects, blocs of sensation.",
+      "claims": [
+       {
+        "by": "IEP §7 (kept)"
+       },
+       {
+        "by": "SEP §4.3 (kept)"
+       }
+      ]
+     },
+     {
+      "text": "“Thought, in all its modes,” the Stanford article adds, “struggles with chaos against opinion.”",
+      "claims": [
+       {
+        "by": "SEP §4.3 (kept)"
+       }
+      ]
+     },
+     {
+      "text": "A concept, on the Internet Encyclopedia of Philosophy's account, is an assemblage of components that must stay coherent with one another, a multiplicity, distinct from a proposition, and it “has no relationship to truth, which is an external determination”.",
+      "claims": [
+       {
+        "by": "IEP §7 (kept)"
+       }
+      ],
+      "paragraph": "starts a new paragraph"
+     },
+     {
+      "text": "Concepts exist on the plane of immanence, and each philosopher must create such a plane.",
+      "claims": [
+       {
+        "by": "IEP §7 (kept)"
+       }
+      ]
+     },
+     {
+      "text": "The question of what thought presupposes, the IEP notes, is the one Difference and Repetition had treated under the image of thought.",
+      "claims": [
+       {
+        "by": "IEP §§4.d, 7 (kept)"
+       }
+      ]
+     },
+     {
+      "text": "Conceptual personae are “the figures of thought that give concepts their specific force”, and the IEP names the Idiot as Descartes's implicit persona.",
+      "claims": [
+       {
+        "by": "IEP §7 (kept)"
+       }
+      ],
+      "paragraph": "starts a new paragraph"
+     },
+     {
+      "text": "“A conceptual persona is not a subject,” the Stanford article explains, “for thinking is not subjective.”",
+      "claims": [
+       {
+        "by": "SEP §4.3 (kept)"
+       }
+      ]
+     },
+     {
+      "text": "The plane of immanence is opposed to transcendence, and the IEP explains that insisting that immanence be immanent to something is what brings transcendence back and arrests thought.",
+      "claims": [
+       {
+        "by": "IEP §7 (kept)"
+       }
+      ],
+      "paragraph": "starts a new paragraph"
+     },
+     {
+      "text": "For Deleuze, the Stanford article notes, Spinoza was the “prince” or even the “Christ” of philosophers, and Deleuze's essay “Immanence: A Life” returns to the theme.",
+      "claims": [
+       {
+        "by": "SEP §2 (kept)"
+       },
+       {
+        "by": "IEP §3.d (kept)"
+       }
+      ]
+     },
+     {
+      "text": "A Thousand Plateaus already speaks of a plane of immanence.",
+      "claims": [
+       {
+        "by": "ATP pp. 254, 266"
+       }
+      ],
+      "paragraph": "starts a new paragraph"
+     },
+     {
+      "text": "Its tenth plateau, in the sections it calls “Memories of a Spinozist”, describes a fixed plane on which things are distinguished only by speed and slowness, “a plane of immanence or univocality opposed to analogy” (pp. 253–254).",
+      "claims": [
+       {
+        "by": "ATP pp. 253–254"
+       }
+      ]
+     },
+     {
+      "text": "The authors call it the plane of consistency or composition, as opposed to the plan(e) of organization or development, and “necessarily a plane of immanence and univocality”; on it there is no distinction between the natural and the artificial, and it never has a dimension supplementary to what happens on it (p. 266).",
+      "claims": [
+       {
+        "by": "ATP p. 266"
+       }
+      ]
+     },
+     {
+      "text": "The plane of organization and development they call the plane of transcendence (p. 281).",
+      "claims": [
+       {
+        "by": "ATP p. 281"
+       }
+      ]
+     },
+     {
+      "text": "Pages of A Thousand Plateaus are from Brian Massumi's translation (1987).",
+      "claims": [
+       {
+        "by": "editorial (page note)"
+       }
+      ]
+     },
+     {
+      "text": "In its account of What Is Philosophy?, the Stanford article says philosophy gives consistency to the virtual, mapping the forces of a system as pure potentials, while science tracks how the virtual is actualized and explains why one road was taken.",
+      "claims": [
+       {
+        "by": "SEP §4.3 (kept)"
+       }
+      ],
+      "paragraph": "starts a new paragraph"
+     }
+    ],
+    "quotes": [
+     {
+      "q": "the art of forming, inventing, and fabricating concepts",
+      "checked": "IEP §7 (kept)"
+     },
+     {
+      "q": "Thought, in all its modes,",
+      "checked": "SEP §4.3 (kept)"
+     },
+     {
+      "q": "struggles with chaos against opinion.",
+      "checked": "SEP §4.3 (kept)"
+     },
+     {
+      "q": "has no relationship to truth, which is an external determination",
+      "checked": "IEP §7 (kept)"
+     },
+     {
+      "q": "the figures of thought that give concepts their specific force",
+      "checked": "IEP §7 (kept)"
+     },
+     {
+      "q": "A conceptual persona is not a subject,",
+      "checked": "SEP §4.3 (kept)"
+     },
+     {
+      "q": "for thinking is not subjective.",
+      "checked": "SEP §4.3 (kept)"
+     },
+     {
+      "q": "prince",
+      "checked": "SEP §2 (kept)"
+     },
+     {
+      "q": "Christ",
+      "checked": "SEP §2 (kept)"
+     },
+     {
+      "q": "Memories of a Spinozist",
+      "checked": "section title, ATP pp. 253, 256"
+     },
+     {
+      "q": "a plane of immanence or univocality opposed to analogy",
+      "checked": "ATP p. 254"
+     },
+     {
+      "q": "necessarily a plane of immanence and univocality",
+      "checked": "ATP p. 266 ('It is necessarily a plane of immanence and univocality')"
+     }
+    ],
+    "s": "What Is Philosophy? (1991), trans. Hugh Tomlinson and Graham Burchell (1994), chs. 1–3; “Immanence: A Life” (1995); A Thousand Plateaus (1980), trans. Brian Massumi (1987), plateau 10 (pp. 253–282)",
+    "src": "SEP",
+    "srcs": [
+     "IEP"
+    ],
+    "p": [
+     "deleuze",
+     "guattari",
+     "spinoza"
+    ],
+    "review": {
+     "by": "Independent reviewer (separate agent, fresh context)",
+     "date": "2026-11-15",
+     "verdict": "pass"
+    }
+   }
+  }
+ }
 }

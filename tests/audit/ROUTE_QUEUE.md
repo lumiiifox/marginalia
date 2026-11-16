@@ -16,9 +16,9 @@ them, and any that the primary text shows to be too smooth are re-audited.
 
 ### Waiting for books
 
-What Is Philosophy? (plane-of-immanence) and Kafka: Toward a Minor Literature (minor-literature, and the Kafka sentences of
-rhizome and deterritorialization): both entries stay audited from the encyclopedias and A Thousand Plateaus until the owner imports
-the books (glossary-atp.json, `unread`).
+Kafka: Toward a Minor Literature (minor-literature, and the Kafka sentences of rhizome and deterritorialization): the entry stays
+audited from the Brinkley translation, De Balsi and A Thousand Plateaus until the owner imports the book (glossary-atp.json, `unread`).
+"Immanence: A Life" (one sentence of plane-of-immanence) likewise (glossary-wip.json, `unread`).
 
 ### Next: back to Land
 
@@ -34,4 +34,5 @@ universals, deduction, essentialism and existentialism (glossary-route3.json). D
 syntheses-of-time, virtual-actual and univocity re-read (glossary-dr.json, superseding their records in glossary-dg.json). Anti-Oedipus, read in the book itself: desiring-production, body-without-organs, syntheses-unconscious,
 schizoanalysis and coding-decoding re-read (glossary-ao.json, likewise superseding glossary-dg.json). A Thousand Plateaus, read in the book itself: rhizome, assemblage,
 deterritorialization, plane-of-immanence and minor-literature re-read, and the A Thousand Plateaus sentences of body-without-organs and
-coding-decoding re-checked (glossary-atp.json, likewise superseding glossary-dg.json).
+coding-decoding re-checked (glossary-atp.json, likewise superseding glossary-dg.json). What Is Philosophy?, read in the book itself: plane-of-immanence
+re-read, and two sentences of deterritorialization from it (glossary-wip.json, superseding plane-of-immanence's record in glossary-atp.json).
