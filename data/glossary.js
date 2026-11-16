@@ -1074,3 +1074,55 @@ const VERIFIED_TERMS = ["desiring-production", "body-without-organs", "syntheses
   "hyperstition", "accelerationism", "necessity", "virtue-ethics",
   // the last route terms: being, its kinds, inference and the existentialists (tests/audit/glossary-route3.json)
   "ontology", "metaphysics", "accident", "universals", "deduction", "essentialism", "existentialism"];
+
+// ---- page links and disputes ----
+/* TERM_PAGES: for a checked entry read in the books, the book of each bare page reference "(p. …)" or "(pp. …)" in its text, in order
+   (DR, AO, ATP, WIP, KAF; null where it cites someone else), so the page opens your copy (pageLinks, study.js). Built from the audit
+   records' sources for each sentence (tests/audit/glossary-dr, -ao, -atp, -wip, -kaf.json); rebuild it when such an entry's text changes.
+   TERM_DISPUTES: where readers disagree, or a question the entry leaves open, drawn from the same audits' disputes. */
+const TERM_PAGES = {
+  "representation": ["DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR"],
+  "repetition": ["DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR"],
+  "difference-in-itself": ["DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR"],
+  "syntheses-of-time": ["DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR"],
+  "virtual-actual": ["DR", "DR", "DR", "DR", "DR", "DR", "DR"],
+  "univocity": ["DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR", "DR"],
+  "desiring-production": ["AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO"],
+  "syntheses-unconscious": ["AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", null, "AO"],
+  "schizoanalysis": ["AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO"],
+  "body-without-organs": ["AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP"],
+  "coding-decoding": ["AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "AO", "ATP", "ATP"],
+  "assemblage": ["ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP"],
+  "plane-of-immanence": ["WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "WIP", "ATP", "ATP", "ATP", "WIP"],
+  "rhizome": ["ATP", "KAF", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP"],
+  "deterritorialization": ["AO", "AO", "AO", "AO", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "KAF", "KAF", "KAF", "KAF", "WIP", "WIP", "WIP", "AO", "AO"],
+  "minor-literature": ["KAF", "KAF", "KAF", "KAF", "KAF", "KAF", "KAF", "KAF", "KAF", "KAF", "KAF", "KAF", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP", "ATP"],
+};
+const TERM_DISPUTES = {
+  "repetition": [
+    "The pure past and the virtual: Deleuze speaks of a virtual coexistence of the levels of the pure past (p. 83); Joe Hughes argues that the virtual of chapter 4 appears only after the third synthesis (Hughes, pp. 111–112). Left open.",
+    "The order of the syntheses: Hughes argues for the order Deleuze gives, and reports that James Williams and many others read the third synthesis as operating before the first (Hughes, p. 78). Williams's books have not been read for this entry.",
+  ],
+  "syntheses-of-time": [
+    "The order of the syntheses: Joe Hughes notes that James Williams and many others read the third synthesis as operating before the first (Hughes, p. 78). Williams's books have not been read for this entry.",
+  ],
+  "univocity": [
+    "Degrees of power: Joe Hughes follows Deleuze's account of degrees of power, then asks whether univocity really reduces everything to equal participation in being (Hughes, pp. 57–59).",
+    "Univocity and the One: Alain Badiou argued that Deleuze is at bottom a philosopher of the One, as the Stanford Encyclopedia article reports. Badiou's book has not been read for this entry, and the dispute is left open.",
+  ],
+  "syntheses-unconscious": [
+    "One Deleuze or two: Ian Buchanan argues that the passive syntheses of Anti-Oedipus rest on the syntheses of time of Difference and Repetition (Buchanan, pp. 50–51), against the “two Deleuzes” reading he ascribes to Alain Badiou and Slavoj Žižek (Buchanan, pp. 135–136). Deleuze and Guattari's text, read in English, never names Difference and Repetition; two translators' notes in the English edition do. Badiou's and Žižek's own books have not been read for this entry.",
+  ],
+  "coding-decoding": [
+    "Nomad or war machine: A Thousand Plateaus says it is the nomad who reterritorializes on deterritorialization itself; the Stanford Encyclopedia article says this of the war machine. The entry gives both, each credited.",
+  ],
+  "plane-of-immanence": [
+    "One plane for each philosopher? The book asks whether every great philosopher lays out a new plane and leans toward yes, and it also records philosophers working for a long time on a master's plane; the Internet Encyclopedia of Philosophy says that each philosopher must create such a plane.",
+    "Concept and truth: the IEP says a concept has “no relationship to truth”; the book says a concept always has “the truth that falls to it”, according to the conditions of its creation, and that philosophy is not inspired by truth. How far the two differ is left open.",
+    "Are conceptual personae subjects? The Stanford article says a conceptual persona “is not a subject”; the book calls the personae “the real subjects of his philosophy” and says that the one who says “I” is always a third person. The article may mean the psychological subject, which the book also sets aside.",
+    "Difference and Repetition: the IEP ties the plane of immanence to that book's image of thought; the text of What Is Philosophy? does not name it, as far as the damaged scan could be searched, so the link is the IEP's reading.",
+  ],
+  "minor-literature": [
+    "Minor or small: Sara De Balsi notes that Kafka's own diary word is “small”, and that the French “mineure” comes from Marthe Robert's translation of the diaries; the notes of Kafka: Toward a Minor Literature quote the same diary entry in English as “a small nation's memory”, without discussing the word. Kafka's diaries have not been read for this entry.",
+  ],
+};

@@ -83,10 +83,10 @@ function syncNav(i = currentBlock()) {
   $("#rnav-where").textContent = navLabel(i); $("#rnav-pct").textContent = `${Math.round(v / 10)}%`;
   drawNavNotes(i);
 }
-// The first block of a printed page: an exact label (roman numerals too), or the last numbered page before the number.
-function blockForPage(want) {
-  want = String(want || "").trim().toLowerCase(); if (!want) return -1;
-  const B = R.blocks; let best = -1, bestN = -Infinity;
+// The block where printed page `want` starts, in the open book or in blocks B; the nearest lower numbered page when it has no marker of its own.
+function blockForPage(want, B = R.blocks) {
+  want = String(want || "").trim().toLowerCase(); if (!want || !B) return -1;
+  let best = -1, bestN = -Infinity;
   for (let i = 0; i < B.length; i++) {
     if (B[i].k !== "pg") continue;
     const x = String(B[i].x).trim().toLowerCase(); if (x === want) return i;

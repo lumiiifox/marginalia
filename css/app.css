@@ -1262,3 +1262,6 @@ button.src::after { content: ""; position: absolute; inset: -8px -2px; }
    under More, so a list of notes is mostly your passages and glosses. */
 .note .more-acts { display: none; }
 .note.acts-open .more-acts { display: contents; }
+.tdisp { margin: 12px 0 4px; padding: 2px 0 2px 12px; border-left: 3px solid var(--rule); } /* where readers disagree (disputesHTML) */
+.tdisp .tmore { margin: 6px 0; }
+.pgwrap { white-space: nowrap; } /* a page reference that opens your copy (pageLinks) keeps its brackets on its line */

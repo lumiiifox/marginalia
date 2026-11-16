@@ -279,7 +279,7 @@ function mentionsHTML(m) {
 function fillLinks(d) {
   const box = d.querySelector(":scope > .tbody > [data-gx]"); if (!box || box.dataset.done) return;
   const g = allTerms().find((x) => x.id === box.dataset.gx); if (!g) return;
-  box.dataset.done = "1"; box.innerHTML = refParas(g.x, { kind: "term", id: g.id });
+  box.dataset.done = "1"; box.innerHTML = pageLinks(refParas(g.x, { kind: "term", id: g.id }), g);
 }
 function fillMentions(d) {
   const box = d.querySelector(":scope > .tbody > [data-mentions]"); if (!box || box.dataset.done) return;
@@ -304,6 +304,51 @@ const isCheckedTerm = (g) => g.builtIn && !g.edited && VERIFIED_TERMS.includes(g
 const isCheckedThinker = (id) => VERIFIED_THINKERS.includes(id);
 const UNCHECKED_NOTE = "Unchecked: not yet audited against its sources. Treat it as provisional.";
 const checkMark = (ok) => `<p class="ckmark ${ok ? "ok" : "un"}">${ok ? "Checked: every claim audited against its sources and independently reviewed." : UNCHECKED_NOTE}</p>`;
+/* Pages cited in an entry read in the books open your own copy there (TERM_PAGES in glossary.js gives the book of each bare "(p. …)"
+   in order). A book counts as yours when its text is loaded, its title begins with the book's own (after any leading "Deleuze and Guattari:"),
+   it isn't a guide, introduction or reader about the book, and any author it has includes Deleuze (PAGE_BOOKS); with none, the reference
+   stays text. Another edition (Mille plateaux, L'Anti-Oedipe) has other page numbers, so only the English titles count.
+   An entry you edited keeps plain references, since its text may no longer match. */
+const PAGE_BOOKS = {
+  DR: { n: "Difference and Repetition", re: /^(the\s+)?difference\s+and\s+repetition\b/i },
+  AO: { n: "Anti-Oedipus", re: /^anti[-\s]?(o|oe|œ)dipus\b/i },
+  ATP: { n: "A Thousand Plateaus", re: /^(a\s+)?thousand\s+plateaus\b/i },
+  WIP: { n: "What Is Philosophy?", re: /^what\s+is\s+philosophy\b/i },
+  KAF: { n: "Kafka: Toward a Minor Literature", re: /^kafka\b.*\bminor\s+literature/i },
+};
+const PAGE_REF = /\((pp?\. [0-9ivxlc][0-9ivxlc,–\- ]*)\)/g; // the same pattern built TERM_PAGES
+function pageBook(key) {
+  const b = PAGE_BOOKS[key]; if (!b) return null;
+  for (const [id, t] of S.texts) {
+    const title = String(t.title || "").replace(/^\s*(gilles\s+)?deleuze([^:–-]*guattari)?\s*[:–-]\s*/i, "");
+    if (t.hasContent && b.re.test(title) && !/\b(guide|introduction|reader)\b/i.test(title) && (!t.author || /deleuze/i.test(t.author))) return id;
+  }
+  return null;
+}
+function pageLinks(html, g) {
+  const pb = g.builtIn && !g.edited && typeof TERM_PAGES !== "undefined" && TERM_PAGES[g.id]; if (!pb) return html;
+  let k = 0; const ids = {};
+  return html.replace(PAGE_REF, (all, ref) => {
+    const key = pb[k++]; if (!key) return all;
+    const id = key in ids ? ids[key] : (ids[key] = pageBook(key)); if (!id) return all;
+    const first = (ref.slice(ref.indexOf(" ") + 1).match(/^(\d+|[ivxlc]+)/) || [""])[0];
+    return `<span class="pgwrap">(<button type="button" class="branch-inline-link pgref" data-bookpage="${esc(id)}" data-page="${esc(first)}" title="Open your copy of ${esc(PAGE_BOOKS[key].n)} at page ${esc(first)}">${ref}</button>)</span>`;
+  });
+}
+async function openBookPage(id, pg) {
+  const B = await loadContent(id), i = B ? blockForPage(pg, B) : -1;
+  if (i < 0) {
+    toast(B && B.some((b) => b.k === "pg") ? `This copy has no page ${pg}, so the book opens where you left off.` : "This copy has no printed page numbers, so the book opens where you left off.");
+    return go({ screen: "reader", textId: id });
+  }
+  if (String(B[i].x).trim().toLowerCase() !== String(pg).toLowerCase()) toast(`This copy has no page ${pg}; it opens at page ${B[i].x}, the nearest before it.`);
+  return go({ screen: "reader", textId: id, at: i, flash: true });
+}
+// Where readers disagree, or what the entry leaves open (TERM_DISPUTES): drawn under the sources of an entry as built in.
+function disputesHTML(g) {
+  const list = g.builtIn && !g.edited && typeof TERM_DISPUTES !== "undefined" && TERM_DISPUTES[g.id];
+  return list && list.length ? `<div class="tdisp"><div class="label">Where readers disagree</div>${list.map((d) => `<p class="tmore">${esc(d)}</p>`).join("")}</div>` : "";
+}
 function termHTML(g, tmap) {
   const hits = termNotes(g);
   const see = [...(LINKS.see.get(g.id) || [])], vs = [...(LINKS.vs.get(g.id) || [])];
@@ -317,8 +362,9 @@ function termHTML(g, tmap) {
       <p class="tdef">${esc(g.d)}</p>
       ${g.builtIn && !g.edited ? checkMark(isCheckedTerm(g)) : ""}
       ${figHTML(g.img)}${diaHTML(g.fig)}
-      <div data-gx="${esc(g.id)}">${S.gOpen.has(g.id) ? refParas(g.x, { kind: "term", id: g.id }) : classicParas(g.x)}</div>
+      <div data-gx="${esc(g.id)}">${pageLinks(S.gOpen.has(g.id) ? refParas(g.x, { kind: "term", id: g.id }) : classicParas(g.x), g)}</div>
       ${g.s ? `<p class="tsrc">${sourceLinks(g.s)}</p>` : ""}
+      ${disputesHTML(g)}
       ${thinkerSources(g)}
       ${g.w ?`<p class="tsrc">Associated with ${esc(g.w)}</p>` : ""}
       ${aliasesOf(g.id).length ? `<p class="tsrc">Look up also finds: ${esc(aliasesOf(g.id).join(", "))}</p>` : ""}
