@@ -36,4 +36,6 @@ deterritorialization, plane-of-immanence and minor-literature re-read, and the A
 coding-decoding re-checked (glossary-atp.json, likewise superseding glossary-dg.json). What Is Philosophy?, read in the book itself: plane-of-immanence
 re-read, and two sentences of deterritorialization from it (glossary-wip.json, superseding plane-of-immanence's record in glossary-atp.json). Kafka: Toward a Minor Literature, read in the book itself:
 minor-literature re-read, and the Kafka sentences of rhizome and deterritorialization (glossary-kaf.json, superseding minor-literature's record
-in glossary-atp.json).
+in glossary-atp.json). The Logic of Sense, read in the book itself at the owner's request: sense-event, aion-chronos and counter-actualization (new),
+and the Logic of Sense sentence of body-without-organs re-checked (glossary-los.json). The encyclopedias' and James Williams's readings of
+the book are still to be read (its `unread`), so the new entries describe the book and give no one's interpretation yet.

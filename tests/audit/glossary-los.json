@@ -1,0 +1,640 @@
+{
+ "audit": "glossary-los",
+ "audited": "2026-11-17",
+ "mode": "in place",
+ "scope": "The Logic of Sense, read in the book at the owner's request (it follows the route's Deleuze books): the new entries sense-event, aion-chronos and counter-actualization, and the Logic of Sense sentence of body-without-organs re-read (under rechecked; that entry stays audited in glossary-ao.json)",
+ "by": {
+  "draft": "Claude (Opus 5.5); no ChatGPT draft for this batch",
+  "first_pass": "Claude (Opus 5.5), first pass, 2026-11-17: every sentence drafted from the copy the owner supplied; every page and quotation checked against it (quotations by script; pages located by script from the page breaks of the copy, checked against its running heads and the table of contents; the preface's roman pages by eye)",
+  "review": "Independent reviewer (separate agent, fresh context), 2026-11-17: checked the page locator by hand against the running heads (pp. 4–6, 12–23, 28–35, 54, 58, 61–63, 70–72, 88–90, 94–95, 129, 142–168, 176, 184–185, 188, 212, 224) and the preface by eye, then every sentence of sense-event, aion-chronos and counter-actualization and the body-without-organs sentence for verbatim quotations, pages, faithful paraphrase, attribution and house style, with an n-gram script for unquoted copying. Required fixes, all applied: seven unquoted runs of the book's words quoted or reworded (pp. 63, 150, 151, 161, 165); the preface's grounds for Carroll and the Stoics restated (p. xiii); the empty square's page and wording corrected (pp. 51, 70–71); the link between the double structure and ethics given from p. 152; the Bousquet line credited as the book gives it (p. 148); the will's object narrowed as Deleuze narrows it (p. 149); the body-without-organs dispute widened to every page naming it, with pp. 225 and 297 noted; series 12–19 added to unread. Optional suggestions 1 and 3–6 applied; double causality left for a later batch. Re-check by the same reviewer: all correct. Verdict: pass."
+ },
+ "sources": {
+  "LOS": {
+   "name": "Gilles Deleuze, The Logic of Sense (1969), trans. Mark Lester with Charles Stivale, ed. Constantin V. Boundas (Columbia University Press, 1990), the copy the owner supplied, read for every page cited (not committed: the book is under copyright)",
+   "src": "https://cup.columbia.edu/book/the-logic-of-sense/9780231059831"
+  }
+ },
+ "note": "The book is under copyright and stays out of the repository; quotations are under 15 words. Every claim in the three new entries is a claim about what Deleuze's book says, credited to him with its page; no reading of the book by another scholar is used. Interpretations are left for when the secondary literature is read (see unread).",
+ "disputes": [
+  "Body without organs in The Logic of Sense: the Stanford Encyclopedia article reads the book as naming with the phrase a life of intensities in motion. In the book it is Artaud's glorious body in the schizophrenic depths, set against the fragmented body (pp. 88, 90, 188); none of the pages naming it (pp. 88–93, 129, 188–203, 224) speaks of intensity. The book gives intensity to the erogenous zones of the surface (p. 225), and its Klossowski appendix calls breaths “pure intensities” (p. 297), a possible bridge for the Stanford reading. The Stanford wording was not re-read in this run (it rests on glossary-dg.json and glossary-ao.json). Not settled."
+ ],
+ "unread": [
+  {
+   "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze”, and Internet Encyclopedia of Philosophy, “Gilles Deleuze”",
+   "part": "their sections on The Logic of Sense",
+   "why": "the pages could not be fetched in this run (the fetch was refused); the entries were written from the book alone",
+   "terms": [
+    "sense-event",
+    "aion-chronos",
+    "counter-actualization"
+   ],
+   "effect": "the entries describe the book and credit no reading of it to anyone else; how scholars interpret sense, Aion and counter-actualization is not yet given"
+  },
+  {
+   "source": "James Williams, Gilles Deleuze's Logic of Sense: A Critical Introduction and Guide (Edinburgh University Press, 2008)",
+   "part": "the whole guide",
+   "why": "the owner supplied it, but its text was lost before it could be read",
+   "terms": [
+    "sense-event",
+    "aion-chronos",
+    "counter-actualization"
+   ],
+   "effect": "no reading of Williams's is given; the natural next source for interpretation and disputes"
+  },
+  {
+   "source": "The Logic of Sense, series 12–19",
+   "part": "pp. 74–141, except pp. 88–93 and 129",
+   "why": "read only where the entries cite them",
+   "terms": [
+    "sense-event",
+    "aion-chronos",
+    "counter-actualization"
+   ],
+   "effect": "double causality and the quasi-cause (series 14, pp. 94–99) and the static genesis (series 15–17) bear directly on sense-event and are not yet given"
+  },
+  {
+   "source": "The Logic of Sense, the appendixes and series 24–34",
+   "part": "pp. 169–333, except the pages cited",
+   "why": "read only where the entries cite them",
+   "terms": [
+    "sense-event",
+    "aion-chronos",
+    "counter-actualization"
+   ],
+   "effect": "intensity in the erogenous zones of the surface (p. 225) and breaths as pure intensities in the Klossowski appendix (p. 297) bear on the body-without-organs dispute; otherwise none known"
+  }
+ ],
+ "terms": {
+  "sense-event": {
+   "new_d": [
+    {
+     "text": "Deleuze's account, in The Logic of Sense (1969), of sense as a fourth dimension of the proposition: an incorporeal event that subsists in propositions and is attributed to things, at the boundary between the two.",
+     "claims": [
+      {
+       "by": "LOS pp. 19–22"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Deleuze presents The Logic of Sense as a series of paradoxes that form the theory of sense, with a privileged place for Lewis Carroll, who first staged those paradoxes, and for the Stoics, who began a new image of what a philosopher is (p. xiii), and calls it an attempt at “a logical and psychological novel” (p. xiv).",
+     "claims": [
+      {
+       "by": "LOS pp. xiii–xiv"
+      }
+     ]
+    },
+    {
+     "text": "Pages of The Logic of Sense are from the translation by Mark Lester with Charles Stivale, edited by Constantin V. Boundas (1990).",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ]
+    },
+    {
+     "text": "He starts from the Stoic division of things into two kinds (pp. 4–5).",
+     "claims": [
+      {
+       "by": "LOS pp. 4–5"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "On one side are bodies, with their qualities, actions and passions and the states of affairs they make up, which are causes for one another; on the other are the incorporeal effects of these causes, “logical or dialectical attributes” of which one can only say that they “subsist or inhere” (p. 5).",
+     "claims": [
+      {
+       "by": "LOS pp. 4–5"
+      }
+     ]
+    },
+    {
+     "text": "When a scalpel cuts flesh, Émile Bréhier writes in a passage Deleuze quotes, it produces in the flesh a new attribute, being cut, which leaves its properties as they were (p. 5).",
+     "claims": [
+      {
+       "by": "LOS p. 5"
+      }
+     ]
+    },
+    {
+     "text": "Deleuze sets green, a quality of the mixture that tree and air make, beside “to green”, an attribute said of the tree (pp. 6, 21).",
+     "claims": [
+      {
+       "by": "LOS pp. 6, 21"
+      }
+     ]
+    },
+    {
+     "text": "Three relations within the proposition are commonly recognized, he writes (pp. 12–15): denotation, its relation to a state of affairs, judged true or false; manifestation, its relation to the person who speaks, with that person's desires and beliefs; and signification, its relation to general concepts and to the propositions that imply it or that it implies.",
+     "claims": [
+      {
+       "by": "LOS pp. 12–15"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Each in turn grounds or presupposes another, so that they form what he calls the circle of the proposition (pp. 16–17).",
+     "claims": [
+      {
+       "by": "LOS pp. 15–17"
+      }
+     ]
+    },
+    {
+     "text": "Sense is a fourth dimension (p. 19): what the proposition expresses, an “incorporeal, complex, and irreducible entity, at the surface of things” (p. 19).",
+     "claims": [
+      {
+       "by": "LOS p. 19"
+      }
+     ]
+    },
+    {
+     "text": "Deleuze credits its discovery to the Stoics, and finds it again in the fourteenth century in Gregory of Rimini and Nicholas of Autrecourt and at the end of the nineteenth in Meinong (p. 19); Husserl's name for it is expression (p. 20).",
+     "claims": [
+      {
+       "by": "LOS pp. 19–20"
+      }
+     ]
+    },
+    {
+     "text": "Sense has no existence outside the proposition that expresses it, yet it belongs as an attribute to the thing or state of affairs, while a proposition's own attribute is its predicate (p. 21).",
+     "claims": [
+      {
+       "by": "LOS p. 21"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "It is “exactly the boundary between propositions and things” (p. 22), and Deleuze identifies it with the event: “the event is sense itself” (p. 22), so long as the event is kept apart from the state of affairs that realizes it (p. 22).",
+     "claims": [
+      {
+       "by": "LOS p. 22"
+      }
+     ]
+    },
+    {
+     "text": "The fifth series sets out the paradoxes of sense (pp. 28–35).",
+     "claims": [
+      {
+       "by": "LOS pp. 28–35"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The sense of what I say can be stated only in another proposition, whose sense needs a further one, a regress Deleuze calls Frege's paradox and also Carroll's (pp. 28–29); sense suspends affirmation and negation, so that “God is” and “God is not” have the same sense (pp. 31–33); and propositions about impossible objects such as square circles have a sense and no signification, so the absurd and nonsense must be kept apart (p. 35).",
+     "claims": [
+      {
+       "by": "LOS pp. 28–29"
+      },
+      {
+       "by": "LOS pp. 31–33"
+      },
+      {
+       "by": "LOS p. 35"
+      }
+     ]
+    },
+    {
+     "text": "Sense, he argues, is produced by nonsense: a paradoxical element, always displaced and absent from its own place, which appears in one series as an empty square (p. 51), circulates through both series and produces sense in each as an effect (pp. 70–71).",
+     "claims": [
+      {
+       "by": "LOS p. 51"
+      },
+      {
+       "by": "LOS pp. 70–71"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "He credits the authors called structuralists with this view of sense as a surface effect and a position effect (p. 71), and welcomes the news “that sense is never a principle or an origin” and is produced (p. 72).",
+     "claims": [
+      {
+       "by": "LOS pp. 71–72"
+      }
+     ]
+    },
+    {
+     "text": "Events bear on problems and define their conditions: “The mode of the event is the problematic” (p. 54).",
+     "claims": [
+      {
+       "by": "LOS p. 54"
+      }
+     ]
+    }
+   ],
+   "quotes": [
+    {
+     "q": "a logical and psychological novel",
+     "checked": "LOS p. xiv (checked by eye: 'This book is an attempt to develop a logical and psychological novel.')"
+    },
+    {
+     "q": "logical or dialectical attributes",
+     "checked": "LOS p. 5"
+    },
+    {
+     "q": "subsist or inhere",
+     "checked": "LOS p. 5"
+    },
+    {
+     "q": "to green",
+     "checked": "LOS p. 21 ('We distinguish between green as a sensible color or quality and \"to green\" as a noematic color or attribute.')"
+    },
+    {
+     "q": "incorporeal, complex, and irreducible entity, at the surface of things",
+     "checked": "LOS p. 19"
+    },
+    {
+     "q": "exactly the boundary between propositions and things",
+     "checked": "LOS p. 22"
+    },
+    {
+     "q": "the event is sense itself",
+     "checked": "LOS p. 22"
+    },
+    {
+     "q": "God is",
+     "checked": "LOS p. 33"
+    },
+    {
+     "q": "God is not",
+     "checked": "LOS p. 33"
+    },
+    {
+     "q": "that sense is never a principle or an origin",
+     "checked": "LOS p. 72"
+    },
+    {
+     "q": "The mode of the event is the problematic",
+     "checked": "LOS p. 54"
+    }
+   ],
+   "s": "The Logic of Sense (1969), trans. Mark Lester with Charles Stivale (1990), Preface and series 1–11 (pp. xiii–73)",
+   "src": "LOS",
+   "srcs": [],
+   "p": [
+    "deleuze",
+    "husserl"
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-17",
+    "verdict": "pass after fixes"
+   }
+  },
+  "aion-chronos": {
+   "new_d": [
+    {
+     "text": "The two readings of time in Deleuze's The Logic of Sense (1969): Chronos, in which only the present exists, and Aion, in which only past and future subsist and divide every present without end.",
+     "claims": [
+      {
+       "by": "LOS p. 5"
+      },
+      {
+       "by": "LOS pp. 162–165"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Deleuze takes the pair from the Stoics, for whom, he writes, time must be grasped twice: entirely as the living present of bodies that act and are acted on, and entirely as divisible without end into past and future, “two simultaneous readings of time” (p. 5).",
+     "claims": [
+      {
+       "by": "LOS p. 5"
+      }
+     ]
+    },
+    {
+     "text": "Pages of The Logic of Sense are from the translation by Mark Lester with Charles Stivale, edited by Constantin V. Boundas (1990).",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ]
+    },
+    {
+     "text": "In Chronos only the present exists, and past and future are relative to a present: what is past or future for one present belongs to a vaster one, up to the divine present of the whole cosmos (pp. 162–163).",
+     "claims": [
+      {
+       "by": "LOS pp. 162–163"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "It is the time of bodies and their mixtures, and the present measures what bodies and causes do (p. 162).",
+     "claims": [
+      {
+       "by": "LOS p. 162"
+      }
+     ]
+    },
+    {
+     "text": "The time of the present is “a limited but infinite time”, infinite because it is cyclical (p. 61).",
+     "claims": [
+      {
+       "by": "LOS p. 61"
+      }
+     ]
+    },
+    {
+     "text": "Beneath the measured present Deleuze places a becoming-mad of the depths that subverts it, which he calls a bad Chronos (pp. 163–164).",
+     "claims": [
+      {
+       "by": "LOS pp. 163–164"
+      }
+     ]
+    },
+    {
+     "text": "In Aion the past and the future subsist or inhere, and the instant, “without thickness and without extension”, divides each present into past and future in both directions at once (p. 164).",
+     "claims": [
+      {
+       "by": "LOS p. 164"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Aion is “a pure straight line at the surface” (p. 62) and the “eternal truth of time” (p. 165).",
+     "claims": [
+      {
+       "by": "LOS pp. 62, 165"
+      }
+     ]
+    },
+    {
+     "text": "It is the time of events and effects (p. 62): the event is always at once “something which has just happened and something about to happen” (p. 63), and of dying Deleuze writes that no one ever dies, and one “has always just died or is always going to die” (p. 63).",
+     "claims": [
+      {
+       "by": "LOS pp. 62–63"
+      }
+     ]
+    },
+    {
+     "text": "He lists the contrasts in the twenty-third series (p. 165): Chronos is limited and infinite, circular, and filled entirely by the bodies that are its causes and matter; Aion is unlimited as past and future are, finite as the instant is, a straight line, and haunted by incorporeal effects that never fill it.",
+     "claims": [
+      {
+       "by": "LOS p. 165"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Aion traces the frontier between things and propositions, and in this way makes language possible (pp. 166–167).",
+     "claims": [
+      {
+       "by": "LOS pp. 166–167"
+      }
+     ]
+    },
+    {
+     "text": "On its line Deleuze places an eternal return of pure events, set against the circular return of Chronos (p. 176), and borrows from Borges the image of a labyrinth made of a single straight line (pp. 62, 176).",
+     "claims": [
+      {
+       "by": "LOS pp. 62, 176"
+      }
+     ]
+    },
+    {
+     "text": "Aion has a present of its own, the present of “the actor, dancer, or mime” (p. 168), and the pure infinitive of the verb, he writes, is the Aion (pp. 184–185).",
+     "claims": [
+      {
+       "by": "LOS p. 168"
+      },
+      {
+       "by": "LOS pp. 184–185"
+      }
+     ]
+    }
+   ],
+   "quotes": [
+    {
+     "q": "two simultaneous readings of time",
+     "checked": "LOS p. 5"
+    },
+    {
+     "q": "a limited but infinite time",
+     "checked": "LOS p. 61"
+    },
+    {
+     "q": "without thickness and without extension",
+     "checked": "LOS p. 164"
+    },
+    {
+     "q": "a pure straight line at the surface",
+     "checked": "LOS p. 62"
+    },
+    {
+     "q": "eternal truth of time",
+     "checked": "LOS p. 165"
+    },
+    {
+     "q": "has always just died or is always going to die",
+     "checked": "LOS p. 63"
+    },
+    {
+     "q": "something which has just happened and something about to happen",
+     "checked": "LOS p. 63"
+    },
+    {
+     "q": "the actor, dancer, or mime",
+     "checked": "LOS p. 168"
+    }
+   ],
+   "s": "The Logic of Sense (1969), trans. Mark Lester with Charles Stivale (1990), series 2 (pp. 4–11), 10, “Of the Ideal Game” (pp. 58–65), and 23, “Of the Aion” (pp. 162–168)",
+   "src": "LOS",
+   "srcs": [],
+   "p": [
+    "deleuze"
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-17",
+    "verdict": "pass after fixes"
+   }
+  },
+  "counter-actualization": {
+   "new_d": [
+    {
+     "text": "In Deleuze's The Logic of Sense (1969), the operation that doubles an event's actualization in bodies and states of affairs, modeled on the actor, and draws out the event's impersonal part and its eternal truth.",
+     "claims": [
+      {
+       "by": "LOS pp. 150–152"
+      },
+      {
+       "by": "LOS p. 161"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Every event, Deleuze writes, has a double structure (pp. 151–152): on one side the moment it is actualized, embodied in a person, an individual or a state of affairs; on the other its past and future taken in themselves, impersonal and pre-individual, whose only present is the mobile instant that represents it, which he calls the counter-actualization (p. 151).",
+     "claims": [
+      {
+       "by": "LOS pp. 151–152"
+      }
+     ]
+    },
+    {
+     "text": "He credits Maurice Blanchot with showing this double structure in death, which is grounded in me and my body and also has “no relation to me at all” (p. 151).",
+     "claims": [
+      {
+       "by": "LOS p. 151"
+      }
+     ]
+    },
+    {
+     "text": "Pages of The Logic of Sense are from the translation by Mark Lester with Charles Stivale, edited by Constantin V. Boundas (1990).",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ]
+    },
+    {
+     "text": "Deleuze ties this double structure to ethics: only the free man, he writes, grasps the event and enacts its counter-actualization, and so escapes ressentiment (p. 152).",
+     "claims": [
+      {
+       "by": "LOS p. 152"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Stoic ethics, Deleuze writes, consists in willing the event as such, whatever occurs insofar as it occurs (p. 143); he later narrows the formula, so that the will wills “something in that which occurs”, which he calls the Event (p. 149).",
+     "claims": [
+      {
+       "by": "LOS pp. 143, 149"
+      }
+     ]
+    },
+    {
+     "text": "Ethics either makes no sense at all, he writes, or it means “not to be unworthy of what happens to us” (p. 149); to take what happens as unjust and as someone else's fault is ressentiment, and resignation, he suggests, is one more figure of it (p. 149).",
+     "claims": [
+      {
+       "by": "LOS p. 149"
+      }
+     ]
+    },
+    {
+     "text": "His example is Joe Bousquet, who took the wound he bore as a pure event (p. 148); events, Deleuze writes, signal to us: “My wound existed before me, I was born to embody it” (p. 148).",
+     "claims": [
+      {
+       "by": "LOS p. 148"
+      }
+     ]
+    },
+    {
+     "text": "The model is the actor (pp. 147, 150).",
+     "claims": [
+      {
+       "by": "LOS pp. 147, 150"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The actor occupies the instant and plays a role that is always still to come and already past, and so keeps from the event “only its contour and its splendor” (p. 150).",
+     "claims": [
+      {
+       "by": "LOS p. 150"
+      }
+     ]
+    },
+    {
+     "text": "Counter-actualization alone, Deleuze warns, belongs to a buffoon; doubling the event's real actualization, as the true actor and dancer do, it gives the truth of the event “the only chance of not being confused with its inevitable actualization” (p. 161).",
+     "claims": [
+      {
+       "by": "LOS p. 161"
+      }
+     ]
+    },
+    {
+     "text": "In the twenty-second series, which opens on F. Scott Fitzgerald's The Crack-Up, he asks whether one can stop at an event's counter-actualization and prevent its full actualization in the body (p. 157), and answers that the event's eternal truth is grasped only when the event is “also inscribed in the flesh” (p. 161).",
+     "claims": [
+      {
+       "by": "LOS p. 157"
+      },
+      {
+       "by": "LOS p. 161"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Psychoanalysis, the science of pure events in his account, is also, he writes, an art of counter-actualizations (p. 212).",
+     "claims": [
+      {
+       "by": "LOS p. 212"
+      }
+     ]
+    }
+   ],
+   "quotes": [
+    {
+     "q": "not to be unworthy of what happens to us",
+     "checked": "LOS p. 149"
+    },
+    {
+     "q": "only its contour and its splendor",
+     "checked": "LOS p. 150"
+    },
+    {
+     "q": "the only chance of not being confused with its inevitable actualization",
+     "checked": "LOS p. 161"
+    },
+    {
+     "q": "also inscribed in the flesh",
+     "checked": "LOS p. 161"
+    },
+    {
+     "q": "no relation to me at all",
+     "checked": "LOS p. 151"
+    },
+    {
+     "q": "something in that which occurs",
+     "checked": "LOS p. 149"
+    },
+    {
+     "q": "My wound existed before me, I was born to embody it",
+     "checked": "LOS p. 148"
+    }
+   ],
+   "s": "The Logic of Sense (1969), trans. Mark Lester with Charles Stivale (1990), series 20–22 (pp. 142–161) and 30 (pp. 210–216)",
+   "src": "LOS",
+   "srcs": [],
+   "p": [
+    "deleuze"
+   ],
+   "review": {
+    "by": "Independent reviewer (separate agent, fresh context)",
+    "date": "2026-11-17",
+    "verdict": "pass after fixes"
+   }
+  }
+ },
+ "rechecked": {
+  "body-without-organs": [
+   {
+    "old": "In The Logic of Sense (1969), the Stanford Encyclopedia article notes, Deleuze drew on Artaud to name a life of intensities in motion the body without organs.",
+    "new": "Deleuze had already used it in The Logic of Sense (1969), where it is Artaud's “glorious body”, an organism without parts set against the fragmented body in the depths of schizophrenia (pp. 88, 90, 188). The Stanford Encyclopedia article reads that book as naming with it a life of intensities in motion; the book's pages on the body without organs do not speak of intensity. Pages of The Logic of Sense are from the translation by Mark Lester with Charles Stivale, edited by Constantin V. Boundas (1990).",
+    "by": "LOS pp. 88, 90, 188; SEP (as checked in glossary-dg.json and glossary-ao.json); editorial (page note)",
+    "note": "The entry's one Logic of Sense sentence, which rested on the Stanford article, read against the book: in it the body without organs is Artaud's glorious body, the active pole of the schizophrenic depths set against the fragmented body (pp. 88, 90, 188); none of the pages naming it (pp. 88–93, 129, 188–203, 224, and note 3 to series 27 on p. 351) speaks of intensity, though the book gives intensity to the erogenous zones of the surface (p. 225) and calls breaths “pure intensities” in its Klossowski appendix (p. 297). The Stanford reading is kept, credited, beside the book. The entry stays audited in glossary-ao.json.",
+    "quotes": [
+     {
+      "q": "glorious body",
+      "checked": "LOS p. 88 ('To these values a glorious body corresponds')"
+     }
+    ]
+   }
+  ]
+ },
+ "summary": "Three new entries read in The Logic of Sense (Lester and Stivale's translation), every quotation verbatim and every page checked: sense and event, Aion and Chronos, and counter-actualization. They describe what the book says and credit no one else's reading, since the encyclopedias could not be fetched and Williams's guide was lost; both are listed as unread. Body without organs now says what The Logic of Sense itself says of it, beside the Stanford reading, and the gap between them is shown as an open dispute."
+}

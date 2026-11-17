@@ -307,7 +307,7 @@ const checkMark = (ok) => `<p class="ckmark ${ok ? "ok" : "un"}">${ok ? "Checked
 /* Pages cited in an entry read in the books open your own copy there (TERM_PAGES in glossary.js gives the book of each bare "(p. …)"
    in order). A book counts as yours when its text is loaded, its title begins with the book's own (after any leading "Deleuze and Guattari:"),
    it isn't a guide, introduction or reader about the book, and any author it has includes Deleuze (PAGE_BOOKS); with none, the reference
-   stays text. Another edition (Mille plateaux, L'Anti-Oedipe) has other page numbers, so only the English titles count.
+   stays text. Another edition (Mille plateaux, L'Anti-Oedipe, Logique du sens) has other page numbers, so only the English titles count.
    An entry you edited keeps plain references, since its text may no longer match. */
 const PAGE_BOOKS = {
   DR: { n: "Difference and Repetition", re: /^(the\s+)?difference\s+and\s+repetition\b/i },
@@ -315,6 +315,7 @@ const PAGE_BOOKS = {
   ATP: { n: "A Thousand Plateaus", re: /^(a\s+)?thousand\s+plateaus\b/i },
   WIP: { n: "What Is Philosophy?", re: /^what\s+is\s+philosophy\b/i },
   KAF: { n: "Kafka: Toward a Minor Literature", re: /^kafka\b.*\bminor\s+literature/i },
+  LOS: { n: "The Logic of Sense", re: /^(the\s+)?logic\s+of\s+sense\b/i },
 };
 const PAGE_REF = /\((pp?\. [0-9ivxlc][0-9ivxlc,–\- ]*)\)/g; // the same pattern built TERM_PAGES
 function pageBook(key) {

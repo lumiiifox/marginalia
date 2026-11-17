@@ -8,7 +8,8 @@ Made-up books only, phone-sized touch screen. Checks that:
   3. with a book whose title names A Thousand Plateaus, exactly that book's references in Deterritorialization become links, the
      Anti-Oedipus and What Is Philosophy? ones stay text, and the visible text of the entry is unchanged;
   4. tapping "(p. 56)" opens the reader at the block where printed page 56 starts; a page the copy lacks opens the book with a note;
-  5. a book whose text isn't loaded, or whose title names another book, gets no links;
+  5. a book whose text isn't loaded, or whose title names another book (or is a guide to it), gets no links; The Logic of Sense links
+     in the new entries and in body-without-organs;
   6. Plane of immanence shows "Where readers disagree" with its four disputes, and Assemblage, which has none, shows no such box;
   7. an entry you edited shows neither links nor disputes.
 Needs: pip install playwright && playwright install chromium
@@ -107,6 +108,12 @@ async def main():
         await page.reload(); await page.wait_for_function(READY)
         ml = await openEntry(page, "minor-literature")
         check(ml and ["p. 16", "kaf", "16"] in ml["links"], f"Kafka: Toward a Minor Literature's pages link to it ({[l for l in ml['links'] if l[1] == 'kaf'][:3]})")
+        await page.evaluate("() => (async () => { const now = Date.now(); await put('content', 'los', [{ k: 'pg', x: '149' }, { k: 'p', x: 'Sense.' }]); await put('texts', 'los', { title: 'The Logic of Sense', author: 'Gilles Deleuze', hasContent: true, total: 2, sections: [], createdAt: now, updatedAt: now }); await put('content', 'wil', [{ k: 'pg', x: '5' }, { k: 'p', x: 'Guide.' }]); await put('texts', 'wil', { title: \"Gilles Deleuze's Logic of Sense: A Critical Introduction and Guide\", author: 'James Williams', hasContent: true, total: 2, sections: [], createdAt: now, updatedAt: now }); })()")
+        await page.reload(); await page.wait_for_function(READY)
+        ca = await openEntry(page, "counter-actualization")
+        check(ca and ["p. 149", "los", "149"] in ca["links"] and all(l[1] == "los" for l in ca["links"]), f"The Logic of Sense's pages link to it, and Williams's guide to it gets none ({[l for l in ca['links']][:3]})")
+        bw = await openEntry(page, "body-without-organs")
+        check(bw and ["pp. 88, 90, 188", "los", "88"] in bw["links"], f"body-without-organs links its Logic of Sense pages ({[l for l in bw['links'] if l[1] == 'los']})")
         rp = await openEntry(page, "repetition")
         check(rp and not rp["links"], f"a guide to a book by another author gets none of the book's links ({rp and rp['links'][:3]})")
 
