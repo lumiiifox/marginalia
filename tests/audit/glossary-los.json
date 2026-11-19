@@ -6,7 +6,8 @@
  "by": {
   "draft": "Claude (Opus 5.5); no ChatGPT draft for this batch",
   "first_pass": "Claude (Opus 5.5), first pass, 2026-11-17: every sentence drafted from the copy the owner supplied; every page and quotation checked against it (quotations by script; pages located by script from the page breaks of the copy, checked against its running heads and the table of contents; the preface's roman pages by eye)",
-  "review": "Independent reviewer (separate agent, fresh context), 2026-11-17: checked the page locator by hand against the running heads (pp. 4–6, 12–23, 28–35, 54, 58, 61–63, 70–72, 88–90, 94–95, 129, 142–168, 176, 184–185, 188, 212, 224) and the preface by eye, then every sentence of sense-event, aion-chronos and counter-actualization and the body-without-organs sentence for verbatim quotations, pages, faithful paraphrase, attribution and house style, with an n-gram script for unquoted copying. Required fixes, all applied: seven unquoted runs of the book's words quoted or reworded (pp. 63, 150, 151, 161, 165); the preface's grounds for Carroll and the Stoics restated (p. xiii); the empty square's page and wording corrected (pp. 51, 70–71); the link between the double structure and ethics given from p. 152; the Bousquet line credited as the book gives it (p. 148); the will's object narrowed as Deleuze narrows it (p. 149); the body-without-organs dispute widened to every page naming it, with pp. 225 and 297 noted; series 12–19 added to unread. Optional suggestions 1 and 3–6 applied; double causality left for a later batch. Re-check by the same reviewer: all correct. Verdict: pass."
+  "review": "Independent reviewer (separate agent, fresh context), 2026-11-17: checked the page locator by hand against the running heads (pp. 4–6, 12–23, 28–35, 54, 58, 61–63, 70–72, 88–90, 94–95, 129, 142–168, 176, 184–185, 188, 212, 224) and the preface by eye, then every sentence of sense-event, aion-chronos and counter-actualization and the body-without-organs sentence for verbatim quotations, pages, faithful paraphrase, attribution and house style, with an n-gram script for unquoted copying. Required fixes, all applied: seven unquoted runs of the book's words quoted or reworded (pp. 63, 150, 151, 161, 165); the preface's grounds for Carroll and the Stoics restated (p. xiii); the empty square's page and wording corrected (pp. 51, 70–71); the link between the double structure and ethics given from p. 152; the Bousquet line credited as the book gives it (p. 148); the will's object narrowed as Deleuze narrows it (p. 149); the body-without-organs dispute widened to every page naming it, with pp. 225 and 297 noted; series 12–19 added to unread. Optional suggestions 1 and 3–6 applied; double causality left for a later batch. Re-check by the same reviewer: all correct. Verdict: pass.",
+  "recheck_2026-11-19": "Claude, 2026-11-19: the Stanford wording on Artaud and the body without organs re-read in the article (fetched through the web-fetch tool, literal text through section 4.2); entry sentence and dispute corrected. Independent reviewer (separate agent, fresh context), 2026-11-19: re-read SEP §3.2 literally and confirmed the quotations verbatim, the newborn and Stern context, and the page-reference counts; required the last dispute sentence to say the article attributes the idea to “a tradition of developmental psychology”, with Stern's image as its expression, and one unquoted five-word run from the SEP reworded. Both applied. Re-check by the same reviewer: one unquoted SEP run in this note quoted. Verdict: pass."
  },
  "sources": {
   "LOS": {
@@ -16,7 +17,7 @@
  },
  "note": "The book is under copyright and stays out of the repository; quotations are under 15 words. Every claim in the three new entries is a claim about what Deleuze's book says, credited to him with its page; no reading of the book by another scholar is used. Interpretations are left for when the secondary literature is read (see unread).",
  "disputes": [
-  "Body without organs in The Logic of Sense: the Stanford Encyclopedia article reads the book as naming with the phrase a life of intensities in motion. In the book it is Artaud's glorious body in the schizophrenic depths, set against the fragmented body (pp. 88, 90, 188); none of the pages naming it (pp. 88–93, 129, 188–203, 224) speaks of intensity. The book gives intensity to the erogenous zones of the surface (p. 225), and its Klossowski appendix calls breaths “pure intensities” (p. 297), a possible bridge for the Stanford reading. The Stanford wording was not re-read in this run (it rests on glossary-dg.json and glossary-ao.json). Not settled."
+  "Body without organs in The Logic of Sense: the Stanford Encyclopedia article (revised by Daniela Voss, 2022), section 3.2, says Deleuze will “call this life of intensities-in-motion the “body without organs.”” “This life” is the newborn's, in the dynamic genesis at its first stage, pictured with Daniel Stern's “weatherscape” of rising and falling intensities (The Interpersonal World of the Infant, 1985). In the book it is Artaud's glorious body in the schizophrenic depths, set against the fragmented body (pp. 88, 90, 188); none of the pages naming it (pp. 88–93, 129, 188–203, 224) speaks of intensity. The book gives intensity to the erogenous zones of the surface (p. 225), and its Klossowski appendix calls breaths “pure intensities” (p. 297), a possible bridge for the Stanford reading. The article says Deleuze draws on “a tradition of developmental psychology” and gives Stern's image as its expression; the intensity wording in that paragraph is Stern's, published sixteen years after the book. Stanford wording re-read 2026-11-19. Not settled."
  ],
  "unread": [
   {
@@ -631,6 +632,18 @@
      {
       "q": "glorious body",
       "checked": "LOS p. 88 ('To these values a glorious body corresponds')"
+     }
+    ]
+   },
+   {
+    "old": "The Stanford Encyclopedia article reads that book as naming with it a life of intensities in motion; the book's pages on the body without organs do not speak of intensity.",
+    "new": "The Stanford Encyclopedia article reads that book as calling the newborn's “life of intensities-in-motion” the body without organs, a life it pictures with Daniel Stern's image of infant experience (1985); the book's pages on the body without organs do not speak of intensity.",
+    "by": "SEP “Gilles Deleuze” (rev. Voss, 3 June 2022), section 3.2, ninth paragraph, re-read 2026-11-19; LOS as in the record above",
+    "note": "Re-read against the Stanford article itself. Its wording is hyphenated, “intensities-in-motion”, and the life it names is the newborn's in the dynamic genesis (the paragraph opens “The first stage of the dynamic genesis of sense”), described with Daniel Stern's 1985 image of the infant's “weatherscape”. The earlier sentence gave the phrase unquoted and without that context; it now quotes the article and says whose life it is. The dispute text is corrected the same way.",
+    "quotes": [
+     {
+      "q": "life of intensities-in-motion",
+      "checked": "SEP §3.2 ('call this life of intensities-in-motion the “body without organs.”')"
      }
     ]
    }
