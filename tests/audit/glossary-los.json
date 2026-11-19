@@ -7,51 +7,76 @@
   "draft": "Claude (Opus 5.5); no ChatGPT draft for this batch",
   "first_pass": "Claude (Opus 5.5), first pass, 2026-11-17: every sentence drafted from the copy the owner supplied; every page and quotation checked against it (quotations by script; pages located by script from the page breaks of the copy, checked against its running heads and the table of contents; the preface's roman pages by eye)",
   "review": "Independent reviewer (separate agent, fresh context), 2026-11-17: checked the page locator by hand against the running heads (pp. 4–6, 12–23, 28–35, 54, 58, 61–63, 70–72, 88–90, 94–95, 129, 142–168, 176, 184–185, 188, 212, 224) and the preface by eye, then every sentence of sense-event, aion-chronos and counter-actualization and the body-without-organs sentence for verbatim quotations, pages, faithful paraphrase, attribution and house style, with an n-gram script for unquoted copying. Required fixes, all applied: seven unquoted runs of the book's words quoted or reworded (pp. 63, 150, 151, 161, 165); the preface's grounds for Carroll and the Stoics restated (p. xiii); the empty square's page and wording corrected (pp. 51, 70–71); the link between the double structure and ethics given from p. 152; the Bousquet line credited as the book gives it (p. 148); the will's object narrowed as Deleuze narrows it (p. 149); the body-without-organs dispute widened to every page naming it, with pp. 225 and 297 noted; series 12–19 added to unread. Optional suggestions 1 and 3–6 applied; double causality left for a later batch. Re-check by the same reviewer: all correct. Verdict: pass.",
-  "recheck_2026-11-19": "Claude, 2026-11-19: the Stanford wording on Artaud and the body without organs re-read in the article (fetched through the web-fetch tool, literal text through section 4.2); entry sentence and dispute corrected. Independent reviewer (separate agent, fresh context), 2026-11-19: re-read SEP §3.2 literally and confirmed the quotations verbatim, the newborn and Stern context, and the page-reference counts; required the last dispute sentence to say the article attributes the idea to “a tradition of developmental psychology”, with Stern's image as its expression, and one unquoted five-word run from the SEP reworded. Both applied. Re-check by the same reviewer: one unquoted SEP run in this note quoted. Verdict: pass."
+  "recheck_2026-11-19": "Claude, 2026-11-19: the Stanford wording on Artaud and the body without organs re-read in the article (fetched through the web-fetch tool, literal text through section 4.2); entry sentence and dispute corrected. Independent reviewer (separate agent, fresh context), 2026-11-19: re-read SEP §3.2 literally and confirmed the quotations verbatim, the newborn and Stern context, and the page-reference counts; required the last dispute sentence to say the article attributes the idea to “a tradition of developmental psychology”, with Stern's image as its expression, and one unquoted five-word run from the SEP reworded. Both applied. Re-check by the same reviewer: one unquoted SEP run in this note quoted. Verdict: pass.",
+  "batch2": "Claude (Opus 5.5), 2026-11-19: drafted from the owner's copies of the book (OCR text with page markers) and of Williams's guide; every quotation and page checked by script against them, OCR errors (9 for g, ef for of, broken ligatures) checked by eye.",
+  "review_batch2": "Independent reviewer (separate agent, fresh context), 2026-11-19: checked the book locator against running heads (series 14–17 and 27) and Williams's against his folios and contents (STATIC GENESIS on p. 124), every new quotation and page, paraphrase, attribution, house style and TERM_PAGES counts, with a 5-gram script for unquoted copying, and searched every page naming the body without organs for 'intens' (none). Required fixes, all applied: three unquoted runs reworded (LOS pp. 95, 96; Williams p. 55); Deleuze's revision of Klein's schizoid position credited to Deleuze; Badiou's position credited as Williams reports it; the Williams unread range corrected. Optional suggestions applied: extraction wording (p. 31), 'glosses' for physique statique, 'thing = x' quoted (p. 115), the Aion and univocity series tied to the first question only, Badiou's French title, quote records for dispute words, the entry's 'only' dropped, a lead clause for the static genesis. Re-check by the same reviewer: all correct. Verdict: pass."
  },
  "sources": {
   "LOS": {
    "name": "Gilles Deleuze, The Logic of Sense (1969), trans. Mark Lester with Charles Stivale, ed. Constantin V. Boundas (Columbia University Press, 1990), the copy the owner supplied, read for every page cited (not committed: the book is under copyright)",
    "src": "https://cup.columbia.edu/book/the-logic-of-sense/9780231059831"
+  },
+  "WILLIAMS": {
+   "name": "James Williams, Gilles Deleuze's Logic of Sense: A Critical Introduction and Guide (Edinburgh University Press, 2008), the copy the owner supplied (not committed: under copyright); cited as (Williams, p. …), pages of the guide, which never link to Deleuze's book",
+   "src": "https://edinburghuniversitypress.com/book-gilles-deleuze-s-logic-of-sense.html"
+  },
+  "SEP": {
+   "name": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze” (Daniela Voss; first published 2008, substantive revision 3 June 2022), section 3.2, read in literal text 2026-11-19",
+   "src": "https://plato.stanford.edu/entries/deleuze/"
+  },
+  "IEP": {
+   "name": "Internet Encyclopedia of Philosophy, “Gilles Deleuze (1925–1995)” (anonymous, undated), read in full 2026-11-19",
+   "src": "https://iep.utm.edu/deleuze/"
   }
  },
  "note": "The book is under copyright and stays out of the repository; quotations are under 15 words. Every claim in the three new entries is a claim about what Deleuze's book says, credited to him with its page; no reading of the book by another scholar is used. Interpretations are left for when the secondary literature is read (see unread).",
  "disputes": [
-  "Body without organs in The Logic of Sense: the Stanford Encyclopedia article (revised by Daniela Voss, 2022), section 3.2, says Deleuze will “call this life of intensities-in-motion the “body without organs.”” “This life” is the newborn's, in the dynamic genesis at its first stage, pictured with Daniel Stern's “weatherscape” of rising and falling intensities (The Interpersonal World of the Infant, 1985). In the book it is Artaud's glorious body in the schizophrenic depths, set against the fragmented body (pp. 88, 90, 188); none of the pages naming it (pp. 88–93, 129, 188–203, 224) speaks of intensity. The book gives intensity to the erogenous zones of the surface (p. 225), and its Klossowski appendix calls breaths “pure intensities” (p. 297), a possible bridge for the Stanford reading. The article says Deleuze draws on “a tradition of developmental psychology” and gives Stern's image as its expression; the intensity wording in that paragraph is Stern's, published sixteen years after the book. Stanford wording re-read 2026-11-19. Not settled."
+  "Body without organs in The Logic of Sense, as shown on the entry (re-read 2026-11-19 against SEP §3.2 and LOS series 27): Intensities in The Logic of Sense? The Stanford Encyclopedia article (revised by Daniela Voss, 2022) reads the book as calling the newborn's “life of intensities-in-motion” the body without organs, and pictures that life with Daniel Stern's image of infant experience, published in 1985. The Stanford article and the book both place the body without organs in the infant: the book sets it in the infant's schizoid position, Klein's position as Deleuze revises it (pp. 187–188), to which, it supposes, the schizophrenic regresses (p. 189), the schizophrenic whose body without organs is Artaud's glorious body (pp. 88, 90). They part only on “intensities”, which the book's pages on it never use. The book gives intensity to the erogenous zones of the surface (p. 225), and its essay on Klossowski calls breaths “pure intensities” (p. 297), a possible bridge. The article says Deleuze draws on “a tradition of developmental psychology” and gives Stern's image as its expression; the intensity wording in that paragraph is Stern's, published sixteen years after the book. Not settled.",
+  "Sense-event, “sterile division” or “decoupling”: Sterile division or decoupling? Lester and Stivale translate Deleuze's dédoublement as “sterile division” (p. 31). James Williams translates it “decoupling”, since French has its own word, division, and Deleuze avoids it in this passage: on his reading the paradox cuts a single dry proposition loose from the regress, and its sense drifts off sterile (Williams, p. 55). He also reads the two paradoxes as relaunching each other, so that the alternative between them keeps sense in movement (Williams, p. 55).",
+  "Aion-chronos, the present (Badiou and Williams): The present: as James Williams reports it, Alain Badiou, in Logiques des mondes (2006; translated as Logics of Worlds), centres time and ethics on the present, where a subject incorporates into the present of a truth. James Williams calls this a moral “presentism” and argues that Deleuze's two presents answer it: the present of Chronos, where the event strikes the body, and the present of the actor, which counter-actualizes it (p. 168), with eternal ideas working on every present because they are neutral and impassive (Williams, pp. 172–174). Badiou's book has not been read for this entry; his position is given as Williams reports it.",
+  "Counter-actualization, guidance for action (open question): Can counter-actualization guide action? James Williams asks whether its principles are too abstract for specific wrongs and too individualistic for an ethics that begins from living with others (Williams, p. 153), and whether replaying events suits an age that can cure and prevent what it once had to bear (Williams, p. 158). He takes up the first question again through the series on the Aion and on univocity (Williams, pp. 169–174); the entry leaves the questions open."
  ],
  "unread": [
   {
-   "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze”, and Internet Encyclopedia of Philosophy, “Gilles Deleuze”",
-   "part": "their sections on The Logic of Sense",
-   "why": "the pages could not be fetched in this run (the fetch was refused); the entries were written from the book alone",
+   "source": "Stanford Encyclopedia of Philosophy, “Gilles Deleuze”",
+   "part": "sections 4.3 to the end (the fetching tool returned them as a summary)",
+   "why": "the article is reachable only through a fetching tool that gives literal text up to section 4.2",
    "terms": [
     "sense-event",
     "aion-chronos",
     "counter-actualization"
    ],
-   "effect": "the entries describe the book and credit no reading of it to anyone else; how scholars interpret sense, Aion and counter-actualization is not yet given"
+   "effect": "none known: its Logic of Sense section (3.2) was read in full, and the later sections cover the books with Guattari, cinema and the arts"
   },
   {
-   "source": "James Williams, Gilles Deleuze's Logic of Sense: A Critical Introduction and Guide (Edinburgh University Press, 2008)",
-   "part": "the whole guide",
-   "why": "the owner supplied it, but its text was lost before it could be read",
+   "source": "James Williams, Gilles Deleuze's Logic of Sense: A Critical Introduction and Guide (2008)",
+   "part": "all but pp. 55–56, 122–132, 152–158 and 169–174",
+   "why": "read where the three entries needed a reading (sterility, static genesis and double causality, counter-actualization, the Aion and Badiou)",
    "terms": [
     "sense-event",
     "aion-chronos",
     "counter-actualization"
    ],
-   "effect": "no reading of Williams's is given; the natural next source for interpretation and disputes"
+   "effect": "his chapters on the earlier series (pp. 28–76, apart from pp. 55–56), the dynamic genesis (pp. 194–201) and the conclusion are not drawn on; he may say more on sense and the event than the entries give"
   },
   {
-   "source": "The Logic of Sense, series 12–19",
-   "part": "pp. 74–141, except pp. 88–93 and 129",
+   "source": "Alain Badiou, Logiques des mondes (2006; Logics of Worlds, 2009)",
+   "part": "the whole book",
+   "why": "cited only as James Williams reports it (Williams, pp. 172–174)",
+   "terms": [
+    "aion-chronos",
+    "counter-actualization"
+   ],
+   "effect": "the dispute on the present gives Badiou's side in Williams's words; Badiou's own statement of it is unchecked"
+  },
+  {
+   "source": "The Logic of Sense, series 12–13 and 18–19",
+   "part": "pp. 74–93 and 127–141, except pp. 88–93 and 129",
    "why": "read only where the entries cite them",
    "terms": [
-    "sense-event",
-    "aion-chronos",
-    "counter-actualization"
+    "sense-event"
    ],
-   "effect": "double causality and the quasi-cause (series 14, pp. 94–99) and the static genesis (series 15–17) bear directly on sense-event and are not yet given"
+   "effect": "the series on the stammerer and the schizophrenic (12–13) and on the philosophers and humour (18–19) are not drawn on; none known to bear on what the entries say"
   },
   {
    "source": "The Logic of Sense, the appendixes and series 24–34",
@@ -201,6 +226,18 @@
      ]
     },
     {
+     "text": "The second, the paradox of sterile division, arises when the sense of a proposition is extracted as a neutralized double of it (p. 31), and sets a task for later: to “combine the sterility of sense” with “its power of genesis” with respect to the proposition's dimensions (p. 32).",
+     "claims": [
+      {
+       "by": "LOS p. 31"
+      },
+      {
+       "by": "LOS p. 32"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
      "text": "Sense, he argues, is produced by nonsense: a paradoxical element, always displaced and absent from its own place, which appears in one series as an empty square (p. 51), circulates through both series and produces sense in each as an effect (pp. 70–71).",
      "claims": [
       {
@@ -227,6 +264,201 @@
        "by": "LOS p. 54"
       }
      ]
+    },
+    {
+     "text": "The fourteenth series takes up that task (pp. 94–99).",
+     "claims": [
+      {
+       "by": "LOS pp. 94–99"
+      }
+     ],
+     "added": "2026-11-19",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Sense results from bodies and their mixtures, and so is always in danger of being “snapped up by its cause” (p. 94).",
+     "claims": [
+      {
+       "by": "LOS p. 94"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
+     "text": "Following the Stoics, Deleuze gives the event a “double causality” (p. 94): bodies are its cause, and other events its quasi-cause.",
+     "claims": [
+      {
+       "by": "LOS p. 94"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
+     "text": "The quasi-cause is the paradoxical element of nonsense, which secures “the full autonomy of the effect” (p. 95).",
+     "claims": [
+      {
+       "by": "LOS p. 95"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
+     "text": "Taken as the effect of bodies, sense is impassible and sterile; taken together with the quasi-cause, it shares in that cause's force and becomes productive, engendering the dimensions of the proposition and what fulfils them: states of affairs, states of the subject, concepts and classes (pp. 95–96).",
+     "claims": [
+      {
+       "by": "LOS pp. 95–96"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
+     "text": "Deleuze calls “the passage from sterility to genesis” the problem the logic of sense always returns to (p. 97).",
+     "claims": [
+      {
+       "by": "LOS p. 97"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
+     "text": "Husserl, on his account, found sense impassible again in the noema, and then made its genesis depend on common sense, good sense and the form of a person (pp. 96–98); a genesis of sense needs an impersonal transcendental field, the condition Deleuze takes from Sartre's article of 1937 (pp. 98–99), determined by singularities (p. 99).",
+     "claims": [
+      {
+       "by": "LOS pp. 96–98"
+      },
+      {
+       "by": "LOS pp. 98–99"
+      },
+      {
+       "by": "LOS p. 99"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
+     "text": "The static genesis (series 15–17) shows how sense produces what the circle of the proposition took as given: individuals, persons and concepts, and the proposition's dimensions.",
+     "claims": [
+      {
+       "by": "LOS (see the sentences that follow)"
+      }
+     ],
+     "added": "2026-11-19",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Singularities, impersonal and pre-individual, are distributed over a surface, and Deleuze calls them “the true transcendental events” (pp. 102–103).",
+     "claims": [
+      {
+       "by": "LOS pp. 102–103"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
+     "text": "In the ontological genesis a world forms where the series around singularities converge, and individuals are constituted in it, each enveloping a finite number of its singularities (pp. 109–110); Leibniz's compossibility is the rule of this convergence, and where series diverge an incompossible world begins (p. 111).",
+     "claims": [
+      {
+       "by": "LOS pp. 109–110"
+      },
+      {
+       "by": "LOS p. 111"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
+     "text": "On a second level persons appear: a “thing = x common to several worlds”, such as a “vague Adam” (p. 114), defined by synthetic predicates, from which classes and properties derive (p. 115).",
+     "claims": [
+      {
+       "by": "LOS p. 114"
+      },
+      {
+       "by": "LOS p. 115"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
+     "text": "The first stage, he writes, is “the work of sense”, the second “the work of nonsense” (p. 116).",
+     "claims": [
+      {
+       "by": "LOS p. 116"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
+     "text": "In the logical genesis, denotation relates the proposition to individuals, manifestation to persons, and signification to the classes and properties that depend on persons, though Deleuze denies any simple parallel between the two geneses (pp. 118–119); sense is “doubly generative” (p. 120), engendering the proposition and the things its dimensions bear on.",
+     "claims": [
+      {
+       "by": "LOS pp. 118–119"
+      },
+      {
+       "by": "LOS p. 120"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
+     "text": "Sense is then expressed as a problem, which propositions answer (pp. 120–121).",
+     "claims": [
+      {
+       "by": "LOS pp. 120–121"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
+     "text": "The idea of a static genesis, he writes, resolves the contradiction between sterility and genesis (p. 124): bodies produce sense from their depth by forming surfaces, and sense, once at the surface, shares in the quasi-cause and in turn produces individuation and signification (pp. 124–126).",
+     "claims": [
+      {
+       "by": "LOS p. 124"
+      },
+      {
+       "by": "LOS pp. 124–126"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
+     "text": "James Williams, in his guide to the book (2008), calls the quasi-cause one of Deleuze's rare “heavy and clumsy concepts”, resting on stretched analogies with the physics of surfaces, and then defends it: on his reading the quasi-cause changes the relation of actual things to sense and leaves their measurable properties alone (Williams, p. 130).",
+     "claims": [
+      {
+       "by": "WILLIAMS p. 130"
+      }
+     ],
+     "added": "2026-11-19",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "He glosses “static” through the French physique statique, “the physics of things in equilibrium”, and reads genesis as the emergence of what is singular, and so open to change, in things already identified (Williams, pp. 124–125); the static genesis works, he writes, by limitation (Williams, p. 126).",
+     "claims": [
+      {
+       "by": "WILLIAMS pp. 124–125"
+      },
+      {
+       "by": "WILLIAMS p. 126"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
+     "text": "He warns against taking sense for meaning: meaning changes with each proposition, and sense stays neutral across them (Williams, p. 56).",
+     "claims": [
+      {
+       "by": "WILLIAMS p. 56"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
+     "text": "Pages of Williams are from his Gilles Deleuze's Logic of Sense: A Critical Introduction and Guide (Edinburgh University Press, 2008); they are pages of the guide and open nothing in your copy of Deleuze.",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ],
+     "added": "2026-11-19"
     }
    ],
    "quotes": [
@@ -273,11 +505,81 @@
     {
      "q": "The mode of the event is the problematic",
      "checked": "LOS p. 54"
+    },
+    {
+     "q": "combine the sterility of sense",
+     "checked": "LOS p. 32"
+    },
+    {
+     "q": "its power of genesis",
+     "checked": "LOS p. 32"
+    },
+    {
+     "q": "snapped up by its cause",
+     "checked": "LOS p. 94"
+    },
+    {
+     "q": "double causality",
+     "checked": "LOS p. 94"
+    },
+    {
+     "q": "the full autonomy of the effect",
+     "checked": "LOS p. 95 (italic in the copy; OCR reads “ef the ef ect”, checked by eye)"
+    },
+    {
+     "q": "the passage from sterility to genesis",
+     "checked": "LOS p. 97"
+    },
+    {
+     "q": "the true transcendental events",
+     "checked": "LOS pp. 102–103 (the phrase runs across the page break)"
+    },
+    {
+     "q": "vague Adam",
+     "checked": "LOS p. 114"
+    },
+    {
+     "q": "the work of sense",
+     "checked": "LOS p. 116"
+    },
+    {
+     "q": "the work of nonsense",
+     "checked": "LOS p. 116"
+    },
+    {
+     "q": "doubly generative",
+     "checked": "LOS p. 120"
+    },
+    {
+     "q": "heavy and clumsy concepts",
+     "checked": "WILLIAMS p. 130"
+    },
+    {
+     "q": "static",
+     "checked": "WILLIAMS p. 124"
+    },
+    {
+     "q": "the physics of things in equilibrium",
+     "checked": "WILLIAMS p. 124"
+    },
+    {
+     "q": "thing = x common to several worlds",
+     "checked": "LOS p. 115"
+    },
+    {
+     "q": "sterile division",
+     "checked": "LOS p. 31 (dispute)"
+    },
+    {
+     "q": "decoupling",
+     "checked": "WILLIAMS p. 55 (dispute)"
     }
    ],
-   "s": "The Logic of Sense (1969), trans. Mark Lester with Charles Stivale (1990), Preface and series 1–11 (pp. xiii–73)",
+   "s": "The Logic of Sense (1969), trans. Mark Lester with Charles Stivale (1990), Preface and series 1–11 (pp. xiii–73) and 14–17 (pp. 94–126); James Williams, Gilles Deleuze's Logic of Sense: A Critical Introduction and Guide (2008)",
    "src": "LOS",
-   "srcs": [],
+   "srcs": [
+    "WILLIAMS"
+   ],
    "p": [
     "deleuze",
     "husserl"
@@ -412,6 +714,37 @@
        "by": "LOS pp. 184–185"
       }
      ]
+    },
+    {
+     "text": "James Williams reads Aion and Chronos as two incompatible times that determine each other, and the theory as depending on never folding them into one time: the event has “an actual passing side” in Chronos and “an eternal but differential side” in Aion, which is how events can be “both eternal and passing” (Williams, pp. 122–123).",
+     "claims": [
+      {
+       "by": "WILLIAMS pp. 122–123"
+      }
+     ],
+     "added": "2026-11-19",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "He reads the present of the actor that closes the twenty-third series (p. 168) as Deleuze's answer, decades in advance, to an ethics centred on the present act, of the kind Alain Badiou sets out in Logiques des mondes (2006) (Williams, pp. 172–174).",
+     "claims": [
+      {
+       "by": "LOS p. 168"
+      },
+      {
+       "by": "WILLIAMS pp. 172–174"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
+     "text": "Pages of Williams are from his Gilles Deleuze's Logic of Sense: A Critical Introduction and Guide (Edinburgh University Press, 2008); they are pages of the guide and open nothing in your copy of Deleuze.",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ],
+     "added": "2026-11-19"
     }
    ],
    "quotes": [
@@ -446,11 +779,29 @@
     {
      "q": "the actor, dancer, or mime",
      "checked": "LOS p. 168"
+    },
+    {
+     "q": "an actual passing side",
+     "checked": "WILLIAMS p. 123"
+    },
+    {
+     "q": "an eternal but differential side",
+     "checked": "WILLIAMS p. 123"
+    },
+    {
+     "q": "both eternal and passing",
+     "checked": "WILLIAMS p. 122"
+    },
+    {
+     "q": "presentism",
+     "checked": "WILLIAMS p. 172 (dispute)"
     }
    ],
-   "s": "The Logic of Sense (1969), trans. Mark Lester with Charles Stivale (1990), series 2 (pp. 4–11), 10, “Of the Ideal Game” (pp. 58–65), and 23, “Of the Aion” (pp. 162–168)",
+   "s": "The Logic of Sense (1969), trans. Mark Lester with Charles Stivale (1990), series 2 (pp. 4–11), 10, “Of the Ideal Game” (pp. 58–65), and 23, “Of the Aion” (pp. 162–168); James Williams, Gilles Deleuze's Logic of Sense: A Critical Introduction and Guide (2008)",
    "src": "LOS",
-   "srcs": [],
+   "srcs": [
+    "WILLIAMS"
+   ],
    "p": [
     "deleuze"
    ],
@@ -576,6 +927,34 @@
        "by": "LOS p. 212"
       }
      ]
+    },
+    {
+     "text": "James Williams reads counter-actualization as a replay of the event that leaves its outcome as it was and changes its tone and significance, as Joe Bousquet did with his wound in his books (Williams, p. 155).",
+     "claims": [
+      {
+       "by": "WILLIAMS p. 155"
+      }
+     ],
+     "added": "2026-11-19",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "He renders Deleuze's amor fati as a “love of the event”, which selects something to affirm on the event's ideal side and neither denies nor resents what happened in the body (Williams, p. 156).",
+     "claims": [
+      {
+       "by": "WILLIAMS p. 156"
+      }
+     ],
+     "added": "2026-11-19"
+    },
+    {
+     "text": "Pages of Williams are from his Gilles Deleuze's Logic of Sense: A Critical Introduction and Guide (Edinburgh University Press, 2008); they are pages of the guide and open nothing in your copy of Deleuze.",
+     "claims": [
+      {
+       "by": "editorial (page note)"
+      }
+     ],
+     "added": "2026-11-19"
     }
    ],
    "quotes": [
@@ -606,11 +985,17 @@
     {
      "q": "My wound existed before me, I was born to embody it",
      "checked": "LOS p. 148"
+    },
+    {
+     "q": "love of the event",
+     "checked": "WILLIAMS p. 156"
     }
    ],
-   "s": "The Logic of Sense (1969), trans. Mark Lester with Charles Stivale (1990), series 20–22 (pp. 142–161) and 30 (pp. 210–216)",
+   "s": "The Logic of Sense (1969), trans. Mark Lester with Charles Stivale (1990), series 20–22 (pp. 142–161) and 30 (pp. 210–216); James Williams, Gilles Deleuze's Logic of Sense: A Critical Introduction and Guide (2008)",
    "src": "LOS",
-   "srcs": [],
+   "srcs": [
+    "WILLIAMS"
+   ],
    "p": [
     "deleuze"
    ],
@@ -646,8 +1031,26 @@
       "checked": "SEP §3.2 ('call this life of intensities-in-motion the “body without organs.”')"
      }
     ]
+   },
+   {
+    "old": "The Stanford Encyclopedia article reads that book as calling the newborn's “life of intensities-in-motion” the body without organs, a life it pictures with Daniel Stern's image of infant experience (1985); the book's pages on the body without organs do not speak of intensity.",
+    "new": "The Stanford Encyclopedia article reads that book as calling the newborn's “life of intensities-in-motion” the body without organs, a life it pictures with Daniel Stern's image of infant experience (1985). The book also places it in the infant: in its twenty-seventh series Deleuze takes up Melanie Klein's schizoid position of the nursing infant and revises it: what that position sets against bad partial objects is the body without organs (pp. 187–188), and Deleuze supposes that the schizophrenic regresses to that position (p. 189). They differ on intensity, which the book's pages on the body without organs never mention.",
+    "by": "LOS pp. 187–189 (series 27); SEP §3.2",
+    "note": "The owner pointed out (2026-11-19) that series 27 also places the body without organs in the infant: the nursing infant of Klein's paranoid-schizoid position (p. 187) sets against bad partial objects an organism without parts, a body without organs (p. 188), and Deleuze supposes the schizophrenic regresses to that position (p. 189; the book puts it as an assumption, 'If we assume'). So the Stanford reading and the book agree on the infant and differ on intensity: no page of series 13 (pp. 88–93), p. 129, or series 27–28 up to p. 200 uses 'intens-' (searched in the OCR text 2026-11-19; pp. 201–203 and 224 rest on the 2026-11-17 reading). Entry sentence and dispute narrowed accordingly.",
+    "quotes": [
+     {
+      "q": "intensities",
+      "checked": "absent from LOS pp. 88–93, 129, 186–200 (script search)"
+     }
+    ]
    }
   ]
  },
- "summary": "Three new entries read in The Logic of Sense (Lester and Stivale's translation), every quotation verbatim and every page checked: sense and event, Aion and Chronos, and counter-actualization. They describe what the book says and credit no one else's reading, since the encyclopedias could not be fetched and Williams's guide was lost; both are listed as unread. Body without organs now says what The Logic of Sense itself says of it, beside the Stanford reading, and the gap between them is shown as an open dispute."
+ "summary": "Three new entries read in The Logic of Sense (Lester and Stivale's translation), every quotation verbatim and every page checked: sense and event, Aion and Chronos, and counter-actualization. They describe what the book says and credit no one else's reading, since the encyclopedias could not be fetched and Williams's guide was lost; both are listed as unread. Body without organs now says what The Logic of Sense itself says of it, beside the Stanford reading, and the gap between them is shown as an open dispute. Second batch (2026-11-19): sense and event now covers the sterility and genetic power of sense, double causality and the quasi-cause, and the static genesis; all three entries give James Williams's reading with his pages, and three new open disputes are recorded; body without organs quotes the Stanford article and says where it agrees with the book.",
+ "batch2": {
+  "audited": "2026-11-19",
+  "scope": "Second batch, at the owner's request: sense-event extended with the sterility and genetic power of sense (pp. 31–32), double causality and the quasi-cause (series 14, pp. 94–99) and the static genesis (series 15–17, pp. 100–126); credited readings from James Williams's guide (2008) added to sense-event, aion-chronos and counter-actualization; body-without-organs re-read against the Stanford article and series 27 (pp. 186–189). The encyclopedias were read for these entries: the IEP article cites the book and discusses none of these concepts, and the Stanford section 3.2 says nothing the book's own words do not settle, beyond the body-without-organs reading, so neither is cited in the three entries.",
+  "locators": "Book: the owner's OCR text in five files, each printed page marked [p. N]; checked against the running heads at pp. 31, 95, 99, 105, 112, 124, 125, 126 (and the series openings at pp. 94, 100, 109, 118, 186). Williams: pdftotext of the owner's PDF (232 PDF pages; printed page = PDF page − 11 from p. 1), checked against the contents page at pp. 28, 97, 124, 168 (section headings on those pages) and the folios.",
+  "decision": "Recorded in this file, not a new glossary-los2.json: tests/mastery.py counts the terms of every glossary-*.json, and a second file listing the same three entries would count them twice."
+ }
 }
