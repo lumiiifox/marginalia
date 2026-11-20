@@ -63,7 +63,8 @@
    "checked": [
     "Cunningham, Radical Philosophy 191 (2015), 29–38: Anti-Oedipus: 'to go further, to “accelerate [or hasten] the process”, as Nietzsche put it'; note 16: 'Land’s argument, written in 1993, and quoting Anti-Oedipus' … 'Machinic revolution must therefore go in the opposite direction to socialistic regulation'; 'Anti-Oedipus may have provided much of the vocabulary for such a position'; Land’s later work favours 'the time-structure of capital accumulation'",
     "Haynes 2021 (accepted version; Royal Holloway record for the details): 'The work of Nick Land prioritises above all Anti-Oedipus … and particularly its vocabulary and conceptual framework for mapping productive desire onto cybernetic-productive processes'; right accelerationism 'as exemplified in Land’s work … embraces the project of capitalism'",
-    "2026-11-20 re-read: Land, “Circuitries” (1992), Fanged Noumena pp. 289–318, owner's copy: 'amongst the great cyberneticists' (p. 296); AO p. 251 quoted verbatim, 'almost Hegelian in its preposterous humanism', 'a component of general cybernetics, and ultimately a very trivial one' (p. 297); the 24 footnoted AO quotations checked against the owner's copy (list in glossary-route2.json reread_circuitries); AO p. 240 reads “accelerate the process” (Cunningham's '[or hasten]' is his)"
+    "2026-11-20 re-read: Land, “Circuitries” (1992), Fanged Noumena pp. 289–318, owner's copy: 'amongst the great cyberneticists' (p. 296); AO p. 251 quoted verbatim, 'almost Hegelian in its preposterous humanism', 'a component of general cybernetics, and ultimately a very trivial one' (p. 297); the 24 footnoted AO quotations checked against the owner's copy (list in glossary-route2.json reread_circuitries); AO p. 240 reads “accelerate the process” (Cunningham's '[or hasten]' is his)",
+    "2026-11-20 'Meat': 'an anticipatively assembled inducer for the replay of geohistory in hypermedia' (p. 412); 14 footnoted AO quotations checked: 12 match, 1 altered (fn 34, p. 139), 1 worded differently (fn 7, p. 9) (glossary-route2.json reread_meat)"
    ],
    "review": {
     "verdict": "pass",
@@ -90,6 +91,17 @@
       "'urges' → 'suggests' (AO's 'perhaps')"
      ]
     }
+   },
+   "reread_meat": {
+    "fixes": [
+     "'Meat' item added",
+     "'Its' clarified as the essay's"
+    ],
+    "review": {
+     "verdict": "pass",
+     "first_verdict": "fix"
+    },
+    "note": "fn 32's OCR shows 'as it is as prohibited'; if Land's text has it, the tally becomes 11 match, 2 altered"
    }
   },
   {

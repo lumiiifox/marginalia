@@ -53,8 +53,8 @@
    "src": "data/books/classic-aristotle-ethics.json"
   },
   "OSU": {
-   "name": "Simon O'Sullivan, “Accelerationism, Hyperstition and Myth-Science”, Cyclops 2 (2017), pp. 11–44 (author's copy, Goldsmiths Research Online)",
-   "src": "https://eprints-gro.gold.ac.uk/19773/1/Hyperstition_Myth-Science_Cyclops.docx"
+   "name": "Simon O'Sullivan, “Accelerationism, Hyperstition and Myth-Science”, Cyclops 2 (2017), pp. 11–44 (the published pages, on the author's site; quotations follow this version since 2026-11-20)",
+   "src": "https://www.simonosullivan.net/articles/Accelerationism_Hyperstition_and_Myth-Science.pdf"
   },
   "SE": {
    "name": "Spinoza, Ethics, trans. R. H. M. Elwes, bundled: data/books/classic-spinoza-ethics.json",
@@ -177,7 +177,7 @@
      "review": "second review, 2026-11-03: checked doubtful point (c): Cunningham does write 'in the somewhat altered context of the UK during the early 1990s in the work of Nick Land and the CCRU'; now quoted as his phrase. The CCRU's founding date is in no source consulted, so the entry gives no year of its own. 'Deleuzian Thatcherism' is Noys as Cunningham reports him ('Noys terms the result')."
     },
     {
-     "text": "Simon O'Sullivan reads Land's essay “Circuitries” as pitching positive feedback loops against the stabilizing effect of negative ones: “the call is for ever more mutation and deviation from the norm”.",
+     "text": "Simon O'Sullivan reads Land's essay “Circuitries” as pitching positive feedback loops against the stabilizing effect of negative ones: “the call is forever more mutation and deviation from the norm”.",
      "claims": [
       {
        "by": "OSU"
@@ -299,7 +299,7 @@
      "checked": "CUN (second review)"
     },
     {
-     "q": "the call is for ever more mutation and deviation from the norm",
+     "q": "the call is forever more mutation and deviation from the norm",
      "checked": "OSU"
     },
     {
@@ -513,7 +513,7 @@
      "paragraph": "starts a new paragraph"
     },
     {
-     "text": "He calls positive feedback loops “another name for hyperstition” and reads Land's writings, especially those of the 1990s, as “time loops in which the future they predict impacts back on the present”: in “Circuitries” a science-fiction narrative accompanies the theory, and “Meat (or How to Kill Oedipus in Cyberspace)” is “both politico-philosophical treatise and cyberpunk fiction”.",
+     "text": "He calls positive feedback loops “another name for hyperstition” and reads Land's writings, especially those of the 1990s, as “time loops in which the future they predict impacts back on the present”: in “Circuitries” a science-fiction narrative accompanies the theory, and “Meat (or How to Kill Oedipus in Cyberspace)” is “both philosophico-political treatise and cyberpunk fiction”.",
      "claims": [
       {
        "by": "OSU"
@@ -621,7 +621,7 @@
      "checked": "OSU (title of Land's essay)"
     },
     {
-     "q": "both politico-philosophical treatise and cyberpunk fiction",
+     "q": "both philosophico-political treatise and cyberpunk fiction",
      "checked": "OSU"
     },
     {
@@ -1187,7 +1187,7 @@
     "fn": 12,
     "cited": 180,
     "land": "Man must constitute himself through the repression of the intense germinal influx ...",
-    "book": "p. 190, same words (the owner's copy misprints this page's number as '180' at its foot; pp. 189 and 191 confirm 190)",
+    "book": "p. 190, same words (the owner's copy misprints this page's number as '180' at its foot; pp. 189 and 191 confirm 190). Land's 'Meat' (1995), citing the Athlone edition, gives the same passage as p. 190; the '180' in 'Circuitries' may be a misprinted page number that the essay copies (if the Athlone edition shares the misprint in the owner's Minnesota copy)",
     "verdict": "wrong page (190)"
    },
    {
@@ -1425,7 +1425,7 @@
     "terms": [
      "hyperstition"
     ],
-    "effect": "O'Sullivan's description of it ('both politico-philosophical treatise and cyberpunk fiction') stays his, unchecked against Land"
+    "effect": "O'Sullivan's description of it ('both politico-philosophical treatise and cyberpunk fiction') stays his, unchecked against Land (resolved 2026-11-20: read in reread_meat)"
    },
    {
     "source": "Deleuze and Guattari, L'Anti-Œdipe (French)",
@@ -1450,6 +1450,202 @@
      "hyperstition"
     ],
     "effect": "his feedback sentence was returned as a verbatim quotation, matching the wording already in the entry"
+   }
+  ]
+ },
+ "reread_meat": {
+  "date": "2026-11-20",
+  "scope": "accelerationism, hyperstition and the Land → Deleuze and Guattari connection re-read against Nick Land, “Meat (or How to Kill Oedipus in Cyberspace)”; its Anti-Oedipus quotations checked against Anti-Oedipus; the “Meat” item in reread_circuitries.unread settled",
+  "sources": {
+   "MEAT": {
+    "name": "Nick Land, “Meat (or How to Kill Oedipus in Cyberspace)” (1995, as dated in Fanged Noumena), in Fanged Noumena (2011), pp. 411–439: the owner's copy, OCR of page screenshots with a [p. N] marker per printed page, read whole (pp. 431–439 corrected by the owner; not committed: under copyright)"
+   },
+   "AO": {
+    "name": "as in reread_circuitries"
+   },
+   "OSU": {
+    "name": "O'Sullivan, Cyclops 2 (2017), published pages (author's site) and the Goldsmiths author's copy, compared by a fetching tool on 2026-11-20"
+   },
+   "AST": {
+    "name": "“Astra – Reading Meat against the hyperstition entry – 2026-11-19”, a collaborator's note in the owner's Drive, read as a draft to check (its claims checked against the texts below; none taken on trust)"
+   }
+  },
+  "by": {
+   "first_pass": "Claude (Opus 5.5), 2026-11-20: the essay read whole; its Anti-Oedipus quotations located by script in the owner's copy and compared by hand; O'Sullivan's published wording compared with the author's copy",
+   "review": "Independent reviewer (separate agent, fresh context), 2026-11-20: confirmed O'Sullivan's published wording by WebFetch (printed p. 20) and the switch to it; located every footnote in AO independently (page = PDF − 23, from running heads) and confirmed every verdict and the tally (12/1/1, no wrong pages), fn 24 and fn 41 as supported paraphrase, and no missed quotation; confirmed the word counts and the 'escalating dissipator' (capitalism, p. 430) and Lyotard (fn 42) attributions. Required fixes, all applied: the hyperstition sentence's page ranges (argument to p. 438; cyberspace scenes pp. 418, 427 set apart from the Apocalypse Now scenes, pp. 425–426, 436–439); 'He quotes the Hyperstition website' made 'O'Sullivan quotes'; 'Meat' added to accelerationism's sources; 'Its' in the CONNECTIONS item made 'The essay's ... than those in Circuitries'. Suggestions applied: Burroughs as the second epigraph; record notes on spellings (fn 18, 38), the fn 18 splice, the fn 32 OCR doubt, the 1995 date, and the hedged fn 12 note. Verdict: passes after the fixes."
+  },
+  "findings": {
+   "labels": "Neither 'accelerationism' nor 'hyperstition' occurs (line-break hyphens joined). 'accelerating' occurs twice: 'accelerating cut-ups' (p. 431) and 'logistically accelerating rhythm' (p. 434).",
+   "osullivan_wording": "The note AST was right: O'Sullivan's published text reads 'both philosophico-political treatise and cyberpunk fiction', where the Goldsmiths author's copy, which the entries quoted and linked, reads 'politico-philosophical'. The published 'Circuitries' sentence reads 'forever more', the author's copy 'for ever more'. Both entries now quote and link the published pages. Printed page: 20 by the published PDF's running heads (AST gives p. 19 for the 'Meat' item; the page is not shown in either entry, so nothing shipped depends on it).",
+   "osullivan_on_meat": "His description ('both philosophico-political treatise and cyberpunk fiction') is borne out by the essay: argument on coding, despotism, capital, labour and VR (pp. 416–424, 428–438) and scenes in cyberspace (pp. 418, 427), in a rewritten Apocalypse Now (second person pp. 425–426, 436, 439; third person pp. 437–438) and a near-future America (p. 433). AST's further points checked: Cadigan's dialogue on p. 412 is quoted (fn 3), Land's own interface scene is p. 418, the Kurtz/Willard ending pp. 438–439; agreed. AST's point that p. 415 is a narrative operation and no evidence of a hyperstition acting outside the text: agreed, and the entry gives p. 415 as Land's sentence without claiming more.",
+   "connection": "Land calls Anti-Oedipus 'an anticipatively assembled inducer for the replay of geohistory in hypermedia' (p. 412). His quotations here follow the translation far more closely than in 'Circuitries'.",
+   "anti_oedipus_quotations": "14 footnoted quotations in quotation marks or block form, from 13 cited pages; two further footnotes (fn 24, p. 145; fn 41, p. 143) cite Anti-Oedipus for unquoted paraphrase, and both pages bear the paraphrase out. A Thousand Plateaus (fn 5, 12, 20, 21), Freud, Conrad, Eliade, Ginzburg, Herr, Lyotard and Haraway quotations not checked (see unread)."
+  },
+  "quotations": [
+   {
+    "fn": 4,
+    "cited": 327,
+    "book": "pp. 326–327 (begins at the foot of p. 326), same words",
+    "verdict": "matches"
+   },
+   {
+    "fn": 7,
+    "cited": 9,
+    "book": "p. 9: 'becomes unbearable ... larvae and loathsome worms, and a God at work messing it all up'",
+    "verdict": "right page, worded differently (Land: 'has become unbearable', 'disgusting worms', 'a God who botches or strangles it through organization')"
+   },
+   {
+    "fn": 11,
+    "cited": "140–42",
+    "book": "pp. 140–142, same words with Land's ellipses ('quasi cause' unhyphenated in the copy)",
+    "verdict": "matches"
+   },
+   {
+    "fn": 13,
+    "cited": 190,
+    "book": "p. 190",
+    "verdict": "matches (same passage 'Circuitries' cites as 180)"
+   },
+   {
+    "fn": 18,
+    "cited": 158,
+    "book": "p. 158 ('spiraling'; Land has 'spiralling', a spelling difference; the Athlone edition he cites was not checked). Land splices the words onto 'shamans are not'; in AO they are said of the names of kinship dramatis personae",
+    "verdict": "matches"
+   },
+   {
+    "fn": 25,
+    "cited": 193,
+    "book": "p. 193",
+    "verdict": "matches"
+   },
+   {
+    "fn": 26,
+    "cited": 192,
+    "book": "p. 192",
+    "verdict": "matches"
+   },
+   {
+    "fn": 32,
+    "cited": 162,
+    "book": "p. 162, with Land's bracketed insertions marked as his. The OCR of 'Meat' p. 429 reads 'as it is as prohibited'; unchecked against the screenshot whether this is an OCR slip or Land's text (if Land's, the verdict becomes altered)",
+    "verdict": "matches"
+   },
+   {
+    "fn": 34,
+    "cited": 139,
+    "book": "p. 139: 'If the universal comes at the end'",
+    "verdict": "altered: Land adds 'only' and drops 'If'"
+   },
+   {
+    "fn": 35,
+    "cited": 230,
+    "book": "p. 230",
+    "verdict": "matches"
+   },
+   {
+    "fn": 36,
+    "cited": 228,
+    "book": "p. 228",
+    "verdict": "matches"
+   },
+   {
+    "fn": 37,
+    "cited": 246,
+    "book": "p. 246",
+    "verdict": "matches"
+   },
+   {
+    "fn": 38,
+    "cited": 225,
+    "book": "p. 225 (in the essay the block runs from p. 430 to p. 431) (Land: 'labour', a spelling difference)",
+    "verdict": "matches"
+   },
+   {
+    "fn": 39,
+    "cited": 224,
+    "book": "p. 224",
+    "verdict": "matches"
+   }
+  ],
+  "tally": "12 match; 1 altered (fn 34); 1 worded differently (fn 7); no wrong pages. Paraphrase citations fn 24 (p. 145) and fn 41 (p. 143) supported.",
+  "new_text": [
+   {
+    "term": "accelerationism",
+    "text": "In “Meat” (1995), word absent, 'an escalating dissipator' (p. 430), Lyotard quoted on 'positive delirium' (p. 434)",
+    "by": "MEAT"
+   },
+   {
+    "term": "hyperstition",
+    "text": "“Meat” does not use the word; bears out O'Sullivan; argument and scenes with pages; Burroughs 'time-travel' (p. 411); 'tendril of tomorrow' (p. 415)",
+    "by": "MEAT; OSU"
+   },
+   {
+    "term": "accelerationism, hyperstition",
+    "text": "O'Sullivan quoted from the published pages: 'forever more', 'philosophico-political'",
+    "by": "OSU (published PDF)"
+   }
+  ],
+  "quotes": [
+   {
+    "q": "an escalating dissipator, emerging from the interactive reinforcement of its complexity and dilation",
+    "checked": "MEAT p. 430 (13 words)"
+   },
+   {
+    "q": "positive delirium",
+    "checked": "MEAT p. 434, in Land's block quotation of Lyotard, Libidinal Economy (his fn 42)"
+   },
+   {
+    "q": "time-travel",
+    "checked": "MEAT p. 411, Burroughs epigraph (Land's fn 2)"
+   },
+   {
+    "q": "as if a tendril of tomorrow were burrowing back",
+    "checked": "MEAT p. 415"
+   },
+   {
+    "q": "an anticipatively assembled inducer for the replay of geohistory in hypermedia",
+    "checked": "MEAT p. 412"
+   },
+   {
+    "q": "both philosophico-political treatise and cyberpunk fiction",
+    "checked": "OSU published p. 20 (author's copy: 'politico-philosophical')"
+   },
+   {
+    "q": "the call is forever more mutation and deviation from the norm",
+    "checked": "OSU published p. 20 (author's copy: 'for ever')"
+   }
+  ],
+  "unread": [
+   {
+    "source": "A Thousand Plateaus, pp. 100, 152, 245, 247–248, as 'Meat' quotes them",
+    "part": "those pages",
+    "why": "outside this task (Anti-Oedipus only)",
+    "terms": [],
+    "effect": "nothing shipped rests on them"
+   },
+   {
+    "source": "O'Sullivan, published PDF after its first ~40,000 characters",
+    "part": "the rest of the article",
+    "why": "the fetching tool returned it as a summary",
+    "terms": [
+     "accelerationism",
+     "hyperstition"
+    ],
+    "effect": "the quoted sentences sit in the verbatim part; the later sections were read in the author's copy"
+   },
+   {
+    "source": "OCR of 'Meat' pp. 411–430",
+    "part": "note numbers and section breaks",
+    "why": "uncorrected OCR (the owner corrected pp. 431–439 only)",
+    "terms": [],
+    "effect": "footnotes matched to quotations by position and content; every Anti-Oedipus page confirmed in the book"
+   },
+   {
+    "source": "'Meat' p. 429 screenshot",
+    "part": "fn 32's quotation",
+    "why": "only the OCR was available",
+    "terms": [],
+    "effect": "whether Land's text has a stray 'as' ('as it is as prohibited') is unchecked; nothing shipped quotes it"
    }
   ]
  }
