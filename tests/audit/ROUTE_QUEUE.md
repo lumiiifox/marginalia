@@ -24,6 +24,10 @@ them, and any that the primary text shows to be too smooth are re-audited.
 The Deleuze books are read; the route returns to Land, whose entries (glossary-route2.json) are re-read against his own texts as the
 owner imports them.
 
+"Circuitries" (1992, Fanged Noumena pp. 289–318) read 2026-11-20: accelerationism and hyperstition re-read against it, its 24 Anti-Oedipus
+quotations checked against the book, and the Land → Deleuze and Guattari connection re-checked (glossary-route2.json `reread_circuitries`,
+connections.json). Next: "Meat (or How to Kill Oedipus in Cyberspace)", whose claims stay in that record's `unread` until it is imported.
+
 ## Audited
 
 The 15 Deleuze and Guattari entries and structuralism (glossary-dg.json); Spinoza's metaphysics (glossary-spinoza.json); the ancient and

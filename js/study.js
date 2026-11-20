@@ -305,8 +305,8 @@ const isCheckedThinker = (id) => VERIFIED_THINKERS.includes(id);
 const UNCHECKED_NOTE = "Unchecked: not yet audited against its sources. Treat it as provisional.";
 const checkMark = (ok) => `<p class="ckmark ${ok ? "ok" : "un"}">${ok ? "Checked: every claim audited against its sources and independently reviewed." : UNCHECKED_NOTE}</p>`;
 /* Pages cited in an entry read in the books open your own copy there (TERM_PAGES in glossary.js gives the book of each bare "(p. …)"
-   in order). A book counts as yours when its text is loaded, its title begins with the book's own (after any leading "Deleuze and Guattari:"),
-   it isn't a guide, introduction or reader about the book, and any author it has includes Deleuze (PAGE_BOOKS); with none, the reference
+   in order). A book counts as yours when its text is loaded, its title begins with the book's own (after any leading "Deleuze and Guattari:" or "Nick Land:"),
+   it isn't a guide, introduction or reader about the book, and any author it has includes Deleuze (Land for Fanged Noumena, `au` in PAGE_BOOKS); with none, the reference
    stays text. Another edition (Mille plateaux, L'Anti-Oedipe, Logique du sens) has other page numbers, so only the English titles count.
    An entry you edited keeps plain references, since its text may no longer match. */
 const PAGE_BOOKS = {
@@ -316,13 +316,14 @@ const PAGE_BOOKS = {
   WIP: { n: "What Is Philosophy?", re: /^what\s+is\s+philosophy\b/i },
   KAF: { n: "Kafka: Toward a Minor Literature", re: /^kafka\b.*\bminor\s+literature/i },
   LOS: { n: "The Logic of Sense", re: /^(the\s+)?logic\s+of\s+sense\b/i },
+  FN: { n: "Fanged Noumena", re: /^fanged\s+noumena\b/i, au: /\bland\b/i },
 };
 const PAGE_REF = /\((pp?\. [0-9ivxlc][0-9ivxlc,–\- ]*)\)/g; // the same pattern built TERM_PAGES
 function pageBook(key) {
   const b = PAGE_BOOKS[key]; if (!b) return null;
   for (const [id, t] of S.texts) {
-    const title = String(t.title || "").replace(/^\s*(gilles\s+)?deleuze([^:–-]*guattari)?\s*[:–-]\s*/i, "");
-    if (t.hasContent && b.re.test(title) && !/\b(guide|introduction|reader)\b/i.test(title) && (!t.author || /deleuze/i.test(t.author))) return id;
+    const title = String(t.title || "").replace(/^\s*(gilles\s+)?deleuze([^:–-]*guattari)?\s*[:–-]\s*/i, "").replace(/^\s*(nick\s+)?land\s*[:–-]\s*/i, "");
+    if (t.hasContent && b.re.test(title) && !/\b(guide|introduction|reader)\b/i.test(title) && (!t.author || (b.au || /deleuze/i).test(t.author))) return id;
   }
   return null;
 }

@@ -9,7 +9,8 @@ Made-up books only, phone-sized touch screen. Checks that:
      Anti-Oedipus and What Is Philosophy? ones stay text, and the visible text of the entry is unchanged;
   4. tapping "(p. 56)" opens the reader at the block where printed page 56 starts; a page the copy lacks opens the book with a note;
   5. a book whose text isn't loaded, or whose title names another book (or is a guide to it), gets no links; The Logic of Sense links
-     in the new entries and in body-without-organs;
+     in the new entries and in body-without-organs; Fanged Noumena by Land links Circuitries' pages in accelerationism and hyperstition,
+     and a Fanged Noumena by anyone else gets none;
   6. Plane of immanence shows "Where readers disagree" with its four disputes, and Assemblage, which has none, shows no such box;
   7. an entry you edited shows neither links nor disputes.
 Needs: pip install playwright && playwright install chromium
@@ -116,6 +117,17 @@ async def main():
         check(bw and ["pp. 88, 90, 188", "los", "88"] in bw["links"], f"body-without-organs links its Logic of Sense pages ({[l for l in bw['links'] if l[1] == 'los']})")
         rp = await openEntry(page, "repetition")
         check(rp and not rp["links"], f"a guide to a book by another author gets none of the book's links ({rp and rp['links'][:3]})")
+        # Land's Fanged Noumena: his own book, by author Land, links Circuitries' pages in accelerationism and hyperstition
+        await page.evaluate("() => (async () => { const now = Date.now(); await put('content', 'fn', [{ k: 'pg', x: '297' }, { k: 'p', x: 'Circuits.' }]); await put('texts', 'fn', { title: 'Fanged Noumena: Collected Writings 1987–2007', author: 'Nick Land', hasContent: true, total: 2, sections: [], createdAt: now, updatedAt: now }); })()")
+        await page.reload(); await page.wait_for_function(READY)
+        ac = await openEntry(page, "accelerationism")
+        hy = await openEntry(page, "hyperstition")
+        check(ac and ["p. 313", "fn", "313"] in ac["links"] and len(ac["links"]) == 7 and hy and ["p. 317", "fn", "317"] in hy["links"] and len(hy["links"]) == 5,
+              f"Fanged Noumena by Land links Circuitries' pages in accelerationism (7) and hyperstition (5) ({ac and ac['links'][:3]}, {hy and len(hy['links'])})")
+        await page.evaluate("() => (async () => { const now = Date.now(); await put('texts', 'fn', { title: 'Fanged Noumena', author: 'Ray Brassier', hasContent: true, total: 2, sections: [], createdAt: now, updatedAt: now }); })()")
+        await page.reload(); await page.wait_for_function(READY)
+        ac2 = await openEntry(page, "accelerationism")
+        check(ac2 and not ac2["links"], f"a Fanged Noumena not by Land gets no links ({ac2 and ac2['links'][:3]})")
 
         # 5 another title, or a book without its text, gets no links
         await page.evaluate(SEED, "Mille plateaux"); await page.reload(); await page.wait_for_function(READY)

@@ -301,8 +301,8 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   section (`go({ screen: "branches", focus, sec })`, sections carry `data-bsec`). `mentionSources` folds the built-in texts once. Nothing stored.
 - Page references that open your copy (`pageLinks`, `PAGE_BOOKS`, `PAGE_REF`, `pageBook`, `openBookPage`, in study.js; `TERM_PAGES` at the end of
   data/glossary.js): in a built-in, unedited entry read in the books, each bare "(p. …)" or "(pp. …)" has its book in `TERM_PAGES` (DR, AO, ATP,
-  WIP, KAF, LOS, or null for another author's page), in order; when a book with its text loaded has a title beginning with that book's English
-  title (after any leading "Deleuze and Guattari:"), isn't a guide, introduction or reader, and has Deleuze among any authors given, the
+  WIP, KAF, LOS, FN for Land's Fanged Noumena, or null for another author's page), in order; when a book with its text loaded has a title beginning with that book's English
+  title (after any leading "Deleuze and Guattari:" or "Nick Land:"), isn't a guide, introduction or reader, and has Deleuze (Land for FN, `au`) among any authors given, the
   reference becomes a button opening it at the printed page's first block (`blockForPage(want, B)`, reader.js), else it stays text. A
   numbered page the copy lacks opens the nearest page before it, and a page it can't place opens the book where you left off, each with a
   note. Look up's panel shows entries without these links or disputes. `TERM_PAGES` is built from the audit records' sources per sentence; rebuild it when such an entry's text changes

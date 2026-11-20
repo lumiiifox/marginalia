@@ -1101,5 +1101,356 @@
     "macintyre"
    ]
   }
+ },
+ "reread_circuitries": {
+  "date": "2026-11-20",
+  "scope": "accelerationism and hyperstition re-read against Nick Land, “Circuitries” (1992), and Land's quotations of Anti-Oedipus checked against Anti-Oedipus; the start of the Land route (tests/audit/ROUTE_QUEUE.md)",
+  "sources": {
+   "CIR": {
+    "name": "Nick Land, “Circuitries” (1992), in Fanged Noumena: Collected Writings 1987–2007, ed. Robin Mackay and Ray Brassier (Urbanomic / Sequence Press, 2011), pp. 289–318: the owner's copy, OCR of the owner's page screenshots with a [p. N] marker per printed page, read whole (not committed: under copyright)"
+   },
+   "AO": {
+    "name": "Deleuze and Guattari, Anti-Oedipus, trans. Hurley, Seem and Lane (Viking 1977; Minnesota reprint, same pagination), the owner's copy (printed page = PDF page − 23, confirmed by running heads at pp. 7, 37, 77, 171, 251, 273, 277, 312, 321, 326, 327, 339)"
+   },
+   "OSU": {
+    "name": "Simon O'Sullivan, “Accelerationism, Hyperstition and Myth-Science”, Cyclops 2 (2017), author's copy, read whole by a fetching tool in two passes (2026-11-20)"
+   }
+  },
+  "by": {
+   "first_pass": "Claude (Opus 5.5), 2026-11-20: the essay read whole; all 24 footnoted Anti-Oedipus quotations located by script in the owner's copy and compared by hand; O'Sullivan's essay searched whole for every passage on “Circuitries” and feedback",
+   "review": "Independent reviewer (separate agent, fresh context), 2026-11-20: read the whole essay and re-located all 24 AO quotations by script, compared by hand, checking doubtful page numbers against the rendered PDF. Confirmed the footnote numbering, the counts (24 quotations, 17 cited pages, 9/5/5/4/1) and every verdict; confirmed the two labels never occur; confirmed 'recasts it as cybernetics' (pp. 295–297) and AO p. 240 without '[or hasten]'; js and test change sound. Required fixes, all applied: the three-circuit quotation is wholly on p. 297 (was pp. 297–298); the CONNECTIONS claim that an elision 'changes the subject' withdrawn, since Land's 'whose' keeps society as subject; the CONNECTIONS citation range now includes essay p. 304; 'the division the essay turns on' narrowed to the short- versus long-range distinction, since Land uses a two-term opposition elsewhere. Audit notes added: fn 12's page is misprinted '180' in the owner's copy; p. 269 is the nearest line to fn 14. Optional suggestions applied: hyperstition sentence restated without a 'not X; Y' shape, 'cut-up' changed to 'fragmented', 'urges' to 'suggests' (AO asks with 'perhaps'), the study.js comment updated. Verdict: passes after the fixes."
+  },
+  "findings": {
+   "labels": "Neither word is in the essay: no 'accelerationism' and no 'hyperstition'; the only form of 'accelerate' is “time accelerating” (p. 317). The entries now say so, and use the essay as evidence for the ideas the later labels name.",
+   "osullivan": "O'Sullivan's only sentence on feedback in “Circuitries”: “Positive feedback loops (another name for hyperstition) are pitched against the stabilization effect of negative ones: the call is for ever more mutation and deviation from the norm.” He never mentions Land's three kinds of circuit, short- versus long-range runaway, or 'escalative'. Land's own scheme (pp. 297–298) asks for a division finer than negative/positive, faults modernist cybernetics for conflating short- and long-range runaway circuits (p. 297), and calls only long-range positive feedback escalative (p. 298); amplification, the plain positive loop, is one of the things it is not. Verdict: the two-way summary flattens Land's scheme on pp. 297–298 (short- versus long-range runaway); Land himself uses the two-term cybernegative/cyberpositive opposition elsewhere (pp. 297, 299, 308, 314, 317), and O'Sullivan's 'ever more mutation' fits long-range escalation. Recorded as a sentence stating Land's scheme with pages, credited to the essay, and naming what O'Sullivan's summary leaves out. No open dispute: O'Sullivan offers no argument for the two-way reading, so there is no second side to credit; the text settles it. Also noted, not shipped: O'Sullivan says the essay 'ends with' Artaud; Artaud's verse runs to p. 317, and the essay ends with Land's own paragraph (p. 318), which O'Sullivan himself quotes.",
+   "anti_oedipus_quotations": "24 footnoted quotations from 17 distinct pages (3, 4, 5, 26, 47, 53, 136, 180, 251, 273, 283, 312, 321, 322, 324, 326, 339); the owner's task counted 'about 15'. The 17 pages are cited pages; four of them are wrong. Results below.",
+   "connection": "CONNECTIONS land → deleuze, guattari (reinterpretation) holds and is sharpened: Land calls them 'amongst the great cyberneticists' (p. 296) and reads desiring-production as cybernetics (pp. 295–296); his one explicit break (pp. 296–297) quotes AO p. 251 verbatim and calls it 'almost Hegelian in its preposterous humanism', making social axiomatics 'a component of general cybernetics, and ultimately a very trivial one'. The essay's fn 2 elision of 'of society' keeps society as the subject (Land's 'whose'). The claim now says he recasts the vocabulary as cybernetics. Also corrected: AO p. 240 reads “accelerate the process”; “[or hasten]” is Cunningham's insertion. “Circuitries” does not quote AO pp. 239–240."
+  },
+  "quotations": [
+   {
+    "fn": 2,
+    "cited": 312,
+    "land": "general theory ... is a generalized theory of flux",
+    "book": "p. 262: 'the general theory of society is a generalized theory of flows'",
+    "verdict": "wrong page; 'flux' for 'flows'; the elided 'of society' is carried by Land's 'whose' (society); Land glosses it 'which is to say: cybernetics'"
+   },
+   {
+    "fn": 3,
+    "cited": 5,
+    "land": "Production as a process overflows all ideal categories ...",
+    "book": "p. 5: 'Production as process overtakes all idealistic categories'",
+    "verdict": "right page, worded differently from the translation cited"
+   },
+   {
+    "fn": 4,
+    "cited": 47,
+    "land": "desiring machine, a partial object, does not represent anything",
+    "book": "p. 47: 'A desiring-machine and a partial object do not represent anything'",
+    "verdict": "right page, altered"
+   },
+   {
+    "fn": 5,
+    "cited": 26,
+    "land": "auto-production of the unconscious",
+    "book": "p. 26: 'autoproduction of the unconscious'",
+    "verdict": "matches (hyphen only)"
+   },
+   {
+    "fn": 6,
+    "cited": "26 (Ibid.)",
+    "land": "cyclical movement by which the unconscious, always remaining “subject”, reproduc(es) itself",
+    "book": "pp. 275–276, same words",
+    "verdict": "wrong page"
+   },
+   {
+    "fn": 7,
+    "cited": "26 (Ibid.)",
+    "land": "generation ... is secondary in relation to the cycle",
+    "book": "p. 276: 'generation second in relation to the cycle'",
+    "verdict": "wrong page; 'secondary' for 'second'"
+   },
+   {
+    "fn": 8,
+    "cited": 283,
+    "land": "not merely functioning, but formation and autoproduction",
+    "book": "p. 283: 'not only its functioning, but formation and autoproduction'",
+    "verdict": "right page, altered"
+   },
+   {
+    "fn": 9,
+    "cited": 251,
+    "land": "not even an automatic or cybernetic machine",
+    "book": "p. 251, same words",
+    "verdict": "matches"
+   },
+   {
+    "fn": 12,
+    "cited": 180,
+    "land": "Man must constitute himself through the repression of the intense germinal influx ...",
+    "book": "p. 190, same words (the owner's copy misprints this page's number as '180' at its foot; pp. 189 and 191 confirm 190)",
+    "verdict": "wrong page (190)"
+   },
+   {
+    "fn": 13,
+    "cited": 339,
+    "land": "remains in the precritical age",
+    "book": "p. 339",
+    "verdict": "matches"
+   },
+   {
+    "fn": 14,
+    "cited": "339 (Ibid.)",
+    "land": "the psychoanalysts' chant (essay p. 303), with an unfootnoted companion line",
+    "book": "no match anywhere in the copy; nearest p. 269 ('yes, I desired my mother and wanted to kill my father'), p. 114 (the law's prohibitions) and p. 273 (the father's question)",
+    "verdict": "not in the book"
+   },
+   {
+    "fn": 15,
+    "cited": 53,
+    "land": "it engineers, it is machinic",
+    "book": "p. 53, whole sentence same",
+    "verdict": "matches"
+   },
+   {
+    "fn": 16,
+    "cited": 26,
+    "land": "is a machine, and the object of desire is another machine connected to it",
+    "book": "p. 26",
+    "verdict": "matches"
+   },
+   {
+    "fn": 17,
+    "cited": 322,
+    "land": "schizoanalysis is solely functional",
+    "book": "p. 322",
+    "verdict": "matches"
+   },
+   {
+    "fn": 18,
+    "cited": 324,
+    "land": "the molecular functions of the unconscious",
+    "book": "p. 324",
+    "verdict": "matches"
+   },
+   {
+    "fn": 19,
+    "cited": "324 (Ibid.)",
+    "land": "preindividual and prepersonal singularities ...",
+    "book": "p. 324 (Leclaire's 'erogenous body')",
+    "verdict": "matches"
+   },
+   {
+    "fn": 20,
+    "cited": 326,
+    "land": "a whole that does not unify or totalize, but ...",
+    "book": "p. 326: 'does not unify or totalize them'",
+    "verdict": "right page, one word dropped"
+   },
+   {
+    "fn": 21,
+    "cited": 5,
+    "land": "artificial schizophrenia, such as one sees in hospitals ...",
+    "book": "p. 5: 'the artificial schizophrenic found in mental institutions'",
+    "verdict": "right page, worded differently"
+   },
+   {
+    "fn": 22,
+    "cited": 136,
+    "land": "the schizo-entity",
+    "book": "p. 136: 'the schizo-as-entity'",
+    "verdict": "right page, altered"
+   },
+   {
+    "fn": 23,
+    "cited": 321,
+    "land": "madness is called madness ... testifying all alone for deterritorialization ...",
+    "book": "p. 321, with 'it is deprived of this support, and' left out unmarked",
+    "verdict": "right page, unmarked omission"
+   },
+   {
+    "fn": 26,
+    "cited": 4,
+    "land": "the dazzling dark truth that shelters in delirium",
+    "book": "p. 4: 'the glaring, sober truth that resides in delirium'",
+    "verdict": "right page, worded differently"
+   },
+   {
+    "fn": 28,
+    "cited": 3,
+    "land": "is not at all a specific pole of nature, but nature as a process of production",
+    "book": "p. 3: 'not at all any one specific aspect of nature'",
+    "verdict": "right page, worded differently"
+   },
+   {
+    "fn": 29,
+    "cited": 5,
+    "land": "there is no schizophrenic specificity or entity ...",
+    "book": "p. 5: 'there is no specifically schizophrenic phenomenon or entity'",
+    "verdict": "right page, worded differently"
+   },
+   {
+    "fn": 38,
+    "cited": 273,
+    "land": "Which comes first, the chicken or the egg ...",
+    "book": "p. 273",
+    "verdict": "matches"
+   }
+  ],
+  "tally": "9 match; 5 altered slightly (fn 4, 8, 20, 22, 23); 5 worded differently at the right page (fn 3, 21, 26, 28, 29, all pp. 3–5); 4 wrong page (fn 2, 6, 7, 12); 1 not in the book (fn 14).",
+  "new_text": [
+   {
+    "term": "accelerationism",
+    "text": "Land's essay, written in 1992, never uses the word accelerationism; the only form of the verb in it is “time accelerating” (p. 317).",
+    "by": "CIR (whole essay searched)"
+   },
+   {
+    "term": "accelerationism",
+    "text": "Pages of “Circuitries” are from Fanged Noumena (2011).",
+    "by": "editorial"
+   },
+   {
+    "term": "accelerationism",
+    "text": "Wienerean gadgets / three-way division",
+    "by": "CIR p. 297"
+   },
+   {
+    "term": "accelerationism",
+    "text": "stabilization suppresses mutation, short-range burst, long-range escalative with Land's three examples",
+    "by": "CIR p. 298"
+   },
+   {
+    "term": "accelerationism",
+    "text": "conflation of the two runaway kinds; O'Sullivan's summary leaves out the short- versus long-range distinction",
+    "by": "CIR p. 297; OSU"
+   },
+   {
+    "term": "accelerationism",
+    "text": "axiomatics as primitive trigger; capital as underdeveloped schizophrenia",
+    "by": "CIR pp. 297, 313"
+   },
+   {
+    "term": "hyperstition",
+    "text": "the essay never uses the word; the loop through time is in Land's sentences",
+    "by": "CIR (whole essay searched); OSU"
+   },
+   {
+    "term": "hyperstition",
+    "text": "cybernegative/cyberpositive loops (p. 317); programmed from Cyberia (p. 299); infiltrated from the future (p. 311); cut-up opening (pp. 289–292); smuggled back out of the future (p. 318)",
+    "by": "CIR"
+   }
+  ],
+  "quotes": [
+   {
+    "q": "time accelerating",
+    "checked": "CIR p. 317"
+   },
+   {
+    "q": "Wienerean gadgets: homeostats and amplifiers",
+    "checked": "CIR p. 297"
+   },
+   {
+    "q": "between stabilization circuits, short-range runaway circuits, and long-range runaway circuits",
+    "checked": "CIR p. 297 (the whole quotation; 'cir-cuits' breaks within the page)"
+   },
+   {
+    "q": "neither homeostatic, nor amplificatory, but escalative",
+    "checked": "CIR p. 298"
+   },
+   {
+    "q": "the capitalized terminus of anthropoid civilization",
+    "checked": "CIR p. 297 (Land capitalizes 'The', sentence-initial)"
+   },
+   {
+    "q": "the primitive trigger for a transglobal post-biological machinism",
+    "checked": "CIR p. 297"
+   },
+   {
+    "q": "underdeveloped schizophrenia",
+    "checked": "CIR p. 313"
+   },
+   {
+    "q": "A cybernegative circuit is a loop in time,",
+    "checked": "CIR p. 317"
+   },
+   {
+    "q": "whereas cyberpositive circuitry loops time ‘itself’",
+    "checked": "CIR p. 317 (line break in 'cyber-positive' is a hyphenation; the word is unhyphenated on pp. 297, 308, 314)"
+   },
+   {
+    "q": "We are programmed from where Cyberia has already happened",
+    "checked": "CIR p. 299"
+   },
+   {
+    "q": "are infiltrated from the future",
+    "checked": "CIR p. 311"
+   },
+   {
+    "q": "to be smuggled back out of the future",
+    "checked": "CIR p. 318"
+   },
+   {
+    "q": "amongst the great cyberneticists",
+    "checked": "CIR p. 296"
+   },
+   {
+    "q": "almost Hegelian in its preposterous humanism",
+    "checked": "CIR p. 297"
+   },
+   {
+    "q": "and ultimately a very trivial one",
+    "checked": "CIR p. 297"
+   },
+   {
+    "q": "general theory ... is a generalized theory of flux",
+    "checked": "CIR p. 295"
+   },
+   {
+    "q": "which is to say: cybernetics",
+    "checked": "CIR p. 295"
+   },
+   {
+    "q": "the general theory of society is a generalized theory of flows",
+    "checked": "AO p. 262"
+   },
+   {
+    "q": "accelerate the process",
+    "checked": "AO p. 240"
+   }
+  ],
+  "unread": [
+   {
+    "source": "Nick Land, “Meat (or How to Kill Oedipus in Cyberspace)”",
+    "part": "the whole essay",
+    "why": "not yet imported (the owner's next text)",
+    "terms": [
+     "hyperstition"
+    ],
+    "effect": "O'Sullivan's description of it ('both politico-philosophical treatise and cyberpunk fiction') stays his, unchecked against Land"
+   },
+   {
+    "source": "Deleuze and Guattari, L'Anti-Œdipe (French)",
+    "part": "pp. matching AO 3–5 and 262",
+    "why": "no copy available here",
+    "terms": [],
+    "effect": "Land's wording of fn 2, 3, 21, 26, 28, 29 differs from the English translation he cites; whose rendering it is (his own from the French, or another) is unchecked"
+   },
+   {
+    "source": "Nick Land, the 1993 text Cunningham quotes",
+    "part": "the whole",
+    "why": "not imported",
+    "terms": [],
+    "effect": "the connection's 'Machinic revolution' sentence is still Cunningham's quotation, unchecked"
+   },
+   {
+    "source": "Simon O'Sullivan, Cyclops 2 (2017)",
+    "part": "exact wording beyond quotations under 125 characters",
+    "why": "read through a fetching tool that relays text through a model",
+    "terms": [
+     "accelerationism",
+     "hyperstition"
+    ],
+    "effect": "his feedback sentence was returned as a verbatim quotation, matching the wording already in the entry"
+   }
+  ]
  }
 }

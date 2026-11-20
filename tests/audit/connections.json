@@ -62,7 +62,8 @@
    "kind": "reinterpretation",
    "checked": [
     "Cunningham, Radical Philosophy 191 (2015), 29–38: Anti-Oedipus: 'to go further, to “accelerate [or hasten] the process”, as Nietzsche put it'; note 16: 'Land’s argument, written in 1993, and quoting Anti-Oedipus' … 'Machinic revolution must therefore go in the opposite direction to socialistic regulation'; 'Anti-Oedipus may have provided much of the vocabulary for such a position'; Land’s later work favours 'the time-structure of capital accumulation'",
-    "Haynes 2021 (accepted version; Royal Holloway record for the details): 'The work of Nick Land prioritises above all Anti-Oedipus … and particularly its vocabulary and conceptual framework for mapping productive desire onto cybernetic-productive processes'; right accelerationism 'as exemplified in Land’s work … embraces the project of capitalism'"
+    "Haynes 2021 (accepted version; Royal Holloway record for the details): 'The work of Nick Land prioritises above all Anti-Oedipus … and particularly its vocabulary and conceptual framework for mapping productive desire onto cybernetic-productive processes'; right accelerationism 'as exemplified in Land’s work … embraces the project of capitalism'",
+    "2026-11-20 re-read: Land, “Circuitries” (1992), Fanged Noumena pp. 289–318, owner's copy: 'amongst the great cyberneticists' (p. 296); AO p. 251 quoted verbatim, 'almost Hegelian in its preposterous humanism', 'a component of general cybernetics, and ultimately a very trivial one' (p. 297); the 24 footnoted AO quotations checked against the owner's copy (list in glossary-route2.json reread_circuitries); AO p. 240 reads “accelerate the process” (Cunningham's '[or hasten]' is his)"
    ],
    "review": {
     "verdict": "pass",
@@ -73,6 +74,22 @@
      "Land's quotation given with its capital M",
      "Haynes linked to the open accepted version, DOI kept in the name"
     ]
+   },
+   "reread_2026_11_20": {
+    "claim": "'recasts it as cybernetics' added, on pp. 295–297",
+    "fixes": [
+     "AO p. 240 quoted as the book has it",
+     "two text items added from Circuitries"
+    ],
+    "review": {
+     "verdict": "pass",
+     "first_verdict": "fix",
+     "fixes": [
+      "'elision changes the subject' withdrawn (Land's 'whose' keeps society as subject); fn 2 given as wrong page and altered word",
+      "essay page range includes p. 304",
+      "'urges' → 'suggests' (AO's 'perhaps')"
+     ]
+    }
    }
   },
   {
