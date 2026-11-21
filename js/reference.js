@@ -790,6 +790,41 @@ function articleHTML(b, terms) {
 // A bracket with anything that isn't a reference is left as text. The book's blocks are found by their own labels (passageBlock).
 // Citation styles: each names a bundled classic, the form of one reference to it, and how to find that reference's block.
 // An article's `xr` names the styles it uses (one, or a list). Several references in one bracket are joined by "; ".
+// Kant, Critique of Pure Reason (Meiklejohn): his translation prints no A/B pages, so each reference the entries use is listed
+// with words from its passage. Each number comes from a scholar who cites that passage (Kemp Smith's Commentary, 1918, or a
+// current SEP entry) and its Akademie page was checked against the German; tests/audit/glossary-kant.json records the match.
+// [the passage's words in Meiklejohn, where the number comes from, Akademie volume:page]
+const KANT_AB = {
+  "Bxvi": ["objects must conform to our cognition", "Rohlf; Kemp Smith", "3:12"],
+  "Bxviii": ["we only cognize in things a priori that which we ourselves place in them", "Rohlf", "3:13"],
+  "Bxix–xx": ["while possessing a real existence, lie beyond its sphere", "Rohlf", "3:13–14"],
+  "Bxxvi–xxvii": ["without something that appears", "Stang; Kemp Smith", "3:17"],
+  "Bxxx": ["abolish knowledge, to make room for belief", "Rohlf", "3:19"],
+  "A6/B10": ["the predicate B belongs to the subject A", "Kemp Smith; Rey", "3:33"],
+  "B11": ["Judgements of experience, as such, are always synthetical", "Rey", "3:34"],
+  "A9/B13": ["Everything that happens has a cause", "Kemp Smith", "3:35"],
+  "B15": ["7 + 5 = 12", "Rey", "3:37"],
+  "B19": ["How are synthetical judgements a priori possible?", "Kemp Smith", "3:39"],
+  "A26/B42": ["Space does not represent any property of objects as things in themselves", "Stang", "3:55"],
+  "A28/B44": ["the empirical reality of space", "Kemp Smith", "3:56"],
+  "A30/B45": ["what we call outward objects", "Stang", "3:57"],
+  "A42/B59": ["are not in themselves the same as our representations of them in intuition", "Rohlf; Stang", "3:65"],
+  "A51/B75": ["Thoughts without content are void", "Kemp Smith", "3:75"],
+  "A79/B105": ["gives also unity to the mere synthesis", "Kemp Smith", "3:92"],
+  "A80/B106": ["Table of the Categories", "Rohlf", "3:93"],
+  "B131": ["accompany all my representations", "Rohlf; Kemp Smith", "3:108"],
+  "B308": ["the whole meaning of the categories is entirely lost", "Kemp Smith", "3:210"],
+  "A255/B310–11": ["merely a limitative conception", "Kemp Smith", "3:211"],
+  "A255/B311": ["quite inadmissible in a positive sense", "Kemp Smith", "3:212"],
+  "A407/B434": ["euthanasia of pure reason", "Grier", "3:282"],
+  "A420/B448": ["Antithetic of Pure Reason", "Kemp Smith", "3:290"],
+  "A491/B519": ["This doctrine I call Transcendental Idealism", "Stang; Kemp Smith", "3:338"],
+  "A497/B525": ["If that which is conditioned is given", "Kemp Smith; Grier", "3:342"],
+  "A506/B534": ["admissible only as a condition of things in themselves", "Kemp Smith", "3:347"],
+  "A528/B556": ["Concluding Remark on the Solution of the Transcendental Mathematical Ideas", "Kemp Smith", "3:360"],
+  "A532/B560": ["Deduction of Cosmical Events", "Kemp Smith", "3:362"],
+};
+const kantFlat = (b) => plain(b.x || "").replace(/<[^>]+>/g, "").replace(/[¹²³⁴⁵⁶⁷⁸⁹⁰]/g, "").replace(/\s+/g, " ");
 const PASSAGE_STYLES = {
   // canon reads the standard scholarly notation as the same reference: part, then p(roposition), d(efinition), a(xiom), post(ulate),
   // pref(ace) or app(endix), and after a proposition its c(orollary), s(cholium: the edition's Note) or d(emonstration: its Proof,
@@ -839,6 +874,9 @@ const PASSAGE_STYLES = {
   "du-bois-souls": { book: "classic-du-bois-souls", item: /^Souls ([IVX]+)$/, find: (B, [n]) => headPath(B, [[2, (t) => t.startsWith(`${n}. `)]]) },
   // Mill, On Liberty: chapter, "OL I".
   "mill-liberty": { book: "classic-mill-liberty", item: /^OL (I|II|III|IV|V)$/, find: (B, [n]) => headPath(B, [[2, (t) => t.startsWith(`${n}. `)]]) },
+  // Kant, Critique of Pure Reason: A/B pages, "A26/B42", "Bxvi" (only those listed in KANT_AB), found by the passage's words.
+  "kant-critique": { book: "classic-kant-critique", item: new RegExp(`^(${Object.keys(KANT_AB).map((k) => k.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&")).join("|")})$`),
+    find: (B, [ref]) => { const e = KANT_AB[ref]; return e ? B.findIndex((b) => b.k !== "fn" && kantFlat(b).includes(e[0])) : -1; } },
   "hobbes-leviathan": { book: "classic-hobbes-leviathan", item: /^Lev\. ([IVXL]+)$/,
     find: (B, [ch]) => headPath(B, [[2, (t) => t.startsWith(`${ch}. `)]]) },
 };

@@ -1,0 +1,1147 @@
+{
+ "audit": "glossary-kant",
+ "audited": "2026-11-21",
+ "mode": "new entries and re-reads",
+ "scope": "Kant read in the Critique of Pure Reason at the owner's request (route justification: the Deleuze and Land readings need him; the route itself is unchanged): three new entries, transcendental-idealism, categories, antinomy, and two re-reads, noumenon and synthetic-a-priori, whose 2026-10-27 records move here from glossary-kant-hegel.json (kept there under superseded). Each read in the bundled Meiklejohn first and the Stanford Encyclopedia second.",
+ "by": {
+  "draft": "Claude (Opus 5.5); no ChatGPT draft for this batch",
+  "review": "Independent reviewer (separate agent, fresh context), 2026-11-21: matched every quotation in the five entries to the bundled book by script (all Kant's verbatim, under 15 words, inside the passage their page opens); checked all 28 A/B numbers against the Kemp Smith notes or SEP citations named and all 28 Akademie pages against the German; fetched Rohlf, Stang, Grier and Rey and checked every attributed claim, quotation and revision date; compared the German A and B texts for the first-edition passages listed as absent. Required fixes, all applied: Grier's sentence restated as reporting Kant's claim of an indirect argument; the page dropped from three quotations that sit on a later page than the one cited (A507/B535, about A531/B559, B309), the paragraph's page kept on the sentence it fits; the A369 definition marked as Guyer and Wood's wording, as Stang quotes it; two corrections to this record (the noumenon s1 note, the dispute count). Optional suggestions applied: the metaphysical deduction named as Kant's term, Grier as reporting Kant's diagnosis, “parts of” A 241–2 and A 248–53 (Kemp Smith gives A242 = B302, A248 = B305), Rohlf's “two classes of objects”. Not re-checked: the Redding and Fanged Noumena sentences, kept from the 2026-10-27 audit. Verdict: pass after the required fixes.",
+  "first_pass": "Claude (Opus 5.5), 2026-11-21: every sentence drafted from the bundled Meiklejohn; every Kant quotation found verbatim in the bundled book by script and, where a page follows it, in that page's passage (tests/links.py); each A/B number taken from a scholar who quotes or cites that passage and matched by content, never estimated from position; the scholarship read through the web-fetch tool (literal text, quotations under 125 characters)"
+ },
+ "sources": {
+  "CPR": {
+   "name": "Immanuel Kant, Critique of Pure Reason (1781; 2nd ed. 1787), trans. J. M. D. Meiklejohn, the bundled Gutenberg text (eBook 4280, classic-kant-critique), which translates the second edition and adds the first edition's preface; cited by A/B page, each reference listed in KANT_AB (js/reference.js) and below under ab",
+   "src": "https://www.gutenberg.org/ebooks/4280"
+  },
+  "AA": {
+   "name": "Kant, Kritik der reinen Vernunft, Akademie-Ausgabe vols. 3 (B) and 4 (A), text with page markers from the korpora.org transcription (GitHub: spookyuser/kant-akademieausgabe-corpus); used to check each A/B number's Akademie page",
+   "src": "https://korpora.org/kant/"
+  },
+  "AB_DE": {
+   "name": "Kant, Critik der reinen Vernunft, German first (1781) and second (1787) editions, Project Gutenberg 6342 and 6343; compared to find the first-edition passages absent from Meiklejohn",
+   "src": "https://www.gutenberg.org/ebooks/6342"
+  },
+  "KS": {
+   "name": "Norman Kemp Smith, A Commentary to Kant's 'Critique of Pure Reason' (Macmillan, 1918), Project Gutenberg 43572; read in full text; source of most A/B numbers (its notes cite the passages it quotes) and of the first-edition page ranges",
+   "src": "https://www.gutenberg.org/ebooks/43572"
+  },
+  "KNT": {
+   "name": "Michael Rohlf, “Immanuel Kant”, Stanford Encyclopedia of Philosophy (first published 20 May 2010; substantive revision 31 July 2024), read in literal text through the start of §5.1, 2026-11-21",
+   "src": "https://plato.stanford.edu/entries/kant/"
+  },
+  "STA": {
+   "name": "Nicholas F. Stang, “Kant's Transcendental Idealism”, Stanford Encyclopedia of Philosophy (first published 4 March 2016; no revision line), read in literal text through part of §5.3, 2026-11-21",
+   "src": "https://plato.stanford.edu/entries/kant-transcendental-idealism/"
+  },
+  "GRI": {
+   "name": "Michelle Grier, “Kant's Critique of Metaphysics”, Stanford Encyclopedia of Philosophy (first published 29 February 2004; substantive revision 14 September 2022), read in literal text to the end (second pass), 2026-11-21",
+   "src": "https://plato.stanford.edu/entries/kant-metaphysics/"
+  },
+  "REY": {
+   "name": "Georges Rey, “The Analytic/Synthetic Distinction”, Stanford Encyclopedia of Philosophy (substantive revision 1 June 2026), read in literal text to the middle of §3.2",
+   "src": "https://plato.stanford.edu/entries/analytic-synthetic/"
+  },
+  "RED": {
+   "name": "Paul Redding, “Georg Wilhelm Friedrich Hegel”, Stanford Encyclopedia of Philosophy (substantive revision 19 September 2025); the sentence kept from glossary-kant-hegel.json, not re-read",
+   "src": "https://plato.stanford.edu/entries/hegel/"
+  },
+  "MAC": {
+   "name": "Robin Mackay and Ray Brassier, “Editors' Introduction”, in Nick Land, Fanged Noumena (Urbanomic/Sequence, 2011); the title sentence kept from glossary-kant-hegel.json",
+   "src": "https://sequencepress.com/products/fanged-noumena-collected-writings-1987-2007"
+  }
+ },
+ "note": "Meiklejohn's translation prints no A/B pages. By the owner's choice (2026-11-21, “Scholars' citations plus Akademie page”), each number comes from Kemp Smith's Commentary or a current SEP entry that quotes or cites the same sentence, matched to Meiklejohn by content, and the German sentence's Akademie page was checked by script; the table is under ab. Passages with no such source are quoted without a page (listed under unread). Kant is public domain, so he is quoted exactly from the bundled book, each quotation under 15 words: the full text is one tap away, and each page reference opens its passage. Interpretation is credited to named scholarship only. Kemp Smith (1918) is the oldest scholarship used; it is cited for page numbers, the A/B edition differences and his reading of the noumenon revision, which is given as his.",
+ "disputes": [
+  "transcendental-idealism, noumenon: one object or two? Rohlf (SEP, 2024): “there is no such thing as the standard interpretation of Kant's transcendental idealism”; he sets out a two-objects reading (from the Garve–Feder review) and a two-aspects reading (Langton 1998, property dualism; Allison 2004, two standpoints). Stang (SEP, 2016) treats phenomenalist, epistemic (Prauss, Allison, Bird) and metaphysical dual-aspect readings (Langton), and lists one-object and two-object readers in §5. Recorded open; the entries report the readings and settle none.",
+  "noumenon: what the second edition's revision of the phenomena and noumena chapter does. Kemp Smith reads it as making the existence of things in themselves “quite explicit”; this is his reading, given as his. Stang §6, which treats the chapter, was not read (see unread)."
+ ],
+ "unread": [
+  {
+   "source": "Stang, “Kant's Transcendental Idealism” (SEP)",
+   "part": "the rest of §5.3, §5.4, §6 (noumena and the transcendental object) and §7",
+   "why": "the fetching tool's offsets did not reach them in literal text",
+   "terms": [
+    "noumenon",
+    "transcendental-idealism"
+   ],
+   "effect": "the noumenon entry rests on Kant's text and Kemp Smith for the two senses and the revision; Stang is cited only for what was read (§§1–5.2)"
+  },
+  {
+   "source": "Rohlf, “Immanuel Kant” (SEP)",
+   "part": "§5.1 onward (morality, freedom, highest good, unity of nature and freedom)",
+   "why": "returned as a summary",
+   "terms": [
+    "transcendental-idealism"
+   ],
+   "effect": "none known: the entries use §§2–4 only"
+  },
+  {
+   "source": "Rey, “The Analytic/Synthetic Distinction” (SEP)",
+   "part": "from the middle of §3.2 to the end",
+   "why": "returned as a summary",
+   "terms": [
+    "synthetic-a-priori"
+   ],
+   "effect": "none: the sentences kept from the 2026-10-27 audit rest on §§1–2"
+  },
+  {
+   "source": "A/B pages",
+   "part": "the thesis and antithesis statements of the four antinomies (blocks 745, 751, 769, 774, 787, 792, 805, 810), the negative and positive senses of noumenon (block 528), Kant's naming of the categories “with Aristotle” (block 213)",
+   "why": "no scholar read here quotes or cites these sentences with a page, and pages are never estimated",
+   "terms": [
+    "antinomy",
+    "noumenon",
+    "categories"
+   ],
+   "effect": "quoted without a page; the paragraph's nearest page reference opens the section (A420/B448 for the antinomies)"
+  },
+  {
+   "source": "Kant, first edition (A)",
+   "part": "the A Deduction (A 95–130), the A Paralogisms (A 348–405), parts of A 241–2 and A 248–53, A 24's third argument",
+   "why": "absent from Meiklejohn's translation, which follows the second edition",
+   "terms": [
+    "categories",
+    "transcendental-idealism",
+    "noumenon"
+   ],
+   "effect": "named in the entries and in the book's primer as absent; A369's definition is quoted only as Stang gives it"
+  }
+ ],
+ "terms": {
+  "transcendental-idealism": {
+   "new_d": [
+    {
+     "text": "Kant's doctrine that space and time are forms of our sensible intuition, so that we cognize things only as they appear to us and never as they are in themselves.",
+     "claims": []
+    }
+   ],
+   "new_text": [
+    {
+     "text": "The second preface proposes an experiment modelled on Copernicus: metaphysics should try assuming “that the objects must conform to our cognition” (Bxvi).",
+     "claims": [
+      {
+       "by": "CPR Bxvi"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 33"
+    },
+    {
+     "text": "On that assumption a priori cognition becomes possible, since “we only cognize in things a priori that which we ourselves place in them” (Bxviii).",
+     "claims": [
+      {
+       "by": "CPR Bxviii"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 33"
+    },
+    {
+     "text": "Kant still reserves the power of thinking things in themselves, since otherwise we would affirm “an appearance, without something that appears” (Bxxvi–xxvii).",
+     "claims": [
+      {
+       "by": "CPR Bxxvi–xxvii"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 41"
+    },
+    {
+     "text": "Limiting speculative reason in this way serves the practical: “I must, therefore, abolish knowledge, to make room for belief” (Bxxx).",
+     "claims": [
+      {
+       "by": "CPR Bxxx"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 43"
+    },
+    {
+     "text": "The Transcendental Aesthetic argues the doctrine for space and time.",
+     "claims": [
+      {
+       "by": "CPR A19–49/B33–73 (framing; the sentences that follow carry their pages)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "“Space does not represent any property of objects as things in themselves” (A26/B42).",
+     "claims": [
+      {
+       "by": "CPR A26/B42"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 119"
+    },
+    {
+     "text": "Kant therefore maintains “the empirical reality of space” for all possible outer experience, together with its transcendental ideality (A28/B44).",
+     "claims": [
+      {
+       "by": "CPR A28/B44"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 121"
+    },
+    {
+     "text": "What we call outward objects are “nothing else but mere representations of our sensibility” (A30/B45), whose real correlate, the thing in itself, these representations never make known.",
+     "claims": [
+      {
+       "by": "CPR A30/B45"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 122"
+    },
+    {
+     "text": "The things we intuit “are not in themselves the same as our representations of them in intuition” (A42/B59).",
+     "claims": [
+      {
+       "by": "CPR A42/B59"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 145"
+    },
+    {
+     "text": "The name comes in the chapter on the antinomy.",
+     "claims": [
+      {
+       "by": "CPR A490–91/B518–19 (Section VI heading, block 868)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Everything intuited in space and time is phenomenon, mere representation, with no self-subsistent existence apart from human thought: “This doctrine I call Transcendental Idealism” (A491/B519).",
+     "claims": [
+      {
+       "by": "CPR A491/B519"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 869"
+    },
+    {
+     "text": "A note adds that Kant has elsewhere called it “formal idealism”, to distinguish it from material idealism, which doubts or denies the existence of external things (A491/B519).",
+     "claims": [
+      {
+       "by": "CPR A491/B519"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 870"
+    },
+    {
+     "text": "The antinomy also yields an indirect proof (A506/B534).",
+     "claims": [
+      {
+       "by": "CPR A506/B534"
+      }
+     ]
+    },
+    {
+     "text": "If the world were a whole existing in itself it would be finite or infinite; it is neither, so phenomena “are nothing, apart from our representations”.",
+     "claims": [
+      {
+       "by": "CPR A506/B534 (block 887)"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 887"
+    },
+    {
+     "text": "Two features of this translation matter here.",
+     "claims": [
+      {
+       "by": "framing sentence (no claim)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Meiklejohn renders Kant's Erscheinung (appearance) as “phenomenon” almost throughout, as Norman Kemp Smith points out in his Commentary (1918), so his “phenomena” usually stand for what Kant calls appearances.",
+     "claims": [
+      {
+       "by": "KS"
+      }
+     ],
+     "quotes": "2 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 6, 29"
+    },
+    {
+     "text": "And it translates the second edition, which drops the Fourth Paralogism, where the first edition defines transcendental idealism as “the doctrine that they are all together to be regarded as mere representations”, in the Guyer and Wood translation Nicholas Stang quotes from A369.",
+     "claims": [
+      {
+       "by": "STA"
+      }
+     ],
+     "quotes": "1 from the scholarship, verbatim in its literal text"
+    },
+    {
+     "text": "Michael Rohlf's Stanford Encyclopedia entry (revised 2024) states that “there is no such thing as the standard interpretation of Kant's transcendental idealism”.",
+     "claims": [
+      {
+       "by": "KNT"
+      }
+     ],
+     "quotes": "1 from the scholarship, verbatim in its literal text",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "He sets out a two-objects reading, which counts appearances and things in themselves as two classes of objects and goes back to the Göttingen review by Christian Garve and J. G. Feder, and a two-aspects reading of one world, in a property-dualist version (Rae Langton, 1998) and an epistemological version of two standpoints (Henry Allison, 2004).",
+     "claims": [
+      {
+       "by": "KNT §§3.1–3.2"
+      }
+     ]
+    },
+    {
+     "text": "Stang credits the epistemic reading to Gerold Prauss, Allison and Graham Bird, and calls Langton's “Perhaps the most influential metaphysical but non-phenomenalist interpretation”.",
+     "claims": [
+      {
+       "by": "STA"
+      }
+     ],
+     "quotes": "1 from the scholarship, verbatim in its literal text"
+    },
+    {
+     "text": "Whether appearances and things in themselves are one object or two stays disputed (see Phenomenon and noumenon).",
+     "claims": [
+      {
+       "by": "KNT §3; STA §5 (“One Object or Two?”)"
+      }
+     ]
+    }
+   ],
+   "s": "Kant, Critique of Pure Reason (1781; 2nd ed. 1787), Bxvi–xxx, A26–30/B42–45, A42/B59, A490–91/B518–19, A506–7/B534–5"
+  },
+  "noumenon": {
+   "old": [
+    {
+     "s": 1,
+     "text": "Nicholas Stang sums up the doctrine: space and time are “the forms of our sensible intuition of objects”, and “We cannot cognize things in themselves”, though we can think about them using the categories.",
+     "accuracy": "rechecked",
+     "by": "STA",
+     "note": "cut; the second preface (Bxix–xx, Bxxvi–xxvii) now states the doctrine in Kant's words"
+    },
+    {
+     "s": 2,
+     "text": "Kant calls the thing in itself “something actual for itself but uncognized by us”, and interpreters divide between a two-objects and a two-aspects reading of the distinction.",
+     "accuracy": "rechecked",
+     "by": "KNT",
+     "note": "replaced by Meiklejohn's own wording (B308, A255/B310–11) and Kemp Smith's reading of the revision; the two-readings point moved to transcendental-idealism, where Rohlf and Stang set it out"
+    },
+    {
+     "s": 3,
+     "text": "Jacobi, and Fichte after him, objected that Kant's account of affection is inconsistent: the objects that affect our senses can be neither things in themselves, since that would apply the categories to them, nor appearances, which depend on the very experiences they would cause; Jacobi wrote that “without the presupposition of the [thing in itself] I cannot enter the [critical] system”.",
+     "accuracy": "rechecked",
+     "by": "STA",
+     "note": "kept as audited"
+    },
+    {
+     "s": 4,
+     "text": "Paul Redding reports that post-Kantian interpreters see Hegel as furthering Kant's critique “into the very coherence of a conception of an in-itself reality”.",
+     "accuracy": "rechecked",
+     "by": "RED",
+     "note": "kept as audited"
+    },
+    {
+     "s": 5,
+     "text": "Nick Land's collected writings of 1987–2007 are titled Fanged Noumena.",
+     "accuracy": "rechecked",
+     "by": "MAC",
+     "note": "kept as audited"
+    }
+   ],
+   "new_d": [
+    {
+     "text": "Kant: phenomena are things as they appear to us, under the forms of space and time and the categories. The noumenon, or thing in itself, is a thing considered apart from our way of intuiting it, which we can think but cannot cognize.",
+     "claims": []
+    }
+   ],
+   "new_text": [
+    {
+     "text": "The second preface states the result.",
+     "claims": [
+      {
+       "by": "framing sentence (no claim)"
+      }
+     ]
+    },
+    {
+     "text": "Our a priori cognition “has only to do with phenomena”, and things in themselves, “while possessing a real existence, lie beyond its sphere” (Bxix–xx).",
+     "claims": [
+      {
+       "by": "CPR Bxix–xx"
+      }
+     ],
+     "quotes": "2 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 35, 35"
+    },
+    {
+     "text": "We keep the power of thinking them, since otherwise there would be “an appearance, without something that appears” (Bxxvi–xxvii).",
+     "claims": [
+      {
+       "by": "CPR Bxxvi–xxvii"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 41"
+    },
+    {
+     "text": "The chapter on phenomena and noumena distinguishes two senses.",
+     "claims": [
+      {
+       "by": "CPR B306–7, block 528 (no A/B source found; quoted without a page)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "A thing so far as it is not an object of our sensuous intuition is a noumenon “in the negative sense of the word”; the object of an intellectual intuition, a mode of intuition which does not belong to us, would be a noumenon “in the positive sense”.",
+     "claims": [
+      {
+       "by": "CPR B307, block 528 (no A/B source found; quoted without a page)"
+      }
+     ],
+     "quotes": "2 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 528, 528"
+    },
+    {
+     "text": "Without the unity of intuitions in space and time, “the whole meaning of the categories is entirely lost” (B308), so what we call noumenon “must be understood by us as such in a negative sense”.",
+     "claims": [
+      {
+       "by": "CPR B308"
+      }
+     ],
+     "quotes": "2 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 529, 529"
+    },
+    {
+     "text": "The concept is not self-contradictory, and it is needed “to restrain sensuous intuition within the bounds of phenomena” (A255/B310–11); it is “merely a limitative conception and therefore only of negative use” (A255/B310–11).",
+     "claims": [
+      {
+       "by": "CPR A255/B310–11"
+      },
+      {
+       "by": "CPR A255/B310–11"
+      }
+     ],
+     "quotes": "2 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 531, 531"
+    },
+    {
+     "text": "The division of objects into phenomena and noumena is “quite inadmissible in a positive sense” (A255/B311).",
+     "claims": [
+      {
+       "by": "CPR A255/B311"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 532"
+    },
+    {
+     "text": "Kant revised this chapter for the second edition, and first-edition paragraphs of it, among them parts of A 241–2 and A 248–53, are absent from Meiklejohn's translation.",
+     "claims": [
+      {
+       "by": "CPR, German A and B texts compared (Gutenberg 6342/6343); KS for A 241–2, A 248–53; STA §2.4.7 (“extensively revised”)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Norman Kemp Smith's Commentary (1918) reads the revision as a hardening.",
+     "claims": [
+      {
+       "by": "KS"
+      }
+     ]
+    },
+    {
+     "text": "Where the first edition called the division of objects into phenomena and noumena “not in any way admissible”, the second adds the words “in the positive sense”, and in Kemp Smith's reading “the assumption that things in themselves actually exist becomes quite explicit”.",
+     "claims": [
+      {
+       "by": "KS"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 528; 2 from the scholarship, verbatim in its literal text"
+    },
+    {
+     "text": "Whether appearances and things in themselves are one object or two, interpreters still dispute (see Transcendental idealism).",
+     "claims": [
+      {
+       "by": "KNT §3; STA §5 (“One Object or Two?”)"
+      }
+     ]
+    },
+    {
+     "text": "Jacobi, and Fichte after him, objected that Kant's account of affection is inconsistent: the objects that affect our senses can be neither things in themselves, since that would apply the categories to them, nor appearances, which depend on the very experiences they would cause; Jacobi wrote that “without the presupposition of the [thing in itself] I cannot enter the [critical] system”.",
+     "claims": [
+      {
+       "by": "STA"
+      }
+     ],
+     "quotes": "1 from the scholarship, verbatim in its literal text",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Paul Redding reports that post-Kantian interpreters see Hegel as furthering Kant's critique “into the very coherence of a conception of an in-itself reality”.",
+     "claims": [
+      {
+       "by": "RED"
+      }
+     ],
+     "quotes": "1 from the scholarship, verbatim in its literal text"
+    },
+    {
+     "text": "Nick Land's collected writings of 1987–2007 are titled Fanged Noumena.",
+     "claims": [
+      {
+       "by": "MAC"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    }
+   ],
+   "s": "Kant, Critique of Pure Reason (1781; 2nd ed. 1787), Bxix–xxvii, A235–60/B294–315"
+  },
+  "synthetic-a-priori": {
+   "old": [
+    {
+     "s": 1,
+     "text": "Georges Rey writes that the possibility of the synthetic a priori “became a major concern” of Kant's work, and that Kant argued that “even so elementary an example in arithmetic as 7+5=12 is synthetic”; his concern extended to geometry as well.",
+     "accuracy": "rechecked",
+     "by": "REY",
+     "note": "kept as audited"
+    },
+    {
+     "s": 2,
+     "text": "Kant treats the law that every event has a cause as one that the sensible world conforms to and that can be known a priori.",
+     "accuracy": "rechecked",
+     "by": "KNT",
+     "note": "replaced by Kant's own example read in Meiklejohn (A9/B13)"
+    },
+    {
+     "s": 3,
+     "text": "His answer is that sensibility contributes space and time as a priori forms of intuition and the understanding contributes the categories, so that “we can cognize of things a priori only what we ourselves have put into them”.",
+     "accuracy": "rechecked",
+     "by": "KNT",
+     "note": "replaced by Bxviii in Meiklejohn's words (the old quotation was Rohlf's Guyer–Wood rendering)"
+    },
+    {
+     "s": 4,
+     "text": "In the nineteenth century Gauss, Riemann and Lobachevsky developed non-Euclidean geometries as conceptual possibilities, and in 1916 Einstein argued that physics seemed to favour one of them over Euclid's.",
+     "accuracy": "rechecked",
+     "by": "REY",
+     "note": "kept as audited"
+    },
+    {
+     "s": 5,
+     "text": "The logical positivists hoped logical analysis would show that the rest of our knowledge, beyond mathematics, rests on logic and experience combined.",
+     "accuracy": "rechecked",
+     "by": "REY",
+     "note": "kept as audited"
+    }
+   ],
+   "new_d": [
+    {
+     "text": "Kant's claim that some judgments add content to their concepts and are still known independently of experience.",
+     "claims": []
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Kant divides judgments by how the predicate stands to the subject.",
+     "claims": [
+      {
+       "by": "CPR A6/B10, block 70 (framing)"
+      }
+     ]
+    },
+    {
+     "text": "Either “the predicate B belongs to the subject A” as something contained, though covertly, in its concept, or it lies outside the concept while connected with it; the first judgment he calls analytical, the second synthetical (A6/B10).",
+     "claims": [
+      {
+       "by": "CPR A6/B10"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 70"
+    },
+    {
+     "text": "“Judgements of experience, as such, are always synthetical” (B11), since an analytical judgment needs no appeal to experience.",
+     "claims": [
+      {
+       "by": "CPR B11"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 71"
+    },
+    {
+     "text": "Synthetical judgments a priori raise the difficulty.",
+     "claims": [
+      {
+       "by": "framing sentence (no claim)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "In “Everything that happens has a cause” (A9/B13), the concept of cause lies outside the concept of something that happens, and the proposition claims a universality and necessity which experience cannot give (A9/B13).",
+     "claims": [
+      {
+       "by": "CPR A9/B13"
+      },
+      {
+       "by": "CPR A9/B13"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 72"
+    },
+    {
+     "text": "Mathematics holds such judgments too: we might take 7 + 5 = 12 for analytical, but the concept of the sum of seven and five “contains nothing more than the uniting of both sums into one” (B15).",
+     "claims": [
+      {
+       "by": "CPR B15"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 76"
+    },
+    {
+     "text": "The task of the whole work comes under one question: “How are synthetical judgements a priori possible?” (B19).",
+     "claims": [
+      {
+       "by": "CPR B19"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 81"
+    },
+    {
+     "text": "The answer begins from the experiment of the second preface: “we only cognize in things a priori that which we ourselves place in them” (Bxviii).",
+     "claims": [
+      {
+       "by": "CPR Bxviii"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 33",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Space and time, as forms of intuition, and the categories of the understanding supply what such a judgment adds (see Transcendental idealism; Categories of the understanding).",
+     "claims": [
+      {
+       "by": "cross-reference within the app, resting on the transcendental-idealism and categories entries (KNT §2.2)"
+      }
+     ]
+    },
+    {
+     "text": "Michael Rohlf reads the Copernican hypothesis as the ground for holding that “we can have a priori knowledge about the general structure of the sensible world”.",
+     "claims": [
+      {
+       "by": "KNT"
+      }
+     ],
+     "quotes": "1 from the scholarship, verbatim in its literal text"
+    },
+    {
+     "text": "Georges Rey writes that the possibility of the synthetic a priori “became a major concern” of Kant's work, and that Kant argued that “even so elementary an example in arithmetic as 7+5=12 is synthetic”; his concern extended to geometry as well.",
+     "claims": [
+      {
+       "by": "REY"
+      }
+     ],
+     "quotes": "2 from the scholarship, verbatim in its literal text",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "In the nineteenth century Gauss, Riemann and Lobachevsky developed non-Euclidean geometries as conceptual possibilities, and in 1916 Einstein argued that physics seemed to favour one of them over Euclid's.",
+     "claims": [
+      {
+       "by": "REY (kept from the audit of 2026-10-27, glossary-kant-hegel.json)"
+      }
+     ]
+    },
+    {
+     "text": "The logical positivists hoped logical analysis would show that the rest of our knowledge, beyond mathematics, rests on logic and experience combined.",
+     "claims": [
+      {
+       "by": "REY (kept from the audit of 2026-10-27, glossary-kant-hegel.json)"
+      }
+     ]
+    }
+   ],
+   "s": "Kant, Critique of Pure Reason (1781; 2nd ed. 1787), Bxviii, A6–10/B10–19; Prolegomena (1783), §5"
+  },
+  "categories": {
+   "new_d": [
+    {
+     "text": "Kant's twelve pure concepts of the understanding, which he derives from the logical forms of judgment and argues hold a priori of every object of possible experience.",
+     "claims": []
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Cognition needs two faculties: sensibility, through which objects are given, and understanding, through which they are thought.",
+     "claims": [
+      {
+       "by": "CPR A50–1/B74–5, block 163 (A51/B75, KS)"
+      }
+     ]
+    },
+    {
+     "text": "“Thoughts without content are void; intuitions without conceptions, blind” (A51/B75).",
+     "claims": [
+      {
+       "by": "CPR A51/B75"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 163"
+    },
+    {
+     "text": "The function that unites representations in a judgment “gives also unity to the mere synthesis of different representations in an intuition”, and “this unity we call the pure conception of the understanding” (A79/B105).",
+     "claims": [
+      {
+       "by": "CPR A79/B105"
+      }
+     ],
+     "quotes": "2 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 212, 212",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "There are therefore as many pure conceptions as there are logical functions of judgment, and Kant, “with Aristotle”, calls them categories, while noting the great difference in execution.",
+     "claims": [
+      {
+       "by": "CPR A79–80/B105, block 213 (follows A79/B105; no separate A/B source, quoted without a page)"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 213"
+    },
+    {
+     "text": "His Table of the Categories (A80/B106) has four heads of three: quantity (unity, plurality, totality), quality (reality, negation, limitation), relation (inherence and subsistence, causality and dependence, community) and modality (possibility and impossibility, existence and non-existence, necessity and contingence).",
+     "claims": [
+      {
+       "by": "CPR A80/B106"
+      }
+     ]
+    },
+    {
+     "text": "Kant calls this derivation from the forms of judgment the metaphysical deduction; in Michael Rohlf's examples, the categorical form of judgment yields substance and accident, and the hypothetical form, cause and effect.",
+     "claims": [
+      {
+       "by": "KNT"
+      }
+     ]
+    },
+    {
+     "text": "The transcendental deduction asks by what right these concepts apply to objects.",
+     "claims": [
+      {
+       "by": "CPR A84–5/B116–17 (Rohlf §4; framing)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The second edition's version starts from self-consciousness: the I think, Kant writes, must “accompany all my representations” (B131).",
+     "claims": [
+      {
+       "by": "CPR B131"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 256"
+    },
+    {
+     "text": "Rohlf reads the deduction as showing that the categories are objectively valid because they are necessary conditions of experience.",
+     "claims": [
+      {
+       "by": "KNT"
+      }
+     ]
+    },
+    {
+     "text": "The first edition's version of the deduction, A 95–130, with its threefold synthesis and the passage at A 125–6 where the understanding is the legislation for nature, is absent from Meiklejohn's translation.",
+     "claims": [
+      {
+       "by": "CPR, German A and B texts compared; KS for A 95–130; KNT quotes A125–126"
+      }
+     ]
+    },
+    {
+     "text": "The categories have no use beyond possible experience: for noumena, “the whole meaning of the categories is entirely lost” (B308).",
+     "claims": [
+      {
+       "by": "CPR B308"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 529",
+     "paragraph": "starts a new paragraph"
+    }
+   ],
+   "s": "Kant, Critique of Pure Reason (1781; 2nd ed. 1787), A50–1/B74–5, A70–83/B95–109, B129–69, B305–9"
+  },
+  "antinomy": {
+   "new_d": [
+    {
+     "text": "Kant's name for the conflict reason falls into when it thinks the world as a completed whole: four pairs of opposed propositions, thesis and antithesis, each of which seems provable.",
+     "claims": []
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Seeking the unconditioned for every conditioned, reason meets “a perfectly natural antithetic”, into which it falls of itself.",
+     "claims": [
+      {
+       "by": "CPR A407/B434, block 712"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 712"
+    },
+    {
+     "text": "It is tempted either to a despairing scepticism or to dogmatic obstinacy, and the scepticism “might perhaps deserve the title of the euthanasia of pure reason” (A407/B434).",
+     "claims": [
+      {
+       "by": "CPR A407/B434"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 712"
+    },
+    {
+     "text": "The Antithetic (A420/B448) sets out four conflicts.",
+     "claims": [
+      {
+       "by": "CPR A420/B448"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "In the first, the world “has a beginning in time, and is also limited in regard to space”, against a world infinite in time and space.",
+     "claims": [
+      {
+       "by": "CPR first conflict, blocks 745, 751 (no A/B source for the statements)"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 745"
+    },
+    {
+     "text": "In the second, every composite substance consists of simple parts, against there being no simple substance in the world.",
+     "claims": [
+      {
+       "by": "CPR second conflict, blocks 769, 774 (no A/B source for the statements; KS gives A420/B448 for the section)"
+      }
+     ]
+    },
+    {
+     "text": "In the third, a causality of freedom is needed besides causality by the laws of nature, against “There is no such thing as freedom”.",
+     "claims": [
+      {
+       "by": "CPR third conflict, blocks 787, 792 (no A/B source for the statements)"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 792"
+    },
+    {
+     "text": "In the fourth, an absolutely necessary being exists, in the world or as its cause, against there being none.",
+     "claims": [
+      {
+       "by": "CPR fourth conflict, blocks 805, 810 (no A/B source for the statements)"
+      }
+     ]
+    },
+    {
+     "text": "Michelle Grier notes that both sides argue apagogically, establishing their conclusions by indirect proof.",
+     "claims": [
+      {
+       "by": "GRI"
+      }
+     ]
+    },
+    {
+     "text": "Behind the conflict stands one argument: if the conditioned is given, “the whole series of its conditions is also given” (A497/B525), and sensuous objects are given as conditioned.",
+     "claims": [
+      {
+       "by": "CPR A497/B525"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 877",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Grier reports Kant's diagnosis of this syllogism as an ambiguous middle term, which takes the conditioned as a pure concept in the major premise and empirically in the minor.",
+     "claims": [
+      {
+       "by": "GRI"
+      }
+     ]
+    },
+    {
+     "text": "Kant's diagnosis is that the idea of absolute totality is “admissible only as a condition of things in themselves” (A506/B534), and applied to phenomena it produces an illusory opposition.",
+     "claims": [
+      {
+       "by": "CPR A506/B534"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 887"
+    },
+    {
+     "text": "The same passage draws from the antinomy an indirect proof of transcendental idealism.",
+     "claims": [
+      {
+       "by": "CPR A506/B534, block 887"
+      }
+     ]
+    },
+    {
+     "text": "The first two antinomies, the mathematical ones, are ended “by declaring both contradictory statements to be false” (A528/B556).",
+     "claims": [
+      {
+       "by": "CPR A528/B556"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 922",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "In the two dynamical ones a condition outside the series of phenomena is admissible, so “both propositions of reason may be shown to be true in their proper signification”.",
+     "claims": [
+      {
+       "by": "CPR A528/B556, blocks 923–925"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 925"
+    },
+    {
+     "text": "The solution of the third begins from two modes of causality, “the causality of nature or of freedom” (A532/B560).",
+     "claims": [
+      {
+       "by": "CPR A532/B560"
+      }
+     ],
+     "quotes": "1 of Kant's (Meiklejohn) verbatim in the bundled book, blocks 928"
+    },
+    {
+     "text": "Grier notes that Kant claims the resolution provides “an indirect argument for his own transcendental idealism”, and she lists detailed discussions of the antinomies by Al-Azm, Bennett, Guyer, Strawson, Watkins, Van Cleve and others.",
+     "claims": [
+      {
+       "by": "GRI"
+      }
+     ],
+     "quotes": "1 from the scholarship, verbatim in its literal text",
+     "paragraph": "starts a new paragraph"
+    }
+   ],
+   "s": "Kant, Critique of Pure Reason (1781; 2nd ed. 1787), A405–567/B432–595"
+  }
+ },
+ "ab": [
+  {
+   "ref": "Bxvi",
+   "block": 33,
+   "words": "objects must conform to our cognition",
+   "number_from": "Rohlf §2.2 cites Bxvi–xviii for the Copernican passage (“assuming that the objects must conform to our cognition”); Kemp Smith, Commentary, note 123",
+   "akademie": "AA 3:12 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "Bxviii",
+   "block": 33,
+   "words": "we only cognize in things a priori that which we ourselves place in them",
+   "number_from": "Rohlf §2.2 quotes the sentence at Bxviii (“we can cognize of things a priori only what we ourselves have put into them”)",
+   "akademie": "AA 3:13 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "Bxix–xx",
+   "block": 35,
+   "words": "while possessing a real existence, lie beyond its sphere",
+   "number_from": "Rohlf §3 quotes Bxix–xx (“such cognition reaches appearances only”), the same sentence as Meiklejohn's “has only to do with phenomena”",
+   "akademie": "AA 3:13–14 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "Bxxvi–xxvii",
+   "block": 41,
+   "words": "without something that appears",
+   "number_from": "Stang §3.2 cites Bxxvi–xxvii for appearances being appearances of something; Kemp Smith, note 142",
+   "akademie": "AA 3:17 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "Bxxx",
+   "block": 43,
+   "words": "abolish knowledge, to make room for belief",
+   "number_from": "Rohlf §3 quotes Bxxx (“I had to deny knowledge in order to make room for faith”)",
+   "akademie": "AA 3:19 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A6/B10",
+   "block": 70,
+   "words": "the predicate B belongs to the subject A",
+   "number_from": "Kemp Smith, note 164; Rey §1.1 cites B10 for the definition of analytic judgment",
+   "akademie": "AA 3:33 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "B11",
+   "block": 71,
+   "words": "Judgements of experience, as such, are always synthetical",
+   "number_from": "Rey §1.1 quotes B11 (“I merely draw out the predicate…”), the next sentences of the same paragraph",
+   "akademie": "AA 3:34 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A9/B13",
+   "block": 72,
+   "words": "Everything that happens has a cause",
+   "number_from": "Kemp Smith, note 255 (the causal proposition as example)",
+   "akademie": "AA 3:35 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "B15",
+   "block": 76,
+   "words": "7 + 5 = 12",
+   "number_from": "Rey §1.1 quotes B15 (“the concept of 12 is not contained in the concepts of 7, 5, or +”)",
+   "akademie": "AA 3:37 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "B19",
+   "block": 81,
+   "words": "How are synthetical judgements a priori possible?",
+   "number_from": "Kemp Smith, note 290 (the general problem of pure reason)",
+   "akademie": "AA 3:39 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A26/B42",
+   "block": 119,
+   "words": "Space does not represent any property of objects as things in themselves",
+   "number_from": "Stang quotes A26/B42 (“Space represents no property at all of any things in themselves…”)",
+   "akademie": "AA 3:55 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A28/B44",
+   "block": 121,
+   "words": "the empirical reality of space",
+   "number_from": "Kemp Smith, note 478 (empirical reality, transcendental ideality of space)",
+   "akademie": "AA 3:56 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A30/B45",
+   "block": 122,
+   "words": "what we call outward objects",
+   "number_from": "Stang quotes A30/B45 (“what we call outer objects are nothing other than mere representations of our sensibility”)",
+   "akademie": "AA 3:57 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A42/B59",
+   "block": 145,
+   "words": "are not in themselves the same as our representations of them in intuition",
+   "number_from": "Rohlf §3 quotes A42/B59–60 and Stang A42/B59 (“nor are their relations so constituted in themselves as they appear to us”)",
+   "akademie": "AA 3:65 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A51/B75",
+   "block": 163,
+   "words": "Thoughts without content are void",
+   "number_from": "Kemp Smith, note 348 (“Thoughts without content…”)",
+   "akademie": "AA 3:75 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A79/B105",
+   "block": 212,
+   "words": "gives also unity to the mere synthesis",
+   "number_from": "Kemp Smith, note 720 (the same function gives unity to judgment and intuition)",
+   "akademie": "AA 3:92 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A80/B106",
+   "block": 214,
+   "words": "Table of the Categories",
+   "number_from": "Rohlf §4 cites A80–81/B106 for the table of categories",
+   "akademie": "AA 3:93 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "B131",
+   "block": 256,
+   "words": "accompany all my representations",
+   "number_from": "Rohlf §4.1 quotes B131–132 (“The I think must be able to accompany all my representations”); Kemp Smith, note 957",
+   "akademie": "AA 3:108 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "B308",
+   "block": 529,
+   "words": "the whole meaning of the categories is entirely lost",
+   "number_from": "Kemp Smith, note 1311, quoting the sentence “their whole employment, and indeed all their meaning entirely ceases”",
+   "akademie": "AA 3:210 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A255/B310–11",
+   "block": 531,
+   "words": "merely a limitative conception",
+   "number_from": "Kemp Smith, note 1299 (the limiting concept)",
+   "akademie": "AA 3:211 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A255/B311",
+   "block": 532,
+   "words": "quite inadmissible in a positive sense",
+   "number_from": "Kemp Smith, note 1312, on the sentence the second edition qualifies with “in the positive sense”",
+   "akademie": "AA 3:212 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A407/B434",
+   "block": 712,
+   "words": "euthanasia of pure reason",
+   "number_from": "Grier §4 quotes A407/B434 (“euthanasia of pure reason”)",
+   "akademie": "AA 3:282 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A420/B448",
+   "block": 734,
+   "words": "Antithetic of Pure Reason",
+   "number_from": "Kemp Smith, note 1503 (start of Section II, the Antithetic); Grier cites A420/B448 for Section I's last sentence on the same page",
+   "akademie": "AA 3:290 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A491/B519",
+   "block": 869,
+   "words": "This doctrine I call Transcendental Idealism",
+   "number_from": "Stang §1 quotes A491/B519 (“This doctrine I call transcendental idealism.”); Kemp Smith, note 1553",
+   "akademie": "AA 3:338 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A497/B525",
+   "block": 877,
+   "words": "If that which is conditioned is given",
+   "number_from": "Grier §4.1 quotes A497/B525 (“If the conditioned is given, then the whole series of conditions”); Kemp Smith, note 1555",
+   "akademie": "AA 3:342 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A506/B534",
+   "block": 887,
+   "words": "admissible only as a condition of things in themselves",
+   "number_from": "Kemp Smith, note 1557 (the indirect proof of transcendental idealism)",
+   "akademie": "AA 3:347 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A528/B556",
+   "block": 921,
+   "words": "Concluding Remark on the Solution of the Transcendental Mathematical Ideas",
+   "number_from": "Kemp Smith, note 1575 (the remark introducing the dynamical ideas)",
+   "akademie": "AA 3:360 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A532/B560",
+   "block": 927,
+   "words": "Deduction of Cosmical Events",
+   "number_from": "Kemp Smith, note 1579 (solution of the third antinomy)",
+   "akademie": "AA 3:362 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  }
+ ],
+ "summary": "Three new entries (transcendental idealism, categories of the understanding, antinomy of pure reason) and two re-reads (phenomenon and noumenon, synthetic a priori), read in the bundled Meiklejohn Critique first and the Stanford Encyclopedia second (Rohlf 2024, Stang 2016, Grier 2022, Rey 2026), with Kemp Smith's Commentary (1918) for A/B pages and the first-edition differences. 28 A/B references, each matched by content to a scholar's citation and checked against the Akademie page; each opens its passage in the book. Two disputes recorded: one object or two (open), and Kemp Smith's reading of the second-edition revision of the noumenon chapter (given as his; Stang §6 unread)."
+}

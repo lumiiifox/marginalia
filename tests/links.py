@@ -235,7 +235,9 @@ async def main():
         # glossary entries with xr: every bracketed reference in the text is a link to a passage that exists, and every quotation
         # followed by one is the bundled book's words in that very section (Hume, read in the Treatise and the Enquiry)
         xr = await page.evaluate("""(async () => { const out = { bad: [], links: 0, quotes: 0, terms: 0 }, books = {};
-          const span = (B, i) => { const l = B[i].l; let j = i + 1; while (j < B.length && !(B[j].k === 'h' && B[j].l <= l)) j++;
+          // a heading's section runs to the next heading at its level or above; a paragraph is itself and the notes printed after it
+          const span = (B, i) => { const l = B[i].l; let j = i + 1;
+            if (B[i].k === 'h') { while (j < B.length && !(B[j].k === 'h' && B[j].l <= l)) j++; } else while (j < B.length && B[j].k === 'fn') j++;
             return B.slice(i, j).map((b) => plain(b.x || '').replace(/<[^>]+>/g, '')).join(' ').replace(/[¹²³⁴⁵⁶⁷⁸⁹⁰]/g, '').replace(/\\s+/g, ' '); };
           for (const g of GLOSSARY.filter((g) => g.xr)) { out.terms++;
             for (const para of g.x.split(/\\n\\s*\\n/)) {
@@ -246,13 +248,18 @@ async def main():
                 if (!books[st]) books[st] = (await (await fetch('data/books/' + PASSAGE_STYLES[st].book + '.json')).json()).content;
                 const i = passageBlock(books[st], a.dataset.passageAt, st); if (i < 0) { out.bad.push(g.id + ' ' + a.textContent); continue; }
                 at[a.textContent] = (at[a.textContent] || '') + ' ' + span(books[st], i); }
-              for (const m of para.matchAll(/“([^”]*)”([^“]*?)\\(((?:T|EHU) [^()]+)\\)/g)) {
+              for (const m of para.matchAll(/“([^”]*)”([^“]*?)\\(((?:T|EHU) [^()]+|[AB][\\dxvi][^()]*)\\)/g)) {
                 if (/[.;]\\s/.test(m[2])) continue;  // the reference belongs to a later sentence
                 out.quotes++; const q = m[1].replace(/[,.]$/, ''), txt = m[3].split('; ').map((r) => at[r] || '').join(' ');
                 if (!txt.includes(q)) out.bad.push(g.id + ' quote ' + q);
                 if (q.split(/\\s+/).length >= 15) out.bad.push(g.id + ' long quote ' + q); } } }
           return out; })()""")
-        check(xr["terms"] >= 5 and xr["links"] >= 60 and xr["quotes"] >= 50 and not xr["bad"], f"glossary entries citing Hume: every reference opens its section, every quotation is that section's words, under 15 words ({xr})")
+        check(xr["terms"] >= 5 and xr["links"] >= 60 and xr["quotes"] >= 50 and not xr["bad"], f"glossary entries citing Hume and Kant: every reference opens its section, every quotation is that section's words, under 15 words ({xr})")
+        # every A/B page listed for the Critique finds its passage in the bundled Meiklejohn (the first block holding its words)
+        kab = await page.evaluate("""(async () => { const B = (await (await fetch('data/books/classic-kant-critique.json')).json()).content, bad = [];
+          for (const [ref, [w]] of Object.entries(KANT_AB)) { const i = passageBlock(B, ref, 'kant-critique'); if (i < 0) bad.push(ref); }
+          return { n: Object.keys(KANT_AB).length, bad }; })()""")
+        check(kab["n"] >= 20 and not kab["bad"], f"every A/B page listed for the Critique of Pure Reason opens a passage in Meiklejohn ({kab})")
         await page.evaluate("openTerm('conatus')"); await page.wait_for_timeout(300)
         await page.click("details.term[data-term-id='conatus'] .tsrc [data-passage='spinoza-ethics'] >> nth=0")
         await page.wait_for_function("S.screen === 'reader' && R.tid === 'classic-spinoza-ethics' && R.blocks", timeout=20000); await page.wait_for_timeout(600)

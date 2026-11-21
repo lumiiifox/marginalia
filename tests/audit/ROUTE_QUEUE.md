@@ -37,10 +37,19 @@ personal-identity (new, glossary-hume.json), and the Hume thinker card (thinkers
 Empiricism and Subjectivity. Still unread: Millican's later sections, the original works of the New Hume debate and of the Appendix
 readings (given through the encyclopedias, Millican and Yang), Giles pp. 186–200 (the audit's `unread`).
 
+### Kant, read in the Critique of Pure Reason (owner's request, 2026-11-21)
+
+Justified by the Deleuze and Land readings, which need Kant; the route is unchanged. The Critique comes with the app in Meiklejohn's
+translation (second edition, with the first edition's preface; its primer lists the first-edition passages it lacks). Read 2026-11-21:
+transcendental-idealism, categories and antinomy (new) and noumenon and synthetic-a-priori (re-read), in glossary-kant.json, with A/B
+pages matched by content to Kemp Smith's Commentary and the SEP entries and checked against the Akademie pages. Still unread: Stang §§5.3–7
+(noumena), Rohlf from §5.1, A/B pages for the antinomy statements (the audit's `unread`). "Kantian joke" waits for a named source (first
+place to look: the editors' introduction to Fanged Noumena); Land's 1988 essay waits for the owner's pages of Fanged Noumena pp. 55–80.
+
 ## Audited
 
 The 15 Deleuze and Guattari entries and structuralism (glossary-dg.json); Spinoza's metaphysics (glossary-spinoza.json); the ancient and
-early modern ground (glossary-aristotle.json); Kant and Hegel (glossary-kant-hegel.json); Nietzsche (glossary-nietzsche.json); Land and
+early modern ground (glossary-aristotle.json); Kant and Hegel (glossary-kant-hegel.json), Kant re-read in the Critique (glossary-kant.json); Nietzsche (glossary-nietzsche.json); Land and
 accelerationism, and the terms the Spinoza → Deleuze close reading points to (glossary-route2.json); ontology, metaphysics, accident,
 universals, deduction, essentialism and existentialism (glossary-route3.json). Difference and Repetition, read in the book itself: representation and repetition (new), and difference-in-itself,
 syntheses-of-time, virtual-actual and univocity re-read (glossary-dr.json, superseding their records in glossary-dg.json). Anti-Oedipus, read in the book itself: desiring-production, body-without-organs, syntheses-unconscious,

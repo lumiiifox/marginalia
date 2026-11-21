@@ -55,105 +55,6 @@
  },
  "note": "Claims the sources consulted did not cover were cut, keeping each entry to what was checked; Deleuze's transcendental empiricism and Land's Fanged Noumena tie the entries to the route.",
  "terms": {
-  "noumenon": {
-   "old": [
-    {
-     "s": 1,
-     "text": "Phenomena under space, time and categories; the noumenon or thing in itself, which we cannot know.",
-     "accuracy": "supported",
-     "by": "KNT; STA"
-    },
-    {
-     "s": 2,
-     "text": "Kant distinguishes a negative sense of noumenon from a positive sense (an object of an intellectual intuition we lack).",
-     "accuracy": "unverified",
-     "note": "Not in the sources consulted; cut."
-    },
-    {
-     "s": 3,
-     "text": "Things in themselves cannot be known yet must be thinkable; practical reason gives grounds for belief in freedom, God and immortality.",
-     "accuracy": "overstated",
-     "by": "STA",
-     "note": "Thinkable-but-unknowable kept from Stang; the practical-reason clause has no source consulted, cut."
-    },
-    {
-     "s": 4,
-     "text": "Fichte and Hegel judged an unknowable thing in itself incoherent, which set German idealism on its course.",
-     "accuracy": "overstated",
-     "by": "STA; RED",
-     "note": "Stang reports the affection objection (Jacobi, Fichte); Redding's reading of Hegel quoted; the causal claim about German idealism cut."
-    },
-    {
-     "s": 5,
-     "text": "Land's collected essays take their title, Fanged Noumena, from the term.",
-     "accuracy": "supported",
-     "by": "MAC",
-     "note": "Stated as the title."
-    }
-   ],
-   "new_d": [
-    {
-     "text": "Kant: phenomena are things as they appear to us, under the forms of space and time and the categories. The noumenon, or thing in itself, is reality as it is independent of us, which we cannot know.",
-     "claims": [
-      {
-       "by": "KNT"
-      },
-      {
-       "by": "STA"
-      }
-     ]
-    }
-   ],
-   "new_text": [
-    {
-     "text": "Nicholas Stang sums up the doctrine: space and time are “the forms of our sensible intuition of objects”, and “We cannot cognize things in themselves”, though we can think about them using the categories.",
-     "claims": [
-      {
-       "by": "STA"
-      }
-     ]
-    },
-    {
-     "text": "Kant calls the thing in itself “something actual for itself but uncognized by us”, and interpreters divide between a two-objects and a two-aspects reading of the distinction.",
-     "claims": [
-      {
-       "by": "KNT"
-      }
-     ]
-    },
-    {
-     "text": "Jacobi, and Fichte after him, objected that Kant's account of affection is inconsistent: the objects that affect our senses can be neither things in themselves, since that would apply the categories to them, nor appearances, which depend on the very experiences they would cause; Jacobi wrote that “without the presupposition of the [thing in itself] I cannot enter the [critical] system”.",
-     "claims": [
-      {
-       "by": "STA"
-      }
-     ]
-    },
-    {
-     "text": "Paul Redding reports that post-Kantian interpreters see Hegel as furthering Kant's critique “into the very coherence of a conception of an in-itself reality”.",
-     "claims": [
-      {
-       "by": "RED"
-      }
-     ]
-    },
-    {
-     "text": "Nick Land's collected writings of 1987–2007 are titled Fanged Noumena.",
-     "claims": [
-      {
-       "by": "MAC"
-      }
-     ]
-    }
-   ],
-   "s": "Kant, Critique of Pure Reason, Bxix–xx, A235–60/B294–315",
-   "src": "STA",
-   "srcs": [
-    "KNT",
-    "RED",
-    "MAC"
-   ]
-  },
   "transcendental": {
    "old": [
     {
@@ -240,93 +141,6 @@
     "PER",
     "GRI",
     "DEL"
-   ]
-  },
-  "synthetic-a-priori": {
-   "old": [
-    {
-     "s": 1,
-     "text": "Judgments that add content and are known independently of experience: arithmetic, geometry, every event has a cause.",
-     "accuracy": "supported",
-     "by": "REY; KNT"
-    },
-    {
-     "s": 2,
-     "text": "“How are synthetic judgments a priori possible?” organizes the Critique.",
-     "accuracy": "overstated",
-     "by": "REY",
-     "note": "Rey: its possibility became a major concern of Kant's work; the question as worded is not in the sources consulted."
-    },
-    {
-     "s": 3,
-     "text": "Kant's answer: space and time forms of intuition, categories forms of understanding.",
-     "accuracy": "supported",
-     "by": "KNT"
-    },
-    {
-     "s": 4,
-     "text": "Critics argued that non-Euclidean geometry and relativity undercut his examples; the logical empiricists denied any synthetic a priori knowledge.",
-     "accuracy": "overstated",
-     "by": "REY",
-     "note": "Restated as the source has it."
-    }
-   ],
-   "new_d": [
-    {
-     "text": "Kant's claim that some judgments add content to their concepts and are still known independently of experience.",
-     "claims": [
-      {
-       "by": "REY"
-      }
-     ]
-    }
-   ],
-   "new_text": [
-    {
-     "text": "Georges Rey writes that the possibility of the synthetic a priori “became a major concern” of Kant's work, and that Kant argued that “even so elementary an example in arithmetic as 7+5=12 is synthetic”; his concern extended to geometry as well.",
-     "claims": [
-      {
-       "by": "REY"
-      }
-     ]
-    },
-    {
-     "text": "Kant treats the law that every event has a cause as one that the sensible world conforms to and that can be known a priori.",
-     "claims": [
-      {
-       "by": "KNT"
-      }
-     ]
-    },
-    {
-     "text": "His answer is that sensibility contributes space and time as a priori forms of intuition and the understanding contributes the categories, so that “we can cognize of things a priori only what we ourselves have put into them”.",
-     "claims": [
-      {
-       "by": "KNT"
-      }
-     ]
-    },
-    {
-     "text": "In the nineteenth century Gauss, Riemann and Lobachevsky developed non-Euclidean geometries as conceptual possibilities, and in 1916 Einstein argued that physics seemed to favour one of them over Euclid's.",
-     "claims": [
-      {
-       "by": "REY"
-      }
-     ]
-    },
-    {
-     "text": "The logical positivists hoped logical analysis would show that the rest of our knowledge, beyond mathematics, rests on logic and experience combined.",
-     "claims": [
-      {
-       "by": "REY"
-      }
-     ]
-    }
-   ],
-   "s": "Kant, Critique of Pure Reason, Bxviii, B14–19; Prolegomena (1783), §5",
-   "src": "REY",
-   "srcs": [
-    "KNT"
    ]
   },
   "dialectic": {
@@ -560,6 +374,197 @@
    "srcs": [
     "RED"
    ]
+  }
+ },
+ "superseded": {
+  "note": "Re-read in Kant's Critique of Pure Reason (bundled Meiklejohn) on 2026-11-21 (glossary-kant.json). Kept here as the record of the first, encyclopedia-based audit.",
+  "terms": {
+   "noumenon": {
+    "old": [
+     {
+      "s": 1,
+      "text": "Phenomena under space, time and categories; the noumenon or thing in itself, which we cannot know.",
+      "accuracy": "supported",
+      "by": "KNT; STA"
+     },
+     {
+      "s": 2,
+      "text": "Kant distinguishes a negative sense of noumenon from a positive sense (an object of an intellectual intuition we lack).",
+      "accuracy": "unverified",
+      "note": "Not in the sources consulted; cut."
+     },
+     {
+      "s": 3,
+      "text": "Things in themselves cannot be known yet must be thinkable; practical reason gives grounds for belief in freedom, God and immortality.",
+      "accuracy": "overstated",
+      "by": "STA",
+      "note": "Thinkable-but-unknowable kept from Stang; the practical-reason clause has no source consulted, cut."
+     },
+     {
+      "s": 4,
+      "text": "Fichte and Hegel judged an unknowable thing in itself incoherent, which set German idealism on its course.",
+      "accuracy": "overstated",
+      "by": "STA; RED",
+      "note": "Stang reports the affection objection (Jacobi, Fichte); Redding's reading of Hegel quoted; the causal claim about German idealism cut."
+     },
+     {
+      "s": 5,
+      "text": "Land's collected essays take their title, Fanged Noumena, from the term.",
+      "accuracy": "supported",
+      "by": "MAC",
+      "note": "Stated as the title."
+     }
+    ],
+    "new_d": [
+     {
+      "text": "Kant: phenomena are things as they appear to us, under the forms of space and time and the categories. The noumenon, or thing in itself, is reality as it is independent of us, which we cannot know.",
+      "claims": [
+       {
+        "by": "KNT"
+       },
+       {
+        "by": "STA"
+       }
+      ]
+     }
+    ],
+    "new_text": [
+     {
+      "text": "Nicholas Stang sums up the doctrine: space and time are “the forms of our sensible intuition of objects”, and “We cannot cognize things in themselves”, though we can think about them using the categories.",
+      "claims": [
+       {
+        "by": "STA"
+       }
+      ]
+     },
+     {
+      "text": "Kant calls the thing in itself “something actual for itself but uncognized by us”, and interpreters divide between a two-objects and a two-aspects reading of the distinction.",
+      "claims": [
+       {
+        "by": "KNT"
+       }
+      ]
+     },
+     {
+      "text": "Jacobi, and Fichte after him, objected that Kant's account of affection is inconsistent: the objects that affect our senses can be neither things in themselves, since that would apply the categories to them, nor appearances, which depend on the very experiences they would cause; Jacobi wrote that “without the presupposition of the [thing in itself] I cannot enter the [critical] system”.",
+      "claims": [
+       {
+        "by": "STA"
+       }
+      ]
+     },
+     {
+      "text": "Paul Redding reports that post-Kantian interpreters see Hegel as furthering Kant's critique “into the very coherence of a conception of an in-itself reality”.",
+      "claims": [
+       {
+        "by": "RED"
+       }
+      ]
+     },
+     {
+      "text": "Nick Land's collected writings of 1987–2007 are titled Fanged Noumena.",
+      "claims": [
+       {
+        "by": "MAC"
+       }
+      ]
+     }
+    ],
+    "s": "Kant, Critique of Pure Reason, Bxix–xx, A235–60/B294–315",
+    "src": "STA",
+    "srcs": [
+     "KNT",
+     "RED",
+     "MAC"
+    ]
+   },
+   "synthetic-a-priori": {
+    "old": [
+     {
+      "s": 1,
+      "text": "Judgments that add content and are known independently of experience: arithmetic, geometry, every event has a cause.",
+      "accuracy": "supported",
+      "by": "REY; KNT"
+     },
+     {
+      "s": 2,
+      "text": "“How are synthetic judgments a priori possible?” organizes the Critique.",
+      "accuracy": "overstated",
+      "by": "REY",
+      "note": "Rey: its possibility became a major concern of Kant's work; the question as worded is not in the sources consulted."
+     },
+     {
+      "s": 3,
+      "text": "Kant's answer: space and time forms of intuition, categories forms of understanding.",
+      "accuracy": "supported",
+      "by": "KNT"
+     },
+     {
+      "s": 4,
+      "text": "Critics argued that non-Euclidean geometry and relativity undercut his examples; the logical empiricists denied any synthetic a priori knowledge.",
+      "accuracy": "overstated",
+      "by": "REY",
+      "note": "Restated as the source has it."
+     }
+    ],
+    "new_d": [
+     {
+      "text": "Kant's claim that some judgments add content to their concepts and are still known independently of experience.",
+      "claims": [
+       {
+        "by": "REY"
+       }
+      ]
+     }
+    ],
+    "new_text": [
+     {
+      "text": "Georges Rey writes that the possibility of the synthetic a priori “became a major concern” of Kant's work, and that Kant argued that “even so elementary an example in arithmetic as 7+5=12 is synthetic”; his concern extended to geometry as well.",
+      "claims": [
+       {
+        "by": "REY"
+       }
+      ]
+     },
+     {
+      "text": "Kant treats the law that every event has a cause as one that the sensible world conforms to and that can be known a priori.",
+      "claims": [
+       {
+        "by": "KNT"
+       }
+      ]
+     },
+     {
+      "text": "His answer is that sensibility contributes space and time as a priori forms of intuition and the understanding contributes the categories, so that “we can cognize of things a priori only what we ourselves have put into them”.",
+      "claims": [
+       {
+        "by": "KNT"
+       }
+      ]
+     },
+     {
+      "text": "In the nineteenth century Gauss, Riemann and Lobachevsky developed non-Euclidean geometries as conceptual possibilities, and in 1916 Einstein argued that physics seemed to favour one of them over Euclid's.",
+      "claims": [
+       {
+        "by": "REY"
+       }
+      ]
+     },
+     {
+      "text": "The logical positivists hoped logical analysis would show that the rest of our knowledge, beyond mathematics, rests on logic and experience combined.",
+      "claims": [
+       {
+        "by": "REY"
+       }
+      ]
+     }
+    ],
+    "s": "Kant, Critique of Pure Reason, Bxviii, B14–19; Prolegomena (1783), §5",
+    "src": "REY",
+    "srcs": [
+     "KNT"
+    ]
+   }
   }
  }
 }
