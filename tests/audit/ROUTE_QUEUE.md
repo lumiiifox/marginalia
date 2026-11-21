@@ -42,5 +42,8 @@ coding-decoding re-checked (glossary-atp.json, likewise superseding glossary-dg.
 re-read, and two sentences of deterritorialization from it (glossary-wip.json, superseding plane-of-immanence's record in glossary-atp.json). Kafka: Toward a Minor Literature, read in the book itself:
 minor-literature re-read, and the Kafka sentences of rhizome and deterritorialization (glossary-kaf.json, superseding minor-literature's record
 in glossary-atp.json). The Logic of Sense, read in the book itself at the owner's request: sense-event, aion-chronos and counter-actualization (new),
-and the Logic of Sense sentence of body-without-organs re-checked (glossary-los.json). The encyclopedias' and James Williams's readings of
-the book are still to be read (its `unread`), so the new entries describe the book and give no one's interpretation yet.
+and the Logic of Sense sentence of body-without-organs re-checked (glossary-los.json). A second batch (2026-11-19) added double causality, the quasi-cause
+and the static genesis to sense-event, gave James Williams's reading (Gilles Deleuze's Logic of Sense, 2008) with his pages in all three
+new entries, and recorded three new open disputes. Still unread (its `unread` has the full list): Williams's guide outside pp. 55–56, 122–132, 152–158
+and 169–174, Badiou's Logiques des mondes, the book's series 12–13 and 18–19 (apart from pp. 88–93 and 129), and the book's pages from
+p. 169 on that the entries don't cite.

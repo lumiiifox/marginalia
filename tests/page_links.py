@@ -122,8 +122,8 @@ async def main():
         await page.reload(); await page.wait_for_function(READY)
         ac = await openEntry(page, "accelerationism")
         hy = await openEntry(page, "hyperstition")
-        check(ac and ["p. 313", "fn", "313"] in ac["links"] and len(ac["links"]) == 9 and hy and ["p. 317", "fn", "317"] in hy["links"] and len(hy["links"]) == 11,
-              f"Fanged Noumena by Land links Circuitries' pages in accelerationism (9) and hyperstition (11) ({ac and ac['links'][:3]}, {hy and len(hy['links'])})")
+        check(ac and ["p. 313", "fn", "313"] in ac["links"] and len(ac["links"]) == 9 and hy and ["p. 317", "fn", "317"] in hy["links"] and len(hy["links"]) == 12,
+              f"Fanged Noumena by Land links Circuitries' pages in accelerationism (9) and hyperstition (12) ({ac and ac['links'][:3]}, {hy and len(hy['links'])})")
         await page.evaluate("() => (async () => { const now = Date.now(); await put('texts', 'fn', { title: 'Fanged Noumena', author: 'Ray Brassier', hasContent: true, total: 2, sections: [], createdAt: now, updatedAt: now }); })()")
         await page.reload(); await page.wait_for_function(READY)
         ac2 = await openEntry(page, "accelerationism")

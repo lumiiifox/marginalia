@@ -1472,7 +1472,7 @@
   },
   "by": {
    "first_pass": "Claude (Opus 5.5), 2026-11-20: the essay read whole; its Anti-Oedipus quotations located by script in the owner's copy and compared by hand; O'Sullivan's published wording compared with the author's copy",
-   "review": "Independent reviewer (separate agent, fresh context), 2026-11-20: confirmed O'Sullivan's published wording by WebFetch (printed p. 20) and the switch to it; located every footnote in AO independently (page = PDF − 23, from running heads) and confirmed every verdict and the tally (12/1/1, no wrong pages), fn 24 and fn 41 as supported paraphrase, and no missed quotation; confirmed the word counts and the 'escalating dissipator' (capitalism, p. 430) and Lyotard (fn 42) attributions. Required fixes, all applied: the hyperstition sentence's page ranges (argument to p. 438; cyberspace scenes pp. 418, 427 set apart from the Apocalypse Now scenes, pp. 425–426, 436–439); 'He quotes the Hyperstition website' made 'O'Sullivan quotes'; 'Meat' added to accelerationism's sources; 'Its' in the CONNECTIONS item made 'The essay's ... than those in Circuitries'. Suggestions applied: Burroughs as the second epigraph; record notes on spellings (fn 18, 38), the fn 18 splice, the fn 32 OCR doubt, the 1995 date, and the hedged fn 12 note. Verdict: passes after the fixes."
+   "review": "Independent reviewer (separate agent, fresh context), 2026-11-20: confirmed O'Sullivan's published wording by WebFetch (printed p. 20) and the switch to it; located every footnote in AO independently (page = PDF − 23, from running heads) and confirmed every verdict and the tally (12/1/1, no wrong pages), fn 24 and fn 41 as supported paraphrase, and no missed quotation; confirmed the word counts and the 'escalating dissipator' (capitalism, p. 430) and Lyotard (fn 42) attributions. Required fixes, all applied: the hyperstition sentence's page ranges (argument to p. 438; cyberspace scenes pp. 418, 427 set apart from the Apocalypse Now scenes, pp. 425–426, 436–439); 'He quotes the Hyperstition website' made 'O'Sullivan quotes'; 'Meat' added to accelerationism's sources; 'Its' in the CONNECTIONS item made 'The essay's ... than those in Circuitries'. Suggestions applied: Burroughs as the second epigraph; record notes on spellings (fn 18, 38), the fn 18 splice, the fn 32 OCR doubt, the 1995 date, and the hedged fn 12 note. Verdict: passes after the fixes. (Tally later corrected to 11/2/1 on 2026-11-21: see corrections.)"
   },
   "findings": {
    "labels": "Neither 'accelerationism' nor 'hyperstition' occurs (line-break hyphens joined). 'accelerating' occurs twice: 'accelerating cut-ups' (p. 431) and 'logistically accelerating rhythm' (p. 434).",
@@ -1527,8 +1527,8 @@
    {
     "fn": 32,
     "cited": 162,
-    "book": "p. 162, with Land's bracketed insertions marked as his. The printed 'Meat' p. 429 (owner's screenshot, 2026-11-21) reads 'Incest as it is as prohibited': the stray 'as' is Land's text",
-    "verdict": "altered: an extra 'as'"
+    "book": "p. 162: 'Incest as it is prohibited'; Land's bracketed insertions marked as his. 'Meat' p. 429 reads 'Incest as it is as prohibited': the owner's screenshot of the printed page shows the second 'as', and the OCR reads the same (corrected 2026-11-21). Whether the word is Land's, his source edition's (Athlone, not checked) or the compositor's is unchecked",
+    "verdict": "altered: Land adds 'as'"
    },
    {
     "fn": 34,
@@ -1567,7 +1567,7 @@
     "verdict": "matches"
    }
   ],
-  "tally": "11 match; 2 altered (fn 32, an extra 'as'; fn 34, 'only' added); 1 worded differently (fn 7); no wrong pages. Paraphrase citations fn 24 (p. 145) and fn 41 (p. 143) supported.",
+  "tally": "11 match; 2 altered, each adding a word (fn 32, 'as'; fn 34, 'only'); 1 worded differently (fn 7); no wrong pages. Paraphrase citations fn 24 (p. 145) and fn 41 (p. 143) supported. (Until 2026-11-21: 12 match, 1 altered; fn 32 was counted as a match while the p. 429 wording was unchecked.)",
   "new_text": [
    {
     "term": "accelerationism",
@@ -1639,6 +1639,29 @@
     "why": "uncorrected OCR (the owner corrected pp. 431–439 only)",
     "terms": [],
     "effect": "footnotes matched to quotations by position and content; every Anti-Oedipus page confirmed in the book"
+   }
+  ],
+  "corrections": [
+   {
+    "date": "2026-11-21",
+    "what": "fn 32 (p. 429): settled by the owner's screenshot of the printed page, which reads 'Incest as it is as prohibited'; AO p. 162 reads 'Incest as it is prohibited' (re-checked in the owner's copy, PDF p. 185). Verdict changed from match to altered; the Land → Deleuze and Guattari item in data/thinkers.js now says eleven match, two add a word, one (p. 9) worded differently; connections.json updated to match. This session did not see the screenshot; it had the owner's report of it (2026-11-21) and the OCR, which agree. The tally change was first pushed in 73b6af0, which called the extra word Land's text; this record says only that the printed page has it.",
+    "terms": [
+     "Land → Deleuze and Guattari connection"
+    ],
+    "review": "Independent reviewer (separate agent, fresh context), 2026-11-21: confirmed fn 32 and fn 34 against AO pp. 162 and 139, every page and grammatical person in the new hyperstition sentence against the OCR, 'Willard (you)' verbatim before note 28 (Downham), and the ROUTE_QUEUE sentence against glossary-los.json. Required fixes, applied: connections.json reread_meat note brought up to date; the ROUTE_QUEUE unread list marked partial and series 12–13 and 18–19 given their read pages. Suggestions applied: the hyperstition sentence split in two; this record names only the owner as having read the screenshot."
+   },
+   {
+    "date": "2026-11-21",
+    "what": "hyperstition: the sentence called all the 'Meat' scenes second person, and presented the p. 425 'Willard (you)' as Land's. Re-read in the OCR: the 'Willard (you)' passage closes with Land's note 28 (M. Downham, Vague 20, 1988), so it is a quotation; Land then takes the identification into his own prose on p. 425 ('somewhere for you to be'), addresses the reader on pp. 426, 436 and 439, and tells of Kurtz in the third person on pp. 437–438. p. 427 (the Sphinx and her K-40) is in the second person, and nothing on the page places it in cyberspace, so the sentence no longer calls it a cyberspace scene; p. 418 (the reader shifts to the other side of the screen) keeps its page. p. 415 also addresses the reader ('When you try to visualize Kurtz'); the sentence quotes that page for its 'tendril of tomorrow' only.",
+    "terms": [
+     "hyperstition"
+    ],
+    "quotes": [
+     {
+      "q": "Willard (you)",
+      "checked": "MEAT p. 425, inside the passage credited to M. Downham (Land's fn 28)"
+     }
+    ]
    }
   ]
  }
