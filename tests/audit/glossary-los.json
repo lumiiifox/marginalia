@@ -11,7 +11,9 @@
   "batch2": "Claude (Opus 5.5), 2026-11-19: drafted from the owner's copies of the book (OCR text with page markers) and of Williams's guide; every quotation and page checked by script against them, OCR errors (9 for g, ef for of, broken ligatures) checked by eye.",
   "review_batch2": "Independent reviewer (separate agent, fresh context), 2026-11-19: checked the book locator against running heads (series 14–17 and 27) and Williams's against his folios and contents (STATIC GENESIS on p. 124), every new quotation and page, paraphrase, attribution, house style and TERM_PAGES counts, with a 5-gram script for unquoted copying, and searched every page naming the body without organs for 'intens' (none). Required fixes, all applied: three unquoted runs reworded (LOS pp. 95, 96; Williams p. 55); Deleuze's revision of Klein's schizoid position credited to Deleuze; Badiou's position credited as Williams reports it; the Williams unread range corrected. Optional suggestions applied: extraction wording (p. 31), 'glosses' for physique statique, 'thing = x' quoted (p. 115), the Aion and univocity series tied to the first question only, Badiou's French title, quote records for dispute words, the entry's 'only' dropped, a lead clause for the static genesis. Re-check by the same reviewer: all correct. Verdict: pass.",
   "batch3": "Claude (Opus 5.5), 2026-11-21: drafted from two sets of notes the owner supplied (documents in the owner's Drive), treated as drafts: every page they cite was read in the owner's copies of the book (OCR text with page markers) and of Williams's guide, and only what the pages support was used. Series 12, 13, 18 and 19 (pp. 74–93, 127–141) read in full; Williams pp. 33–37, 53–58, 154–156, 194–199 and 203. Quotations and pages checked by script, unquoted runs of six or more words from either source reworded (n-gram script).",
-  "review_batch3": "Independent reviewer (separate agent, fresh context), 2026-11-21: checked every new quotation (verbatim, under 15 words, including Williams pp. 36–37 across the page break), every page against the series openings (pp. 74, 82, 127, 134) and Williams's folios (pp. 33, 34, 56, 57, 155, 196, 203), paraphrase, attribution, house style, TERM_PAGES lengths, and unquoted copying with a 5-gram script (no run of six words). Required fixes, all applied: Williams's definition of sense restated as variations in the intensity of relations between infinitives (pp. 33, 35; “to green” is not on pp. 33–35); the events-and-sense difference marked as the entry's reading and given Williams pp. 35, 195–196; one contrastive construction in the dynamic-genesis sentence reworded; the bad-Chronos verdict corrected (p. 164 draws the tie) and p. 37 removed from the unread pages. Optional suggestions applied: humour as Deleuze's “art” (p. 141), “may keep” for p. 87's hedge, Artaud and Wolfson pages to p. 90, the body-without-organs sentence reworded so action and passion are the poles, series 18 grounded at p. 143, the bad Chronos tie added (p. 164), and Williams's phrase quoted. Not applied: the p. 163 hesitation in the dispute, and “among others” in the unread line. Re-check by the same reviewer: all fixes accurate, TERM_PAGES and audit records consistent. Verdict: pass."
+  "review_batch3": "Independent reviewer (separate agent, fresh context), 2026-11-21: checked every new quotation (verbatim, under 15 words, including Williams pp. 36–37 across the page break), every page against the series openings (pp. 74, 82, 127, 134) and Williams's folios (pp. 33, 34, 56, 57, 155, 196, 203), paraphrase, attribution, house style, TERM_PAGES lengths, and unquoted copying with a 5-gram script (no run of six words). Required fixes, all applied: Williams's definition of sense restated as variations in the intensity of relations between infinitives (pp. 33, 35; “to green” is not on pp. 33–35); the events-and-sense difference marked as the entry's reading and given Williams pp. 35, 195–196; one contrastive construction in the dynamic-genesis sentence reworded; the bad-Chronos verdict corrected (p. 164 draws the tie) and p. 37 removed from the unread pages. Optional suggestions applied: humour as Deleuze's “art” (p. 141), “may keep” for p. 87's hedge, Artaud and Wolfson pages to p. 90, the body-without-organs sentence reworded so action and passion are the poles, series 18 grounded at p. 143, the bad Chronos tie added (p. 164), and Williams's phrase quoted. Not applied: the p. 163 hesitation in the dispute, and “among others” in the unread line. Re-check by the same reviewer: all fixes accurate, TERM_PAGES and audit records consistent. Verdict: pass.",
+  "batch4": "Claude (Opus 5.5), 2026-11-21, at the owner's request: the open question on p. 77 against the cosmic present. Series 10 (pp. 58–65), 23 (pp. 162–168) and 24 (pp. 169–176) read in full; the whole book (pp. 1–333, the owner's five OCR files) searched for the present at the scale of the whole; Williams's guide searched in full text. Quotations checked by script; six-word runs reworded.",
+  "review_batch4": "Independent reviewer (separate agent, fresh context), 2026-11-21: read pp. 4, 58–65, 74–81, 131, 143–151, 162–176, searched the whole book and Williams's guide, checked quotations, pages, TERM_PAGES and six-word runs. Required fixes, all applied: the draft's reconciliation (the two passages as the two readings of time) was the writer's inference, so the open question was restored and reworded with the second reading (direction vs cycle) and pp. 143 and 270; p. 163 paraphrased with its condition and without a contrast; first occurrences corrected; the Hume paragraph moved. Re-check: pass."
  },
  "sources": {
   "LOS": {
@@ -37,7 +39,7 @@
   "Sense-event, “sterile division” or “decoupling”: Sterile division or decoupling? Lester and Stivale translate Deleuze's dédoublement as “sterile division” (p. 31). James Williams translates it “decoupling”, since French has its own word, division, and Deleuze avoids it in this passage: on his reading the paradox cuts a single dry proposition loose from the regress, and its sense drifts off sterile (Williams, p. 55). He also reads the two paradoxes as relaunching each other, so that the alternative between them keeps sense in movement (Williams, p. 55).",
   "Aion-chronos, the present (Badiou and Williams): The present: as James Williams reports it, Alain Badiou, in Logiques des mondes (2006; translated as Logics of Worlds), centres time and ethics on the present, where a subject incorporates into the present of a truth. James Williams calls this a moral “presentism” and argues that Deleuze's two presents answer it: the present of Chronos, where the event strikes the body, and the present of the actor, which counter-actualizes it (p. 168), with eternal ideas working on every present because they are neutral and impassive (Williams, pp. 172–174). Badiou's book has not been read for this entry; his position is given as Williams reports it.",
   "Counter-actualization, guidance for action (open question): Can counter-actualization guide action? James Williams asks whether its principles are too abstract for specific wrongs and too individualistic for an ethics that begins from living with others (Williams, p. 153), and whether replaying events suits an age that can cure and prevent what it once had to bear (Williams, p. 158). He takes up the first question again through the series on the Aion and on univocity (Williams, pp. 169–174); the entry leaves the questions open.",
-  "Aion-chronos, one present for the whole (open question, 2026-11-21): One present for the whole? Deleuze gives Chronos a divine present of the whole cosmos (pp. 162–163) and a cosmic present for the Stoic unity of bodily causes (p. 131), and in the twelfth series writes that the universe taken as “the system of all systems, or the abnormal set” admits no fixed present (p. 77). The book may be setting the Stoic cosmos, a unity of causes, apart from the universe as an abnormal set; it does not say so, and no scholar's reading of the point has been read for this entry. Left open."
+  "Aion-chronos, one present for the whole (open question, reworded 2026-11-21, batch 4): One present for the whole? Chronos has a cosmic present wherever bodies form a unity (pp. 4, 61, 143), and the twelfth series says that the universe taken as “the system of all systems” admits no fixed present, which it gives as the reason Aion sidesteps the present (p. 77). Read with p. 61, where each of the two readings of time is “complete and excludes the other”, the two passages could fall on either side of that divide. p. 77 allows a second reading too: the arrow it confines to partial systems is a direction, and Chronos at the scale of the whole is cyclical (pp. 61, 163). The book never sets the two passages side by side, and it leaves open the unity they turn on: “Perhaps it does” (p. 163), and in the appendix on Lucretius the true problem is “whether there is a unity of causes” (p. 270). James Williams does not treat the point, and no other scholar has been read for it. Left open."
  ],
  "unread": [
   {
@@ -53,14 +55,14 @@
   },
   {
    "source": "James Williams, Gilles Deleuze's Logic of Sense: A Critical Introduction and Guide (2008)",
-   "part": "all but pp. 33–37, 53–58, 122–132, 152–158, 169–174, 194–199 and 203",
+   "part": "all but pp. 33–37, 53–58, 73–76, 122–132, 152–158, 169–174, 194–199 and 203 (the whole guide was searched by script in batch 4 for the Chronos/Aion present and p. 77)",
    "why": "read where the entries needed a reading (sterility, static genesis and double causality, counter-actualization, the Aion and Badiou; in batch 3, sense and the infinitive, neutrality, the regress, Bousquet and the barricades, the dynamic genesis, and reading Hume)",
    "terms": [
     "sense-event",
     "aion-chronos",
     "counter-actualization"
    ],
-   "effect": "his pages on Alice and the directions of time (pp. 28–29), the circle of the proposition (pp. 40–47), the military recruit's greenness (pp. 50–51), the two unequal series and esoteric words (pp. 59–72), good sense and common sense (pp. 73–75), and the conclusion's exchange with ordinary-language philosophy (pp. 202–207 apart from p. 203) are not drawn on"
+   "effect": "his pages on Alice and the directions of time (pp. 28–29), the circle of the proposition (pp. 40–47), the military recruit's greenness (pp. 50–51), the two unequal series and esoteric words (pp. 59–72), good sense and common sense (pp. 73–75), and the conclusion's exchange with ordinary-language philosophy (pp. 202–207 apart from p. 203) are not drawn on; batch 4: his remaining pages are known not to treat p. 77 or the cosmic present (full-text search), so nothing there bears on aion-chronos's whole-scale present"
   },
   {
    "source": "Alain Badiou, Logiques des mondes (2006; Logics of Worlds, 2009)",
@@ -851,14 +853,50 @@
      "added": "2026-11-21"
     },
     {
-     "text": "The eighteenth series keeps a cosmic present for the Stoic unity of bodily causes, a perfect mixture (p. 131).",
+     "text": "Deleuze introduces it with “Here we rediscover the opposition between Aion and Chronos” (p. 77), and it gives the reason Aion sidesteps the present.",
      "claims": [
       {
-       "by": "LOS p. 131"
+       "by": "LOS p. 77"
       }
      ],
-     "excerpt": "“everything is exact in the cosmic present” (p. 131)",
-     "added": "2026-11-21"
+     "excerpt": "“Here we rediscover the opposition between Aion and Chronos” (p. 77, across a line break); “for no present can be fixed” gives the reason",
+     "added": "2026-11-21 (batch 4)"
+    },
+    {
+     "text": "The same page limits Chronos as well: its passage from past to future holds only inside partial systems (p. 77).",
+     "claims": [
+      {
+       "by": "LOS p. 77"
+      }
+     ],
+     "excerpt": "“presents follow one another inside partial worlds or partial systems” (p. 77)",
+     "added": "2026-11-21 (batch 4)"
+    },
+    {
+     "text": "The time of bodies has had a cosmic present since the second series: “to the degree that there is a unity” of bodies, a cosmic present takes in the whole universe (p. 4); the present reaches the limits of the Universe “from contraction to contraction” (p. 61); and all bodies together form a perfect mixture, which is the unity of causes or the cosmic present (pp. 131, 143, 163).",
+     "claims": [
+      {
+       "by": "LOS p. 4"
+      },
+      {
+       "by": "LOS p. 61"
+      },
+      {
+       "by": "LOS pp. 131, 143, 163"
+      }
+     ],
+     "excerpt": "first occurrence of “cosmic present”: p. 4; p. 61 “becomes a living cosmic present”; p. 143 “the unity of causes among themselves or the cosmic present”; pp. 131, 163",
+     "added": "2026-11-21 (batch 4)"
+    },
+    {
+     "text": "Whether bodies have enough unity to give the present a measure Deleuze leaves at “Perhaps it does, at the level of the cosmic Zeus” (p. 163), and the related question whether a mixture is good or bad is answered, he writes, only once the two terms cease to matter and virtue is sought in another element, Aion set against Chronos (p. 163).",
+     "claims": [
+      {
+       "by": "LOS p. 163"
+      }
+     ],
+     "excerpt": "quotation verbatim; “finds an answer only when the two terms end up being indifferent” (p. 163)",
+     "added": "2026-11-21 (batch 4)"
     },
     {
      "text": "In the depths of schizophrenia, the thirteenth series says, the present grows “more contracted as it is filled” (p. 87), the movement of schizophrenia Deleuze later assigns to the bad Chronos (p. 164), and the opposition of poles in that bodily present shares nothing with the contradiction spread over Aion's infinite subdivision (pp. 91–92).",
@@ -1349,7 +1387,7 @@
    }
   ]
  },
- "summary": "Three new entries read in The Logic of Sense (Lester and Stivale's translation), every quotation verbatim and every page checked: sense and event, Aion and Chronos, and counter-actualization. They describe what the book says and credit no one else's reading, since the encyclopedias could not be fetched and Williams's guide was lost; both are listed as unread. Body without organs now says what The Logic of Sense itself says of it, beside the Stanford reading, and the gap between them is shown as an open dispute. Second batch (2026-11-19): sense and event now covers the sterility and genetic power of sense, double causality and the quasi-cause, and the static genesis; all three entries give James Williams's reading with his pages, and three new open disputes are recorded; body without organs quotes the Stanford article and says where it agrees with the book. Third batch (2026-11-21): series 12–13 and 18–19 read in full. Sense and event now tells the nonsense of the surface, which gives sense, from the nonsense of the depths, which engulfs it, and adds humour, Antisthenes and the dynamic genesis; Aion and Chronos adds the twelfth series' universe without a present and the Stoic cosmic present, with an open question between them; counter-actualization adds the eighteenth and nineteenth series; body without organs adds the action-passion ambivalence. Williams's readings added on the infinitive, neutrality, the regress, impossible objects, the dynamic genesis, Bousquet and the barricades, and reading Hume.",
+ "summary": "Three new entries read in The Logic of Sense (Lester and Stivale's translation), every quotation verbatim and every page checked: sense and event, Aion and Chronos, and counter-actualization. They describe what the book says and credit no one else's reading, since the encyclopedias could not be fetched and Williams's guide was lost; both are listed as unread. Body without organs now says what The Logic of Sense itself says of it, beside the Stanford reading, and the gap between them is shown as an open dispute. Second batch (2026-11-19): sense and event now covers the sterility and genetic power of sense, double causality and the quasi-cause, and the static genesis; all three entries give James Williams's reading with his pages, and three new open disputes are recorded; body without organs quotes the Stanford article and says where it agrees with the book. Third batch (2026-11-21): series 12–13 and 18–19 read in full. Sense and event now tells the nonsense of the surface, which gives sense, from the nonsense of the depths, which engulfs it, and adds humour, Antisthenes and the dynamic genesis; Aion and Chronos adds the twelfth series' universe without a present and the Stoic cosmic present, with an open question between them; counter-actualization adds the eighteenth and nineteenth series; body without organs adds the action-passion ambivalence. Williams's readings added on the infinitive, neutrality, the regress, impossible objects, the dynamic genesis, Bousquet and the barricades, and reading Hume. Fourth batch (2026-11-21): the open question on p. 77 kept and reworded exactly; the book never joins p. 77 to the cosmic present, and leaves the unity of causes open (pp. 4, 143, 163, 270). Williams does not treat the point.",
  "batch2": {
   "audited": "2026-11-19",
   "scope": "Second batch, at the owner's request: sense-event extended with the sterility and genetic power of sense (pp. 31–32), double causality and the quasi-cause (series 14, pp. 94–99) and the static genesis (series 15–17, pp. 100–126); credited readings from James Williams's guide (2008) added to sense-event, aion-chronos and counter-actualization; body-without-organs re-read against the Stanford article and series 27 (pp. 186–189). The encyclopedias were read for these entries: the IEP article cites the book and discusses none of these concepts, and the Stanford section 3.2 says nothing the book's own words do not settle, beyond the body-without-organs reading, so neither is cited in the three entries.",
@@ -1428,5 +1466,22 @@
    }
   ],
   "decision": "Recorded in this file, as batch 2 was, since a second glossary file listing the same terms would make tests/mastery.py count them twice."
+ },
+ "batch4": {
+  "audited": "2026-11-21",
+  "question": "Aion-chronos showed as an open question (batch 3): p. 77 (no fixed present for the universe taken as the system of all systems) against the Stoic cosmic present (pp. 131, 162–163).",
+  "first_occurrences": {
+   "cosmic present": "p. 4 (series 2: “to the degree that there is a unity of bodies among themselves … a cosmic present embraces the entire universe”); then pp. 61, 131, 143, 144",
+   "cosmic (any use)": "p. 4; then 61, 131, 143, 144, 147, 150, 155, 163, 177, 213, 247, 302–304, 314, 333 (pp. 177, 213, 247: “a-cosmic” singularities)",
+   "Universe / universe": "p. 4 (“the entire universe”, cosmic present); p. 48 (Lévi-Strauss quotation, “The Universe signified”, unrelated); p. 61 (the present reaches “the limits of the entire Universe”); p. 77; then 79, 125, 163, 267, 308, 333",
+   "divine present": "p. 150 (“the divine present is the circle in its entirety”); then 151, 162, 163",
+   "greatest present": "p. 147; then 163 (“The greatest present, the divine present, is the great mixture”)",
+   "the whole of": "p. 138 (unrelated: Kant on the sum total of possibility); 165 (“the whole of Chronos together with the becoming-mad of the depths”); 224, 295, 310, 333",
+   "unity of causes / corporeal causes": "p. 64 (“the unity of corporeal causes among themselves”, set against the unity of events); then pp. 131, 132, 143, 163, 270 (“the true problem is whether there is a unity of causes”); p. 169 near-match (“unity and the link of physical causes”); p. 4 speaks of a unity of bodies",
+   "system of all systems / abnormal set": "abnormal set p. 74 first; “system of all systems” only on p. 77",
+   "other wordings of the whole-scale present": "“a more vast present” p. 162; “the most vast of presents” p. 163; “a universal present” and “the present of the world” p. 147; “at the level of the whole, in the full circle of the divine present” p. 151; “taken as a whole” p. 143. “great present” and “present of the whole” as phrases: not found"
+  },
+  "outcome": "Not settled: the book never sets p. 77 beside the cosmic present, and no scholar read treats the point, so the open question stays on the entry, reworded as the texts leave it. A first draft of this batch called the two passages the two readings of time (p. 61) and withdrew the question; the independent review showed that alignment to be the writer's inference: p. 77 also confines Chronos's direction to partial systems while Chronos at the whole is cyclical (pp. 61, 163), which allows a second reading; p. 143 has bodies taken as a whole form the cosmic present; and the unity the cosmic present rests on is left open by the book itself (p. 4 “to the degree that”, p. 163 “Perhaps”, p. 270 “the true problem is whether there is a unity of causes”). The entry now states each passage with its pages and makes no alignment; the dispute gives both possible readings and says the book never joins the passages. Williams's p. 144 reads the two times as incomplete without one another, against p. 61's “each one of which is complete”; outside this batch's question and not drawn on.",
+  "williams": "Searched the whole of Williams's guide (pdftotext, every page) for Chronos, Aion, Boltzmann, cosmic, universe, Zeus, divine present, greatest present, the abnormal set, and citations of LoS pp. 4, 61, 77, 131 and 162–168. He does not treat p. 77 or the cosmic present anywhere: his only discussion of series 12 (pp. 73–75, read in full for this batch) lists the abnormal set and infinite subdivision among its paradoxes and good sense's privileging of the present (p. 75, item 6), with nothing on the universe or a cosmic present. His remaining pages were not read cover to cover."
  }
 }
