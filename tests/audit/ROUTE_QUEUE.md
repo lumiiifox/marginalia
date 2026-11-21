@@ -29,6 +29,14 @@ quotations checked against the book, and the Land → Deleuze and Guattari conne
 connections.json). "Meat (or How to Kill Oedipus in Cyberspace)" (1995, pp. 411–439) read 2026-11-20 the same way (`reread_meat`); O'Sullivan now quoted from
 his published pages. Next: further Land texts as the owner imports them.
 
+### Hume, read in his own texts (owner's request, 2026-11-21)
+
+Justified by the route through Deleuze's Empiricism and Subjectivity and the first synthesis of time (Difference and Repetition, pp. 70–71).
+Read 2026-11-21 in the bundled Treatise and first Enquiry: impressions-ideas, association-of-ideas, necessary-connection, custom and
+personal-identity (new, glossary-hume.json), and the Hume thinker card (thinkers-route.json). The Deleuze → Hume connection waits for
+Empiricism and Subjectivity. Still unread: Millican's later sections, the original works of the New Hume debate and of the Appendix
+readings (given through the encyclopedias, Millican and Yang), Giles pp. 186–200 (the audit's `unread`).
+
 ## Audited
 
 The 15 Deleuze and Guattari entries and structuralism (glossary-dg.json); Spinoza's metaphysics (glossary-spinoza.json); the ancient and

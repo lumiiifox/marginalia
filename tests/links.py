@@ -232,6 +232,27 @@ async def main():
         check(src["bad"] == [] and src["n"] >= 40 and src["styles"] >= 10, f"every locator in the glossary's source lines links a passage that exists, the line's words unchanged ({src['n']} links, {src['styles']} books, {src['bad'][:3]})")
         check(src["cases"] == [["I|Definition|4||", "I|Definition|6||", "II|Proposition|7|Note|"], ["III|Proposition|6||", "III|Proposition|11|Note|"], ["XVII"], ["1|4|6"], ["§13", "§36"], [], []],
               f"parts carry across items, ranges link their first number, Schol. is a note, Cicero's Republic and Akademie pages stay text ({src['cases']})")
+        # glossary entries with xr: every bracketed reference in the text is a link to a passage that exists, and every quotation
+        # followed by one is the bundled book's words in that very section (Hume, read in the Treatise and the Enquiry)
+        xr = await page.evaluate("""(async () => { const out = { bad: [], links: 0, quotes: 0, terms: 0 }, books = {};
+          const span = (B, i) => { const l = B[i].l; let j = i + 1; while (j < B.length && !(B[j].k === 'h' && B[j].l <= l)) j++;
+            return B.slice(i, j).map((b) => plain(b.x || '').replace(/<[^>]+>/g, '')).join(' ').replace(/[¹²³⁴⁵⁶⁷⁸⁹⁰]/g, '').replace(/\\s+/g, ' '); };
+          for (const g of GLOSSARY.filter((g) => g.xr)) { out.terms++;
+            for (const para of g.x.split(/\\n\\s*\\n/)) {
+              const d = document.createElement('div'); d.innerHTML = passageLinks(esc(para), g.xr);
+              if (d.textContent !== para) out.bad.push(g.id + ' text changed');
+              const at = {};
+              for (const a of d.querySelectorAll('[data-passage]')) { const st = a.dataset.passage; out.links++;
+                if (!books[st]) books[st] = (await (await fetch('data/books/' + PASSAGE_STYLES[st].book + '.json')).json()).content;
+                const i = passageBlock(books[st], a.dataset.passageAt, st); if (i < 0) { out.bad.push(g.id + ' ' + a.textContent); continue; }
+                at[a.textContent] = (at[a.textContent] || '') + ' ' + span(books[st], i); }
+              for (const m of para.matchAll(/“([^”]*)”([^“]*?)\\(((?:T|EHU) [^()]+)\\)/g)) {
+                if (/[.;]\\s/.test(m[2])) continue;  // the reference belongs to a later sentence
+                out.quotes++; const q = m[1].replace(/[,.]$/, ''), txt = m[3].split('; ').map((r) => at[r] || '').join(' ');
+                if (!txt.includes(q)) out.bad.push(g.id + ' quote ' + q);
+                if (q.split(/\\s+/).length >= 15) out.bad.push(g.id + ' long quote ' + q); } } }
+          return out; })()""")
+        check(xr["terms"] >= 5 and xr["links"] >= 60 and xr["quotes"] >= 50 and not xr["bad"], f"glossary entries citing Hume: every reference opens its section, every quotation is that section's words, under 15 words ({xr})")
         await page.evaluate("openTerm('conatus')"); await page.wait_for_timeout(300)
         await page.click("details.term[data-term-id='conatus'] .tsrc [data-passage='spinoza-ethics'] >> nth=0")
         await page.wait_for_function("S.screen === 'reader' && R.tid === 'classic-spinoza-ethics' && R.blocks", timeout=20000); await page.wait_for_timeout(600)

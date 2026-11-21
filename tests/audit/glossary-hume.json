@@ -1,0 +1,1060 @@
+{
+ "audit": "glossary-hume",
+ "audited": "2026-11-21",
+ "mode": "new entries",
+ "scope": "Hume read in his own texts at the owner's request (route justification: Deleuze's Empiricism and Subjectivity, and the first synthesis of time in Difference and Repetition, pp. 70–71): five new entries, each read in the Treatise first and the first Enquiry second: impressions-ideas, association-of-ideas, necessary-connection, custom, personal-identity. The Hume thinker card's audit is in thinkers-route.json. The Deleuze → Hume connection is untouched (it waits for Empiricism and Subjectivity).",
+ "by": {
+  "draft": "Claude (Opus 5.5); no ChatGPT draft for this batch",
+  "first_pass": "Claude (Opus 5.5), 2026-11-21: every sentence drafted from the bundled Treatise (Standard Ebooks) and first Enquiry (Standard Ebooks); every quotation followed by a section reference checked by script against that section's text; the scholarship read through the web-fetch tool (literal text, quotations under 125 characters)",
+  "review": "Independent reviewer (separate agent, fresh context), 2026-11-21: matched all 73 quotations in the five entries to their references by script (65 of Hume's verbatim in the cited section, all under 15 words; 8 scholarship quotations checked in the sources); checked every paraphrase against the passages of the cited sections of the Treatise (1.1.1, 1.1.4, 1.3.8, 1.3.14, 1.4.5–6, Appendix, Book III headings) and Enquiry (II–V, VII); fetched SEP “David Hume” (to 100,000 of 111,797 characters), SEP “Kant and Hume on Causality” (§1, the dogmatic-slumber passage), IEP Lorkowski (whole), Millican (§§1–3.3), Yang (whole) and Giles (pp. 176 and 186, the two quotations); checked the links, the disputes, the unread list and the code change. Required fixes, all applied: a contrastive construction in association-of-ideas reworded; a gendered pronoun for Sunny Yang removed and Yang's conclusion quoted (p. 192); the fourth Appendix reading corrected (T 1.4.5 claims the intellectual world free of contradictions, the hope is the Appendix's); four runs copied from the scholarship quoted or reworded (SEP on the New Humeans, Lorkowski's projection sentence, Pears as Yang quotes him, with “in the right place” restored, SEP on prioritising the first definition). Optional suggestions applied: Blackburn as a critic of the realist reading, Winkler's reading credited to Lorkowski, Garrett's 2011 essay named as separate, the card's reputation sentence brought to SEP's “somewhat more popular success”, T 1.3.8's belief sentence as recall, Friedman named on the card's source, the dates moved to checked. Verdict: pass after the required fixes. Re-check by the same reviewer: every fix correct and verbatim, all 65 Hume quotations still verbatim; three corrections to this summary applied. Verdict: pass."
+ },
+ "sources": {
+  "T": {
+   "name": "David Hume, A Treatise of Human Nature (1739–40), the bundled Standard Ebooks edition (classic-hume-treatise); cited by book, part and section (T 1.1.1) and the Appendix (T App.), each linking to its section",
+   "src": "https://standardebooks.org/ebooks/david-hume/a-treatise-of-human-nature"
+  },
+  "EHU": {
+   "name": "David Hume, An Enquiry Concerning Human Understanding (1748), the bundled Standard Ebooks edition (classic-hume-enquiry), the text of the later editions (its section III lacks the long passage on narrative of the early editions); cited by section and part (EHU VII.2)",
+   "src": "https://standardebooks.org/ebooks/david-hume/an-enquiry-concerning-human-understanding"
+  },
+  "SEP": {
+   "name": "Hsueh Qu and Elizabeth S. Radcliffe, “David Hume”, Stanford Encyclopedia of Philosophy (first published 16 June 2026; it replaces the former entry by other authors), read in literal text through section 5.3, 2026-11-21",
+   "src": "https://plato.stanford.edu/entries/hume/"
+  },
+  "SEP_KH": {
+   "name": "“Kant and Hume on Causality”, Stanford Encyclopedia of Philosophy (first published 4 June 2008; substantive revision 31 July 2024; the page metadata names Michael Friedman), sections 1–3 read in literal text, 2026-11-21",
+   "src": "https://plato.stanford.edu/entries/kant-hume-causality/"
+  },
+  "IEP": {
+   "name": "C. M. Lorkowski, “David Hume: Causation”, Internet Encyclopedia of Philosophy (undated), read in full in literal text, 2026-11-21",
+   "src": "https://iep.utm.edu/hume-cau/"
+  },
+  "MILLICAN": {
+   "name": "Peter Millican, “Against the ‘New Hume’”, for the revised edition of Rupert Read and Kenneth A. Richman (eds), The New Hume Debate (Routledge, 2007); the author's PDF at davidhume.org, sections 1–2 read in literal text",
+   "src": "https://davidhume.org/scholarship/papers/millican/2007%20Against%20the%20New%20Hume.pdf"
+  },
+  "YANG": {
+   "name": "Sunny Yang, “Hume’s Second Thoughts on Personal Identity”, Problemos 94 (2018), pp. 182–193, read in full; the source for the survey of Appendix readings (Garrett, Stroud, Pears, Kemp Smith, Ellis, Waxman, Swain), which are cited as Yang reports them",
+   "src": "https://journals.vu.lt/problemos/article/view/11989"
+  },
+  "GILES": {
+   "name": "James Giles, “The No-Self Theory: Hume, Buddhism, and Personal Identity”, Philosophy East and West 43.2 (1993), pp. 175–200, pp. 175–186 read in literal text",
+   "src": "https://www.jstor.org/stable/1399612"
+  }
+ },
+ "note": "Hume is public domain, so he is quoted exactly from the bundled editions, each quotation under 15 words with its section, which links to that section in the book (glossary entries now take xr, as branch articles do). Interpretation is credited to named scholarship only. Two disputes the owner named are recorded open: the New Hume debate over real causal powers, and what the Appendix retracts. Links: impressions-ideas → empiricism (Hume ties the principle to the innate-ideas dispute, T 1.1.1; the empiricism entry already cites him); custom and necessary-connection → induction-problem (the Stanford and Internet Encyclopedia articles join the induction argument to custom and causation); custom → syntheses-of-time (DR's first synthesis starts from Hume's thesis on repetition, already audited in glossary-dr.json, which the entry pairs with T 1.3.14's own words); personal-identity ↔ anatman (Giles 1993 compares the two directly). No link to naturalistic-fallacy: none of the five concepts bears on it, and Hume's is-ought passage (T 3.1.1), the source that would support one, is outside this batch.",
+ "disputes": [
+  "necessary-connection: Real causal powers, the New Hume debate? Hume often speaks of “secret” powers in objects (EHU V.1), and New Humeans read such passages as evidence that he believed in causal powers beyond regularity, which we cannot know: in Qu and Radcliffe's account (Stanford Encyclopedia), they argue “that Hume acknowledges the conceivability and possibility of such objective necessary connections”. Lorkowski (Internet Encyclopedia) traces the reading to Norman Kemp Smith's The Philosophy of David Hume (1941), and names Edward Craig, John P. Wright (The Sceptical Realism of David Hume, 1983) and Galen Strawson (The Secret Connexion, 1989), who limits Hume's regularity theory to what we can know about causation, leaving open what causation is. Old Humeans, in Qu and Radcliffe's account, argue that Hume denies the possibility of any objective necessary connection; they cite Kenneth Winkler (1991), who reads the secret connections as further regularities beyond present observation (Lorkowski), and Peter Millican. Millican grants that Hume's empiricism about meaning cannot by itself refute the realist reading, and calls the New Humeans' reply on that point “purely a defensive manoeuvre”; his own case is that Hume's argument for the doctrine of necessity (EHU VIII) requires a semantic reading of the analysis. Simon Blackburn, a self-described quasi-realist, criticises the realist reading (Lorkowski). Not settled.",
+  "personal-identity: What does the Appendix retract? Hume names two principles he cannot reconcile and never says exactly what fails (Sunny Yang, Problemos, 2018, p. 192). Qu and Radcliffe (Stanford Encyclopedia) call his diagnosis “notoriously unclear”. Yang sorts the readings, after Jonathan Ellis (Hume Studies, 2006), into four groups. On one, the bundle theory cannot individuate minds: Don Garrett (Philosophical Review, 1981, and an essay of 2011) takes the case of qualitatively identical perceptions in two minds at once, which resemblance and causation cannot assign to one mind or the other, and David Pears (1993) holds that the theory “cannot draw the boundary between one mind and another in the right place”; Barry Stroud (Hume, 1977) reads “inexplicable” as inconsistent with the theory of ideas. On another, Hume's account needs a continuing self, an active agency or set of dispositions, that the theory of ideas cannot supply (Norman Kemp Smith, 1941, and others). On a third, the associative principles cannot produce the idea of a self (Ellis). On a fourth, the trouble is a conflict between T 1.4.6 and T 1.4.5, where Hume had claimed the intellectual world was free of the contradictions found in the natural one; the Appendix recalls that he had “entertained some hopes” of this (Wayne Waxman, 1992; Corliss Swain, 2006). Yang's own reading is that Hume's despair concerns finding “the ultimate principles of connection” among our distinct perceptions (p. 192). Not settled."
+ ],
+ "unread": [
+  {
+   "source": "Stanford Encyclopedia of Philosophy, “David Hume” (Qu and Radcliffe)",
+   "part": "about 100 characters at the start of section 4.2, and the bibliography after Fieser 1992",
+   "why": "the fetching tool returned them as a summary",
+   "terms": [
+    "custom"
+   ],
+   "effect": "none known: section 4.2 is on justice; the passages used (2.1–2.3, 1) were read in literal text"
+  },
+  {
+   "source": "Stanford Encyclopedia of Philosophy, “Kant and Hume on Causality”",
+   "part": "from about the middle of section 3 to the end",
+   "why": "the fetching tool returned it as a summary",
+   "terms": [
+    "necessary-connection"
+   ],
+   "effect": "only the thinker card's dogmatic-slumber line rests on this article, and it is in section 1, read literally; the summary reports no New Hume discussion beyond the bibliography, so the New Hume dispute rests on the other sources"
+  },
+  {
+   "source": "Peter Millican, “Against the ‘New Hume’”",
+   "part": "sections after 2 (roughly pp. 11–29 of the PDF), and the volume's bibliographic details, which the PDF does not print",
+   "why": "the fetching tool returned literal text only to about p. 10",
+   "terms": [
+    "necessary-connection",
+    "impressions-ideas"
+   ],
+   "effect": "the dispute cites only Millican's sections 1–2; his later arguments (on Kail, the Conceivability Principle, his quasi-realist reading) are unrepresented; the volume is named from the PDF's own reference to 'the current volume' and the standard bibliography, unconfirmed from the PDF"
+  },
+  {
+   "source": "Galen Strawson, The Secret Connexion (1989); John P. Wright, The Sceptical Realism of David Hume (1983); Kenneth Winkler, “The New Hume” (1991); Edward Craig; Peter Kail (2007); Simon Blackburn (1990); Robinson; Don Garrett on the two definitions",
+   "part": "the works themselves",
+   "why": "not available in this session; their readings are given as the Stanford and Internet Encyclopedia articles and Millican report them",
+   "terms": [
+    "necessary-connection"
+   ],
+   "effect": "each New Hume position is stated as a named encyclopedia or Millican attributes it, never from the original"
+  },
+  {
+   "source": "Garrett (1981, 2011), Stroud (1977), Pears (1993), Kemp Smith (1941), Ellis (2006), Waxman (1992), Swain (2006)",
+   "part": "the works themselves",
+   "why": "not available in this session",
+   "terms": [
+    "personal-identity"
+   ],
+   "effect": "the Appendix dispute gives their readings as Sunny Yang's survey reports them, credited to Yang"
+  },
+  {
+   "source": "James Giles, “The No-Self Theory”",
+   "part": "pp. 186–200",
+   "why": "the fetching tool returned literal text only to about p. 186",
+   "terms": [
+    "personal-identity"
+   ],
+   "effect": "the two quotations used are from pp. 176 and 186, read literally; Giles's conclusion is unread"
+  },
+  {
+   "source": "Kant, Prolegomena to Any Future Metaphysics (1783)",
+   "part": "the whole",
+   "why": "not bundled; the dogmatic-slumber sentence is checked as the Stanford article quotes it (Ak. 4:260)",
+   "terms": [
+    "necessary-connection"
+   ],
+   "effect": "the thinker card quotes the Stanford article's translation; no glossary entry quotes the Prolegomena"
+  },
+  {
+   "source": "Hume, the Abstract of the Treatise (1740), and Treatise 1.3.1–1.3.7 and 1.3.9–1.3.13",
+   "part": "the whole",
+   "why": "outside the sections the owner named; not bundled (the Abstract)",
+   "terms": [
+    "custom",
+    "necessary-connection"
+   ],
+   "effect": "the entries cite only the named sections; Hume's argument on induction (T 1.3.6) is left to the Problem of induction entry, which is unaudited"
+  }
+ ],
+ "terms": {
+  "impressions-ideas": {
+   "new_d": [
+    {
+     "text": "Hume's division of every perception of the mind into impressions, which strike it with most force and liveliness, and ideas, their fainter images in thinking.",
+     "claims": [
+      {
+       "by": "T 1.1.1"
+      },
+      {
+       "by": "EHU II"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "The Treatise opens by dividing “All the perceptions of the human mind” into impressions and ideas, which differ in “the degrees of force and liveliness” with which they strike the mind (T 1.1.1).",
+     "claims": [
+      {
+       "by": "T 1.1.1"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "Impressions take in “all our sensations, passions and emotions” as they first appear in the soul, and ideas are “the faint images of these in thinking and reasoning” (T 1.1.1).",
+     "claims": [
+      {
+       "by": "T 1.1.1"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "Everyone, Hume writes, perceives the difference “betwixt feeling and thinking” (T 1.1.1).",
+     "claims": [
+      {
+       "by": "T 1.1.1"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "He divides both kinds again into simple and complex.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ]
+    },
+    {
+     "text": "A complex idea need not copy any complex impression: he can imagine the New Jerusalem, paved with gold and walled with rubies, without having seen it (T 1.1.1).",
+     "claims": [
+      {
+       "by": "T 1.1.1"
+      }
+     ]
+    },
+    {
+     "text": "For simple perceptions he affirms that the rule of resemblance “holds without any exception” (T 1.1.1), and he states his first general proposition: that all our simple ideas “in their first appearance are derived from simple impressions” (T 1.1.1).",
+     "claims": [
+      {
+       "by": "T 1.1.1"
+      },
+      {
+       "by": "T 1.1.1"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "Two kinds of evidence support it: impressions constantly come before their ideas, never the reverse, and a person born blind or deaf lacks the ideas along with the impressions (T 1.1.1).",
+     "claims": [
+      {
+       "by": "T 1.1.1"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "One phenomenon tells against it.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ]
+    },
+    {
+     "text": "A person who has seen every shade of blue but one could, Hume grants, supply the missing shade from imagination, an instance he finds too singular to alter “our general maxim” (T 1.1.1).",
+     "claims": [
+      {
+       "by": "T 1.1.1"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "He calls the principle “the first principle I establish in the science of human nature” (T 1.1.1), and takes it to restate the old dispute over whether there are innate ideas (T 1.1.1).",
+     "claims": [
+      {
+       "by": "T 1.1.1"
+      },
+      {
+       "by": "T 1.1.1"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "The Enquiry draws the same line by “different degrees of force and vivacity” (EHU II).",
+     "claims": [
+      {
+       "by": "EHU II"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "It calls the less lively perceptions “Thoughts or Ideas” and gives the name impressions to “all our more lively perceptions” (EHU II).",
+     "claims": [
+      {
+       "by": "EHU II"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "Its statement of the principle is that “all our ideas or more feeble perceptions are copies of our impressions” (EHU II), and it repeats the missing shade of blue (EHU II).",
+     "claims": [
+      {
+       "by": "EHU II"
+      },
+      {
+       "by": "EHU II"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "It also turns the principle into a test: when a philosophical term is suspected of having no meaning, we need only ask “from what impression is that supposed idea derived?” (EHU II).",
+     "claims": [
+      {
+       "by": "EHU II"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "Hume applies the test to the idea of necessary connection (EHU VII) and to the idea of the self (T 1.4.6).",
+     "claims": [
+      {
+       "by": "EHU VII"
+      },
+      {
+       "by": "T 1.4.6"
+      }
+     ]
+    },
+    {
+     "text": "In the Appendix to the Treatise Hume corrects a claim of T 1.3.7, that two ideas of the same object differ only in force and vivacity: he would have been “nearer the truth”, he writes, to say they differ by “their different feeling” (T App.).",
+     "claims": [
+      {
+       "by": "T App."
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "In the Stanford Encyclopedia entry, Hsueh Qu and Elizabeth S.",
+     "claims": [
+      {
+       "by": "SEP"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Radcliffe describe the distinction as the difference “between feeling and thinking”, and find the principle that simple ideas copy simple impressions in both books.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ],
+     "quotes": "checked against the source's text as fetched (see sources)"
+    },
+    {
+     "text": "Peter Millican calls it the Copy Principle and reads it as a limit on what our words can mean, and weighs how far it bears on the dispute over Hume's view of causation (see Causation and necessary connection).",
+     "claims": [
+      {
+       "by": "MILLICAN"
+      }
+     ]
+    }
+   ],
+   "s": "Hume, Treatise of Human Nature (1739), I.i.1; Enquiry Concerning Human Understanding (1748), §2"
+  },
+  "association-of-ideas": {
+   "new_d": [
+    {
+     "text": "Hume's three principles by which one idea naturally introduces another in the imagination: resemblance, contiguity in time or place, and cause and effect.",
+     "claims": [
+      {
+       "by": "T 1.1.4"
+      },
+      {
+       "by": "EHU III"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Since the imagination can separate simple ideas and join them again in any form, Hume argues, its operations would be unaccountable without some universal principles that make it uniform (T 1.1.4).",
+     "claims": [
+      {
+       "by": "T 1.1.4"
+      }
+     ]
+    },
+    {
+     "text": "Hume calls the uniting principle “a gentle force, which commonly prevails” (T 1.1.4).",
+     "claims": [
+      {
+       "by": "T 1.1.4"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "Three qualities produce it: “Resemblance, Contiguity in time or place, and Cause and Effect” (T 1.1.4).",
+     "claims": [
+      {
+       "by": "T 1.1.4"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "No relation, he writes, makes a stronger connection in the fancy than cause and effect, and it is the most extensive of the three, reaching through intermediate causes, as with cousins in the fourth degree (T 1.1.4).",
+     "claims": [
+      {
+       "by": "T 1.1.4"
+      }
+     ]
+    },
+    {
+     "text": "He calls this union “a kind of Attraction” in the mental world, comparable in its effects to attraction in the natural world (T 1.1.4).",
+     "claims": [
+      {
+       "by": "T 1.1.4"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Its causes are “mostly unknown” and must be resolved into “original qualities of human nature” (T 1.1.4).",
+     "claims": [
+      {
+       "by": "T 1.1.4"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "Among its effects are the complex ideas of relations, modes and substances (T 1.1.4).",
+     "claims": [
+      {
+       "by": "T 1.1.4"
+      }
+     ]
+    },
+    {
+     "text": "The Enquiry finds the same connection in serious thought and in reverie: even in dreams, the imagination “ran not altogether at adventures” (EHU III).",
+     "claims": [
+      {
+       "by": "EHU III"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Hume writes that no philosopher has tried to enumerate the principles of association, and finds only three, “Resemblance, Contiguity in time or place, and Cause or Effect” (EHU III).",
+     "claims": [
+      {
+       "by": "EHU III"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "A picture leads our thoughts to its original, mention of one room in a building to the others, and a wound to the pain that follows it (EHU III).",
+     "claims": [
+      {
+       "by": "EHU III"
+      }
+     ]
+    },
+    {
+     "text": "He grants that the list is hard to prove complete (EHU III).",
+     "claims": [
+      {
+       "by": "EHU III"
+      }
+     ]
+    },
+    {
+     "text": "The same three relations do further work in the Treatise.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "A present impression passes some of its vivacity to a related idea, and so produces belief: the picture of an absent friend enlivens our idea of him by resemblance, nearness to home by contiguity, and a saint's relics by causation (T 1.3.8), and the Enquiry repeats the experiments (EHU V.2).",
+     "claims": [
+      {
+       "by": "T 1.3.8"
+      },
+      {
+       "by": "EHU V.2"
+      }
+     ]
+    },
+    {
+     "text": "Resemblance, which memory produces, and causation give the succession of perceptions the identity we ascribe to a mind (T 1.4.6).",
+     "claims": [
+      {
+       "by": "T 1.4.6"
+      }
+     ]
+    },
+    {
+     "text": "Qu and Radcliffe, in the Stanford Encyclopedia, list the three principles and note that Hume takes causation to be the strongest.",
+     "claims": [
+      {
+       "by": "SEP"
+      },
+      {
+       "by": "SEP"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    }
+   ],
+   "s": "Hume, Treatise of Human Nature (1739), I.i.4; Enquiry Concerning Human Understanding (1748), §3"
+  },
+  "necessary-connection": {
+   "new_d": [
+    {
+     "text": "Hume's analysis of the idea of cause: experience shows only that like objects are constantly conjoined, and the idea of necessary connection is copied from a felt determination of the mind to pass from one to its usual attendant.",
+     "claims": [
+      {
+       "by": "T 1.3.14"
+      },
+      {
+       "by": "EHU VII.2"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "In T 1.3.14 Hume looks for the impression from which the idea of necessity is copied.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ]
+    },
+    {
+     "text": "A single instance shows one object precedent and contiguous to another, and the repetition of like instances “discovers nothing new in any one of them” and “produces nothing new either in these objects, or in any external body” (T 1.3.14).",
+     "claims": [
+      {
+       "by": "T 1.3.14"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "What repetition does produce is a change in the mind: after enough instances we feel “a determination of the mind to pass from one object to its usual attendant” (T 1.3.14).",
+     "claims": [
+      {
+       "by": "T 1.3.14"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "Necessity “is nothing but an internal impression of the mind” (T 1.3.14); it is “something, that exists in the mind, not in objects” (T 1.3.14).",
+     "claims": [
+      {
+       "by": "T 1.3.14"
+      },
+      {
+       "by": "T 1.3.14"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "The mind's “great propensity to spread itself on external objects” explains why we place necessity in the objects (T 1.3.14).",
+     "claims": [
+      {
+       "by": "T 1.3.14"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "Hume anticipates the outcry: “What! the efficacy of causes lie in the determination of the mind!” (T 1.3.14).",
+     "claims": [
+      {
+       "by": "T 1.3.14"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "He closes the section with two definitions of cause.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The first defines it as “An object precedent and contiguous to another”, where all objects resembling the first stand in like relations to objects resembling the second; the second as an object “so united with it in the imagination” that the idea of the one determines the mind to form the idea of the other (T 1.3.14).",
+     "claims": [
+      {
+       "by": "T 1.3.14"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "The Enquiry asks the same question of single instances among bodies, of the will's command over the body and of its command over our ideas, and finds no impression of power in any of them (EHU VII.1).",
+     "claims": [
+      {
+       "by": "EHU VII.1"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Hume then denies that occasionalism helps, since we are as ignorant of how a mind, even the supreme mind, acts as of how bodies act (EHU VII.1).",
+     "claims": [
+      {
+       "by": "EHU VII.1"
+      }
+     ]
+    },
+    {
+     "text": "In single instances, “All events seem entirely loose and separate”, and “They seem conjoined, but never connected” (EHU VII.2).",
+     "claims": [
+      {
+       "by": "EHU VII.2"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "The idea comes from “this customary transition of the imagination from one object to its usual attendant” (EHU VII.2).",
+     "claims": [
+      {
+       "by": "EHU VII.2"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "The Enquiry's first definition makes a cause “an object, followed by another”, where all objects similar to the first are followed by objects similar to the second, and glosses it: “if the first object had not been, the second never had existed” (EHU VII.2).",
+     "claims": [
+      {
+       "by": "EHU VII.2"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "The second makes it an object “whose appearance always conveys the thought to that other” (EHU VII.2).",
+     "claims": [
+      {
+       "by": "EHU VII.2"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "C.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "M.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ]
+    },
+    {
+     "text": "Lorkowski's Internet Encyclopedia article reads the first definition as tracing constant conjunction in the objects and the second as tracing the internal impression, and writes that “the idea of necessity that supplements constant conjunction is a psychological projection”.",
+     "claims": [
+      {
+       "by": "IEP"
+      },
+      {
+       "by": "IEP"
+      }
+     ],
+     "quotes": "checked against the source's text as fetched (see sources)"
+    },
+    {
+     "text": "It notes that readers dispute how the definitions relate: Robinson argued that they are not equivalent, and Don Garrett that they can be squared.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ]
+    },
+    {
+     "text": "Qu and Radcliffe, in the Stanford Encyclopedia, report that commentators, Old Humeans in particular, have argued for giving the first definition priority.",
+     "claims": [
+      {
+       "by": "SEP"
+      },
+      {
+       "by": "SEP"
+      }
+     ]
+    },
+    {
+     "text": "Whether Hume also believed in causal powers beyond anything the definitions capture is the New Hume debate, shown under Where readers disagree.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ]
+    },
+    {
+     "text": "The argument that causal inference rests on no reasoning, in T 1.3.6 and EHU IV, is set out under Problem of induction; the principle Hume puts in its place is under Custom or habit.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    }
+   ],
+   "s": "Hume, Treatise of Human Nature (1739), I.iii.14; Enquiry Concerning Human Understanding (1748), §7"
+  },
+  "custom": {
+   "new_d": [
+    {
+     "text": "Hume's name for the propensity, produced by repetition without any reasoning, to pass from an object to the idea of its usual attendant; on his account every inference from experience rests on it.",
+     "claims": [
+      {
+       "by": "T 1.3.8"
+      },
+      {
+       "by": "EHU V.1"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "In T 1.3.8 Hume asks what gives the idea believed its vivacity, having shown that belief “consists in a lively idea related to a present impression” (T 1.3.8).",
+     "claims": [
+      {
+       "by": "T 1.3.8"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "A present impression, he argues, passes some of its force to the ideas related to it, and he tries the claim on each relation: the picture of an absent friend, nearness to home, the relics of a saint (T 1.3.8).",
+     "claims": [
+      {
+       "by": "T 1.3.8"
+      }
+     ]
+    },
+    {
+     "text": "Belief in a cause or effect follows a present impression immediately, by no new operation of reason or imagination, and Hume calls “everything custom, which proceeds from a past repetition, without any new reasoning” (T 1.3.8).",
+     "claims": [
+      {
+       "by": "T 1.3.8"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "He concludes that “all probable reasoning is nothing but a species of sensation” (T 1.3.8).",
+     "claims": [
+      {
+       "by": "T 1.3.8"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "Custom works unnoticed.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "A traveller who stops at a river foresees the effects of going on without recalling a single instance: “The custom operates before we have time for reflection” (T 1.3.8).",
+     "claims": [
+      {
+       "by": "T 1.3.8"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "Where one careful experiment is enough to know a cause, the inference still rests on custom, since the principle that like objects in like circumstances produce like effects “has established itself by a sufficient custom” (T 1.3.8).",
+     "claims": [
+      {
+       "by": "T 1.3.8"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "The Enquiry puts the doctrine as the sceptical solution to the doubts of section IV.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "A person brought suddenly into the world would see one event follow another and could not reach the idea of cause; after long experience of constant conjunction he infers the one from the other, and the principle that determines him is custom: “This principle is Custom or Habit” (EHU V.1).",
+     "claims": [
+      {
+       "by": "EHU V.1"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "Hume claims to name a principle of human nature without giving its ultimate cause (EHU V.1), and calls it “the great guide of human life” (EHU V.1).",
+     "claims": [
+      {
+       "by": "EHU V.1"
+      },
+      {
+       "by": "EHU V.1"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "Belief is “a more vivid, lively, forcible, firm, steady conception of an object” than imagination alone can reach (EHU V.2).",
+     "claims": [
+      {
+       "by": "EHU V.2"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "Custom produces “a kind of pre-established harmony” between the course of nature and the succession of our ideas, and nature has secured the inference by “some instinct or mechanical tendency” (EHU V.2).",
+     "claims": [
+      {
+       "by": "EHU V.2"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "Custom also supplies the idea of necessary connection: repetition “neither discovers nor causes anything in the objects” and “has an influence only on the mind” (T 1.3.14).",
+     "claims": [
+      {
+       "by": "T 1.3.14"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "In Difference and Repetition Deleuze starts the first synthesis of time, habit, from this thesis of Hume's, that repetition changes nothing in the object and something in the mind that contemplates it (see Syntheses of time).",
+     "claims": [
+      {
+       "by": "DR via syntheses-of-time (glossary-dr.json, DR pp. 70–71)"
+      }
+     ]
+    },
+    {
+     "text": "Readers disagree over what the appeal to custom and instinct does.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "In Lorkowski's account in the Internet Encyclopedia, it is Hume's solution to the problem of induction; sceptical readers take it as a description of how we come to believe, and others as a justification of the belief.",
+     "claims": [
+      {
+       "by": "IEP"
+      },
+      {
+       "by": "IEP"
+      }
+     ]
+    },
+    {
+     "text": "Qu and Radcliffe, in the Stanford Encyclopedia, name the wider question the Kemp Smith problem: “the problem of reconciling the sceptical aspects of Hume with the naturalistic ones”.",
+     "claims": [
+      {
+       "by": "SEP"
+      },
+      {
+       "by": "SEP"
+      }
+     ],
+     "quotes": "checked against the source's text as fetched (see sources)"
+    }
+   ],
+   "s": "Hume, Treatise of Human Nature (1739), I.iii.8; Enquiry Concerning Human Understanding (1748), §5"
+  },
+  "personal-identity": {
+   "new_d": [
+    {
+     "text": "Hume's account of the self as a bundle of perceptions to which the imagination ascribes an identity, an account he found in the Treatise's Appendix that he could not make consistent.",
+     "claims": [
+      {
+       "by": "T 1.4.6"
+      },
+      {
+       "by": "T App."
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Some philosophers, Hume writes, imagine we are “every moment intimately conscious” of a self (T 1.4.6).",
+     "claims": [
+      {
+       "by": "T 1.4.6"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "He asks from what impression the idea could be derived.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ]
+    },
+    {
+     "text": "Any impression of a self would have to last unchanged through life, and there is no impression “constant and invariable”; “consequently there is no such idea” (T 1.4.6).",
+     "claims": [
+      {
+       "by": "T 1.4.6"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "When he enters most intimately into what he calls himself, he writes, “I always stumble on some particular perception or other” (T 1.4.6).",
+     "claims": [
+      {
+       "by": "T 1.4.6"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "The rest of mankind are “nothing but a bundle or collection of different perceptions” (T 1.4.6).",
+     "claims": [
+      {
+       "by": "T 1.4.6"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "The mind is “a kind of theatre” where perceptions appear and pass, though “The comparison of the theatre must not mislead us”: the successive perceptions alone constitute the mind (T 1.4.6).",
+     "claims": [
+      {
+       "by": "T 1.4.6"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "Hume separates personal identity as it regards our thought or imagination from personal identity as it regards our passions, and treats the first (T 1.4.6).",
+     "claims": [
+      {
+       "by": "T 1.4.6"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The identity we ascribe to the mind “is only a fictitious one”, of the same kind as the identity we ascribe to plants and animals (T 1.4.6).",
+     "claims": [
+      {
+       "by": "T 1.4.6"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "The imagination passes so easily along a succession of related perceptions that it takes them for one continued object, and to justify the mistake we “feign” a soul, a self or a substance (T 1.4.6).",
+     "claims": [
+      {
+       "by": "T 1.4.6"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "For the mind the relations are resemblance, which memory produces, and causation; he compares the soul to “a republic or commonwealth” whose members change while the republic remains (T 1.4.6).",
+     "claims": [
+      {
+       "by": "T 1.4.6"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "The nice and subtle questions about personal identity, he concludes, are “rather as grammatical than as philosophical difficulties” (T 1.4.6).",
+     "claims": [
+      {
+       "by": "T 1.4.6"
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "In the Appendix Hume finds himself “involved in such a labyrinth” over this section (T App.).",
+     "claims": [
+      {
+       "by": "T App."
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "There are “two principles, which I cannot render consistent”: that “all our distinct perceptions are distinct existences”, and that “the mind never perceives any real connection among distinct existences” (T App.).",
+     "claims": [
+      {
+       "by": "T App."
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "If perceptions inhered in something simple and individual, or the mind perceived a real connection among them, there would be no difficulty (T App.).",
+     "claims": [
+      {
+       "by": "T App."
+      }
+     ]
+    },
+    {
+     "text": "He pleads “the privilege of a sceptic”, and does not pronounce the difficulty “absolutely insuperable” (T App.).",
+     "claims": [
+      {
+       "by": "T App."
+      }
+     ],
+     "quotes": "verbatim, checked by script against the bundled section"
+    },
+    {
+     "text": "The first Enquiry has no section on personal identity.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ]
+    },
+    {
+     "text": "Qu and Radcliffe, in the Stanford Encyclopedia, read the Treatise's self as a bundle, taken at one time, or a succession, taken over time, of associated perceptions.",
+     "claims": [
+      {
+       "by": "SEP"
+      },
+      {
+       "by": "SEP"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Of the Appendix they write that “Hume's diagnosis of the exact problem he sees is notoriously unclear”, and that no consensus has been reached; the main readings are shown under Where readers disagree.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ],
+     "quotes": "checked against the source's text as fetched (see sources)"
+    },
+    {
+     "text": "James Giles (Philosophy East and West, 1993) calls Hume “the most important no-self theorist” and finds the Buddha “in complete agreement with Hume” that where there is diversity there can be no identity (see No-self).",
+     "claims": [
+      {
+       "by": "GILES"
+      }
+     ],
+     "quotes": "checked against the source's text as fetched (see sources)",
+     "paragraph": "starts a new paragraph"
+    }
+   ],
+   "s": "Hume, Treatise of Human Nature (1739–40), I.iv.6 and Appendix"
+  }
+ },
+ "summary": "Five new entries read in Hume's Treatise first and his first Enquiry second, every quotation verbatim from the bundled books with a link to its section: impressions and ideas, association of ideas, causation and necessary connection, custom or habit, and personal identity. Scholarship from Qu and Radcliffe (SEP, 2026), Lorkowski (IEP), Millican, Yang and Giles. Two disputes recorded open: the New Hume debate, and what the Appendix retracts. The Hume thinker card audited in thinkers-route.json."
+}
