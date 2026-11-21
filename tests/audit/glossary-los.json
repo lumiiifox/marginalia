@@ -9,7 +9,9 @@
   "review": "Independent reviewer (separate agent, fresh context), 2026-11-17: checked the page locator by hand against the running heads (pp. 4–6, 12–23, 28–35, 54, 58, 61–63, 70–72, 88–90, 94–95, 129, 142–168, 176, 184–185, 188, 212, 224) and the preface by eye, then every sentence of sense-event, aion-chronos and counter-actualization and the body-without-organs sentence for verbatim quotations, pages, faithful paraphrase, attribution and house style, with an n-gram script for unquoted copying. Required fixes, all applied: seven unquoted runs of the book's words quoted or reworded (pp. 63, 150, 151, 161, 165); the preface's grounds for Carroll and the Stoics restated (p. xiii); the empty square's page and wording corrected (pp. 51, 70–71); the link between the double structure and ethics given from p. 152; the Bousquet line credited as the book gives it (p. 148); the will's object narrowed as Deleuze narrows it (p. 149); the body-without-organs dispute widened to every page naming it, with pp. 225 and 297 noted; series 12–19 added to unread. Optional suggestions 1 and 3–6 applied; double causality left for a later batch. Re-check by the same reviewer: all correct. Verdict: pass.",
   "recheck_2026-11-19": "Claude, 2026-11-19: the Stanford wording on Artaud and the body without organs re-read in the article (fetched through the web-fetch tool, literal text through section 4.2); entry sentence and dispute corrected. Independent reviewer (separate agent, fresh context), 2026-11-19: re-read SEP §3.2 literally and confirmed the quotations verbatim, the newborn and Stern context, and the page-reference counts; required the last dispute sentence to say the article attributes the idea to “a tradition of developmental psychology”, with Stern's image as its expression, and one unquoted five-word run from the SEP reworded. Both applied. Re-check by the same reviewer: one unquoted SEP run in this note quoted. Verdict: pass.",
   "batch2": "Claude (Opus 5.5), 2026-11-19: drafted from the owner's copies of the book (OCR text with page markers) and of Williams's guide; every quotation and page checked by script against them, OCR errors (9 for g, ef for of, broken ligatures) checked by eye.",
-  "review_batch2": "Independent reviewer (separate agent, fresh context), 2026-11-19: checked the book locator against running heads (series 14–17 and 27) and Williams's against his folios and contents (STATIC GENESIS on p. 124), every new quotation and page, paraphrase, attribution, house style and TERM_PAGES counts, with a 5-gram script for unquoted copying, and searched every page naming the body without organs for 'intens' (none). Required fixes, all applied: three unquoted runs reworded (LOS pp. 95, 96; Williams p. 55); Deleuze's revision of Klein's schizoid position credited to Deleuze; Badiou's position credited as Williams reports it; the Williams unread range corrected. Optional suggestions applied: extraction wording (p. 31), 'glosses' for physique statique, 'thing = x' quoted (p. 115), the Aion and univocity series tied to the first question only, Badiou's French title, quote records for dispute words, the entry's 'only' dropped, a lead clause for the static genesis. Re-check by the same reviewer: all correct. Verdict: pass."
+  "review_batch2": "Independent reviewer (separate agent, fresh context), 2026-11-19: checked the book locator against running heads (series 14–17 and 27) and Williams's against his folios and contents (STATIC GENESIS on p. 124), every new quotation and page, paraphrase, attribution, house style and TERM_PAGES counts, with a 5-gram script for unquoted copying, and searched every page naming the body without organs for 'intens' (none). Required fixes, all applied: three unquoted runs reworded (LOS pp. 95, 96; Williams p. 55); Deleuze's revision of Klein's schizoid position credited to Deleuze; Badiou's position credited as Williams reports it; the Williams unread range corrected. Optional suggestions applied: extraction wording (p. 31), 'glosses' for physique statique, 'thing = x' quoted (p. 115), the Aion and univocity series tied to the first question only, Badiou's French title, quote records for dispute words, the entry's 'only' dropped, a lead clause for the static genesis. Re-check by the same reviewer: all correct. Verdict: pass.",
+  "batch3": "Claude (Opus 5.5), 2026-11-21: drafted from two sets of notes the owner supplied (documents in the owner's Drive), treated as drafts: every page they cite was read in the owner's copies of the book (OCR text with page markers) and of Williams's guide, and only what the pages support was used. Series 12, 13, 18 and 19 (pp. 74–93, 127–141) read in full; Williams pp. 33–37, 53–58, 154–156, 194–199 and 203. Quotations and pages checked by script, unquoted runs of six or more words from either source reworded (n-gram script).",
+  "review_batch3": "Independent reviewer (separate agent, fresh context), 2026-11-21: checked every new quotation (verbatim, under 15 words, including Williams pp. 36–37 across the page break), every page against the series openings (pp. 74, 82, 127, 134) and Williams's folios (pp. 33, 34, 56, 57, 155, 196, 203), paraphrase, attribution, house style, TERM_PAGES lengths, and unquoted copying with a 5-gram script (no run of six words). Required fixes, all applied: Williams's definition of sense restated as variations in the intensity of relations between infinitives (pp. 33, 35; “to green” is not on pp. 33–35); the events-and-sense difference marked as the entry's reading and given Williams pp. 35, 195–196; one contrastive construction in the dynamic-genesis sentence reworded; the bad-Chronos verdict corrected (p. 164 draws the tie) and p. 37 removed from the unread pages. Optional suggestions applied: humour as Deleuze's “art” (p. 141), “may keep” for p. 87's hedge, Artaud and Wolfson pages to p. 90, the body-without-organs sentence reworded so action and passion are the poles, series 18 grounded at p. 143, the bad Chronos tie added (p. 164), and Williams's phrase quoted. Not applied: the p. 163 hesitation in the dispute, and “among others” in the unread line. Re-check by the same reviewer: all fixes accurate, TERM_PAGES and audit records consistent. Verdict: pass."
  },
  "sources": {
   "LOS": {
@@ -34,7 +36,8 @@
   "Body without organs in The Logic of Sense, as shown on the entry (re-read 2026-11-19 against SEP §3.2 and LOS series 27): Intensities in The Logic of Sense? The Stanford Encyclopedia article (revised by Daniela Voss, 2022) reads the book as calling the newborn's “life of intensities-in-motion” the body without organs, and pictures that life with Daniel Stern's image of infant experience, published in 1985. The Stanford article and the book both place the body without organs in the infant: the book sets it in the infant's schizoid position, Klein's position as Deleuze revises it (pp. 187–188), to which, it supposes, the schizophrenic regresses (p. 189), the schizophrenic whose body without organs is Artaud's glorious body (pp. 88, 90). They part only on “intensities”, which the book's pages on it never use. The book gives intensity to the erogenous zones of the surface (p. 225), and its essay on Klossowski calls breaths “pure intensities” (p. 297), a possible bridge. The article says Deleuze draws on “a tradition of developmental psychology” and gives Stern's image as its expression; the intensity wording in that paragraph is Stern's, published sixteen years after the book. Not settled.",
   "Sense-event, “sterile division” or “decoupling”: Sterile division or decoupling? Lester and Stivale translate Deleuze's dédoublement as “sterile division” (p. 31). James Williams translates it “decoupling”, since French has its own word, division, and Deleuze avoids it in this passage: on his reading the paradox cuts a single dry proposition loose from the regress, and its sense drifts off sterile (Williams, p. 55). He also reads the two paradoxes as relaunching each other, so that the alternative between them keeps sense in movement (Williams, p. 55).",
   "Aion-chronos, the present (Badiou and Williams): The present: as James Williams reports it, Alain Badiou, in Logiques des mondes (2006; translated as Logics of Worlds), centres time and ethics on the present, where a subject incorporates into the present of a truth. James Williams calls this a moral “presentism” and argues that Deleuze's two presents answer it: the present of Chronos, where the event strikes the body, and the present of the actor, which counter-actualizes it (p. 168), with eternal ideas working on every present because they are neutral and impassive (Williams, pp. 172–174). Badiou's book has not been read for this entry; his position is given as Williams reports it.",
-  "Counter-actualization, guidance for action (open question): Can counter-actualization guide action? James Williams asks whether its principles are too abstract for specific wrongs and too individualistic for an ethics that begins from living with others (Williams, p. 153), and whether replaying events suits an age that can cure and prevent what it once had to bear (Williams, p. 158). He takes up the first question again through the series on the Aion and on univocity (Williams, pp. 169–174); the entry leaves the questions open."
+  "Counter-actualization, guidance for action (open question): Can counter-actualization guide action? James Williams asks whether its principles are too abstract for specific wrongs and too individualistic for an ethics that begins from living with others (Williams, p. 153), and whether replaying events suits an age that can cure and prevent what it once had to bear (Williams, p. 158). He takes up the first question again through the series on the Aion and on univocity (Williams, pp. 169–174); the entry leaves the questions open.",
+  "Aion-chronos, one present for the whole (open question, 2026-11-21): One present for the whole? Deleuze gives Chronos a divine present of the whole cosmos (pp. 162–163) and a cosmic present for the Stoic unity of bodily causes (p. 131), and in the twelfth series writes that the universe taken as “the system of all systems, or the abnormal set” admits no fixed present (p. 77). The book may be setting the Stoic cosmos, a unity of causes, apart from the universe as an abnormal set; it does not say so, and no scholar's reading of the point has been read for this entry. Left open."
  ],
  "unread": [
   {
@@ -50,14 +53,14 @@
   },
   {
    "source": "James Williams, Gilles Deleuze's Logic of Sense: A Critical Introduction and Guide (2008)",
-   "part": "all but pp. 55–56, 122–132, 152–158 and 169–174",
-   "why": "read where the three entries needed a reading (sterility, static genesis and double causality, counter-actualization, the Aion and Badiou)",
+   "part": "all but pp. 33–37, 53–58, 122–132, 152–158, 169–174, 194–199 and 203",
+   "why": "read where the entries needed a reading (sterility, static genesis and double causality, counter-actualization, the Aion and Badiou; in batch 3, sense and the infinitive, neutrality, the regress, Bousquet and the barricades, the dynamic genesis, and reading Hume)",
    "terms": [
     "sense-event",
     "aion-chronos",
     "counter-actualization"
    ],
-   "effect": "his chapters on the earlier series (pp. 28–76, apart from pp. 55–56), the dynamic genesis (pp. 194–201) and the conclusion are not drawn on; he may say more on sense and the event than the entries give"
+   "effect": "his pages on Alice and the directions of time (pp. 28–29), the circle of the proposition (pp. 40–47), the military recruit's greenness (pp. 50–51), the two unequal series and esoteric words (pp. 59–72), good sense and common sense (pp. 73–75), and the conclusion's exchange with ordinary-language philosophy (pp. 202–207 apart from p. 203) are not drawn on"
   },
   {
    "source": "Alain Badiou, Logiques des mondes (2006; Logics of Worlds, 2009)",
@@ -68,15 +71,6 @@
     "counter-actualization"
    ],
    "effect": "the dispute on the present gives Badiou's side in Williams's words; Badiou's own statement of it is unchecked"
-  },
-  {
-   "source": "The Logic of Sense, series 12–13 and 18–19",
-   "part": "pp. 74–93 and 127–141, except pp. 88–93 and 129",
-   "why": "read only where the entries cite them",
-   "terms": [
-    "sense-event"
-   ],
-   "effect": "the series on the stammerer and the schizophrenic (12–13) and on the philosophers and humour (18–19) are not drawn on; none known to bear on what the entries say"
   },
   {
    "source": "The Logic of Sense, the appendixes and series 24–34",
@@ -186,6 +180,19 @@
      ]
     },
     {
+     "text": "In the eighteenth series he adds that credit for the new frontier between things and propositions should perhaps go to Antisthenes (p. 132), among the Cynics and Stoics in whom he finds a third image of the philosopher, turned toward the surface (pp. 129–133).",
+     "claims": [
+      {
+       "by": "LOS p. 132"
+      },
+      {
+       "by": "LOS pp. 129–133"
+      }
+     ],
+     "excerpt": "“perhaps to Antisthenes that credit must be given” (p. 132)",
+     "added": "2026-11-21"
+    },
+    {
      "text": "Sense has no existence outside the proposition that expresses it, yet it belongs as an attribute to the thing or state of affairs, while a proposition's own attribute is its predicate (p. 21).",
      "claims": [
       {
@@ -264,6 +271,93 @@
        "by": "LOS p. 54"
       }
      ]
+    },
+    {
+     "text": "That nonsense belongs to the surface.",
+     "claims": [
+      {
+       "by": "LOS pp. 81, 90–91, 136"
+      }
+     ],
+     "excerpt": "editorial lead-in, resting on the sentences that follow",
+     "added": "2026-11-21",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Because nonsense has “an internal and original relation to sense”, the paradoxical element running through the two series bestows sense on the terms of each (p. 81), and this surface organization, Deleuze writes, has “an extreme and persistent fragility” (p. 81).",
+     "claims": [
+      {
+       "by": "LOS p. 81"
+      }
+     ],
+     "excerpt": "“this paradoxical element bestows sense upon the terms of each series” (p. 81)",
+     "added": "2026-11-21"
+    },
+    {
+     "text": "The thirteenth series describes a second nonsense, which he finds in Antonin Artaud's writing from Rodez and in Louis Wolfson's book on his schizophrenia (pp. 83–90), and he warns against grouping child, poet and madman together (pp. 82–83).",
+     "claims": [
+      {
+       "by": "LOS pp. 82–90"
+      }
+     ],
+     "excerpt": "Artaud's letter from Rodez (p. 84); Wolfson (pp. 84–88); “grotesque trinity of child, poet, and madman” (p. 83) (reworded after review, 2026-11-21)",
+     "added": "2026-11-21"
+    },
+    {
+     "text": "Once the surface splits open, “Nonsense no longer gives sense, for it has consumed everything” (p. 82).",
+     "claims": [
+      {
+       "by": "LOS pp. 82, 86–87"
+      }
+     ],
+     "excerpt": "quotation verbatim, p. 82; “the surface has split open” (p. 86)",
+     "added": "2026-11-21"
+    },
+    {
+     "text": "Words may keep a power of denotation, experienced as empty, and lose their sense, their power to express an incorporeal event (p. 87); the two series disappear, and nonsense “absorbs and engulfs all sense” on both sides (p. 91).",
+     "claims": [
+      {
+       "by": "LOS p. 87"
+      },
+      {
+       "by": "LOS p. 91"
+      }
+     ],
+     "excerpt": "“maintains perhaps a certain power of denotation” (p. 87); “the two series have disappeared” (p. 91) (reworded after review, 2026-11-21)",
+     "added": "2026-11-21"
+    },
+    {
+     "text": "Deleuze calls this nonsense of the depths sub-sense, a-sense or Untersinn, and keeps it apart from surface nonsense (p. 90): the two surface figures of nonsense, which distribute sense, share nothing with the two plunges into nonsense that engulf it (p. 91).",
+     "claims": [
+      {
+       "by": "LOS pp. 90–91"
+      }
+     ],
+     "excerpt": "“Sub-sense, a-sense, Untersinn” (p. 90); “two dives into nonsense” (p. 91)",
+     "added": "2026-11-21"
+    },
+    {
+     "text": "The nineteenth series returns to the surface.",
+     "claims": [
+      {
+       "by": "LOS p. 136"
+      }
+     ],
+     "excerpt": "“we must be led back to the surface” (p. 136)",
+     "added": "2026-11-21"
+    },
+    {
+     "text": "Pure sense is produced there in relation to a third element, “the nonsense of the surface” (p. 136), and humour, which Deleuze calls “the co-extensiveness of sense with nonsense” and “the art of the static genesis” (p. 141), is the art of that relation.",
+     "claims": [
+      {
+       "by": "LOS p. 136"
+      },
+      {
+       "by": "LOS p. 141"
+      }
+     ],
+     "excerpt": "quotations verbatim, pp. 136, 141 (reworded after review, 2026-11-21)",
+     "added": "2026-11-21"
     },
     {
      "text": "The fourteenth series takes up that task (pp. 94–99).",
@@ -421,6 +515,16 @@
      "added": "2026-11-19"
     },
     {
+     "text": "In the twenty-seventh series Deleuze sets beside it a dynamic genesis, which leads “from states of affairs to events, from mixtures to pure lines” (p. 186).",
+     "claims": [
+      {
+       "by": "LOS p. 186"
+      }
+     ],
+     "excerpt": "quotation verbatim, p. 186",
+     "added": "2026-11-21"
+    },
+    {
      "text": "James Williams, in his guide to the book (2008), calls the quasi-cause one of Deleuze's rare “heavy and clumsy concepts”, resting on stretched analogies with the physics of surfaces, and then defends it: on his reading the quasi-cause changes the relation of actual things to sense and leaves their measurable properties alone (Williams, p. 130).",
      "claims": [
       {
@@ -443,6 +547,16 @@
      "added": "2026-11-19"
     },
     {
+     "text": "He reads the static and dynamic geneses as running in opposite directions, the static leading from virtual to actual and the dynamic from actual to virtual, and calls the dynamic process primary; pure events, he insists, stay primary all the same, through the role they play in producing actual things (Williams, pp. 194–196).",
+     "claims": [
+      {
+       "by": "WILLIAMS pp. 194–196"
+      }
+     ],
+     "excerpt": "“pure events are primary” (Williams, p. 195); “goes from the actual to the virtual” (p. 195) (reworded after review, 2026-11-21)",
+     "added": "2026-11-21"
+    },
+    {
      "text": "He warns against taking sense for meaning: meaning changes with each proposition, and sense stays neutral across them (Williams, p. 56).",
      "claims": [
       {
@@ -450,6 +564,78 @@
       }
      ],
      "added": "2026-11-19"
+    },
+    {
+     "text": "He defines sense as variations in the intensity of relations between infinitives such as to spill and to offend (Williams, p. 33); an event leaves each infinitive as it was and changes its relations to the others (Williams, p. 35).",
+     "claims": [
+      {
+       "by": "WILLIAMS p. 33"
+      },
+      {
+       "by": "WILLIAMS p. 35"
+      }
+     ],
+     "excerpt": "“variations in the intensity of relations of infinitives” (Williams, p. 33); restated p. 50",
+     "added": "2026-11-21"
+    },
+    {
+     "text": "He writes that “Deleuze separates events and sense” to keep sense independent (Williams, p. 35), where the book says “the event is sense itself” (p. 22).",
+     "claims": [
+      {
+       "by": "WILLIAMS p. 35"
+      },
+      {
+       "by": "LOS p. 22"
+      }
+     ],
+     "excerpt": "quotations verbatim (Williams p. 35; LOS p. 22)",
+     "added": "2026-11-21"
+    },
+    {
+     "text": "Read beside p. 22, the gap looks like one of terms: Williams's event has an actual side (Williams, p. 35), and what he calls pure events he also calls infinitives (Williams, pp. 195–196), while Deleuze's identity holds for the event kept apart from the state of affairs (p. 22).",
+     "claims": [
+      {
+       "by": "WILLIAMS p. 35"
+      },
+      {
+       "by": "WILLIAMS pp. 195–196"
+      },
+      {
+       "by": "LOS p. 22"
+      }
+     ],
+     "excerpt": "“the actual side of the event” (Williams, p. 35); “pure events or pure infinitives” (p. 195); the reconciliation is the writer's, marked as such (“looks like”)",
+     "added": "2026-11-21"
+    },
+    {
+     "text": "Neutrality, on Williams's reading, holds for the infinitive and leaves room for change in what he calls significance: “X is a traitor” and “X is not a traitor” express the same sense, to betray, and need not alter its ties to other infinitives alike, and no rule of negation or modality settles how they alter them (Williams, pp. 56–57).",
+     "claims": [
+      {
+       "by": "WILLIAMS pp. 56–57"
+      }
+     ],
+     "excerpt": "“the same sense (the infinitive ‘to betray’)” (Williams, p. 57)",
+     "added": "2026-11-21"
+    },
+    {
+     "text": "Even an impossible object such as the round square has a sense, he argues, since a proposition naming it can set off research in mathematics or philosophy (Williams, pp. 57–58).",
+     "claims": [
+      {
+       "by": "WILLIAMS pp. 57–58"
+      }
+     ],
+     "excerpt": "“trigger enthusiasm for research in philosophy or mathematics” (Williams, p. 58)",
+     "added": "2026-11-21"
+    },
+    {
+     "text": "Of the regress of sense he stresses that each new proposition alters the sense of the entire series, so that the regress also multiplies sense: “We always have more sense than we think” (Williams, p. 54).",
+     "claims": [
+      {
+       "by": "WILLIAMS p. 54"
+      }
+     ],
+     "excerpt": "quotation verbatim, Williams p. 54",
+     "added": "2026-11-21"
     },
     {
      "text": "Pages of Williams are from his Gilles Deleuze's Logic of Sense: A Critical Introduction and Guide (Edinburgh University Press, 2008); they are pages of the guide and open nothing in your copy of Deleuze.",
@@ -655,6 +841,42 @@
      ]
     },
     {
+     "text": "The twelfth series, drawing on the physicist Ludwig Boltzmann, limits the oriented present: Chronos goes from past to future only as one present succeeds another within partial systems, and the universe taken as “the system of all systems” admits no fixed present (p. 77).",
+     "claims": [
+      {
+       "by": "LOS p. 77"
+      }
+     ],
+     "excerpt": "“no present can be fixed in a Universe” (p. 77)",
+     "added": "2026-11-21"
+    },
+    {
+     "text": "The eighteenth series keeps a cosmic present for the Stoic unity of bodily causes, a perfect mixture (p. 131).",
+     "claims": [
+      {
+       "by": "LOS p. 131"
+      }
+     ],
+     "excerpt": "“everything is exact in the cosmic present” (p. 131)",
+     "added": "2026-11-21"
+    },
+    {
+     "text": "In the depths of schizophrenia, the thirteenth series says, the present grows “more contracted as it is filled” (p. 87), the movement of schizophrenia Deleuze later assigns to the bad Chronos (p. 164), and the opposition of poles in that bodily present shares nothing with the contradiction spread over Aion's infinite subdivision (pp. 91–92).",
+     "claims": [
+      {
+       "by": "LOS p. 87"
+      },
+      {
+       "by": "LOS pp. 91–92"
+      },
+      {
+       "by": "LOS p. 164"
+      }
+     ],
+     "excerpt": "quotation verbatim, p. 87; “opposition of poles in the physical present of bodies” (p. 92) (reworded after review, 2026-11-21)",
+     "added": "2026-11-21"
+    },
+    {
      "text": "In Aion the past and the future subsist or inhere, and the instant, “without thickness and without extension”, divides each present into past and future in both directions at once (p. 164).",
      "claims": [
       {
@@ -714,6 +936,16 @@
        "by": "LOS pp. 184–185"
       }
      ]
+    },
+    {
+     "text": "What the Stoics brought up to the surface, in the eighteenth series, is the event, different in nature from bodies, and “the Aion in its difference in nature from the devouring Chronos” (p. 132).",
+     "claims": [
+      {
+       "by": "LOS p. 132"
+      }
+     ],
+     "excerpt": "quotation verbatim, p. 132",
+     "added": "2026-11-21"
     },
     {
      "text": "James Williams reads Aion and Chronos as two incompatible times that determine each other, and the theory as depending on never folding them into one time: the event has “an actual passing side” in Chronos and “an eternal but differential side” in Aion, which is how events can be “both eternal and passing” (Williams, pp. 122–123).",
@@ -884,6 +1116,40 @@
      ]
     },
     {
+     "text": "Deleuze grounds this ethics in the physics of the eighteenth series, to which he returns (p. 143).",
+     "claims": [
+      {
+       "by": "LOS p. 143"
+      },
+      {
+       "by": "LOS pp. 131–132"
+      }
+     ],
+     "excerpt": "“We must go back to what we said a little while ago” (p. 143)",
+     "added": "2026-11-21",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "In Stoic physics a mixture is “good in the order of the whole” and can be bad, even execrable, in partial encounters (p. 131), and the hero of Stoic thought is Hercules, who always returns to the surface, from the depths or the heights (pp. 131–132).",
+     "claims": [
+      {
+       "by": "LOS pp. 131–132"
+      }
+     ],
+     "excerpt": "“good in the order of the whole, but imperfect, bad, or even execrable” (p. 131); “ascends or descends to the surface” (p. 132)",
+     "added": "2026-11-21"
+    },
+    {
+     "text": "The sage of the nineteenth series finds at the surface pure events taken in their eternal truth, apart from the state of affairs that actualizes them (p. 136).",
+     "claims": [
+      {
+       "by": "LOS p. 136"
+      }
+     ],
+     "excerpt": "“Pure events considered from the perspective of their eternal truth” (p. 136)",
+     "added": "2026-11-21"
+    },
+    {
      "text": "The model is the actor (pp. 147, 150).",
      "claims": [
       {
@@ -939,6 +1205,26 @@
      "paragraph": "starts a new paragraph"
     },
     {
+     "text": "What stays as it was is the physical event, the wound, which creation cannot negate; the free act that redoubles it changes the wound's past and future, so that a curtailed youth becomes an entry into poetry (Williams, pp. 155–156).",
+     "claims": [
+      {
+       "by": "WILLIAMS pp. 155–156"
+      }
+     ],
+     "excerpt": "“Creation cannot negate what occurs” (Williams, p. 155); “changes the past and the future” (p. 156)",
+     "added": "2026-11-21"
+    },
+    {
+     "text": "In an earlier example, the barricades of June 1832, the first barricade matters to the authorities for the way its sense can be expressed again in later uprisings, and Williams calls counter-actualization “a reciprocally determining interaction between sense and the actual side of events”: acts of repair, on his reading, redouble at the level of sense what was done (Williams, pp. 35–37).",
+     "claims": [
+      {
+       "by": "WILLIAMS pp. 35–37"
+      }
+     ],
+     "excerpt": "quotation verbatim, Williams pp. 36–37 (runs across the page break)",
+     "added": "2026-11-21"
+    },
+    {
      "text": "He renders Deleuze's amor fati as a “love of the event”, which selects something to affirm on the event's ideal side and neither denies nor resents what happened in the body (Williams, p. 156).",
      "claims": [
       {
@@ -946,6 +1232,16 @@
       }
      ],
      "added": "2026-11-19"
+    },
+    {
+     "text": "He extends it to Deleuze's way of reading philosophers: in his book on Hume, Deleuze divines what in an earlier philosophy crosses the ages and replays it, which Williams calls replaying and counter-actualization and counts as Deleuze's moral position (Williams, p. 203).",
+     "claims": [
+      {
+       "by": "WILLIAMS p. 203"
+      }
+     ],
+     "excerpt": "“what is meant by replaying and counter-actualisation” (Williams, p. 203)",
+     "added": "2026-11-21"
     },
     {
      "text": "Pages of Williams are from his Gilles Deleuze's Logic of Sense: A Critical Introduction and Guide (Edinburgh University Press, 2008); they are pages of the guide and open nothing in your copy of Deleuze.",
@@ -1043,14 +1339,94 @@
       "checked": "absent from LOS pp. 88–93, 129, 186–200 (script search)"
      }
     ]
+   },
+   {
+    "old": "Deleuze had already used it in The Logic of Sense (1969), where it is Artaud's “glorious body”, an organism without parts set against the fragmented body in the depths of schizophrenia (pp. 88, 90, 188).",
+    "new": "(unchanged, followed by) The glorious body is the active pole of an ambivalence of action and passion whose poles are inseparable, Deleuze adds: its fluids may carry fragments of organs, and the fluid is corrupted only by the passive pole, inseparable from it (pp. 88–89).",
+    "by": "LOS pp. 88–89 (series 13)",
+    "note": "Added 2026-11-21 (batch 3): set against the fragmented body alone, the glorious body could read as a stable cure; pp. 88–89 make the two poles of one ambivalence. Series 13 calls the breath-words' values “exclusively tonic” (p. 88), not intensities, so the intensity dispute stands as it was. The entry stays audited in glossary-ao.json.",
+    "added": "2026-11-21"
    }
   ]
  },
- "summary": "Three new entries read in The Logic of Sense (Lester and Stivale's translation), every quotation verbatim and every page checked: sense and event, Aion and Chronos, and counter-actualization. They describe what the book says and credit no one else's reading, since the encyclopedias could not be fetched and Williams's guide was lost; both are listed as unread. Body without organs now says what The Logic of Sense itself says of it, beside the Stanford reading, and the gap between them is shown as an open dispute. Second batch (2026-11-19): sense and event now covers the sterility and genetic power of sense, double causality and the quasi-cause, and the static genesis; all three entries give James Williams's reading with his pages, and three new open disputes are recorded; body without organs quotes the Stanford article and says where it agrees with the book.",
+ "summary": "Three new entries read in The Logic of Sense (Lester and Stivale's translation), every quotation verbatim and every page checked: sense and event, Aion and Chronos, and counter-actualization. They describe what the book says and credit no one else's reading, since the encyclopedias could not be fetched and Williams's guide was lost; both are listed as unread. Body without organs now says what The Logic of Sense itself says of it, beside the Stanford reading, and the gap between them is shown as an open dispute. Second batch (2026-11-19): sense and event now covers the sterility and genetic power of sense, double causality and the quasi-cause, and the static genesis; all three entries give James Williams's reading with his pages, and three new open disputes are recorded; body without organs quotes the Stanford article and says where it agrees with the book. Third batch (2026-11-21): series 12–13 and 18–19 read in full. Sense and event now tells the nonsense of the surface, which gives sense, from the nonsense of the depths, which engulfs it, and adds humour, Antisthenes and the dynamic genesis; Aion and Chronos adds the twelfth series' universe without a present and the Stoic cosmic present, with an open question between them; counter-actualization adds the eighteenth and nineteenth series; body without organs adds the action-passion ambivalence. Williams's readings added on the infinitive, neutrality, the regress, impossible objects, the dynamic genesis, Bousquet and the barricades, and reading Hume.",
  "batch2": {
   "audited": "2026-11-19",
   "scope": "Second batch, at the owner's request: sense-event extended with the sterility and genetic power of sense (pp. 31–32), double causality and the quasi-cause (series 14, pp. 94–99) and the static genesis (series 15–17, pp. 100–126); credited readings from James Williams's guide (2008) added to sense-event, aion-chronos and counter-actualization; body-without-organs re-read against the Stanford article and series 27 (pp. 186–189). The encyclopedias were read for these entries: the IEP article cites the book and discusses none of these concepts, and the Stanford section 3.2 says nothing the book's own words do not settle, beyond the body-without-organs reading, so neither is cited in the three entries.",
   "locators": "Book: the owner's OCR text in five files, each printed page marked [p. N]; checked against the running heads at pp. 31, 95, 99, 105, 112, 124, 125, 126 (and the series openings at pp. 94, 100, 109, 118, 186). Williams: pdftotext of the owner's PDF (232 PDF pages; printed page = PDF page − 11 from p. 1), checked against the contents page at pp. 28, 97, 124, 168 (section headings on those pages) and the folios.",
   "decision": "Recorded in this file, not a new glossary-los2.json: tests/mastery.py counts the terms of every glossary-*.json, and a second file listing the same three entries would count them twice."
+ },
+ "batch3": {
+  "audited": "2026-11-21",
+  "scope": "Third batch, at the owner's request: The Logic of Sense series 12–13 and 18–19 read in full and drawn on in sense-event (surface nonsense and the nonsense of the depths, pp. 81–91; humour, pp. 136, 141; Antisthenes, p. 132; the dynamic genesis, p. 186), aion-chronos (no present for the universe, p. 77; the cosmic present, p. 131; the bodily present of the depths, pp. 87, 91–92; the Aion brought to the surface, p. 132) and counter-actualization (good for the whole and execrable in partial encounters, p. 131; Hercules, pp. 131–132; the sage, p. 136); body-without-organs given the action-passion ambivalence of pp. 88–89; further readings from Williams's guide added to the three entries (pp. 33–37, 54, 56–58, 155–156, 194–196, 203).",
+  "locators": "Book: the same OCR files as batch 2; the series openings at pp. 74, 82, 127 and 134 and running heads on every page read (pp. 74–93, 127–141) agree with the [p. N] markers. Williams: pdftotext of the owner's PDF, every printed folio from p. 1 to p. 207 matched by script to the page index used (the folio sits at the foot of each page; printed page = position in pdftotext's page list − 12).",
+  "terminology": "Williams writes that “Deleuze separates events and sense” to keep sense independent (Williams, p. 35); Deleuze writes “the event is sense itself” (p. 22). The entry offers, as its own reading and marked as such, that the gap looks like one of terms: Williams's event has an actual side (Williams, p. 35; p. 57 calls it both something expressed and a change in a state of affairs), and what he calls pure events he also calls infinitives (Williams, pp. 195–196), while Deleuze's identity holds for the event kept apart from the state of affairs that realizes it (p. 22). Williams himself does not say this; not shown as a dispute.",
+  "draft_points_checked": [
+   {
+    "point": "Series 13 sets the nonsense that produces sense at the surface (p. 81) against a nonsense that engulfs it (p. 91).",
+    "verdict": "supported; the engulfing nonsense first appears on p. 82 (“Nonsense no longer gives sense”), named Untersinn on p. 90, engulfing on p. 91. Used."
+   },
+   {
+    "point": "Body without organs: breath passage pp. 88–89 is ambivalent.",
+    "verdict": "supported: action and passion are “the inseparable poles of an ambivalence” (p. 88); fluids may carry fragments of organs (p. 88); the fluid is corrupted by the other pole (p. 89). Used."
+   },
+   {
+    "point": "Series 12: a whole as unity of bodily causes and a universe as abnormal set need separate explanation (pp. 77, 131).",
+    "verdict": "pages supported (p. 77, no present for the universe as system of all systems; p. 131, cosmic present of the unity of causes, and pp. 162–163). The reconciliation is interpretation: shown on aion-chronos as an open question, credited to no one."
+   },
+   {
+    "point": "Series 18: Antisthenes and the new frontier, tentatively (p. 132).",
+    "verdict": "supported (“perhaps”). Used beside the existing credit to the Stoics (p. 19)."
+   },
+   {
+    "point": "Series 18: goodness at the scale of the whole gives no warrant to call a particular injury good for its victim (p. 131).",
+    "verdict": "p. 131 says any mixture is good in the order of the whole and can be execrable in partial encounters. The page is used; the inference about victims is the draft's and is left out."
+   },
+   {
+    "point": "Series 19: humour as co-presence of surface nonsense and sense; the fourth person singular (pp. 136–141).",
+    "verdict": "supported (pp. 136, 141). Used for sense-event; the link to the actor's impersonal operation is the draft's reading and is left out."
+   },
+   {
+    "point": "Series 13: the depths' present contracts as it fills (p. 87) and differs from Aion's division (pp. 91–92).",
+    "verdict": "supported. Used on aion-chronos; the book itself ties the contracting present to the bad Chronos (p. 164: it “bursts asunder and contracts (the movement of schizophrenia)”), and the entry now says so."
+   },
+   {
+    "point": "Series 12: water at 0° as a singular point (p. 80) supports the actor (pp. 150–151).",
+    "verdict": "p. 80 supported; the support for the actor is the draft's inference. Not used."
+   },
+   {
+    "point": "Williams: neutrality qualified (W 57).",
+    "verdict": "supported (pp. 56–57: same sense, to betray; effects on significance not deducible from negation or modality). Used."
+   },
+   {
+    "point": "Williams: Bousquet's unchanged outcome restricted to the injury; barricades (W 35–37, 155).",
+    "verdict": "supported (p. 155 “Creation cannot negate what occurs”; p. 156 the free act changes past and future; pp. 35–37 barricades and reciprocal determination). The draft's “repair changes what can happen” misstates p. 36, where counter-actualization is how acts of repair replay what happened at the level of sense; the entry follows p. 36."
+   },
+   {
+    "point": "Williams: direction of the dynamic genesis (W 194–196, D 186).",
+    "verdict": "supported. Used."
+   },
+   {
+    "point": "Williams: regress as proliferation (W 53–54).",
+    "verdict": "supported (p. 54). Used."
+   },
+   {
+    "point": "Williams: impossible objects (W 57–58).",
+    "verdict": "supported (p. 58). Used."
+   },
+   {
+    "point": "Williams: counter-actualization extended to reading Hume (W 203–205).",
+    "verdict": "supported on p. 203. Used, cited to p. 203 only."
+   },
+   {
+    "point": "Williams: the wound, cry, description and infinitive (W 198–200).",
+    "verdict": "p. 199 supported. Not used in this batch."
+   },
+   {
+    "point": "Williams: items on W 28–29, 31–32, 38–51, 59–76, 197–198, 200–207 (other than 203).",
+    "verdict": "not read for this batch; listed in unread."
+   }
+  ],
+  "decision": "Recorded in this file, as batch 2 was, since a second glossary file listing the same terms would make tests/mastery.py count them twice."
  }
 }
