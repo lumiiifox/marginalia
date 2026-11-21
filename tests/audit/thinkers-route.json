@@ -2,7 +2,7 @@
  "audit": "thinkers-route",
  "audited": "2026-10-24",
  "mode": "in place",
- "scope": "The thinker cards on the reading route: Aristotle, Spinoza, Nietzsche, Deleuze, Guattari, Land; added 2026-11-03: Bergson, Bataille",
+ "scope": "The thinker cards on the reading route: Aristotle, Spinoza, Nietzsche, Deleuze, Guattari, Land; added 2026-11-03: Bergson, Bataille; added 2026-11-21: Hume",
  "by": {
   "first_pass": "Claude (Opus 5.5)",
   "review": "Independent reviewer (Claude subagent, fresh context), 2026-10-24, 25 searches and fetches: Aristotle and Spinoza pass; Nietzsche, Deleuze, Guattari and Land pass after fixes now made (the archived Wicks entry added as a source; a repeated sentence on Deleuze's illness; the Guattari source credited to Adam Shatz; Land's move to Shanghai dated loosely, his essay named, and an unquoted run from Burrows reworded). Guattari's analysis with Lacan is left undated, as sources disagree (Britannica: the 1950s; Universalis: until 1960; other accounts 1962–69).",
@@ -213,6 +213,49 @@
     "by": "independent reviewer (separate agent), 2026-11-03",
     "note": "passes after the cuts and corrections above"
    }
+  },
+  "hume": {
+   "audited": "2026-11-21",
+   "sources": [
+    "SEP “David Hume” (Hsueh Qu and Elizabeth S. Radcliffe, first published 16 June 2026), §§1, 2.1–2.3, 4, 5, read in literal text",
+    "SEP “Kant and Hume on Causality” (substantive revision 31 July 2024), §1, for Kant's Prolegomena (Ak. 4:260)",
+    "the bundled Treatise (T 1.1.1, 1.1.4, 1.3.8, 1.3.14, 1.4.6, Appendix; Book III's headings) and first Enquiry (II, III, V, VII; its headings)"
+   ],
+   "checked": [
+    "David Hume (1711–1776) (SEP opening)",
+    "“a prominent intellectual of the Scottish Enlightenment”; somewhat more popular success in his time with essays and histories (SEP intro, §1)",
+    "the Treatise's subtitle: an attempt to introduce the experimental method of reasoning into moral subjects (SEP §2.1)",
+    "1748 Philosophical Essays concerning Human Understanding, retitled Enquiry in 1758, covering topics of Treatise Book 1; second Enquiry 1751, material of Book 3 (SEP §1)",
+    "Essays, Moral and Political 1741; History of England in six volumes, 1754–62 (SEP §1)",
+    "impressions and ideas; resemblance, contiguity and causation (T 1.1.1, 1.1.4; EHU II, III; SEP §2.1)",
+    "the circularity of any probable argument for the uniformity principle (SEP §2.3, EHU 4.19)",
+    "no impression of a self (T 1.4.6); the Appendix's confession (T App.); belief and custom (T 1.3.8; EHU V)",
+    "sentimentalism, sympathy, utility; virtues useful or agreeable to self and others (SEP §§3.2, 4, 4.3, 4.4)",
+    "justice an artificial virtue from human convention (SEP §4.2, T 3.2.1.17); sections on the origin of government and the source of allegiance (Treatise III.ii.7–8, by heading)",
+    "Of the Standard of Taste among the Four Dissertations (SEP §1)",
+    "miracles, the natural history of religion, design in the Dialogues; posthumous publication arranged by Hume, 1779 (SEP §§1, 5)",
+    "“the remembrance of David Hume which, many years ago, first interrupted my dogmatic slumber” (SEP Kant and Hume §1, Prolegomena 1783, Ak. 4:260)",
+    "the Kemp Smith problem, and the relation of the Enquiries to the Treatise, as open questions (SEP §§1, 2.3)"
+   ],
+   "fixed": [
+    "the card's source credited to the new SEP entry by Qu and Radcliffe (2026), which replaced the former entry",
+    "the short description 'Scottish empiricist, skeptical about causation, induction and the self' replaced: SEP's introduction calls the sceptical label not necessarily accurate, and the New Hume debate leaves his scepticism about causation open",
+    "'recast major parts' made specific: the 1748 title Philosophical Essays, the 1758 retitling, and which Book each Enquiry covers",
+    "'influential essays' cut to what the source says (essays from 1741 on; histories and essays more appreciated in his time)",
+    "'His discussion of induction shows why' made Hume's argument ('He argues that'), since readers dispute what the argument targets (IEP §3)",
+    "'questions whether introspection reveals' made 'denies' (T 1.4.6), and the Appendix's confession added",
+    "'habit' given as Hume names it, custom or habit (EHU V.1)",
+    "'These analyses form part of a larger project that investigates both the limits of philosophical justification and the natural operations of human cognition' cut: it states one side of the Kemp Smith problem as settled; the problem is now named in the last paragraph",
+    "'organizes virtues partly through their usefulness and agreeableness' given in SEP's four categories",
+    "'political obligation' narrowed to the Treatise's sections on government and allegiance, which SEP does not discuss and the bundled Treatise's headings confirm",
+    "'Hume's arguments remain central to later debates' cut as unsourced",
+    "the Prolegomena and its year named for the dogmatic-slumber line, quoted as the SEP article gives it",
+    "reviewer: the reputation sentence brought to SEP §1 (“somewhat more popular success”), and Friedman named on the Kant–Hume source"
+   ],
+   "not_retrieved": [
+    "the influences listed (Locke, Berkeley) and the key works list beyond the Dialogues' date"
+   ],
+   "review": "Independent reviewer (separate agent, fresh context), 2026-11-21: every sentence checked against SEP “David Hume” (Qu and Radcliffe), SEP “Kant and Hume on Causality” §1 (Ak. 4:260) and the bundled Treatise's Book III headings and Enquiry IV; dates confirmed in SEP §1 and the introduction (1711–1776, 1741, 1748, 1751, 1754–62, 1758, 1779), the bundled Treatise (1739–40), and the Kant–Hume article's Prolegomena reference (Ak. 4:260; 1783 is the standard date). Optional fixes applied as listed. Re-check: pass."
   }
  }
 }
