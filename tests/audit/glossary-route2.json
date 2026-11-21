@@ -1527,8 +1527,8 @@
    {
     "fn": 32,
     "cited": 162,
-    "book": "p. 162, with Land's bracketed insertions marked as his. The OCR of 'Meat' p. 429 reads 'as it is as prohibited'; unchecked against the screenshot whether this is an OCR slip or Land's text (if Land's, the verdict becomes altered)",
-    "verdict": "matches"
+    "book": "p. 162, with Land's bracketed insertions marked as his. The printed 'Meat' p. 429 (owner's screenshot, 2026-11-21) reads 'Incest as it is as prohibited': the stray 'as' is Land's text",
+    "verdict": "altered: an extra 'as'"
    },
    {
     "fn": 34,
@@ -1567,7 +1567,7 @@
     "verdict": "matches"
    }
   ],
-  "tally": "12 match; 1 altered (fn 34); 1 worded differently (fn 7); no wrong pages. Paraphrase citations fn 24 (p. 145) and fn 41 (p. 143) supported.",
+  "tally": "11 match; 2 altered (fn 32, an extra 'as'; fn 34, 'only' added); 1 worded differently (fn 7); no wrong pages. Paraphrase citations fn 24 (p. 145) and fn 41 (p. 143) supported.",
   "new_text": [
    {
     "term": "accelerationism",
@@ -1639,13 +1639,6 @@
     "why": "uncorrected OCR (the owner corrected pp. 431–439 only)",
     "terms": [],
     "effect": "footnotes matched to quotations by position and content; every Anti-Oedipus page confirmed in the book"
-   },
-   {
-    "source": "'Meat' p. 429 screenshot",
-    "part": "fn 32's quotation",
-    "why": "only the OCR was available",
-    "terms": [],
-    "effect": "whether Land's text has a stray 'as' ('as it is as prohibited') is unchecked; nothing shipped quotes it"
    }
   ]
  }
