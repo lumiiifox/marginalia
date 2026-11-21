@@ -279,7 +279,7 @@ function mentionsHTML(m) {
 function fillLinks(d) {
   const box = d.querySelector(":scope > .tbody > [data-gx]"); if (!box || box.dataset.done) return;
   const g = allTerms().find((x) => x.id === box.dataset.gx); if (!g) return;
-  box.dataset.done = "1"; box.innerHTML = pageLinks(refParas(g.x, { kind: "term", id: g.id }), g);
+  box.dataset.done = "1"; box.innerHTML = passageLinks(pageLinks(refParas(g.x, { kind: "term", id: g.id }), g), g.xr);
 }
 function fillMentions(d) {
   const box = d.querySelector(":scope > .tbody > [data-mentions]"); if (!box || box.dataset.done) return;
@@ -364,7 +364,7 @@ function termHTML(g, tmap) {
       <p class="tdef">${esc(g.d)}</p>
       ${g.builtIn && !g.edited ? checkMark(isCheckedTerm(g)) : ""}
       ${figHTML(g.img)}${diaHTML(g.fig)}
-      <div data-gx="${esc(g.id)}">${pageLinks(S.gOpen.has(g.id) ? refParas(g.x, { kind: "term", id: g.id }) : classicParas(g.x), g)}</div>
+      <div data-gx="${esc(g.id)}">${passageLinks(pageLinks(S.gOpen.has(g.id) ? refParas(g.x, { kind: "term", id: g.id }) : classicParas(g.x), g), g.xr)}</div>
       ${g.s ? `<p class="tsrc">${sourceLinks(g.s)}</p>` : ""}
       ${disputesHTML(g)}
       ${thinkerSources(g)}

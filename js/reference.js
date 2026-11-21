@@ -814,9 +814,10 @@ const PASSAGE_STYLES = {
     find: (B, [book, ch]) => headPath(B, [[2, (t) => t === `Book ${book}`], [3, (t) => t.startsWith(`${toRoman(+ch)}. `)]]) },
   // Hobbes, Leviathan: chapter, "Lev. XIII".
   // Hume, Enquiry concerning Human Understanding: section and part, "EHU IV.2" ("EHU VII").
-  // Hume, A Treatise of Human Nature: book, part and section, "T 1.4.6".
-  "hume-treatise": { book: "classic-hume-treatise", item: /^T ([123])\.(\d+)\.(\d+)$/,
-    find: (B, [b, p, s]) => headPath(B, [[2, (t) => t.startsWith(`Book ${toRoman(+b)}:`)], [3, (t) => t.startsWith(`Part ${toRoman(+p)}:`)], [4, (t) => t.startsWith(`Section ${toRoman(+s)}:`)]]) },
+  // Hume, A Treatise of Human Nature: book, part and section, "T 1.4.6", or the Appendix, "T App.".
+  "hume-treatise": { book: "classic-hume-treatise", item: /^T (?:([123])\.(\d+)\.(\d+)|(App)\.)$/,
+    find: (B, [b, p, s, app]) => app ? headPath(B, [[2, (t) => t === "Appendix"]])
+      : headPath(B, [[2, (t) => t.startsWith(`Book ${toRoman(+b)}:`)], [3, (t) => t.startsWith(`Part ${toRoman(+p)}:`)], [4, (t) => t.startsWith(`Section ${toRoman(+s)}:`)]]) },
   "hume-enquiry": { book: "classic-hume-enquiry", item: /^EHU ([IVX]+)(?:\.(\d))?$/,
     find: (B, [sec, part]) => headPath(B, [[2, (t) => t.startsWith(`${sec}. `)], ...(part ? [[3, (t) => t === `Part ${toRoman(+part)}`]] : [])]) },
   // Descartes: a Meditation or a part of the Discourse, "Med. II", "Disc. IV".
