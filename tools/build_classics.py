@@ -55,6 +55,9 @@ BOOKS = [
     dict(id="classic-kant-groundwork", text_source=dict(repo="https://github.com/GITenberg/Fundamental-Principles-of-the-Metaphysic-of-Morals_5682", file="5682.txt", convert="kant_groundwork"),
          cover=dict(title="Fundamental Principles of the Metaphysic of Morals", size=25, art="stars"),
          text=dict(title="Fundamental Principles of the Metaphysic of Morals", author="Immanuel Kant", edition="trans. Thomas Kingsmill Abbott", orig="1785")),
+    dict(id="classic-kant-critique", text_source=dict(repo="https://github.com/GITenberg/The-Critique-of-Pure-Reason_4280", file="4280-0.txt", encoding="utf-8", convert="kant_critique"),
+         cover=dict(title="Critique of Pure Reason", size=40, art="stars"),
+         text=dict(title="Critique of Pure Reason", author="Immanuel Kant", edition="trans. J. M. D. Meiklejohn", orig="1781–87")),
     dict(id="classic-rousseau-social-contract", repo="jean-jacques-rousseau_the-social-contract_g-d-h-cole", files=None,
          text=dict(title="The Social Contract", author="Jean-Jacques Rousseau", edition="trans. G. D. H. Cole", publisher="Standard Ebooks", year="2024", orig="1762")),
     dict(id="classic-wollstonecraft-vindication", repo="mary-wollstonecraft_a-vindication-of-the-rights-of-woman", files=None,
@@ -305,6 +308,151 @@ def spinoza_ethics(raw):
     assert refs == notes == list(range(1, 18)), (refs, notes)
     return f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Ethics</title></head><body>{"".join(out)}</body></html>'
 
+# Kant's Critique of Pure Reason: Meiklejohn's headings as the app shows them, by level. Each entry: a test on the heading's text
+# (its lines joined), the level, and the title shown. A heading the table doesn't name keeps its own words at the level of the
+# headings around it (see kant_critique).
+CPR_PARTS = [  # the chapters (level 2)
+    (r"PREFACE TO THE FIRST EDITION", "Preface to the First Edition (1781)"), (r"PREFACE TO THE SECOND EDITION", "Preface to the Second Edition (1787)"),
+    (r"Introduction$", "Introduction"), (r"FIRST PART\. TRANSCENDENTAL AESTHETIC", "Transcendental Aesthetic"),
+    (r"INTRODUCTION\. Idea of a Transcendental Logic", "Transcendental Logic: Introduction"),
+    (r"FIRST DIVISION\. TRANSCENDENTAL LOGIC\. TRANSCENDENTAL ANALYTIC", "Transcendental Analytic"),
+    (r"BOOK I\. Analytic of Conceptions", "Transcendental Analytic, Book I: Analytic of Conceptions"),
+    (r"BOOK II\. Analytic of Principles", "Transcendental Analytic, Book II: Analytic of Principles"),
+    (r"TRANSCENDENTAL DIALECTIC\.$", "Transcendental Dialectic: Introduction"),
+    (r"TRANSCENDENTAL DIALECTIC—BOOK I—", "Transcendental Dialectic, Book I: Of the Conceptions of Pure Reason"),
+    (r"TRANSCENDENTAL DIALECTIC—BOOK II—", "Transcendental Dialectic, Book II: Of the Dialectical Procedure of Pure Reason"),
+    (r"II\. Transcendental Doctrine of Method", "Transcendental Doctrine of Method")]
+CPR_DROP = [r"I\. TRANSCENDENTAL DOCTRINE OF ELEMENTS", r"Second Part—TRANSCENDENTAL LOGIC", r"SECOND DIVISION—TRANSCENDENTAL LOGIC",
+            r"TRANSCENDENTAL DOCTRINE OF THE FACULTY OF JUDGEMENT"]  # division titles the chapter headings above already carry
+CPR_CAPS = {  # the edition's subheadings in capitals: level and title
+    "1. AXIOMS OF INTUITION.": (5, "1. Axioms of Intuition"), "2. ANTICIPATIONS OF PERCEPTION.": (5, "2. Anticipations of Perception"),
+    "3. ANALOGIES OF EXPERIENCE.": (5, "3. Analogies of Experience"), "A. FIRST ANALOGY.": (6, "A. First Analogy"), "B. SECOND ANALOGY.": (6, "B. Second Analogy"),
+    "C. THIRD ANALOGY.": (6, "C. Third Analogy"), "4. THE POSTULATES OF EMPIRICAL THOUGHT.": (5, "4. The Postulates of Empirical Thought"),
+    "REFUTATION OF IDEALISM.": (5, "Refutation of Idealism"), "GENERAL REMARK ON THE SYSTEM OF PRINCIPLES.": (5, "General Remark on the System of Principles"),
+    "REMARK ON THE AMPHIBOLY OF THE CONCEPTIONS OF REFLECTION.": (4, "Remark on the Amphiboly of the Conceptions of Reflection"),
+    "A. OF REASON IN GENERAL.": (4, "A. Of Reason in General"), "B. OF THE LOGICAL USE OF REASON.": (4, "B. Of the Logical Use of Reason"),
+    "C. OF THE PURE USE OF REASON.": (4, "C. Of the Pure Use of Reason"),
+    "FIRST CONFLICT OF THE TRANSCENDENTAL IDEAS. THESIS.": (5, "First Conflict of the Transcendental Ideas", "Thesis"),
+    "SECOND CONFLICT OF TRANSCENDENTAL IDEAS. THESIS.": (5, "Second Conflict of Transcendental Ideas", "Thesis"),
+    "THIRD CONFLICT OF THE TRANSCENDENTAL IDEAS. THESIS.": (5, "Third Conflict of the Transcendental Ideas", "Thesis"),
+    "FOURTH CONFLICT OF THE TRANSCENDENTAL IDEAS. THESIS.": (5, "Fourth Conflict of the Transcendental Ideas", "Thesis"),
+    "OBSERVATIONS ON THE FIRST ANTINOMY. ON THE THESIS.": (5, "Observations on the First Antinomy", "On the Thesis"),
+    "OBSERVATIONS ON THE SECOND ANTINOMY. THESIS.": (5, "Observations on the Second Antinomy", "On the Thesis"),
+    "OBSERVATIONS ON THE THIRD ANTINOMY. ON THE THESIS.": (5, "Observations on the Third Antinomy", "On the Thesis"),
+    "OBSERVATIONS ON THE FOURTH ANTINOMY. ON THE THESIS.": (5, "Observations on the Fourth Antinomy", "On the Thesis"),
+    "ANTITHESIS.": (6, "Antithesis"), "ON THE ANTITHESIS.": (6, "On the Antithesis")}
+CPR_PARA_HEADS = {  # headings the transcription sets as paragraphs: level and title
+    "Refutation of the Argument of Mendelssohn for the Substantiality or Permanence of the Soul.": (4, None),
+    "GENERAL REMARK": (4, "General Remark on the Transition from Rational Psychology to Cosmology"), "On the Transition from Rational Psychology to Cosmology.": (0, None),
+    "Concluding Remark on the Solution of the Transcendental Mathematical Ideas—and Introductory to the Solution of the Dynamical Ideas.": (5, None),
+    "Possibility of Freedom in Harmony with the Universal Law of Natural Necessity.": (6, None),
+    "Exposition of the Cosmological Idea of Freedom in Harmony with the Universal Law of Natural Necessity.": (6, None),
+    "Concluding Remarks on the Antinomy of Pure Reason.": (4, None), "Of the Ultimate End of the Natural Dialectic of Human Reason.": (4, None),
+    "Scepticism not a Permanent State for Human Reason.": (5, None)}  # level 0: folded into the heading before
+CPR_KEEP_CAPS = {"SUBSTANCE", "SIMPLE", "UNITY", "COMPOSITION", "DIVISION", "ORIGINATION", "DEPENDENCE", "EXISTENCE", "NOTHING"}
+# The transcription's tables, its columns run together; here each is a numbered list, its items in Meiklejohn's words, from the
+# earlier Gutenberg transcription that kept the columns (4280.txt).
+CPR_TABLES = [
+    ["Quantity of judgements: Universal, Particular, Singular", "Quality: Affirmative, Negative, Infinite", "Relation: Categorical, Hypothetical, Disjunctive",
+     "Modality: Problematical, Assertorical, Apodeictical"],
+    ["Table of the Categories", "Of Quantity: Unity, Plurality, Totality", "Of Quality: Reality, Negation, Limitation",
+     "Of Relation: Of Inherence and Subsistence (substantia et accidens); Of Causality and Dependence (cause and effect); Of Community (reciprocity between the agent and patient)",
+     "Of Modality: Possibility—Impossibility; Existence—Non-existence; Necessity—Contingence"],
+    ["Axioms of Intuition", "Anticipations of Perception", "Analogies of Experience", "Postulates of Empirical Thought in general"],
+    ["Nothing as", "As Empty Conception without object, ens rationis", "Empty object of a conception, nihil privativum", "Empty intuition without object, ens imaginarium",
+     "Empty object without conception, nihil negativum"],
+    ["The Soul is SUBSTANCE", "As regards its quality it is SIMPLE", "As regards the different times in which it exists, it is numerically identical, that is UNITY, not Plurality",
+     "It is in relation to possible objects in space*"],
+    ["I think,", "as Subject,", "as simple Subject,", "as identical Subject, in every state of my thought."],
+    ["The absolute Completeness of the COMPOSITION of the given totality of all phenomena.", "The absolute Completeness of the DIVISION of given totality in a phenomenon.",
+     "The absolute Completeness of the ORIGINATION of a phenomenon.", "The absolute Completeness of the DEPENDENCE of the EXISTENCE of what is changeable in a phenomenon."]]
+CPR_TITLED = {0: 0, 1: 1, 3: 1}  # tables whose first line is a title, not an item (the judgements' first item names its class)
+def kant_critique(raw):
+    """Meiklejohn's translation of the Critique of Pure Reason (1855), from Project Gutenberg's UTF-8 transcription (4280-0.txt): one
+    XHTML document. Chapters are the Prefaces, the Introduction, the Aesthetic, the Logic's Introduction, the two books of the Analytic,
+    the Dialectic's Introduction and its two books, and the Doctrine of Method; Meiklejohn's sections and numbered paragraphs (his own
+    § numbers, which differ from Kant's) sit inside them. Footnotes ([*Footnote: …], and the bracketed notes inside a paragraph) follow
+    the paragraph that cites them; a note with no mark in the text (one of Meiklejohn's) is marked at the end of the paragraph before."""
+    t = raw.replace("\r\n", "\n")
+    t = t[t.index("\n PREFACE TO THE FIRST EDITION 1781\n"):t.index("End of the Project Gutenberg")]
+    blocks = [b.strip("\n") for b in re.split(r"\n\s*\n", t) if b.strip()]
+    norm = lambda b: " ".join(b.split())
+    def inline(x):
+        x = esc(norm(x).replace('"', "”"))
+        x = re.sub(r"_([^_]+)_", r"<i>\1</i>", x)
+        return x
+    out, notes, refs, tables, k = [], 0, 0, list(CPR_TABLES), 0
+    level, prev_p, chapter = 3, None, ""
+    def fn_ref(_):
+        nonlocal refs
+        refs += 1
+        return f"<sup>{refs}</sup>"
+    def para(x):
+        nonlocal prev_p
+        inl = []
+        def take(m):
+            nonlocal refs
+            refs += 1; inl.append((refs, m.group(1)))
+            return f"<sup>{refs}</sup>"
+        x = re.sub(r" ?\[Footnote: ([^\]]+)\]", take, x)
+        x = re.sub(r"(?<=[\w.,;:’”)])\*+(?:\[2\])?", fn_ref, x)
+        out.append("<p>" + inline(x) + "</p>"); prev_p = len(out) - 1
+        for n, body in inl:
+            nonlocal_notes(n, body)
+    def nonlocal_notes(n, body):
+        nonlocal notes
+        notes += 1; assert n == notes, (n, notes)
+        out.append(f'<aside epub:type="footnote"><p>{n}. {inline(body)}</p></aside>')
+    while k < len(blocks):
+        b = blocks[k]; k += 1
+        n = norm(b)
+        if b.startswith(" ") and not b.startswith("  "):  # a heading
+            part = next((title for pat, title in CPR_PARTS if re.match(pat, n)), None)
+            if part: out.append(f"<h2>{esc(part)}</h2>"); level = 3; chapter = part; continue
+            if any(re.match(pat, n) for pat in CPR_DROP): continue
+            n = re.sub(r"\s*§ \d+\.?$", "", n).replace("theSolution", "the Solution").replace("Schematism at of", "Schematism of").rstrip(".")
+            n = re.sub(r"^§ I\.", "§ 1.", n)
+            if re.match(r"(Chapter|APPENDIX|INTRODUCTION\. Of the Transcendental Faculty)", n): lv = 3
+            elif re.match(r"(Section|SECTION|Transition to)", n): lv = 3 if chapter.startswith("Transcendental Dialectic, Book I:") else 4
+            elif re.match(r"(I|II|III|IV|V|VI|VII)\. ", n): lv = 3 if not out or "Introduction" in out[-1] or level == 3 else 5
+            else: lv = 5
+            if re.match(r"§ \d+", n): lv = 4 if re.match(r"§ (1|9|10)\.", n) else 5
+            if n == "Introductory": lv = 4
+            n = re.sub(r"^INTRODUCTION\. ", "Introduction: ", n)
+            n = n.replace("APPENDIX. ", "Appendix: ") if n.startswith("APPENDIX. ") else ("Appendix: Of the Amphiboly of the Conceptions of Reflection" if n == "APPENDIX" else n)
+            if n.startswith("SECTION "): n = "Section " + n[8:]
+            if chapter == "Transcendental Aesthetic": lv -= 1  # no chapters inside it
+            out.append(f"<h{lv}>{esc(n)}</h{lv}>"); level = lv; continue
+        if re.fullmatch(r"§ \d+", n): out.append(f"<h5>{n}</h5>"); continue
+        if n in CPR_PARA_HEADS:
+            lv, h = CPR_PARA_HEADS[n]
+            if lv: out.append(f"<h{lv}>{esc(h or n.rstrip('.'))}</h{lv}>")
+            continue
+        if n in CPR_CAPS:
+            lv, h, *sub = CPR_CAPS[n]
+            out.append(f"<h{lv}>{esc(h)}</h{lv}>" + "".join(f"<h{lv + 1}>{esc(x)}</h{lv + 1}>" for x in sub)); continue
+        if b.startswith("          "):  # a table: its blocks run together, given as a list
+            while k < len(blocks) and blocks[k].startswith("          "): k += 1
+            rows, ti = tables.pop(0), len(CPR_TABLES) - len(tables) - 1
+            head = rows[0] if ti in (1, 3) else None
+            items = rows[1:] if head else rows
+            if head: out.append(f"<p>{inline(head)}</p>")
+            li = []
+            for x in items:
+                x = re.sub(r"(?<=[\w.,;:’”)])\*", fn_ref, x)
+                li.append(f"<li><p>{inline(x)}</p></li>")
+            out.append("<ol>" + "".join(li) + "</ol>"); prev_p = len(out) - 1; continue
+        m = re.match(r"\[?\*{0,2}(?:\[2\])?Footnote: (.*?)\]?$", n)
+        if m:  # a footnote, after the paragraph citing it
+            if notes == refs:  # nothing in the text marks it: marked at the end of the paragraph before
+                refs += 1; out[prev_p] = re.sub(r"</p>$", f"<sup>{refs}</sup></p>", out[prev_p])
+            nonlocal_notes(notes + 1, m.group(1)); continue
+        if b.count("\n") >= 2 and max(len(l) for l in b.split("\n")) < 45 and not b.startswith(" "):  # verse
+            out.append("<p>" + " / ".join(inline(l) for l in b.split("\n") if l.strip()) + "</p>"); continue
+        para(b)
+    assert not tables and refs == notes, (len(tables), refs, notes)
+    return f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Critique of Pure Reason</title></head><body>{"".join(out)}</body></html>'
+
 GUTENBERG = CACHE / "gutenberg"
 def heading_text(t):
     """A Gutenberg heading as the app shows it: "I   THE SCIENTIFIC LITERATURE ..." -> "I. The Scientific Literature ...",
@@ -365,7 +513,7 @@ def gutenberg_epub(folder):
     endnotes = f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Notes</title></head><body><section epub:type="endnotes"><h2>Notes</h2><ol>{ol}</ol></section></body></html>'
     return docs, endnotes
 
-CONVERT = {"kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics}
+CONVERT = {"kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique}
 
 def clone(url, dest):
     if not dest.exists():
@@ -436,7 +584,7 @@ async def main(only):
                 else:
                     names = []
                     ts = bk["text_source"]
-                    files, endnotes = [CONVERT[ts["convert"]]((TEXTS / bk["id"] / ts["file"]).read_text(encoding="latin-1"))], None
+                    files, endnotes = [CONVERT[ts["convert"]]((TEXTS / bk["id"] / ts["file"]).read_text(encoding=ts.get("encoding", "latin-1")))], None
                 r = await page.evaluate(BUILD, {"id": bk["id"], "flatten": bool(bk.get("flatten")), "files": files, "endnotes": endnotes, "drop": bk.get("drop") or [],
                                                 "parts": [n.startswith("part-") for n in names] if bk.get("parts") else None})
                 for s in r["sections"]:

@@ -249,6 +249,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   out each time from notes, follow-ups, summaries, ticked chapters, shelves, drafts, comparisons and `PATHS` (`FIRSTS`, `bookPlates`; `BACK_MATTER`
   sections don't count as chapters; example books never count). Nothing stored, nothing expires.
 - Primers (`PRIMERS` at the end of `data/branches.js`, keyed by classic id; `primerHTML` on the book's page): what the book is, how it's built,
+  (`missing`, optional: passages of the work the bundled edition lacks, shown as "Not in this edition"; the Critique's first-edition passages),
   words to know and its reading paths, with sources; open until you start reading or take a note. Every id in `CLASSICS` needs one (tested).
 - Disputations (`DISPUTES` at the end of `data/branches.js`; `disputesView`, the `disputes` screen, from the home screen; `disputePanel`): an argument
   from a classic (book, section, `find` words to open the reader at), your objection (kept in `DSP` while the app is open), then the classic one,
@@ -294,7 +295,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - Classics (`CLASSICS`, `addClassics`, at start): public-domain books that come with the app, each added to the library once, queued,
   from `data/books/<id>.json` (`{ text, content }`, the shapes a backup holds) and its cover `<id>.jpg`. `mg-classics` lists those added,
   so a deleted classic stays deleted; one that can't be fetched is tried next time. Skipped in automated browsers unless a test passes
-  `true`. `tools/build_classics.py` builds them from Standard Ebooks sources (Kant and Spinoza's Ethics from plain-text transcriptions, through their converters) with
+  `true`. `tools/build_classics.py` builds them from Standard Ebooks sources (the Groundwork, the Critique of Pure Reason and Spinoza's Ethics from plain-text transcriptions, through their converters) with
   the app's own parser; add a new id to `CLASSICS`.
 - Mentioned in (`mentionsOf`, `mentionsHTML`, in study.js): the article sections, thinker cards and glossary entries whose text uses a term's
   name (`termNeedles`: its name, the name in its brackets, a pair's halves listed in `k`) or a thinker's (`thinkerNeedles`: as `branchLinks`

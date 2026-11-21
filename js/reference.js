@@ -407,6 +407,7 @@ function primerHTML(id, t) {
   return `<section class="group"><details class="primer"${fresh ? " open" : ""}><summary class="label">Before you start</summary><div class="paperpanel primerbody">
     <p class="tdef">${esc(p.about)}</p>
     <div class="crow"><span class="clabel">How it's built</span><p class="tdef">${esc(p.built)}</p></div>
+    ${p.missing ? `<div class="crow primer-missing"><span class="clabel">Not in this edition</span><p class="tdef">${esc(p.missing)}</p></div>` : ""}
     ${chipRow("Words to know", termChips(p.terms || [], termMap()))}
     ${paths.length || close.length ? chipRow("Read it in a path", paths.map(([P, k]) => `<button class="chip" data-path="${esc(P.id)}">${esc(P.n)} · step ${k + 1}</button>`).join("") + close.map((P) => `<button class="chip" data-path="${esc(P.id)}">${esc(P.n)}</button>`).join("")) : ""}
     ${thinkerSources(p)}
@@ -415,7 +416,7 @@ function primerHTML(id, t) {
 // Titles for steps whose book isn't in the library: the classics' own titles (tests/study_tools.py checks them against data/books/).
 const CLASSIC_TITLES = { "classic-plato-socrates": "Euthyphro, Apology, Crito, Phaedo", "classic-aristotle-ethics": "Nicomachean Ethics", "classic-descartes-meditations": "Discourse on the Method and Meditations on First Philosophy",
   "classic-hobbes-leviathan": "Leviathan", "classic-spinoza-ethics": "Ethics", "classic-hume-treatise": "A Treatise of Human Nature", "classic-hume-enquiry": "An Enquiry Concerning Human Understanding", "classic-rousseau-social-contract": "The Social Contract",
-  "classic-kant-groundwork": "Fundamental Principles of the Metaphysic of Morals", "classic-wollstonecraft-vindication": "A Vindication of the Rights of Woman",
+  "classic-kant-critique": "Critique of Pure Reason", "classic-kant-groundwork": "Fundamental Principles of the Metaphysic of Morals", "classic-wollstonecraft-vindication": "A Vindication of the Rights of Woman",
   "classic-marx-engels-manifesto": "The Communist Manifesto", "classic-nietzsche-beyond": "Beyond Good and Evil", "classic-nietzsche-genealogy": "The Genealogy of Morals", "classic-cooper-voice": "A Voice from the South", "classic-du-bois-souls": "The Souls of Black Folk",
   "classic-plato-republic": "The Republic", "classic-mill-liberty": "On Liberty", "classic-russell-problems": "The Problems of Philosophy",
   "classic-freud-dreams": "The Interpretation of Dreams", "classic-freud-pleasure": "Beyond the Pleasure Principle" };
@@ -434,6 +435,7 @@ const CLASSIC_NAMES = {
   "classic-hume-treatise": { by: ["hume"], full: ["A Treatise of Human Nature", "Treatise of Human Nature"], own: [{ s: "Treatise", pre: ["the", "The", "his"] }] },
   "classic-hume-enquiry": { by: ["hume"], full: ["Enquiry concerning Human Understanding", "Enquiry Concerning Human Understanding", "first Enquiry"] },
   "classic-rousseau-social-contract": { by: ["rousseau"], full: ["The Social Contract", "Of the Social Contract", { s: "Social Contract", post: /^ \(1762\)/ }] },
+  "classic-kant-critique": { by: ["kant"], full: ["Critique of Pure Reason"] },
   "classic-kant-groundwork": { by: ["kant"], full: ["Groundwork of the Metaphysics of Morals", "Groundwork of the Metaphysic of Morals", "Fundamental Principles of the Metaphysic of Morals"], own: ["Groundwork"] },
   "classic-wollstonecraft-vindication": { by: ["wollstonecraft"], full: ["A Vindication of the Rights of Woman", "Vindication of the Rights of Woman"] },
   "classic-marx-engels-manifesto": { by: ["marx", "engels"], full: ["The Communist Manifesto", "Communist Manifesto", "Manifesto of the Communist Party"], own: [{ s: "Manifesto", pre: ["the", "The"] }] },
