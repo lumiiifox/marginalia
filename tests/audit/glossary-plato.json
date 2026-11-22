@@ -1,0 +1,2184 @@
+{
+ "audit": "glossary-plato",
+ "audited": "2026-11-22",
+ "mode": "new entries and two thinker cards",
+ "scope": "Plato read in the bundled Jowett (classic-plato-socrates: Euthyphro, Apology, Crito, Phaedo; classic-plato-republic) at the owner's request (route: Plato and Aristotle before the route continues): three new entries, forms, elenchus and tripartite-soul (justice and the tripartite soul), each read in the dialogues first and the Stanford and Internet Encyclopedia articles second. The Socrates and Plato thinker cards' audits are in thinkers-route.json. Recollection is given one sentence from the Phaedo (72e, 75e); the Meno is not bundled.",
+ "by": {
+  "draft": "Claude (Opus 5.5); no ChatGPT draft for this batch",
+  "first_pass": "Claude (Opus 5.5), 2026-11-22: every sentence drafted from the bundled Jowett; every Stephanus number matched by content to Burnet's Greek (below, under st) and checked by script; every Plato quotation checked by script against the blocks its reference opens; the scholarship read through the web-fetch tool in literal text (quotations under 125 characters)",
+  "review": "Independent reviewer (separate agent, fresh context), 2026-11-22: re-implemented stephBlocks and checked every quotation in the three entries against the Jowett blocks its reference opens (all verbatim, all under 15 words, every anchor unique and inside its dialogue or Republic book); read Burnet's Greek directly for all 76 Stephanus references, every range included; fetched Kraut, Nails and Monoson, Silverman, Brown, Woodruff, the IEP article and Shields §1 and confirmed every revision date and attributed claim; rebuilt the shipped text from the audit's sentences; reviewed PLATO_ST, stephBlocks, the two citation styles and the links.py checks (no bugs). Required fixes, all applied: “the idea of good appears last of all” moved from Rep. 517b to 517b–c (ἀγαθοῦ ἰδέα opens 517c; a 77th reference added); the forms dispute brought to Silverman §12 (both the existential and predicative readings set knowledge and belief over objects, distinct only on the predicative; Fine's reading lets both Forms and sensible things be known, with no “through Forms”); copied runs quoted or reworded (Silverman's “beings that are what they are in virtue of themselves”, the Two Worlds and “what is true” runs, Brown's city–person sentence, Vlastos's pattern as the IEP quotes him, Kraut's four phrases on the Plato card, Nails and Monoson on irony and Nehamas on the schools); two contrastive constructions reworded (the charge against Socrates; “Socrates wanted no examples”); an ambiguous “he” for Brown named; the audit's reason for “opposed” corrected (Apology 32b; SEP §3 says Socrates refused to allow the vote). Optional suggestions applied: Santas as Silverman cites him, with Silverman's knowability phrase quoted (“the knowability and being of the objects of knowledge”), which the re-check required; partaking as Silverman's first approximation; Burnyeat's judgement as Brown cites it; Simmias's own unseen Forms at 65d; Adeimantus named at 505a (checked: he answers from 487b until Glaucon takes over at 506d); the 6e Greek given in full; the cards' fixed lists completed. Not applied: Futter named for the IEP article (both passes got the byline only from the fetching tool's answer, so the article stays uncredited); Republic anchors restricted to their book (every current anchor is unique in the book, which links.py checks indirectly). Not checked by the reviewer: the final ~19.6k characters of Silverman and ~18k of Brown were not read; Brown's sentences on Kamtekar, Burnyeat, Sachs and “explicit attention” came back only as the fetching tool's paraphrase, so copied runs there are not fully ruled out; the reviewer did not run tests/run.py (Claude ran it). Verdict: pass after the required fixes. Re-check of the applied fixes, 2026-11-22: all 69 quotations still verbatim and under 15 words, Rep. 517b–c confirmed in Burnet, Adeimantus at 505a confirmed; one required fix (Silverman's knowability phrase quoted), applied. Verdict: pass."
+ },
+ "sources": {
+  "JOW": {
+   "name": "Plato, Euthyphro, Apology, Crito, Phaedo, trans. Benjamin Jowett, the bundled Standard Ebooks edition (classic-plato-socrates); cited by Stephanus number, each listed in PLATO_ST (js/reference.js) and below under st",
+   "src": "https://standardebooks.org/ebooks/plato/dialogues/benjamin-jowett"
+  },
+  "REP": {
+   "name": "Plato, The Republic, trans. Benjamin Jowett, the bundled Standard Ebooks edition (classic-plato-republic); cited by Stephanus number (Rep. 433a), each listed in PLATO_ST, and by book (Rep. II)",
+   "src": "https://standardebooks.org/ebooks/plato/dialogues/benjamin-jowett"
+  },
+  "BURNET": {
+   "name": "Plato, Platonis Opera, ed. John Burnet (Oxford, 1900–1907), the Perseus Digital Library TEI text with Stephanus section milestones (GitHub PerseusDL/canonical-greekLit, tlg0059.tlg001.perseus-grc1, tlg002, tlg004 and tlg030 perseus-grc2); the authority for every Stephanus number. Fowler's (Euthyphro, Apology, Phaedo) and Shorey's (Republic) English in the same corpus, also Stephanus-marked, used only to find the passage",
+   "src": "https://github.com/PerseusDL/canonical-greekLit/tree/master/data/tlg0059"
+  },
+  "KRAUT": {
+   "name": "Richard Kraut, “Plato”, Stanford Encyclopedia of Philosophy (first published 20 March 2004; substantive revision 24 April 2026), read whole in literal text, 2026-11-22",
+   "src": "https://plato.stanford.edu/entries/plato/"
+  },
+  "NAILS": {
+   "name": "Debra Nails and S. Sara Monoson, “Socrates”, Stanford Encyclopedia of Philosophy (first published 16 September 2005; substantive revision 26 May 2022; the copyright line names both, the page metadata Monoson), read whole in literal text, 2026-11-22",
+   "src": "https://plato.stanford.edu/entries/socrates/"
+  },
+  "SIL": {
+   "name": "Allan Silverman, “Plato’s Middle Period Metaphysics and Epistemology”, Stanford Encyclopedia of Philosophy (first published 9 June 2003; substantive revision 14 July 2014), read in literal text to the end of §16 except part of the middle third (see unread)",
+   "src": "https://plato.stanford.edu/entries/plato-metaphysics/"
+  },
+  "BROWN": {
+   "name": "Eric Brown, “Plato’s Ethics and Politics in The Republic”, Stanford Encyclopedia of Philosophy (first published 1 April 2003; substantive revision 12 September 2017), read in literal text through §4.2 (see unread)",
+   "src": "https://plato.stanford.edu/entries/plato-ethics-politics/"
+  },
+  "WOODRUFF": {
+   "name": "Paul Woodruff, “Plato’s Shorter Ethical Works”, Stanford Encyclopedia of Philosophy (first published 6 July 2005; substantive revision 18 December 2022), read in literal text to the start of the Charmides discussion (§14; see unread)",
+   "src": "https://plato.stanford.edu/entries/plato-ethics-shorter/"
+  },
+  "IEP": {
+   "name": "“Socratic Method”, Internet Encyclopedia of Philosophy (undated; the byline, Dylan Futter, came back only in the fetching tool's summary), §§1–5 read in literal text",
+   "src": "https://iep.utm.edu/socratic-method/"
+  },
+  "SHIELDS": {
+   "name": "Christopher Shields, “Aristotle”, Stanford Encyclopedia of Philosophy (first published 25 September 2008; substantive revision 25 August 2020), §1 read in literal text, for Aristotle in the Academy",
+   "src": "https://plato.stanford.edu/entries/aristotle/"
+  }
+ },
+ "note": "Jowett's translation prints no Stephanus numbers. Each number was matched by content to Burnet's Greek, whose sections Perseus marks: the Greek that the quoted Jowett sentence translates was found in that section by script (st, below), and the number is never estimated. A section of short exchanges can run over several Jowett blocks, so a reference lists every block it needs (PLATO_ST) and opens the first. Plato is public domain, so he is quoted exactly from the bundled Jowett, each quotation under 15 words. Jowett's “absolute justice” renders dikaion auto, which the forms entry says. Interpretation is credited to named scholarship only. Three disputes are recorded open, one per entry. Links: forms ↔ universals (the universals entry already calls Plato's forms the paradigm of transcendent realism, glossary-route3.json); elenchus → forms (Woodruff §5: Allen 1970 reads the What-is-X assumption as an early theory of forms); elenchus ↔ tripartite-soul (Woodruff's introduction contrasts the unified soul of the shorter dialogues with the divided soul of the middle ones); forms ↔ tripartite-soul (both from the Republic; the soul's turn to the good, Rep. 518c, and the ruling part's knowledge, Rep. 442c).",
+ "disputes": [
+  "forms: What do knowledge and opinion range over in Republic V? Allan Silverman (Stanford Encyclopedia, §12) sets out three readings of “is” in the argument of 476–480: existential, veridical and predicative. On the existential and predicative readings knowledge and belief are set over objects, and on the predicative reading those objects are distinct; that reading, in Silverman's words, “lends itself to a defense of the Two Worlds account”, which keeps Forms and sensible things strictly apart. Gail Fine (1978, 1990) reads the “is” as veridical: knowledge is set over “what is true”, its objects are propositions, the overlap of the two faculties counts in the reading's favour, and both Forms and sensible things can be known. Not settled.",
+  "elenchus: Does the elenchus prove anything? Paul Woodruff (Stanford Encyclopedia, §2) holds that Gregory Vlastos “has argued persuasively” that the elenchus supports Socrates' ethical doctrine; on Hugh Benson's reading “the method can do no more than convict a partner of confusion”. The Internet Encyclopedia's article finds Vlastos's constructive account “not widely accepted by scholars for several reasons”. A related dispute concerns the priority of definition, the principle that one must be able to define a virtue to know anything about it: Peter Geach attacked it as the Socratic fallacy (Woodruff, §4), and the Internet Encyclopedia reports that “Many scholars judge PD to be implausible or false”. Not settled.",
+  "tripartite-soul: How agent-like are the three parts? Eric Brown (Stanford Encyclopedia, §2.1) takes Socrates' descriptions at face value, so that each part “is like an independent agent” (citing Kamtekar, 2006), a strategy of explaining action by “subpersonal homunculi” which Brown, citing Burnyeat (2006), calls both appealing and problematic. Shields (2001) and Price (2009) read them as “merely conceptual parts, akin to subsets of a set”. Not settled."
+ ],
+ "unread": [
+  {
+   "source": "Silverman (SEP)",
+   "part": "part of the middle third of the entry (between about characters 40,000 and 80,000), and the notes and bibliography",
+   "why": "the fetching tool returned it as a summary",
+   "terms": [
+    "forms"
+   ],
+   "effect": "none known: the sentences used (§§2, 3, 7, 8, 12, 13) came back in literal text"
+  },
+  {
+   "source": "Brown (SEP)",
+   "part": "from the middle of §4.2 to the end (§§4.3–6, bibliography)",
+   "why": "returned as a summary",
+   "terms": [
+    "tripartite-soul"
+   ],
+   "effect": "none known: the entry uses §§1.1, 1.3, 2.1–2.2; what Bernard Williams (1973) argues about the analogy is not stated in what was read, so he is not cited for it"
+  },
+  {
+   "source": "Woodruff (SEP)",
+   "part": "§§14–20 (Charmides to Protagoras)",
+   "why": "returned as a summary",
+   "terms": [
+    "elenchus"
+   ],
+   "effect": "none: the Euthyphro is §13, read literally"
+  },
+  {
+   "source": "Internet Encyclopedia, “Socratic Method”",
+   "part": "§§6–10 (the Apology, the Socratic fallacy, aporia, irony) and references",
+   "why": "returned as a summary",
+   "terms": [
+    "elenchus"
+   ],
+   "effect": "the Geach charge is given through Woodruff §4; the IEP is cited only for §§2–3"
+  },
+  {
+   "source": "the Meno",
+   "part": "whole",
+   "why": "not bundled",
+   "terms": [
+    "forms"
+   ],
+   "effect": "recollection gets one sentence from the Phaedo, as the owner asked"
+  }
+ ],
+ "terms": {
+  "forms": {
+   "new_d": [
+    {
+     "text": "Plato's name for what each thing is in itself, such as justice itself, beauty itself and equality itself: unchanging, grasped by thought, and shared in by the many things we perceive.",
+     "claims": [
+      {
+       "by": "summary of the entry's text"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "In the Phaedo Socrates asks Simmias, “Is there or is there not an absolute justice?” (Phaedo 65d), and Simmias agrees that there is, and an absolute beauty and good, none of which he has ever seen with his eyes.",
+     "claims": [
+      {
+       "by": "JOW Phaedo 65d"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Jowett's “absolute” renders the Greek for “itself”: at 65d Burnet's text reads dikaion auto, “the just itself”.",
+     "claims": [
+      {
+       "by": "BURNET: Burnet, Phaedo 65d (Perseus)"
+      }
+     ],
+     "quotes": "words quoted from the source named"
+    },
+    {
+     "text": "Equal sticks and stones “appear at one time equal, and at another time unequal” (Phaedo 74b), while the equal itself never appears unequal, so the sticks are “not the same with the idea of equality” (Phaedo 74c).",
+     "claims": [
+      {
+       "by": "JOW Phaedo 74b"
+      },
+      {
+       "by": "JOW Phaedo 74c"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "All such equals “strive to attain absolute equality, but fall short of it” (Phaedo 75a).",
+     "claims": [
+      {
+       "by": "JOW Phaedo 75a"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Socrates argues that we must have known the equal itself before we first perceived equal things, since we refer them to it, and that what we call learning is the recovery of that earlier knowledge through the senses: “may not this be rightly termed recollection?” (Phaedo 75e).",
+     "claims": [
+      {
+       "by": "JOW Phaedo 75e"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "The argument begins from Cebes' reminder of Socrates' “favorite doctrine” that knowledge is recollection (Phaedo 72e); the Meno, where the doctrine is set out at length, is not in the library.",
+     "claims": [
+      {
+       "by": "JOW Phaedo 72e"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Asked whether the essences are ever changed, Cebes answers, “They must be always the same” (Phaedo 78d), while the many beautiful men, horses and garments are “always in a state of change” (Phaedo 78e).",
+     "claims": [
+      {
+       "by": "JOW Phaedo 78d"
+      },
+      {
+       "by": "JOW Phaedo 78e"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "These can be seen and touched, but “the unchanging things you can only perceive with the mind” (Phaedo 79a).",
+     "claims": [
+      {
+       "by": "JOW Phaedo 79a"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Later, giving his own account of causes, Socrates holds that a beautiful thing is beautiful “only in as far as it partakes of absolute beauty” (Phaedo 100c), and that “by beauty all beautiful things become beautiful” (Phaedo 100d).",
+     "claims": [
+      {
+       "by": "JOW Phaedo 100c"
+      },
+      {
+       "by": "JOW Phaedo 100d"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Allan Silverman (Stanford Encyclopedia) reads the Phaedo's Forms as “beings that are what they are in virtue of themselves”, “immaterial, non-spatial and atemporal”, and offers “a relation between material particulars and Forms” as a first approximation of partaking.",
+     "claims": [
+      {
+       "by": "SIL: SEP Silverman §§2, 3, 7"
+      }
+     ],
+     "quotes": "scholarship quotations checked in the source named"
+    },
+    {
+     "text": "In Republic V the lovers of sights and sounds delight in fine colours and forms, but “their mind is incapable of seeing or loving absolute beauty” (Rep. 476b).",
+     "claims": [
+      {
+       "by": "REP Rep. 476b"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Whoever takes beautiful things for beauty itself is dreaming: he is one “who puts the copy in the place of the real object” (Rep. 476c).",
+     "claims": [
+      {
+       "by": "REP Rep. 476c"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "The philosopher is awake, able “to distinguish the idea from the objects which participate in the idea” (Rep. 476c–d).",
+     "claims": [
+      {
+       "by": "REP Rep. 476c–d"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Knowledge “is relative to being” (Rep. 477b), and opinion turns out to lie between knowledge and ignorance (Rep. 478d).",
+     "claims": [
+      {
+       "by": "REP Rep. 477b"
+      },
+      {
+       "by": "REP Rep. 478d"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Those who see many beautiful things but not beauty itself “may be said to have opinion but not knowledge” (Rep. 479e); those who see “the absolute and eternal and immutable” may be said to know (Rep. 479e).",
+     "claims": [
+      {
+       "by": "REP Rep. 479e"
+      },
+      {
+       "by": "REP Rep. 479e"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "What this argument sets knowledge and opinion over is disputed: see the dispute below.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ]
+    },
+    {
+     "text": "In Book VI Socrates says that Adeimantus has often been told “that the idea of good is the highest knowledge” (Rep. 505a).",
+     "claims": [
+      {
+       "by": "REP Rep. 505a"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The many beautiful and good things, he says, “are seen but not known”, and their ideas “are known but not seen” (Rep. 507b).",
+     "claims": [
+      {
+       "by": "REP Rep. 507b"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "The sun gives visible things their visibility and their growth, and the good, in the same way, imparts truth to the known and the power of knowing to the knower (Rep. 508e), and gives the objects of knowledge their being; yet “the good is not essence, but far exceeds essence in dignity and power” (Rep. 509b).",
+     "claims": [
+      {
+       "by": "REP Rep. 508e"
+      },
+      {
+       "by": "REP Rep. 509b"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Silverman observes, citing Gerasimos Santas (1980), that Plato “never says in what sense the Good is responsible” for “the knowability and being of the objects of knowledge”.",
+     "claims": [
+      {
+       "by": "SIL: SEP Silverman §13"
+      }
+     ],
+     "quotes": "scholarship quotations checked in the source named"
+    },
+    {
+     "text": "Next comes “a line which has been cut into two unequal” parts, the visible below and the intelligible above, each cut again in the same proportion (Rep. 509d).",
+     "claims": [
+      {
+       "by": "REP Rep. 509d"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "In the lower intelligible part the soul uses visible things as images and reasons from hypotheses down to conclusions (Rep. 510b), as geometers do; in the higher, dialectic uses hypotheses “as steps and points of departure” toward “the first principle of the whole” and ends in ideas (Rep. 511b–c).",
+     "claims": [
+      {
+       "by": "REP Rep. 510b"
+      },
+      {
+       "by": "REP Rep. 511b–c"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "To the four parts answer four states of the soul, noēsis, dianoia, pistis and eikasia in Burnet's Greek, which Jowett gives as reason, understanding, faith and “perception of shadows” (Rep. 511d–e).",
+     "claims": [
+      {
+       "by": "REP Rep. 511d–e"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Silverman reports that what the objects of dianoia are is a matter of great controversy, and cites Myles Burnyeat (1987) for the leading approaches.",
+     "claims": [
+      {
+       "by": "SIL: SEP Silverman §13"
+      }
+     ]
+    },
+    {
+     "text": "Book VII pictures human beings who have lived from childhood in an underground den (Rep. 514a), chained so that “they see only their own shadows, or the shadows of one another” (Rep. 515a).",
+     "claims": [
+      {
+       "by": "REP Rep. 514a"
+      },
+      {
+       "by": "REP Rep. 515a"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "A prisoner freed and dragged up into the light sees first shadows, then reflections, then the things themselves, the heavens by night, and last the sun itself (Rep. 516a–b).",
+     "claims": [
+      {
+       "by": "REP Rep. 516a–b"
+      }
+     ]
+    },
+    {
+     "text": "Socrates applies the image: the prison is the world of sight, and the journey upward is “the ascent of the soul into the intellectual world” (Rep. 517b), where “the idea of good appears last of all” (Rep. 517b–c).",
+     "claims": [
+      {
+       "by": "REP Rep. 517b"
+      },
+      {
+       "by": "REP Rep. 517b–c"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Education on this account turns the whole soul around, since “the power and capacity of learning exists in the soul already” (Rep. 518c), and needs an art of “conversion” (Rep. 518d).",
+     "claims": [
+      {
+       "by": "REP Rep. 518c"
+      },
+      {
+       "by": "REP Rep. 518d"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Those who have seen the good must take their turn and “go down to the general underground abode” to rule (Rep. 520c).",
+     "claims": [
+      {
+       "by": "REP Rep. 520c"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    }
+   ]
+  },
+  "elenchus": {
+   "new_d": [
+    {
+     "text": "Socrates' way of examining a claim to know, as Plato portrays it: the speaker's answer to a question such as “What is piety?” is tested against other things the speaker agrees to until the two are shown to conflict.",
+     "claims": [
+      {
+       "by": "summary of the entry's text"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "In the Apology Socrates traces his questioning to Delphi, where Chaerephon asked the oracle whether anyone was wiser than Socrates, and “the Pythian prophetess answered, that there was no man wiser” (Apology 21a).",
+     "claims": [
+      {
+       "by": "JOW Apology 21a"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Puzzled, since he knew “that I have no wisdom, small or great” (Apology 21b), he went to a politician with a reputation for wisdom, hoping to refute the oracle.",
+     "claims": [
+      {
+       "by": "JOW Apology 21b"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "The man thought himself wise and was not, and Socrates concluded that he had the advantage over him: “I neither know nor think that I know” (Apology 21d).",
+     "claims": [
+      {
+       "by": "JOW Apology 21d"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Poets and craftsmen fared no better, and he took the oracle to mean “that God only is wise” (Apology 23a), and that the wisest man is the one who, like Socrates, knows that his wisdom “is in truth worth nothing” (Apology 23b).",
+     "claims": [
+      {
+       "by": "JOW Apology 23a"
+      },
+      {
+       "by": "JOW Apology 23b"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "He calls himself “a sort of gadfly, given to the state by God” (Apology 30e), and tells the jury that “the unexamined life is not worth living” (Apology 38a).",
+     "claims": [
+      {
+       "by": "JOW Apology 30e"
+      },
+      {
+       "by": "JOW Apology 38a"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Paul Woodruff (Stanford Encyclopedia) thinks some form of elenchus probably lies behind Socrates' report that everyone he examined who claimed wisdom was found wanting.",
+     "claims": [
+      {
+       "by": "WOODRUFF: SEP Woodruff §2"
+      }
+     ]
+    },
+    {
+     "text": "The Euthyphro shows the method at work on one question.",
+     "claims": [],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Socrates asks, “And what is piety, and what is impiety?”, assuming that piety is “in every action always the same” (Euthyphro 5d).",
+     "claims": [
+      {
+       "by": "JOW Euthyphro 5d"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Euthyphro answers from his own case, prosecuting his father for the death of a serf: “Piety is doing as I am doing” (Euthyphro 5d).",
+     "claims": [
+      {
+       "by": "JOW Euthyphro 5d"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Socrates reminds him that he had asked him to “explain the general idea which makes all pious things to be pious” (Euthyphro 6d), something to serve as “a standard to which I may look” (Euthyphro 6e).",
+     "claims": [
+      {
+       "by": "JOW Euthyphro 6d"
+      },
+      {
+       "by": "JOW Euthyphro 6e"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "The second answer, “Piety, then, is that which is dear to the gods” (Euthyphro 6e), fails because the gods quarrel, so that the same things are “both hateful and dear to them” (Euthyphro 8a).",
+     "claims": [
+      {
+       "by": "JOW Euthyphro 6e"
+      },
+      {
+       "by": "JOW Euthyphro 8a"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Euthyphro amends it: “what all the gods love is pious and holy” (Euthyphro 9e).",
+     "claims": [
+      {
+       "by": "JOW Euthyphro 9e"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Socrates then asks whether the holy is “beloved by the gods because it is holy”, or holy because it is beloved (Euthyphro 10a).",
+     "claims": [
+      {
+       "by": "JOW Euthyphro 10a"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Euthyphro grants the first, “It is loved because it is holy, not holy because it is loved” (Euthyphro 10d), and so his definition, asked for the essence, gives “an attribute only” (Euthyphro 11a); in Burnet's Greek, ousia and pathos.",
+     "claims": [
+      {
+       "by": "JOW Euthyphro 10d"
+      },
+      {
+       "by": "JOW Euthyphro 11a"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "A third attempt makes piety “that part of justice which attends to the gods” (Euthyphro 12e), and ends as “learning how to please the gods in word and deed” (Euthyphro 14b), which brings the argument back to what is dear to the gods.",
+     "claims": [
+      {
+       "by": "JOW Euthyphro 12e"
+      },
+      {
+       "by": "JOW Euthyphro 14b"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "“Then we must begin again and ask, What is piety?” (Euthyphro 15c), Socrates says, and Euthyphro leaves.",
+     "claims": [
+      {
+       "by": "JOW Euthyphro 15c"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Woodruff calls the conclusion aporia, an impasse.",
+     "claims": [
+      {
+       "by": "WOODRUFF: SEP Woodruff §13"
+      }
+     ]
+    },
+    {
+     "text": "Woodruff sets out the requirements Socrates' question imposes: an answer must belong to every case of the virtue, to nothing that is not a case, and must explain why the cases are what they are.",
+     "claims": [
+      {
+       "by": "WOODRUFF: SEP Woodruff §3"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The rules of the exchange are that the respondent “must answer every question according to his own beliefs”, and the questioner secures agreement to premises that turn out inconsistent with the first answer.",
+     "claims": [
+      {
+       "by": "WOODRUFF: SEP Woodruff §2"
+      }
+     ],
+     "quotes": "scholarship quotations checked in the source named"
+    },
+    {
+     "text": "The Internet Encyclopedia's article gives Gregory Vlastos's statement of the pattern: the interlocutor “asserts a thesis, p”; “Socrates secures agreement to further premises, say q and r”; and the interlocutor agrees that q and r entail not-p.",
+     "claims": [
+      {
+       "by": "IEP: IEP §3a (Vlastos 1994, p. 11)"
+      }
+     ],
+     "quotes": "scholarship quotations checked in the source named"
+    },
+    {
+     "text": "It notes that “the Socratic method is sometimes dubbed the elenchus”, and that Socrates himself never gives his method that name.",
+     "claims": [
+      {
+       "by": "IEP: IEP §3"
+      }
+     ],
+     "quotes": "scholarship quotations checked in the source named"
+    },
+    {
+     "text": "Woodruff's puzzle is how the method could lead to “any firm result” when its premises “have no authority beyond the partner's agreement”.",
+     "claims": [
+      {
+       "by": "WOODRUFF: SEP Woodruff §2"
+      }
+     ],
+     "quotes": "scholarship quotations checked in the source named"
+    }
+   ]
+  },
+  "tripartite-soul": {
+   "new_d": [
+    {
+     "text": "Plato's account in Republic IV: the soul has three parts, reason, spirit and appetite, and a person is just when each part does its own work, with reason ruling.",
+     "claims": [
+      {
+       "by": "summary of the entry's text"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "In Book II Glaucon and Adeimantus press Socrates to show that justice is to be chosen for itself (Rep. II); Eric Brown (Stanford Encyclopedia) notes that “Socrates' strategy depends on an analogy between a city and a person.”",
+     "claims": [
+      {
+       "by": "REP Rep. II"
+      },
+      {
+       "by": "BROWN: SEP Brown §§1.1, 1.3"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script; scholarship quotations checked in the source named"
+    },
+    {
+     "text": "In the city built in Books II–IV, justice turns out to be the principle laid down at its founding, that each should do the one thing his nature suits: “justice was doing one’s own business, and not being a busybody” (Rep. 433a).",
+     "claims": [
+      {
+       "by": "REP Rep. 433a"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Meddling among the three classes is the greatest harm to the city, and when traders, auxiliaries and guardians “each do their own business, that is justice” (Rep. 434c).",
+     "claims": [
+      {
+       "by": "REP Rep. 434c"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Socrates then asks whether the soul has the same three principles, warning that the present method is inadequate and “the true method is another and a longer one” (Rep. 435d).",
+     "claims": [
+      {
+       "by": "REP Rep. 435d"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "His test is a principle: “The same thing clearly cannot act or be acted upon in the same part” in contrary ways at the same time (Rep. 436b); Brown calls it the principle of non-opposition.",
+     "claims": [
+      {
+       "by": "REP Rep. 436b"
+      },
+      {
+       "by": "Rep. 436b; SEP Brown §2.1"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script; scholarship quotations checked in the source named"
+    },
+    {
+     "text": "A man may be thirsty and yet unwilling to drink (Rep. 439c), so the part that reasons and forbids differs from the part that thirsts, which Jowett calls “the irrational or appetitive” (Rep. 439d).",
+     "claims": [
+      {
+       "by": "REP Rep. 439c"
+      },
+      {
+       "by": "REP Rep. 439d"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Leontius, passing the bodies of executed men, felt both a desire to see them and abhorrence; at last he ran to them crying, “Look, ye wretches, take your fill of the fair sight” (Rep. 440a).",
+     "claims": [
+      {
+       "by": "REP Rep. 440a"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "The moral is that “anger at times goes to war with desire” (Rep. 440a), and in such struggles “his spirit is on the side of his reason” (Rep. 440b).",
+     "claims": [
+      {
+       "by": "REP Rep. 440a"
+      },
+      {
+       "by": "REP Rep. 440b"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Spirit is a third part, unless corrupted by bad education “the natural auxiliary of reason” (Rep. 441a), and so the principles in city and soul are agreed to be “three in number” (Rep. 441c).",
+     "claims": [
+      {
+       "by": "REP Rep. 441a"
+      },
+      {
+       "by": "REP Rep. 441c"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "The individual is just in the same way as the city: one in whom “the several qualities of his nature do their own work will be just” (Rep. 441d–e).",
+     "claims": [
+      {
+       "by": "REP Rep. 441d–e"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Reason, wise and caring for the whole soul, should rule, with spirit as “the subject and ally” (Rep. 441e), and the two together govern appetite, “the largest part of the soul and by nature most insatiable of gain” (Rep. 442a).",
+     "claims": [
+      {
+       "by": "REP Rep. 441e"
+      },
+      {
+       "by": "REP Rep. 442a"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "A person is courageous when spirit “retains in pleasure and in pain the commands of reason” about what to fear (Rep. 442b–c), wise by the ruling part's knowledge of what is “for the interest of each of the three parts” and of the whole (Rep. 442c), and temperate when all three “are equally agreed that reason ought to rule” (Rep. 442c–d).",
+     "claims": [
+      {
+       "by": "REP Rep. 442b–c"
+      },
+      {
+       "by": "REP Rep. 442c"
+      },
+      {
+       "by": "REP Rep. 442c–d"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "The city's division of labour “was a shadow of justice” (Rep. 443c); justice itself concerns the inner life, and the just man “is his own master and his own law, and at peace with himself” (Rep. 443d).",
+     "claims": [
+      {
+       "by": "REP Rep. 443c"
+      },
+      {
+       "by": "REP Rep. 443d"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Injustice is “a strife which arises among the three principles” (Rep. 444b), and virtue is “the health and beauty and well-being of the soul” (Rep. 444d–e).",
+     "claims": [
+      {
+       "by": "REP Rep. 444b"
+      },
+      {
+       "by": "REP Rep. 444d–e"
+      }
+     ],
+     "quotes": "Plato's (Jowett) verbatim in the bundled book, inside the blocks their Stephanus reference opens; checked by script"
+    },
+    {
+     "text": "Socrates checks the account against common cases: such a man is the least likely to make away with a deposit of gold or silver, or to commit theft, sacrilege or treachery (Rep. 442e–443a).",
+     "claims": [
+      {
+       "by": "REP Rep. 442e–443a"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Brown credits David Sachs (1963) with the objection that this leaves unshown why a soul in such order will act justly in the ordinary sense, and judges that Socrates leaves the worry unaddressed at the end of Book IV, and Brown looks for answers in Books II–III and V–VII.",
+     "claims": [
+      {
+       "by": "BROWN: SEP Brown §2.2"
+      }
+     ]
+    },
+    {
+     "text": "How agent-like the three parts are is disputed: see below.",
+     "claims": [
+      {
+       "by": "cross-reference within the app (no claim)"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "st": [
+  {
+   "ref": "Euthyphro 5d",
+   "blocks": [
+    61,
+    63,
+    64
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "Is not piety in every action always the same?",
+    "And what is piety, and what is impiety?",
+    "Piety is doing as I am doing"
+   ],
+   "burnet": [
+    "ταὐτόν ἐστιν ἐν πάσῃ πράξει τὸ ὅσιον",
+    "τί φῂς εἶναι τὸ ὅσιον καὶ τί τὸ ἀνόσιον",
+    "ὅπερ ἐγὼ νῦν ποιῶ"
+   ],
+   "burnet_sections": [
+    "5d"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Euthyphro 6d",
+   "blocks": [
+    73
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "explain the general idea which makes all pious things to be pious"
+   ],
+   "burnet": [
+    "αὐτὸ τὸ εἶδος ᾧ πάντα τὰ ὅσια ὅσιά ἐστιν"
+   ],
+   "burnet_sections": [
+    "6d"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Euthyphro 6e",
+   "blocks": [
+    75,
+    78
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "a standard to which I may look",
+    "Piety, then, is that which is dear to the gods"
+   ],
+   "burnet": [
+    "χρώμενος αὐτῇ παραδείγματι",
+    "ἔστι τοίνυν τὸ μὲν τοῖς θεοῖς προσφιλὲς ὅσιον"
+   ],
+   "burnet_sections": [
+    "6e"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Euthyphro 8a",
+   "blocks": [
+    103
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "are both hateful and dear to them?"
+   ],
+   "burnet": [
+    "θεομισῆ τε καὶ θεοφιλῆ ταὔτʼ ἂν εἴη"
+   ],
+   "burnet_sections": [
+    "8a"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Euthyphro 9e",
+   "blocks": [
+    128
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "what all the gods love is pious and holy"
+   ],
+   "burnet": [
+    "ὃ ἂν πάντες οἱ θεοὶ φιλῶσιν"
+   ],
+   "burnet_sections": [
+    "9e"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Euthyphro 10a",
+   "blocks": [
+    131
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "beloved by the gods because it is holy"
+   ],
+   "burnet": [
+    "ὅτι ὅσιόν ἐστιν φιλεῖται ὑπὸ τῶν θεῶν"
+   ],
+   "burnet_sections": [
+    "10a"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Euthyphro 10d",
+   "blocks": [
+    151
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "It is loved because it is holy, not holy because it is loved?"
+   ],
+   "burnet": [
+    "διότι ἄρα ὅσιόν ἐστιν φιλεῖται"
+   ],
+   "burnet_sections": [
+    "10d"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Euthyphro 11a",
+   "blocks": [
+    161
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "to offer an attribute only"
+   ],
+   "burnet": [
+    "πάθος δέ τι περὶ αὐτοῦ λέγειν"
+   ],
+   "burnet_sections": [
+    "11a"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Euthyphro 12e",
+   "blocks": [
+    184
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "that part of justice which attends to the gods"
+   ],
+   "burnet": [
+    "τὸ περὶ τὴν τῶν θεῶν θεραπείαν"
+   ],
+   "burnet_sections": [
+    "12e"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Euthyphro 14b",
+   "blocks": [
+    226
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "learning how to please the gods in word and deed"
+   ],
+   "burnet": [
+    "κεχαρισμένα τις ἐπίστηται τοῖς θεοῖς λέγειν τε καὶ πράττειν"
+   ],
+   "burnet_sections": [
+    "14b"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Euthyphro 15c",
+   "blocks": [
+    255
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "Then we must begin again and ask, What is piety?"
+   ],
+   "burnet": [
+    "ἐξ ἀρχῆς ἄρα ἡμῖν πάλ"
+   ],
+   "burnet_sections": [
+    "15c"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Apology 21a",
+   "blocks": [
+    294
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "the Pythian prophetess answered, that there was no man wiser"
+   ],
+   "burnet": [
+    "μηδένα σοφώτερον εἶναι"
+   ],
+   "burnet_sections": [
+    "21a"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Apology 21b",
+   "blocks": [
+    295
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "for I know that I have no wisdom, small or great"
+   ],
+   "burnet": [
+    "οὔτε μέγα οὔτε σμικρὸν σύνοιδα ἐμαυτῷ σοφὸς ὤν"
+   ],
+   "burnet_sections": [
+    "21b"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Apology 21d",
+   "blocks": [
+    295
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "I neither know nor think that I know"
+   ],
+   "burnet": [
+    "ἐγὼ δέ, ὥσπερ οὖν οὐκ οἶδα, οὐδὲ οἴομαι"
+   ],
+   "burnet_sections": [
+    "21d"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Apology 23a",
+   "blocks": [
+    298
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "the truth is, O men of Athens, that God only is wise"
+   ],
+   "burnet": [
+    "τῷ ὄντι ὁ θεὸς σοφὸς εἶναι"
+   ],
+   "burnet_sections": [
+    "23a"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Apology 23b",
+   "blocks": [
+    298
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "knows that his wisdom is in truth worth nothing"
+   ],
+   "burnet": [
+    "ἔγνωκεν ὅτι οὐδενὸς ἄξιός ἐστι τῇ ἀληθείᾳ πρὸς σοφίαν"
+   ],
+   "burnet_sections": [
+    "23b"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Apology 24b–c",
+   "blocks": [
+    300
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "It says that Socrates is a doer of evil, who corrupts the youth"
+   ],
+   "burnet": [
+    "τούς τε νέους διαφθείροντα",
+    "δαιμόνια καινά"
+   ],
+   "burnet_sections": [
+    "24b",
+    "24c"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Apology 30e",
+   "blocks": [
+    346
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "am a sort of gadfly, given to the state by God"
+   ],
+   "burnet": [
+    "ὑπὸ μύωπός τινος"
+   ],
+   "burnet_sections": [
+    "30e"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Apology 31d",
+   "blocks": [
+    347
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "it always forbids but never commands me"
+   ],
+   "burnet": [
+    "ἀεὶ ἀποτρέπει"
+   ],
+   "burnet_sections": [
+    "31d"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Apology 32b",
+   "blocks": [
+    348
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "the trial of the generals who had not taken up the bodies"
+   ],
+   "burnet": [
+    "Ἀντιοχὶς πρυτανεύουσα"
+   ],
+   "burnet_sections": [
+    "32b"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Apology 32c–d",
+   "blocks": [
+    348
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "bade us bring Leon the Salaminian from Salamis"
+   ],
+   "burnet": [
+    "Λέοντα τὸν Σαλαμίνιον",
+    "οὐ λόγῳ ἀλλʼ ἔργῳ"
+   ],
+   "burnet_sections": [
+    "32c",
+    "32d"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Apology 38a",
+   "blocks": [
+    356
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "the unexamined life is not worth living"
+   ],
+   "burnet": [
+    "ἀνεξέταστος βίος οὐ βιωτὸς ἀνθρώπῳ"
+   ],
+   "burnet_sections": [
+    "38a"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Apology 38b",
+   "blocks": [
+    356
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "Let thirty minae be the penalty"
+   ],
+   "burnet": [
+    "τριάκοντα μνῶν"
+   ],
+   "burnet_sections": [
+    "38b"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Phaedo 65d",
+   "blocks": [
+    642
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "Is there or is there not an absolute justice?"
+   ],
+   "burnet": [
+    "φαμέν τι εἶναι δίκαιον αὐτὸ ἢ οὐδέν"
+   ],
+   "burnet_sections": [
+    "65d"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Phaedo 72e",
+   "blocks": [
+    738
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "Your favorite doctrine, Socrates, that knowledge is simply recollection"
+   ],
+   "burnet": [
+    "ἡ μάθησις οὐκ ἄλλο τι ἢ ἀνάμνησις"
+   ],
+   "burnet_sections": [
+    "72e"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Phaedo 74b",
+   "blocks": [
+    765
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "appear at one time equal, and at another time unequal"
+   ],
+   "burnet": [
+    "τῷ μὲν ἴσα φαίνεται, τῷ δ’ οὔ"
+   ],
+   "burnet_sections": [
+    "74b"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Phaedo 74c",
+   "blocks": [
+    767,
+    769
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "But are real equals ever unequal?",
+    "Then these (so-called) equals are not the same with the idea of equality?"
+   ],
+   "burnet": [
+    "αὐτὰ τὰ ἴσα ἔστιν ὅτε ἄνισά σοι ἐφάνη",
+    "οὐ ταὐτὸν ἄρα ἐστίν"
+   ],
+   "burnet_sections": [
+    "74c"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Phaedo 75a",
+   "blocks": [
+    783
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "strive to attain absolute equality, but fall short of it"
+   ],
+   "burnet": [
+    "ὀρέγεται μὲν πάντα ταῦτα εἶναι οἷον τὸ ἴσον, ἔχει δὲ ἐνδεεστέρως"
+   ],
+   "burnet_sections": [
+    "75a"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Phaedo 75e",
+   "blocks": [
+    801
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "may not this be rightly termed recollection?"
+   ],
+   "burnet": [
+    "ἀναμιμνῄσκεσθαι λέγοντες ὀρθῶς ἂν λέγοιμεν"
+   ],
+   "burnet_sections": [
+    "75e"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Phaedo 78d",
+   "blocks": [
+    843
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "They must be always the same, Socrates, replied Cebes."
+   ],
+   "burnet": [
+    "ὡσαύτως, ἔφη, ἀνάγκη, ὁ Κέβης"
+   ],
+   "burnet_sections": [
+    "78d"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Phaedo 78e",
+   "blocks": [
+    845
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "The latter, replied Cebes; they are always in a state of change."
+   ],
+   "burnet": [
+    "οὐδέποτε ὡσαύτως ἔχει"
+   ],
+   "burnet_sections": [
+    "78e"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Phaedo 79a",
+   "blocks": [
+    846
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "the unchanging things you can only perceive with the mind"
+   ],
+   "burnet": [
+    "τῷ τῆς διανοίας λογισμῷ"
+   ],
+   "burnet_sections": [
+    "79a"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Phaedo 100c",
+   "blocks": [
+    1038
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "it can be beautiful only in as far as it partakes of absolute beauty"
+   ],
+   "burnet": [
+    "διότι μετέχει ἐκείνου τοῦ καλοῦ"
+   ],
+   "burnet_sections": [
+    "100c"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Phaedo 100d",
+   "blocks": [
+    1040
+   ],
+   "book": "classic-plato-socrates",
+   "words": [
+    "by beauty all beautiful things become beautiful"
+   ],
+   "burnet": [
+    "τῷ καλῷ πάντα τὰ καλὰ γίγνεται καλά"
+   ],
+   "burnet_sections": [
+    "100d"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 433a",
+   "blocks": [
+    1579
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "Further, we affirmed that justice was doing one’s own business"
+   ],
+   "burnet": [
+    "τὸ τὰ αὑτοῦ πράττειν καὶ μὴ πολυπραγμονεῖν δικαιοσύνη ἐστί"
+   ],
+   "burnet_sections": [
+    "433a"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 434c",
+   "blocks": [
+    1607
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "when the trader, the auxiliary, and the guardian each do their own business"
+   ],
+   "burnet": [
+    "χρηματιστικοῦ, ἐπικουρικοῦ, φυλακικοῦ"
+   ],
+   "burnet_sections": [
+    "434c"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 435d",
+   "blocks": [
+    1621
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "the true method is another and a longer one"
+   ],
+   "burnet": [
+    "ἄλλη γὰρ μακροτέρα καὶ πλείων ὁδὸς"
+   ],
+   "burnet_sections": [
+    "435d"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 436b",
+   "blocks": [
+    1633
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "The same thing clearly cannot act or be acted upon in the same part"
+   ],
+   "burnet": [
+    "ταὐτὸν τἀναντία ποιεῖν ἢ πάσχειν κατὰ ταὐτόν"
+   ],
+   "burnet_sections": [
+    "436b"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 439c",
+   "blocks": [
+    1687
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "And might a man be thirsty, and yet unwilling to drink?"
+   ],
+   "burnet": [
+    "διψῶντας οὐκ ἐθέλειν πιεῖν"
+   ],
+   "burnet_sections": [
+    "439c"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 439d",
+   "blocks": [
+    1693
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "may be termed the irrational or appetitive"
+   ],
+   "burnet": [
+    "ἀλόγιστόν τε καὶ ἐπιθυμητικόν"
+   ],
+   "burnet_sections": [
+    "439d"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 440a",
+   "blocks": [
+    1697,
+    1699
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "Look, ye wretches, take your fill of the fair sight",
+    "anger at times goes to war with desire"
+   ],
+   "burnet": [
+    "ἐμπλήσθητε τοῦ καλοῦ θεάματος",
+    "τὴν ὀργὴν πολεμεῖν ἐνίοτε ταῖς ἐπιθυμίαις"
+   ],
+   "burnet_sections": [
+    "440a"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 440b",
+   "blocks": [
+    1701
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "his spirit is on the side of his reason"
+   ],
+   "burnet": [
+    "σύμμαχον τῷ λόγῳ γιγνόμενον τὸν θυμὸν"
+   ],
+   "burnet_sections": [
+    "440b"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 441a",
+   "blocks": [
+    1711
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "is the natural auxiliary of reason"
+   ],
+   "burnet": [
+    "ἐπίκουρον ὂν τῷ λογιστικῷ φύσει"
+   ],
+   "burnet_sections": [
+    "441a"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 441c",
+   "blocks": [
+    1719
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "and that they are three in number"
+   ],
+   "burnet": [
+    "ἴσα τὸν ἀριθμόν"
+   ],
+   "burnet_sections": [
+    "441c"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 441d–e",
+   "blocks": [
+    1729
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "the several qualities of his nature do their own work will be just"
+   ],
+   "burnet": [
+    "τὰ αὑτοῦ ἕκαστον τῶν ἐν αὐτῷ πράττῃ, οὗτος δίκαιός τε ἔσται"
+   ],
+   "burnet_sections": [
+    "441e"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 441e",
+   "blocks": [
+    1731
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "the passionate or spirited principle to be the subject and ally"
+   ],
+   "burnet": [
+    "τῷ δὲ θυμοειδεῖ ὑπηκόῳ εἶναι καὶ συμμάχῳ"
+   ],
+   "burnet_sections": [
+    "441e"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 442a",
+   "blocks": [
+    1735
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "the largest part of the soul and by nature most insatiable of gain"
+   ],
+   "burnet": [
+    "πλεῖστον τῆς ψυχῆς ἐν ἑκάστῳ ἐστὶ καὶ χρημάτων φύσει ἀπληστότατον"
+   ],
+   "burnet_sections": [
+    "442a"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 442b–c",
+   "blocks": [
+    1739
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "retains in pleasure and in pain the commands of reason"
+   ],
+   "burnet": [
+    "διά τε λυπῶν καὶ ἡδονῶν τὸ ὑπὸ τῶν λόγων παραγγελθὲν"
+   ],
+   "burnet_sections": [
+    "442c"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 442c",
+   "blocks": [
+    1741
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "what is for the interest of each of the three parts and of the whole"
+   ],
+   "burnet": [
+    "τὴν τοῦ συμφέροντος ἑκάστῳ τε καὶ ὅλῳ"
+   ],
+   "burnet_sections": [
+    "442c"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 442c–d",
+   "blocks": [
+    1743
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "are equally agreed that reason ought to rule"
+   ],
+   "burnet": [
+    "ὁμοδοξῶσι δεῖν ἄρχειν"
+   ],
+   "burnet_sections": [
+    "442d"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 442e–443a",
+   "blocks": [
+    1751,
+    1753
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "make away with a deposit of gold or silver",
+    "guilty of sacrilege or theft, or treachery"
+   ],
+   "burnet": [
+    "παρακαταθήκην χρυσίου ἢ ἀργυρίου",
+    "ἱεροσυλιῶν καὶ κλοπῶν καὶ προδοσιῶν"
+   ],
+   "burnet_sections": [
+    "442e",
+    "443a"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 443c",
+   "blocks": [
+    1765
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "was a shadow of justice"
+   ],
+   "burnet": [
+    "εἴδωλόν τι τῆς δικαιοσύνης"
+   ],
+   "burnet_sections": [
+    "443c"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 443d",
+   "blocks": [
+    1767
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "is his own master and his own law, and at peace with himself"
+   ],
+   "burnet": [
+    "ἄρξαντα αὐτὸν αὑτοῦ καὶ κοσμήσαντα καὶ φίλον γενόμενον ἑαυτῷ"
+   ],
+   "burnet_sections": [
+    "443d"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 444b",
+   "blocks": [
+    1775
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "a strife which arises among the three principles"
+   ],
+   "burnet": [
+    "στάσιν τινὰ αὖ τριῶν ὄντων τούτων"
+   ],
+   "burnet_sections": [
+    "444b"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 444d–e",
+   "blocks": [
+    1789
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "the health and beauty and well-being of the soul"
+   ],
+   "burnet": [
+    "ὑγίειά τέ τις ἂν εἴη καὶ",
+    "κάλλος καὶ εὐεξία ψυχῆς"
+   ],
+   "burnet_sections": [
+    "444d",
+    "444e"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 476b",
+   "blocks": [
+    2271
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "their mind is incapable of seeing or loving absolute beauty"
+   ],
+   "burnet": [
+    "αὐτοῦ δὲ τοῦ καλοῦ ἀδύνατος αὐτῶν ἡ διάνοια τὴν φύσιν ἰδεῖν"
+   ],
+   "burnet_sections": [
+    "476b"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 476c",
+   "blocks": [
+    2275
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "who puts the copy in the place of the real object?"
+   ],
+   "burnet": [
+    "τὸ ὅμοιόν τῳ μὴ ὅμοιον ἀλλʼ αὐτὸ ἡγῆται εἶναι ᾧ ἔοικεν"
+   ],
+   "burnet_sections": [
+    "476c"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 476c–d",
+   "blocks": [
+    2277
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "is able to distinguish the idea from the objects which participate in the idea"
+   ],
+   "burnet": [
+    "καθορᾶν καὶ αὐτὸ καὶ τὰ ἐκείνου μετέχοντα"
+   ],
+   "burnet_sections": [
+    "476d"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 477b",
+   "blocks": [
+    2299
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "And knowledge is relative to being and knows being."
+   ],
+   "burnet": [
+    "ἐπιστήμη μὲν ἐπὶ τῷ ὄντι πέφυκε"
+   ],
+   "burnet_sections": [
+    "477b"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 478d",
+   "blocks": [
+    2341
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "Then you would infer that opinion is intermediate?"
+   ],
+   "burnet": [
+    "μεταξὺ ἄρα ἂν εἴη τούτοιν δόξα"
+   ],
+   "burnet_sections": [
+    "478d"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 479e",
+   "blocks": [
+    2363,
+    2365
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "such persons may be said to have opinion but not knowledge?",
+    "But those who see the absolute and eternal and immutable"
+   ],
+   "burnet": [
+    "δοξάζειν φήσομεν ἅπαντα, γιγνώσκειν δὲ ὧν δοξάζουσιν οὐδέν",
+    "ἀεὶ κατὰ ταὐτὰ ὡσαύτως ὄντα"
+   ],
+   "burnet_sections": [
+    "479e"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 505a",
+   "blocks": [
+    2666
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "the idea of good is the highest knowledge"
+   ],
+   "burnet": [
+    "ἡ τοῦ ἀγαθοῦ ἰδέα μέγιστον μάθημα"
+   ],
+   "burnet_sections": [
+    "505a"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 507b",
+   "blocks": [
+    2706
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "The many, as we say, are seen but not known, and the ideas are known but not seen."
+   ],
+   "burnet": [
+    "ὁρᾶσθαί φαμεν, νοεῖσθαι δʼ οὔ"
+   ],
+   "burnet_sections": [
+    "507b"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 508e",
+   "blocks": [
+    2746
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "that which imparts truth to the known and the power of knowing to the knower"
+   ],
+   "burnet": [
+    "τὸ τὴν ἀλήθειαν παρέχον τοῖς γιγνωσκομένοις"
+   ],
+   "burnet_sections": [
+    "508e"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 509b",
+   "blocks": [
+    2752
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "the good is not essence, but far exceeds essence in dignity and power"
+   ],
+   "burnet": [
+    "ἔτι ἐπέκεινα τῆς οὐσίας πρεσβείᾳ καὶ δυνάμει ὑπερέχοντος"
+   ],
+   "burnet_sections": [
+    "509b"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 509d",
+   "blocks": [
+    2762
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "Now take a line which has been cut into two unequal"
+   ],
+   "burnet": [
+    "γραμμὴν δίχα τετμημένην λαβὼν ἄνισα τμήματα"
+   ],
+   "burnet_sections": [
+    "509d"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 510b",
+   "blocks": [
+    2770
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "the enquiry can only be hypothetical, and instead of going upwards to a principle"
+   ],
+   "burnet": [
+    "ζητεῖν ἀναγκάζεται ἐξ ὑποθέσεων, οὐκ ἐπʼ ἀρχὴν πορευομένη"
+   ],
+   "burnet_sections": [
+    "510b"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 511b–c",
+   "blocks": [
+    2778
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "using the hypotheses not as first principles, but only as hypotheses"
+   ],
+   "burnet": [
+    "τὰς ὑποθέσεις ποιούμενος οὐκ ἀρχὰς ἀλλὰ τῷ ὄντι ὑποθέσεις",
+    "καὶ τελευτᾷ εἰς εἴδη"
+   ],
+   "burnet_sections": [
+    "511b",
+    "511c"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 511d–e",
+   "blocks": [
+    2780
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "let there be four faculties in the soul"
+   ],
+   "burnet": [
+    "τέτταρα ταῦτα παθήματα ἐν τῇ ψυχῇ",
+    "τῷ τελευταίῳ εἰκασίαν"
+   ],
+   "burnet_sections": [
+    "511d",
+    "511e"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 514a",
+   "blocks": [
+    2783
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "Behold! human beings living in a underground den"
+   ],
+   "burnet": [
+    "ἐν καταγείῳ οἰκήσει σπηλαιώδει"
+   ],
+   "burnet_sections": [
+    "514a"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 515a",
+   "blocks": [
+    2787
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "they see only their own shadows, or the shadows of one another"
+   ],
+   "burnet": [
+    "πλὴν τὰς σκιὰς τὰς ὑπὸ τοῦ πυρὸς"
+   ],
+   "burnet_sections": [
+    "515a"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 516a–b",
+   "blocks": [
+    2803
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "first he will see the shadows best, next the reflections"
+   ],
+   "burnet": [
+    "πρῶτον μὲν τὰς σκιὰς ἂν ῥᾷστα καθορῷ",
+    "τελευταῖον δὴ οἶμαι τὸν ἥλιον"
+   ],
+   "burnet_sections": [
+    "516a",
+    "516b"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 517b",
+   "blocks": [
+    2819
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "the ascent of the soul into the intellectual world"
+   ],
+   "burnet": [
+    "τὴν εἰς τὸν νοητὸν τόπον τῆς ψυχῆς ἄνοδον"
+   ],
+   "burnet_sections": [
+    "517b"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 517b–c",
+   "blocks": [
+    2819
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "the idea of good appears last of all"
+   ],
+   "burnet": [
+    "ἐν τῷ γνωστῷ τελευταία ἡ τοῦ",
+    "ἀγαθοῦ ἰδέα καὶ μόγις ὁρᾶσθαι"
+   ],
+   "burnet_sections": [
+    "517b",
+    "517c"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 518c",
+   "blocks": [
+    2829
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "the power and capacity of learning exists in the soul already"
+   ],
+   "burnet": [
+    "ταύτην τὴν ἐνοῦσαν ἑκάστου δύναμιν ἐν τῇ ψυχῇ"
+   ],
+   "burnet_sections": [
+    "518c"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 518d",
+   "blocks": [
+    2831
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "some art which will effect conversion"
+   ],
+   "burnet": [
+    "τῆς περιαγωγῆς"
+   ],
+   "burnet_sections": [
+    "518d"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  },
+  {
+   "ref": "Rep. 520c",
+   "blocks": [
+    2845
+   ],
+   "book": "classic-plato-republic",
+   "words": [
+    "must go down to the general underground abode"
+   ],
+   "burnet": [
+    "καταβατέον οὖν ἐν μέρει ἑκάστῳ"
+   ],
+   "burnet_sections": [
+    "520c"
+   ],
+   "how": "content: the Greek words that these Jowett sentences translate found by script in Burnet's text at the section named (Perseus canonical-greekLit, which marks Stephanus sections), with Shorey's or Fowler's Stephanus-marked English (same corpus) used to locate the passage; the opening block is the first in its dialogue holding the words"
+  }
+ ],
+ "summary": "Three new entries read in Plato's own dialogues in the bundled Jowett: Forms (Phaedo and Republic V–VII, with the sun, line and cave), the elenchus (Apology and Euthyphro) and justice and the tripartite soul (Republic IV). 76 Stephanus numbers, each matched to Burnet's Greek and opening its passage in Jowett. Scholarship from Silverman (2014), Brown (2017), Woodruff (2022), Kraut (2026) and the Internet Encyclopedia. Three disputes recorded open: what Republic V's knowledge and opinion range over, whether the elenchus proves anything, and how agent-like the soul's parts are. The Socrates and Plato cards audited in thinkers-route.json."
+}
