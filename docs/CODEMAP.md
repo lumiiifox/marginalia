@@ -169,7 +169,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   under its own section (unverified claims reported apart).
 - Citations into a classic (`xr` on a branch entry names one style in `PASSAGE_STYLES`, or a list): each style has the classic's `book`, an
   `item` pattern for one reference and a `find(B, groups)` for its block. Now "spinoza-ethics" ("(I, Proposition 17, Corollary 2)", "(I, Appendix)", "(III, Preface)", and the standard notation "(E1p17c2)", "(E1p8s2)", "(E2d7)", read by its `canon` through `canonRef`; found by the
-  book's own labels in `spinozaBlock`), "nietzsche-genealogy" ("(GM II §12)"), "nietzsche-beyond" ("(BGE §260)"), "aristotle-ethics" ("(NE I.7)", or with a Bekker number, "(NE II.6, 1106a36–b7)": only those listed in `NE_BEKKER`, each opening the paragraph in its chapter that holds its words, since Peters prints no Bekker numbers; the table notes the scholar each line comes from, and the audit how it was checked against Bywater's Greek), "rousseau-social-contract"
+  book's own labels in `spinozaBlock`), "nietzsche-genealogy" ("(GM II §12)"), "nietzsche-beyond" ("(BGE §260)"), "aristotle-metaphysics" ("(Met. V.2)": book and chapter), "aristotle-ethics" ("(NE I.7)", or with a Bekker number, "(NE II.6, 1106a36–b7)": only those listed in `NE_BEKKER`, each opening the paragraph in its chapter that holds its words, since Peters prints no Bekker numbers; the table notes the scholar each line comes from, and the audit how it was checked against Bywater's Greek), "rousseau-social-contract"
   ("(SC I.6)"), "hobbes-leviathan" ("(Lev. XIII)"), "hume-treatise" ("(T 1.4.6)", "(T App.)" for the Appendix), "hume-enquiry" ("(EHU IV.2)"), "descartes-meditations" ("(Med. VI)", "(Disc. IV)"),
   "plato-republic" ("(Rep. V)"), "plato-socrates" ("(Apology)"), "kant-groundwork" ("(G II)"), "kant-critique" ("(A26/B42)", "(Bxvi)": only the A/B pages listed in `KANT_AB`, each found by
   words of its passage, since Meiklejohn prints no A/B numbers; the table notes where each number comes from), "marx-engels-manifesto" ("(CM I)"), "du-bois-souls"
@@ -297,7 +297,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - Classics (`CLASSICS`, `addClassics`, at start): public-domain books that come with the app, each added to the library once, queued,
   from `data/books/<id>.json` (`{ text, content }`, the shapes a backup holds) and its cover `<id>.jpg`. `mg-classics` lists those added,
   so a deleted classic stays deleted; one that can't be fetched is tried next time. Skipped in automated browsers unless a test passes
-  `true`. `tools/build_classics.py` builds them from Standard Ebooks sources (the Groundwork, the Critique of Pure Reason and Spinoza's Ethics from plain-text transcriptions, through their converters) with
+  `true`. `tools/build_classics.py` builds them from Standard Ebooks sources (the Groundwork, the Critique of Pure Reason, Spinoza's Ethics and Aristotle's Metaphysics from plain-text transcriptions, through their converters; the Metaphysics from a pinned commit of a repository holding the Internet Classics Archive's text of Ross's translation) with
   the app's own parser; add a new id to `CLASSICS`.
 - Mentioned in (`mentionsOf`, `mentionsHTML`, in study.js): the article sections, thinker cards and glossary entries whose text uses a term's
   name (`termNeedles`: its name, the name in its brackets, a pair's halves listed in `k`) or a thinker's (`thinkerNeedles`: as `branchLinks`

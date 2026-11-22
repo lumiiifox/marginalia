@@ -414,7 +414,7 @@ function primerHTML(id, t) {
   </div></details></section>`;
 }
 // Titles for steps whose book isn't in the library: the classics' own titles (tests/study_tools.py checks them against data/books/).
-const CLASSIC_TITLES = { "classic-plato-socrates": "Euthyphro, Apology, Crito, Phaedo", "classic-aristotle-ethics": "Nicomachean Ethics", "classic-descartes-meditations": "Discourse on the Method and Meditations on First Philosophy",
+const CLASSIC_TITLES = { "classic-plato-socrates": "Euthyphro, Apology, Crito, Phaedo", "classic-aristotle-ethics": "Nicomachean Ethics", "classic-aristotle-metaphysics": "Metaphysics", "classic-descartes-meditations": "Discourse on the Method and Meditations on First Philosophy",
   "classic-hobbes-leviathan": "Leviathan", "classic-spinoza-ethics": "Ethics", "classic-hume-treatise": "A Treatise of Human Nature", "classic-hume-enquiry": "An Enquiry Concerning Human Understanding", "classic-rousseau-social-contract": "The Social Contract",
   "classic-kant-critique": "Critique of Pure Reason", "classic-kant-groundwork": "Fundamental Principles of the Metaphysic of Morals", "classic-wollstonecraft-vindication": "A Vindication of the Rights of Woman",
   "classic-marx-engels-manifesto": "The Communist Manifesto", "classic-nietzsche-beyond": "Beyond Good and Evil", "classic-nietzsche-genealogy": "The Genealogy of Morals", "classic-cooper-voice": "A Voice from the South", "classic-du-bois-souls": "The Souls of Black Folk",
@@ -429,6 +429,7 @@ const CLASSIC_NAMES = {
   "classic-plato-socrates": { by: ["plato", "socrates"], full: ["Euthyphro", "Crito", "Phaedo", "Plato's Apology"], own: ["Apology"] },
   "classic-plato-republic": { by: ["plato"], full: ["Plato's Republic", { s: "Republic", pre: ["the", "The"], notPost: /^ of\b/, notPre: /\bOn the $/ }, { s: "Republic", post: /^ (\d|[IVX]+\b)/, notPre: /\bOn the $/ }], own: ["Republic"] },
   "classic-aristotle-ethics": { by: ["aristotle"], full: ["Nicomachean Ethics"] },
+  "classic-aristotle-metaphysics": { by: ["aristotle"], full: [{ s: "Metaphysics", pre: ["Aristotle's", "Aristotle’s"] }, { s: "Metaphysics", post: /^ (\d|[IVX]+\b)/ }], own: ["Metaphysics"] },
   "classic-descartes-meditations": { by: ["descartes"], full: ["Discourse on the Method", "Discourse on Method", "Meditations on First Philosophy"], own: ["Meditations"] },
   "classic-hobbes-leviathan": { by: ["hobbes"], full: ["Leviathan"] },
   "classic-spinoza-ethics": { by: ["spinoza"], full: ["Spinoza's Ethics", { s: "Ethics", post: /^ \(1677\)/ }], own: ["Ethics"] },
@@ -494,6 +495,7 @@ const SRC_LOCS = {
   "classic-hume-treatise": ["hume-treatise", (tail) => [...tail.matchAll(/\b(III|II|I)\.([ivx]+)\.(\d+)/g)].map((m) => [m.index, m.index + m[0].length, `${unRoman(m[1])}|${unRoman(m[2])}|${m[3]}`])],
   "classic-hume-enquiry": ["hume-enquiry", (tail) => [...tail.matchAll(/§(\d+)/g)].map((m) => [m.index, m.index + m[0].length, `${toRoman(+m[1])}|`])],
   "classic-aristotle-ethics": ["aristotle-ethics", (tail) => [...tail.matchAll(/\b(VIII|VII|VI|IV|IX|III|II|X|V|I)\.(\d+)(?:[–-]\d+)?/g)].map((m) => [m.index, m.index + m[0].length, `${m[1]}|${m[2]}`])],
+  "classic-aristotle-metaphysics": ["aristotle-metaphysics", (tail) => [...tail.matchAll(/\b(XIV|XIII|XII|XI|IX|X|VIII|VII|VI|IV|V|III|II|I)\.(\d+)(?:[–-]\d+)?/g)].map((m) => [m.index, m.index + m[0].length, `${m[1]}|${m[2]}`])],
   "classic-rousseau-social-contract": ["rousseau-social-contract", (tail) => [...tail.matchAll(/\b(IV|III|II|I)\.(\d+)(?:[–-]\d+)?/g)].map((m) => [m.index, m.index + m[0].length, `${m[1]}|${m[2]}`])],
   "classic-nietzsche-genealogy": ["nietzsche-genealogy", (tail) => { const m = tail.match(/\b(First|Second|Third) Essay, §§?(\d+)|\bPreface,? §(\d+)/); if (!m) return [];
     return [[m.index, m.index + m[0].length, m[3] ? `Preface|${m[3]}` : `${{ First: "I", Second: "II", Third: "III" }[m[1]]}|${m[2]}`]]; }],
@@ -876,6 +878,9 @@ const PASSAGE_STYLES = {
       const e = NE_BEKKER[bk]; if (!e || e[0] !== `${book}.${ch}`) return -1;
       for (let i = h + 1; i < B.length && !(B[i].k === "h" && B[i].l <= 4); i++) if (B[i].k !== "fn" && kantFlat(B[i]).includes(e[1])) return i;
       return -1; } },
+  // Aristotle, Metaphysics (Ross): book and chapter, "Met. V.2" (Book V is Delta; the book headings give both).
+  "aristotle-metaphysics": { book: "classic-aristotle-metaphysics", item: /^Met\. (XIV|XIII|XII|XI|X|IX|VIII|VII|VI|V|IV|III|II|I)\.(\d+)$/,
+    find: (B, [book, ch]) => headPath(B, [[2, (t) => t.startsWith(`Book ${book} (`)], [3, (t) => t === `Chapter ${ch}`]]) },
   // Rousseau, The Social Contract: book and chapter, "SC I.6".
   "rousseau-social-contract": { book: "classic-rousseau-social-contract", item: /^SC (I|II|III|IV)\.(\d+)$/,
     find: (B, [book, ch]) => headPath(B, [[2, (t) => t === `Book ${book}`], [3, (t) => t.startsWith(`${toRoman(+ch)}. `)]]) },

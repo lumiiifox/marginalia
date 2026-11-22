@@ -58,6 +58,13 @@ BOOKS = [
     dict(id="classic-kant-critique", text_source=dict(repo="https://github.com/GITenberg/The-Critique-of-Pure-Reason_4280", file="4280-0.txt", encoding="utf-8", convert="kant_critique"),
          cover=dict(title="Critique of Pure Reason", size=40, art="stars"),
          text=dict(title="Critique of Pure Reason", author="Immanuel Kant", edition="trans. J. M. D. Meiklejohn", orig="1781–87")),
+    # Ross's translation (W. D. Ross died 1971) as the Internet Classics Archive transcribes it (classics.mit.edu, metaphysics.mb.txt), taken
+    # from a git repository's first commit, which keeps that file's words, spelling and punctuation and only splits it by book. A later commit
+    # of the same repository marks the verse quotations; it is read only to tell verse lines from prose (its own wording is edited, so unused).
+    dict(id="classic-aristotle-metaphysics", text_source=dict(repo="https://github.com/jeonghyeon-net/metaphysics", commit="dd0af2399591ffd0be8e851a105d9d2b31775db6",
+         files=[f"books/book-{i:02d}.md" for i in range(1, 15)], verse_commit="8dc2dc1", verse_dir="en/", encoding="utf-8", convert="aristotle_metaphysics"),
+         cover=dict(title="Metaphysics", size=44, art="stars"),
+         text=dict(title="Metaphysics", author="Aristotle", edition="trans. W. D. Ross", orig="")),
     dict(id="classic-rousseau-social-contract", repo="jean-jacques-rousseau_the-social-contract_g-d-h-cole", files=None,
          text=dict(title="The Social Contract", author="Jean-Jacques Rousseau", edition="trans. G. D. H. Cole", publisher="Standard Ebooks", year="2024", orig="1762")),
     dict(id="classic-wollstonecraft-vindication", repo="mary-wollstonecraft_a-vindication-of-the-rights-of-woman", files=None,
@@ -454,6 +461,43 @@ def kant_critique(raw):
     return f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Critique of Pure Reason</title></head><body>{"".join(out)}</body></html>'
 
 GUTENBERG = CACHE / "gutenberg"
+MET_BOOKS = ["Alpha", "Little Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu"]
+def aristotle_metaphysics(raw, verse):
+    """Ross's translation of the Metaphysics, from the Internet Classics Archive's transcription split by book ("# Metaphysics — Book V",
+    "## Part 2", each paragraph a line opening with a stray double quote, a lone quote between paragraphs): one XHTML document, a chapter
+    per book ("Book V (Delta)") and a heading per chapter ("Chapter 2"; the transcription's "Part"). Verse quotations (lines found in
+    `verse`) become one quotation with " / " between lines. The transcription's "--" is a dash; its single hyphens, which stand for
+    both hyphens and dashes, are left as they are. Each book's capitalised first word is set in lower case after its capital."""
+    norm = lambda x: re.sub(r"[^a-z]", "", x.lower())
+    vset = {norm(v) for v in verse if norm(v)}
+    out, book, first, run = [], 0, False, []
+    def flush():
+        if run: out.append("<blockquote><p>" + " / ".join(esc(typo(x)) for x in run) + "</p></blockquote>"); run.clear()
+    for line in raw.replace("\r\n", "\n").split("\n"):
+        t = line.strip()
+        if t.startswith("# "):
+            flush(); book += 1; first = True
+            out.append(f"<h2>Book {toRoman_py(book)} ({MET_BOOKS[book - 1]})</h2>"); continue
+        m = re.fullmatch(r"## Part (\d+)", t)
+        if m: flush(); out.append(f"<h3>Chapter {m.group(1)}</h3>"); continue
+        t = re.sub(r'\s+"$', "", re.sub(r'^"\s*', "", t)).strip()  # the stray quote opening each line, and the one some lines end with
+        if not t: continue
+        if norm(t) in vset and len(t) < 120: run.append(t.rstrip()); continue
+        flush()
+        t = t.replace("--", "—").replace(":-", ":")
+        if first:
+            t = re.sub(r"^(['\"]?)([A-Z])([A-Z]+)\b", lambda m: m.group(1) + m.group(2) + m.group(3).lower(), t); first = False
+        out.append(f"<p>{esc(typo(t))}</p>")
+    flush()
+    assert book == 14, book
+    return f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Metaphysics</title></head><body>{"".join(out)}</body></html>'
+
+def toRoman_py(n):
+    out = ""
+    for v, r in [(10, "X"), (9, "IX"), (5, "V"), (4, "IV"), (1, "I")]:
+        while n >= v: out += r; n -= v
+    return out
+
 def heading_text(t):
     """A Gutenberg heading as the app shows it: "I   THE SCIENTIFIC LITERATURE ..." -> "I. The Scientific Literature ...",
     "( a )  Recent ..." -> "(a) Recent ...", "“ A Beautiful Dream ”" -> "“A Beautiful Dream”"."""
@@ -513,7 +557,7 @@ def gutenberg_epub(folder):
     endnotes = f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Notes</title></head><body><section epub:type="endnotes"><h2>Notes</h2><ol>{ol}</ol></section></body></html>'
     return docs, endnotes
 
-CONVERT = {"kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique}
+CONVERT = {"kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique, "aristotle_metaphysics": aristotle_metaphysics}
 
 def clone(url, dest):
     if not dest.exists():
@@ -561,6 +605,9 @@ async def main(only):
             dest = TEXTS / bk["id"]
             if not dest.exists():
                 import zipfile; zipfile.ZipFile(f).extractall(dest)
+        elif bk["text_source"].get("commit"):
+            dest = TEXTS / bk["id"]
+            if not dest.exists(): dest.parent.mkdir(parents=True, exist_ok=True); subprocess.run(["git", "clone", "-q", bk["text_source"]["repo"], str(dest)], check=True)
         else: clone(bk["text_source"]["repo"], TEXTS / bk["id"])
     if any(b.get("cover") for b in books): clone("https://github.com/theleagueof/league-spartan", FONT.parent.parent)
     OUT.mkdir(parents=True, exist_ok=True)
@@ -584,7 +631,14 @@ async def main(only):
                 else:
                     names = []
                     ts = bk["text_source"]
-                    files, endnotes = [CONVERT[ts["convert"]]((TEXTS / bk["id"] / ts["file"]).read_text(encoding=ts.get("encoding", "latin-1")))], None
+                    if ts.get("commit"):  # files at a pinned commit, and the verse lines marked ("> ") at another
+                        show = lambda c, f: subprocess.run(["git", "-C", str(TEXTS / bk["id"]), "show", f"{c}:{f}"], capture_output=True, text=True, check=True).stdout
+                        raw = "\n".join(show(ts["commit"], f) for f in ts["files"])
+                        names_v = subprocess.run(["git", "-C", str(TEXTS / bk["id"]), "ls-tree", "--name-only", ts["verse_commit"], ts["verse_dir"]], capture_output=True, text=True, check=True).stdout.split()
+                        verse = [l[2:] for f in names_v if f.endswith(".md") for l in show(ts["verse_commit"], f).split("\n") if l.startswith("> ")]
+                        files, endnotes = [CONVERT[ts["convert"]](raw, verse)], None
+                    else:
+                        files, endnotes = [CONVERT[ts["convert"]]((TEXTS / bk["id"] / ts["file"]).read_text(encoding=ts.get("encoding", "latin-1")))], None
                 r = await page.evaluate(BUILD, {"id": bk["id"], "flatten": bool(bk.get("flatten")), "files": files, "endnotes": endnotes, "drop": bk.get("drop") or [],
                                                 "parts": [n.startswith("part-") for n in names] if bk.get("parts") else None})
                 for s in r["sections"]:
