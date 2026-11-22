@@ -1,6 +1,6 @@
 # Marginalia
 
-A personal reading log and reader. Load a PDF, EPUB, Word (.docx), plain text or Markdown file, read it in the app's own typography, and save selected passages as notes with their page numbers.
+A personal app for learning philosophy: a reader, reading log and study tool that teaches from foundations to advanced continental work through close reading of primary texts, recall from memory and written argument, with every reference claim traced to a scholarly source. Load a PDF, EPUB, Word (.docx), plain text or Markdown file, read it in the app's own typography, and save selected passages as notes with their page numbers.
 
 ## Where things are stored
 

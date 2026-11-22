@@ -23,10 +23,22 @@ interpretation stays under review.
 
 ## What Marginalia is for
 
-A personal philosophical reading and research environment built around close reading, rigorous reference material and
-traceable conceptual relationships. It grows with the texts and questions its owner chooses to pursue (now: Aristotle →
-Spinoza → Deleuze → Land); it does not try to cover all of philosophy.
+**Mission (owner's decision, 2026-11-22):** Marginalia teaches philosophy to one reader, from foundations to advanced
+continental work, through close reading of primary texts, recall from memory, and written argument. Every claim in it traces
+to a scholarly source, and each stage of a reading route is checked before the next one opens.
 
+Teaching leads; the reading and research environment (close reading, rigorous reference material, traceable conceptual
+relationships) serves it. It grows with the texts and questions its owner chooses to pursue (now: Aristotle → Spinoza →
+Deleuze → Land); it does not try to cover all of philosophy.
+
+- **The texts and the owner's writing teach.** A lesson is a passage read closely, recalled from memory and argued with in
+  writing. Reference articles, primers and glossary entries are what the owner consults while doing that work.
+- **Order is part of the teaching.** Reading paths run foundations first, with prerequisites (Aristotle and Spinoza before
+  Deleuze; basic logic before argument puzzles).
+- **Feedback comes from Claude, outside the app.** The app costs nothing to run and calls no paid API: it packages the owner's
+  work (summary, reconstruction, passage references) for pasting into a chat, and keeps the verdict that comes back.
+- **Built from study.** A learning feature gets built when the owner has wanted it while actually studying; time on the app
+  is time away from the texts.
 - **Depth before breadth.** An entry is worth having because its claims are accurate, attributed and sourced. Add thinkers,
   terms or texts when a reading needs them, never to fill out coverage.
 - **Connections need evidence.** A link between thinkers or concepts says what kind it is (influence, critique,
@@ -40,8 +52,9 @@ Spinoza → Deleuze → Land); it does not try to cover all of philosophy.
   requirements (owner's decision, 2026-10-26), held to the same rigor as the content: a reward is earned by reading, writing
   notes or answering from verified material, and a puzzle draws only on checked data (or says plainly when it doesn't).
 
-The test for any addition: does it deepen the owner's ability to read, investigate, compare or substantiate philosophical
-ideas, or reward doing so? If not, it waits.
+The test for any addition: does it help the owner learn philosophy, by deepening their ability to read, recall, investigate,
+compare or substantiate philosophical ideas, or by rewarding doing so? If not, it waits. The order of work is in
+`docs/BACKLOG.md`.
 
 ## How changes ship
 
