@@ -287,7 +287,9 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - Thinkers' timeline (Thinkers → Timeline, `S.tl`; a period on the home screen opens it there): `lifeSpan` reads a thinker's dates line (BCE, centuries, "b. 1929"),
   `timelineHTML` draws each period in `TL_ERAS` on its own scale; `contemporariesOf` (lives overlapping 20+ years) is on the thinker card.
 - A chapter's end (`chapterEndCheck`, from `updatePg`): reading on from within about a page of a chapter's end into the next asks
-  for a summary (`summarySheet`, saved in `t.summaries`), once a visit and only without one; `RS.sum` "off" stops it.
+  for a summary (`summarySheet`, saved in `t.summaries`), once a visit and only without one; `RS.sum` "off" stops it. The summary is
+  written from memory: its veil gets the `recall` class, which covers the page completely. Its folded "One argument from this section"
+  (premises and conclusion, `reconSteps(true)` folded under it) saves a separate ordinary Argument note on the section; no new stored field.
 - Your words (`lookedUp`, `wordsPanel`; glossary): the `mg-dict` cache of Look up, one usable sense each; quiz mode "words".
 - A book's menu (`bookMenu`, `moveBook`): holding a book on the shelf for half a second (`HOLD`, pointer events), right-clicking it or
   the keyboard's menu key opens Start/Continue reading, the book's page, Edit, Move to another shelf (its status, with Undo) and Delete

@@ -261,6 +261,8 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 
 /* sheets and menus */
 .veil { position: fixed; inset: 0; background: var(--veil); display: flex; align-items: flex-end; justify-content: center; z-index: 20; }
+.veil.recall { background: var(--paper); } /* a chapter's summary is written from memory: the text stays covered */
+.recallhint { margin: -4px 0 12px; }
 .sheet { background: var(--paper); width: 100%; max-width: 680px; max-height: 92%; overflow-y: auto; border-radius: 14px 14px 0 0; padding: 22px 18px calc(18px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 16px; box-shadow: 0 -10px 30px -10px rgba(0, 0, 0, 0.35); }
 .sheet h2 { font: 700 23px/1.2 var(--f-text); }
 .field { display: grid; gap: 6px; }

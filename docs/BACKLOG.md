@@ -12,7 +12,7 @@ items below connect these into one loop: read → recall → reconstruct → fee
 
 ## Next, in order
 
-1. **Recall before rereading.** The chapter-end summary prompt (`summarySheet`) asks for the chapter's main idea written from
+1. **Recall before rereading.** *(Done 2026-11-22.)* The chapter-end summary prompt (`summarySheet`) asks for the chapter's main idea written from
    memory, with the text hidden while you write, then one argument from the chapter as premises and conclusion (the
    reconstruction steps, `RECON_STEPS`, folded underneath). Interface only.
 2. **Copy for Claude.** One button on a chapter's summary, and on a reading-path step, that copies a single block: the

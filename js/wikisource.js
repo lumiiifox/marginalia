@@ -371,14 +371,30 @@ function summarySheet(tid, secId) {
   const t = S.texts.get(tid), sec = t && (t.sections || []).find((s) => s.id === secId);
   if (!sec) return;
   const cur = (t.summaries || {})[secId] || "";
+  // Recall first: the text stays covered while you write (the veil's "recall" class), and one argument from the chapter can go
+  // with the summary, saved as an ordinary Argument note on the section.
   openSheet(`<h2>Summary of ${esc(sec.label)}</h2>
+    <p class="hint recallhint">Write it from memory before you look back at the text. Recalling it is what makes it stay.</p>
     <div class="field"><label for="s-text">In your own words</label><textarea id="s-text" name="summary" rows="7">${esc(cur)}</textarea>
     <span class="hint">What does this section claim, and how does it get there? Leave it empty to remove the summary. Summaries are
-    kept with the book and come out with its notes when you export them.</span></div>`,
+    kept with the book and come out with its notes when you export them.</span></div>
+    <details class="optfield" id="s-argbox"><summary>One argument from this section</summary>
+      <div class="field"><label for="s-prem">Premises, one per line</label><textarea id="s-prem" name="premises" rows="4"></textarea></div>
+      <div class="field"><label for="s-conc">Conclusion</label><input id="s-conc" name="conclusion" autocomplete="off"></div>
+      <details class="optfield"><summary>How to set it out</summary>${reconSteps(true)}</details>
+      <span class="hint">Saved as an Argument note on this section, which you can open and check against the text afterwards.</span>
+    </details>`,
   async (fd) => {
     const now = S.texts.get(tid); if (!now) return;
+    const premises = (fd.get("premises") || "").split("\n").map((x) => x.trim()).filter(Boolean), conclusion = (fd.get("conclusion") || "").trim();
+    if ((premises.length || conclusion) && !(premises.length && conclusion)) return "An argument needs at least one premise and a conclusion.";
     const summaries = { ...(now.summaries || {}) }, v = fd.get("summary").trim();
     if (v) summaries[secId] = v; else delete summaries[secId];
     await put("texts", tid, { ...now, summaries, updatedAt: Date.now() });
-  });
+    if (!premises.length) return;
+    const at = Date.now();
+    await put("notes", gid(), { textId: tid, kind: "argument", page: "", sectionId: secId, passage: "", gloss: "", premises, conclusion, createdAt: at, updatedAt: at });
+    return () => toast("Saved, with your argument as a note on this section.");
+  },
+  (root) => { root.classList.add("recall"); $("#s-text", root).focus(); });
 }

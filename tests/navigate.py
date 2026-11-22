@@ -10,7 +10,8 @@ Made-up book only, phone-sized touch screen. Checks that:
   4. the foot of the page counts the pages left in the chapter, down to its last page;
   5. Contents has tabs: the chapter you're in, your notes (this chapter or the whole book, tap to go there), bookmarks;
   6. Search all books finds the same phrase split by the printed page, and leaves out running heads marked hidden;
-  7. reading on past a chapter's end asks for a summary of it (Write it opens the summary, saved with the book); a jump
+  7. reading on past a chapter's end asks for a summary of it (Write it opens the summary over a fully covered page, saved with the book,
+     and an argument written with it becomes an Argument note on the chapter; half an argument is refused); a jump
      from the middle of a chapter, a chapter with a summary, a second time, or Reading settings' Don't ask, doesn't ask;
      the same in Scroll mode.
 Needs: pip install playwright && playwright install chromium
@@ -215,8 +216,15 @@ async def main():
             check("End of “Chapter 1”" in t1 and "Write it" in t1, f"{flow}: reading on past Chapter 1's end asks for a summary of it ({t1!r})")
             if flow == "pages":
                 await page.click("#toast .toastbtn >> text=Write it"); await page.wait_for_selector("#s-text")
-                await page.fill("#s-text", "Desire produces; it lacks nothing."); await page.click("button[type=submit]"); await page.wait_for_timeout(400)
+                check(await page.evaluate("document.querySelector('#sheetroot .veil').classList.contains('recall') && getComputedStyle(document.querySelector('#sheetroot .veil')).backgroundColor === getComputedStyle(document.querySelector('#sheetroot .sheet')).backgroundColor"),
+                      "the summary is written from memory: the sheet covers the text completely")
+                await page.fill("#s-text", "Desire produces; it lacks nothing.")
+                await page.click("#s-argbox > summary"); await page.fill("#s-conc", "Desire lacks nothing."); await page.click("button[type=submit]"); await page.wait_for_timeout(300)
+                check("premise and a conclusion" in await page.text_content("#err"), "a conclusion without premises is refused, with a reason")
+                await page.fill("#s-prem", "Desire produces the real.\nWhat produces the real lacks nothing."); await page.click("button[type=submit]"); await page.wait_for_timeout(400)
                 check(await page.evaluate("S.texts.get('v').summaries.c0") == "Desire produces; it lacks nothing.", "Write it opens the chapter's summary and saves it with the book")
+                arg = await page.evaluate("[...S.notes.values()].filter((n) => n.textId === 'v' && n.kind === 'argument' && n.sectionId === 'c0').map((n) => [n.premises, n.conclusion])")
+                check(arg == [[["Desire produces the real.", "What produces the real lacks nothing."], "Desire lacks nothing."]], f"the argument written with it is saved as an Argument note on the chapter ({arg})")
                 await page.evaluate("document.querySelector('#toast').hidden = true; goTo(R.blocks.findIndex((b) => b.s === 'c2') + 40)"); await page.wait_for_timeout(300)
                 await page.evaluate("goTo(R.blocks.findIndex((b) => b.s === 'c3') + 2)"); await page.wait_for_timeout(400)
                 check(await page.evaluate("document.querySelector('#toast').hidden"), "a jump from the middle of a chapter into the next doesn't ask")
