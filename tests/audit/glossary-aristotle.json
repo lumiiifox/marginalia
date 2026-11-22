@@ -345,269 +345,10 @@
    "srcs": [
     "KNT"
    ]
-  },
-  "four-causes": {
-   "old": [
-    {
-     "s": 1,
-     "text": "The four kinds of explanation, material, formal, efficient, final.",
-     "accuracy": "supported",
-     "by": "FAL"
-    },
-    {
-     "s": 2,
-     "text": "The Greek aitia is closer to “explanation” or “that because of which”.",
-     "accuracy": "overstated",
-     "by": "FAL",
-     "note": "Falcon: useful to think of a cause as a type of explanation; the gloss “that because of which” not in the source."
-    },
-    {
-     "s": 3,
-     "text": "Bronze statue: bronze, shape, sculptor, purpose.",
-     "accuracy": "overstated",
-     "by": "FAL",
-     "note": "Kept the parts of the example the source gives."
-    },
-    {
-     "s": 4,
-     "text": "Modern science kept the efficient cause and largely dropped the final cause.",
-     "accuracy": "overstated",
-     "by": "TEL",
-     "note": "Narrowed to what the source reports of Hobbes and Descartes on Harvey."
-    },
-    {
-     "s": 5,
-     "text": "Natural things have their source of change within them; formal, efficient and final causes often coincide; the oak example.",
-     "accuracy": "overstated",
-     "by": "FAL",
-     "note": "The source's Physics II.7 sentence quoted; the oak example and the internal-principle contrast cut."
-    },
-    {
-     "s": 6,
-     "text": "Explanation of organs by purpose persisted until early modern mechanism.",
-     "accuracy": "unverified",
-     "note": "Cut."
-    }
-   ],
-   "new_d": [
-    {
-     "text": "Aristotle's four kinds of cause: material (what a thing is made of), formal (its form), efficient (what brought it about) and final (what it is for).",
-     "claims": [
-      {
-       "by": "FAL"
-      }
-     ]
-    }
-   ],
-   "new_text": [
-    {
-     "text": "The Greek word is aitia, and Andrea Falcon suggests that “it can be useful to think of a cause as a certain type of explanation”.",
-     "claims": [
-      {
-       "by": "FAL"
-      }
-     ]
-    },
-    {
-     "text": "Aristotle gives his general account of the four causes in Physics II 3 and Metaphysics V 2.",
-     "claims": [
-      {
-       "by": "FAL"
-      }
-     ]
-    },
-    {
-     "text": "In the making of a bronze statue, the bronze enters the explanation as the material cause, and the statue enters the explanation of each step of the work as the final cause.",
-     "claims": [
-      {
-       "by": "FAL"
-      }
-     ]
-    },
-    {
-     "text": "In nature, Aristotle observes, “the form and the end often coincide, and they are formally the same as that which produces the change”.",
-     "claims": [
-      {
-       "by": "FAL"
-      }
-     ]
-    },
-    {
-     "text": "Hobbes and Descartes took William Harvey's work as a turn away from Galenic and Aristotelian anatomy, with its appeal to final causes, toward mechanistic science.",
-     "claims": [
-      {
-       "by": "TEL"
-      }
-     ]
-    }
-   ],
-   "s": "Aristotle, Physics II.3, II.7; Metaphysics V.2",
-   "src": "FAL",
-   "srcs": [
-    "TEL"
-   ]
-  },
-  "potentiality": {
-   "old": [
-    {
-     "s": 1,
-     "text": "Dunamis and energeia; the acorn and the oak.",
-     "accuracy": "supported",
-     "by": "ARM",
-     "note": "Example kept as an illustration."
-    },
-    {
-     "s": 2,
-     "text": "Introduced to answer Parmenides' denial of change: change is the actualizing of a potential.",
-     "accuracy": "unverified",
-     "note": "Not in the source consulted; cut."
-    },
-    {
-     "s": 3,
-     "text": "Actuality is prior to potentiality in definition and substance; the unmoved mover is pure actuality.",
-     "accuracy": "supported",
-     "by": "ARM",
-     "note": "Priority in time added; the mover in the source's words."
-    },
-    {
-     "s": 4,
-     "text": "Shapes medieval accounts of God and the soul, and later theories of development, including Hegel's.",
-     "accuracy": "unverified",
-     "note": "Cut; Aquinas and Hegel taken off the entry's thinkers."
-    }
-   ],
-   "new_d": [
-    {
-     "text": "Aristotle's dunamis and energeia: a capacity to be or do something, and its realization. The acorn is potentially an oak; the grown oak is the actuality toward which it develops.",
-     "claims": [
-      {
-       "by": "ARM"
-      },
-      {
-       "by": "editorial"
-      }
-     ]
-    }
-   ],
-   "new_text": [
-    {
-     "text": "In the strictest sense, S. Marc Cohen and C. D. C. Reeve write, “a dunamis is the power that a thing has to produce a change”.",
-     "claims": [
-      {
-       "by": "ARM"
-      }
-     ]
-    },
-    {
-     "text": "Metaphysics IX (Theta) argues that actuality is prior to potentiality in account, in time and in substance.",
-     "claims": [
-      {
-       "by": "ARM"
-      }
-     ]
-    },
-    {
-     "text": "Because what is potentially may possibly not be, eternal movement needs a starting-point “the very substance of which is activity”, and “the primary essence does not have matter, since it is an actuality”.",
-     "claims": [
-      {
-       "by": "ARM"
-      }
-     ]
-    }
-   ],
-   "s": "Aristotle, Metaphysics IX; XII.6–8",
-   "src": "ARM",
-   "srcs": []
-  },
-  "essence": {
-   "old": [
-    {
-     "s": 1,
-     "text": "What a thing is; quiddity, the scholastic name; accidents.",
-     "accuracy": "editorial",
-     "note": "The scholastic term cut."
-    },
-    {
-     "s": 2,
-     "text": "Aristotle's “what it was to be” given in its definition.",
-     "accuracy": "supported",
-     "by": "ARM"
-    },
-    {
-     "s": 3,
-     "text": "Ibn Sīnā distinguished essence from existence (the horse example), and Aquinas built on the distinction.",
-     "accuracy": "overstated",
-     "by": "BEN",
-     "note": "The Aquinas clause has no source consulted; cut."
-    },
-    {
-     "s": 4,
-     "text": "Locke's real and nominal essences.",
-     "accuracy": "supported",
-     "by": "LOC"
-    },
-    {
-     "s": 5,
-     "text": "Existentialists reverse the order: “existence precedes essence.”",
-     "accuracy": "supported",
-     "by": "AHO"
-    }
-   ],
-   "new_d": [
-    {
-     "text": "What a thing is, as its definition states it.",
-     "claims": [
-      {
-       "by": "ARM"
-      }
-     ]
-    }
-   ],
-   "new_text": [
-    {
-     "text": "“Essence” is the standard English translation of Aristotle's phrase to ti ên einai; for Aristotle there is an essence only of those things whose account is a definition, and each substance is one and the same as its essence.",
-     "claims": [
-      {
-       "by": "ARM"
-      }
-     ]
-    },
-    {
-     "text": "Ibn Sīnā argued that essence and existence are distinct, since, as Fedor Benevich puts his argument, “we can know what things are (human beings, horses, triangles) without knowing whether they exist”.",
-     "claims": [
-      {
-       "by": "BEN"
-      }
-     ]
-    },
-    {
-     "text": "Locke separates the real essence of a material thing, its atomic constitution, which is “quite unknown to us”, from its nominal essence, the general idea by which we pick out a sort.",
-     "claims": [
-      {
-       "by": "LOC"
-      }
-     ]
-    },
-    {
-     "text": "Sartre's existentialism reverses the order for human beings: existence precedes essence, meaning that a human being “exists, turns up, appears on the scene, and, only afterwards, defines himself”.",
-     "claims": [
-      {
-       "by": "AHO"
-      }
-     ]
-    }
-   ],
-   "s": "Aristotle, Metaphysics VII.4–6; Locke, Essay III.iii; Sartre, Existentialism Is a Humanism (1946)",
-   "src": "ARM",
-   "srcs": [
-    "BEN",
-    "LOC",
-    "AHO"
-   ]
   }
  },
  "superseded": {
-  "note": "Re-read in the bundled Nicomachean Ethics (Peters) on 2026-11-22 (glossary-aristotle-texts.json). Kept here as the record of the first, encyclopedia-based audit.",
+  "note": "Re-read in the bundled Nicomachean Ethics (Peters) on 2026-11-22 (glossary-aristotle-texts.json). Kept here as the record of the first, encyclopedia-based audit. Four-causes, potentiality and essence re-read in the bundled Ross Metaphysics on 2026-11-22 (same file).",
   "terms": {
    "eudaimonia": {
     "old": [
@@ -675,6 +416,265 @@
     "s": "Aristotle, Nicomachean Ethics I.7, X.7–8 (Peters trans.)",
     "src": "KRA",
     "srcs": []
+   },
+   "four-causes": {
+    "old": [
+     {
+      "s": 1,
+      "text": "The four kinds of explanation, material, formal, efficient, final.",
+      "accuracy": "supported",
+      "by": "FAL"
+     },
+     {
+      "s": 2,
+      "text": "The Greek aitia is closer to “explanation” or “that because of which”.",
+      "accuracy": "overstated",
+      "by": "FAL",
+      "note": "Falcon: useful to think of a cause as a type of explanation; the gloss “that because of which” not in the source."
+     },
+     {
+      "s": 3,
+      "text": "Bronze statue: bronze, shape, sculptor, purpose.",
+      "accuracy": "overstated",
+      "by": "FAL",
+      "note": "Kept the parts of the example the source gives."
+     },
+     {
+      "s": 4,
+      "text": "Modern science kept the efficient cause and largely dropped the final cause.",
+      "accuracy": "overstated",
+      "by": "TEL",
+      "note": "Narrowed to what the source reports of Hobbes and Descartes on Harvey."
+     },
+     {
+      "s": 5,
+      "text": "Natural things have their source of change within them; formal, efficient and final causes often coincide; the oak example.",
+      "accuracy": "overstated",
+      "by": "FAL",
+      "note": "The source's Physics II.7 sentence quoted; the oak example and the internal-principle contrast cut."
+     },
+     {
+      "s": 6,
+      "text": "Explanation of organs by purpose persisted until early modern mechanism.",
+      "accuracy": "unverified",
+      "note": "Cut."
+     }
+    ],
+    "new_d": [
+     {
+      "text": "Aristotle's four kinds of cause: material (what a thing is made of), formal (its form), efficient (what brought it about) and final (what it is for).",
+      "claims": [
+       {
+        "by": "FAL"
+       }
+      ]
+     }
+    ],
+    "new_text": [
+     {
+      "text": "The Greek word is aitia, and Andrea Falcon suggests that “it can be useful to think of a cause as a certain type of explanation”.",
+      "claims": [
+       {
+        "by": "FAL"
+       }
+      ]
+     },
+     {
+      "text": "Aristotle gives his general account of the four causes in Physics II 3 and Metaphysics V 2.",
+      "claims": [
+       {
+        "by": "FAL"
+       }
+      ]
+     },
+     {
+      "text": "In the making of a bronze statue, the bronze enters the explanation as the material cause, and the statue enters the explanation of each step of the work as the final cause.",
+      "claims": [
+       {
+        "by": "FAL"
+       }
+      ]
+     },
+     {
+      "text": "In nature, Aristotle observes, “the form and the end often coincide, and they are formally the same as that which produces the change”.",
+      "claims": [
+       {
+        "by": "FAL"
+       }
+      ]
+     },
+     {
+      "text": "Hobbes and Descartes took William Harvey's work as a turn away from Galenic and Aristotelian anatomy, with its appeal to final causes, toward mechanistic science.",
+      "claims": [
+       {
+        "by": "TEL"
+       }
+      ]
+     }
+    ],
+    "s": "Aristotle, Physics II.3, II.7; Metaphysics V.2",
+    "src": "FAL",
+    "srcs": [
+     "TEL"
+    ]
+   },
+   "potentiality": {
+    "old": [
+     {
+      "s": 1,
+      "text": "Dunamis and energeia; the acorn and the oak.",
+      "accuracy": "supported",
+      "by": "ARM",
+      "note": "Example kept as an illustration."
+     },
+     {
+      "s": 2,
+      "text": "Introduced to answer Parmenides' denial of change: change is the actualizing of a potential.",
+      "accuracy": "unverified",
+      "note": "Not in the source consulted; cut."
+     },
+     {
+      "s": 3,
+      "text": "Actuality is prior to potentiality in definition and substance; the unmoved mover is pure actuality.",
+      "accuracy": "supported",
+      "by": "ARM",
+      "note": "Priority in time added; the mover in the source's words."
+     },
+     {
+      "s": 4,
+      "text": "Shapes medieval accounts of God and the soul, and later theories of development, including Hegel's.",
+      "accuracy": "unverified",
+      "note": "Cut; Aquinas and Hegel taken off the entry's thinkers."
+     }
+    ],
+    "new_d": [
+     {
+      "text": "Aristotle's dunamis and energeia: a capacity to be or do something, and its realization. The acorn is potentially an oak; the grown oak is the actuality toward which it develops.",
+      "claims": [
+       {
+        "by": "ARM"
+       },
+       {
+        "by": "editorial"
+       }
+      ]
+     }
+    ],
+    "new_text": [
+     {
+      "text": "In the strictest sense, S. Marc Cohen and C. D. C. Reeve write, “a dunamis is the power that a thing has to produce a change”.",
+      "claims": [
+       {
+        "by": "ARM"
+       }
+      ]
+     },
+     {
+      "text": "Metaphysics IX (Theta) argues that actuality is prior to potentiality in account, in time and in substance.",
+      "claims": [
+       {
+        "by": "ARM"
+       }
+      ]
+     },
+     {
+      "text": "Because what is potentially may possibly not be, eternal movement needs a starting-point “the very substance of which is activity”, and “the primary essence does not have matter, since it is an actuality”.",
+      "claims": [
+       {
+        "by": "ARM"
+       }
+      ]
+     }
+    ],
+    "s": "Aristotle, Metaphysics IX; XII.6–8",
+    "src": "ARM",
+    "srcs": []
+   },
+   "essence": {
+    "old": [
+     {
+      "s": 1,
+      "text": "What a thing is; quiddity, the scholastic name; accidents.",
+      "accuracy": "editorial",
+      "note": "The scholastic term cut."
+     },
+     {
+      "s": 2,
+      "text": "Aristotle's “what it was to be” given in its definition.",
+      "accuracy": "supported",
+      "by": "ARM"
+     },
+     {
+      "s": 3,
+      "text": "Ibn Sīnā distinguished essence from existence (the horse example), and Aquinas built on the distinction.",
+      "accuracy": "overstated",
+      "by": "BEN",
+      "note": "The Aquinas clause has no source consulted; cut."
+     },
+     {
+      "s": 4,
+      "text": "Locke's real and nominal essences.",
+      "accuracy": "supported",
+      "by": "LOC"
+     },
+     {
+      "s": 5,
+      "text": "Existentialists reverse the order: “existence precedes essence.”",
+      "accuracy": "supported",
+      "by": "AHO"
+     }
+    ],
+    "new_d": [
+     {
+      "text": "What a thing is, as its definition states it.",
+      "claims": [
+       {
+        "by": "ARM"
+       }
+      ]
+     }
+    ],
+    "new_text": [
+     {
+      "text": "“Essence” is the standard English translation of Aristotle's phrase to ti ên einai; for Aristotle there is an essence only of those things whose account is a definition, and each substance is one and the same as its essence.",
+      "claims": [
+       {
+        "by": "ARM"
+       }
+      ]
+     },
+     {
+      "text": "Ibn Sīnā argued that essence and existence are distinct, since, as Fedor Benevich puts his argument, “we can know what things are (human beings, horses, triangles) without knowing whether they exist”.",
+      "claims": [
+       {
+        "by": "BEN"
+       }
+      ]
+     },
+     {
+      "text": "Locke separates the real essence of a material thing, its atomic constitution, which is “quite unknown to us”, from its nominal essence, the general idea by which we pick out a sort.",
+      "claims": [
+       {
+        "by": "LOC"
+       }
+      ]
+     },
+     {
+      "text": "Sartre's existentialism reverses the order for human beings: existence precedes essence, meaning that a human being “exists, turns up, appears on the scene, and, only afterwards, defines himself”.",
+      "claims": [
+       {
+        "by": "AHO"
+       }
+      ]
+     }
+    ],
+    "s": "Aristotle, Metaphysics VII.4–6; Locke, Essay III.iii; Sartre, Existentialism Is a Humanism (1946)",
+    "src": "ARM",
+    "srcs": [
+     "BEN",
+     "LOC",
+     "AHO"
+    ]
    }
   }
  }

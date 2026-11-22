@@ -56,117 +56,6 @@
  },
  "note": "Spinoza is quoted from the bundled Elwes translation (public domain), so every quotation can be checked against the text in the app and opened there; the earlier Curley quotations ran past the repository's limit for copyrighted text. Corrected 2026-11-06: the SEP's “Aristotle’s Metaphysics” is by S. Marc Cohen and C. D. C. Reeve (SEP table of contents and What's New, as checked by the independent review of glossary-route3); it had been credited to Reeve alone.",
  "terms": {
-  "substance": {
-   "old": [
-    {
-     "s": 1,
-     "text": "Spinoza: “By substance I understand what is in itself and is conceived through itself…” (Curley trans.)",
-     "accuracy": "supported",
-     "by": "ETH I Def. 3",
-     "note": "Curley's wording, from a copyrighted translation; replaced by the bundled Elwes text so the quotation can be checked and linked."
-    },
-    {
-     "s": 2,
-     "text": "Aristotle's Categories treats individual things, this man or this horse, as primary substances; Metaphysics VII asks whether substance is form, matter or their compound.",
-     "accuracy": "overstated",
-     "by": "ARM",
-     "note": "Zeta.3 lists essence, universal, genus and subject; matter, form and compound are candidates for subject."
-    },
-    {
-     "s": 3,
-     "text": "Descartes counts two kinds of created substance, thinking and extended, which raises the problem of how they interact.",
-     "accuracy": "supported",
-     "by": "SPN; ATT"
-    },
-    {
-     "s": 4,
-     "text": "Spinoza argues from his definition that there can be only one substance, God or Nature, of which minds and bodies are modes.",
-     "accuracy": "supported",
-     "by": "SPN; ETH I Prop. 14"
-    },
-    {
-     "s": 5,
-     "text": "Locke held that our idea of substance is only the idea of an unknown support of qualities.",
-     "accuracy": "supported",
-     "by": "LOC",
-     "note": "Given Locke's own phrase."
-    },
-    {
-     "s": 6,
-     "text": "srcName/src: Stanford Encyclopedia “Metaphysics”",
-     "accuracy": "unverified",
-     "note": "The general Metaphysics entry was not the source of these claims; replaced by the entries consulted."
-    }
-   ],
-   "new_d": [
-    {
-     "text": "What exists in its own right and bears properties, Aristotle's ousia. Spinoza: “By substance, I mean that which is in itself, and is conceived through itself”.",
-     "claims": [
-      {
-       "by": "ARM"
-      },
-      {
-       "by": "ETH I Def. 3"
-      }
-     ]
-    }
-   ],
-   "new_text": [
-    {
-     "text": "In the Categories Aristotle gives an individual man or horse as examples of primary substances.",
-     "claims": [
-      {
-       "by": "ARM"
-      }
-     ]
-    },
-    {
-     "text": "Metaphysics VII (Zeta) lists essence, universal, genus and subject as candidates for the substance of a thing, and counts matter, form and their compound as subjects.",
-     "claims": [
-      {
-       "by": "ARM"
-      }
-     ]
-    },
-    {
-     "text": "For Descartes each created substance has a principal attribute that is its essence, thought for minds and extension for bodies, and the mind-body problem, how “two radically different substances such as mind and body” can interact, is in Steven Nadler's words perhaps the most celebrated legacy of his dualism.",
-     "claims": [
-      {
-       "by": "ATT"
-      },
-      {
-       "by": "SPN"
-      }
-     ]
-    },
-    {
-     "text": "Spinoza argues that there is only one substance, God or Nature, and that minds and bodies are its modes.",
-     "claims": [
-      {
-       "by": "SPN"
-      },
-      {
-       "by": "ETH I Prop. 14"
-      }
-     ]
-    },
-    {
-     "text": "William Uzgalis describes Locke's substance in general as a “something I know not what”, the support of qualities that cannot subsist by themselves.",
-     "claims": [
-      {
-       "by": "LOC"
-      }
-     ]
-    }
-   ],
-   "s": "Aristotle, Categories 5 and Metaphysics VII; Descartes, Principles of Philosophy I.51–53; Spinoza, Ethics I, Def. 3 and Prop. 14 (Elwes trans.); Locke, Essay Concerning Human Understanding II.xxiii",
-   "src": "ARM",
-   "srcs": [
-    "SPN",
-    "ATT",
-    "LOC"
-   ]
-  },
   "attribute": {
    "old": [
     {
@@ -694,6 +583,122 @@
    "srcs": [
     "SPN"
    ]
+  }
+ },
+ "superseded": {
+  "note": "Substance's Aristotle sentences re-read in the bundled Ross Metaphysics on 2026-11-22 (glossary-aristotle-texts.json); its other sentences are unchanged. Kept here as the record of the first audit.",
+  "terms": {
+   "substance": {
+    "old": [
+     {
+      "s": 1,
+      "text": "Spinoza: “By substance I understand what is in itself and is conceived through itself…” (Curley trans.)",
+      "accuracy": "supported",
+      "by": "ETH I Def. 3",
+      "note": "Curley's wording, from a copyrighted translation; replaced by the bundled Elwes text so the quotation can be checked and linked."
+     },
+     {
+      "s": 2,
+      "text": "Aristotle's Categories treats individual things, this man or this horse, as primary substances; Metaphysics VII asks whether substance is form, matter or their compound.",
+      "accuracy": "overstated",
+      "by": "ARM",
+      "note": "Zeta.3 lists essence, universal, genus and subject; matter, form and compound are candidates for subject."
+     },
+     {
+      "s": 3,
+      "text": "Descartes counts two kinds of created substance, thinking and extended, which raises the problem of how they interact.",
+      "accuracy": "supported",
+      "by": "SPN; ATT"
+     },
+     {
+      "s": 4,
+      "text": "Spinoza argues from his definition that there can be only one substance, God or Nature, of which minds and bodies are modes.",
+      "accuracy": "supported",
+      "by": "SPN; ETH I Prop. 14"
+     },
+     {
+      "s": 5,
+      "text": "Locke held that our idea of substance is only the idea of an unknown support of qualities.",
+      "accuracy": "supported",
+      "by": "LOC",
+      "note": "Given Locke's own phrase."
+     },
+     {
+      "s": 6,
+      "text": "srcName/src: Stanford Encyclopedia “Metaphysics”",
+      "accuracy": "unverified",
+      "note": "The general Metaphysics entry was not the source of these claims; replaced by the entries consulted."
+     }
+    ],
+    "new_d": [
+     {
+      "text": "What exists in its own right and bears properties, Aristotle's ousia. Spinoza: “By substance, I mean that which is in itself, and is conceived through itself”.",
+      "claims": [
+       {
+        "by": "ARM"
+       },
+       {
+        "by": "ETH I Def. 3"
+       }
+      ]
+     }
+    ],
+    "new_text": [
+     {
+      "text": "In the Categories Aristotle gives an individual man or horse as examples of primary substances.",
+      "claims": [
+       {
+        "by": "ARM"
+       }
+      ]
+     },
+     {
+      "text": "Metaphysics VII (Zeta) lists essence, universal, genus and subject as candidates for the substance of a thing, and counts matter, form and their compound as subjects.",
+      "claims": [
+       {
+        "by": "ARM"
+       }
+      ]
+     },
+     {
+      "text": "For Descartes each created substance has a principal attribute that is its essence, thought for minds and extension for bodies, and the mind-body problem, how “two radically different substances such as mind and body” can interact, is in Steven Nadler's words perhaps the most celebrated legacy of his dualism.",
+      "claims": [
+       {
+        "by": "ATT"
+       },
+       {
+        "by": "SPN"
+       }
+      ]
+     },
+     {
+      "text": "Spinoza argues that there is only one substance, God or Nature, and that minds and bodies are its modes.",
+      "claims": [
+       {
+        "by": "SPN"
+       },
+       {
+        "by": "ETH I Prop. 14"
+       }
+      ]
+     },
+     {
+      "text": "William Uzgalis describes Locke's substance in general as a “something I know not what”, the support of qualities that cannot subsist by themselves.",
+      "claims": [
+       {
+        "by": "LOC"
+       }
+      ]
+     }
+    ],
+    "s": "Aristotle, Categories 5 and Metaphysics VII; Descartes, Principles of Philosophy I.51–53; Spinoza, Ethics I, Def. 3 and Prop. 14 (Elwes trans.); Locke, Essay Concerning Human Understanding II.xxiii",
+    "src": "ARM",
+    "srcs": [
+     "SPN",
+     "ATT",
+     "LOC"
+    ]
+   }
   }
  }
 }

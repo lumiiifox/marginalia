@@ -29,6 +29,21 @@
   "WOW": {
    "name": "“Weakness of Will”, Stanford Encyclopedia of Philosophy (first published 14 May 2008; substantive revision 18 September 2025); the page's metadata names Larisa Svirsky, and its copyright line (read only through a summarising fetch) names Sarah Stroud and Larisa Svirsky, so the entry is cited without authors; its body text mentions Aristotle once (§3.4.2, on continence and temperance), and the batch uses it only for Davidson's definition (§2) and the Protagoras denial (introduction)",
    "src": "https://plato.stanford.edu/entries/weakness-will/"
+  },
+  "MET": {
+   "name": "Aristotle, Metaphysics, trans. W. D. Ross, bundled as classic-aristotle-metaphysics (built 2026-11-22 by tools/build_classics.py from github.com/jeonghyeon-net/metaphysics at commit dd0af23, a transcription of the MIT Internet Classics Archive text). Ross died 1971, which passes the rule. Which Ross edition it transcribes (1908 or the 1928 revision) is not stated by the archive, and Wikisource's talk page records the same doubt; the transcription keeps a few slips of its own (a doubled “(4)”, “spccies”)."
+  },
+  "FAL": {
+   "name": "Andrea Falcon, “Aristotle on Causality”, Stanford Encyclopedia of Philosophy (first published 11 January 2006; substantive revision 7 March 2023), read in literal text through §7, 2026-11-22",
+   "src": "https://plato.stanford.edu/entries/aristotle-causality/"
+  },
+  "ARM": {
+   "name": "S. Marc Cohen and C. D. C. Reeve, “Aristotle's Metaphysics”, Stanford Encyclopedia of Philosophy (first published 8 October 2000; substantive revision 24 January 2025), read in literal text through part of §8, 2026-11-22",
+   "src": "https://plato.stanford.edu/entries/aristotle-metaphysics/"
+  },
+  "TEL": {
+   "name": "Colin Allen and Jacob Neal, “Teleological Notions in Biology”, Stanford Encyclopedia of Philosophy (substantive revision 6 February 2026): carried over from glossary-aristotle.json, not re-read",
+   "src": "https://plato.stanford.edu/entries/teleology-biology/"
   }
  },
  "note": "Peters prints no Bekker numbers. Each Bekker number in the entries comes from Kraut's entry or its supplement, which cite those passages by page and line, matched to Peters by content, and checked against Bywater's Greek (the text Peters's revised edition follows): the Greek words were found by script, and the Bekker page, column and five-line markers around them confirm the cited lines. Bywater's text marks every fifth line, so a line number is used only when a scholar supplies it; passages no scholar read here cites by line are cited by book and chapter only (listed under unread). Peters translates phronēsis as “prudence” and akrasia as “incontinence”; the entries give both. Aristotle (in translation) is quoted exactly from the bundled book, each quotation under 15 words; interpretation is credited to Kraut only, by name. The Weakness of Will entry mentions Aristotle once in its body text (§3.4.2, on continence and temperance) and is used only for Davidson's definition and the Protagoras denial.",
@@ -80,6 +95,46 @@
     "virtue-mean"
    ],
    "effect": "the disputes are given only as Kraut reports them, and recorded open"
+  },
+  {
+   "source": "Aristotle, Physics",
+   "part": "the whole book (II.3 and II.7 on the causes)",
+   "why": "not yet bundled. None in Standard Ebooks or Project Gutenberg; the drafter took Hardie and Gaye's translation to exist only as archive.org scans, and the reviewer found it as plain text in the MIT Internet Classics Archive (classics.mit.edu/Aristotle/physics.2.ii.html), the archive the bundled Ross comes from. Hardie and Gaye's death years are to be confirmed before it is bundled",
+   "terms": [
+    "four-causes"
+   ],
+   "effect": "four-causes rests on Metaphysics I.3 and V.2 and says so; its two Physics references come from Falcon. Bundling the Physics is the next step"
+  },
+  {
+   "source": "Cohen and Reeve, “Aristotle's Metaphysics” (SEP)",
+   "part": "§8 (after its opening) to the end, including §11 (substance as cause) and §14 (theology); the reviewer's fetch reached §12 as page text and confirmed the dunamis quotation, but not the rest",
+   "why": "the drafter's fetched page text stopped partway through §8; the rest came back only as a summary, which is not quoted",
+   "terms": [
+    "potentiality",
+    "substance"
+   ],
+   "effect": "the Theta and Lambda sentences rest on Ross's text alone; substance's VII.17 sentence rests on Ross and is stated apart from Cohen and Reeve's reading"
+  },
+  {
+   "source": "Falcon, “Aristotle on Causality” (SEP)",
+   "part": "§8 onward and the bibliography",
+   "why": "the fetched text ended there",
+   "terms": [
+    "four-causes"
+   ],
+   "effect": "none known: the entry uses §§1–3"
+  },
+  {
+   "source": "Aristotle, Metaphysics (Ross)",
+   "part": "Bekker numbers",
+   "why": "the transcription has no Bekker numbers, and the batch cites by book and chapter, which open the chapter",
+   "terms": [
+    "four-causes",
+    "potentiality",
+    "essence",
+    "substance"
+   ],
+   "effect": "none for the links; a Bekker table like the Ethics's can be added when an entry needs a passage narrower than a chapter"
   }
  ],
  "ab": [
@@ -1186,8 +1241,482 @@
     "KRA-SUP",
     "WOW"
    ]
+  },
+  "four-causes": {
+   "new_d": [
+    {
+     "text": "Aristotle's four kinds of cause: material (what a thing comes from and is made of), formal (its form, the definition of its essence), efficient (where the change begins) and final (the end, what it is for).",
+     "claims": [
+      {
+       "by": "MET I.3, V.2"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "The Greek word is aitia, and Andrea Falcon suggests that “it can be useful to think of a cause as a certain type of explanation”.",
+     "claims": [
+      {
+       "by": "FAL §2"
+      }
+     ]
+    },
+    {
+     "text": "Aristotle gives his general account of the four causes in Physics II.3 and Metaphysics V.2.",
+     "claims": [
+      {
+       "by": "FAL §1–2"
+      }
+     ]
+    },
+    {
+     "text": "The Physics is not yet among the bundled books, so this entry rests on the Metaphysics.",
+     "claims": [
+      {
+       "by": "editorial: the bundled library; see unread (Aristotle, Physics)"
+      }
+     ]
+    },
+    {
+     "text": "Metaphysics I.3 begins its history of earlier philosophy by saying that “causes are spoken of in four senses” (Met. I.3): the substance or essence, the matter or substratum, the source of the change, and the purpose and the good, “the end of all generation and change” (Met. I.3).",
+     "claims": [
+      {
+       "by": "MET I.3"
+      },
+      {
+       "by": "MET I.3"
+      }
+     ],
+     "quotes": "Ross verbatim, checked by script (tests/links.py) against the chapter cited, under 15 words",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Book V (Delta), chapter 2, gives an example of each: the bronze of the statue, the ratio 2:1 of the octave, the father of the child, and health as the end of walking (Met. V.2).",
+     "claims": [
+      {
+       "by": "MET V.2"
+      }
+     ]
+    },
+    {
+     "text": "One thing can have several causes: the art of sculpture and the bronze both cause the statue, “the one as matter and the other as source of the movement” (Met. V.2).",
+     "claims": [
+      {
+       "by": "MET V.2"
+      }
+     ],
+     "quotes": "Ross verbatim, checked by script (tests/links.py) against the chapter cited, under 15 words"
+    },
+    {
+     "text": "Falcon reads Metaphysics I.3–7 as a review in which Aristotle's predecessors “merely touched upon these causes”.",
+     "claims": [
+      {
+       "by": "FAL §1"
+      }
+     ]
+    },
+    {
+     "text": "Falcon sums up Physics II.7: in nature “the form and the end often coincide”.",
+     "claims": [
+      {
+       "by": "FAL §3 (Falcon's own prose, citing Phys. II 7, 198a23–26)"
+      }
+     ]
+    },
+    {
+     "text": "Hobbes and Descartes took William Harvey's work as a turn away from Galenic and Aristotelian anatomy, with its appeal to final causes, toward mechanistic science.",
+     "claims": [
+      {
+       "by": "TEL"
+      }
+     ],
+     "unchanged": "kept word for word from the earlier record; not re-read in this batch",
+     "paragraph": "starts a new paragraph"
+    }
+   ],
+   "s": "Aristotle, Metaphysics I.3, V.2 (Ross trans.); Physics II.3, II.7 (unbundled, cited from Falcon)",
+   "src": "FAL",
+   "reread": {
+    "of": "glossary-aristotle.json, kept there under superseded",
+    "old": [
+     {
+      "text": "The Greek word is aitia, and Andrea Falcon suggests that “it can be useful to think of a cause as a certain type of explanation”.",
+      "verdict": "Falcon's sentence verbatim in his §2 (read 2026-11-22); kept"
+     },
+     {
+      "text": "Aristotle gives his general account of the four causes in Physics II 3 and Metaphysics V 2.",
+      "verdict": "verbatim in Falcon §2; kept, now followed by a sentence saying the Physics is unbundled"
+     },
+     {
+      "text": "In the making of a bronze statue, the bronze enters the explanation as the material cause, and the statue enters the explanation of each step of the work as the final cause.",
+      "verdict": "supported (Falcon §2, verbatim); replaced by the four examples Met. V.2 gives in Ross"
+     },
+     {
+      "text": "In nature, Aristotle observes, “the form and the end often coincide, and they are formally the same as that which produces the change”.",
+      "verdict": "Falcon §3 writes this in his own prose, citing Phys. II 7, 198a23–26, so the old text's “Aristotle observes” presented Falcon's paraphrase as Aristotle's words; it was also 19 words, over the 15-word limit. Now seven words, credited to Falcon as his summary of Physics II.7"
+     },
+     {
+      "text": "Hobbes and Descartes took William Harvey's work as a turn away from Galenic and Aristotelian anatomy, with its appeal to final causes, toward mechanistic science.",
+      "verdict": "kept unchanged (TEL)"
+     }
+    ]
+   }
+  },
+  "potentiality": {
+   "new_d": [
+    {
+     "text": "Aristotle's dunamis and energeia: a capacity to bring about or undergo change, and its exercise or realization. The block of wood is potentially a statue of Hermes; someone who knows a science and is not using it is potentially studying.",
+     "claims": [
+      {
+       "by": "MET V.12, IX.6"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Metaphysics V.12 sorts the senses of ‘potency’ and names the primary one “a source of change in another thing or in the same thing qua other” (Met. V.12).",
+     "claims": [
+      {
+       "by": "MET V.12"
+      }
+     ],
+     "quotes": "Ross verbatim, checked by script (tests/links.py) against the chapter cited, under 15 words"
+    },
+    {
+     "text": "The art of building is a potency in the builder and never in the house; a doctor can heal himself, though not in his capacity as the one healed (Met. V.12).",
+     "claims": [
+      {
+       "by": "MET V.12"
+      }
+     ]
+    },
+    {
+     "text": "In the strictest sense, S. Marc Cohen and C. D. C. Reeve write, “a dunamis is the power that a thing has to produce a change”.",
+     "claims": [
+      {
+       "by": "ARM §12"
+      }
+     ]
+    },
+    {
+     "text": "Book IX (Theta) turns to actuality and declines to define it: we must “be content to grasp the analogy” (Met. IX.6), as building is to being able to build, waking to sleeping, and seeing to having sight with the eyes shut (Met. IX.6).",
+     "claims": [
+      {
+       "by": "MET IX.6"
+      },
+      {
+       "by": "MET IX.6"
+      }
+     ],
+     "quotes": "Ross verbatim, checked by script (tests/links.py) against the chapter cited, under 15 words",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Actuality is prior to potency in formula, because being capable of building means being able to build (Met. IX.8).",
+     "claims": [
+      {
+       "by": "MET IX.8"
+      }
+     ]
+    },
+    {
+     "text": "It is prior in time in one sense: what is potentially a man is produced by an actual man, and “there is always a first mover” (Met. IX.8).",
+     "claims": [
+      {
+       "by": "MET IX.8"
+      }
+     ],
+     "quotes": "Ross verbatim, checked by script (tests/links.py) against the chapter cited, under 15 words"
+    },
+    {
+     "text": "It is prior in substantiality, because the actuality is the end for whose sake the potency exists: “animals do not see in order that they may have sight” (Met. IX.8).",
+     "claims": [
+      {
+       "by": "MET IX.8"
+      }
+     ],
+     "quotes": "Ross verbatim, checked by script (tests/links.py) against the chapter cited, under 15 words"
+    },
+    {
+     "text": "The argument concludes that “the substance or form is actuality” (Met. IX.8).",
+     "claims": [
+      {
+       "by": "MET IX.8"
+      }
+     ],
+     "quotes": "Ross verbatim, checked by script (tests/links.py) against the chapter cited, under 15 words"
+    },
+    {
+     "text": "What has a potency need not exercise it, so eternal movement needs a principle “whose very essence is actuality” (Met. XII.6), and such substances “must be without matter” (Met. XII.6).",
+     "claims": [
+      {
+       "by": "MET XII.6"
+      },
+      {
+       "by": "MET XII.6"
+      }
+     ],
+     "quotes": "Ross verbatim, checked by script (tests/links.py) against the chapter cited, under 15 words",
+     "paragraph": "starts a new paragraph"
+    }
+   ],
+   "s": "Aristotle, Metaphysics V.12, IX.6, IX.8, XII.6 (Ross trans.)",
+   "src": "ARM",
+   "reread": {
+    "of": "glossary-aristotle.json, kept there under superseded",
+    "old": [
+     {
+      "text": "In the strictest sense, S. Marc Cohen and C. D. C. Reeve write, “a dunamis is the power that a thing has to produce a change”.",
+      "verdict": "kept; verbatim in Cohen and Reeve §12 (“In the strictest sense, a dunamis is the power that a thing has to produce a change”), confirmed as page text by the reviewer 2026-11-22"
+     },
+     {
+      "text": "Metaphysics IX (Theta) argues that actuality is prior to potentiality in account, in time and in substance.",
+      "verdict": "supported by Met. IX.8 in Ross, which qualifies the priority in time (“in time it is prior in one sense, and in another not”); restated from the text with that qualification"
+     },
+     {
+      "text": "Because what is potentially may possibly not be, eternal movement needs a starting-point “the very substance of which is activity”, and “the primary essence does not have matter, since it is an actuality”.",
+      "verdict": "the two quotations were presented as Aristotle's words but are another translator's: Ross reads “whose very essence is actuality” (XII.6) and “the primary essence has not matter; for it is complete reality” (XII.8); replaced by Ross's words from XII.6"
+     }
+    ]
+   }
+  },
+  "essence": {
+   "new_d": [
+    {
+     "text": "What a thing is, as its definition states it.",
+     "claims": [
+      {
+       "by": "ARM"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "“Essence” is the standard English translation of Aristotle's phrase to ti ên einai, literally, in S. Marc Cohen and C. D. C. Reeve's rendering, “the what it was to be” for a thing.",
+     "claims": [
+      {
+       "by": "ARM §7"
+      }
+     ]
+    },
+    {
+     "text": "In Metaphysics VII.4 the essence of each thing is what it is said to be in virtue of itself: “being you is not being musical” (Met. VII.4).",
+     "claims": [
+      {
+       "by": "MET VII.4"
+      }
+     ],
+     "quotes": "Ross verbatim, checked by script (tests/links.py) against the chapter cited, under 15 words"
+    },
+    {
+     "text": "VII.4 argues that “there is an essence only of those things whose formula is a definition” (Met. VII.4), and that essence belongs in the primary sense to substances (Met. VII.4); “each primary and self-subsistent thing is one and the same as its essence” (Met. VII.6).",
+     "claims": [
+      {
+       "by": "MET VII.4"
+      },
+      {
+       "by": "MET VII.4"
+      },
+      {
+       "by": "MET VII.6"
+      }
+     ],
+     "quotes": "Ross verbatim, checked by script (tests/links.py) against the chapter cited, under 15 words"
+    },
+    {
+     "text": "Ibn Sīnā argued that essence and existence are distinct, since, as Fedor Benevich puts his argument, “we can know what things are (human beings, horses, triangles) without knowing whether they exist”.",
+     "claims": [
+      {
+       "by": "glossary-aristotle.json (superseded record), unchanged"
+      }
+     ],
+     "unchanged": "kept word for word from the earlier record; not re-read in this batch"
+    },
+    {
+     "text": "Locke separates the real essence of a material thing, its atomic constitution, which is “quite unknown to us”, from its nominal essence, the general idea by which we pick out a sort.",
+     "claims": [
+      {
+       "by": "glossary-aristotle.json (superseded record), unchanged"
+      }
+     ],
+     "unchanged": "kept word for word from the earlier record; not re-read in this batch"
+    },
+    {
+     "text": "Sartre's existentialism reverses the order for human beings: existence precedes essence, meaning that a human being “exists, turns up, appears on the scene, and, only afterwards, defines himself”.",
+     "claims": [
+      {
+       "by": "glossary-aristotle.json (superseded record), unchanged"
+      }
+     ],
+     "unchanged": "kept word for word from the earlier record; not re-read in this batch"
+    }
+   ],
+   "s": "Aristotle, Metaphysics VII.4, VII.6 (Ross trans.); Locke, Essay III.iii; Sartre, Existentialism Is a Humanism (1946)",
+   "src": "ARM",
+   "reread": {
+    "of": "glossary-aristotle.json, kept there under superseded",
+    "old": [
+     {
+      "text": "“Essence” is the standard English translation of Aristotle's phrase to ti ên einai; for Aristotle there is an essence only of those things whose account is a definition, and each substance is one and the same as its essence.",
+      "verdict": "supported in substance (Cohen and Reeve §7); “each substance is one and the same as its essence” overstated Met. VII.6, which says this of “each primary and self-subsistent thing”; corrected with Ross's words"
+     },
+     {
+      "text": "Ibn Sīnā argued that essence and existence are distinct, since, as Fedor Benevich puts his argument, “we can know what things are (human beings, horses, triangles) without knowing whether they exist”.",
+      "verdict": "kept unchanged (BEN)"
+     },
+     {
+      "text": "Locke separates the real essence of a material thing, its atomic constitution, which is “quite unknown to us”, from its nominal essence, the general idea by which we pick out a sort.",
+      "verdict": "kept unchanged (LOC)"
+     },
+     {
+      "text": "Sartre's existentialism reverses the order for human beings: existence precedes essence, meaning that a human being “exists, turns up, appears on the scene, and, only afterwards, defines himself”.",
+      "verdict": "kept unchanged (AHO)"
+     }
+    ]
+   }
+  },
+  "substance": {
+   "new_d": [
+    {
+     "text": "What exists in its own right and bears properties, Aristotle's ousia. Spinoza: “By substance, I mean that which is in itself, and is conceived through itself”.",
+     "claims": [
+      {
+       "by": "ARM; ETH I Def. 3 (unchanged)"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "In the Categories Aristotle gives an individual man or horse as examples of primary substances.",
+     "claims": [
+      {
+       "by": "ARM §5"
+      }
+     ]
+    },
+    {
+     "text": "The Metaphysics makes substance the central question of being: “what being is, is just the question, what is substance?” (Met. VII.1).",
+     "claims": [
+      {
+       "by": "MET VII.1"
+      }
+     ],
+     "quotes": "Ross verbatim, checked by script (tests/links.py) against the chapter cited, under 15 words"
+    },
+    {
+     "text": "Book V (Delta), chapter 8, ends with two senses of the word: the ultimate substratum, which is not predicated of anything else, and what is a ‘this’ and separable, the shape or form of each thing (Met. V.8).",
+     "claims": [
+      {
+       "by": "MET V.8"
+      }
+     ]
+    },
+    {
+     "text": "Book VII (Zeta), chapter 3, names essence, universal, genus and substratum as candidates for the substance of a thing, and counts matter, shape and their compound as substrata (Met. VII.3).",
+     "claims": [
+      {
+       "by": "MET VII.3"
+      }
+     ]
+    },
+    {
+     "text": "Matter fails as substance because “both separability and ‘thisness’ are thought to belong chiefly to substance” (Met. VII.3); S. Marc Cohen and C. D. C. Reeve explain that matter is in a sense separable and in a sense a this something, but cannot be both.",
+     "claims": [
+      {
+       "by": "MET VII.3"
+      },
+      {
+       "by": "ARM §6"
+      }
+     ],
+     "quotes": "Ross verbatim, checked by script (tests/links.py) against the chapter cited, under 15 words"
+    },
+    {
+     "text": "In their reading Aristotle's preliminary answer, in VII.4, is “that substance is essence”.",
+     "claims": [
+      {
+       "by": "ARM §7"
+      }
+     ]
+    },
+    {
+     "text": "VII.17 approaches substance as a cause: what we seek is the cause, “the form, by reason of which the matter is some definite thing” (Met. VII.17).",
+     "claims": [
+      {
+       "by": "MET VII.17"
+      }
+     ],
+     "quotes": "Ross verbatim, checked by script (tests/links.py) against the chapter cited, under 15 words"
+    },
+    {
+     "text": "For Descartes each created substance has a principal attribute that is its essence, thought for minds and extension for bodies, and the mind-body problem, how “two radically different substances such as mind and body” can interact, is in Steven Nadler's words perhaps the most celebrated legacy of his dualism.",
+     "claims": [
+      {
+       "by": "glossary-spinoza.json (superseded record), unchanged"
+      }
+     ],
+     "unchanged": "kept word for word from the earlier record; not re-read in this batch"
+    },
+    {
+     "text": "Spinoza argues that there is only one substance, God or Nature, and that minds and bodies are its modes.",
+     "claims": [
+      {
+       "by": "glossary-spinoza.json (superseded record), unchanged"
+      }
+     ],
+     "unchanged": "kept word for word from the earlier record; not re-read in this batch"
+    },
+    {
+     "text": "William Uzgalis describes Locke's substance in general as a “something I know not what”, the support of qualities that cannot subsist by themselves.",
+     "claims": [
+      {
+       "by": "glossary-spinoza.json (superseded record), unchanged"
+      }
+     ],
+     "unchanged": "kept word for word from the earlier record; not re-read in this batch"
+    }
+   ],
+   "s": "Aristotle, Categories 5; Metaphysics V.8, VII.1, VII.3, VII.17 (Ross trans.); Descartes, Principles of Philosophy I.51–53; Spinoza, Ethics I, Def. 3 and Prop. 14 (Elwes trans.); Locke, Essay Concerning Human Understanding II.xxiii",
+   "src": "ARM",
+   "reread": {
+    "of": "glossary-spinoza.json, kept there under superseded",
+    "old": [
+     {
+      "text": "In the Categories Aristotle gives an individual man or horse as examples of primary substances.",
+      "verdict": "kept (Cohen and Reeve §5, verbatim: “an individual man or horse”)"
+     },
+     {
+      "text": "Metaphysics VII (Zeta) lists essence, universal, genus and subject as candidates for the substance of a thing, and counts matter, form and their compound as subjects.",
+      "verdict": "supported (Met. VII.3 in Ross; Cohen and Reeve §6); restated in Ross's terms, substratum and shape, with V.8, VII.1 and VII.17 added"
+     },
+     {
+      "text": "For Descartes each created substance has a principal attribute that is its essence, thought for minds and extension for bodies, and the mind-body problem, how “two radically different substances such as mind and body” can interact, is in Steven Nadler's words perhaps the most celebrated legacy of his dualism.",
+      "verdict": "kept unchanged (ATT, SPN)"
+     },
+     {
+      "text": "Spinoza argues that there is only one substance, God or Nature, and that minds and bodies are its modes.",
+      "verdict": "kept unchanged (SPN)"
+     },
+     {
+      "text": "William Uzgalis describes Locke's substance in general as a “something I know not what”, the support of qualities that cannot subsist by themselves.",
+      "verdict": "kept unchanged (LOC)"
+     }
+    ]
+   }
   }
  },
  "links": "virtue-ethics keeps its paragraph on the mean (II.6–7) and no longer lists phronesis among its key words, so the word now finds the phronesis entry. Related entries: eudaimonia ↔ virtue-mean ↔ phronesis ↔ akrasia, each tie stated in Aristotle's text (II.6 names the prudent man in the definition of virtue; VI.12–13 ties practical wisdom to virtue; VII.2 and VII.10 to akrasia).",
- "summary": "Three new entries (virtue as a mean, phronesis, akrasia) and eudaimonia re-read, all from the bundled Peters Nicomachean Ethics with Kraut's Stanford entry and its akrasia supplement for interpretation. 17 Bekker numbers, each taken from Kraut and checked against Bywater's Greek, open their paragraph in the book. Two disputes recorded open: Book X and the rest of the Ethics, and what the akratic person lacks."
+ "summary": "Three new entries (virtue as a mean, phronesis, akrasia) and eudaimonia re-read, all from the bundled Peters Nicomachean Ethics with Kraut's Stanford entry and its akrasia supplement for interpretation. 17 Bekker numbers, each taken from Kraut and checked against Bywater's Greek, open their paragraph in the book. Two disputes recorded open: Book X and the rest of the Ethics, and what the akratic person lacks. Second batch (Metaphysics, Ross): four-causes, potentiality, essence and substance re-read; four-causes says the Physics is unbundled and rests on Met. I.3 and V.2; potentiality's two quotations of another translator replaced by Ross's words; essence's “each substance” corrected to Met. VII.6's “each primary and self-subsistent thing”.",
+ "batches": {
+  "metaphysics": {
+   "audited": "2026-11-22",
+   "scope": "Re-read of four-causes, potentiality, essence and substance against the newly bundled Ross Metaphysics (owner's request, item 3). Only the Aristotle sentences of essence and substance were re-read; their Ibn Sīnā, Locke, Sartre, Descartes and Spinoza sentences are kept word for word from glossary-aristotle.json and glossary-spinoza.json, whose records of these four terms move under superseded.",
+   "first_pass": "Claude (Opus 5.5), 2026-11-22: every Aristotle sentence drafted from the bundled Ross; every quotation followed by a (Met. …) reference checked by script against the chapter it opens; Falcon and Cohen and Reeve read through the web-fetch tool, quoting only what it returned as page text",
+   "review": "Independent reviewer (separate agent, fresh context), 2026-11-22: checked by its own script all 16 (Met. …) quotations against the chapter split of the bundled Ross (all verbatim, 4 to 14 words); read the cited chapters for every paraphrase; confirmed the Falcon and Cohen and Reeve quotations as page text, including Cohen and Reeve §12; checked the kept sentences are unchanged and the superseded records identical; ran content and links (6 of 6). Required fixes, all applied: the claim that no Physics translation is available as text was false (Hardie and Gaye is plain text in the MIT archive), now “not yet bundled”; Falcon's prose on Physics II.7 credited to Falcon; two misplaced “concludes” (VII.4, IX.8) corrected, with VII.4's qualification that essence belongs in the primary sense to substances; the VII.17 sentence split from Cohen and Reeve's reading; this record's sentence split repaired and each sentence tagged with its chapter or section; Cohen and Reeve §12 marked verified. Not checked: the kept sentences, Ross's edition, Hardie's and Gaye's death years, Falcon §8 onward. Verdict: pass after the required fixes."
+  }
+ }
 }
