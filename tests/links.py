@@ -248,13 +248,20 @@ async def main():
                 if (!books[st]) books[st] = (await (await fetch('data/books/' + PASSAGE_STYLES[st].book + '.json')).json()).content;
                 const i = passageBlock(books[st], a.dataset.passageAt, st); if (i < 0) { out.bad.push(g.id + ' ' + a.textContent); continue; }
                 at[a.textContent] = (at[a.textContent] || '') + ' ' + span(books[st], i); }
-              for (const m of para.matchAll(/“([^”]*)”([^“]*?)\\(((?:T|EHU) [^()]+|[AB][\\dxvi][^()]*)\\)/g)) {
+              for (const m of para.matchAll(/“([^”]*)”([^“]*?)\\(((?:T|EHU|NE) [^()]+|[AB][\\dxvi][^()]*)\\)/g)) {
                 if (/[.;]\\s/.test(m[2])) continue;  // the reference belongs to a later sentence
                 out.quotes++; const q = m[1].replace(/[,.]$/, ''), txt = m[3].split('; ').map((r) => at[r] || '').join(' ');
                 if (!txt.includes(q)) out.bad.push(g.id + ' quote ' + q);
                 if (q.split(/\\s+/).length >= 15) out.bad.push(g.id + ' long quote ' + q); } } }
           return out; })()""")
-        check(xr["terms"] >= 5 and xr["links"] >= 60 and xr["quotes"] >= 50 and not xr["bad"], f"glossary entries citing Hume and Kant: every reference opens its section, every quotation is that section's words, under 15 words ({xr})")
+        check(xr["terms"] >= 9 and xr["links"] >= 130 and xr["quotes"] >= 90 and not xr["bad"], f"glossary entries citing Hume, Kant and Aristotle: every reference opens its section, every quotation is that section's words, under 15 words ({xr})")
+        # every Bekker number listed for the Nicomachean Ethics opens the paragraph holding its words, in its own chapter
+        neb = await page.evaluate("""(async () => { const B = (await (await fetch('data/books/classic-aristotle-ethics.json')).json()).content, bad = [];
+          for (const [ref, [ch]] of Object.entries(NE_BEKKER)) { const at = ch.replace('.', '|') + '|' + ref, i = passageBlock(B, at, 'aristotle-ethics');
+            if (i < 0 || B[i].k === 'h') bad.push(ref); }
+          const wrong = passageBlock(B, 'I|8|1097b22–1098a20', 'aristotle-ethics');
+          return { n: Object.keys(NE_BEKKER).length, bad, wrong }; })()""")
+        check(neb["n"] >= 15 and not neb["bad"] and neb["wrong"] == -1, f"every Bekker number listed for the Nicomachean Ethics opens its passage in Peters, and only in its own chapter ({neb})")
         # every A/B page listed for the Critique finds its passage in the bundled Meiklejohn (the first block holding its words)
         kab = await page.evaluate("""(async () => { const B = (await (await fetch('data/books/classic-kant-critique.json')).json()).content, bad = [];
           for (const [ref, [w]] of Object.entries(KANT_AB)) { const i = passageBlock(B, ref, 'kant-critique'); if (i < 0) bad.push(ref); }

@@ -604,73 +604,78 @@
     "LOC",
     "AHO"
    ]
-  },
-  "eudaimonia": {
-   "old": [
-    {
-     "s": 1,
-     "text": "Highest human good, “happiness” or “flourishing”: activity of the soul in accordance with virtue.",
-     "accuracy": "supported",
-     "by": "KRA; NE I.7"
-    },
-    {
-     "s": 2,
-     "text": "A complete life of activity, needing external goods; its highest form is contemplation.",
-     "accuracy": "supported",
-     "by": "KRA"
-    },
-    {
-     "s": 3,
-     "text": "The Stoics held virtue alone suffices; the Epicureans identified it with tranquility and freedom from pain.",
-     "accuracy": "unverified",
-     "note": "Not in the source consulted; cut."
-    },
-    {
-     "s": 4,
-     "text": "Modern research on well-being uses the term for flourishing.",
-     "accuracy": "unverified",
-     "note": "Cut."
-    }
-   ],
-   "new_d": [
-    {
-     "text": "Aristotle's term for the highest human good, usually translated “happiness” or “flourishing”: activity of the rational part of the soul in accordance with virtue.",
-     "claims": [
-      {
-       "by": "KRA"
-      }
-     ]
-    }
-   ],
-   "new_text": [
-    {
-     "text": "In F. H. Peters's translation the good of man is “exercise of his faculties in accordance with excellence or virtue, or, if there be more than one, in accordance with the best and most complete virtue”.",
-     "claims": [
-      {
-       "by": "NE I.7"
-      }
-     ]
-    },
-    {
-     "text": "Richard Kraut writes that “using reason well over the course of a full life is what happiness consists in”, and that one must also possess “such goods as friends, wealth, and power”.",
-     "claims": [
-      {
-       "by": "KRA"
-      }
-     ]
-    },
-    {
-     "text": "In Book X perfect happiness consists in contemplation, and the happiest kind of life is that of a philosopher.",
-     "claims": [
-      {
-       "by": "KRA"
-      }
-     ]
-    }
-   ],
-   "s": "Aristotle, Nicomachean Ethics I.7, X.7–8 (Peters trans.)",
-   "src": "KRA",
-   "srcs": []
+  }
+ },
+ "superseded": {
+  "note": "Re-read in the bundled Nicomachean Ethics (Peters) on 2026-11-22 (glossary-aristotle-texts.json). Kept here as the record of the first, encyclopedia-based audit.",
+  "terms": {
+   "eudaimonia": {
+    "old": [
+     {
+      "s": 1,
+      "text": "Highest human good, “happiness” or “flourishing”: activity of the soul in accordance with virtue.",
+      "accuracy": "supported",
+      "by": "KRA; NE I.7"
+     },
+     {
+      "s": 2,
+      "text": "A complete life of activity, needing external goods; its highest form is contemplation.",
+      "accuracy": "supported",
+      "by": "KRA"
+     },
+     {
+      "s": 3,
+      "text": "The Stoics held virtue alone suffices; the Epicureans identified it with tranquility and freedom from pain.",
+      "accuracy": "unverified",
+      "note": "Not in the source consulted; cut."
+     },
+     {
+      "s": 4,
+      "text": "Modern research on well-being uses the term for flourishing.",
+      "accuracy": "unverified",
+      "note": "Cut."
+     }
+    ],
+    "new_d": [
+     {
+      "text": "Aristotle's term for the highest human good, usually translated “happiness” or “flourishing”: activity of the rational part of the soul in accordance with virtue.",
+      "claims": [
+       {
+        "by": "KRA"
+       }
+      ]
+     }
+    ],
+    "new_text": [
+     {
+      "text": "In F. H. Peters's translation the good of man is “exercise of his faculties in accordance with excellence or virtue, or, if there be more than one, in accordance with the best and most complete virtue”.",
+      "claims": [
+       {
+        "by": "NE I.7"
+       }
+      ]
+     },
+     {
+      "text": "Richard Kraut writes that “using reason well over the course of a full life is what happiness consists in”, and that one must also possess “such goods as friends, wealth, and power”.",
+      "claims": [
+       {
+        "by": "KRA"
+       }
+      ]
+     },
+     {
+      "text": "In Book X perfect happiness consists in contemplation, and the happiest kind of life is that of a philosopher.",
+      "claims": [
+       {
+        "by": "KRA"
+       }
+      ]
+     }
+    ],
+    "s": "Aristotle, Nicomachean Ethics I.7, X.7–8 (Peters trans.)",
+    "src": "KRA",
+    "srcs": []
+   }
   }
  }
 }

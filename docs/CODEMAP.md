@@ -169,7 +169,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   under its own section (unverified claims reported apart).
 - Citations into a classic (`xr` on a branch entry names one style in `PASSAGE_STYLES`, or a list): each style has the classic's `book`, an
   `item` pattern for one reference and a `find(B, groups)` for its block. Now "spinoza-ethics" ("(I, Proposition 17, Corollary 2)", "(I, Appendix)", "(III, Preface)", and the standard notation "(E1p17c2)", "(E1p8s2)", "(E2d7)", read by its `canon` through `canonRef`; found by the
-  book's own labels in `spinozaBlock`), "nietzsche-genealogy" ("(GM II §12)"), "nietzsche-beyond" ("(BGE §260)"), "aristotle-ethics" ("(NE I.7)"), "rousseau-social-contract"
+  book's own labels in `spinozaBlock`), "nietzsche-genealogy" ("(GM II §12)"), "nietzsche-beyond" ("(BGE §260)"), "aristotle-ethics" ("(NE I.7)", or with a Bekker number, "(NE II.6, 1106a36–b7)": only those listed in `NE_BEKKER`, each opening the paragraph in its chapter that holds its words, since Peters prints no Bekker numbers; the table notes the scholar each line comes from, and the audit how it was checked against Bywater's Greek), "rousseau-social-contract"
   ("(SC I.6)"), "hobbes-leviathan" ("(Lev. XIII)"), "hume-treatise" ("(T 1.4.6)", "(T App.)" for the Appendix), "hume-enquiry" ("(EHU IV.2)"), "descartes-meditations" ("(Med. VI)", "(Disc. IV)"),
   "plato-republic" ("(Rep. V)"), "plato-socrates" ("(Apology)"), "kant-groundwork" ("(G II)"), "kant-critique" ("(A26/B42)", "(Bxvi)": only the A/B pages listed in `KANT_AB`, each found by
   words of its passage, since Meiklejohn prints no A/B numbers; the table notes where each number comes from), "marx-engels-manifesto" ("(CM I)"), "du-bois-souls"
@@ -178,7 +178,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   A reference added to an audited article is checked against the bundled edition and logged in its audit record. Tested by `tests/links.py`.
   A glossary entry takes `xr` the same way (`termHTML`, `fillLinks`): the Hume entries cite "(T 1.3.14)" and "(EHU VII.2)" in their text, and
   `tests/links.py` checks that each opens its section and each quotation before one is that section's words (for a Kant page, the
-  paragraph found and the notes printed after it); the Kant entries cite "(A491/B519)", and every `KANT_AB` page must find its passage.
+  paragraph found and the notes printed after it); the Kant entries cite "(A491/B519)", and every `KANT_AB` page must find its passage. The Aristotle entries (eudaimonia, virtue-mean, phronesis, akrasia) cite "(NE VI.12, 1144a7–8)", and every `NE_BEKKER` number must open a paragraph in its own chapter.
 - The classics named in the reference pages (`CLASSIC_NAMES`, `classicHits`, in reference.js): a bundled classic's title in an article
   (through `branchLinks`), a thinker card (`classicParas`, key works) or a glossary entry (its note and source line) links to the book
   (`data-classic`, `openClassic`, which adds a deleted classic back first). Full titles match anywhere in their own capitals; short ones

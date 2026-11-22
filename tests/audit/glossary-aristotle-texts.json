@@ -1,0 +1,1193 @@
+{
+ "audit": "glossary-aristotle-texts",
+ "audited": "2026-11-22",
+ "mode": "new entries and a re-read",
+ "scope": "Aristotle read in the bundled Nicomachean Ethics (Peters) at the owner's request, as the route turns to Plato and Aristotle after Deleuze: three new entries, virtue-mean (NE II.6–9), phronesis (NE VI), akrasia (NE VII.1–10), and a re-read of eudaimonia (NE I.7–9, X.7–8), whose 2026-10-27 record moves under superseded in glossary-aristotle.json, which stays the record of the encyclopedia-based audit of four-causes, potentiality, essence, determinism and rationalism.",
+ "by": {
+  "draft": "Claude (Opus 5.5); no ChatGPT draft for this batch",
+  "review": "Independent reviewer (separate agent, fresh context), 2026-11-22: checked by its own script all 64 quotations in the four entries (47 Peters, all verbatim in the chapter cited, the 14 with a Bekker number inside the paragraph it opens, all under 15 words; 16 Kraut and supplement quotations confirmed in the SEP pages; 1 title); spot-checked paraphrases against Peters; checked all 17 Bekker numbers against Kraut's printed references and, by its own parser of Bywater's TEI, the Greek under ab at the stated page, column and five-line window; checked revision dates, style and the code change; ran the links test. Required fixes, all applied: two sentences that carried a Bekker range over words outside it split so the range covers only its clause (akrasia, VII.6 anger; eudaimonia, X.7 contemplation); Austin's charge marked as Kraut's words and placed in the main entry; the record's claim that Weakness of Will has nothing on Aristotle corrected (§3.4.2); the eudaimonia re-read verdict corrected (both old Kraut quotations verbatim in §2); the Greek for 1147b13–17 given in Bywater's word order. Optional suggestions applied: the 1147b6–7 and 1147b13–17 sentences put in the text's order; the 1152a6–7 range kept to its clause; 'favours' for Kraut's preferred reading; temperance between profligacy and insensibility; akrasia's summary says Aristotle distinguishes it from vice. Not checked: the end of Kraut's bibliography, Austin's own text, every paraphrase line by line, Peters's death date. Verdict: pass after the required fixes.",
+  "first_pass": "Claude (Opus 5.5), 2026-11-22: every sentence drafted from the bundled Peters (Standard Ebooks); every quotation followed by a reference checked by script against the cited chapter, or the paragraph its Bekker number opens; Bekker numbers matched as under ab; Kraut's entry and supplement and the SEP “Weakness of Will” read through the web-fetch tool in literal text (quotations under 125 characters)"
+ },
+ "sources": {
+  "NE": {
+   "translator": "Frank Hesketh Peters (first edition 1881). No death date was found in any source reached (Standard Ebooks colophon, Foster's English Translations from the Greek, catalogue records). That he died in 1971 or earlier, as the bundling rule requires, is an inference: an Oxford fellow who published this translation in 1881 would have to have lived past about 115 to fail it.",
+   "name": "Aristotle, Nicomachean Ethics, trans. F. H. Peters (revised edition, brought into accordance with Bywater's text), the bundled Standard Ebooks text (classic-aristotle-ethics); cited by book and chapter, which open the chapter, and where listed under ab by Bekker number, which opens the paragraph",
+   "src": "https://standardebooks.org/ebooks/aristotle/nicomachean-ethics/f-h-peters"
+  },
+  "BYW": {
+   "name": "Aristotelis Ethica Nicomachea, ed. I. Bywater (Oxford Classical Texts, 1894), Perseus Digital Library TEI (canonical-greekLit tlg0086.tlg010.perseus-grc2), with Bekker page, column and five-line markers; used to place each Bekker number",
+   "src": "https://github.com/PerseusDL/canonical-greekLit/blob/master/data/tlg0086/tlg010/tlg0086.tlg010.perseus-grc2.xml"
+  },
+  "KRA": {
+   "name": "Richard Kraut, “Aristotle's Ethics”, Stanford Encyclopedia of Philosophy (first published 1 May 2001; substantive revision 11 August 2026), read in literal text through §10, the glossary and further reading, 2026-11-22",
+   "src": "https://plato.stanford.edu/entries/aristotle-ethics/"
+  },
+  "KRA-SUP": {
+   "name": "Richard Kraut, “Alternate Readings of Aristotle on Akrasia”, supplement to “Aristotle's Ethics” (no date printed), read whole",
+   "src": "https://plato.stanford.edu/entries/aristotle-ethics/supplement1.html"
+  },
+  "WOW": {
+   "name": "“Weakness of Will”, Stanford Encyclopedia of Philosophy (first published 14 May 2008; substantive revision 18 September 2025); the page's metadata names Larisa Svirsky, and its copyright line (read only through a summarising fetch) names Sarah Stroud and Larisa Svirsky, so the entry is cited without authors; its body text mentions Aristotle once (§3.4.2, on continence and temperance), and the batch uses it only for Davidson's definition (§2) and the Protagoras denial (introduction)",
+   "src": "https://plato.stanford.edu/entries/weakness-will/"
+  }
+ },
+ "note": "Peters prints no Bekker numbers. Each Bekker number in the entries comes from Kraut's entry or its supplement, which cite those passages by page and line, matched to Peters by content, and checked against Bywater's Greek (the text Peters's revised edition follows): the Greek words were found by script, and the Bekker page, column and five-line markers around them confirm the cited lines. Bywater's text marks every fifth line, so a line number is used only when a scholar supplies it; passages no scholar read here cites by line are cited by book and chapter only (listed under unread). Peters translates phronēsis as “prudence” and akrasia as “incontinence”; the entries give both. Aristotle (in translation) is quoted exactly from the bundled book, each quotation under 15 words; interpretation is credited to Kraut only, by name. The Weakness of Will entry mentions Aristotle once in its body text (§3.4.2, on continence and temperance) and is used only for Davidson's definition and the Protagoras denial.",
+ "disputes": [
+  "eudaimonia: does Book X's praise of contemplation (X.7–8) fit the rest of the Ethics? Kraut reports that some scholars think X.7–8 “deeply at odds” with the rest; he reads Aristotle as assuming the philosopher needs the ethical virtues too. Kraut names no scholar on the other side, and the inclusive and dominant readings of the human good are not discussed in the sources read; recorded open, the entry gives Kraut's reading as his.",
+  "akrasia: what does the akratic person lack, and how far does Aristotle side with Socrates (NE VII.3)? Kraut: the agreement is “only partial”; his supplement rejects a reading on which the ignorance consists in the wrong action and prefers one on which full affirmation is briefly lost. Austin's charge (1957) that Aristotle collapsed weakness into loss of control is given as Kraut reports it. No other named scholar's reading was read (Charles, Bobonich and Destrée appear only in bibliographies); recorded open."
+ ],
+ "unread": [
+  {
+   "source": "Kraut, “Aristotle's Ethics” (SEP)",
+   "part": "the bibliography after Curzer 1997, Academic Tools and Related Entries",
+   "why": "the fetched text ended there",
+   "terms": [
+    "eudaimonia",
+    "virtue-mean",
+    "phronesis",
+    "akrasia"
+   ],
+   "effect": "none known: the entries use only the body text, read literally through §10"
+  },
+  {
+   "source": "“Weakness of Will” (SEP)",
+   "part": "the last ~13,000 characters (end of the bibliography, related entries, acknowledgments)",
+   "why": "returned as a summary",
+   "terms": [
+    "akrasia"
+   ],
+   "effect": "the entry is cited without authors, since only the page metadata (Svirsky) was literal"
+  },
+  {
+   "source": "Bekker lines",
+   "part": "the definition of virtue (II.6, the Greek at 1106b, lines 35–39, running into 1107a), the mean relative to us beyond Milo, the definition of prudence (VI.5), “a reason that desires” (VI.2), the hasty and weak kinds (VII.7), the city with good laws (VII.10), X.8's “extends just so far as contemplation”",
+   "why": "no scholar read here cites these lines, Bywater marks only every fifth line, and lines are never estimated",
+   "terms": [
+    "virtue-mean",
+    "phronesis",
+    "akrasia",
+    "eudaimonia"
+   ],
+   "effect": "cited by book and chapter only, which opens the chapter"
+  },
+  {
+   "source": "Scholarship on the inclusive and dominant readings of eudaimonia, and on NE VII.3 (Charles 2007, Bobonich and Destrée 2007, Brown 1997 on the mean relative to us)",
+   "part": "the works themselves",
+   "why": "named only in Kraut's bibliography; not read",
+   "terms": [
+    "eudaimonia",
+    "akrasia",
+    "virtue-mean"
+   ],
+   "effect": "the disputes are given only as Kraut reports them, and recorded open"
+  }
+ ],
+ "ab": [
+  {
+   "ref": "1097b22–1098a20",
+   "chapter": "NE I.7",
+   "words": "the good of man is exercise of his faculties",
+   "line_from": "Richard Kraut, SEP “Aristotle's Ethics” (rev. 11 Aug 2026), §2, which prints the reference as bare page and line",
+   "greek": "ψυχῆς ἐνέργεια γίνεται κατʼ ἀρετήν (Bywater, Perseus TEI: 1098a, lines 15–19)",
+   "how": "content: the scholar's cited passage found in Peters's chapter, its Greek found in Bywater's text and checked to fall inside the cited lines by the Bekker page, column and five-line markers; the Perseus chapter matches Peters's"
+  },
+  {
+   "ref": "1099a31–b6",
+   "chapter": "NE I.8",
+   "words": "without some furniture of fortune",
+   "line_from": "Richard Kraut, SEP “Aristotle's Ethics” (rev. 11 Aug 2026), §2, which prints the reference as bare page and line",
+   "greek": "ἀδύνατον γὰρ ἢ οὐ ῥᾴδιον τὰ καλὰ πράττειν (Bywater, Perseus TEI: 1099a, lines 30–34)",
+   "how": "content: the scholar's cited passage found in Peters's chapter, its Greek found in Bywater's text and checked to fall inside the cited lines by the Bekker page, column and five-line markers; the Perseus chapter matches Peters's"
+  },
+  {
+   "ref": "1106a36–b7",
+   "chapter": "NE II.6",
+   "words": "too little for Milo, too much for the beginner",
+   "line_from": "Richard Kraut, SEP “Aristotle's Ethics” (rev. 11 Aug 2026), §5.1, which prints the reference as bare page and line",
+   "greek": "Μίλωνι μὲν γὰρ ὀλίγον (Bywater, Perseus TEI: 1106b, lines 1–4)",
+   "how": "content: the scholar's cited passage found in Peters's chapter, its Greek found in Bywater's text and checked to fall inside the cited lines by the Bekker page, column and five-line markers; the Perseus chapter matches Peters's"
+  },
+  {
+   "ref": "1106b28–33",
+   "chapter": "NE II.6",
+   "words": "easy to miss the mark and hard to hit",
+   "line_from": "Richard Kraut, SEP “Aristotle's Ethics” (rev. 11 Aug 2026), §5.1, which prints the reference as bare page and line",
+   "greek": "ῥᾴδιον μὲν τὸ ἀποτυχεῖν (Bywater, Perseus TEI: 1106b, lines 30–34)",
+   "how": "content: the scholar's cited passage found in Peters's chapter, its Greek found in Bywater's text and checked to fall inside the cited lines by the Bekker page, column and five-line markers; the Perseus chapter matches Peters's"
+  },
+  {
+   "ref": "1144a7–8",
+   "chapter": "NE VI.12",
+   "words": "ensures the rightness of the end aimed at",
+   "line_from": "Richard Kraut, SEP “Aristotle's Ethics” (rev. 11 Aug 2026), §5.3, which prints the reference as bare page and line",
+   "greek": "ἡ μὲν γὰρ ἀρετὴ τὸν σκοπὸν ποιεῖ ὀρθόν, ἡ δὲ φρόνησις τὰ πρὸς τοῦτον (Bywater, Perseus TEI: 1144a, lines 5–9)",
+   "how": "content: the scholar's cited passage found in Peters's chapter, its Greek found in Bywater's text and checked to fall inside the cited lines by the Bekker page, column and five-line markers; the Perseus chapter matches Peters's"
+  },
+  {
+   "ref": "1144a23–8",
+   "chapter": "NE VI.12",
+   "words": "the power of the villain",
+   "line_from": "Richard Kraut, SEP “Aristotle's Ethics” (rev. 11 Aug 2026), §5.3, which prints the reference as bare page and line",
+   "greek": "πανουργία (Bywater, Perseus TEI: 1144a, lines 25–29)",
+   "how": "content: the scholar's cited passage found in Peters's chapter, its Greek found in Bywater's text and checked to fall inside the cited lines by the Bekker page, column and five-line markers; the Perseus chapter matches Peters's"
+  },
+  {
+   "ref": "1144b14–17",
+   "chapter": "NE VI.13",
+   "words": "the latter is impossible without prudence",
+   "line_from": "Richard Kraut, SEP “Aristotle's Ethics” (rev. 11 Aug 2026), §4, which prints the reference as bare page and line",
+   "greek": "ἡ κυρία οὐ γίνεται ἄνευ φρονήσεως (Bywater, Perseus TEI: 1144b, lines 15–19)",
+   "how": "content: the scholar's cited passage found in Peters's chapter, its Greek found in Bywater's text and checked to fall inside the cited lines by the Bekker page, column and five-line markers; the Perseus chapter matches Peters's"
+  },
+  {
+   "ref": "1145a8–11",
+   "chapter": "NE VI.13",
+   "words": "does not rule it, but rules in its interests",
+   "line_from": "Richard Kraut, SEP “Aristotle's Ethics” (rev. 11 Aug 2026), §6, which prints the reference as bare page and line",
+   "greek": "ἐκείνης οὖν ἕνεκα ἐπιτάττει (Bywater, Perseus TEI: 1145a, lines 5–9 (the sentence runs into 10–14))",
+   "how": "content: the scholar's cited passage found in Peters's chapter, its Greek found in Bywater's text and checked to fall inside the cited lines by the Bekker page, column and five-line markers; the Perseus chapter matches Peters's"
+  },
+  {
+   "ref": "1145b2–7",
+   "chapter": "NE VII.1",
+   "words": "establish, if possible, the truth of all the current opinions",
+   "line_from": "Richard Kraut, SEP “Aristotle's Ethics” (rev. 11 Aug 2026), §7, which prints the reference as bare page and line",
+   "greek": "τιθέντας τὰ φαινόμενα (Bywater, Perseus TEI: 1145b, lines 1–4)",
+   "how": "content: the scholar's cited passage found in Peters's chapter, its Greek found in Bywater's text and checked to fall inside the cited lines by the Bekker page, column and five-line markers; the Perseus chapter matches Peters's"
+  },
+  {
+   "ref": "1145b25–8",
+   "chapter": "NE VII.2",
+   "words": "this theory evidently conflicts with experience",
+   "line_from": "Richard Kraut, SEP “Aristotle's Ethics” (rev. 11 Aug 2026), §7, which prints the reference as bare page and line",
+   "greek": "ἀμφισβητεῖ τοῖς φαινομένοις ἐναργῶς (Bywater, Perseus TEI: 1145b, lines 25–29)",
+   "how": "content: the scholar's cited passage found in Peters's chapter, its Greek found in Bywater's text and checked to fall inside the cited lines by the Bekker page, column and five-line markers; the Perseus chapter matches Peters's"
+  },
+  {
+   "ref": "1147a10–24",
+   "chapter": "NE VII.3",
+   "words": "asleep, mad, or drunk",
+   "line_from": "Richard Kraut, SEP “Aristotle's Ethics” (rev. 11 Aug 2026), §7, which prints the reference as bare page and line",
+   "greek": "τὸν καθεύδοντα καὶ μαινόμενον καὶ οἰνωμένον (Bywater, Perseus TEI: 1147a, lines 10–14)",
+   "how": "content: the scholar's cited passage found in Peters's chapter, its Greek found in Bywater's text and checked to fall inside the cited lines by the Bekker page, column and five-line markers; the Perseus chapter matches Peters's"
+  },
+  {
+   "ref": "1147b6–7",
+   "chapter": "NE VII.3",
+   "words": "recovers his knowledge",
+   "line_from": "Richard Kraut, SEP “Aristotle's Ethics” (rev. 11 Aug 2026), Kraut, supplement",
+   "greek": "λύεται ἡ ἄγνοια (Bywater, Perseus TEI: 1147b, lines 5–9)",
+   "how": "content: the scholar's cited passage found in Peters's chapter, its Greek found in Bywater's text and checked to fall inside the cited lines by the Bekker page, column and five-line markers; the Perseus chapter matches Peters's"
+  },
+  {
+   "ref": "1147b13–17",
+   "chapter": "NE VII.3",
+   "words": "what Socrates sought to establish really is the case",
+   "line_from": "Richard Kraut, SEP “Aristotle's Ethics” (rev. 11 Aug 2026), §7, which prints the reference as bare page and line",
+   "greek": "ἔοικεν ὃ ἐζήτει Σωκράτης συμβαίνειν (Bywater, Perseus TEI: 1147b, lines 10–19)",
+   "how": "content: the scholar's cited passage found in Peters's chapter, its Greek found in Bywater's text and checked to fall inside the cited lines by the Bekker page, column and five-line markers; the Perseus chapter matches Peters's"
+  },
+  {
+   "ref": "1149a33–4",
+   "chapter": "NE VII.6",
+   "words": "its author is to be treated as an enemy",
+   "line_from": "Richard Kraut, SEP “Aristotle's Ethics” (rev. 11 Aug 2026), §7, which prints the reference as bare page and line",
+   "greek": "ὥσπερ συλλογισάμενος (Bywater, Perseus TEI: 1149a, lines 30–34)",
+   "how": "content: the scholar's cited passage found in Peters's chapter, its Greek found in Bywater's text and checked to fall inside the cited lines by the Bekker page, column and five-line markers; the Perseus chapter matches Peters's"
+  },
+  {
+   "ref": "1152a6–7",
+   "chapter": "NE VII.10",
+   "words": "It is impossible for the same man to be at once prudent and incontinent",
+   "line_from": "Richard Kraut, SEP “Aristotle's Ethics” (rev. 11 Aug 2026), Kraut, supplement",
+   "greek": "ἅμα φρόνιμον καὶ ἀκρατῆ (Bywater, Perseus TEI: 1152a, lines 5–9)",
+   "how": "content: the scholar's cited passage found in Peters's chapter, its Greek found in Bywater's text and checked to fall inside the cited lines by the Bekker page, column and five-line markers; the Perseus chapter matches Peters's"
+  },
+  {
+   "ref": "1177b4–15",
+   "chapter": "NE X.7",
+   "words": "the politician’s life also is not a leisurely occupation",
+   "line_from": "Richard Kraut, SEP “Aristotle's Ethics” (rev. 11 Aug 2026), §10, which prints the reference as bare page and line",
+   "greek": "ἄσχολος (Bywater, Perseus TEI: 1177b, lines 10–14)",
+   "how": "content: the scholar's cited passage found in Peters's chapter, its Greek found in Bywater's text and checked to fall inside the cited lines by the Bekker page, column and five-line markers; the Perseus chapter matches Peters's"
+  },
+  {
+   "ref": "1178a23–b7",
+   "chapter": "NE X.8",
+   "words": "need but a small supply of external goods",
+   "line_from": "Richard Kraut, SEP “Aristotle's Ethics” (rev. 11 Aug 2026), §6, which prints the reference as bare page and line",
+   "greek": "ἐκτὸς χορηγίας (Bywater, Perseus TEI: 1178a, lines 20–24)",
+   "how": "content: the scholar's cited passage found in Peters's chapter, its Greek found in Bywater's text and checked to fall inside the cited lines by the Bekker page, column and five-line markers; the Perseus chapter matches Peters's"
+  }
+ ],
+ "terms": {
+  "eudaimonia": {
+   "new_d": [
+    {
+     "text": "Aristotle's term for the highest human good, usually translated “happiness” or “flourishing”: activity of the rational part of the soul in accordance with virtue, over a complete life.",
+     "claims": [
+      {
+       "by": "NE I.7"
+      },
+      {
+       "by": "KRA"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Nicomachean Ethics I.7 looks for the final end of everything a person does.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ]
+    },
+    {
+     "text": "An end pursued for itself and never for the sake of anything else is final without qualification, and happiness fits that description: “we always choose it for itself, and never for the sake of something else” (NE I.7).",
+     "claims": [
+      {
+       "by": "NE I.7"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "It is also self-sufficient, which Aristotle takes to mean that by itself it makes life desirable and lacking in nothing (NE I.7).",
+     "claims": [
+      {
+       "by": "NE I.7"
+      }
+     ]
+    },
+    {
+     "text": "To say more precisely what happiness is, Aristotle asks for the function (ergon) of a human being.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Nutrition and growth are shared with plants, and sensation with horses and cattle; what remains is the active life of the part of us that has reason (NE I.7).",
+     "claims": [
+      {
+       "by": "NE I.7"
+      }
+     ]
+    },
+    {
+     "text": "A function is done well when it is done in accordance with the thing's own excellence, so the human good is “exercise of his faculties in accordance with excellence or virtue” (NE I.7, 1097b22–1098a20).",
+     "claims": [
+      {
+       "by": "NE I.7, 1097b22–1098a20"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Peters's “exercise of his faculties” renders the Greek psuchēs energeia, activity of the soul.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ],
+     "note": "Greek checked in Bywater's text (1098a16; 1106b27) and Peters's own parenthesis"
+    },
+    {
+     "text": "It takes a complete life: “one swallow or one fine day does not make a spring” (NE I.7).",
+     "claims": [
+      {
+       "by": "NE I.7"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Richard Kraut sums up the definition as “activity of the rational part of the soul in accordance with virtue”, and notes that Aristotle identifies happiness with virtuous activity, where one traditional conception had identified it with virtue itself.",
+     "claims": [
+      {
+       "by": "KRA"
+      }
+     ]
+    },
+    {
+     "text": "Happiness also needs external goods, since it is impossible, or not easy, to act nobly “without some furniture of fortune” (NE I.8, 1099a31–b6).",
+     "claims": [
+      {
+       "by": "NE I.8, 1099a31–b6"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Friends, wealth and political influence serve as instruments, and the lack of good birth, children or good looks spoils it (NE I.8).",
+     "claims": [
+      {
+       "by": "NE I.8"
+      }
+     ]
+    },
+    {
+     "text": "A man who meets the fate of Priam is not called happy (NE I.9).",
+     "claims": [
+      {
+       "by": "NE I.9"
+      }
+     ]
+    },
+    {
+     "text": "Kraut puts it that “one's happiness is endangered if one is severely lacking in certain advantages”.",
+     "claims": [
+      {
+       "by": "KRA"
+      }
+     ]
+    },
+    {
+     "text": "Book X returns to the question.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "If happiness is the exercise of virtue, it is the exercise of the highest virtue, the excellence of the best part of us, and this, Aristotle says, “consists in speculation or contemplation” (NE X.7).",
+     "claims": [
+      {
+       "by": "NE X.7"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Contemplation is the most continuous of activities, the most self-sufficient, and the only one loved for its own sake alone (NE X.7), while the lives of the statesman and the soldier are unleisurely and aim at further ends (NE X.7, 1177b4–15).",
+     "claims": [
+      {
+       "by": "NE X.7"
+      },
+      {
+       "by": "NE X.7, 1177b4–15"
+      }
+     ]
+    },
+    {
+     "text": "The life of the moral virtues is happy “in a secondary sense” (NE X.8).",
+     "claims": [
+      {
+       "by": "NE X.8"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Contemplative happiness needs “but a small supply of external goods” (NE X.8, 1178a23–b7), and “Happiness, then, extends just so far as contemplation” (NE X.8).",
+     "claims": [
+      {
+       "by": "NE X.8, 1178a23–b7"
+      },
+      {
+       "by": "NE X.8"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Whether Book X fits the rest of the Ethics is disputed.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Kraut reports that some scholars have held that “X.7–8 are deeply at odds with the rest of the Ethics”; his own reading is that Aristotle assumes the philosopher will need the ethical virtues too, and he names no scholar on the other side.",
+     "claims": [
+      {
+       "by": "KRA"
+      }
+     ]
+    }
+   ],
+   "s": "Aristotle, Nicomachean Ethics I.7–9, X.7–8 (Peters trans.)",
+   "src": "KRA",
+   "srcs": [],
+   "reread": {
+    "of": "glossary-aristotle.json (2026-10-27), kept there under superseded",
+    "old": [
+     {
+      "text": "In F. H. Peters's translation the good of man is “exercise of his faculties in accordance with excellence or virtue, or, if there be more than one, in accordance with the best and most complete virtue”.",
+      "verdict": "quotation verbatim in Peters (NE I.7) but 24 words, over the 15-word limit; replaced by a 9-word quotation of the same sentence"
+     },
+     {
+      "text": "Richard Kraut writes that “using reason well over the course of a full life is what happiness consists in”, and that one must also possess “such goods as friends, wealth, and power”.",
+      "verdict": "both quotations verbatim in Kraut §2 (revision of 11 August 2026; confirmed by the reviewer), supported; replaced so the entry rests on Peters I.8 and Kraut §2 as read today"
+     },
+     {
+      "text": "In Book X perfect happiness consists in contemplation, and the happiest kind of life is that of a philosopher.",
+      "verdict": "supported (Kraut §10; Peters X.7–8); kept in substance, now stated from the text with X.7 and X.8 cited"
+     }
+    ]
+   }
+  },
+  "virtue-mean": {
+   "new_d": [
+    {
+     "text": "Aristotle's account of virtue of character as a settled disposition to choose what is intermediate, relative to us, in feeling and action, between a vice of excess and a vice of deficiency, as practical wisdom would determine it.",
+     "claims": [
+      {
+       "by": "NE II.6"
+      },
+      {
+       "by": "KRA"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Nicomachean Ethics II.6 takes it as settled that virtue is a state of character (hexis), which Peters translates “habit or trained faculty”, and asks which state it is.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ]
+    },
+    {
+     "text": "The excellence of a thing makes it good and makes it do its work well, so human virtue is “the habit or trained faculty that makes a man good” (NE II.6).",
+     "claims": [
+      {
+       "by": "NE II.6"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "In anything continuous and divisible one can take more, less or an equal amount, either in the thing itself or relative to us.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The mean in the thing is equidistant from both extremes and “one and the same for all”; the mean relative to us is “neither too much nor too little for us”, and differs from person to person (NE II.6).",
+     "claims": [
+      {
+       "by": "NE II.6"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "If ten pounds of food is too much and two too little, the trainer will not for that reason order six, which may be “too little for Milo, too much for the beginner” (NE II.6, 1106a36–b7).",
+     "claims": [
+      {
+       "by": "NE II.6, 1106a36–b7"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Richard Kraut writes that the mean must be determined in a way that “takes into account the particular circumstances of the individual”, and that finding it “is not a mechanical or thoughtless procedure”.",
+     "claims": [
+      {
+       "by": "KRA"
+      }
+     ]
+    },
+    {
+     "text": "Virtue of character concerns feelings and actions, which admit of excess, deficiency and the intermediate.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "To feel fear, confidence, appetite, anger or pity at the right times, on the right occasions, towards the right people, for the right end and in the right way is the intermediate and the best (NE II.6).",
+     "claims": [
+      {
+       "by": "NE II.6"
+      }
+     ]
+    },
+    {
+     "text": "There are many ways of going wrong and one way of going right, so virtue is hard: “easy to miss the mark and hard to hit” (NE II.6, 1106b28–33).",
+     "claims": [
+      {
+       "by": "NE II.6, 1106b28–33"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Aristotle's definition follows.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Virtue “is a habit or trained faculty of choice” (NE II.6), lying in the mean relative to us and determined by reason, “the reason by which the prudent man would determine it” (NE II.6).",
+     "claims": [
+      {
+       "by": "NE II.6"
+      },
+      {
+       "by": "NE II.6"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "The prudent man is Peters's word for the phronimos, the person of practical wisdom (see Phronesis).",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ]
+    },
+    {
+     "text": "In its essence virtue is a mean; judged by what is best and right it is “the extreme of perfection” (NE II.6).",
+     "claims": [
+      {
+       "by": "NE II.6"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Peters renders mesotēs as “moderation” and to meson as “the mean”, printing the Greek beside his words (NE II.6).",
+     "claims": [
+      {
+       "by": "NE II.6"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens",
+     "note": "Greek checked in Bywater's text (1098a16; 1106b27) and Peters's own parenthesis"
+    },
+    {
+     "text": "Kraut stresses that the right amount can be large: Aristotle's treatment “endorses the idea that we should sometimes have strong feelings”.",
+     "claims": [
+      {
+       "by": "KRA"
+      }
+     ]
+    },
+    {
+     "text": "Some feelings and actions have no mean.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Malevolence, shamelessness and envy, adultery, theft and murder have names that “imply badness”, and they are wrong however they are done (NE II.6).",
+     "claims": [
+      {
+       "by": "NE II.6"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Chapter 7 runs through a table: courage is the mean in fear and confidence, with foolhardiness and cowardice as its extremes; temperance lies between profligacy and insensibility; liberality lies between prodigality and illiberality; and several means and extremes have no name in Greek (NE II.7).",
+     "claims": [
+      {
+       "by": "NE II.7"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The extremes are more contrary to each other than to the mean, and one extreme is often the more opposed: cowardice to courage, profligacy to temperance (NE II.8).",
+     "claims": [
+      {
+       "by": "NE II.8"
+      }
+     ]
+    },
+    {
+     "text": "For practice, Aristotle advises steering away from the more opposed extreme, noticing what one is prone to, so as to “bend ourselves in the opposite direction”, as one straightens a bent stick (NE II.9).",
+     "claims": [
+      {
+       "by": "NE II.9"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "How far one may stray before deserving blame cannot be fixed by argument; such matters “can only be determined by perception” (NE II.9).",
+     "claims": [
+      {
+       "by": "NE II.9"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    }
+   ],
+   "s": "Aristotle, Nicomachean Ethics II.6–9 (Peters trans.)",
+   "src": "KRA",
+   "srcs": []
+  },
+  "phronesis": {
+   "new_d": [
+    {
+     "text": "Aristotle's name for the intellectual virtue of deliberating well about what is good for a human life as a whole, translated “prudence” by Peters. Virtue of character makes the goal right and practical wisdom what leads to it, and neither is complete without the other.",
+     "claims": [
+      {
+       "by": "NE VI.5, VI.12–13"
+      },
+      {
+       "by": "KRA"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Book VI of the Nicomachean Ethics starts from a gap left in Book II: the mean is what right reason prescribes, and that rule, though true, is not yet precise (NE VI.1).",
+     "claims": [
+      {
+       "by": "NE VI.1"
+      }
+     ]
+    },
+    {
+     "text": "Aristotle divides the rational part of the soul into a scientific part, which knows what cannot be otherwise, and a calculative part, which deals with what can, since “no one deliberates about things that are invariable” (NE VI.1).",
+     "claims": [
+      {
+       "by": "NE VI.1"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Choice (prohairesis) is desire following on deliberation.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "For a choice to be good the reasoning must be true and the desire right, and the one must affirm what the other pursues (NE VI.2).",
+     "claims": [
+      {
+       "by": "NE VI.2"
+      }
+     ]
+    },
+    {
+     "text": "Choice can be called “either a reason that desires, or a desire that reasons” (NE VI.2).",
+     "claims": [
+      {
+       "by": "NE VI.2"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "The prudent person deliberates well about what is good for himself, “with a view to well-being or living well” (NE VI.5).",
+     "claims": [
+      {
+       "by": "NE VI.5"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Practical wisdom cannot be a science, since action concerns what can be otherwise, and cannot be a craft, since action differs in kind from production; the end of action is acting well itself (NE VI.5).",
+     "claims": [
+      {
+       "by": "NE VI.5"
+      }
+     ]
+    },
+    {
+     "text": "Aristotle concludes that it is “a formed faculty which apprehends truth by reasoning or calculation” in the field of human good (NE VI.5), and gives Pericles as his example.",
+     "claims": [
+      {
+       "by": "NE VI.5"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Temperance, sōphrosunē, takes its name from preserving practical wisdom: pleasure and pain distort judgments about what to do, and leave a judgment such as the sum of a triangle's angles untouched (NE VI.5).",
+     "claims": [
+      {
+       "by": "NE VI.5"
+      }
+     ]
+    },
+    {
+     "text": "Practical wisdom needs knowledge of particulars as well as universals, since it issues in action and “the field of action is the field of particulars” (NE VI.7).",
+     "claims": [
+      {
+       "by": "NE VI.7"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Someone who knows that chicken is light and wholesome will heal better than someone who knows only that light meats are digestible (NE VI.7).",
+     "claims": [
+      {
+       "by": "NE VI.7"
+      }
+     ]
+    },
+    {
+     "text": "A young person can master mathematics and still lack practical wisdom, which deals with particulars learned by experience, and “experience is the fruit of years” (NE VI.8).",
+     "claims": [
+      {
+       "by": "NE VI.8"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "It grasps the last particular, by a perception like the one that sees that a figure is a triangle, while intuitive reason grasps first principles (NE VI.8).",
+     "claims": [
+      {
+       "by": "NE VI.8"
+      }
+     ]
+    },
+    {
+     "text": "A person does his work well when he acts in accordance with both practical wisdom and virtue of character, for virtue “ensures the rightness of the end aimed at”, and practical wisdom the rightness of the means (NE VI.12, 1144a7–8); Kraut renders the line “Virtue makes the goal right, practical wisdom the things leading to it”.",
+     "claims": [
+      {
+       "by": "NE VI.12, 1144a7–8"
+      },
+      {
+       "by": "KRA"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Cleverness (deinotēs), the power to carry out the means to any proposed end, becomes “the power of the villain” when the end is base (NE VI.12, 1144a23–8).",
+     "claims": [
+      {
+       "by": "NE VI.12, 1144a23–8"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Practical wisdom needs cleverness and also good character, because vice perverts the starting point of practical reasoning: “it is impossible to be prudent without being morally good” (NE VI.12).",
+     "claims": [
+      {
+       "by": "NE VI.12"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Natural virtue, present even in children and animals, does harm without reason, like a strong body that cannot see; full virtue is natural virtue guided by reason, and “the latter is impossible without prudence” (NE VI.13, 1144b14–17).",
+     "claims": [
+      {
+       "by": "NE VI.13, 1144b14–17"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens",
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Socrates was right that the virtues need practical wisdom and wrong to think they are forms of it (NE VI.13).",
+     "claims": [
+      {
+       "by": "NE VI.13"
+      }
+     ]
+    },
+    {
+     "text": "Virtue is a formed habit “implying right reason”, and right reason in these matters is practical wisdom (NE VI.13).",
+     "claims": [
+      {
+       "by": "NE VI.13"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Since practical wisdom brings all the virtues of character with it, a fully virtuous person cannot have one of them without the rest (NE VI.13).",
+     "claims": [
+      {
+       "by": "NE VI.13"
+      }
+     ]
+    },
+    {
+     "text": "It gives orders for the sake of theoretical wisdom and gives none to it (NE VI.13, 1145a8–11); Kraut puts it that practical wisdom “issues commands for its sake”, and adds that it “cannot be acquired solely by learning general rules”.",
+     "claims": [
+      {
+       "by": "NE VI.13, 1145a8–11"
+      },
+      {
+       "by": "KRA"
+      }
+     ]
+    }
+   ],
+   "s": "Aristotle, Nicomachean Ethics VI.1–13 (Peters trans.)",
+   "src": "KRA",
+   "srcs": []
+  },
+  "akrasia": {
+   "new_d": [
+    {
+     "text": "Acting against one's own better judgment under the pull of passion. Aristotle's account, in Nicomachean Ethics VII.1–10 (Peters: “incontinence”), distinguishes it from vice: the akratic person's choice is good, and his action fails it.",
+     "claims": [
+      {
+       "by": "NE VII.1–10"
+      },
+      {
+       "by": "KRA"
+      }
+     ]
+    }
+   ],
+   "new_text": [
+    {
+     "text": "Book VII names three conditions of character to avoid, vice, incontinence and brutality, and opposes continence to incontinence (NE VII.1).",
+     "claims": [
+      {
+       "by": "NE VII.1"
+      }
+     ]
+    },
+    {
+     "text": "Aristotle states his method here: set out the received opinions, work through the puzzles they raise, and “establish, if possible, the truth of all the current opinions” (NE VII.1, 1145b2–7).",
+     "claims": [
+      {
+       "by": "NE VII.1, 1145b2–7"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Among those opinions is that the incontinent person knows the act is bad and does it from passion, while the continent person, knowing his appetites bad, follows reason (NE VII.1).",
+     "claims": [
+      {
+       "by": "NE VII.1"
+      }
+     ]
+    },
+    {
+     "text": "Socrates held that there is no such thing as incontinence: no one acts against what is best except through ignorance (NE VII.2).",
+     "claims": [
+      {
+       "by": "NE VII.2"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Aristotle replies that the thesis “evidently conflicts with experience” (NE VII.2, 1145b25–8); Kraut translates the same words as conflicting “with the appearances”.",
+     "claims": [
+      {
+       "by": "NE VII.2, 1145b25–8"
+      },
+      {
+       "by": "KRA"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Others say that the incontinent person has opinion and lacks knowledge, and Aristotle answers that some people hold their opinions as firmly as others hold what they know (NE VII.3).",
+     "claims": [
+      {
+       "by": "NE VII.3"
+      }
+     ]
+    },
+    {
+     "text": "His solution distinguishes ways of knowing.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "A person can have knowledge without using it, and acting against knowledge one is not attending to is not strange (NE VII.3).",
+     "claims": [
+      {
+       "by": "NE VII.3"
+      }
+     ]
+    },
+    {
+     "text": "Practical reasoning has a universal premise and a particular one, and a person can use the universal while the particular lies idle (NE VII.3).",
+     "claims": [
+      {
+       "by": "NE VII.3"
+      }
+     ]
+    },
+    {
+     "text": "Passion puts a person in the condition of those who are “asleep, mad, or drunk” (NE VII.3, 1147a10–24), who in a way have knowledge and in a way lack it.",
+     "claims": [
+      {
+       "by": "NE VII.3, 1147a10–24"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Saying the right words proves nothing, since the incontinent “repeat words in the same sort of way that actors do” (NE VII.3).",
+     "claims": [
+      {
+       "by": "NE VII.3"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Aristotle then gives the cause.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "One universal judgment forbids tasting; another holds that all sweet things are pleasant; the particular judgment “this thing before me is sweet” is present, and so is appetite, which can move the limbs (NE VII.3).",
+     "claims": [
+      {
+       "by": "NE VII.3"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "The incontinent person thus acts in a way under the influence of reason and opinion, and it is the desire that is opposed to right reason (NE VII.3).",
+     "claims": [
+      {
+       "by": "NE VII.3"
+      }
+     ]
+    },
+    {
+     "text": "Animals cannot be incontinent, since they have no universal judgments (NE VII.3).",
+     "claims": [
+      {
+       "by": "NE VII.3"
+      }
+     ]
+    },
+    {
+     "text": "He “recovers his knowledge” the way a drunk or sleeping man does (NE VII.3, 1147b6–7).",
+     "claims": [
+      {
+       "by": "NE VII.3, 1147b6–7"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "The last premise is a judgment about something perceived, and it governs action; under passion the incontinent person lacks it, or has it only as a drunk man recites Empedocles, so that “what Socrates sought to establish really is the case” (NE VII.3, 1147b13–17).",
+     "claims": [
+      {
+       "by": "NE VII.3, 1147b13–17"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "Readers differ on what the incontinent person lacks.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Kraut writes that “Aristotle's agreement with Socrates is only partial”: passion can rival reason, weaken it or bypass it.",
+     "claims": [
+      {
+       "by": "KRA"
+      }
+     ]
+    },
+    {
+     "text": "In a supplement he sets out a reading on which the akratic's “ignorance is constituted by his error in action”, calls it “a difficult reading to defend”, since Aristotle says the ignorance is dissolved and the person knows again, and favours a reading on which what is briefly lost is “one's full recognition or affirmation of the fact”.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ]
+    },
+    {
+     "text": "In the main entry Kraut also reports J.",
+     "claims": [
+      {
+       "by": "KRA"
+      }
+     ]
+    },
+    {
+     "text": "L.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ]
+    },
+    {
+     "text": "Austin's charge (1957) that Plato and Aristotle, in Kraut's words, “collapsed all succumbing to temptation into losing control of ourselves”, and argues that Aristotle should be acquitted of it.",
+     "claims": [
+      {
+       "by": "KRA"
+      },
+      {
+       "by": "KRA (Austin 1957 as Kraut quotes him)"
+      }
+     ]
+    },
+    {
+     "text": "Incontinence in the strict sense concerns the bodily pleasures of touch and taste that temperance governs; people are called incontinent in anger, honour or gain only with a qualification (NE VII.4).",
+     "claims": [
+      {
+       "by": "NE VII.4"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "Anger seems “to hear something of what reason says, but to mis-hear it”, like a hasty servant (NE VII.6).",
+     "claims": [
+      {
+       "by": "NE VII.6"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "It infers that the offender must be treated as an enemy (NE VII.6, 1149a33–4), so incontinence in anger is less disgraceful than incontinence in appetite (NE VII.6).",
+     "claims": [
+      {
+       "by": "NE VII.6, 1149a33–4"
+      },
+      {
+       "by": "NE VII.6"
+      }
+     ]
+    },
+    {
+     "text": "There are two kinds, impetuosity and weakness: some people deliberate and then, under passion, fail to keep to their decision; others are led by passion because they have not deliberated (NE VII.7).",
+     "claims": [
+      {
+       "by": "NE VII.7"
+      }
+     ]
+    },
+    {
+     "text": "Kraut: “At the time of action, the impetuous person experiences no internal conflict.”",
+     "claims": [
+      {
+       "by": "KRA"
+      }
+     ]
+    },
+    {
+     "text": "Incontinence differs from vice.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The profligate keeps to his choice and feels no remorse, so he is incurable; the incontinent person regrets, and his badness comes and goes, like epilepsy (NE VII.8).",
+     "claims": [
+      {
+       "by": "NE VII.8"
+      }
+     ]
+    },
+    {
+     "text": "Since his choice is good, “he is only half bad” (NE VII.10), like a city that passes excellent decrees and has good laws and never carries them out (NE VII.10).",
+     "claims": [
+      {
+       "by": "NE VII.10"
+      },
+      {
+       "by": "NE VII.10"
+      }
+     ],
+     "quotes": "Peters verbatim, checked by script against the cited chapter, or with a Bekker number the paragraph it opens"
+    },
+    {
+     "text": "The prudent person cannot be incontinent (NE VII.10, 1152a6–7), since practical wisdom requires good character and readiness to act on what one knows (NE VII.10).",
+     "claims": [
+      {
+       "by": "NE VII.10, 1152a6–7"
+      },
+      {
+       "by": "NE VII.10"
+      }
+     ]
+    },
+    {
+     "text": "The continent person has bad appetites and is not led by them; the temperate person has none (NE VII.9).",
+     "claims": [
+      {
+       "by": "NE VII.9"
+      }
+     ]
+    },
+    {
+     "text": "In the modern debate the condition is called weakness of will.",
+     "claims": [
+      {
+       "by": "framing or cross-reference (no claim beyond the sentences around it)"
+      }
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The Stanford Encyclopedia's “Weakness of Will” gives Donald Davidson's definition, on which an agent acts incontinently in doing b intentionally while believing an alternative a is open and judging, all things considered, that a would be better, and notes that Plato's Socrates denied that it is possible in the Protagoras.",
+     "claims": [
+      {
+       "by": "WOW"
+      }
+     ]
+    }
+   ],
+   "s": "Aristotle, Nicomachean Ethics VII.1–10 (Peters trans.)",
+   "src": "KRA",
+   "srcs": [
+    "KRA-SUP",
+    "WOW"
+   ]
+  }
+ },
+ "links": "virtue-ethics keeps its paragraph on the mean (II.6–7) and no longer lists phronesis among its key words, so the word now finds the phronesis entry. Related entries: eudaimonia ↔ virtue-mean ↔ phronesis ↔ akrasia, each tie stated in Aristotle's text (II.6 names the prudent man in the definition of virtue; VI.12–13 ties practical wisdom to virtue; VII.2 and VII.10 to akrasia).",
+ "summary": "Three new entries (virtue as a mean, phronesis, akrasia) and eudaimonia re-read, all from the bundled Peters Nicomachean Ethics with Kraut's Stanford entry and its akrasia supplement for interpretation. 17 Bekker numbers, each taken from Kraut and checked against Bywater's Greek, open their paragraph in the book. Two disputes recorded open: Book X and the rest of the Ethics, and what the akratic person lacks."
+}

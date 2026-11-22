@@ -825,6 +825,30 @@ const KANT_AB = {
   "A532/B560": ["Deduction of Cosmical Events", "Kemp Smith", "3:362"],
   "A669/B697": ["cannot be, of themselves and in their own nature, dialectical", "Kemp Smith", "3:442"],
 };
+// Aristotle, Nicomachean Ethics (Peters): his translation prints no Bekker numbers, so each Bekker reference the entries use is
+// listed with its chapter and words from its passage. Each was matched by content to Bywater's Greek text (Oxford, 1894, the text
+// Peters's revised edition follows; Perseus Digital Library edition), whose Bekker page, column and five-line markers place it; the
+// line comes from a named scholar who cites the passage and is checked to fall inside that window. tests/audit/glossary-aristotle-texts.json
+// records each match. [chapter, the passage's words in Peters, where the line comes from]
+const NE_BEKKER = {
+  "1097b22–1098a20": ["I.7", "the good of man is exercise of his faculties", "Kraut §2"],
+  "1099a31–b6": ["I.8", "without some furniture of fortune", "Kraut §2"],
+  "1106a36–b7": ["II.6", "too little for Milo, too much for the beginner", "Kraut §5.1"],
+  "1106b28–33": ["II.6", "easy to miss the mark and hard to hit", "Kraut §5.1"],
+  "1144a7–8": ["VI.12", "ensures the rightness of the end aimed at", "Kraut §5.3"],
+  "1144a23–8": ["VI.12", "the power of the villain", "Kraut §5.3"],
+  "1144b14–17": ["VI.13", "the latter is impossible without prudence", "Kraut §4"],
+  "1145a8–11": ["VI.13", "does not rule it, but rules in its interests", "Kraut §6"],
+  "1145b2–7": ["VII.1", "establish, if possible, the truth of all the current opinions", "Kraut §7"],
+  "1145b25–8": ["VII.2", "this theory evidently conflicts with experience", "Kraut §7"],
+  "1147a10–24": ["VII.3", "asleep, mad, or drunk", "Kraut §7"],
+  "1147b6–7": ["VII.3", "recovers his knowledge", "Kraut, supplement"],
+  "1147b13–17": ["VII.3", "what Socrates sought to establish really is the case", "Kraut §7"],
+  "1149a33–4": ["VII.6", "its author is to be treated as an enemy", "Kraut §7"],
+  "1152a6–7": ["VII.10", "It is impossible for the same man to be at once prudent and incontinent", "Kraut, supplement"],
+  "1177b4–15": ["X.7", "the politician’s life also is not a leisurely occupation", "Kraut §10"],
+  "1178a23–b7": ["X.8", "need but a small supply of external goods", "Kraut §6"],
+};
 const kantFlat = (b) => plain(b.x || "").replace(/<[^>]+>/g, "").replace(/[¹²³⁴⁵⁶⁷⁸⁹⁰]/g, "").replace(/\s+/g, " ");
 const PASSAGE_STYLES = {
   // canon reads the standard scholarly notation as the same reference: part, then p(roposition), d(efinition), a(xiom), post(ulate),
@@ -845,8 +869,13 @@ const PASSAGE_STYLES = {
   "nietzsche-beyond": { book: "classic-nietzsche-beyond", item: /^BGE (Preface|§?\d+A?)$/,
     find: (B, [s]) => { const n = s.replace("§", ""); return n === "Preface" ? headPath(B, [[2, (t) => t === "Preface"]]) : headPath(B, [[3, (t) => t === n || t.startsWith(n + ":")]]); } },
   // Aristotle, Nicomachean Ethics: book and chapter, "NE I.7".
-  "aristotle-ethics": { book: "classic-aristotle-ethics", item: /^NE (I|II|III|IV|V|VI|VII|VIII|IX|X)\.(\d+)$/,
-    find: (B, [book, ch]) => headPath(B, [[2, (t) => t === `Book ${book}`], [4, (t) => t === toRoman(+ch)]]) },
+  // With a Bekker number after it, "NE II.6, 1106b36" (only those listed in NE_BEKKER), the paragraph in that chapter holding its words.
+  "aristotle-ethics": { book: "classic-aristotle-ethics", item: new RegExp(`^NE (I|II|III|IV|V|VI|VII|VIII|IX|X)\\.(\\d+)(?:, (${Object.keys(NE_BEKKER).join("|")}))?$`),
+    find: (B, [book, ch, bk]) => {
+      const h = headPath(B, [[2, (t) => t === `Book ${book}`], [4, (t) => t === toRoman(+ch)]]); if (h < 0 || !bk) return h;
+      const e = NE_BEKKER[bk]; if (!e || e[0] !== `${book}.${ch}`) return -1;
+      for (let i = h + 1; i < B.length && !(B[i].k === "h" && B[i].l <= 4); i++) if (B[i].k !== "fn" && kantFlat(B[i]).includes(e[1])) return i;
+      return -1; } },
   // Rousseau, The Social Contract: book and chapter, "SC I.6".
   "rousseau-social-contract": { book: "classic-rousseau-social-contract", item: /^SC (I|II|III|IV)\.(\d+)$/,
     find: (B, [book, ch]) => headPath(B, [[2, (t) => t === `Book ${book}`], [3, (t) => t.startsWith(`${toRoman(+ch)}. `)]]) },

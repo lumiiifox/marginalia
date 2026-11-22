@@ -46,6 +46,13 @@ pages matched by content to Kemp Smith's Commentary and the SEP entries and chec
 (noumena), Rohlf from §5.1, A/B pages for the antinomy statements (the audit's `unread`). "Kantian joke" waits for a named source (first
 place to look: the editors' introduction to Fanged Noumena); Land's 1988 essay waits for the owner's pages of Fanged Noumena pp. 55–80.
 
+### Aristotle, read in the Nicomachean Ethics (owner's request, 2026-11-22)
+
+The route turns to Plato and Aristotle after Deleuze. Read 2026-11-22 in the bundled Peters: eudaimonia re-read (its first record kept under
+`superseded` in glossary-aristotle.json), and virtue-mean, phronesis and akrasia (new), in glossary-aristotle-texts.json, with Bekker numbers
+taken from Kraut's Stanford entry and checked against Bywater's Greek. Next: the Metaphysics entries (four-causes, potentiality, essence,
+substance) once a translation is bundled; then Plato. Still unread: the scholarship Kraut only cites (the audit's `unread`).
+
 ## Audited
 
 The 15 Deleuze and Guattari entries and structuralism (glossary-dg.json); Spinoza's metaphysics (glossary-spinoza.json); the ancient and
