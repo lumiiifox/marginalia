@@ -852,6 +852,102 @@ const NE_BEKKER = {
   "1178a23–b7": ["X.8", "need but a small supply of external goods", "Kraut §6"],
 };
 const kantFlat = (b) => plain(b.x || "").replace(/<[^>]+>/g, "").replace(/[¹²³⁴⁵⁶⁷⁸⁹⁰]/g, "").replace(/\s+/g, " ");
+// Plato in Jowett: his translation prints no Stephanus numbers, so each reference the entries use is listed with words of its
+// passage (one block, or several for a section of short exchanges). Each number was matched by content to Burnet's Greek text,
+// whose Stephanus sections Perseus marks (canonical-greekLit, tlg0059): the Greek words that Jowett translates in those blocks were
+// found in the section named; tests/audit/glossary-plato.json records the Greek for each. Never estimated.
+// [the passage's words in Jowett, one string per block; Burnet's section(s)]
+const PLATO_ST = {
+  "Euthyphro 5d": [["Is not piety in every action always the same?", "And what is piety, and what is impiety?", "Piety is doing as I am doing"], "5d"],
+  "Euthyphro 6d": [["explain the general idea which makes all pious things to be pious"], "6d"],
+  "Euthyphro 6e": [["a standard to which I may look", "Piety, then, is that which is dear to the gods"], "6e"],
+  "Euthyphro 8a": [["are both hateful and dear to them?"], "8a"],
+  "Euthyphro 9e": [["what all the gods love is pious and holy"], "9e"],
+  "Euthyphro 10a": [["beloved by the gods because it is holy"], "10a"],
+  "Euthyphro 10d": [["It is loved because it is holy, not holy because it is loved?"], "10d"],
+  "Euthyphro 11a": [["to offer an attribute only"], "11a"],
+  "Euthyphro 12e": [["that part of justice which attends to the gods"], "12e"],
+  "Euthyphro 14b": [["learning how to please the gods in word and deed"], "14b"],
+  "Euthyphro 15c": [["Then we must begin again and ask, What is piety?"], "15c"],
+  "Apology 21a": [["the Pythian prophetess answered, that there was no man wiser"], "21a"],
+  "Apology 21b": [["for I know that I have no wisdom, small or great"], "21b"],
+  "Apology 21d": [["I neither know nor think that I know"], "21d"],
+  "Apology 23a": [["the truth is, O men of Athens, that God only is wise"], "23a"],
+  "Apology 23b": [["knows that his wisdom is in truth worth nothing"], "23b"],
+  "Apology 24b–c": [["It says that Socrates is a doer of evil, who corrupts the youth"], "24b, 24c"],
+  "Apology 30e": [["am a sort of gadfly, given to the state by God"], "30e"],
+  "Apology 31d": [["it always forbids but never commands me"], "31d"],
+  "Apology 32b": [["the trial of the generals who had not taken up the bodies"], "32b"],
+  "Apology 32c–d": [["bade us bring Leon the Salaminian from Salamis"], "32c, 32d"],
+  "Apology 38a": [["the unexamined life is not worth living"], "38a"],
+  "Apology 38b": [["Let thirty minae be the penalty"], "38b"],
+  "Phaedo 65d": [["Is there or is there not an absolute justice?"], "65d"],
+  "Phaedo 72e": [["Your favorite doctrine, Socrates, that knowledge is simply recollection"], "72e"],
+  "Phaedo 74b": [["appear at one time equal, and at another time unequal"], "74b"],
+  "Phaedo 74c": [["But are real equals ever unequal?", "Then these (so-called) equals are not the same with the idea of equality?"], "74c"],
+  "Phaedo 75a": [["strive to attain absolute equality, but fall short of it"], "75a"],
+  "Phaedo 75e": [["may not this be rightly termed recollection?"], "75e"],
+  "Phaedo 78d": [["They must be always the same, Socrates, replied Cebes."], "78d"],
+  "Phaedo 78e": [["The latter, replied Cebes; they are always in a state of change."], "78e"],
+  "Phaedo 79a": [["the unchanging things you can only perceive with the mind"], "79a"],
+  "Phaedo 100c": [["it can be beautiful only in as far as it partakes of absolute beauty"], "100c"],
+  "Phaedo 100d": [["by beauty all beautiful things become beautiful"], "100d"],
+  "Rep. 433a": [["Further, we affirmed that justice was doing one’s own business"], "433a"],
+  "Rep. 434c": [["when the trader, the auxiliary, and the guardian each do their own business"], "434c"],
+  "Rep. 435d": [["the true method is another and a longer one"], "435d"],
+  "Rep. 436b": [["The same thing clearly cannot act or be acted upon in the same part"], "436b"],
+  "Rep. 439c": [["And might a man be thirsty, and yet unwilling to drink?"], "439c"],
+  "Rep. 439d": [["may be termed the irrational or appetitive"], "439d"],
+  "Rep. 440a": [["Look, ye wretches, take your fill of the fair sight", "anger at times goes to war with desire"], "440a"],
+  "Rep. 440b": [["his spirit is on the side of his reason"], "440b"],
+  "Rep. 441a": [["is the natural auxiliary of reason"], "441a"],
+  "Rep. 441c": [["and that they are three in number"], "441c"],
+  "Rep. 441d–e": [["the several qualities of his nature do their own work will be just"], "441e"],
+  "Rep. 441e": [["the passionate or spirited principle to be the subject and ally"], "441e"],
+  "Rep. 442a": [["the largest part of the soul and by nature most insatiable of gain"], "442a"],
+  "Rep. 442b–c": [["retains in pleasure and in pain the commands of reason"], "442c"],
+  "Rep. 442c": [["what is for the interest of each of the three parts and of the whole"], "442c"],
+  "Rep. 442c–d": [["are equally agreed that reason ought to rule"], "442d"],
+  "Rep. 442e–443a": [["make away with a deposit of gold or silver", "guilty of sacrilege or theft, or treachery"], "442e, 443a"],
+  "Rep. 443c": [["was a shadow of justice"], "443c"],
+  "Rep. 443d": [["is his own master and his own law, and at peace with himself"], "443d"],
+  "Rep. 444b": [["a strife which arises among the three principles"], "444b"],
+  "Rep. 444d–e": [["the health and beauty and well-being of the soul"], "444d, 444e"],
+  "Rep. 476b": [["their mind is incapable of seeing or loving absolute beauty"], "476b"],
+  "Rep. 476c": [["who puts the copy in the place of the real object?"], "476c"],
+  "Rep. 476c–d": [["is able to distinguish the idea from the objects which participate in the idea"], "476d"],
+  "Rep. 477b": [["And knowledge is relative to being and knows being."], "477b"],
+  "Rep. 478d": [["Then you would infer that opinion is intermediate?"], "478d"],
+  "Rep. 479e": [["such persons may be said to have opinion but not knowledge?", "But those who see the absolute and eternal and immutable"], "479e"],
+  "Rep. 505a": [["the idea of good is the highest knowledge"], "505a"],
+  "Rep. 507b": [["The many, as we say, are seen but not known, and the ideas are known but not seen."], "507b"],
+  "Rep. 508e": [["that which imparts truth to the known and the power of knowing to the knower"], "508e"],
+  "Rep. 509b": [["the good is not essence, but far exceeds essence in dignity and power"], "509b"],
+  "Rep. 509d": [["Now take a line which has been cut into two unequal"], "509d"],
+  "Rep. 510b": [["the enquiry can only be hypothetical, and instead of going upwards to a principle"], "510b"],
+  "Rep. 511b–c": [["using the hypotheses not as first principles, but only as hypotheses"], "511b, 511c"],
+  "Rep. 511d–e": [["let there be four faculties in the soul"], "511d, 511e"],
+  "Rep. 514a": [["Behold! human beings living in a underground den"], "514a"],
+  "Rep. 515a": [["they see only their own shadows, or the shadows of one another"], "515a"],
+  "Rep. 516a–b": [["first he will see the shadows best, next the reflections"], "516a, 516b"],
+  "Rep. 517b": [["the ascent of the soul into the intellectual world"], "517b"],
+  "Rep. 517b–c": [["the idea of good appears last of all"], "517b, 517c"],
+  "Rep. 518c": [["the power and capacity of learning exists in the soul already"], "518c"],
+  "Rep. 518d": [["some art which will effect conversion"], "518d"],
+  "Rep. 520c": [["must go down to the general underground abode"], "520c"],
+};
+// The blocks of a Stephanus reference: each listed passage's first block inside its dialogue (the Republic, or one dialogue of the
+// Euthyphro–Phaedo volume, after its introduction). [] if any is missing.
+function stephBlocks(B, ref) {
+  const e = PLATO_ST[ref]; if (!e) return [];
+  const d = ref.startsWith("Rep.") ? null : ref.split(" ")[0];
+  let lo = 0, hi = B.length;
+  if (d) { lo = headPath(B, [[2, (t) => t === d], [3, (t) => t === d]]); if (lo < 0) return []; hi = B.findIndex((b, i) => i > lo && b.k === "h" && b.l <= 3); if (hi < 0) hi = B.length; }
+  const out = [];
+  for (const w of e[0]) { let at = -1; for (let i = lo; i < hi; i++) if (B[i].k !== "fn" && kantFlat(B[i]).includes(w)) { at = i; break; } if (at < 0) return []; out.push(at); }
+  return out;
+}
+const stephItem = (pre) => new RegExp(`^(${Object.keys(PLATO_ST).filter((k) => pre.test(k)).map((k) => k.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&")).join("|")})$`);
 const PASSAGE_STYLES = {
   // canon reads the standard scholarly notation as the same reference: part, then p(roposition), d(efinition), a(xiom), post(ulate),
   // pref(ace) or app(endix), and after a proposition its c(orollary), s(cholium: the edition's Note) or d(emonstration: its Proof,
@@ -912,6 +1008,9 @@ const PASSAGE_STYLES = {
   // Kant, Critique of Pure Reason: A/B pages, "A26/B42", "Bxvi" (only those listed in KANT_AB), found by the passage's words.
   "kant-critique": { book: "classic-kant-critique", item: new RegExp(`^(${Object.keys(KANT_AB).map((k) => k.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&")).join("|")})$`),
     find: (B, [ref]) => { const e = KANT_AB[ref]; return e ? B.findIndex((b) => b.k !== "fn" && kantFlat(b).includes(e[0])) : -1; } },
+  // Plato by Stephanus number, "Rep. 433a", "Phaedo 74c", "Euthyphro 10a", "Apology 21d" (only those listed in PLATO_ST), found by the passage's words.
+  "plato-republic-st": { book: "classic-plato-republic", item: stephItem(/^Rep\. /), find: (B, [ref]) => { const b = stephBlocks(B, ref); return b.length ? b[0] : -1; } },
+  "plato-socrates-st": { book: "classic-plato-socrates", item: stephItem(/^(Euthyphro|Apology|Crito|Phaedo) /), find: (B, [ref]) => { const b = stephBlocks(B, ref); return b.length ? b[0] : -1; } },
   "hobbes-leviathan": { book: "classic-hobbes-leviathan", item: /^Lev\. ([IVXL]+)$/,
     find: (B, [ch]) => headPath(B, [[2, (t) => t.startsWith(`${ch}. `)]]) },
 };

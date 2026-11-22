@@ -53,6 +53,13 @@ The route turns to Plato and Aristotle after Deleuze. Read 2026-11-22 in the bun
 taken from Kraut's Stanford entry and checked against Bywater's Greek. Next: the Metaphysics entries (four-causes, potentiality, essence,
 substance) once a translation is bundled; then Plato. Still unread: the scholarship Kraut only cites (the audit's `unread`).
 
+### Plato, read in his own dialogues (owner's request, 2026-11-22)
+
+The owner moves to Plato and Aristotle after Deleuze. Read 2026-11-22 in the bundled Jowett (Euthyphro–Phaedo volume and Republic):
+forms, elenchus and tripartite-soul (new, glossary-plato.json), and the Socrates and Plato thinker cards (thinkers-route.json). Jowett prints
+no Stephanus numbers; each one is matched to Burnet's Greek (Perseus) and listed in PLATO_ST. Recollection has one Phaedo sentence; the Meno
+is not bundled. Still unread: Brown from §4.2, Woodruff §§14–20, the IEP's §§6–10 (the audit's `unread`). Aristotle's ethics was read the same day (above).
+
 ## Audited
 
 The 15 Deleuze and Guattari entries and structuralism (glossary-dg.json); Spinoza's metaphysics (glossary-spinoza.json); the ancient and

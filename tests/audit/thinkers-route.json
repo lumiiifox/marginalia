@@ -256,6 +256,89 @@
     "the influences listed (Locke, Berkeley) and the key works list beyond the Dialogues' date"
    ],
    "review": "Independent reviewer (separate agent, fresh context), 2026-11-21: every sentence checked against SEP “David Hume” (Qu and Radcliffe), SEP “Kant and Hume on Causality” §1 (Ak. 4:260) and the bundled Treatise's Book III headings and Enquiry IV; dates confirmed in SEP §1 and the introduction (1711–1776, 1741, 1748, 1751, 1754–62, 1758, 1779), the bundled Treatise (1739–40), and the Kant–Hume article's Prolegomena reference (Ak. 4:260; 1783 is the standard date). Optional fixes applied as listed. Re-check: pass."
+  },
+  "socrates": {
+   "audited": "2026-11-22",
+   "sources": [
+    "SEP “Socrates” (Debra Nails and S. Sara Monoson, substantive revision 26 May 2022), whole entry read in literal text",
+    "the bundled Jowett: Apology 21a–23b, 24b–c, 30e, 31d, 32b–d, 38a–b; Phaedo 97b–98b (Anaxagoras); Crito (the escape plan); Phaedo's close (the poison)",
+    "SEP “Plato’s Shorter Ethical Works” (Paul Woodruff, substantive revision 18 December 2022), §§2, 9, 13, for the elenchus and the involuntariness of wrongdoing"
+   ],
+   "checked": [
+    "469 BCE, deme of Alopece; Sophroniscus a stoneworker; Phaenarete a midwife (SEP intro, §3)",
+    "Xanthippe; Lamprocles, Sophroniscus, Menexenus named as sons (SEP §3)",
+    "Potidaea 432–429 and the wounded Alcibiades; Delium, praised by Laches; Amphipolis a year later (SEP §3)",
+    "the 406 prytany and the Arginusae generals (SEP §3; Apology 32b)",
+    "the oracle via Chaerephon, the examination of politicians, poets and craftsmen (Apology 21a–23b)",
+    "the sign that always forbids and never commands (Apology 31d)",
+    "the charge as Meletus's affidavit gives it (Apology 24b–c); Anytus and Lycon joined the suit (SEP §3)",
+    "thirty minae (Apology 38b); the month's wait for the Delian ship (SEP §3, Xenophon's thirty-one days; Phaedo 58a–c)",
+    "the unexamined life (Apology 38a); the Socratic problem; Clouds 423, a composite (Dover, as SEP §2.1 gives him); Vlastos's reading holding sway until the mid-1990s (SEP intro)"
+   ],
+   "fixed": [
+    "the card's source credited to Nails and Monoson (2022) with its revision date; the IEP “Socrates” article, not re-read, replaced by Woodruff's SEP entry",
+    "dates 'c. 470–399' made 469–399, as SEP gives them",
+    "'As a young man he read Anaxagoras's book eagerly, Plato reports' made the Phaedo's recollection (Phaedo 97b–98b)",
+    "'refused to put to the vote' made 'opposed', the Apology's word (32b, ἠναντιώθην); SEP §3 speaks of his refusal to allow the vote, so either fits",
+    "'refused an order to arrest Leon' made 'bring Leon ... to be put to death' (Apology 32c–d; SEP: “fetch”)",
+    "'which damaged his standing in the restored democracy' cut as unsourced; Critias's office cut; Charmides added from SEP's list",
+    "'a mission from the god to improve the souls of his fellow citizens' cut to 'a mission from the god' (Apology 23b)",
+    "the elenchus restated as Woodruff describes it (answers tested against other things the speaker agrees to)",
+    "'an inner sign that only ever held him back' made Apology 31d's sign, a kind of voice",
+    "'Socratic irony' attributed to SEP's wording (his saying that he knew nothing of importance), replacing 'while steering every discussion'",
+    "the charge's order and wording brought to Apology 24b–c (reviewer: reworded without contrastive negation); 'drank hemlock' made 'drank the poison', as the Phaedo has it",
+    "Xenophon's portrait: 'practical moralist' made SEP's 'a practical man'; Plato 'about twenty-five' made 'in his twenties' (SEP says about twenty-five, Kraut around 28)",
+    "'others read each dialogue on its own terms' cut as unsourced",
+    "'no one does wrong willingly' made the involuntariness of actions done in ignorance (Woodruff §9, Apology 25e–26a)",
+    "the schools claiming him credited to Nehamas as SEP §2 quotes him; the one-line description rewritten from it",
+    "the Clouds' 'studies nature and teaches tricks of argument' dropped for SEP §2.1's description (Dover's composite)",
+    "'until the 1990s' made 'the mid-1990s' (SEP intro); 'for a human being' dropped from the unexamined-life line",
+    "reviewer: the irony line and the Nehamas line quoted, being SEP's wording"
+   ],
+   "not_retrieved": [
+    "the key works list (two dialogues, unchanged)"
+   ],
+   "review": "Independent reviewer (separate agent, fresh context), 2026-11-22, with the glossary batch (glossary-plato.json): every sentence checked against the sources listed and the diff; required fixes applied (copied runs quoted, the charge reworded without contrastive negation, the reason for 'opposed' corrected), fixed list completed. Verdict: pass after the required fixes."
+  },
+  "plato": {
+   "audited": "2026-11-22",
+   "sources": [
+    "SEP “Plato” (Richard Kraut, substantive revision 24 April 2026), whole entry read in literal text",
+    "SEP “Aristotle” (Christopher Shields, substantive revision 25 August 2020), §1, for Aristotle in the Academy",
+    "the bundled Jowett Republic (IV 433a–444e; V 473c–d; VI 507b–511e; VII 514a–520c) and Phaedo (78d–79a, 100c–d)"
+   ],
+   "checked": [
+    "429?–347 B.C.E. and 'An Athenian citizen of high status' (Kraut intro); 'around 28 when Socrates was killed' (Kraut §11)",
+    "Aristotle 'sent to Athens at about the age of seventeen to study in Plato's Academy', 'until Plato's death in 347' (Shields §1)",
+    "thirteen letters, 'many or most of them are almost certainly not his' (Kraut §3)",
+    "dialogue form; Plato never speaks to his audience directly; Socrates speaks in nearly all (Kraut §§3–5)",
+    "the early, middle and late lists and the dispute over the three periods (Kraut §11)",
+    "forms 'eternal, changeless'; the soul grasps them more easily when disembodied (Kraut §1); participation and grasp by thought (Phaedo 100c, 79a)",
+    "justice in the soul each part doing its own (Kraut §6; Rep. 441d–e); philosophers as kings (Rep. 473c–d); the sun, line and cave (Rep. VI–VII)",
+    "Parmenides' 'withering criticism' (Kraut §9); Theaetetus on what knowledge is (Kraut §§2, 11); Timaeus, 'divine efforts to mold reality in the image of the forms' (Kraut §10); Laws among the last works, without Socrates (Kraut §§4, 11)"
+   ],
+   "fixed": [
+    "the card's source credited to Kraut (2026) with its revision date; Shields added for the Academy",
+    "dates 'c. 428–348' made Kraut's 429?–347 (the dates line writes 'c. 429–347' so the timeline can read it)",
+    "'born into a prominent family' made Kraut's 'high status'; 'belonged to the circle around Socrates' cut as unread in Kraut",
+    "'founded the Academy ... the first enduring school of philosophy in the West' cut as unsourced in what was read; Aristotle's time there given as Shields gives it",
+    "'is said to have visited Sicily to advise the rulers of Syracuse' cut; the letters given as Kraut judges them",
+    "the Theaetetus moved out of the late list, which Kraut does not put it in; Critias added; the dispute stated as Kraut states it",
+    "the Symposium's ascent cut (not in what was read, and the Symposium is not bundled)",
+    "'examines and rejects three definitions of knowledge' made 'asks what knowledge is'; 'divine craftsman' made Kraut's 'divine efforts'; 'his longest work ... practical legal code' cut to 'one of his last works'",
+    "'Plato's influence ... immense' cut as editorial",
+    "the education paragraph rewritten without contrastive negation, from Rep. 511b–c, 518c–d and 520c",
+    "the one-line description: 'Student of Socrates and founder of the Academy' replaced, neither being in what was read",
+    "'imitate or participate in' cut to 'participate in' (Phaedo 100c–d; Silverman's partaking)",
+    "'philosopher-kings' made 'ruled by philosophers' (Rep. 473c–d)",
+    "'akin to the Forms and sees them best when freed from the body' made Kraut §1's 'grasps the Forms more easily when freed from the body'",
+    "'how far for the historical Socrates and how far for Plato' shortened to 'how far his Socrates speaks for Plato' (Kraut §§5–6)",
+    "reviewer: Kraut's four phrases quoted (high status; the letters; withering criticism; divine efforts); Shields's runs reworded"
+   ],
+   "not_retrieved": [
+    "the key works list (unchanged)"
+   ],
+   "review": "Independent reviewer (separate agent, fresh context), 2026-11-22, with the glossary batch (glossary-plato.json): every sentence checked against the sources listed and the diff; required fixes applied (Kraut's four phrases quoted: high status, the letters, withering criticism, divine efforts; Shields's runs reworded), fixed list completed. Re-check of the applied fixes, 2026-11-22: Kraut's four phrases verbatim, Shields's runs reworded. Verdict: pass."
   }
  }
 }

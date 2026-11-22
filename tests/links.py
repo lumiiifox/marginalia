@@ -247,14 +247,16 @@ async def main():
               for (const a of d.querySelectorAll('[data-passage]')) { const st = a.dataset.passage; out.links++;
                 if (!books[st]) books[st] = (await (await fetch('data/books/' + PASSAGE_STYLES[st].book + '.json')).json()).content;
                 const i = passageBlock(books[st], a.dataset.passageAt, st); if (i < 0) { out.bad.push(g.id + ' ' + a.textContent); continue; }
-                at[a.textContent] = (at[a.textContent] || '') + ' ' + span(books[st], i); }
-              for (const m of para.matchAll(/“([^”]*)”([^“]*?)\\(((?:T|EHU|NE) [^()]+|[AB][\\dxvi][^()]*)\\)/g)) {
+                // a Stephanus reference: every block listed for it (a section of short exchanges can run over several)
+                const ix = st.endsWith('-st') ? stephBlocks(books[st], a.dataset.passageAt) : [i];
+                at[a.textContent] = (at[a.textContent] || '') + ' ' + ix.map((k) => span(books[st], k)).join(' '); }
+              for (const m of para.matchAll(/“([^”]*)”([^“]*?)\\(((?:T|EHU|NE|Rep\\.|Phaedo|Euthyphro|Apology) [^()]+|[AB][\\dxvi][^()]*)\\)/g)) {
                 if (/[.;]\\s/.test(m[2])) continue;  // the reference belongs to a later sentence
                 out.quotes++; const q = m[1].replace(/[,.]$/, ''), txt = m[3].split('; ').map((r) => at[r] || '').join(' ');
                 if (!txt.includes(q)) out.bad.push(g.id + ' quote ' + q);
                 if (q.split(/\\s+/).length >= 15) out.bad.push(g.id + ' long quote ' + q); } } }
           return out; })()""")
-        check(xr["terms"] >= 9 and xr["links"] >= 130 and xr["quotes"] >= 90 and not xr["bad"], f"glossary entries citing Hume, Kant and Aristotle: every reference opens its section, every quotation is that section's words, under 15 words ({xr})")
+        check(xr["terms"] >= 12 and xr["links"] >= 130 and xr["quotes"] >= 110 and not xr["bad"], f"glossary entries citing Hume, Kant, Aristotle and Plato: every reference opens its section, every quotation is that section's words, under 15 words ({xr})")
         # every Bekker number listed for the Nicomachean Ethics opens the paragraph holding its words, in its own chapter
         neb = await page.evaluate("""(async () => { const B = (await (await fetch('data/books/classic-aristotle-ethics.json')).json()).content, bad = [];
           for (const [ref, [ch]] of Object.entries(NE_BEKKER)) { const at = ch.replace('.', '|') + '|' + ref, i = passageBlock(B, at, 'aristotle-ethics');
@@ -267,6 +269,13 @@ async def main():
           for (const [ref, [w]] of Object.entries(KANT_AB)) { const i = passageBlock(B, ref, 'kant-critique'); if (i < 0) bad.push(ref); }
           return { n: Object.keys(KANT_AB).length, bad }; })()""")
         check(kab["n"] >= 20 and not kab["bad"], f"every A/B page listed for the Critique of Pure Reason opens a passage in Meiklejohn ({kab})")
+        # every Stephanus number listed for Plato finds each of its passages inside its own dialogue in the bundled Jowett
+        pst = await page.evaluate("""(async () => { const bk = {}, bad = [];
+          for (const [ref, [ws]] of Object.entries(PLATO_ST)) { const id = ref.startsWith('Rep.') ? 'classic-plato-republic' : 'classic-plato-socrates';
+            if (!bk[id]) bk[id] = (await (await fetch('data/books/' + id + '.json')).json()).content;
+            const b = stephBlocks(bk[id], ref); if (b.length !== ws.length) bad.push(ref); }
+          return { n: Object.keys(PLATO_ST).length, bad }; })()""")
+        check(pst["n"] >= 70 and not pst["bad"], f"every Stephanus number listed for Plato opens its passage in Jowett's text ({pst})")
         await page.evaluate("openTerm('conatus')"); await page.wait_for_timeout(300)
         await page.click("details.term[data-term-id='conatus'] .tsrc [data-passage='spinoza-ethics'] >> nth=0")
         await page.wait_for_function("S.screen === 'reader' && R.tid === 'classic-spinoza-ethics' && R.blocks", timeout=20000); await page.wait_for_timeout(600)
