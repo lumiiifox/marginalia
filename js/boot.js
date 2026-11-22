@@ -82,6 +82,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "resurfnext") { resurfSkip++; const el = $("#resurf"); if (el) el.outerHTML = resurfHTML(); return; }
   if (b.id === "openwishlist") return go({ screen: "wishlist" });
   if (b.id === "openrecommendations") return go({ screen: "recommendations" });
+  if (b.id === "booknotes") return bookNotesPanel(S.textId);
   if (b.dataset.companions) return go({ screen: "recommendations", recBook: b.dataset.companions });
   if (b.id === "rec-browse") { S.recAll = !S.recAll; render(); return; }
   if (b.id === "newwish") return wishSheet();

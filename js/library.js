@@ -360,6 +360,7 @@ function textView() {
         ${t.hasContent ? "" : `<button class="btn primary" id="loadfile">Load the book</button>`}
         <select id="status" aria-label="Status">${Object.entries(STATUS).map(([k, v]) => `<option value="${k}" ${(t.status || "reading") === k ? "selected" : ""}>${v}</option>`).join("")}</select>
         <button class="btn" id="more" aria-haspopup="dialog">More</button>
+        <button class="btn" id="booknotes">Notes and summaries</button>
         <button class="btn" data-companions="${esc(id)}">Companion books</button>
         ${t.example ? `<span class="chip ex">Example</span>` : ""}
       </div>
@@ -568,6 +569,35 @@ function briefHTML(id, t) {
     ${(() => { const at = where && stepAt(id, S.content.get(id), pos); return at ? `<div><div class="blab">Questions to read these chapters with</div>${readQsHTML(at.P, at.k, true, true)}<div class="bmore">From the reading path “${esc(at.P.n)}”</div></div>` : ""; })()}
     ${t.next ? "" : `<div class="bnext"><button class="linkbtn" id="editnext">Leave yourself a line for next time</button></div>`}
   </div></section>`;
+}
+
+/* ---------- Notes and summaries: everything you've written on a book, chapter by chapter, in one place ---------- */
+// From the book's page (#booknotes). Each section with a summary or notes, in the book's order: the summary in full (tap to edit, or
+// write one where there are notes but no summary), then its notes, an Argument note set out as premises and conclusion. Notes outside
+// any section come last. Nothing stored.
+function bookNotesPanel(id) {
+  const t = S.texts.get(id); if (!t) return;
+  const sums = t.summaries || {}, notes = sortNotes(notesFor(id), t), bySec = new Map();
+  notes.forEach(([nid, n]) => { const k = (t.sections || []).some((s) => s.id === n.sectionId) ? n.sectionId : ""; if (!bySec.has(k)) bySec.set(k, []); bySec.get(k).push([nid, n]); });
+  const noteRow = ([nid, n]) => {
+    const arg = n.kind === "argument" && (n.premises || []).length;
+    return `<button class="brow" data-editnote="${esc(nid)}">${arg ? `<span class="nsarg"><ol class="arg">${n.premises.map((x) => `<li>${esc(x)}</li>`).join("")}</ol><span class="argc">∴ ${esc(n.conclusion || "")}</span></span>` : `<span>${esc(noteSnippet(n, 160))}</span>`}<small>${esc([KINDS[n.kind] || "", loc(n.page)].filter(Boolean).join(", "))}</small></button>`;
+  };
+  const groups = (t.sections || []).filter((s) => String(sums[s.id] || "").trim() || bySec.has(s.id)).map((s) => `<section class="nsec">
+      <h3>${esc(s.label)}</h3>
+      ${String(sums[s.id] || "").trim() ? `<div class="blab">Your summary</div><p class="bsum">${esc(sums[s.id])}</p><button class="linkbtn" data-editsum="${esc(s.id)}">Edit summary</button>`
+        : `<button class="linkbtn" data-editsum="${esc(s.id)}">Write a summary of this section</button>`}
+      ${bySec.has(s.id) ? `<div class="blab">Notes</div>${bySec.get(s.id).map(noteRow).join("")}` : ""}
+    </section>`);
+  if (bySec.has("")) groups.push(`<section class="nsec"><h3>${(t.sections || []).length ? "Not in a section" : "Notes"}</h3>${bySec.get("").map(noteRow).join("")}</section>`);
+  const nSum = Object.values(sums).filter((x) => String(x).trim()).length;
+  openPanel(`<h2>Notes and summaries</h2>
+    <p class="hint">${esc(t.title)}: ${nSum} ${nSum === 1 ? "summary" : "summaries"}, ${notes.length} ${notes.length === 1 ? "note" : "notes"}, in the book's order. Tap one to open it.</p>
+    ${groups.length ? `<div class="brief nsall">${groups.join("")}</div>` : `<p class="empty">Nothing written on this book yet. Summaries come from the end of each chapter as you read, and notes from Add note or a passage you select.</p>`}`,
+  (b) => {
+    if (b.dataset.editsum) return summarySheet(id, b.dataset.editsum);
+    if (b.dataset.editnote) return noteSheet(b.dataset.editnote);
+  });
 }
 
 /* ---------- tags and open questions ---------- */

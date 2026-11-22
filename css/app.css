@@ -249,6 +249,15 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .brief .brow:first-of-type { border-top: 0; }
 .brief .brow small { font: 400 12.5px/1.3 var(--f-ui); color: var(--muted); }
 .brief .bmore { font-size: 14px; color: var(--muted); }
+/* Notes and summaries (bookNotesPanel): the whole of each summary, a section to each group */
+.nsall { padding: 0; gap: 18px; }
+.nsall .bsum { display: block; -webkit-line-clamp: unset; overflow: visible; }
+.nsec { display: grid; gap: 6px; border-top: 1px solid var(--rule); padding-top: 12px; }
+.nsec:first-child { border-top: 0; padding-top: 0; }
+.nsec h3 { margin: 0; font: 600 18px/1.3 var(--f-text); }
+.nsec .linkbtn { justify-self: start; font-size: 14px; }
+.nsarg .arg { margin: 0; padding-left: 20px; }
+.nsarg .argc { display: block; }
 .brief .bnext .linkbtn { font-size: 14px; }
 .brief .bnext .bsum { margin-bottom: 2px; }
 .summary p { margin: 12px 0; white-space: pre-wrap; overflow-wrap: anywhere; font: 400 17px/1.55 var(--f-text); }

@@ -334,6 +334,9 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   everyday-sense names left out), each a bar on a fixed scale (`DENSITY_SENT_FULL`, `DENSITY_TERMS_FULL`) so books compare, never one score;
   the chapter's top terms as chips, and its time at your pace (`paceOf`) or `DENSITY_WPM`. A chapter opens the reader at its heading.
   Cached per content array (`DENSITY_CACHE`). Nothing stored. Tested by `tests/density.py`.
+- Notes and summaries (`bookNotesPanel`, the book page's `#booknotes` button): every section with a summary or notes, in the book's
+  order: the whole summary (`data-editsum` opens `summarySheet`, or offers to write one), then its notes (`data-editnote`), an Argument
+  note set out as premises and conclusion; notes outside any section last. Nothing stored. Tested by `tests/navigate.py` (7).
 - Where you left off (`briefHTML`, `placeIn`, on a book's page under Continue reading): page and chapter at `t.pos`, your summary of that
   chapter or the last one summarized, the book's open questions and latest notes. Nothing stored; it loads the book's text once for the chapter.
 - The pinned passage (`PIN`, `drawPin`, `pinGo`): one passage or note kept at the foot of the reader, from Pin on a selection or a note's
