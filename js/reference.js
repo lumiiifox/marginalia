@@ -823,6 +823,7 @@ const KANT_AB = {
   "A506/B534": ["admissible only as a condition of things in themselves", "Kemp Smith", "3:347"],
   "A528/B556": ["Concluding Remark on the Solution of the Transcendental Mathematical Ideas", "Kemp Smith", "3:360"],
   "A532/B560": ["Deduction of Cosmical Events", "Kemp Smith", "3:362"],
+  "A669/B697": ["cannot be, of themselves and in their own nature, dialectical", "Kemp Smith", "3:442"],
 };
 const kantFlat = (b) => plain(b.x || "").replace(/<[^>]+>/g, "").replace(/[¹²³⁴⁵⁶⁷⁸⁹⁰]/g, "").replace(/\s+/g, " ");
 const PASSAGE_STYLES = {

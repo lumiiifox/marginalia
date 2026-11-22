@@ -1141,6 +1141,14 @@
    "number_from": "Kemp Smith, note 1579 (solution of the third antinomy)",
    "akademie": "AA 3:362 (page marker found above the German sentence, korpora.org corpus)",
    "how": "content: the scholar's quoted or cited sentence translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
+  },
+  {
+   "ref": "A669/B697",
+   "block": 1124,
+   "words": "cannot be, of themselves and in their own nature, dialectical",
+   "number_from": "Kemp Smith, notes 1666 and 1678 (opening of 'On the Final Purpose of the Natural Dialectic of Human Reason'); added 2026-11-22 for the Deleuze → Kant connection (tests/audit/connections.json), where Deleuze quotes it, DR p. 320 n. 6",
+   "akademie": "AA 3:442 (page marker found above the German sentence, korpora.org corpus)",
+   "how": "content: the section's opening sentence, which the scholar's note numbers, translated by Meiklejohn in this block; the German sentence's Akademie page checked by script"
   }
  ],
  "summary": "Three new entries (transcendental idealism, categories of the understanding, antinomy of pure reason) and two re-reads (phenomenon and noumenon, synthetic a priori), read in the bundled Meiklejohn Critique first and the Stanford Encyclopedia second (Rohlf 2024, Stang 2016, Grier 2022, Rey 2026), with Kemp Smith's Commentary (1918) for A/B pages and the first-edition differences. 28 A/B references, each matched by content to a scholar's citation and checked against the Akademie page; each opens its passage in the book. Two disputes recorded: one object or two (open), and Kemp Smith's reading of the second-edition revision of the noumenon chapter (given as his; Stang §6 unread)."
