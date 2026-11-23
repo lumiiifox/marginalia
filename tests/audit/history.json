@@ -15,7 +15,7 @@
      "type": "conceptual",
      "evidence": "yes",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §3",
+     "by": "Philosophy of History (Little) \u00a73",
      "excerpt": "Speculative philosophy of history asks about the meaning and purpose of the historical process.",
      "fix": "keep, credited to Walsh's distinction"
     }
@@ -43,7 +43,7 @@
      "type": "historical",
      "evidence": "yes",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §§2.1–2.2",
+     "by": "Philosophy of History (Little) \u00a7\u00a72.1\u20132.2",
      "fix": "merged with 24"
     }
    ]
@@ -57,7 +57,7 @@
      "type": "historical",
      "evidence": "yes",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §§2.1–2.2",
+     "by": "Philosophy of History (Little) \u00a7\u00a72.1\u20132.2",
      "fix": "merged with 24"
     }
    ]
@@ -71,7 +71,7 @@
      "type": "interpretive",
      "evidence": "partly",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §2.2",
+     "by": "Philosophy of History (Little) \u00a72.2",
      "fix": "merged with 25"
     }
    ]
@@ -85,7 +85,7 @@
      "type": "historical",
      "evidence": "yes",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §2.4",
+     "by": "Philosophy of History (Little) \u00a72.4",
      "fix": "merged with 27"
     }
    ]
@@ -99,7 +99,7 @@
      "type": "historical",
      "evidence": "yes",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §3.1",
+     "by": "Philosophy of History (Little) \u00a73.1",
      "fix": "merged with 28"
     }
    ]
@@ -126,7 +126,7 @@
      "type": "conceptual",
      "evidence": "partly",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §1.2",
+     "by": "Philosophy of History (Little) \u00a71.2",
      "fix": "merged with 31"
     }
    ]
@@ -140,7 +140,7 @@
      "type": "historical",
      "evidence": "yes",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §§1.3, 3.4",
+     "by": "Philosophy of History (Little) \u00a7\u00a71.3, 3.4",
      "fix": "merged with 29"
     }
    ]
@@ -154,7 +154,7 @@
      "type": "conceptual",
      "evidence": "partly",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §1.3",
+     "by": "Philosophy of History (Little) \u00a71.3",
      "note": "Contrastive.",
      "fix": "merged with 31"
     }
@@ -169,7 +169,7 @@
      "type": "historical",
      "evidence": "no",
      "accuracy": "unverified",
-     "by": "Philosophy of History (Little) §§2.1, 6",
+     "by": "Philosophy of History (Little) \u00a7\u00a72.1, 6",
      "note": "Little names Nietzsche and Foucault in other roles; genealogy is not discussed.",
      "fix": "cut"
     }
@@ -211,7 +211,7 @@
      "type": "interpretive",
      "evidence": "partly",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §4",
+     "by": "Philosophy of History (Little) \u00a74",
      "fix": "merged with 31"
     }
    ]
@@ -303,7 +303,7 @@
      "type": "conceptual",
      "evidence": "partly",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §3",
+     "by": "Philosophy of History (Little) \u00a73",
      "fix": "merged into the opening"
     }
    ]
@@ -317,7 +317,7 @@
      "type": "conceptual",
      "evidence": "yes",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §3",
+     "by": "Philosophy of History (Little) \u00a73",
      "fix": "merged into the opening"
     }
    ]
@@ -331,7 +331,7 @@
      "type": "historical",
      "evidence": "partly",
      "accuracy": "overstated",
-     "by": "Philosophy of History (Little) §§2.1–2.2",
+     "by": "Philosophy of History (Little) \u00a7\u00a72.1\u20132.2",
      "excerpt": "human nature is itself a historical product",
      "fix": "reword: Vico's constant human nature and stages; Marx through modes of production"
     }
@@ -346,7 +346,7 @@
      "type": "interpretive",
      "evidence": "yes",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §2.2",
+     "by": "Philosophy of History (Little) \u00a72.2",
      "excerpt": "there is no super-agent lying behind historical events",
      "fix": "keep, reworded"
     }
@@ -361,7 +361,7 @@
      "type": "historical",
      "evidence": "yes",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §2.4",
+     "by": "Philosophy of History (Little) \u00a72.4",
      "fix": "merged with 27"
     }
    ]
@@ -375,7 +375,7 @@
      "type": "historical",
      "evidence": "yes",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §2.4",
+     "by": "Philosophy of History (Little) \u00a72.4",
      "excerpt": "the human sciences were inherently distinct from the natural sciences",
      "fix": "keep, reworded"
     }
@@ -390,7 +390,7 @@
      "type": "historical",
      "evidence": "partly",
      "accuracy": "overstated",
-     "by": "Philosophy of History (Little) §3.1",
+     "by": "Philosophy of History (Little) \u00a73.1",
      "excerpt": "there are virtually no good examples of universal laws in history",
      "fix": "reword to the critics' argument as Little gives it; Dray not named there"
     }
@@ -405,7 +405,7 @@
      "type": "historical",
      "evidence": "yes",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §§1.3, 3.4",
+     "by": "Philosophy of History (Little) \u00a7\u00a71.3, 3.4",
      "excerpt": "beginning with the publication of Hayden White's Metahistory (1973)",
      "fix": "keep"
     }
@@ -420,7 +420,7 @@
      "type": "historical",
      "evidence": "yes",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §2.5",
+     "by": "Philosophy of History (Little) \u00a72.5",
      "excerpt": "Koselleck",
      "fix": "keep, reworded"
     }
@@ -435,7 +435,7 @@
      "type": "interpretive",
      "evidence": "yes",
      "accuracy": "supported",
-     "by": "Philosophy of History (Little) §§1.2–1.3, 4",
+     "by": "Philosophy of History (Little) \u00a7\u00a71.2\u20131.3, 4",
      "excerpt": "narratives are underdetermined by the facts",
      "fix": "keep, reworded"
     }
@@ -456,96 +456,453 @@
  },
  "new_text": [
   {
-   "text": "Following W. H. Walsh, philosophers distinguish a speculative philosophy of history, which asks about the meaning and purpose of the historical process, from a critical philosophy of history, which studies historical knowledge, evidence and explanation.",
    "section": "Speculative and critical philosophy of history",
+   "text": "Following W. H. Walsh, philosophers distinguish a speculative philosophy of history, which asks about the meaning and purpose of the historical process, from a critical philosophy of history, which studies historical knowledge, evidence and explanation.",
    "claims": [
     {
-     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of History” (Little) §3",
+     "by": "Stanford Encyclopedia of Philosophy, \u201cPhilosophy of History\u201d (Little, 2025 version, archived) \u00a73",
      "excerpt": "Speculative philosophy of history asks about the meaning and purpose of the historical process.",
      "accuracy": "supported"
     }
    ]
   },
   {
-   "text": "Vico held that civilizations pass through the same stages because human nature is constant, Herder that human nature is itself a historical product, and Hegel that history is the unfolding of freedom, while Marx traced history through the development of economic modes of production.",
    "section": "Patterns in history",
+   "text": "Vico held that civilizations pass through the same stages because human nature is constant, Herder that human nature is itself a historical product, and Hegel that history is the unfolding of freedom, while Marx traced history through the development of economic modes of production.",
    "claims": [
     {
-     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of History” (Little) §§2.1–2.3",
+     "by": "Stanford Encyclopedia of Philosophy, \u201cPhilosophy of History\u201d (Little, 2025 version, archived) \u00a7\u00a72.1\u20132.3",
      "excerpt": "human nature is itself a historical product",
      "accuracy": "supported"
     }
    ]
   },
   {
-   "text": "Critics find mono-causal interpretations of history vulnerable, and some deny that any super-agent lies behind historical events.",
    "section": "Patterns in history",
+   "text": "Critics find mono-causal interpretations of history vulnerable, and some deny that any super-agent lies behind historical events.",
    "claims": [
     {
-     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of History” (Little) §2.2",
+     "by": "Stanford Encyclopedia of Philosophy, \u201cPhilosophy of History\u201d (Little, 2025 version, archived) \u00a72.2",
      "excerpt": "there is no super-agent lying behind historical events",
      "accuracy": "supported"
     }
    ]
   },
   {
-   "text": "Dilthey held the human sciences to be inherently distinct from the natural sciences, with the understanding of meaning as their method, and Collingwood presented re-enacting the thought of historical agents as the way historians know the past.",
-   "section": "Understanding and explanation",
+   "section": "Kant and Hegel: a plan in history",
+   "text": "Kant's essay \u201cIdea for a Universal History with a Cosmopolitan Aim\u201d (1784) begins from the claim that human actions, as appearances, are determined by natural laws, and hopes that history, viewing the play of human freedom as a whole, can find a regular course in it (AA 8:17).",
    "claims": [
     {
-     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of History” (Little) §2.4",
+     "type": "textual",
+     "by": "Kant, Akademie-Ausgabe vol. 8 (GitHub spookyuser/kant-akademieausgabe-corpus, aa08.txt) p. 17",
+     "excerpt": "einen regelm\u00e4\u00dfigen Gang derselben entdecken k\u00f6nne",
+     "accuracy": "supported",
+     "note": "English title as in the Louden and Z\u00f6ller translation listed in Rauscher's primary sources; date 1784 from the essay's first publication (Berlinische Monatsschrift; Rauscher cites it at AA 8:15\u201331). AA page read from the Akademie text, not estimated."
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Kant and Hegel: a plan in history",
+   "text": "In W. Hastie's translation of 1891, the hope is that \u201ca regular march will be discovered\u201d in the movements of human freedom \u201con the great scale of universal history\u201d.",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Hastie (1891), OLL text (read through the UMB course mirror of the OLL edition)",
+     "excerpt": "a regular march will be discovered in its movements",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Kant and Hegel: a plan in history",
+   "text": "Since individuals and peoples follow no shared plan of their own, Kant proposes to look for a plan of nature in history, \u201ca clue to such a History\u201d, as nature once produced a Kepler and a Newton to find the laws of the planets (AA 8:17\u201318).",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Kant, Akademie-Ausgabe vol. 8 (GitHub spookyuser/kant-akademieausgabe-corpus, aa08.txt) pp. 17\u201318; Hastie (1891), OLL text (read through the UMB course mirror of the OLL edition)",
+     "excerpt": "a clue to such a History",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Kant and Hegel: a plan in history",
+   "text": "Nature's means, the Fourth Proposition says, is human antagonism, \u201cthe unsocial sociability of men\u201d (AA 8:20); its hardest problem, a perfectly just civil constitution, can only be approached, since \u201cout of such crooked material as man is made of nothing can be hammered quite straight\u201d (AA 8:23).",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Kant, Akademie-Ausgabe vol. 8 (GitHub spookyuser/kant-akademieausgabe-corpus, aa08.txt) pp. 20, 23 (Vierter, F\u00fcnfter, Sechster Satz); Hastie (1891), OLL text (read through the UMB course mirror of the OLL edition)",
+     "excerpt": "Out of such crooked material as man is made of nothing can be hammered quite straight.",
+     "accuracy": "supported",
+     "note": "Hastie is public domain (1891). German: 'ungesellige Geselligkeit' (8:20); 'aus so krummem Holze ... kann nichts ganz Gerades gezimmert werden' and 'Nur die Ann\u00e4herung zu dieser Idee ist uns von der Natur auferlegt' (8:23). The just constitution is the Fifth Proposition's problem (8:22), called hardest in the Sixth (8:23)."
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Kant and Hegel: a plan in history",
+   "text": "The Eighth Proposition reads the history of the species as the realisation of \u201ca hidden plan of Nature\u201d (AA 8:27), and the Ninth holds that a philosophical history written by that plan \u201cmust be regarded as possible\u201d, while Kant disclaims any wish \u201cto supplant the empirical cultivation of History\u201d (AA 8:29\u201330).",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Kant, Akademie-Ausgabe vol. 8 (GitHub spookyuser/kant-akademieausgabe-corpus, aa08.txt) pp. 27, 29\u201330; Hastie (1891), OLL text (read through the UMB course mirror of the OLL edition)",
+     "excerpt": "must be regarded as possible, and as even capable of helping forward the purpose of Nature",
+     "accuracy": "supported",
+     "note": "German: 'verborgenen Plans der Natur' (8:27); 'mu\u00df als m\u00f6glich ... angesehen werden' (8:29); 'die Bearbeitung der eigentlichen blo\u00df empirisch abgefa\u00dften Historie verdr\u00e4ngen wollte: w\u00e4re Mi\u00dfdeutung meiner Absicht' (8:30)."
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Kant and Hegel: a plan in history",
+   "text": "Frederick Rauscher, in the Stanford Encyclopedia, ties Kant's view of historical progress to his view of international relations: in this essay incessant wars eventually lead rulers to recognize the benefits of peaceful negotiation, and the argument relies on the self-interest of presumably unelected rulers.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP \u201cKant\u2019s Social and Political Philosophy\u201d (Rauscher, substantive revision 8 June 2026) \u00a78",
+     "excerpt": "incessant wars will eventually lead rulers to recognize the benefits of peaceful negotiation",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Kant and Hegel: a plan in history",
+   "text": "Hegel's Lectures on the Philosophy of History (published in 1837) range the ways of writing history under three heads, original, reflective and philosophical history, and in J. Sibree's translation the philosopher brings to history one thought only: \u201cthat Reason is the Sovereign of the World\u201d.",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Hegel, Lectures on the Philosophy of History, trans. Sibree (marxists.org hi/history3.htm \u00a712; hi/history0.htm, the three heads); date: Kuukkanen \u00a72.1 cites Hegel \u201c1837 [1975]\u201d",
+     "excerpt": "that Reason is the Sovereign of the World",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Kant and Hegel: a plan in history",
+   "text": "\u201cThe History of the world is none other than the progress of the consciousness of Freedom\u201d: the Eastern nations knew only that one is free, the Greek and Roman world that some are free, and \u201cwe know that all men absolutely (man as man) are free\u201d.",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Hegel, Lectures on the Philosophy of History, trans. Sibree (marxists.org hi/history3.htm \u00a7\u00a721\u201322)",
+     "excerpt": "The History of the world is none other than the progress of the consciousness of Freedom",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Kant and Hegel: a plan in history",
+   "text": "Hegel concedes that history can look like a \u201cslaughter-bench\u201d on which the happiness of peoples has been sacrificed, and answers with the \u201ccunning of reason\u201d, which \u201csets the passions to work for itself\u201d.",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Hegel, Lectures on the Philosophy of History, trans. Sibree (marxists.org hi/history3.htm \u00a7\u00a724, 36)",
+     "excerpt": "This may be called the cunning of reason, \u2014 that it sets the passions to work for itself",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Kant and Hegel: a plan in history",
+   "text": "Jouni-Matti Kuukkanen, whose Stanford Encyclopedia entry on the philosophy of history replaced Daniel Little's in November 2026, takes Hegel's conception of history as the progressive realization of human freedom as a canonical example of philosophy of history in this speculative sense.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP \u201cPhilosophy of History\u201d (Kuukkanen, first published 18 November 2026) \u00a72.1 and editor's note",
+     "excerpt": "A canonical example is Hegel's conception of history as the progressive realization",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "History in the classics on the shelf",
+   "text": "The Communist Manifesto opens its first section by declaring that \u201cthe history of all hitherto existing society is the history of class struggles\u201d (CM I).",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Marx and Engels, Communist Manifesto, trans. Moore (bundled, Standard Ebooks), I",
+     "excerpt": "The history of all hitherto existing society is the history of class struggles.",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "History in the classics on the shelf",
+   "text": "Engels, who added notes to Samuel Moore's English translation of 1888, glosses that history as \u201call written history\u201d, since the prehistory of society was all but unknown in 1847 (CM I).",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Bundled Manifesto: Preface signed \u201cFriedrich Engels. London, January 30, 1888\u201d (\u201cI have added a few notes\u201d); note 4 to I",
+     "excerpt": "That is, all written history.",
+     "accuracy": "supported",
+     "note": "The words are in the edition's Notes (note 4), reached through the marker after \u201csociety\u201d in I; (CM I) opens Section I, since the style cannot target the notes."
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "History in the classics on the shelf",
+   "text": "The section narrates the rise of the bourgeoisie from the ruins of feudal society and its simplification of class antagonisms into \u201ctwo great hostile camps\u201d (CM I).",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Bundled Manifesto, I",
+     "excerpt": "Society as a whole is more and more splitting up into two great hostile camps",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "History in the classics on the shelf",
+   "text": "Nietzsche's Genealogy offers a principle \u201cfor any kind of history\u201d (GM II \u00a712): a thing's origin and its later utility are wholly different matters, since whatever exists is repeatedly \u201cput to new purposes by a force superior to itself\u201d, so that understanding a custom's present use, punishment's for example, gives no understanding of its origin.",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Nietzsche, Genealogy of Morals, trans. Samuel (bundled), II \u00a712",
+     "excerpt": "no more pregnant principle for any kind of history",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "History in the classics on the shelf",
+   "text": "The history of a custom is then a \u201csign-chain\u201d of new interpretations whose causes may follow one another haphazard (GM II \u00a712), and \u201conly that which has no history\u201d can be defined (GM II \u00a713).",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Bundled Genealogy, II \u00a7\u00a712\u201313",
+     "excerpt": "it is only that which has no history, which can be defined",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "History in the classics on the shelf",
+   "text": "The Preface states the method's aim: a critique of moral values needs knowledge of \u201cthe conditions and circumstances out of which these values grew\u201d (GM Preface \u00a76), and Nietzsche prefers the grey of \u201cauthentic facts capable of definite proof\u201d to the English theories he finds in Paul R\u00e9e (GM Preface \u00a77).",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Bundled Genealogy, Preface \u00a7\u00a76\u20137",
+     "excerpt": "grey, by which I mean authentic facts capable of definite proof",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "History in the classics on the shelf",
+   "text": "R. Lanier Anderson, in the Stanford Encyclopedia, notes that the First Essay begins from the observation that the familiar conception of morality as altruistic concern for others is \u201ca historical innovation\u201d.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP \u201cFriedrich Nietzsche\u201d (Anderson, substantive revision 25 June 2026) \u00a72",
+     "excerpt": "is not the essence of any possible morality, but a historical innovation.",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "History in the classics on the shelf",
+   "text": "Du Bois's Forethought announces that \u201cthe problem of the twentieth century is the problem of the color line\u201d (Souls Forethought).",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Du Bois, The Souls of Black Folk (bundled, Standard Ebooks), The Forethought",
+     "excerpt": "the problem of the twentieth century is the problem of the color line",
+     "accuracy": "supported",
+     "note": "This edition prints \u201ccolor line\u201d unhyphenated."
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "History in the classics on the shelf",
+   "text": "His first chapter names an inner conflict, double consciousness, \u201ctwo unreconciled strivings\u201d, and makes it the thread of a history: \u201cThe history of the American Negro is the history of this strife\u201d (Souls I).",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Bundled Souls, I. Of Our Spiritual Strivings",
+     "excerpt": "The history of the American Negro is the history of this strife",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "History in the classics on the shelf",
+   "text": "The chapter then reads the decades since Emancipation as a succession of ideals, freedom, the ballot, then \u201cbook-learning\u201d, each of which, Du Bois argues, was \u201cover-simple and incomplete\u201d taken alone (Souls I).",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Bundled Souls, I",
+     "excerpt": "each alone was over-simple and incomplete",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Understanding and explanation",
+   "text": "Dilthey held the human sciences to be inherently distinct from the natural sciences, with the understanding of meaning as their method, and Collingwood presented re-enacting the thought of historical agents as the way historians know the past.",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, \u201cPhilosophy of History\u201d (Little, 2025 version, archived) \u00a72.4",
      "excerpt": "the human sciences were inherently distinct from the natural sciences",
      "accuracy": "supported"
     }
    ]
   },
   {
-   "text": "Carl Hempel's 1942 essay modelled historical explanation on covering laws; critics replied that historical explanations resemble explanations of individual behaviour, and that history offers virtually no good examples of universal laws.",
    "section": "Understanding and explanation",
+   "text": "In The Idea of History, published after his death in 1946, Collingwood separates the outside of an event from its inside, \u201cthat in it which can only be described in terms of thought\u201d, and treats an action as the unity of the two.",
    "claims": [
     {
-     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of History” (Little) §3.1",
+     "type": "interpretive",
+     "by": "SEP \u201cRobin George Collingwood\u201d (Connelly, substantive revision 20 January 2026) \u00a7\u00a71, 3.1, quoting IH 1993: 213",
+     "excerpt": "By the inside of the event I mean that in it which can only be described in terms of thought",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Understanding and explanation",
+   "text": "James Connelly, in the Stanford Encyclopedia, explains that the historian re-enacts \u201cthe very same thought as the agent\u201d, a thought identified by its content.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP Collingwood (Connelly) \u00a73.2",
+     "excerpt": "they do not re-enact a thought of a similar kind but the very same thought as the agent",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Understanding and explanation",
+   "text": "Kuukkanen quotes Collingwood's dictum that \u201call history is the history of thought\u201d and gives the example of Caesar's crossing of the Rubicon, which a description of bodily movements leaves unexplained.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP \u201cPhilosophy of History\u201d (Kuukkanen) \u00a74.2.1",
+     "excerpt": "Caesar's crossing of the Rubicon can be described as a set of bodily movements",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Understanding and explanation",
+   "text": "Critics associated re-enactment with Dilthey's empathy and charged it with crediting historians with telepathic access to other minds (Connelly cites Patrick Gardiner, 1952); Connelly replies that the doctrine makes a conceptual point about what historians re-enact and prescribes no empathetic method, and he takes up the objection that it over-rationalizes the subject matter of history.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP Collingwood (Connelly) \u00a73.2",
+     "excerpt": "It is not meant to prescribe to historians an empathetic method",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Understanding and explanation",
+   "text": "Carl Hempel's 1942 essay modelled historical explanation on covering laws; critics replied that historical explanations resemble explanations of individual behaviour, and that history offers virtually no good examples of universal laws.",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, \u201cPhilosophy of History\u201d (Little, 2025 version, archived) \u00a73.1",
      "excerpt": "there are virtually no good examples of universal laws in history",
      "accuracy": "supported"
     }
    ]
   },
   {
-   "text": "From the publication of Hayden White's Metahistory (1973), and in the work of Louis Mink, philosophers turned to narrative and the rhetorical form of historical writing, and Paul Ricœur traced the relations among memory, identity, narrative and history.",
-   "section": "Narrative and concepts",
+   "section": "Understanding and explanation",
+   "text": "In that essay Hempel held that \u201cgeneral laws have quite analogous functions in history and in the natural sciences\u201d, so that explaining a historical event means subsuming it under laws.",
    "claims": [
     {
-     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of History” (Little) §§1.3, 3.4",
+     "type": "interpretive",
+     "by": "SEP \u201cPhilosophy of History\u201d (Kuukkanen) \u00a7\u00a72.2, 3.1, quoting Hempel 1942, 35",
+     "excerpt": "The pivotal feature of Hempel's model is thus its appeal to general laws.",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Understanding and explanation",
+   "text": "W. H. Dray answered with a rational-action model of explanation (1957), on which historians explain an action through the agent's reasons, and, Connelly reports, argued that Hempel failed to see what distinguishes explaining actions from explaining events.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP Kuukkanen \u00a73.1.1; SEP Collingwood (Connelly) \u00a73.3",
+     "excerpt": "Dray argued that Hempel failed to see that what distinguishes action from event explanations",
+     "accuracy": "supported",
+     "note": "Kuukkanen dates Dray's rational-action theory 1957 in \u00a73.1.1 (cited) and 1963 in \u00a72.2; 1957 is Laws and Explanation in History."
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Understanding and explanation",
+   "text": "Hempel (1974) maintained that even explanations of particular actions presuppose law-like generalizations; later critics, Kuukkanen reports, held that the debate concerned forms of explanation irrelevant to practising historians.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP Kuukkanen \u00a72.2",
+     "excerpt": "often focused on forms of explanation irrelevant to the concerns of practicing historians",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Narrative and concepts",
+   "text": "From the publication of Hayden White's Metahistory (1973), and in the work of Louis Mink, philosophers turned to narrative and the rhetorical form of historical writing, and Paul Ric\u0153ur traced the relations among memory, identity, narrative and history.",
+   "claims": [
+    {
+     "by": "Stanford Encyclopedia of Philosophy, \u201cPhilosophy of History\u201d (Little, 2025 version, archived) \u00a7\u00a71.3, 3.4",
      "excerpt": "beginning with the publication of Hayden White's Metahistory (1973)",
      "accuracy": "supported"
     }
    ]
   },
   {
-   "text": "Reinhart Koselleck asked philosophers of history to identify the concepts needed to characterize history, such as the space of experience and the horizon of expectation, to place them in their political and social discourses, and to assess how useful they are.",
    "section": "Narrative and concepts",
+   "text": "Reinhart Koselleck asked philosophers of history to identify the concepts needed to characterize history, such as the space of experience and the horizon of expectation, to place them in their political and social discourses, and to assess how useful they are.",
    "claims": [
     {
-     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of History” (Little) §2.5",
+     "by": "Stanford Encyclopedia of Philosophy, \u201cPhilosophy of History\u201d (Little, 2025 version, archived) \u00a72.5",
      "excerpt": "possible or necessary in characterizing history",
      "accuracy": "supported"
     }
    ]
   },
   {
-   "text": "Recent work stresses that the scale a historian chooses changes what is found, that the facts underdetermine narratives, so that several truthful accounts can coexist, and that the field's choice of topics has tended to be Eurocentric.",
    "section": "Recent directions",
+   "text": "Recent work stresses that the scale a historian chooses changes what is found, that the facts underdetermine narratives, so that several truthful accounts can coexist, and that the field's choice of topics has tended to be Eurocentric.",
    "claims": [
     {
-     "by": "Stanford Encyclopedia of Philosophy, “Philosophy of History” (Little) §§1.2–1.3, 4",
+     "by": "Stanford Encyclopedia of Philosophy, \u201cPhilosophy of History\u201d (Little, 2025 version, archived) \u00a7\u00a71.2\u20131.3, 4",
      "excerpt": "narratives are underdetermined by the facts",
      "accuracy": "supported"
     }
    ]
   },
   {
+   "section": "Open questions",
    "text": "Can multiple narratives of the same events be true?",
-   "section": "Open questions",
    "claims": [
     {
      "type": "non-assertive",
@@ -554,8 +911,8 @@
    ]
   },
   {
+   "section": "Open questions",
    "text": "What counts as progress, and for whom?",
-   "section": "Open questions",
    "claims": [
     {
      "type": "non-assertive",
@@ -564,18 +921,117 @@
    ]
   },
   {
-   "text": "How do present concerns shape historical inquiry without making it arbitrary?",
    "section": "Open questions",
+   "text": "How do present concerns shape historical inquiry without making it arbitrary?",
    "claims": [
     {
      "type": "non-assertive",
      "accuracy": "non-assertive"
     }
    ]
+  },
+  {
+   "section": "Open questions",
+   "text": "Does Kant's plan of nature describe the course of history, or only guide the philosopher who reads it?",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Open questions",
+   "text": "Is Collingwood's re-enactment a kind of empathy?",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Open questions",
+   "text": "Kuukkanen reports that it has been associated with the tradition of historical empathy (Retz 2018), and Connelly holds that it prescribes no empathetic method.",
+   "claims": [
+    {
+     "type": "dispute",
+     "by": "SEP Kuukkanen \u00a74.2.1; SEP Collingwood (Connelly) \u00a73.2",
+     "excerpt": "Collingwood's re-enactment theory has also been associated with the tradition of historical empathy",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 3)"
   }
  ],
  "applied": {
-  "date": "2026-10-23",
-  "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
- }
+  "date": "2026-11-23",
+  "note": "The article in data/branches.js is exactly the sentences of new_text, in order, with section sources (xs). Records added on 2026-11-23 carry \u201cadded\u201d. Cut sentences of the 2026-10-23 audit are marked fix: cut under sentences."
+ },
+ "expansions": [
+  {
+   "task": "3: history in the bundled classics, Kant and Hegel, Collingwood and Hempel",
+   "date": "2026-11-23",
+   "by": "Claude (lead dev), first pass; independent review by a separate Claude reviewer (fresh context, 2026-11-23): 24 of 30 sentences passed as drafted; fixes applied to the Anderson, Rauscher and Connelly sentences, the Hempel order, and two records (Engels note, Dray date)",
+   "requested": "owner, via the coordinator, 2026-11-23: expand toward ~2,000 words with tasks 3 and 4",
+   "sources_read": [
+    "Bundled classics: Communist Manifesto (Moore, 1888; Engels's preface and notes), Genealogy of Morals (Samuel), The Souls of Black Folk",
+    "Kant, Idee zu einer allgemeinen Geschichte in weltb\u00fcrgerlicher Absicht, Akademie-Ausgabe 8:15\u201331 (GitHub spookyuser/kant-akademieausgabe-corpus, aa08.txt, with its AA page markers)",
+    "Kant, trans. W. Hastie, Kant's Principles of Politics (Edinburgh: Clark, 1891), OLL edition text via the UMB course mirror",
+    "Hegel, Lectures on the Philosophy of History, trans. J. Sibree, marxists.org hi/history0.htm and history3.htm (the index says the e-text is Sibree's)",
+    "SEP \u201cPhilosophy of History\u201d, Jouni-Matti Kuukkanen (first published 18 Nov 2026), read literally to the bibliography",
+    "SEP \u201cPhilosophy of History\u201d, Daniel Little (substantive revision 14 May 2025), now at /archives/fall2026/entries/history/",
+    "SEP \u201cKant's Social and Political Philosophy\u201d, Frederick Rauscher (read whole in its 11 Apr 2022 revision; re-checked by the reviewer in the revision of 8 Jun 2026, where the \u00a78 sentences cited stand)",
+    "SEP \u201cRobin George Collingwood\u201d, James Connelly (substantive revision 20 Jan 2026), body read whole",
+    "SEP \u201cCarl Hempel\u201d, James Fetzer (substantive revision 16 Mar 2026): no account of the 1942 history paper, so nothing cited from it",
+    "SEP \u201cFriedrich Nietzsche\u201d, R. Lanier Anderson (substantive revision 25 Jun 2026), read to \u00a76.1"
+   ],
+   "unread": [
+    {
+     "part": "Hastie's own title for the essay and his title page",
+     "why": "OLL page served only metadata; the mirror labels the essay itself",
+     "effect": "the article gives the Louden and Z\u00f6ller English title and names Hastie only as translator of the quoted words"
+    },
+    {
+     "part": "Sibree, the sentence that peoples and governments never learned from history",
+     "why": "not found in history0.htm or history3.htm as read",
+     "effect": "left out"
+    },
+    {
+     "part": "SEP Nietzsche \u00a7\u00a76.2\u20136.3 and bibliography",
+     "why": "fetch stopped at \u00a76.1",
+     "effect": "none on these sentences"
+    }
+   ],
+   "disputes": [
+    {
+     "question": "Is Collingwood's re-enactment a form of empathy?",
+     "sides": [
+      "Kuukkanen \u00a74.2.1 reports its association with the tradition of historical empathy (Retz 2018)",
+      "Connelly \u00a73.2: it is not meant to prescribe an empathetic method; Gardiner's telepathy charge misreads a conceptual point"
+     ],
+     "shown": "Open questions"
+    },
+    {
+     "question": "Is Kant's plan of nature a claim about history or an idea guiding its reading?",
+     "sides": [
+      "Kant calls it an Idee and a Leitfaden a priori (AA 8:29\u201330); no source read records a scholarly dispute (Rauscher records none)"
+     ],
+     "shown": "Open questions, as a question only"
+    }
+   ],
+   "references": "Bracketed references (CM I; GM II \u00a712, II \u00a713, Preface \u00a76, Preface \u00a77; Souls Forethought, Souls I) each open their own heading in the bundled edition (tests/links.py). AA pages for Kant were read from the Akademie text, never estimated. Sibree is cited by translator only; the marxists.org paragraph numbers (\u00a7\u00a712, 21\u201322, 24, 36) are the web page's, recorded here and kept out of the article.",
+   "code": "\u201cSouls Forethought\u201d (and \u201cSouls Afterthought\u201d) added to the du-bois-souls citation style, so the Forethought opens in the reader."
+  }
+ ],
+ "later_fixes": [
+  {
+   "date": "2026-11-23",
+   "kind": "source moved",
+   "note": "SEP replaced Daniel Little's \u201cPhilosophy of History\u201d with a new entry by Jouni-Matti Kuukkanen on 18 November 2026. The sentences checked against Little now cite his archived version (substantive revision 14 May 2025, https://plato.stanford.edu/archives/fall2026/entries/history/); all seven excerpts were re-found there literally (\u00a7\u00a71.3, 2.1, 2.2, 2.4, 3, 3.1, 3.4).",
+   "checked_against": "the archived entry, read literally in two passes"
+  }
+ ]
 }

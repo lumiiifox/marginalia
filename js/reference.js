@@ -1027,8 +1027,9 @@ const PASSAGE_STYLES = {
     find: (B, [n]) => headPath(B, [[2, (t) => t.startsWith({ Preface: "Preface", I: "First Section", II: "Second Section", III: "Third Section" }[n])]]) },
   // Marx and Engels, Manifesto: section, "CM II".
   "marx-engels-manifesto": { book: "classic-marx-engels-manifesto", item: /^CM (I|II|III|IV)$/, find: (B, [n]) => headPath(B, [[2, (t) => t.startsWith(`${n}. `)]]) },
-  // Du Bois, The Souls of Black Folk: chapter, "Souls I".
-  "du-bois-souls": { book: "classic-du-bois-souls", item: /^Souls ([IVX]+)$/, find: (B, [n]) => headPath(B, [[2, (t) => t.startsWith(`${n}. `)]]) },
+  // Du Bois, The Souls of Black Folk: chapter, "Souls I", or "Souls Forethought" / "Souls Afterthought".
+  "du-bois-souls": { book: "classic-du-bois-souls", item: /^Souls ([IVX]+|Forethought|Afterthought)$/,
+    find: (B, [n]) => headPath(B, [[2, (t) => /^[IVX]+$/.test(n) ? t.startsWith(`${n}. `) : t === `The ${n}`]]) },
   // Mill, On Liberty: chapter, "OL I".
   "mill-liberty": { book: "classic-mill-liberty", item: /^OL (I|II|III|IV|V)$/, find: (B, [n]) => headPath(B, [[2, (t) => t.startsWith(`${n}. `)]]) },
   // Kant, Critique of Pure Reason: A/B pages, "A26/B42", "Bxvi" (only those listed in KANT_AB), found by the passage's words.
