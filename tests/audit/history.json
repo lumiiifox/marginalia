@@ -754,6 +754,305 @@
    "added": "2026-11-23 (task 3)"
   },
   {
+   "section": "Genealogy and the uses of history",
+   "text": "Nietzsche's \u201cOn the Use and Abuse of History for Life\u201d (1874) holds that \u201can excess of history\u201d hurts life, which needs the power to forget as well as the power to remember, and distinguishes three kinds of history, \u201cthe monumental, the antiquarian, and the critical\u201d.",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Nietzsche, The Use and Abuse of History, trans. Collins (1909; Gutenberg 38226), \u00a7\u00a71\u20132",
+     "excerpt": "clearly grasped as that an excess of history hurts it",
+     "accuracy": "supported",
+     "note": "Also \u00a71: 'we must know the right time to forget as well as the right time to remember'; \u00a72: 'the _monumental_, the _antiquarian_, and the _critical_'."
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Genealogy and the uses of history",
+   "text": "Robert Wicks, in the Stanford Encyclopedia, sums up its principle: \u201cthe quest for knowledge should serve the interests of life\u201d.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP \u201cNietzsche's Life and Works\u201d (Wicks, substantive revision 10 September 2021) \u00a72",
+     "excerpt": "the quest for knowledge should serve the interests of life.",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Genealogy and the uses of history",
+   "text": "Foucault's \u201cNietzsche, Genealogy, History\u201d (1971) reinterprets this line of Nietzsche's thought: genealogy opposes itself to the search for origins (p. 140), follows descent and emergence (pp. 145\u2013148), and in its last section turns the three kinds of history into parody, the dissociation of identity and the sacrifice of the subject of knowledge (pp. 160\u2013164).",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Foucault, NGH, in Language, Counter-Memory, Practice, ed. Bouchard (1977), pp. 140\u2013164 (csulb PDF, running heads)",
+     "excerpt": "genealogy returns to the three modalities of history",
+     "accuracy": "supported",
+     "note": "p. 140 'it opposes itself to the search for \u201corigins.\u201d'; p. 145 Herkunft 'stock or descent'; p. 148 'Entstehung designates emergence'; p. 160 parodic; p. 161 dissociation of identity, monumental; p. 162 sacrifice of the subject of knowledge, antiquarian; p. 164 critical.",
+     "connection": {
+      "from": "nietzsche",
+      "to": "foucault",
+      "kind": "reinterpretation",
+      "rests_on": "NGH, a reading of Nietzsche's texts including the second Untimely Meditation (pp. 160\u2013164); Oksala \u00a73.3"
+     }
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Genealogy and the uses of history",
+   "text": "Johanna Oksala, in the Stanford Encyclopedia, writes that Foucault meant the term to evoke Nietzsche's genealogy of morals.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP \u201cMichel Foucault\u201d (Oksala, substantive revision 21 April 2026) \u00a73.3; NGH is not named in the entry",
+     "excerpt": "Foucault intended the term \u201cgenealogy\u201d to evoke Nietzsche\u2019s genealogy of morals",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Benjamin against progress",
+   "text": "In Walter Benjamin's theses \u201cOn the Concept of History\u201d, first published in 1942, two years after his death, Klee's Angelus Novus becomes an angel who \u201csees one single catastrophe\u201d where we see a chain of events: \u201cThat which we call progress, is this storm.\u201d",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Benjamin, Thesis IX, trans. Redmond (marxists.org); publication: SEP Benjamin (Charles, substantive revision 23 December 2025), introduction",
+     "excerpt": "That which we call progress, is this storm.",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Benjamin against progress",
+   "text": "Matthew Charles, in the Stanford Encyclopedia, reports Benjamin's view that Marxism had become infected by the ideology of progress, and his answer, now-time (Jetztzeit), which blasts open \u201cthe continuum of history\u201d.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP Benjamin (Charles) \u00a79",
+     "excerpt": "the concept of progress is demobilizing; and Marxism had become infected by the ideology of progress",
+     "accuracy": "supported",
+     "connection": {
+      "from": "benjamin",
+      "to": "marxism",
+      "kind": "critique",
+      "rests_on": "Charles \u00a79 and Thesis XIII: the target is the Marxism of his day, Social Democracy in particular, infected by the ideology of progress; Benjamin writes as a historical materialist"
+     }
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Koj\u00e8ve, Fukuyama and the end of history",
+   "text": "Alexandre Koj\u00e8ve's Paris lectures on Hegel's Phenomenology (1933\u201339), were attended by Bataille, Lacan, Breton, Merleau-Ponty and Raymond Aron; on Boris Groys's account, Koj\u00e8ve held that the end of history had already come through the French Revolution and the Napoleonic wars, with \u201cthe secular, universal, and homogeneous state in which every human being is equally recognized\u201d.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "Groys, \u201cThe Photographer as the Sage\u201d (BAK, 2012)",
+     "excerpt": "the end of history already took place in the past, namely, during the Napoleonic wars; the end of history came into being through the French Revolution",
+     "accuracy": "supported",
+     "connection": {
+      "from": "hegel",
+      "to": "kojeve",
+      "kind": "reinterpretation",
+      "rests_on": "Groys (lectures on the Phenomenology); Fukuyama 1989 ('Koj\u00e8ve sought to resurrect the Hegel of the Phenomenology of Mind')"
+     }
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Koj\u00e8ve, Fukuyama and the end of history",
+   "text": "Francis Fukuyama's \u201cThe End of History?\u201d (1989) drew on Koj\u00e8ve's Hegel to describe \u201cthe end point of mankind's ideological evolution\u201d in the universalization of Western liberal democracy.",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Fukuyama 1989 (ucsd copy, print pp. 1\u20132 of 15; journal pages not shown)",
+     "excerpt": "the end point of mankind's ideological evolution",
+     "accuracy": "supported",
+     "connection": {
+      "from": "kojeve",
+      "to": "fukuyama",
+      "kind": "influence",
+      "rests_on": "Fukuyama 1989; Groys ('uses Koj\u00e8vian thought in a very substantial manner'); Kuukkanen \u00a74.4"
+     }
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Koj\u00e8ve, Fukuyama and the end of history",
+   "text": "Groys judges that Fukuyama misses Koj\u00e8ve's central point, that this state remains a project after the revolution.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "Groys (BAK, 2012)",
+     "excerpt": "Fukuyama misses the central point of Koj\u00e8ve's political philosophy:",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Koj\u00e8ve, Fukuyama and the end of history",
+   "text": "Kuukkanen calls Fukuyama's thesis the most important catalyst of a revival of speculative philosophy of history.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP Kuukkanen \u00a74.4",
+     "excerpt": "most important catalyst for this revival was Fukuyama",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Universal history in Anti-Oedipus",
+   "text": "Anti-Oedipus (1972) reads all history retrospectively in the light of capitalism, \u201cprovided that the rules formulated by Marx are followed exactly\u201d, and the first rule is that \u201cuniversal history is the history of contingencies, and not the history of necessity\u201d (p. 140).",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Deleuze and Guattari, Anti-Oedipus, trans. Hurley, Seem and Lane (owner's PDF, Drive; printed page = PDF page \u2212 23, running heads checked on pp. 140, 224, 271), p. 140 (its note cites Grundrisse pp. 104\u2013108 and Godelier)",
+     "excerpt": "universal history is the history of contingencies, and not the history of necessity",
+     "accuracy": "supported",
+     "connection": {
+      "from": "marx",
+      "to": "deleuze",
+      "kind": "reinterpretation",
+      "rests_on": "AO p. 140 and its note citing the Grundrisse"
+     }
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Universal history in Anti-Oedipus",
+   "text": "Capitalism needed \u201cgreat accidents\u201d and encounters that might never have happened, so universal history is \u201ccontingent, singular, ironic, and critical\u201d (p. 140), \u201cthe only universal history is the history of contingency\u201d (p. 224), and without its own critique it is \u201cnothing more than a theology\u201d (p. 271).",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Deleuze and Guattari, Anti-Oedipus, trans. Hurley, Seem and Lane (owner's PDF, Drive; printed page = PDF page \u2212 23, running heads checked on pp. 140, 224, 271), pp. 140, 224, 271",
+     "excerpt": "The only universal history is the history of contingency.",
+     "accuracy": "supported",
+     "note": "Also p. 153: capitalism 'is at the end of history', resulting 'from a long history of contingencies and accidents'; p. 195: 'history is the history of contingencies and encounters'."
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Universal history in Anti-Oedipus",
+   "text": "In the Stanford Encyclopedia, Daniel Smith, John Protevi and Daniela Voss call this \u201ca contingent history, that is, one that avoids dialectical laws of history\u201d, in which social life takes three forms: the earth for the tribe, the body of the despot for the empire, and capital for capitalism.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP \u201cGilles Deleuze\u201d (Smith, Protevi and Voss; substantive revision 3 June 2022) \u00a74.1",
+     "excerpt": "a contingent history, that is, one that avoids dialectical laws of history",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Universal history in Anti-Oedipus",
+   "text": "Pages of Anti-Oedipus are from the translation by Robert Hurley, Mark Seem and Helen R. Lane (1977).",
+   "claims": [
+    {
+     "type": "editorial-note",
+     "by": "Deleuze and Guattari, Anti-Oedipus, trans. Hurley, Seem and Lane (owner's PDF, Drive; printed page = PDF page \u2212 23, running heads checked on pp. 140, 224, 271)",
+     "excerpt": "Translated by Robert Hurley and Mark Seem",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Accelerationism",
+   "text": "The same book asks whether the revolutionary path is to withdraw from the world market or to go further, to \u201caccelerate the process\u201d, a phrase it credits to Nietzsche (pp. 239\u2013240), and Robin Mackay and Armen Avanessian call it \u201cprobably the most famous \u2018accelerationist\u2019 passage\u201d in Deleuze and Guattari's work (p. 14 of their introduction).",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "Deleuze and Guattari, Anti-Oedipus, trans. Hurley, Seem and Lane (owner's PDF, Drive; printed page = PDF page \u2212 23, running heads checked on pp. 140, 224, 271), pp. 239\u2013240; Mackay and Avanessian, \u201cIntroduction\u201d (2014), p. 14",
+     "excerpt": "probably the most famous 'accelerationist' passage in Deleuze and Guattari's work",
+     "accuracy": "supported",
+     "connection": {
+      "from": "deleuze",
+      "to": "accelerationism",
+      "kind": "influence",
+      "rests_on": "Mackay and Avanessian p. 14; AO pp. 239\u2013240"
+     }
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Accelerationism",
+   "text": "Nick Land's \u201cCircuitries\u201d (1992) describes a universal schizophrenia whose evacuation from history \u201cappears inside history as capitalism\u201d (p. 305), and expects the capitalized terminus of anthropoid civilization to be seen as \u201cthe primitive trigger for a transglobal post-biological machinism\u201d (p. 297).",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Land, \u201cCircuitries\u201d, Fanged Noumena (2011) (owner's page-marked file circuitries_pp289-318.txt), pp. 297, 305 (p. 297 also in reread_circuitries)",
+     "excerpt": "appears inside history as capitalism",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Accelerationism",
+   "text": "Simon O'Sullivan finds in the essay the \u201cstrange temporality of capitalism\u201d and its \u201cretroactive orientation\u201d (p. 22), and describes hyperstition, in the Cybernetic Culture Research Unit's sense, as \u201ca future vision thrown back to engineer its own history\u201d (p. 14).",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "O'Sullivan, Cyclops 2 (2017), pp. 14, 22 (published PDF, literal part)",
+     "excerpt": "it operates as a future vision thrown back to engineer its own history.",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Accelerationism",
+   "text": "Land's essay never uses the word accelerationism.",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Land, \u201cCircuitries\u201d, Fanged Noumena (2011) (owner's page-marked file circuitries_pp289-318.txt); tests/audit/glossary-route2.json reread_circuitries",
+     "excerpt": "the only form of the verb in it is \u201ctime accelerating\u201d (p. 317)",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Accelerationism",
+   "text": "Pages of \u201cCircuitries\u201d are from Fanged Noumena: Collected Writings 1987\u20132007 (2011).",
+   "claims": [
+    {
+     "type": "editorial-note",
+     "by": "Land, \u201cCircuitries\u201d, Fanged Noumena (2011) (owner's page-marked file circuitries_pp289-318.txt)",
+     "excerpt": "[p. 297]",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Accelerationism",
+   "text": "Benjamin Noys, in David Cunningham's report, objects that the accelerationism of Lyotard and Land affirms labour's \u201ccapture\u201d by the machinic and the abstract.",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "Cunningham, Radical Philosophy 191 (2015), as recorded for the accelerationism entry (tests/audit/glossary-route2.json, CUN)",
+     "excerpt": "capture",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
    "section": "Understanding and explanation",
    "text": "Dilthey held the human sciences to be inherently distinct from the natural sciences, with the understanding of meaning as their method, and Collingwood presented re-enacting the thought of historical agents as the way historians know the past.",
    "claims": [
@@ -964,6 +1263,65 @@
     }
    ],
    "added": "2026-11-23 (task 3)"
+  },
+  {
+   "section": "Open questions",
+   "text": "Did Fukuyama read Koj\u00e8ve rightly?",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Open questions",
+   "text": "Groys holds that for Koj\u00e8ve the universal and homogeneous state remained a project; Fukuyama writes that for Koj\u00e8ve it had found real-life embodiment in postwar Western Europe.",
+   "claims": [
+    {
+     "type": "dispute",
+     "by": "Groys (BAK, 2012); Fukuyama 1989",
+     "excerpt": "the universal and homogeneous state also remains a project after the revolution",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Open questions",
+   "text": "Are Benjamin's theses theological, materialist, or both?",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Open questions",
+   "text": "Charles reports that Scholem promoted a theological reading, Brecht a materialist one, and Adorno sought to make them compatible, and he judges the question badly posed in the received concepts of theology and materialism.",
+   "claims": [
+    {
+     "type": "dispute",
+     "by": "SEP Benjamin (Charles) \u00a79",
+     "excerpt": "Yet the question is badly posed if it is framed within received concepts",
+     "accuracy": "supported"
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
+  },
+  {
+   "section": "Open questions",
+   "text": "If universal history is the history of contingencies, can it still have a direction?",
+   "claims": [
+    {
+     "type": "non-assertive",
+     "accuracy": "non-assertive"
+    }
+   ],
+   "added": "2026-11-23 (task 4)"
   }
  ],
  "applied": {
@@ -1024,6 +1382,65 @@
    ],
    "references": "Bracketed references (CM I; GM II \u00a712, II \u00a713, Preface \u00a76, Preface \u00a77; Souls Forethought, Souls I) each open their own heading in the bundled edition (tests/links.py). AA pages for Kant were read from the Akademie text, never estimated. Sibree is cited by translator only; the marxists.org paragraph numbers (\u00a7\u00a712, 21\u201322, 24, 36) are the web page's, recorded here and kept out of the article.",
    "code": "\u201cSouls Forethought\u201d (and \u201cSouls Afterthought\u201d) added to the du-bois-souls citation style, so the Forethought opens in the reader."
+  },
+  {
+   "task": "4: the continental line on history, toward Deleuze and Land",
+   "date": "2026-11-23",
+   "by": "Claude (lead dev), first pass; independent review by a separate Claude reviewer (fresh context, 2026-11-23): passed after fixes to the Mackay and Avanessian sentence (overstated), the Koj\u00e8ve sentence (Breton added; claims attributed to Koj\u00e8ve as Groys reports them), the Benjamin connection (target: the Marxism of his day), O'Sullivan's wording, missing section sources, and a note that Land never uses the word accelerationism",
+   "sources_read": [
+    "Nietzsche, The Use and Abuse of History, trans. Adrian Collins (1909), Project Gutenberg 38226 (GITenberg clone)",
+    "SEP \u201cNietzsche's Life and Works\u201d, Robert Wicks (substantive revision 10 Sep 2021), read whole",
+    "Foucault, \u201cNietzsche, Genealogy, History\u201d, Language, Counter-Memory, Practice, ed. Bouchard (1977), csulb PDF, read whole (pages from running heads; p. 139 inferred)",
+    "SEP \u201cMichel Foucault\u201d, Johanna Oksala (substantive revision 21 Apr 2026), read whole: it never names \u201cNietzsche, Genealogy, History\u201d or the second Untimely Meditation",
+    "SEP \u201cWalter Benjamin\u201d, Matthew Charles (substantive revision 23 Dec 2025), read whole in literal passes",
+    "Benjamin, \u201cTheses on the Philosophy of History\u201d, trans. Dennis Redmond (2005, CC BY-SA), marxists.org, read whole",
+    "Boris Groys, \u201cThe Photographer as the Sage\u201d (BAK, 2012), read whole",
+    "Fukuyama, \u201cThe End of History?\u201d (1989), ucsd print of the wesjones copy, literal to about 40%: journal pages not shown",
+    "SEP \u201cPhilosophy of History\u201d, Kuukkanen (2026) \u00a7\u00a72.1, 4.4",
+    "Deleuze and Guattari, Anti-Oedipus (Hurley, Seem, Lane), owner's PDF in Drive, pp. 139\u2013140, 153, 195, 224, 239\u2013240, 271 read in full",
+    "SEP \u201cGilles Deleuze\u201d, Smith, Protevi and Voss (substantive revision 3 Jun 2022), \u00a74.1",
+    "Mackay and Avanessian, \u201cIntroduction\u201d, #Accelerate (2014), literal pp. 3\u201321",
+    "O'Sullivan, \u201cAccelerationism, Hyperstition and Myth-Science\u201d, Cyclops 2 (2017), literal pp. 12\u201329",
+    "Land, \u201cCircuitries\u201d, Fanged Noumena (2011), owner's page-marked file circuitries_pp289-318.txt (pp. 297, 305)",
+    "Cunningham, Radical Philosophy 191 (2015), through the accelerationism entry's audit record (glossary-route2.json)"
+   ],
+   "unread": [
+    {
+     "part": "Fukuyama 1989 after the first ~40%, including the closing remark on boredom",
+     "why": "fetch returned the rest as a summary",
+     "effect": "nothing quoted from that part"
+    },
+    {
+     "part": "Mackay and Avanessian pp. 21\u201343; O'Sullivan pp. 30\u201344",
+     "why": "fetch returned the rest as a summary",
+     "effect": "quoted sentences sit in the literal parts"
+    },
+    {
+     "part": "Foucault's translators for \u201cNietzsche, Genealogy, History\u201d",
+     "why": "the PDF credits only the editor, D. F. Bouchard",
+     "effect": "the source line names the editor only"
+    }
+   ],
+   "disputes": [
+    {
+     "question": "Did Fukuyama read Koj\u00e8ve rightly?",
+     "sides": [
+      "Groys: for Koj\u00e8ve the universal and homogeneous state also remains a project after the revolution",
+      "Fukuyama 1989, print p. 2: 'For Koj\u00e8ve, this so-called \"universal homogenous state\" found real-life embodiment' in postwar Western Europe"
+     ],
+     "shown": "Open questions"
+    },
+    {
+     "question": "Are Benjamin's theses theological, materialist, or both?",
+     "sides": [
+      "Scholem: theological; Brecht: materialist; Adorno: compatible (all as reported by Charles \u00a79)",
+      "Charles: badly posed in received concepts"
+     ],
+     "shown": "Open questions"
+    }
+   ],
+   "connections": "Each link states its kind and rests on a passage or source, recorded on its sentence (connection): Nietzsche \u2192 Foucault (reinterpretation), Benjamin \u2192 the Marxism of his day (critique), Hegel \u2192 Koj\u00e8ve (reinterpretation), Koj\u00e8ve \u2192 Fukuyama (influence), Marx \u2192 Deleuze and Guattari (reinterpretation), Anti-Oedipus \u2192 accelerationism (influence). None is added to CONNECTIONS in this task, so none needs a connections.json record.",
+   "cautions": "Land's quotations of Anti-Oedipus are never used as Anti-Oedipus's words (Circuitries quotes AO loosely, see reread_circuitries); AO is quoted from the owner's copy only."
   }
  ],
  "later_fixes": [
