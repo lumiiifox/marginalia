@@ -108,7 +108,10 @@ compare or substantiate philosophical ideas, or by rewarding doing so? If not, i
 - **Never commit books, PDFs or backup files.** The repository is public. The one exception is `data/books/`: the classics that
   come with the app, built by `tools/build_classics.py` from Standard Ebooks editions (or, for a work they lack, a Project
   Gutenberg EPUB or a public-domain transcription of a public-domain translation; the EPUBs sit in the git-ignored
-  tests/.cache/gutenberg) and public domain in both the US and Canada (author and any translator died in 1971 or earlier).
+  tests/.cache/gutenberg) and public domain in both the US and Canada. Canada: the author and any translator died in 1971 or
+  earlier (life plus 50, frozen at 1971: the 2022 extension to life plus 70 revived nothing). US: the edition used was
+  first published 95 or more years before the current year (1930 or earlier in 2026), or is otherwise public domain there.
+  Both tests must pass; countries that count life plus 70 are not the test.
   Nothing from the owner's library ever goes there.
 - Nothing personal about the owner goes in the repository beyond what this file says.
 - Changing the stored shape of a record: bump `indexedDB.open("marginalia", N)` only when a store is added or needs migration,
