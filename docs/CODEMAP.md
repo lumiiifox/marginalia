@@ -145,7 +145,9 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   `searchHTML`: books, glossary, notes, and Search inside your books); Continue reading (`continueHTML`, `continueBook`: the
   unfinished, non-example book with the latest `readAt`, one large button opening the reader at your place via `data-continue`, with
   the page and chapter there (`homePlace`, loading the book's text once, `HOME_LOADING`), your line for next time and the book's page as
-  a text link); one open Question note of yours from that book in your words, newest first (`bookQuestion`, `bookQuestionHTML`); From
+  a text link; labelled Currently reading); On your shelf (`shelfStripHTML`, `SHELF_STRIP`: up to ten other books in the shelves'
+  order, a strip of covers on one plank that scrolls sideways, each opening its book's page; holding and arranging stay on Library);
+  Today's question (`dqCardHTML`, daily.js); one open Question note of yours from that book in your words, newest first (`bookQuestion`, `bookQuestionHTML`); From
   your margins. With books but none started, Choose a book (`chooseHTML`: a shelf row, unfinished first); with an empty library once
   loading is done, Add your first text and Restore a backup. Sections with nothing to show are left out.
 - Library (`shelfView`, the `shelf` screen): the shelves (`shelvesHTML`, `shelfRowsHTML`, `shelfBookHTML`), Add text, Wishlist and

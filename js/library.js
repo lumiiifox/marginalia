@@ -195,7 +195,7 @@ function libraryView() {
   let body = "";
   if (searching) body = searchHTML(texts);
   else if (!ready) body = "";
-  else if (continueBook()) body = continueHTML() + dqCardHTML() + bookQuestionHTML() + resurfHTML();
+  else if (continueBook()) body = continueHTML() + shelfStripHTML() + dqCardHTML() + bookQuestionHTML() + resurfHTML();
   else if (texts.length) body = chooseHTML() + dqCardHTML() + resurfHTML();
   else body = `<section class="home-sec firstuse"><h2>Add your first text</h2><p class="hint">Bring in a book from a PDF, EPUB, Word or text file, then read it here and save passages as you go. If you used Marginalia on another device, restore its backup instead.</p>
     <div class="row"><button class="btn primary" id="addtext">Add your first text</button><span class="btn filebtn">Restore a backup<input id="restore" type="file" aria-label="Restore from a backup file"></span></div></section>`;
@@ -203,6 +203,18 @@ function libraryView() {
     ${banner()}<div id="cloud-warning-slot">${cloudBackupWarningHTML()}</div>
     <input class="search" id="q" type="search" placeholder="Search books, notes, glossary" value="${esc(S.q)}" aria-label="Search your books, notes and the glossary">
     ${body}`;
+}
+/* A strip of the shelf on Home, swiped sideways: up to SHELF_STRIP books in the shelves' order (Reading, Queued, Finished), the
+   current book left out since it is just above. A tap opens the book's page; holding and arranging stay on Library's shelves. */
+const SHELF_STRIP = 10;
+function shelfStripHTML() {
+  const cur = continueBook(), skip = cur ? cur[0] : null;
+  const all = Object.keys(STATUS).flatMap((st) => shelfList(st)).filter(([id, t]) => id !== skip && !t.example), list = all.slice(0, SHELF_STRIP);
+  if (!list.length) return "";
+  return `<section class="strip" aria-label="Your shelf"><div class="strip-head"><h2>On your shelf</h2><button class="linkbtn" data-tab="shelf">${all.length > list.length ? `All ${all.length + (skip ? 1 : 0)}` : "Library"}</button></div>
+    <div class="strip-row" tabindex="0" style="--n:${list.length}">${list.map(([id, t]) => { const pc = progressOf(t);
+      return `<button class="stripbook" data-open="${esc(id)}" aria-label="${esc(t.title)}">${coverHTML(t, coverURL(id))}<span class="sb-title">${esc(t.title)}</span>${pc > 0 ? `<span class="sb-prog"><i style="width:${pc}%"></i></span>` : ""}</button>`; }).join("")}
+    <div class="plank" aria-hidden="true"></div></div></section>`;
 }
 // Books on the shelf but none started: a few to choose from, unfinished ones first, in the shelves' order.
 function chooseHTML() {
@@ -243,9 +255,9 @@ function continueHTML() {
   const [id, t] = hit, pc = progressOf(t), d = Math.floor((Date.now() - t.readAt) / DAY), where = homePlace(id, t);
   const when = d < 1 ? "today" : d < 2 ? "yesterday" : d < 14 ? `${d} days ago` : new Date(t.readAt).toLocaleDateString(undefined, { month: "short", day: "numeric" });
   const place = [where && where.page ? loc(where.page) : "", where && where.label ? `in ${where.label}` : ""].filter(Boolean).join(" ");
-  return `<section class="current"><button class="contcard" data-continue="${esc(id)}" aria-label="${esc(`Continue reading ${t.title}${place ? `, ${place}` : ""}`)}">
+  return `<section class="current"><button class="contcard" data-continue="${esc(id)}" aria-label="${esc(`Currently reading ${t.title}, continue${place ? `, ${place}` : ""}`)}">
     <span class="cc-cover">${coverHTML(t, coverURL(id))}</span>
-    <span class="cc-l">Continue reading</span><span class="cc-t">${esc(t.title)}</span>${t.author ? `<span class="cc-a">${esc(t.author)}</span>` : ""}
+    <span class="cc-l">Currently reading</span><span class="cc-t">${esc(t.title)}</span>${t.author ? `<span class="cc-a">${esc(t.author)}</span>` : ""}
     ${place ? `<span class="cc-where">${esc(place)}</span>` : ""}
     <span class="cc-m">${pc > 0 ? `${pc}% · ` : ""}last read ${esc(when)}</span>${pc > 0 ? `<span class="rc-meter cc-meter" aria-hidden="true"><i style="width:${pc}%"></i></span>` : ""}
     <span class="rc-go" aria-hidden="true">›</span></button>

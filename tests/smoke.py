@@ -360,6 +360,11 @@ async def main():
           return [none, choose, c?.dataset.continue, c?.querySelector('.cc-m')?.textContent, c?.querySelector('.cc-where')?.textContent, kids.findIndex((x) => x.contains(c)) === kids.findIndex((x) => x.id === 'q') + 1]; }""")
         check(cont[0] and cont[1], f"with no book started there is no Continue reading card, and Choose a book offers the shelf ({cont[:2]})")
         check(cont[2:] == ["c1", "50% · last read today", "p. 17", True], f"Continue reading shows the book read last, unfinished, at its page, first under search ({cont})")
+        strip = await page.evaluate("""async () => { for (let i = 0; i < 12; i++) await put('texts', 'sx' + i, { title: 'Shelf ' + i, status: 'queued', createdAt: i, updatedAt: i });
+          go({ screen: 'library' }); const s = document.querySelector('.strip'), kids = [...document.querySelector('#main').children], ids = [...s.querySelectorAll('.stripbook')].map((b) => b.dataset.open);
+          const out = [ids.length, ids.includes('c1'), kids.indexOf(s) === kids.indexOf(document.querySelector('.current')) + 1, getComputedStyle(s.querySelector('.strip-row')).overflowX, document.documentElement.scrollWidth > innerWidth, document.querySelector('.cc-l').textContent];
+          for (let i = 0; i < 12; i++) await del('texts', 'sx' + i); return out; }""")
+        check(strip == [10, False, True, "auto", False, "Currently reading"], f"Home shows Currently reading, then a sideways strip of up to ten other books from the shelf ({strip})")
         q = await page.evaluate("""async () => { const now = Date.now(), long = 'Why does the proof need this step? '.repeat(8).trim();
           await put('notes', 'hq1', { textId: 'c1', kind: 'question', passage: 'Paragraph 2', gloss: long, page: '17', at: 2, createdAt: now - 1000, updatedAt: now });
           await put('notes', 'hq2', { textId: 'c1', kind: 'question', passage: 'x', gloss: 'An answered one', at: 1, resolved: true, createdAt: now, updatedAt: now });

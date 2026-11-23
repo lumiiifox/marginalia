@@ -765,10 +765,24 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 /* text links in a row: secondary actions, set apart by space */
 .qfirst { display: grid; gap: 4px; }
 .qfirst .readqs, .solo { color: var(--ink); }
+/* On your shelf: a sideways strip of covers standing on one plank, between the current book and today's question */
+.strip { display: grid; gap: 10px; }
+.strip-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.strip-head h2 { margin: 0; font: 700 12.5px/1.2 var(--f-ui); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.strip-row { position: relative; display: flex; gap: 14px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scrollbar-width: none;
+  margin-inline: -16px; padding: 4px 16px 2px; scroll-padding-inline: 16px; --cw: clamp(84px, 24vw, 112px); }
+.strip-row::-webkit-scrollbar { display: none; }
+.stripbook { flex: 0 0 var(--cw); width: var(--cw); scroll-snap-align: start; position: relative; z-index: 1; display: grid; gap: 3px; align-content: start;
+  text-align: left; background: none; border: 0; padding: 0; color: var(--ink); }
+.stripbook .cover { margin-bottom: 22px; }
+.stripbook .sb-title { -webkit-line-clamp: 2; font-size: 14.5px; }
+/* the plank runs under the covers the whole length of the strip, so it scrolls with them */
+.strip-row .plank { left: 0; right: auto; width: max(100%, calc(var(--n, 10) * (var(--cw) + 14px) + 32px)); top: calc(4px + var(--cw) * 1.5 - 3px); }
+.strip-row:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 .textlinks { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 20px; align-items: baseline; }
 .textlinks .linkbtn { font-size: 15px; }
 /* sections on Home and Library are set apart by space and a rule */
-#main > .homeq, #main > #resurf, #main > .choose, .writing, .backup { border-top: 1px solid var(--rule); padding-top: 22px; }
+#main > .homeq, #main > #resurf, #main > .choose, #main > .strip, .writing, .backup { border-top: 1px solid var(--rule); padding-top: 22px; }
 /* the question from the current book, in your words, set to be read */
 .homeq { display: grid; gap: 8px; }
 .homeq .hq { margin: 0; font: 400 19px/1.5 var(--f-text); color: var(--ink); overflow-wrap: break-word; }
