@@ -65,6 +65,11 @@ BOOKS = [
          files=[f"books/book-{i:02d}.md" for i in range(1, 15)], verse_commit="8dc2dc1", verse_dir="en/", encoding="utf-8", convert="aristotle_metaphysics"),
          cover=dict(title="Metaphysics", size=44, art="stars"),
          text=dict(title="Metaphysics", author="Aristotle", edition="trans. W. D. Ross", orig="")),
+    # Dakyns's translation (The Works of Xenophon, vol. III, part 1, Macmillan, 1897; H. G. Dakyns died 1911), as Project Gutenberg
+    # transcribes it (ebook 1177), from its GITenberg repository.
+    dict(id="classic-xenophon-memorabilia", text_source=dict(repo="https://github.com/GITenberg/The-Memorabilia_1177", file="1177.txt", convert="xenophon_memorabilia"),
+         cover=dict(title="Memorabilia", size=44, art="stars"),
+         text=dict(title="Memorabilia", author="Xenophon", edition="trans. H. G. Dakyns", orig="")),
     dict(id="classic-rousseau-social-contract", repo="jean-jacques-rousseau_the-social-contract_g-d-h-cole", files=None,
          text=dict(title="The Social Contract", author="Jean-Jacques Rousseau", edition="trans. G. D. H. Cole", publisher="Standard Ebooks", year="2024", orig="1762")),
     dict(id="classic-wollstonecraft-vindication", repo="mary-wollstonecraft_a-vindication-of-the-rights-of-woman", files=None,
@@ -492,6 +497,50 @@ def aristotle_metaphysics(raw, verse):
     assert book == 14, book
     return f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Metaphysics</title></head><body>{"".join(out)}</body></html>'
 
+def xenophon_memorabilia(raw):
+    """Dakyns's translation of the Memorabilia (1897), from a plain-text transcription: one XHTML document, a chapter per book
+    ("Book IV") and a heading per chapter ("Chapter VI"; the transcription's bare Roman numeral). Dakyns prints no section numbers;
+    the reference articles find a section by its words (XEN_MEM in js/reference.js). His notes, numbered from (1) in each chapter and
+    printed after the paragraph that cites them, become footnotes numbered through the book; an indented block after a note goes on
+    with that note, and anywhere else is a quotation, its lines joined by " / ". The transcription's {braces} mark transliterated
+    Greek, set here in italics; its "--" is a dash."""
+    t = raw.replace("\r\n", "\n")
+    t = t[t.index("BOOK I\n"):t.index("End of the Project Gutenberg")]
+    raw_blocks = [b for b in re.split(r"\n\s*\n", t) if b.strip()]
+    def fix(x):
+        x = " ".join(x.split()).replace("--", "—")
+        return re.sub(r"\{([^{}]*)\}", lambda m: "\x01" + m.group(1) + "\x02", typo(x))
+    def html(x): return esc(x).replace("\x01", "<i>").replace("\x02", "</i>")
+    out, local, total, notes, books, in_note = [], {}, 0, 0, 0, False
+    def refs(x):
+        def ref(m):
+            nonlocal total
+            n = int(m.group(1))
+            if n in local: return m.group(0)  # cited already: a number in the text itself
+            total += 1; local[n] = total
+            return f"<sup>{total}</sup>"
+        return re.sub(r" ?\((\d+)\)", ref, x)
+    for b in raw_blocks:
+        n = " ".join(b.split())
+        m = re.fullmatch(r"BOOK ([IV]+)", n)
+        if m: books += 1; out.append(f"<h2>Book {m.group(1)}</h2>"); in_note = False; continue
+        if re.fullmatch(r"[IVXL]+", n): out.append(f"<h3>Chapter {n}</h3>"); local.clear(); in_note = False; continue
+        m = re.match(r" \((\d+)\)\s+(.*)", b, re.S)
+        if m:
+            k = local.pop(int(m.group(1)), None)  # a number is free again once its note is out (II.vi numbers two notes 14)
+            assert k, ("note without a reference", b[:80])
+            notes += 1; in_note = True
+            out.append(f'<aside epub:type="footnote"><p>{k}. {html(fix(m.group(2)))}</p></aside>'); continue
+        if b.startswith("    ") and in_note:
+            out[-1] = out[-1].replace("</p></aside>", " " + html(fix(n)) + "</p></aside>"); continue
+        if b.startswith("    "):
+            lines = [fix(l) for l in b.split("\n") if l.strip()]
+            out.append("<blockquote><p>" + refs(" / ".join(html(l) for l in lines)) + "</p></blockquote>"); continue
+        in_note = False
+        out.append(f"<p>{refs(html(fix(n)))}</p>")
+    assert books == 4 and notes == total, (books, notes, total)
+    return f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Memorabilia</title></head><body>{"".join(out)}</body></html>'
+
 def toRoman_py(n):
     out = ""
     for v, r in [(10, "X"), (9, "IX"), (5, "V"), (4, "IV"), (1, "I")]:
@@ -557,7 +606,7 @@ def gutenberg_epub(folder):
     endnotes = f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Notes</title></head><body><section epub:type="endnotes"><h2>Notes</h2><ol>{ol}</ol></section></body></html>'
     return docs, endnotes
 
-CONVERT = {"kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique, "aristotle_metaphysics": aristotle_metaphysics}
+CONVERT = {"kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique, "aristotle_metaphysics": aristotle_metaphysics, "xenophon_memorabilia": xenophon_memorabilia}
 
 def clone(url, dest):
     if not dest.exists():

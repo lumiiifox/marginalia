@@ -270,7 +270,10 @@ function syllabusHTML(P) {
       ${active ? `<div class="syllabus-reading-head">${pathCover(st)}<div><span class="syllabus-number">${k + 1}.</span><h3 tabindex="-1" data-selected-reading>${esc(b.title)}</h3>${b.author ? `<p class="syllabus-author">${esc(b.author)}</p>` : ""}<p class="syllabus-assignment">${esc(chapters)}</p>${s.done ? `<p class="syllabus-status">Read</p>` : ""}</div></div>` : `<button class="syllabus-compact" data-pathselect="${esc(P.id)}" data-step="${k}">${pathCover(st)}<span><span class="syllabus-number">${k + 1}.</span><em>${esc(b.title)}</em>${b.author ? `<span>${esc(b.author)}</span>` : ""}<small>${esc(chapters)}${s.done ? " · Read" : ""}</small></span><span class="syllabus-expand">View</span></button>`}
       <div class="syllabus-reading-body"${active ? "" : " hidden"}>
         ${missing ? `<p class="hint">Some assigned chapters are missing from this copy. Edit the path to choose the range again.</p>` : ""}
-        ${st.why ? `<div class="syllabus-purpose"><div class="label">Reading notes</div><p>${esc(st.why)}</p></div>` : ""}
+        ${st.who ? `<p class="syllabus-who">${esc(st.who)}</p>` : ""}
+        ${st.why ? `<div class="syllabus-purpose"><div class="label">Reading notes</div><p>${st.xr ? passageLinks(esc(st.why), st.xr) : esc(st.why)}</p></div>` : ""}
+        ${(st.reading || []).map((d) => `<p class="syllabus-reading-src"><span class="ck">Through scholarship</span> ${esc(d.says)} <a href="${esc(d.src)}" target="_blank" rel="noopener" class="tsrc">${esc(d.srcName)}</a></p>`).join("")}
+        ${st.dispute && typeof DISPUTES !== "undefined" && DISPUTES.some((d) => d.id === st.dispute) ? `<button class="btn" data-dispute="${esc(st.dispute)}">Open the disputation: ${esc(DISPUTES.find((d) => d.id === st.dispute).where)}</button>` : ""}
         ${readQsHTML(P, k, !!s.t, false).replace('<details class="readqd">', active ? '<details class="readqd" open>' : '<details class="readqd">')}
         <div class="syllabus-read-actions">${action}</div>
       </div></li>`;
@@ -424,7 +427,7 @@ const CLASSIC_TITLES = { "classic-plato-socrates": "Euthyphro, Apology, Crito, P
   "classic-hobbes-leviathan": "Leviathan", "classic-spinoza-ethics": "Ethics", "classic-hume-treatise": "A Treatise of Human Nature", "classic-hume-enquiry": "An Enquiry Concerning Human Understanding", "classic-rousseau-social-contract": "The Social Contract",
   "classic-kant-critique": "Critique of Pure Reason", "classic-kant-groundwork": "Fundamental Principles of the Metaphysic of Morals", "classic-wollstonecraft-vindication": "A Vindication of the Rights of Woman",
   "classic-marx-engels-manifesto": "The Communist Manifesto", "classic-nietzsche-beyond": "Beyond Good and Evil", "classic-nietzsche-genealogy": "The Genealogy of Morals", "classic-cooper-voice": "A Voice from the South", "classic-du-bois-souls": "The Souls of Black Folk",
-  "classic-plato-republic": "The Republic", "classic-mill-liberty": "On Liberty", "classic-russell-problems": "The Problems of Philosophy",
+  "classic-plato-republic": "The Republic", "classic-xenophon-memorabilia": "Memorabilia", "classic-mill-liberty": "On Liberty", "classic-russell-problems": "The Problems of Philosophy",
   "classic-freud-dreams": "The Interpretation of Dreams", "classic-freud-pleasure": "Beyond the Pleasure Principle" };
 /* ---------- the classics where the reference pages name them ----------
    A classic's title in an article, a thinker card or a glossary entry opens the book (added back first if you deleted it), and
@@ -434,6 +437,7 @@ const CLASSIC_TITLES = { "classic-plato-socrates": "Euthyphro, Apology, Crito, P
 const CLASSIC_NAMES = {
   "classic-plato-socrates": { by: ["plato", "socrates"], full: ["Euthyphro", "Crito", "Phaedo", "Plato's Apology"], own: ["Apology"] },
   "classic-plato-republic": { by: ["plato"], full: ["Plato's Republic", { s: "Republic", pre: ["the", "The"], notPost: /^ of\b/, notPre: /\bOn the $/ }, { s: "Republic", post: /^ (\d|[IVX]+\b)/, notPre: /\bOn the $/ }], own: ["Republic"] },
+  "classic-xenophon-memorabilia": { by: [], full: ["Memorabilia"] },
   "classic-aristotle-ethics": { by: ["aristotle"], full: ["Nicomachean Ethics"] },
   "classic-aristotle-metaphysics": { by: ["aristotle"], full: [{ s: "Metaphysics", pre: ["Aristotle's", "Aristotle’s"] }, { s: "Metaphysics", post: /^ (\d|[IVX]+\b)/ }], own: ["Metaphysics"] },
   "classic-descartes-meditations": { by: ["descartes"], full: ["Discourse on the Method", "Discourse on Method", "Meditations on First Philosophy"], own: ["Meditations"] },
@@ -857,6 +861,22 @@ const NE_BEKKER = {
   "1177b4–15": ["X.7", "the politician’s life also is not a leisurely occupation", "Kraut §10"],
   "1178a23–b7": ["X.8", "need but a small supply of external goods", "Kraut §6"],
 };
+// Xenophon's Memorabilia in Dakyns: his translation prints no section numbers either, so a section a reference uses is listed with
+// words in his text. Each was matched by content to the sections Perseus marks in Marchant's Greek text (canonical-greekLit,
+// tlg0032.tlg002). A reference opens the paragraph holding the words listed, which is the section's own first paragraph, or for
+// II.1.13 and IV.6.4 the one where the section's main reply begins (tests/audit/daily-questions.json says which). Never estimated.
+// [the section's words in Dakyns; the Greek words matched]
+const XEN_MEM = {
+  "IV.6.1": ["if a man knew what each reality was", "τί ἕκαστον εἴη τῶν ὄντων"],
+  "IV.6.2": ["As a first instance I will take the question of piety", "πρῶτον δὲ περὶ εὐσεβείας ὧδέ πως ἐσκόπει"],
+  "IV.6.3": ["Then he who knows these laws will know how he must honour the gods", "ὁ τοὺς νόμους τούτους εἰδὼς"],
+  "IV.6.4": ["he who knows what the law requires in reference to the gods", "ὁ ἄρα τὰ περὶ τοὺς θεοὺς νόμιμα εἰδὼς"],
+  "II.1.8": ["I do not dream for a moment of ranking myself", "οὐδαμῶς γε τάττω ἐμαυτὸν εἰς τὴν τῶν ἄρχειν βουλομένων τάξιν"],
+  "II.1.9": ["states claim to treat their rulers precisely as I treat my domestic slaves", "ἀξιοῦσιν αἱ πόλεις τοῖς ἄρχουσιν ὥσπερ ἐγὼ τοῖς οἰκέταις χρῆσθαι"],
+  "II.1.11": ["a middle path between the two", "μέση τούτων ὁδός"],
+  "II.1.12": ["if only your path could avoid human beings", "μηδὲ διʼ ἀνθρώπων"],
+  "II.1.13": ["I roam the wide world a foreigner", "ξένος πανταχοῦ εἰμι"],
+};
 const kantFlat = (b) => plain(b.x || "").replace(/<[^>]+>/g, "").replace(/[¹²³⁴⁵⁶⁷⁸⁹⁰]/g, "").replace(/\s+/g, " ");
 // Plato in Jowett: his translation prints no Stephanus numbers, so each reference the entries use is listed with words of its
 // passage (one block, or several for a section of short exchanges). Each number was matched by content to Burnet's Greek text,
@@ -1017,6 +1037,13 @@ const PASSAGE_STYLES = {
   // Plato by Stephanus number, "Rep. 433a", "Phaedo 74c", "Euthyphro 10a", "Apology 21d" (only those listed in PLATO_ST), found by the passage's words.
   "plato-republic-st": { book: "classic-plato-republic", item: stephItem(/^Rep\. /), find: (B, [ref]) => { const b = stephBlocks(B, ref); return b.length ? b[0] : -1; } },
   "plato-socrates-st": { book: "classic-plato-socrates", item: stephItem(/^(Euthyphro|Apology|Crito|Phaedo) /), find: (B, [ref]) => { const b = stephBlocks(B, ref); return b.length ? b[0] : -1; } },
+  // Xenophon, Memorabilia (Dakyns): book and chapter, "Mem. IV.6", or a section, "Mem. IV.6.4" (only those listed in XEN_MEM), found by its words.
+  "xenophon-memorabilia": { book: "classic-xenophon-memorabilia", item: /^Mem\. (I|II|III|IV)\.(\d+)(?:\.(\d+))?$/,
+    find: (B, [book, ch, sec]) => {
+      const h = headPath(B, [[2, (t) => t === `Book ${book}`], [3, (t) => t === `Chapter ${toRoman(+ch)}`]]); if (h < 0 || !sec) return h;
+      const e = XEN_MEM[`${book}.${ch}.${sec}`]; if (!e) return -1;
+      for (let i = h + 1; i < B.length && !(B[i].k === "h" && B[i].l <= 3); i++) if (B[i].k !== "fn" && kantFlat(B[i]).includes(e[0])) return i;
+      return -1; } },
   "hobbes-leviathan": { book: "classic-hobbes-leviathan", item: /^Lev\. ([IVXL]+)$/,
     find: (B, [ch]) => headPath(B, [[2, (t) => t.startsWith(`${ch}. `)]]) },
 };
