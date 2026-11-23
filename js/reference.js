@@ -836,6 +836,7 @@ const KANT_AB = {
   "A528/B556": ["Concluding Remark on the Solution of the Transcendental Mathematical Ideas", "Kemp Smith", "3:360"],
   "A532/B560": ["Deduction of Cosmical Events", "Kemp Smith", "3:362"],
   "A669/B697": ["cannot be, of themselves and in their own nature, dialectical", "Kemp Smith", "3:442"],
+  "A713/B741": ["The construction of a conception is the presentation a priori of the intuition", "Shabel", "3:469"],
 };
 // Aristotle, Nicomachean Ethics (Peters): his translation prints no Bekker numbers, so each Bekker reference the entries use is
 // listed with its chapter and words from its passage. Each was matched by content to Bywater's Greek text (Oxford, 1894, the text
@@ -951,6 +952,8 @@ const PLATO_ST = {
   "Rep. 509b": [["the good is not essence, but far exceeds essence in dignity and power"], "509b"],
   "Rep. 509d": [["Now take a line which has been cut into two unequal"], "509d"],
   "Rep. 510b": [["the enquiry can only be hypothetical, and instead of going upwards to a principle"], "510b"],
+  "Rep. 510c–d": [["students of geometry, arithmetic, and the kindred sciences assume the odd and the even"], "510c, 510d"],
+  "Rep. 510d–e": [["not of the figures which they draw, but of the absolute square"], "510d, 510e"],
   "Rep. 511b–c": [["using the hypotheses not as first principles, but only as hypotheses"], "511b, 511c"],
   "Rep. 511d–e": [["let there be four faculties in the soul"], "511d, 511e"],
   "Rep. 514a": [["Behold! human beings living in a underground den"], "514a"],
@@ -961,6 +964,15 @@ const PLATO_ST = {
   "Rep. 518c": [["the power and capacity of learning exists in the soul already"], "518c"],
   "Rep. 518d": [["some art which will effect conversion"], "518d"],
   "Rep. 520c": [["must go down to the general underground abode"], "520c"],
+  "Rep. 522c": [["number and calculation:—do not all arts and sciences necessarily partake of them?"], "522c"],
+  "Rep. 525d": [["compelling the soul to reason about abstract number"], "525d"],
+  "Rep. 526a": [["those numbers which can only be realized in thought"], "526a"],
+  "Rep. 527b": [["the knowledge at which geometry aims is knowledge of the eternal"], "527b"],
+  "Rep. 530b": [["in astronomy, as in geometry, we should employ problems"], "530b"],
+  "Rep. 531c": [["they never reach the natural harmonies of number"], "531c"],
+  "Rep. 533b–c": [["they only dream about being"], "533b, 533c"],
+  "Rep. 533c": [["goes directly to the first principle and is the only science which does away with hypotheses"], "533c"],
+  "Rep. 534e": [["is the coping-stone of the sciences"], "534e"],
 };
 // The blocks of a Stephanus reference: each listed passage's first block inside its dialogue (the Republic, or one dialogue of the
 // Euthyphro–Phaedo volume, after its introduction). [] if any is missing.
@@ -1045,6 +1057,8 @@ const PASSAGE_STYLES = {
       const e = XEN_MEM[`${book}.${ch}.${sec}`]; if (!e) return -1;
       for (let i = h + 1; i < B.length && !(B[i].k === "h" && B[i].l <= 3); i++) if (B[i].k !== "fn" && kantFlat(B[i]).includes(e[0])) return i;
       return -1; } },
+  // Russell, The Problems of Philosophy: chapter, "PP VII".
+  "russell-problems": { book: "classic-russell-problems", item: /^PP ([IVX]+)$/, find: (B, [n]) => headPath(B, [[2, (t) => t.startsWith(`${n}. `)]]) },
   "hobbes-leviathan": { book: "classic-hobbes-leviathan", item: /^Lev\. ([IVXL]+)$/,
     find: (B, [ch]) => headPath(B, [[2, (t) => t.startsWith(`${ch}. `)]]) },
 };

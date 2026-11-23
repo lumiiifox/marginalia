@@ -545,10 +545,746 @@
      "accuracy": "non-assertive"
     }
    ]
+  },
+  {
+   "text": "Plato’s Republic divides a line into two unequal parts, one for the visible and one for the intelligible, and divides each part again in the same proportion (Rep. 509d).",
+   "section": "Plato: the divided line and the mathematical studies",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Plato, Republic (Jowett), bundled, Rep. 509d",
+     "excerpt": "a line which has been cut into two unequal",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Students of geometry and arithmetic work in the lower intelligible part: they assume the odd and the even, the figures and three kinds of angle as hypotheses and give no account of them (Rep. 510c–d), and though they use visible figures, they reason about the absolute square and the absolute diameter (Rep. 510d–e).",
+   "section": "Plato: the divided line and the mathematical studies",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Plato, Republic (Jowett), bundled, Rep. 510c–d",
+     "excerpt": "assume the odd and the even and the figures",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "Plato, Republic (Jowett), bundled, Rep. 510d–e",
+     "excerpt": "not of the figures which they draw, but of the absolute square",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Dialectic uses the same hypotheses as steps toward the first principle of the whole (Rep. 511b–c), and Socrates assigns the four parts four faculties, giving the second from the top, the mathematician’s, the name understanding (Rep. 511d–e).",
+   "section": "Plato: the divided line and the mathematical studies",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Plato, Republic (Jowett), bundled, Rep. 511b–c",
+     "excerpt": "as steps and points of departure into a world which is above hypotheses",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "Plato, Republic (Jowett), bundled, Rep. 511d–e",
+     "excerpt": "reason answering to the highest, understanding to the second",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Book VII sets out the studies that prepare the future rulers for dialectic: arithmetic, which every art and science uses (Rep. 522c) and which compels the soul to reason about abstract number (Rep. 525d), “those numbers which can only be realized in thought” (Rep. 526a); geometry, whose knowledge is “knowledge of the eternal” (Rep. 527b); astronomy, to be pursued through problems that leave the visible heavens alone (Rep. 530b); and harmonics, which should ask why some numbers are harmonious and others not (Rep. 531c).",
+   "section": "Plato: the divided line and the mathematical studies",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Plato, Republic (Jowett), bundled, Rep. 522c",
+     "excerpt": "do not all arts and sciences necessarily partake of them?",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "Plato, Republic (Jowett), bundled, Rep. 525d",
+     "excerpt": "compelling the soul to reason about abstract number",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "Plato, Republic (Jowett), bundled, Rep. 526a",
+     "excerpt": "those numbers which can only be realized in thought",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "Plato, Republic (Jowett), bundled, Rep. 527b",
+     "excerpt": "knowledge of the eternal, and not of aught perishing",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "Plato, Republic (Jowett), bundled, Rep. 530b",
+     "excerpt": "we should employ problems, and let the heavens alone",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "Plato, Republic (Jowett), bundled, Rep. 531c",
+     "excerpt": "why some numbers are harmonious and others not",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "Silverman §14",
+     "excerpt": "kinds of study conducive to the education of the philosopher-ruler",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Yet these studies only dream about being while they leave their hypotheses unexamined (Rep. 533b–c); dialectic alone does away with hypotheses (Rep. 533c) and is set over the other studies as their coping-stone (Rep. 534e).",
+   "section": "Plato: the divided line and the mathematical studies",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Plato, Republic (Jowett), bundled, Rep. 533b–c",
+     "excerpt": "they only dream about being",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "Plato, Republic (Jowett), bundled, Rep. 533c",
+     "excerpt": "the only science which does away with hypotheses",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "Plato, Republic (Jowett), bundled, Rep. 534e",
+     "excerpt": "is the coping-stone of the sciences, and is set over them",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Allan Silverman’s SEP entry observes that, given Plato’s examples, this faculty, dianoia, “seems distinctive of scientific or mathematical reasoning,” and reports that what its objects are is a matter of great controversy: on one view they are abstract images of ordinary material things, and on another, for which he refers to Burnyeat, they are the material things themselves or Forms treated in a different way.",
+   "section": "Plato: the divided line and the mathematical studies",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Silverman, “Plato’s Middle Period Metaphysics and Epistemology” (rev. 14 Jul 2014) §13",
+     "excerpt": "the capacity of dianoia seems distinctive of scientific or mathematical reasoning",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "Silverman §13",
+     "excerpt": "are matters of great controversy",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "Silverman §13 (citing Burnyeat 1987)",
+     "excerpt": "or they are Forms, though treated in a way different",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Øystein Linnebo’s SEP entry distinguishes the mathematical platonism debated today from the view of the historical Plato: the modern doctrine is inspired by his theory of Forms and is now debated independently of it.",
+   "section": "Plato: the divided line and the mathematical studies",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Linnebo, “Platonism in the Philosophy of Mathematics” (rev. 28 Mar 2023) §1.1",
+     "excerpt": "Platonism must be distinguished from the view of the historical Plato.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Aristotle’s Metaphysics XIII argues that mathematical objects can exist neither in sensible things nor separately from them: they are prior to bodies in definition and posterior in substance, so they exist only in a special sense, since “exist” has many senses (Met. XIII.2).",
+   "section": "Aristotle: mathematical objects studied qua quantities",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Aristotle, Metaphysics (Ross), bundled, Met. XIII.2",
+     "excerpt": "either do not exist at all or exist in a special sense",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "On his positive account mathematics studies sensible magnitudes and numbers, considered only qua bodies, planes, lines or indivisibles, as a science of health studies its subject qua healthy (Met. XIII.3).",
+   "section": "Aristotle: mathematical objects studied qua quantities",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Aristotle, Metaphysics (Ross), bundled, Met. XIII.3",
+     "excerpt": "only qua bodies, or again only qua planes, or only qua lines",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The arithmetician and the geometer proceed “by setting up by an act of separation what is not separate,” and they make no error by it, any more than someone who draws a line on the ground and calls it a foot long when it is not (Met. XIII.3).",
+   "section": "Aristotle: mathematical objects studied qua quantities",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Aristotle, Metaphysics (Ross), bundled, Met. XIII.3",
+     "excerpt": "by setting up by an act of separation what is not separate",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Henry Mendell’s SEP entry reads the objects of mathematics as “perceptible objects treated in a special way,” calls Aristotle’s answer to the separability problem “a kind of fictionalism,” and notes that the status of these objects leads to much controversy.",
+   "section": "Aristotle: mathematical objects studied qua quantities",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Mendell, “Aristotle and Mathematics” (first published 26 Mar 2004; no later revision date printed) §7.1, §7.3",
+     "excerpt": "Aristotle solves the separability problem with a kind of fictionalism.",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "Mendell §7.1",
+     "excerpt": "It is the status of this entity which leads to much controversy.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Mendell also reports that Aristotle allows only a potential infinite and holds that mathematicians can do without an actual one, and Linnebo’s entry, under the heading of inspiration from Aristotle, notes that a potentialist view of the hierarchy of sets “continues to enjoy considerable support.”",
+   "section": "Aristotle: mathematical objects studied qua quantities",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "Mendell §12",
+     "excerpt": "This is a potential, but never actual infinite.",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "Linnebo §4.4",
+     "excerpt": "potentialism about the hierarchy of sets continues to enjoy considerable support",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "In the Fifth Meditation Descartes finds in himself ideas of things that possess “true and immutable natures of their own” (Med. V).",
+   "section": "Descartes and Hume: essences and relations of ideas",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Descartes, Meditations (Veitch), bundled, Med. V",
+     "excerpt": "possess true and immutable natures of their own",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Even if no triangle has ever existed outside his thought, the triangle has a determinate essence that he did not frame, from which follow properties he had not thought of when he first imagined it, such as that its three angles equal two right angles.",
+   "section": "Descartes and Hume: essences and relations of ideas",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Med. V",
+     "excerpt": "which is immutable and eternal, and not framed by me",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "To the objection that the idea came through the senses he replies that he can demonstrate properties of figures he has never perceived.",
+   "section": "Descartes and Hume: essences and relations of ideas",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Med. V",
+     "excerpt": "figures with regard to which it cannot be supposed that they were ever objects of sense",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "The same Meditation makes the certainty of a remembered geometrical proof depend on knowing that God exists and is no deceiver.",
+   "section": "Descartes and Hume: essences and relations of ideas",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Med. V",
+     "excerpt": "if I do not know that there is a God",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Lawrence Nolan’s SEP entry on the ontological argument records a dispute over these essences: some commentators read Descartes as a Platonic realist (Kenny, Wilson), one places the essences in God (Schmaltz), and revisionist readings make him a conceptualist (Chappell, Nolan).",
+   "section": "Descartes and Hume: essences and relations of ideas",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Nolan, “Descartes’ Ontological Argument” (rev. 5 May 2025) §2",
+     "excerpt": "committed to a species of Platonic realism",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "Nolan §2",
+     "excerpt": "places Cartesian essences in God",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "Nolan §2",
+     "excerpt": "read Descartes as a conceptualist",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Hume divides all the objects of human reason into relations of ideas and matters of fact, and puts geometry, algebra and arithmetic in the first class (EHU IV.1).",
+   "section": "Descartes and Hume: essences and relations of ideas",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Hume, Enquiry, bundled, EHU IV.1",
+     "excerpt": "Of the first kind are the sciences of Geometry, Algebra, and Arithmetic",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Their propositions are “discoverable by the mere operation of thought”; though there never were a circle or triangle in nature, Euclid’s truths would keep their certainty, while the contrary of any matter of fact remains possible because it implies no contradiction.",
+   "section": "Descartes and Hume: essences and relations of ideas",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "EHU IV.1",
+     "excerpt": "discoverable by the mere operation of thought",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "EHU IV.1",
+     "excerpt": "The contrary of every matter of fact is still possible",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Mixed mathematics, in the same section, applies geometry to laws of nature that experience alone discovers.",
+   "section": "Descartes and Hume: essences and relations of ideas",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "EHU IV.1",
+     "excerpt": "the discovery of the law itself is owing merely to experience",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Hsueh Qu and Elizabeth Radcliffe’s SEP entry calls this division “Hume’s Fork,” and gives “2+2=4” as knowledge that no contingent feature of the world could make false.",
+   "section": "Descartes and Hume: essences and relations of ideas",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Qu and Radcliffe, “David Hume” (first published 16 Jun 2026) §2.2",
+     "excerpt": "what is now known as ‘Hume’s Fork,’",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "Qu and Radcliffe §2.2",
+     "excerpt": "mathematical knowledge such as “2+2=4”",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Kant holds that mathematical judgements are synthetic: the concept of the sum of seven and five contains only their union, and twelve appears only when an intuition is added, such as five fingers counted onto seven (B15).",
+   "section": "Kant: arithmetic and geometry as synthetic a priori",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Kant, Critique of Pure Reason (Meiklejohn), bundled, B15",
+     "excerpt": "the conception of twelve is by no means obtained",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "Shabel §2.2 (cites B15)",
+     "excerpt": "seeking assistance in the intuition that corresponds to one of the two",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "Shabel §2.2",
+     "excerpt": "all mathematical judgments are synthetic and a priori",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Geometry is synthetic too, in the same passage: the concept of a straight line contains no quantity, so “the shortest” has to be added to it through intuition.",
+   "section": "Kant: arithmetic and geometry as synthetic a priori",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Meiklejohn, B15 block",
+     "excerpt": "my conception of straight contains no notion of quantity",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Philosophy knows from concepts and mathematics from their construction, and to construct a concept is to present a priori the intuition that corresponds to it (A713/B741).",
+   "section": "Kant: arithmetic and geometry as synthetic a priori",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Meiklejohn, A713/B741 (AA 3:469)",
+     "excerpt": "The construction of a conception is the presentation a priori of the intuition",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Lisa Shabel’s SEP entry explains that “the only candidates for such ‘pure intuitions’ are space and time,” so that mathematics rests on the forms of human sensibility.",
+   "section": "Kant: arithmetic and geometry as synthetic a priori",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Shabel, “Kant’s Philosophy of Mathematics” (rev. 11 Aug 2021) §2.1, §2.2",
+     "excerpt": "the only candidates for such “pure intuitions” are space and time",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "Shabel §2.2",
+     "excerpt": "grounded in and explained by the very nature of human sensibility",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "She describes a long-standard story, perhaps first promoted by Russell and Carnap, that treats this intuition-based theory as obsolete, which contemporary scholarship contests, and a long-running dispute between Jaakko Hintikka, for whom mathematical judgements are synthetic because their intuitions are singular (the “logical” reading), and Charles Parsons, for whom they are synthetic because their intuitions are immediate (the “phenomenological” reading).",
+   "section": "Kant: arithmetic and geometry as synthetic a priori",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "Shabel §3.1",
+     "excerpt": "perhaps originally promoted by Bertrand Russell",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "Shabel §3.1, §3.2",
+     "excerpt": "an enduring debate between Jaakko Hintikka and Charles Parsons",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Russell’s Problems of Philosophy (1912) holds that all pure mathematics is a priori, like logic: once one has seen that two and two are four, further instances add nothing to one’s certainty, and a world where two and two make five would upset the whole fabric of our knowledge (PP VII).",
+   "section": "Russell: a priori knowledge after Kant",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Russell, Problems of Philosophy, bundled, PP VII",
+     "excerpt": "All pure mathematics is a priori, like logic.",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "PP VII",
+     "excerpt": "would upset the whole fabric of our knowledge",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "He credits Kant with seeing that arithmetic and geometry are synthetic, and he finds the empiricist account by induction inadequate (PP VIII).",
+   "section": "Russell: a priori knowledge after Kant",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "PP VIII",
+     "excerpt": "all the propositions of arithmetic and geometry, are “synthetic,”",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "PP VIII",
+     "excerpt": "we have already seen to be inadequate",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Kant’s own solution fails in Russell’s judgement: if arithmetic were contributed by our nature, our nature might change tomorrow so as to make two and two become five, and arithmetic must hold of things whether anyone thinks of them or not.",
+   "section": "Russell: a priori knowledge after Kant",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "PP VIII",
+     "excerpt": "tomorrow our nature would so change as to make two and two become five",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "PP VIII",
+     "excerpt": "they must apply to things equally whether we think of them or not",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "His own account places the objects of a priori knowledge, such as qualities and relations, in a world that is neither mental nor physical.",
+   "section": "Russell: a priori knowledge after Kant",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "PP VIII",
+     "excerpt": "must be placed in a world which is neither mental nor physical",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Elsewhere Russell defended logicism, which Andrew Irvine’s SEP entry glosses as the view that mathematics is “in some important sense reducible to logic.”",
+   "section": "Russell: a priori knowledge after Kant",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Irvine, “Bertrand Russell” (rev. 15 Oct 2024), introduction",
+     "excerpt": "in some important sense reducible to logic",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "What are the objects of Plato’s dianoia: abstract images, sensible things, or Forms (Silverman reports great controversy), and did Plato posit mathematical intermediates, which Mendell says Speusippus and possibly Plato did?",
+   "section": "Open questions",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "question",
+     "by": "Silverman §13; Mendell §6",
+     "excerpt": "contemporary philosophers such as Speusippus and possibly Plato posited",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "Is Aristotle’s treatment of mathematical objects a fictionalism, as Mendell’s phrase suggests, or a realism about sensible things studied qua quantities, and how much turns on the controversy Mendell notes over their status?",
+   "section": "Open questions",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "question",
+     "by": "Mendell §1, §7.1, §7.3",
+     "excerpt": "some sympathetic readers have seen Aristotle as expressing a fictionalist version of physicalism",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "Are Descartes’s true and immutable natures Platonic essences, ideas in God or concepts, the three readings Nolan’s entry names?",
+   "section": "Open questions",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "question",
+     "by": "Nolan §2",
+     "excerpt": "read Descartes as a conceptualist",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "Does Kant’s intuition make mathematics synthetic by its singularity (Hintikka) or its immediacy (Parsons), and is mathematical inference synthetic or only its axioms, a disagreement Shabel leaves open?",
+   "section": "Open questions",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "question",
+     "by": "Shabel §2.2, §3.2",
+     "excerpt": "“phenomenological” and “logical” interpretations",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "How does Russell’s agreement in 1912 that arithmetic is synthetic fit his logicism?",
+   "section": "Open questions",
+   "added": "2026-11-23",
+   "claims": [
+    {
+     "type": "question",
+     "by": "PP VIII; Irvine intro",
+     "excerpt": "editorial question, raised by comparing the two; no source read joins them",
+     "accuracy": "non-assertive"
+    }
+   ]
   }
  ],
  "applied": {
   "date": "2026-10-23",
   "note": "The article in data/branches.js is exactly the sentences of new_text, with section sources (xs) drawn from their claims. Cut sentences are marked fix: cut."
- }
+ },
+ "expansions": [
+  {
+   "date": "2026-11-23",
+   "task": "Mathematics in the classics on the shelf (owner's request, task 1 of 2)",
+   "sections": [
+    "Plato: the divided line and the mathematical studies",
+    "Aristotle: mathematical objects studied qua quantities",
+    "Descartes and Hume: essences and relations of ideas",
+    "Kant: arithmetic and geometry as synthetic a priori",
+    "Russell: a priori knowledge after Kant"
+   ],
+   "method": "Each textual sentence drafted from the bundled edition and its quotations checked by script against the passage its reference opens; interpretation only from the SEP entries below, read through the web-fetch tool in literal text (quotations under 125 characters). Records are in new_text, marked added 2026-11-23.",
+   "sources": {
+    "Horsten, Philosophy of Mathematics": "first published 25 Sep 2007; substantive revision 25 Jan 2022 (no body discussion of Plato, Aristotle, Descartes, Hume or Kant's synthetic a priori, so not cited in these sections)",
+    "Linnebo, Platonism in the Philosophy of Mathematics": "first published 18 Jul 2009; substantive revision 28 Mar 2023",
+    "Mendell, Aristotle and Mathematics": "first published 26 Mar 2004; the page prints no later substantive revision (the archive-information page refused the fetch)",
+    "Shabel, Kant's Philosophy of Mathematics": "first published 19 Jul 2013; substantive revision 11 Aug 2021",
+    "Silverman, Plato's Middle Period Metaphysics and Epistemology": "first published 9 Jun 2003; substantive revision 14 Jul 2014",
+    "Nolan, Descartes' Ontological Argument": "first published 18 Jun 2001; substantive revision 5 May 2025",
+    "Qu and Radcliffe, David Hume": "first published 16 Jun 2026",
+    "Irvine, Bertrand Russell": "first published 7 Dec 1995; substantive revision 15 Oct 2024",
+    "Kraut, Plato": "substantive revision 24 Apr 2026; read whole, nothing on the divided line or Republic VII's studies, so not cited"
+   },
+   "references": {
+    "plato_st_new": {
+     "Rep. 510c–d": {
+      "burnet_section": "510c",
+      "greek": "οἱ περὶ τὰς γεωμετρίας τε καὶ λογισμοὺς"
+     },
+     "Rep. 510d–e": {
+      "burnet_section": "510d",
+      "greek": "τοῦ τετραγώνου αὐτοῦ ἕνεκα"
+     },
+     "Rep. 522c": {
+      "burnet_section": "522c",
+      "greek": "ἀριθμόν τε καὶ λογισμόν"
+     },
+     "Rep. 525d": {
+      "burnet_section": "525d",
+      "greek": "περὶ αὐτῶν τῶν ἀριθμῶν ἀναγκάζει διαλέγεσθαι"
+     },
+     "Rep. 526a": {
+      "burnet_section": "526a",
+      "greek": "ὧν διανοηθῆναι μόνον ἐγχωρεῖ"
+     },
+     "Rep. 527b": {
+      "burnet_section": "527b",
+      "greek": "ὡς τοῦ ἀεὶ ὄντος γνώσεως"
+     },
+     "Rep. 530b": {
+      "burnet_section": "530b",
+      "greek": "προβλήμασιν ἄρα"
+     },
+     "Rep. 531c": {
+      "burnet_section": "531c",
+      "greek": "ἀλλʼ οὐκ εἰς προβλήματα ἀνίασιν"
+     },
+     "Rep. 533b–c": {
+      "burnet_section": "533b",
+      "greek": "ὀνειρώττουσι μὲν"
+     },
+     "Rep. 533c": {
+      "burnet_section": "533c",
+      "greek": "τὰς ὑποθέσεις ἀναιροῦσα"
+     },
+     "Rep. 534e": {
+      "burnet_section": "534e",
+      "greek": "θριγκὸς τοῖς μαθήμασιν"
+     }
+    },
+    "plato_st_note": "Matched by content to Burnet's Greek (PerseusDL canonical-greekLit tlg0059.tlg030.perseus-grc2, Stephanus section milestones): the Greek words Jowett translates in each block lie in the section named. Rep. 509d, 511b–c and 511d–e were already in PLATO_ST.",
+    "kant_ab_new": {
+     "A713/B741": {
+      "meiklejohn": "The construction of a conception is the presentation a priori of the intuition",
+      "from": "Shabel §2.1 cites A713/B741 for the definition of construction",
+      "akademie": "3:469, 'Einen Begriff aber construiren, heißt: die ihm correspondirende Anschauung a priori darstellen' (spookyuser/kant-akademieausgabe-corpus aa03)"
+     }
+    },
+    "kant_not_added": "B16 for the straight line: no source read cites it (Shabel gives no page for the example), so the sentence cites no A/B page and says 'in the same passage' as B15, which Meiklejohn prints in the same paragraph.",
+    "other": "Met. XIII.2, XIII.3, Med. V, EHU IV.1, PP VII, PP VIII open their chapter headings (checked by tests/links.py)."
+   },
+   "disputes": [
+    "Objects of Plato's dianoia (Silverman §13: great controversy; Burnyeat 1987) and whether Plato posited mathematical intermediates (Mendell §6: Speusippus and possibly Plato)",
+    "Aristotle as fictionalist or realist about mathematical objects (Mendell §1, §7.1, §7.3)",
+    "Descartes's true and immutable natures: Platonic realism (Kenny, Wilson), in God (Schmaltz), conceptualism (Chappell, Nolan) (Nolan §2)",
+    "Kant's intuition: Hintikka's logical vs Parsons's phenomenological reading; whether inference or only axioms are synthetic (Shabel §2.2, §3.2)",
+    "Hume's relations of ideas: Qu and Radcliffe describe them as a priori, analytic and necessary and note Millican 2017's worries about the distinction (§2.2); not added to the article, since the worries were not read"
+   ],
+   "unread": [
+    {
+     "part": "Silverman, end of §16 and bibliography",
+     "why": "fetch ended mid-sentence",
+     "effect": "none on the sentences used"
+    },
+    {
+     "part": "Nolan §3 onward, Irvine §3 onward",
+     "why": "cut by the fetching tool",
+     "effect": "Irvine's account of The Problems of Philosophy unread; the Russell paragraph rests on Russell's text, Irvine cited only for logicism"
+    },
+    {
+     "part": "Linnebo §4.1, about 66 characters",
+     "why": "seam between fetch passes",
+     "effect": "none"
+    },
+    {
+     "part": "Mendell's revision history",
+     "why": "archinfo page refused (robots)",
+     "effect": "cited by its first-publication date"
+    },
+    {
+     "part": "Smith, Descartes' Theory of Ideas (rev. 18 Sep 2025)",
+     "why": "literal text stopped in §4, before the Meditation V material",
+     "effect": "not cited"
+    }
+   ],
+   "review": "Independent reviewer (separate agent, fresh context), 2026-11-23: re-read every cited passage in the bundled books, all 11 Stephanus numbers in Burnet's Greek, AA 3:469, and all eight SEP entries (revision dates confirmed); PASS after fixes, all applied: seven runs of SEP wording quoted or reworded (Linnebo, Shabel twice, Mendell twice, Qu and Radcliffe, Irvine, Silverman); Silverman's 'seems' restored; 'a priori' in the Kant sentence moved to Shabel's reading, since B14 is not in KANT_AB; 'turn the rulers toward being' reworded to Silverman §14; missing excerpts added; KANT_AB kept in page order; unlinked-reference check extended to Stephanus numbers, Met. and A/B pages; 'textual' added to the README's claim types."
+  }
+ ]
 }

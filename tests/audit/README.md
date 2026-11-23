@@ -7,7 +7,7 @@ re-read; cards awaiting their independent review sit under `pending`, outside `c
 until it passes). Each sentence of the audited text has a record, and each
 claim in it an assessment:
 
-- `type`: historical, conceptual, interpretive, editorial or question.
+- `type`: historical, conceptual, interpretive, editorial or question; `textual` (from 2026-11-23) marks a claim about what a bundled text says, checked against the passage its reference opens.
 - `evidence`: does the article's cited source support the claim? yes, partly, no or not-retrieved.
 - `accuracy`: supported, overstated, contested (a disputed reading stated as settled), wrong, unverified, editorial (an aside
   with nothing to check) or non-assertive (a question). Non-assertive claims stay out of the counts.

@@ -124,7 +124,7 @@ async def main():
           const label = { 'nietzsche-genealogy': (p) => p[1], 'aristotle-ethics': (p) => toRoman(+p[1]), 'rousseau-social-contract': (p) => toRoman(+p[1]) + '. ', 'hobbes-leviathan': (p) => p[0] + '. ',
             'hume-treatise': (p) => 'Section ' + toRoman(+p[2]) + ':', 'hume-enquiry': (p) => p[1] ? 'Part ' + toRoman(+p[1]) : p[0] + '. ', 'descartes-meditations': (p) => p[0] === 'Med' ? 'Meditation ' + p[1] + ':' : 'Part ' + p[1],
             'plato-republic': (p) => 'Book ' + p[0], 'plato-socrates': (p) => p[0], 'kant-groundwork': (p) => ({ Preface: 'Preface', I: 'First Section', II: 'Second Section', III: 'Third Section' })[p[0]],
-            'marx-engels-manifesto': (p) => p[0] + '. ', 'du-bois-souls': (p) => /^[IVX]+$/.test(p[0]) ? p[0] + '. ' : 'The ' + p[0], 'mill-liberty': (p) => p[0] + '. ', 'nietzsche-beyond': (p) => p[0].replace('§', '') };
+            'marx-engels-manifesto': (p) => p[0] + '. ', 'du-bois-souls': (p) => /^[IVX]+$/.test(p[0]) ? p[0] + '. ' : 'The ' + p[0], 'mill-liberty': (p) => p[0] + '. ', 'russell-problems': (p) => p[0] + '. ', 'aristotle-metaphysics': (p) => 'Chapter ' + p[1], 'nietzsche-beyond': (p) => p[0].replace('§', '') };
           const out = { n: {}, bad: [] }, books = {};
           for (const b of BRANCHES.filter((b) => b.xr)) {
             const d = document.createElement('div'); d.innerHTML = articleHTML(b, []);
@@ -133,6 +133,9 @@ async def main():
               if (!books[st]) books[st] = (await (await fetch('data/books/' + PASSAGE_STYLES[st].book + '.json')).json()).content;
               const B = books[st], at = a.dataset.passageAt, i = passageBlock(B, at, st), t = i >= 0 ? plain(B[i].x).trim() : '';
               out.n[st] = (out.n[st] || 0) + 1;
+              // a style found by its passage's words (Kant's A/B pages, Stephanus numbers) must open the block holding them
+              const words = { 'kant-critique': (r) => KANT_AB[r][0], 'plato-republic-st': (r) => PLATO_ST[r][0][0], 'plato-socrates-st': (r) => PLATO_ST[r][0][0] }[st];
+              if (words) { if (i < 0 || !kantFlat(B[i]).includes(words(at))) out.bad.push(b.id + ': ' + a.textContent + ' -> ' + t.slice(0, 30)); continue; }
               if (i < 0 || B[i].k !== 'h' || !t.startsWith(label[st](at.split('|')))) out.bad.push(b.id + ': ' + a.textContent + ' -> ' + t.slice(0, 30));
             }
             d.querySelectorAll('.cite-nb').forEach((x) => x.remove()); const left = (d.textContent.match(/\\((?:NE|GM|SC|Lev\\.) [^()]*\\)/g) || []); if (left.length) out.bad.push(b.id + ' unlinked: ' + left.join(' '));
@@ -157,12 +160,13 @@ async def main():
         more = await page.evaluate("""async () => { const one = async (st, at) => { const B = (await (await fetch('data/books/' + PASSAGE_STYLES[st].book + '.json')).json()).content; const i = passageBlock(B, at, st); return i < 0 ? null : plain(B[i].x); };
           return [await one('hume-enquiry', 'IV|2'), await one('hume-treatise', '1|4|6'), await one('hume-enquiry', 'VII|'), await one('descartes-meditations', 'Med|VI'), await one('descartes-meditations', 'Disc|IV'), await one('plato-republic', 'V'),
             await one('plato-socrates', 'Apology'), await one('kant-groundwork', 'II'), await one('marx-engels-manifesto', 'II'), await one('du-bois-souls', 'I'), await one('du-bois-souls', 'Forethought'), await one('mill-liberty', 'I'), await one('mill-liberty', 'VI'),
-            await one('nietzsche-beyond', '§13'), await one('nietzsche-beyond', '260'), await one('nietzsche-beyond', '§237'), await one('nietzsche-beyond', '§237A'), await one('nietzsche-beyond', 'Preface'), await one('nietzsche-beyond', '§297')]; }""")
-        want = ["Part II", "Section VI: Of Personal Identity", "VII. Of the Idea of Necessary Connection", "Meditation VI:", "Part IV", "Book V", "Apology", "Second Section:", "II. Proletarians and Communists", "I. Of Our Spiritual Strivings", "The Forethought", "I. Introductory", None, "13", "260", "237: Seven Apophthegms", "237A", "Preface", None]
+            await one('nietzsche-beyond', '§13'), await one('nietzsche-beyond', '260'), await one('nietzsche-beyond', '§237'), await one('nietzsche-beyond', '§237A'), await one('nietzsche-beyond', 'Preface'), await one('nietzsche-beyond', '§297'),
+            await one('russell-problems', 'VII'), await one('russell-problems', 'VIII'), await one('russell-problems', 'XVI')]; }""")
+        want = ["Part II", "Section VI: Of Personal Identity", "VII. Of the Idea of Necessary Connection", "Meditation VI:", "Part IV", "Book V", "Apology", "Second Section:", "II. Proletarians and Communists", "I. Of Our Spiritual Strivings", "The Forethought", "I. Introductory", None, "13", "260", "237: Seven Apophthegms", "237A", "Preface", None, "VII. On Our Knowledge of General Principles", "VIII. How a Priori Knowledge Is Possible", None]
         check(all((w is None and g is None) or (g and g.startswith(w)) for g, w in zip(more, want)) and more[6] == "Apology",
-              f"the Enquiry, Descartes, the Republic, the Socratic dialogues, the Groundwork, the Manifesto, Souls, On Liberty and Beyond Good and Evil find their chapters, and a missing one finds nothing ({more})")
+              f"the Enquiry, Descartes, the Republic, the Socratic dialogues, the Groundwork, the Manifesto, Souls, On Liberty, Beyond Good and Evil and The Problems of Philosophy find their chapters, and a missing one finds nothing ({more})")
         unl = await page.evaluate("""() => { const bad = []; for (const b of BRANCHES) { const d = document.createElement('div'); d.innerHTML = articleHTML(b, allTerms()); d.querySelectorAll('.cite-nb').forEach((x) => x.remove());
-          const m = d.textContent.match(/\\((?:EHU [IVX]+(?:\\.\\d)?|Med\\. [IVX]+|Disc\\. [IVX]+|Rep\\. [IVX]+|G (?:Preface|I|II|III)|CM [IV]+|Souls (?:[IVX]+|Forethought|Afterthought)|OL [IV]+|T \\d\\.\\d+\\.\\d+|BGE (?:§?\\d+A?|Preface))\\)/g); if (m) bad.push(b.id + ': ' + m.join(' ')); } return bad; }""")
+          const m = d.textContent.match(/\\((?:EHU [IVX]+(?:\\.\\d)?|Med\\. [IVX]+|Disc\\. [IVX]+|Rep\\. [IVX]+|G (?:Preface|I|II|III)|CM [IV]+|Souls (?:[IVX]+|Forethought|Afterthought)|OL [IV]+|PP [IVX]+|Rep\\. \\d+[a-e](?:–(?:\\d+)?[a-e])?|Met\\. [IVX]+\\.\\d+|A\\d+\\/B\\d+|B\\d+|T \\d\\.\\d+\\.\\d+|BGE (?:§?\\d+A?|Preface))\\)/g); if (m) bad.push(b.id + ': ' + m.join(' ')); } return bad; }""")
         check(unl == [], f"every reference to these classics in the articles is a link ({unl})")
         # the classics' titles
         hits = await page.evaluate("""() => [

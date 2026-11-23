@@ -189,7 +189,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   "(Euthyphro 10a)", "(Apology 21d)": only the Stephanus numbers listed in `PLATO_ST`, each found by words of its passage inside its own dialogue
   (`stephBlocks`; a section of short exchanges lists several blocks and opens the first), since Jowett prints none; each was matched to Burnet's Greek), "xenophon-memorabilia" ("(Mem. IV.6)", or a section, "(Mem. IV.6.4)": only those listed in `XEN_MEM`, found by words of their first block in the chapter, since Dakyns prints no section numbers; each matched to the Greek sections Perseus marks), "kant-groundwork" ("(G II)"), "kant-critique" ("(A26/B42)", "(Bxvi)": only the A/B pages listed in `KANT_AB`, each found by
   words of its passage, since Meiklejohn prints no A/B numbers; the table notes where each number comes from), "marx-engels-manifesto" ("(CM I)"), "du-bois-souls"
-  ("(Souls I)", "(Souls Forethought)") and "mill-liberty" ("(OL I)"), all but Spinoza's found by headings (`headPath`). `passageLinks` turns a bracket into links
+  ("(Souls I)", "(Souls Forethought)"), "mill-liberty" ("(OL I)") and "russell-problems" ("(PP VII)", a chapter of The Problems of Philosophy), all but Spinoza's found by headings (`headPath`). `passageLinks` turns a bracket into links
   when every "; "-joined item matches one style; anything else stays text. `openPassage` opens the classic there, adding it back if deleted.
   A reference added to an audited article is checked against the bundled edition and logged in its audit record. Tested by `tests/links.py`.
   A glossary entry takes `xr` the same way (`termHTML`, `fillLinks`): the Hume entries cite "(T 1.3.14)" and "(EHU VII.2)" in their text, and
