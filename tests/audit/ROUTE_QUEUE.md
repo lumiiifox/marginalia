@@ -27,7 +27,11 @@ owner imports them.
 "Circuitries" (1992, Fanged Noumena pp. 289–318) read 2026-11-20: accelerationism and hyperstition re-read against it, its 24 Anti-Oedipus
 quotations checked against the book, and the Land → Deleuze and Guattari connection re-checked (glossary-route2.json `reread_circuitries`,
 connections.json). "Meat (or How to Kill Oedipus in Cyberspace)" (1995, pp. 411–439) read 2026-11-20 the same way (`reread_meat`); O'Sullivan now quoted from
-his published pages. Next: further Land texts as the owner imports them.
+his published pages.
+
+Order after Plato and Aristotle (owner's decision, 2026-11-23): Land's "Kant, Capital, and the Prohibition of Incest" (1988), then
+Deleuze's Empiricism and Subjectivity, then cybernetics, then "Immanence: A Life". All four wait on the owner's imports. The rest of
+Williams's guide to The Logic of Sense, and Badiou, wait until a question needs them.
 
 ### Hume, read in his own texts (owner's request, 2026-11-21)
 
@@ -43,8 +47,9 @@ Justified by the Deleuze and Land readings, which need Kant; the route is unchan
 translation (second edition, with the first edition's preface; its primer lists the first-edition passages it lacks). Read 2026-11-21:
 transcendental-idealism, categories and antinomy (new) and noumenon and synthetic-a-priori (re-read), in glossary-kant.json, with A/B
 pages matched by content to Kemp Smith's Commentary and the SEP entries and checked against the Akademie pages. Still unread: Stang §§5.3–7
-(noumena), Rohlf from §5.1, A/B pages for the antinomy statements (the audit's `unread`). "Kantian joke" waits for a named source (first
-place to look: the editors' introduction to Fanged Noumena); Land's 1988 essay waits for the owner's pages of Fanged Noumena pp. 55–80.
+(noumena), Rohlf from §5.1, A/B pages for the antinomy statements (the audit's `unread`). "Kantian joke" is dropped for good (owner's
+decision, 2026-11-23): Mackay and Brassier's introduction never explains the title, and no other source was found; the Land → Kant
+connection rests on their p. 6. Land's 1988 essay waits for the owner's pages of Fanged Noumena pp. 55–80.
 
 ### Aristotle, read in the Nicomachean Ethics (owner's request, 2026-11-22)
 

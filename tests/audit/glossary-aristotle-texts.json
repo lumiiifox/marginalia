@@ -10,7 +10,7 @@
  },
  "sources": {
   "NE": {
-   "translator": "Frank Hesketh Peters (first edition 1881). No death date was found in any source reached (Standard Ebooks colophon, Foster's English Translations from the Greek, catalogue records). That he died in 1971 or earlier, as the bundling rule requires, is an inference: an Oxford fellow who published this translation in 1881 would have to have lived past about 115 to fail it.",
+   "translator": "Frank Hesketh Peters, a Fellow of University College, Oxford (Online Library of Liberty, which gives his dates as “???? – ????”). Checked 2026-11-23 against both legs of the rule (CLAUDE.md, fb38920). US: passes on the record. The translation was first published in 1881 (Peters's preface in the bundled text; Open Library's record of the London, C. K. Paul edition), and the bundled text is a later revision that cites Bywater's 1890 and 1892 work, so before 1930 (the 5th edition is 1893, the 12th 1916, per Liberty Fund and HathiTrust). Canada: inferred. No death date was found in any source reached (Standard Ebooks colophon and preface, Online Library of Liberty, HathiTrust, Open Library, Foster's English Translations from the Greek). An Oxford fellow who published this translation in 1881 would have to have lived past about 115 to have died after 1971. The inference stands until a death date is found.",
    "name": "Aristotle, Nicomachean Ethics, trans. F. H. Peters (revised edition, brought into accordance with Bywater's text), the bundled Standard Ebooks text (classic-aristotle-ethics); cited by book and chapter, which open the chapter, and where listed under ab by Bekker number, which opens the paragraph",
    "src": "https://standardebooks.org/ebooks/aristotle/nicomachean-ethics/f-h-peters"
   },

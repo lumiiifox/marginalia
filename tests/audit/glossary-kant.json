@@ -53,18 +53,18 @@
  "note": "Meiklejohn's translation prints no A/B pages. By the owner's choice (2026-11-21, “Scholars' citations plus Akademie page”), each number comes from Kemp Smith's Commentary or a current SEP entry that quotes or cites the same sentence, matched to Meiklejohn by content, and the German sentence's Akademie page was checked by script; the table is under ab. Passages with no such source are quoted without a page (listed under unread). Kant is public domain, so he is quoted exactly from the bundled book, each quotation under 15 words: the full text is one tap away, and each page reference opens its passage. Interpretation is credited to named scholarship only. Kemp Smith (1918) is the oldest scholarship used; it is cited for page numbers, the A/B edition differences and his reading of the noumenon revision, which is given as his.",
  "disputes": [
   "transcendental-idealism, noumenon: one object or two? Rohlf (SEP, 2024): “there is no such thing as the standard interpretation of Kant's transcendental idealism”; he sets out a two-objects reading (from the Garve–Feder review) and a two-aspects reading (Langton 1998, property dualism; Allison 2004, two standpoints). Stang (SEP, 2016) treats phenomenalist, epistemic (Prauss, Allison, Bird) and metaphysical dual-aspect readings (Langton), and lists one-object and two-object readers in §5. Recorded open; the entries report the readings and settle none.",
-  "noumenon: what the second edition's revision of the phenomena and noumena chapter does. Kemp Smith reads it as making the existence of things in themselves “quite explicit”; this is his reading, given as his. Stang §6, which treats the chapter, was not read (see unread)."
+  "noumenon: what the second edition's revision of the phenomena and noumena chapter does. Kemp Smith reads it as making the existence of things in themselves “quite explicit”; this is his reading, given as his. Of Stang §6, which treats the chapter, only §6.1's statement that it was “substantially revised for the B Edition” has been read (the owner's check, 2026-11-23); the rest is unread (see unread)."
  ],
  "unread": [
   {
    "source": "Stang, “Kant's Transcendental Idealism” (SEP)",
-   "part": "the rest of §5.3, §5.4, §6 (noumena and the transcendental object) and §7",
-   "why": "the fetching tool's offsets did not reach them in literal text",
+   "part": "the rest of §5.3, §5.4, §6 (noumena and the transcendental object) apart from one sentence of §6.1, and §7",
+   "why": "the fetching tool's offsets did not reach them in literal text. The owner's spot-check (2026-11-23) read §6.1, which says the chapter was “substantially revised for the B Edition”; whether Stang discusses Kemp Smith in the body is still unread",
    "terms": [
     "noumenon",
     "transcendental-idealism"
    ],
-   "effect": "the noumenon entry rests on Kant's text and Kemp Smith for the two senses and the revision; Stang is cited only for what was read (§§1–5.2)"
+   "effect": "the noumenon entry rests on Kant's text and Kemp Smith for the two senses and the revision; Stang §6.1, read by the owner, agrees that the chapter was substantially revised for B"
   },
   {
    "source": "Rohlf, “Immanuel Kant” (SEP)",
