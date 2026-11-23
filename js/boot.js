@@ -107,6 +107,10 @@ document.addEventListener("click", (e) => {
   if (b.id === "openplates") return go({ screen: "plates" });
   if (b.id === "openmastery") return go({ screen: "mastery" });
   if (b.id === "openstudy") return go({ screen: "study" });
+  if (b.id === "opendaily") return go({ screen: "daily" });
+  if (b.dataset.dqwrite) return dqWrite(b.dataset.dqwrite);
+  if (b.dataset.dqkeep) return dqKeep(b.dataset.dqkeep);
+  if (b.dataset.dqopen) return dqPanel(b.dataset.dqopen);
   if (b.id === "allhits") { S.qAll = S.q; return render(); }
   // a note's less used actions open in place, without drawing the screen again
   if (b.hasAttribute("data-noteacts")) { const open = b.closest(".note").classList.toggle("acts-open"); b.setAttribute("aria-expanded", open); b.textContent = open ? "Less" : "More"; return; }
@@ -290,6 +294,7 @@ const bootSlow = setTimeout(() => {
     S.paths = await idbAll("paths");
     S.wishlist = await idbAll("wishlist");
     S.mastery = await idbAll("mastery");
+    S.daily = await idbAll("daily");
     await loadTrash().catch(() => {});
     S.mode = "ready";
   } catch (e) { idb = null; S.mode = "local"; S.openErr = e; }

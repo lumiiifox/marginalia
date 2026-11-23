@@ -525,6 +525,7 @@ function studyView() {
   return `<header class="gl-head"><div><h1>Study</h1><div class="sub">Practice on checked material, and what you've earned</div></div></header>
     <div class="studycards">${masteryCardHTML()}
     ${typeof PATHS !== "undefined" && PATHS.length ? card("openpaths", "Reading paths", `${PATHS.length} routes through the classics on your shelf, chapter by chapter`) : ""}
+    ${typeof DAILY_QUESTIONS !== "undefined" && DAILY_QUESTIONS.length ? card("opendaily", "Daily questions", (() => { const n = S.daily.size, a = [...S.daily.values()].filter((r) => r.answer).length; return n ? `${n} seen, ${a} answered. Each one you have seen on the home screen, dated` : "The question on your home screen each day, dated, answered or not"; })()) : ""}
     ${typeof DISPUTES !== "undefined" && DISPUTES.length ? card("opendisputes", "Disputations", `${DISPUTES.length} arguments to answer, then compare with the classic objection`) : ""}
     ${card("puzzles", "Puzzles", "Guess the thinker, connect two thinkers, order of birth")}
     ${card("quiz", "Quiz yourself", "Ten questions from the checked glossary entries and thinkers")}

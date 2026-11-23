@@ -14,14 +14,14 @@ FIRST = ["pdf_import"]
 # Timing-sensitive tests (a page flip within so many milliseconds, a summary saved as the page turns) run alone at the end, so the other tests can't slow them down.
 LAST = ["paged_reader", "navigate"]
 GROUPS = {
-    "storage": ["smoke", "trash", "classics", "printed_page", "mastery", "slow_network", "deploy"],
+    "storage": ["smoke", "trash", "classics", "printed_page", "mastery", "slow_network", "deploy", "daily"],
     "reader": ["reader_details", "paged_reader", "structure", "comfort", "navigate", "highlights", "notes_lookup", "quotes_language", "pin",
                "followups", "classics", "printed_page", "editions", "density", "verse_lists"],
     "import": ["pdf_import", "pdf_highlights", "pdf_book", "wikisource", "text_import", "integrity", "csp", "import_failures"],
     "reference": ["study_tools", "links", "in_your_books", "page_links", "density", "mastery", "discovery"],
     "look": ["contrast", "smoke", "search_box", "tap_targets", "csp"],
     # a change to reference content only (data/, tests/audit/): what it can break, in about two minutes
-    "content": ["study_tools", "links", "in_your_books", "page_links", "mastery", "density"],
+    "content": ["study_tools", "links", "in_your_books", "page_links", "mastery", "density", "daily"],
 }
 ALL = sorted(f[:-3] for f in os.listdir(HERE) if f.endswith(".py") and f != "run.py")
 WORKERS = int(os.environ.get("MG_WORKERS", 4))  # more workers means more load: a way to shake out timing flakes
