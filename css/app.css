@@ -791,6 +791,22 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .tabbar .tab:focus-visible { outline: 2px solid var(--link); outline-offset: -4px; }
 body.typing .tabbar { display: none; }
 #main { padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)); }
+/* Today's question (js/daily.js): under Continue reading, the question in large type */
+#main > .dqcard { border-top: 1px solid var(--rule); padding-top: 22px; }
+.dq-l { font: 700 12.5px/1.2 var(--f-ui); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.dq-q { font: 400 21px/1.25 var(--f-text); margin: 4px 0 4px; overflow-wrap: anywhere; }
+.dqentry .dq-q { font-size: 22px; }
+.dq-sheetq { font-size: 21px; }
+.dq-who { display: block; font: italic 400 14.5px/1.35 var(--f-text); color: var(--muted); margin: 0 0 6px; }
+.dq-text, .dq-frame, .dq-again { font: 400 16px/1.45 var(--f-text); margin: 0 0 10px; overflow-wrap: anywhere; }
+.dq-prev { margin: 0 0 8px; }
+.dq-prev summary { font: 400 15px/1.4 var(--f-ui); color: var(--muted); min-height: 32px; }
+.dqcard .dq-acts { margin: 2px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.dq-passage .dq-who { margin-top: 2px; }
+.dq-ex { display: block; font: italic 400 14px/1.35 var(--f-text); }
+.thinkrow.dqrow { grid-template-columns: minmax(0, 1fr); width: 100%; }
+.thinkrow.dqrow .ty { white-space: normal; }
+
 /* truth tables */
 .tt-syms .segb { min-width: 44px; font: 500 18px/1 var(--f-text); padding: 9px 10px; }
 .tt-ascii { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; letter-spacing: 0.04em; }
@@ -1146,6 +1162,9 @@ span.bhid { display: inline; }
 .syllabus-assignment { padding-top: 12px; border-top: 1px solid var(--rule); font: 400 17px/1.45 var(--f-text); margin: 0; overflow-wrap: anywhere; }
 .syllabus-reading-body { margin-top: 20px; }
 .syllabus-purpose p { font: 400 19px/1.5 var(--f-text); margin: 8px 0 20px; white-space: pre-line; overflow-wrap: anywhere; }
+.syllabus-who { font: 500 13px/1.3 var(--f-ui); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin: 0 0 4px; }
+.syllabus-reading-src { font: 400 17px/1.45 var(--f-text); margin: 0 0 16px; overflow-wrap: anywhere; }
+.syllabus-reading-body > [data-dispute] { margin: 0 0 20px; }
 .syllabus .readqd { margin: 0 0 20px; }
 .syllabus .readqd summary { font: 400 18px/1.4 var(--f-text); color: var(--muted); min-height: 36px; }
 .syllabus .readqs { border-left: 2px solid var(--rule); padding-left: 20px; margin: 8px 0; }

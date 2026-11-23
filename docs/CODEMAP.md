@@ -24,6 +24,7 @@ can break that order: keep new code in the file of its area, and check with a te
 | `js/reader.js` | the reader: layout, swipe pages and the flip, your place and jumps, reading pace, highlights and notes in the text, the pinned passage |
 | `js/structure.js` | Edit → marking a book's structure, and the reader's gestures and controls |
 | `js/mastery.js` | mastery: the collection earned by reading checked material, its toasts and screen |
+| `js/daily.js` | Today's question on the home screen, the Daily questions screen, and your answers to them |
 | `js/discovery.js` | wishlist records and forms, sourced reading recommendations, and companion books |
 | `js/boot.js` | events for the whole app, the classics (`CLASSICS`) and starting up |
 
@@ -184,7 +185,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   ("(SC I.6)"), "hobbes-leviathan" ("(Lev. XIII)"), "hume-treatise" ("(T 1.4.6)", "(T App.)" for the Appendix), "hume-enquiry" ("(EHU IV.2)"), "descartes-meditations" ("(Med. VI)", "(Disc. IV)"),
   "plato-republic" ("(Rep. V)"), "plato-socrates" ("(Apology)"), "plato-republic-st" and "plato-socrates-st" ("(Rep. 433a)", "(Phaedo 74c)",
   "(Euthyphro 10a)", "(Apology 21d)": only the Stephanus numbers listed in `PLATO_ST`, each found by words of its passage inside its own dialogue
-  (`stephBlocks`; a section of short exchanges lists several blocks and opens the first), since Jowett prints none; each was matched to Burnet's Greek), "kant-groundwork" ("(G II)"), "kant-critique" ("(A26/B42)", "(Bxvi)": only the A/B pages listed in `KANT_AB`, each found by
+  (`stephBlocks`; a section of short exchanges lists several blocks and opens the first), since Jowett prints none; each was matched to Burnet's Greek), "xenophon-memorabilia" ("(Mem. IV.6)", or a section, "(Mem. IV.6.4)": only those listed in `XEN_MEM`, found by words of their first block in the chapter, since Dakyns prints no section numbers; each matched to the Greek sections Perseus marks), "kant-groundwork" ("(G II)"), "kant-critique" ("(A26/B42)", "(Bxvi)": only the A/B pages listed in `KANT_AB`, each found by
   words of its passage, since Meiklejohn prints no A/B numbers; the table notes where each number comes from), "marx-engels-manifesto" ("(CM I)"), "du-bois-souls"
   ("(Souls I)") and "mill-liberty" ("(OL I)"), all but Spinoza's found by headings (`headPath`). `passageLinks` turns a bracket into links
   when every "; "-joined item matches one style; anything else stays text. `openPassage` opens the classic there, adding it back if deleted.
@@ -229,6 +230,15 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - Quiz sets to share (`setMaker`, from Quiz yourself; `setLink`, `readSet`): chosen terms travel in a `#set=` link as base64url JSON (built-in ids,
   and your own or edited terms in full, within `SET_LIMITS`); `openFromHash` at start and on `hashchange` opens the quiz with `QZ.set`, or a
   `#path=` link's reading path, then cleans the address. Nothing stored.
+- Today's question (`js/daily.js`; `DAILY_QUESTIONS` at the end of `data/branches.js`; `dqCardHTML` under Continue reading, `dqToday` by
+  `dayNumber`, in list order): the question, whose words its passage are (`who`), the passage with links (`xr`), Write an answer and Keep for
+  later. Each question shown is stored in the `daily` store (IndexedDB version 12) under its id once a day (`dqMarkSeen`, after drawing):
+  a copy of the question, `first` and `seen` (local days), `kept`, `answer: {at, day, x}` and `followups` (Answer again, dated). A second
+  visit the same day changes that day's words (`dqWrite`). `dqPanel` is one question's entry (source, answers, what to look at on a second
+  attempt, its path); `dailyView` (the `daily` screen, Study → Daily questions) lists every one seen; kept ones show in Open questions
+  (`dqKeptHTML`); home search matches the question, its thinker, work, topic and your answers (`dqSearch`, `dqSearchHTML`). Backed up
+  (backup version unchanged: the store is an added key); restore checks with `validDaily` and joins both copies' days and follow-ups
+  (`withDaily`; `seen` counts as activity). Content audit: `tests/audit/daily-questions.json`. Tested by `tests/daily.py`.
 - Term of the day (`termOfDay`, `todHTML`, at the top of Reference when nothing is searched): one of the checked entries (`TOD_POOL`: `GLOSSARY` in `VERIFIED_TERMS`) a day by
   `dayNumber`, in an order shuffled once per round so every one comes up before any repeats; your edit of it if you made one. Nothing is stored.
 - Hear it (`sayBtn`, `sayIt`, `CAN_SAY`): on a glossary term and a thinker's card, the phone's own voice (Web Speech API, English) says the name;
@@ -253,7 +263,10 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   in the text says how to mark it. (Inside the reader, Contents in ☰ lists the headings, `tocPanel`.) A deleted classic comes back with `readdClassic`, which uses `putClassic`
   (also what `addClassics` uses). `CLASSIC_TITLES` names books not in the library; the tests check it against `data/books/`.
   Each step's `q` are questions to read it with (`readQsHTML`): folded on the path, and in Where you left off while your place is inside the
-  step's chapters (`stepAt`); `askQuestion` turns one into an ordinary Question note on the book, once.
+  step's chapters (`stepAt`); `askQuestion` turns one into an ordinary Question note on the book, once. A built-in step may also have `who`
+  (whose words, shown above the notes: "Plato's Socrates · Euthyphro"), `xr` (a citation style, so bracketed references in `why` open the
+  passage), `reading` (named scholarship, `{says, src, srcName}`) and `dispute` (a `DISPUTES` id, opened from the step). "socratic-piety"
+  uses them; its audit is `tests/audit/daily-questions.json`.
 - Close readings (a `PATHS` entry with `kind: "close"`, a `book`, its citation `style` and `parts` of stations; `closePathHTML` on the paths
   screen, `bookPaths()` for the other paths): each station's `refs` open the book at its passages through `passageLinks` (so your place is kept
   as ← Your place), `says` gives the text's own words, `deleuze` what named scholarship says of Deleuze's reading (sources in `PATH_SRC`), with

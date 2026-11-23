@@ -29,7 +29,7 @@ function render(keep) {
   if (reading) { refreshMarks(); return; }
   wakeOff();
   $("#selbar").hidden = true;
-  const views = { wishlist: wishlistView, recommendations: recommendationsView, text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, paths: pathsView, plates: platesView, mastery: masteryView, shelf: shelfView, study: studyView, disputes: disputesView, concord: concordView, compares: comparesView, compare: compareView };
+  const views = { wishlist: wishlistView, recommendations: recommendationsView, text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, paths: pathsView, plates: platesView, mastery: masteryView, shelf: shelfView, study: studyView, daily: dailyView, disputes: disputesView, concord: concordView, compares: comparesView, compare: compareView };
   drawMain((views[S.screen] || libraryView)(), keep);
 }
 /* Draws the screen. With `keep`, the search box being typed in, everything around the box is replaced and the box itself stays the
@@ -152,7 +152,7 @@ function searchHTML(texts) {
   const anyLoaded = [...S.texts.values()].some((t) => t.hasContent);
   const fb = fold(S.q.trim()), bk = texts.filter(([, t]) => fold(`${t.title} ${t.author || ""}`).includes(fb)).slice(0, 8);
   const booksHit = bk.length ? `<section class="group"><div class="label">Your books<span class="cnt">${bk.length}</span></div><div class="termhits">${bk.map(([id, t]) => `<button class="termhit" data-open="${esc(id)}"><b>${esc(t.title)}</b><span>${[t.author, `${STATUS[t.status || "reading"] || ""} shelf`].filter(Boolean).map(esc).join(" · ")}</span></button>`).join("")}</div></section>` : "";
-  return `${booksHit}${anyLoaded && S.q.trim().length > 1 ? `<button class="btn searchbooks" id="searchbooks">Search inside your books for “${esc(S.q.trim())}”</button>` : ""}${th.length || who.length ? `<section class="group"><div class="label">In the glossary</div>${who.length ? `<div class="chips">${thinkerChips(who.map((p) => p.id))}</div>` : ""}${th.length ? `<div class="termhits">${th.map((g) => `<button class="termhit" data-term="${esc(g.id)}"><b>${esc(g.t)}</b><span>${esc(g.d.length > 150 ? g.d.slice(0, 150) + "…" : g.d)}</span></button>`).join("")}</div>` : ""}</section>` : ""}
+  return `${booksHit}${dqSearchHTML(S.q)}${anyLoaded && S.q.trim().length > 1 ? `<button class="btn searchbooks" id="searchbooks">Search inside your books for “${esc(S.q.trim())}”</button>` : ""}${th.length || who.length ? `<section class="group"><div class="label">In the glossary</div>${who.length ? `<div class="chips">${thinkerChips(who.map((p) => p.id))}</div>` : ""}${th.length ? `<div class="termhits">${th.map((g) => `<button class="termhit" data-term="${esc(g.id)}"><b>${esc(g.t)}</b><span>${esc(g.d.length > 150 ? g.d.slice(0, 150) + "…" : g.d)}</span></button>`).join("")}</div>` : ""}</section>` : ""}
     <section class="group"><div class="label">${hits.length ? `${hits.length} note${hits.length === 1 ? "" : "s"} matching “${esc(S.q)}”` : `Notes matching “${esc(S.q)}”`}</div>
     <div class="noteslist">${(S.qAll === S.q ? hits : hits.slice(0, SEARCH_FIRST)).map(([id, n]) => noteHTML(id, n, S.texts.get(n.textId), true)).join("") || `<p class="empty">No notes match. Search looks through passages, your notes and page numbers.</p>`}</div>
     ${S.qAll !== S.q && hits.length > SEARCH_FIRST ? `<button class="btn" id="allhits">Show all ${hits.length} notes</button>` : ""}</section>`;
@@ -195,8 +195,8 @@ function libraryView() {
   let body = "";
   if (searching) body = searchHTML(texts);
   else if (!ready) body = "";
-  else if (continueBook()) body = continueHTML() + bookQuestionHTML() + resurfHTML();
-  else if (texts.length) body = chooseHTML() + resurfHTML();
+  else if (continueBook()) body = continueHTML() + dqCardHTML() + bookQuestionHTML() + resurfHTML();
+  else if (texts.length) body = chooseHTML() + dqCardHTML() + resurfHTML();
   else body = `<section class="home-sec firstuse"><h2>Add your first text</h2><p class="hint">Bring in a book from a PDF, EPUB, Word or text file, then read it here and save passages as you go. If you used Marginalia on another device, restore its backup instead.</p>
     <div class="row"><button class="btn primary" id="addtext">Add your first text</button><span class="btn filebtn">Restore a backup<input id="restore" type="file" aria-label="Restore from a backup file"></span></div></section>`;
   return `<header class="top"><h1 class="mark-leaf">${LEAF_SVG}<span class="sr">Marginalia</span></h1></header>
@@ -693,6 +693,7 @@ function questionsView() {
   return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>${banner()}
     <header class="gl-head"><div><h1>Open questions</h1><div class="sub">${open.length} open, ${done.length} resolved</div></div>${open.length ? `<button class="btn" id="exportquestions">Export</button>` : ""}</header>
     <p class="hint">Every note of the kind Question or Objection stays here until you mark it resolved. Edit the note to record the answer you found.</p>
+    ${dqKeptHTML()}
     ${groupsHTML(open) || `<p class="empty"><b>Nothing open.</b> ${all.length ? "Every question and objection is resolved." : "Save a note as a Question or an Objection and it will wait here."}</p>`}
     ${done.length ? `<details class="resolvedlist"><summary class="label">Resolved<span class="cnt">${done.length}</span></summary>${groupsHTML(done)}</details>` : ""}`;
 }

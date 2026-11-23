@@ -9,7 +9,7 @@ Made-up notes only, phone-sized screen. Checks that:
   5. a station is read once a note falls in its passage, and the next station unlocks;
   6. locked items fold into one tile; the home card and the collection screen show the same count;
   7. a backup carries mastery; restoring merges the earlier time of each stage and never takes one away; bad records are skipped;
-  8. a version 10 library upgrades to 11 with everything in it.
+  8. a version 10 library upgrades to the current version with everything in it.
 """
 import os
 import asyncio, json, subprocess, sys, time
@@ -57,7 +57,7 @@ async def main():
 
         # 8 upgrade
         up = await page.evaluate("[idb.version, [...idb.objectStoreNames].includes('mastery'), S.texts.has('old'), S.notes.has('on'), S.mastery.size]")
-        check(up == [11, True, True, True, 0], f"a version 10 library opens in version 11 with its book and note, nothing collected ({up})")
+        check(up == [12, True, True, True, 0], f"a version 10 library opens in version 12 with its book and note, nothing collected ({up})")
 
         # 1 verified lists
         terms, thinkers = audit_lists()

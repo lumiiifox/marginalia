@@ -1,11 +1,11 @@
 // Marginalia: storage on this device (IndexedDB), Recently deleted, covers, toasts, saving files, and backup and restore. One of the app's scripts, loaded in order by index.html (see CLAUDE.md).
 /* ---------- store: IndexedDB on this device ---------- */
-const STORES = ["texts", "notes", "content", "covers", "terms", "drafts", "compares", "files", "trash", "trashlist", "paths", "wishlist", "mastery"]; // files: original PDFs; trash: Recently deleted, listed in trashlist. Only trashlist is read at start; none is backed up
+const STORES = ["texts", "notes", "content", "covers", "terms", "drafts", "compares", "files", "trash", "trashlist", "paths", "wishlist", "mastery", "daily"]; // files: original PDFs; trash: Recently deleted, listed in trashlist. Only trashlist is read at start; none is backed up
 // The storage version: raise it only when a store is added or needs migrating (CLAUDE.md). Tests compare against it.
-const DB_VERSION = 11;
+const DB_VERSION = 12;
 function idbOpen() {
   return new Promise((res, rej) => {
-    const r = indexedDB.open("marginalia", DB_VERSION); // 5 added the drafts store, 6 the comparisons store, 7 the original PDFs, 8 Recently deleted, 9 custom reading paths, 10 wishlist, 11 mastery
+    const r = indexedDB.open("marginalia", DB_VERSION); // 5 added the drafts store, 6 the comparisons store, 7 the original PDFs, 8 Recently deleted, 9 custom reading paths, 10 wishlist, 11 mastery, 12 daily questions
     r.onupgradeneeded = () => { const d = r.result; STORES.forEach((n) => { if (!d.objectStoreNames.contains(n)) d.createObjectStore(n); }); };
     r.onsuccess = () => {
       const d = r.result;
@@ -40,7 +40,7 @@ function idbGet(store, key) {
 }
 // The copy in memory of a store's records ("files" has none: PDFs are read from storage when wanted).
 function mapFor(col) {
-  const m = { texts: S.texts, notes: S.notes, content: S.content, covers: S.covers, terms: S.terms, drafts: S.drafts, compares: S.compares, paths: S.paths, wishlist: S.wishlist, mastery: S.mastery }[col];
+  const m = { texts: S.texts, notes: S.notes, content: S.content, covers: S.covers, terms: S.terms, drafts: S.drafts, compares: S.compares, paths: S.paths, wishlist: S.wishlist, mastery: S.mastery, daily: S.daily }[col];
   if (!m) throw new Error(`No copy in memory for "${col}".`);
   return m;
 }
@@ -241,7 +241,7 @@ async function saveFile(name, text, type) {
 }
 const blobToDataURL = (b) => new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = () => rej(fr.error); fr.readAsDataURL(b); });
 // One readonly transaction captures all exported stores together, including edits from other tabs.
-const BACKUP_STORES = ["texts", "notes", "content", "covers", "terms", "drafts", "compares", "paths", "wishlist", "mastery"];
+const BACKUP_STORES = ["texts", "notes", "content", "covers", "terms", "drafts", "compares", "paths", "wishlist", "mastery", "daily"];
 async function backupData() {
   const records = idb ? await new Promise((resolve, reject) => {
     const tx = idb.transaction(BACKUP_STORES, "readonly"), out = {};
@@ -272,7 +272,7 @@ function idbTx(stores, fn) {
   });
 }
 /* restoring: check the file, show what it would change, then merge in one transaction */
-const RESTORE_KINDS = [["texts", "text", "texts"], ["notes", "note", "notes"], ["drafts", "draft", "drafts"], ["compares", "comparison", "comparisons"], ["terms", "glossary entry", "glossary entries"], ["paths", "reading path", "reading paths"], ["wishlist", "wishlist book", "wishlist books"]];
+const RESTORE_KINDS = [["texts", "text", "texts"], ["notes", "note", "notes"], ["drafts", "draft", "drafts"], ["compares", "comparison", "comparisons"], ["terms", "glossary entry", "glossary entries"], ["paths", "reading path", "reading paths"], ["wishlist", "wishlist book", "wishlist books"], ["daily", "daily question", "daily questions"]];
 // Checked to the depth the app relies on when it draws a record; anything else in a record is kept as it is.
 const isObj = (x) => !!x && typeof x === "object" && !Array.isArray(x);
 const optStr = (x) => x === undefined || x === null || typeof x === "string";
@@ -286,6 +286,7 @@ const DAY_KEY = /^\d{4}-\d{2}-\d{2}$/;
 const VALID = {
   mastery: (v) => validMastery(v),
   wishlist: (v) => validWish(v),
+  daily: (v) => validDaily(v),
   paths: (v) => validCustomPath(v),
   texts: (v) => isObj(v) && isS(v.title) && optStr(v.author) && optStr(v.edition) && optStr(v.lang) && optStr(v.next) && (v.rank === undefined || Number.isFinite(v.rank)) && optArr(v.pdfLabels, isS) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
     && optArr(v.bookmarks, (x) => isObj(x) && Number.isInteger(x.at)) && (v.summaries === undefined || isObj(v.summaries)) && (v.pos === undefined || Number.isInteger(v.pos))
@@ -314,7 +315,7 @@ const VALID = {
 const goodId = (id) => typeof id === "string" && id.length > 0 && id.length < 200;
 // Reading position, activity, reading time (days) and a book's place on its shelf (rank) are left out when deciding whether two
 // versions differ; the reading follows the later reading, reading time joins both copies', and the place stays as it is on this device.
-const ACTIVITY = new Set(["updatedAt", "readAt", "activeAt", "pos", "posF", "total", "rank", "days"]);
+const ACTIVITY = new Set(["updatedAt", "readAt", "activeAt", "pos", "posF", "total", "rank", "days", "seen"]); // seen: the days a daily question was shown
 // The reading position follows whichever copy was read more recently, whichever copy's details win,
 // unless the two hold different versions of the book's text: then the position stays with its own text.
 const READING = ["pos", "posF", "total", "readAt"];
@@ -407,7 +408,7 @@ async function importBackup(file) {
 }
 // Another window of the app (the installed app and a browser tab, say) may have changed the library since the summary.
 async function reloadStores() {
-  for (const st of ["texts", "notes", "drafts", "compares", "terms", "paths", "wishlist", "mastery"]) { const m = await idbAll(st), map = mapFor(st); map.clear(); m.forEach((v, k) => map.set(k, v)); }
+  for (const st of ["texts", "notes", "drafts", "compares", "terms", "paths", "wishlist", "mastery", "daily"]) { const m = await idbAll(st), map = mapFor(st); map.clear(); m.forEach((v, k) => map.set(k, v)); }
 }
 async function confirmRestore(name, data, sig, theirs) {
   if (idb) await reloadStores();
@@ -471,8 +472,9 @@ async function applyRestore(plan, theirs) {
   const take = (st) => st === "new" || st === "older" || (theirs && (st === "newer" || st === "conflict"));
   const ops = [];
   for (const [store] of RESTORE_KINDS) for (const r of plan.rows[store]) {
-    if (take(r.st)) ops.push([store, r.id, store === "texts" ? keepRank(withReading(r.v, r.cur), r.cur) : store === "notes" ? withThoughts(r.v, r.cur) : store === "drafts" ? withCritiques(r.v, r.cur) : r.v]);
+    if (take(r.st)) ops.push([store, r.id, store === "texts" ? keepRank(withReading(r.v, r.cur), r.cur) : store === "notes" ? withThoughts(r.v, r.cur) : store === "drafts" ? withCritiques(r.v, r.cur) : store === "daily" ? withDaily(r.v, r.cur) : r.v]);
     else if (store === "drafts" && r.cur) { const m = withCritiques(r.cur, r.v); if (m !== r.cur) ops.push([store, r.id, m, "merged"]); } // the backup's critiques join this device's draft
+    else if (store === "daily" && r.cur) { const m = withDaily(r.cur, r.v); if (m !== r.cur) ops.push([store, r.id, m, "merged"]); } // the backup's days and later answers join this device's
     else if (store === "notes" && r.cur) { const m = withThoughts(r.cur, r.v); if (m !== r.cur) ops.push([store, r.id, m, "merged"]); } // the backup's follow-ups join this device's note
     else if (store === "texts" && r.cur) { const m = withReading(r.cur, r.v); if (m !== r.cur) ops.push([store, r.id, m, "pos"]); } // a later reading position travels on its own
   }

@@ -1,0 +1,288 @@
+{
+ "audit": "Daily questions and the Socratic path on piety",
+ "audited": "2026-11-23",
+ "scope": "DAILY_QUESTIONS (data/branches.js), PATHS 'socratic-piety', PRIMERS['classic-xenophon-memorabilia'], XEN_MEM (js/reference.js). Drafted from an outside proposal (ChatGPT, via the owner); every locator and claim re-checked here against texts and sources.",
+ "by": {
+  "draft": "Claude (thread session, 2026-11-23)",
+  "review": "independent reviewer (a separate Claude session with no part in the draft), 2026-11-23: re-read the four scholarly sources and Woodruff, every quotation against the bundled texts, XEN_MEM against the Greek, the Dakyns copyright, and the code"
+ },
+ "texts": {
+  "jowett": "Plato, Euthyphro, trans. Jowett (bundled, classic-plato-socrates); Stephanus numbers through PLATO_ST, matched to Burnet's Greek in glossary-plato.json",
+  "dakyns": "Xenophon, Memorabilia, trans. H. G. Dakyns (Macmillan 1897; Dakyns d. 1911), Project Gutenberg 1177 via GITenberg; bundled here as classic-xenophon-memorabilia. Copyright: Canada leg, translator died 1911; US leg, first published 1897.",
+  "greek": "Marchant's Greek, Perseus canonical-greekLit tlg0032.tlg002.perseus-grc2 (section divisions); Marchant's English (perseus-eng2) read only to align sections, never quoted (Marchant d. 1960).",
+  "ross": "Aristotle, Metaphysics IV.5, trans. Ross (bundled)"
+ },
+ "locators": [
+  {
+   "ref": "Mem. IV.6.1",
+   "dakyns": "if a man knew what each reality was",
+   "greek": "τί ἕκαστον εἴη τῶν ὄντων",
+   "ok": true
+  },
+  {
+   "ref": "Mem. IV.6.2",
+   "dakyns": "As a first instance I will take the question of piety",
+   "greek": "πρῶτον δὲ περὶ εὐσεβείας ὧδέ πως ἐσκόπει",
+   "ok": true,
+   "note": "§2 begins in the last sentence of Dakyns's paragraph for §1; corrected on review (was keyed to the question to Euthydemus, one block later)."
+  },
+  {
+   "ref": "Mem. IV.6.3",
+   "dakyns": "Then he who knows these laws will know how he must honour the gods",
+   "greek": "ὁ τοὺς νόμους τούτους εἰδὼς",
+   "ok": true
+  },
+  {
+   "ref": "Mem. IV.6.4",
+   "dakyns": "he who knows what the law requires in reference to the gods",
+   "greek": "ὁ ἄρα τὰ περὶ τοὺς θεοὺς νόμιμα εἰδὼς",
+   "ok": true,
+   "note": "§4 opens with Euthydemus's 'οὐκ οἶμαι' (Dakyns: 'I think not'), one block earlier; the reference opens at Socrates' next question, which carries the definition."
+  },
+  {
+   "ref": "Mem. II.1.8",
+   "dakyns": "I do not dream for a moment of ranking myself",
+   "greek": "οὐδαμῶς γε τάττω ἐμαυτὸν",
+   "ok": true
+  },
+  {
+   "ref": "Mem. II.1.9",
+   "dakyns": "states claim to treat their rulers precisely as I treat my domestic slaves",
+   "greek": "ἀξιοῦσιν αἱ πόλεις τοῖς ἄρχουσιν",
+   "ok": true,
+   "note": "inside the same Dakyns paragraph as II.1.8"
+  },
+  {
+   "ref": "Mem. II.1.11",
+   "dakyns": "a middle path between the two",
+   "greek": "μέση τούτων ὁδός",
+   "ok": true
+  },
+  {
+   "ref": "Mem. II.1.12",
+   "dakyns": "if only your path could avoid human beings",
+   "greek": "μηδὲ διʼ ἀνθρώπων",
+   "ok": true
+  },
+  {
+   "ref": "Mem. II.1.13",
+   "dakyns": "I roam the wide world a foreigner",
+   "greek": "ξένος πανταχοῦ εἰμι",
+   "ok": true,
+   "note": "§13 begins inside Socrates' paragraph of §12 ('I daresay you have not failed to note this common case'); the reference opens at Aristippus's reply, which ends §13."
+  },
+  {
+   "ref": "Met. IV.5",
+   "ross": "for he thought one could not do it even once",
+   "ok": true,
+   "note": "1010a10-15 in Bekker; the bundled Ross prints no Bekker numbers, so the chapter is cited"
+  }
+ ],
+ "proposal_corrections": [
+  "The proposal said Xenophon's Socrates leads Euthydemus to piety as 'knowledge of how the gods ought to be honoured'. At IV.6.4 the definition accepted is knowing what is lawful (τὰ νόμιμα) concerning the gods; 'how one must honour' is the step at IV.6.3. The app quotes Dakyns's wording of 6.4.",
+  "The proposal's medieval prompts (Ibn Sina, Metaphysics of the Healing I.6; Aquinas ST I q2 a3; Maimonides, Guide I.58) and the Kant–Wollstonecraft pairing were held back: no public-domain English Ibn Sina to check against; Aquinas, Maimonides and Kant's 1784 essay are not bundled and the reading route does not need them now. Wollstonecraft is bundled, as the proposal said.",
+  "The proposal's Presocratic prompt kept its river question; Plato's Cratylus 402a and Parmenides fr. 8 are not bundled, so the passage is anchored in Aristotle, Met. IV.5 (bundled, next on the route), with B12 quoted in Graham's translation."
+ ],
+ "sources": [
+  {
+   "id": "woodruff",
+   "name": "Paul Woodruff, 'Plato's Shorter Ethical Works', SEP (substantive revision 18 Dec 2022)",
+   "read": "already audited in glossary-plato.json (§§2-5)",
+   "claims": [
+    "requirements on an answer to 'what is X?' (§3: every case, nothing else, explains why; Woodruff also lists synonymy, so the path names the three it uses instead of counting them)",
+    "the priority of definition is disputed (§4; the IEP's 'Many scholars judge PD to be implausible or false' is not attributed to Woodruff)"
+   ]
+  },
+  {
+   "id": "altman",
+   "name": "William H. F. Altman, 'Dialectic in Xenophon's Memorabilia: Responding to 4.6', Guairacá Revista de Filosofia 34.2 (2018) 110-133",
+   "read": "literal to about p. 122; pp. 122-133 only summarized by the fetching tool",
+   "claims": [
+    {
+     "says": "definitions say who the pious man is, piety itself undefined",
+     "excerpt": "they merely define 'the one' who is, e.g., pious",
+     "page": "122"
+    },
+    {
+     "says": "Patzer objects to the step from piety to the pious man in 4.6.2",
+     "excerpt": "objectionable hypóthesis",
+     "page": "123 (Patzer 2010, p. 65)"
+    },
+    {
+     "says": "if the gods author the unwritten laws (4.4.19), knowing what is lawful could suffice",
+     "excerpt": "there is a case to be made for the claim",
+     "page": "120-121",
+     "note": "a concession: Altman goes on to ask what follows if a city's written law declared the Delphic oracle's pronouncements of no legal value; the path now says so"
+    }
+   ],
+   "note": "Altman does not mention the Euthyphro in the part read; the path says the comparison of the two definitions is its own."
+  },
+  {
+   "id": "browning",
+   "name": "Eve A. Browning, 'Xenophon', IEP (no date printed)",
+   "read": "whole",
+   "claims": [
+    {
+     "says": "Plato's Socrates follows the argument wherever it leads; Xenophon's sends partners away with practical advice",
+     "excerpt": "some nuggets of practical advice",
+     "section": "§2"
+    },
+    {
+     "says": "sharp contrasts with Plato's portrait",
+     "excerpt": "display some sharp contrasts",
+     "section": "introduction"
+    }
+   ],
+   "note": "IV.6 and II.1 are not discussed in the article."
+  },
+  {
+   "id": "tsouna",
+   "name": "Voula Tsouna, 'The Cyrenaics', SEP (first published 31 Mar 2026)",
+   "read": "literal to the bibliography",
+   "claims": [
+    {
+     "says": "in Xenophon (Mem. 2.1), Aristippus prefers neither to rule nor to be ruled, living as a stranger in every land",
+     "excerpt": "prefers neither to rule nor to be ruled",
+     "section": "§2"
+    },
+    {
+     "says": "the evidence on Aristippus is second-hand",
+     "excerpt": "second-hand and chiefly anecdotal",
+     "section": "§2"
+    }
+   ],
+   "note": "Author taken from the page's metadata (DC.creator); the fetched body text had no byline."
+  },
+  {
+   "id": "graham",
+   "name": "Daniel W. Graham, 'Heraclitus', SEP (first published 8 Feb 2007; substantive revision 8 Dec 2023)",
+   "read": "literal to about 40k of 51k characters; §3.1 whole",
+   "claims": [
+    {
+     "says": "B12 translation",
+     "excerpt": "On those stepping into rivers staying the same other and other waters flow.",
+     "section": "§3.1",
+     "note": "13 words, quoted whole"
+    },
+    {
+     "says": "B12 the one genuine river fragment, with Kirk (1954) and Marcovich (1967)",
+     "excerpt": "the only actual quotation from Heraclitus’ book",
+     "section": "§3.1"
+    },
+    {
+     "says": "some things stay the same only by changing",
+     "excerpt": "some things stay the same only by changing",
+     "section": "§3.1"
+    },
+    {
+     "says": "Plato's report, Cratylus 402a",
+     "excerpt": "all things pass and nothing stays",
+     "section": "§3.1"
+    },
+    {
+     "says": "Plato may have taken his reading from Cratylus",
+     "excerpt": "he may well have derived his reading",
+     "section": "§3.1"
+    },
+    {
+     "says": "B12 transmission",
+     "excerpt": "Cleanthes from Arius Didymus from Eusebius",
+     "section": "§3.1"
+    }
+   ]
+  }
+ ],
+ "quotations": [
+  {
+   "q": "Piety is doing as I am doing",
+   "text": "jowett",
+   "ref": "Euthyphro 5d",
+   "ok": true
+  },
+  {
+   "q": "the general idea which makes all pious things to be pious",
+   "text": "jowett",
+   "ref": "Euthyphro 6d",
+   "ok": true
+  },
+  {
+   "q": "a standard to which I may look",
+   "text": "jowett",
+   "ref": "Euthyphro 6e",
+   "ok": true
+  },
+  {
+   "q": "what each reality was",
+   "text": "dakyns",
+   "ref": "Mem. IV.6.1",
+   "ok": true
+  },
+  {
+   "q": "honours the gods",
+   "text": "dakyns",
+   "ref": "Mem. IV.6.2",
+   "ok": true
+  },
+  {
+   "q": "knows what the law requires with respect to the gods",
+   "text": "dakyns",
+   "ref": "Mem. IV.6.4",
+   "ok": true
+  },
+  {
+   "q": "a middle path between the two",
+   "text": "dakyns",
+   "ref": "Mem. II.1.11",
+   "ok": true
+  }
+ ],
+ "disputes": [
+  "The priority of definition (Woodruff §4; IEP): recorded as disputed on the path.",
+  "Whether Xenophon's IV.6 definitions are serious Socratic doctrine or provocations (Altman p. 113): not shown as settled; the path asks the question."
+ ],
+ "unread": [
+  {
+   "part": "Altman pp. 122-133",
+   "why": "fetch cut off; summarized only",
+   "effect": "nothing used from those pages"
+  },
+  {
+   "part": "Graham, SEP Heraclitus, after about §5",
+   "why": "fetch cut off",
+   "effect": "none: the river discussion is §3.1, read literally"
+  },
+  {
+   "part": "Dorion's Budé commentary, Patzer, Morrison on IV.6",
+   "why": "not retrieved",
+   "effect": "the scholarship on IV.6 rests on Altman alone"
+  }
+ ],
+ "review": {
+  "verdict": "content: pass with fixes; code: pass with fixes",
+  "required": [
+   "Altman pages 120-123 (Patzer passage on p. 123): applied",
+   "Altman's 4.4.19 point is a concession followed by the Delphic counterexample: applied",
+   "Tsouna frame used 'neither ... but ...': rephrased",
+   "the disputation tests the amended definition, what all the gods love (9e): applied",
+   "IV.6.2 keyed to where §2 begins: applied",
+   "card too tall on a phone pushed the bookshelf off the first screen (smoke failed): passage folded under the question",
+   "restore could drop one of two first answers written on two devices: withDaily keeps the earlier as the answer and the later as a later answer; tested"
+  ],
+  "recommended": [
+   "comment on where a Memorabilia reference opens: rewritten",
+   "'what is piety?' in quotation marks was not Dakyns's wording: now quotes Dakyns",
+   "B12 transmission names Cleanthes: applied",
+   "Browning 'finds some sharp contrasts': applied",
+   "Woodruff's requirements named, not counted: applied",
+   "a corrected question reaches the screen (dqView prefers the list's wording): applied",
+   "daily.py in the storage and content groups: applied"
+  ],
+  "confirmed": [
+   "all seven quotations verbatim",
+   "II.1.8, II.1.9, II.1.11, II.1.12, IV.6.1, IV.6.3 aligned with the Greek",
+   "Dakyns first published 1897, died 1911",
+   "Graham, Tsouna, Browning, Altman and Woodruff claims as recorded",
+   "nothing contested stated as settled"
+  ]
+ }
+}

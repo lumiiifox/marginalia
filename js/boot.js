@@ -107,6 +107,10 @@ document.addEventListener("click", (e) => {
   if (b.id === "openplates") return go({ screen: "plates" });
   if (b.id === "openmastery") return go({ screen: "mastery" });
   if (b.id === "openstudy") return go({ screen: "study" });
+  if (b.id === "opendaily") return go({ screen: "daily" });
+  if (b.dataset.dqwrite) return dqWrite(b.dataset.dqwrite);
+  if (b.dataset.dqkeep) return dqKeep(b.dataset.dqkeep);
+  if (b.dataset.dqopen) return dqPanel(b.dataset.dqopen);
   if (b.id === "allhits") { S.qAll = S.q; return render(); }
   // a note's less used actions open in place, without drawing the screen again
   if (b.hasAttribute("data-noteacts")) { const open = b.closest(".note").classList.toggle("acts-open"); b.setAttribute("aria-expanded", open); b.textContent = open ? "Less" : "More"; return; }
@@ -223,7 +227,7 @@ document.addEventListener("input", (e) => {
    content }, built by tools/build_classics.py) and its cover from data/books/<id>.jpg, on the Queued shelf. mg-classics
    lists those added, so a classic you delete stays deleted; one that can't be fetched (offline) is tried again next time.
    Tests run in an automated browser, which is left out unless a test asks (addClassics(true)). */
-const CLASSICS = ["classic-plato-socrates", "classic-plato-republic", "classic-aristotle-ethics", "classic-aristotle-metaphysics", "classic-descartes-meditations", "classic-hobbes-leviathan", "classic-spinoza-ethics", "classic-hume-treatise", "classic-hume-enquiry",
+const CLASSICS = ["classic-plato-socrates", "classic-plato-republic", "classic-xenophon-memorabilia", "classic-aristotle-ethics", "classic-aristotle-metaphysics", "classic-descartes-meditations", "classic-hobbes-leviathan", "classic-spinoza-ethics", "classic-hume-treatise", "classic-hume-enquiry",
   "classic-rousseau-social-contract", "classic-kant-critique", "classic-kant-groundwork", "classic-wollstonecraft-vindication", "classic-marx-engels-manifesto", "classic-mill-liberty", "classic-nietzsche-beyond", "classic-nietzsche-genealogy",
   "classic-cooper-voice", "classic-freud-dreams", "classic-du-bois-souls", "classic-russell-problems", "classic-freud-pleasure"]; // in historical order, the shelf's order
 let classicsBusy = false;
@@ -290,6 +294,7 @@ const bootSlow = setTimeout(() => {
     S.paths = await idbAll("paths");
     S.wishlist = await idbAll("wishlist");
     S.mastery = await idbAll("mastery");
+    S.daily = await idbAll("daily");
     await loadTrash().catch(() => {});
     S.mode = "ready";
   } catch (e) { idb = null; S.mode = "local"; S.openErr = e; }
