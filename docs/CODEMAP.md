@@ -216,7 +216,8 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   an entry's text when it opens, `fillLinks`) (accents ignored; names under five
   letters in exact case; `LINK_FULL_ONLY` names, such as Said and Land, only in full; a name two entries share never links).
 - Quiz yourself (`quizPanel`, from the glossary, Reference and Study): questions made from `allTerms()` definitions
-  (the term blanked out by `maskTerm`: its names, title and bracketed other name with their inflections and the words formed from them by
+  (only checked entries, `isCheckedTerm`, and checked thinkers' works unless Include unchecked entries, `QZ.all`, is on; a shared set
+  is quizzed as sent; Name the fallacy says how many fallacies are unchecked) (the term blanked out by `maskTerm`: its names, title and bracketed other name with their inflections and the words formed from them by
   `MASK_DERIVED`'s suffixes, accidental, Daoists; a single word of a longer name only with its inflections, so a clue keeps its sense;
   tested over every entry in `tests/smoke.py`) and `THINKERS` key works (`worksOf` leaves out works by other authors); nothing is stored.
   Argument puzzles (from the Logic branch, `argModes`): Name the fallacy uses each fallacy's `ex` examples, never offering a `FAL_NEAR` pair
@@ -258,6 +259,9 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   as ← Your place), `says` gives the text's own words, `deleuze` what named scholarship says of Deleuze's reading (sources in `PATH_SRC`), with
   `terms`, questions (`askCloseQuestion`) and the path's typed `conns`. A station is read once a note of yours falls in one of its passages'
   blocks (`passageSpan`: a proposition with its proof, corollaries and notes; questions added from the path don't count; `closeState`, which loads each path's book once, `CLOSE_ASKED`, and redraws Reading paths or Mastery when it arrives).
+  A station's `qFirst` puts its questions before the scholarship ("Work it out first"); its `solo` asks you to set out a proof on
+  your own and folds the scholarship until you have a note on the station's passages (it can still be opened). Station 3 (one
+  substance) and station 4 (the immanent cause) use them.
   Nothing stored. Now "spinoza-deleuze", all five parts (30 stations); a Deleuze line marked `own` is his own words from a lecture transcript,
   labelled apart from scholarship; every quotation is checked against the bundled text and each station's
   independent review is in `tests/audit/spinoza-deleuze.json`. Tested by `tests/study_tools.py` (`close_reading`).
@@ -278,6 +282,12 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   place (`sectionIndex`) with the note's own page where it disagrees, the paragraph around it, the gloss and follow-ups; then the glossary terms
   found in the writer's own words only (`termNeedles`, `findNeedles`), with a warning that a definition is no evidence of a passage's sense;
   then works cited. Nothing stored. Tested by `tests/study_tools.py`.
+- Copy for Claude (`studyMarkdown`, `copyForClaude`, writing.js; `data-copyclaude` with the section ids, or `*` for a whole book, and
+  `data-tid`, `data-from`): on each section of Notes and summaries, under your summary in Where you left off, and on a reading-path
+  step. One block for a chat: the chapters and their pages, your summary written from memory, the arguments you set out, every passage
+  you marked there numbered [E1]… and checked by `evidenceLines` (shared with For critique), and your open questions; the ask is one
+  inference in your answer, the passage that bears on it, and one sentence to revise or defend. Nothing stored or sent.
+  Tested by `teaching` in `tests/study_tools.py`.
 - Critiques you received (a draft's More → Add a critique you received, `critiqueSheet`; `d.critiques = [{ id, at, by, x }]`, up to `CRIT_MAX`
   characters each): kept with the draft, apart from its text, under it as `critiquesHTML`; a critique's [E1], [E2] … open the items the export
   numbers as evidence (`critiqueEvidence`, `jumpToItem`), an [E…] with no passage stays text. The next export For critique quotes them as

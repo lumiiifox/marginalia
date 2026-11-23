@@ -1079,6 +1079,43 @@ async def connections(browser):
     check(not errs, "no script errors in connections" + (f": {errs}" if errs else ""))
     await page.context.close()
 
+async def teaching(browser):
+    """Copy for Claude, the quiz drawn from checked material, and the Spinoza stations that ask before they tell."""
+    page, errs = await fresh(browser)
+    await page.evaluate("addClassics(true)"); await page.wait_for_function("S.texts.has('classic-spinoza-ethics')", timeout=60000)
+    # Copy for Claude: a chapter's summary, argument, marked passages (numbered and checked) and open questions, with the narrow ask
+    md = await page.evaluate("""(async () => { const tid = 'classic-spinoza-ethics', t = S.texts.get(tid), B = await loadContent(tid);
+      const sec = t.sections.find((x) => /Concerning God/.test(x.label)) || t.sections[0], [a, b] = stepRange(B, [sec.id]);
+      const i = B.findIndex((x, k) => k >= a && k < b && /^PROP\\. XV\\./.test(x.x || '')), now = Date.now();
+      await put('texts', tid, { ...t, summaries: { ...(t.summaries || {}), [sec.id]: 'Only one substance exists, so everything is in it.' } });
+      await put('notes', 'tq1', { textId: tid, kind: 'question', passage: 'Whatsoever is, is in God', gloss: 'Does in mean inherence or causal dependence?', at: i, sectionId: sec.id, page: '', createdAt: now, updatedAt: now });
+      await put('notes', 'ta1', { textId: tid, kind: 'argument', passage: '', gloss: '', premises: ['Besides God there is no substance.', 'Modes cannot be without substance.'], conclusion: 'Everything is in God.', sectionId: sec.id, createdAt: now, updatedAt: now });
+      const out = await studyMarkdown(tid, [sec.id], 'A test.'); await del('notes', 'tq1'); await del('notes', 'ta1'); return out; })()""")
+    check("## What I'd like from you" in md and "Identify one inference" in md and "one sentence of mine to revise or to defend" in md, "Copy for Claude asks for one inference, the passage on it, and one sentence to revise or defend")
+    check("Only one substance exists" in md and "1. Besides God there is no substance." in md and "Therefore: Everything is in God." in md, "it carries the summary written from memory and the argument set out")
+    check("### E1." in md and "Status: Verbatim" in md and "Does in mean inherence" in md and "[E1]" in md.split("## 3.")[1], "each marked passage is numbered and checked against the book, and an open question points at its passage")
+    # the path step and the notes panel both offer it
+    btn = await page.evaluate("(() => { go({ screen: 'paths', path: PATHS.find((P) => P.steps).id }); return !!document.querySelector('[data-copyclaude][data-from]'); })()")
+    check(btn, "a reading-path step offers Copy for Claude")
+    # the quiz: checked entries only, unless asked for the whole glossary
+    pool = await page.evaluate("""(() => { QZ.all = false; QZ.set = null; const a = quizQuestions('def', 'all'), w = quizQuestions('work', 'all');
+      const okA = a.every((q) => isCheckedTerm(q.g)), okW = w.every((q) => isCheckedThinker(q.p.id)); QZ.all = true;
+      const b = Array.from({ length: 6 }, () => quizQuestions('def', 'all')).flat(); QZ.all = false;
+      return [a.length, okA, okW, b.some((q) => !isCheckedTerm(q.g))]; })()""")
+    check(pool[0] == 10 and pool[1] and pool[2] and pool[3], f"the quiz asks about checked entries and thinkers unless you include the unchecked ones ({pool})")
+    await page.evaluate("go({ screen: 'study' }); quizPanel('all')"); await page.wait_for_selector(".qz-opt")
+    bar = await page.evaluate("[document.querySelector('.qz-bar span').textContent, !!document.querySelector('[data-qzall]')]")
+    check("checked ones only" in bar[0] and bar[1], f"the quiz says it draws on checked entries, with a way to include the rest ({bar})")
+    await page.evaluate("stepBack()")
+    # Spinoza: station 3 asks about the move from Proposition 14 to 15 before the scholarship; station 4's commentary waits for your proof
+    st = await page.evaluate("""(async () => { go({ screen: 'paths', path: 'spinoza-deleuze' }); await new Promise((r) => setTimeout(r, 600));
+      const s3 = document.querySelector('[data-station="one-substance"]'), s4 = document.querySelector('[data-station="immanent-cause"]');
+      const html = s3.innerHTML, qAt = html.indexOf('Work it out first'), dAt = html.indexOf('Deleuze, through scholarship');
+      const fold = s4.querySelector('details.readqd'); return [qAt > 0 && qAt < dAt, /Proposition 14/.test(s3.querySelector('.qfirst').textContent), !!s4.querySelector('.solo'), fold && !fold.open && /Deleuze, through scholarship/.test(fold.innerHTML)]; })()""")
+    check(st == [True, True, True, True], f"station 3 puts the question on Propositions 14 and 15 before the scholarship; station 4 asks for the proof first, its commentary folded ({st})")
+    check(not errs, f"no script errors ({errs})")
+    await page.close()
+
 async def close_reading(browser):
     import re, json
     page, errs = await fresh(browser)
@@ -1115,7 +1152,7 @@ async def close_reading(browser):
         labels: [...new Set([...sec.querySelectorAll('.ck')].map((k) => k.textContent))], conns: [...sec.querySelectorAll('.crow .chip[data-thinker]')].map((c) => c.textContent), done: sec.querySelectorAll('.pstep.done').length }; })()""")
     want = await page.evaluate("(() => { const P = PATHS.find((x) => x.id === 'spinoza-deleuze'); return [closeStations(P).length, closeStations(P).reduce((n, s) => n + s.refs.length, 0)]; })()")
     check(ui and ui["stations"] == want[0] == 30 and ui["links"] == want[1] and len(ui["parts"]) == 5 and ui["done"] == 0, f"the path lists its 30 stations under Parts I to V, every passage a link ({ui}, {want})")
-    check(ui and ui["labels"] == ["In the text", "Deleuze, through scholarship", "Deleuze, in his lectures"], f"Spinoza's text comes first and Deleuze's reading apart, scholarship and his own lectures each labelled ({ui and ui['labels']})")
+    check(ui and [x for x in ui["labels"] if x.startswith(("In the", "Deleuze"))] == ["In the text", "Deleuze, through scholarship", "Deleuze, in his lectures"], f"Spinoza's text comes first and Deleuze's reading apart, scholarship and his own lectures each labelled ({ui and ui['labels']})")
     check(ui and ui["conns"] == ["Deleuze reinterprets Spinoza", "Nietzsche criticizes Spinoza"], f"the path shows its typed connections ({ui and ui['conns']})")
     nodel = await page.evaluate("[...document.querySelectorAll('section.path.close .pstep')].filter((s) => s.querySelector('.nodel')).map((s) => s.dataset.station)")
     nodel_want = await page.evaluate("closeStations(PATHS.find((x) => x.id === 'spinoza-deleuze')).filter((s) => !(s.deleuze || []).length).map((s) => s.id)")
@@ -1275,6 +1312,7 @@ async def main():
         await critique_import(browser)
         await connections(browser)
         await close_reading(browser)
+        await teaching(browser)
         await critique(browser)
         await browser.close()
 

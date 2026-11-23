@@ -247,5 +247,24 @@
    "notes": "Rocha (ICI Berlin Press 2021, Cultural Inquiry 20, pp. 73–90; DOI 10.37050/ci-20_04) and the Vincennes lecture transcripts (24 January 1978, 20 January 1981; webdeleuze.com, hosted by Goldsmiths) checked."
   }
  },
- "also": "spinoza-ethics citations can now name a part's preface or appendix: (I, Appendix), (III, Preface)."
+ "also": "spinoza-ethics citations can now name a part's preface or appendix: (I, Appendix), (III, Preface).",
+ "changes": [
+  {
+   "date": "2026-11-23",
+   "added": {
+    "one-substance": {
+     "qFirst": true,
+     "question": "the proof of Proposition 15 starts from Proposition 14 and cites Definitions 3 and 5 and Axiom 1 (checked: Elwes's proof cites Prop. xiv., Def. iii., Def. v., Ax. i., and nothing else); “Whatsoever is, is in God” is Elwes's wording"
+    },
+    "immanent-cause": {
+     "solo": "the proof of Proposition 18 cites Prop. xv., Prop. xvi. Coroll. i. and Prop. xiv. (checked in Elwes); the commentary is folded until a note of yours falls in the station's passages"
+    }
+   },
+   "review": {
+    "verdict": "pass",
+    "first_verdict": "fix",
+    "notes": "Independent reviewer (separate agent, fresh context): text 1 pass; text 2 named only Proposition 15 as the proof's basis; fixed to name Proposition 16's first corollary and Proposition 14 as well."
+   }
+  }
+ ]
 }

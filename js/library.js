@@ -616,7 +616,7 @@ function briefHTML(id, t) {
   return `<section class="group"><div class="label">Where you left off</div><div class="paperpanel brief">
     ${pos !== null ? `<p class="bwhere">${where ? `${esc(where.page ? loc(where.page) : `${progressOf(t)}% through`)}${where.label ? ` <span>in ${esc(where.label)}</span>` : ""}` : `${progressOf(t)}% through`}${t.readAt ? ` <span>· ${esc(fmtDate(t.readAt))}</span>` : ""}</p>` : ""}
     ${t.next ? `<div class="bnext"><div class="blab">Next time</div><p class="bsum">${esc(t.next)}</p><button class="linkbtn" id="editnext">Change or clear it</button></div>` : ""}
-    ${summary ? `<div><div class="blab">${where.sum === where.sec ? "Your summary of this chapter" : `Your summary of ${esc(where.sumLabel)}`}</div><p class="bsum" id="bsum">${esc(summary)}</p></div>` : ""}
+    ${summary ? `<div><div class="blab">${where.sum === where.sec ? "Your summary of this chapter" : `Your summary of ${esc(where.sumLabel)}`}</div><p class="bsum" id="bsum">${esc(summary)}</p><button class="linkbtn" data-copyclaude="${esc(where.sum)}" data-tid="${esc(id)}">Copy for Claude</button></div>` : ""}
     ${open.length ? `<div><div class="blab">Open questions in this book</div>${open.slice(0, 3).map(row).join("")}${open.length > 3 ? `<div class="bmore">and ${open.length - 3} more</div>` : ""}</div>` : ""}
     ${recent.length ? `<div><div class="blab">Your latest notes</div>${recent.map(row).join("")}</div>` : ""}
     ${(() => { const at = where && stepAt(id, S.content.get(id), pos); return at ? `<div><div class="blab">Questions to read these chapters with</div>${readQsHTML(at.P, at.k, true, true)}<div class="bmore">From the reading path “${esc(at.P.n)}”</div></div>` : ""; })()}
@@ -641,6 +641,7 @@ function bookNotesPanel(id) {
       ${String(sums[s.id] || "").trim() ? `<div class="blab">Your summary</div><p class="bsum">${esc(sums[s.id])}</p><button class="linkbtn" data-editsum="${esc(s.id)}">Edit summary</button>`
         : `<button class="linkbtn" data-editsum="${esc(s.id)}">Write a summary of this section</button>`}
       ${bySec.has(s.id) ? `<div class="blab">Notes</div>${bySec.get(s.id).map(noteRow).join("")}` : ""}
+      <button class="linkbtn" data-copyclaude="${esc(s.id)}">Copy for Claude</button>
     </section>`);
   if (bySec.has("")) groups.push(`<section class="nsec"><h3>${(t.sections || []).length ? "Not in a section" : "Notes"}</h3>${bySec.get("").map(noteRow).join("")}</section>`);
   const nSum = Object.values(sums).filter((x) => String(x).trim()).length;
@@ -650,6 +651,7 @@ function bookNotesPanel(id) {
   (b) => {
     if (b.dataset.editsum) return summarySheet(id, b.dataset.editsum);
     if (b.dataset.editnote) return noteSheet(b.dataset.editnote);
+    if (b.dataset.copyclaude) return copyForClaude(id, [b.dataset.copyclaude]);
   });
 }
 

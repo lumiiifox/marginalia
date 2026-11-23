@@ -304,6 +304,36 @@ function exportDraft(id) {
    text where the text is here: whether it is still there word for word, and the page and chapter at the place it was found, with any
    page you typed that disagrees. Terms are matched in your own writing only; the file says that a definition is no evidence that a
    passage uses the word in that sense. Nothing is stored. */
+/* One quoted passage as evidence, numbered e: checked against the book's text when it is here (placeNote: verbatim at its saved
+   place, found elsewhere, not found, or not checked), with its page and chapter there, the paragraph around it, the gloss and the
+   follow-ups. Used by For critique (critiqueMarkdown) and Copy for Claude (studyMarkdown). */
+function evidenceLines(n, { t, B, pageAt, secAt }, e, who) {
+  const quote = (x) => String(x || "").split(/\n+/).map((l) => `> ${l}`).join("\n");
+  let status, place = "", context = "";
+  const typed = n.page ? loc(n.page) : "";
+  if (!B) status = t ? "Not checked: the book's text isn't loaded in the app, so the wording and place are as the note records them." : "Not checked: the book was deleted.";
+  else {
+    const A = placeNote(n, B);
+    if (!A) status = "Not found: these words could not be found in the book's text near where the note points. Treat the wording as unverified.";
+    else {
+      const anchored = n.anchor && n.anchor.a === A.a && n.anchor.ao === A.ao;
+      status = anchored ? "Verbatim: selected in the book and still reads the same at its saved place." : "Verbatim: found word for word in the book's text" + (n.anchor ? ", a little away from its saved place." : ".");
+      const pg = pageAt[A.a] || "", sec = (t.sections || []).find((x) => x.id === secAt[A.a]);
+      place = [pg ? loc(pg) : "", sec ? `chapter “${sec.label}”` : ""].filter(Boolean).join(", ");
+      if (typed && pg && String(n.page) !== String(pg)) place += ` (the note gives ${typed})`;
+      const para = plain(B[A.a].x || ""), a0 = A.ao, a1 = A.a === A.b ? A.bo : para.length;
+      const before = para.slice(Math.max(0, a0 - 320), a0), after = para.slice(a1, a1 + 320);
+      if (before.trim() || after.trim()) context = `${a0 > 320 ? "…" : ""}${before}**${para.slice(a0, a1)}${A.a === A.b ? "" : " …"}**${after}${a1 + 320 < para.length ? "…" : ""}`;
+    }
+  }
+  const out = [`### ${e}. ${who}${place ? `, ${place}` : typed ? `, ${typed} (as the note gives it)` : ""}`, "",
+    `- Status: ${status}`, `- Kind of note: ${KINDS[n.kind] || "Passage"}`, "", quote(n.passage), ""];
+  if (n.original) out.push("In the original:", "", quote(n.original), "");
+  if (context) out.push("Context in the book (the passage in bold):", "", quote(context), "");
+  if (n.gloss) out.push(`The writer's gloss: ${n.gloss}`, "");
+  for (const f of n.followups || []) out.push(`Later (${fmtDate(f.at)}): ${f.x}`, "");
+  return out;
+}
 async function critiqueMarkdown(id) {
   const d = S.drafts.get(id); if (!d) return "";
   const items = (d.items || []).filter((it) => !(it.t === "p" && String(it.x || "").startsWith(GUIDE)));
@@ -334,30 +364,7 @@ async function critiqueMarkdown(id) {
     draft.push(`${quote(n.passage)} [${e}]`, "");
     if (n.gloss) draft.push(n.gloss, "");
     if (n.kind === "argument" && n.premises && n.premises.length) draft.push(...n.premises.map((x, j) => `${j + 1}. ${x}`), `Therefore: ${n.conclusion || ""}`, "");
-    // where the passage is, checked against the text when it is here
-    let status, place = "", context = "";
-    const typed = n.page ? loc(n.page) : "";
-    if (!B) status = t ? "Not checked: the book's text isn't loaded in the app, so the wording and place are as the note records them." : "Not checked: the book was deleted.";
-    else {
-      const A = placeNote(n, B);
-      if (!A) status = "Not found: these words could not be found in the book's text near where the note points. Treat the wording as unverified.";
-      else {
-        const anchored = n.anchor && n.anchor.a === A.a && n.anchor.ao === A.ao;
-        status = anchored ? "Verbatim: selected in the book and still reads the same at its saved place." : "Verbatim: found word for word in the book's text" + (n.anchor ? ", a little away from its saved place." : ".");
-        const pg = pageAt[A.a] || "", sec = (t.sections || []).find((x) => x.id === secAt[A.a]);
-        place = [pg ? loc(pg) : "", sec ? `chapter “${sec.label}”` : ""].filter(Boolean).join(", ");
-        if (typed && pg && String(n.page) !== String(pg)) place += ` (the note gives ${typed})`;
-        const para = plain(B[A.a].x || ""), a0 = A.ao, a1 = A.a === A.b ? A.bo : para.length;
-        const before = para.slice(Math.max(0, a0 - 320), a0), after = para.slice(a1, a1 + 320);
-        if (before.trim() || after.trim()) context = `${a0 > 320 ? "…" : ""}${before}**${para.slice(a0, a1)}${A.a === A.b ? "" : " …"}**${after}${a1 + 320 < para.length ? "…" : ""}`;
-      }
-    }
-    evidence.push(`### ${e}. ${who}${place ? `, ${place}` : typed ? `, ${typed} (as the note gives it)` : ""}`, "",
-      `- Status: ${status}`, `- Kind of note: ${KINDS[n.kind] || "Passage"}`, "", quote(n.passage), "");
-    if (n.original) evidence.push("In the original:", "", quote(n.original), "");
-    if (context) evidence.push("Context in the book (the passage in bold):", "", quote(context), "");
-    if (n.gloss) evidence.push(`The writer's gloss: ${n.gloss}`, "");
-    for (const f of n.followups || []) evidence.push(`Later (${fmtDate(f.at)}): ${f.x}`, "");
+    evidence.push(...evidenceLines(n, { t, B, pageAt, secAt }, e, who));
   }
   // glossary terms named in the writer's own words
   const F = linkFold(own.join("\n")), terms = allTerms().filter((g) => findNeedles(F, termNeedles(g)).length);
@@ -387,6 +394,52 @@ async function exportCritique(id, copy) {
   const md = await critiqueMarkdown(id);
   if (copy) { const ok = await copyText(md); toast(ok ? "Copied for critique. Paste it into a chat with Claude or ChatGPT." : "Couldn't copy. Your browser blocked the clipboard."); return; }
   saveFile(`${slug(d.title)}-for-critique.md`, md, "text/markdown").catch(() => toast("Couldn't export the draft."));
+}
+/* ---------- Copy for Claude: one chapter's (or a reading-path step's) work, packaged for a chat ----------
+   The passages, your summary written from memory, the arguments you set out, your open questions, and the passages you marked,
+   each numbered [E1]… and checked against the book as For critique checks them (evidenceLines). The ask is narrow: one inference in
+   your answer, the passage that bears on it, one sentence to revise or defend. Nothing is stored; nothing is sent anywhere. */
+async function studyMarkdown(tid, secIds, from) {
+  const t = S.texts.get(tid); if (!t) return "";
+  let B = null; if (t.hasContent) { try { B = await loadContent(tid); } catch {} }
+  const ix = B ? sectionIndex(B) : null, bk = { t, B, pageAt: ix ? ix.pageAt : [], secAt: ix ? ix.secAt : [] };
+  const all = t.sections || [], secs = (secIds && secIds.length ? secIds.map((id) => all.find((x) => x.id === id)).filter(Boolean) : all);
+  const ids = new Set(secs.map((x) => x.id)), whole = !secIds || !secIds.length;
+  // a note belongs here when it's filed under one of the sections, or when its passage falls inside their stretch of the text
+  const range = B && !whole ? stepRange(B, secs.map((x) => x.id)) : null;
+  const inside = (n) => whole || ids.has(n.sectionId) || (range && Number.isInteger(n.at) && n.at >= range[0] && n.at < range[1]);
+  const notes = sortNotes(notesFor(tid), t).filter(([, n]) => inside(n)).map(([, n]) => n);
+  const pages = range ? [bk.pageAt[range[0]], bk.pageAt[Math.max(range[0], range[1] - 1)]].filter(Boolean) : [];
+  const span = pages.length ? loc(pages[0] === pages[pages.length - 1] ? pages[0] : `${pages[0]}–${pages[pages.length - 1]}`) : "";
+  const names = secs.map((x) => `“${x.label}”`).join(", ");
+  const who = [t.author, t.title].filter(Boolean).join(", ");
+  const sums = secs.filter((x) => String((t.summaries || {})[x.id] || "").trim());
+  const args = notes.filter((n) => n.kind === "argument" && (n.premises || []).length);
+  const qs = notes.filter((n) => OPENABLE.has(n.kind) && !n.resolved);
+  const answer = [];
+  for (const x of sums) answer.push(`### My summary of ${x.label}, written from memory`, "", t.summaries[x.id].trim(), "");
+  for (const n of args) answer.push(`### An argument I set out${n.page ? ` (${loc(n.page)})` : ""}`, "", ...n.premises.map((x, j) => `${j + 1}. ${x}`), `Therefore: ${n.conclusion || ""}`, ...(n.gloss ? ["", n.gloss] : []), "");
+  const evidence = [], eOf = new Map(); let k = 0;
+  for (const n of notes.filter((x) => (x.passage || "").trim())) { const e = `E${++k}`; eOf.set(n, e); evidence.push(...evidenceLines(n, bk, e, who)); }
+  const out = [`# For Claude: ${t.title}${whole ? "" : `, ${secs.map((x) => x.label).join("; ")}`}`, "",
+    `Exported from Marginalia on ${fmtDate(Date.now())}. I am reading ${who}${whole ? "" : `: ${names}`}${span ? ` (${span} in my copy)` : ""}.${from ? ` ${from}` : ""}`, "",
+    "## What I'd like from you", "",
+    "1. Identify one inference in my answer (section 1): quote the step, and say what it concludes from what.",
+    "2. Cite the passage that bears most on that inference, by its number in section 2 ([E1], [E2] …) or, if none fits, by page in the chapters named above. Say whether it supports the inference, weakens it, or shows something it leaves out.",
+    "3. Name one sentence of mine to revise or to defend, quoted exactly, and say what the revision or the defence needs from the text.",
+    "Keep to that one inference. Where a judgment would need text that isn't given here, say so rather than supplying it.", "",
+    "## How to read the evidence", "",
+    "- Each passage I marked has a status. *Verbatim* means the app found these exact words in the book's text. *Not checked* or *Not found* means the wording or the place could not be confirmed, so treat it with care.",
+    "- Pages and chapters come from the book's own structure at the place the passage was found. Where my note's own page differs, both are given.", "",
+    "## 1. My answer", "", ...(answer.length ? answer : ["I haven't written a summary or set out an argument for this yet. Ask me for a summary from memory before anything else.", ""]),
+    "## 2. The evidence", "", ...(evidence.length ? evidence : ["I marked no passages here.", ""]),
+    "## 3. My open questions", "", ...(qs.length ? qs.map((n) => `- ${(n.gloss || n.passage || "").trim()}${n.page ? ` (${loc(n.page)})` : ""}${eOf.has(n) ? ` [${eOf.get(n)}]` : ""}`) : ["None open."]), ""];
+  return out.join("\n").replace(/\n{3,}/g, "\n\n");
+}
+async function copyForClaude(tid, secIds, from) {
+  if (!S.texts.has(tid)) return;
+  const md = await studyMarkdown(tid, secIds, from);
+  toast((await copyText(md)) ? "Copied. Paste it into a chat with Claude." : "Couldn't copy. Your browser blocked the clipboard.");
 }
 function exportMenu(id) {
   openPanel(`<h2>Export the draft</h2><div class="menu">

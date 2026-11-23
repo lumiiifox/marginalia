@@ -15,7 +15,7 @@ items below connect these into one loop: read → recall → reconstruct → fee
 1. **Recall before rereading.** *(Done 2026-11-22.)* The chapter-end summary prompt (`summarySheet`) asks for the chapter's main idea written from
    memory, with the text hidden while you write, then one argument from the chapter as premises and conclusion (the
    reconstruction steps, `RECON_STEPS`, folded underneath). Interface only.
-2. **Copy for Claude.** One button on a chapter's summary, and on a reading-path step, that copies a single block: the
+2. **Copy for Claude.** *(Done 2026-11-23: asks for one inference, the passage on it, and one sentence to revise or defend; the grading standard is not built yet.)* One button on a chapter's summary, and on a reading-path step, that copies a single block: the
    passage references, your summary, your reconstruction, your open questions, and the standard to grade against (chosen once,
    e.g. "second-year undergraduate"). Built on the For critique export (`exportCritique`). Free: nothing calls an API.
 3. **Keep the verdict.** Paste Claude's grade back; it is saved with the chapter and shown in Where you left off. Touches

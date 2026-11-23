@@ -763,6 +763,8 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 :root[data-theme="dark"] .contcard .cc-l, :root[data-theme="dark"] .contcard .rc-go { color: var(--link); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .contcard .cc-l, :root:not([data-theme="light"]) .contcard .rc-go { color: var(--link); } }
 /* text links in a row: secondary actions, set apart by space */
+.qfirst { display: grid; gap: 4px; }
+.qfirst .readqs, .solo { color: var(--ink); }
 .textlinks { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 20px; align-items: baseline; }
 .textlinks .linkbtn { font-size: 15px; }
 /* sections on Home and Library are set apart by space and a rule */

@@ -17,6 +17,7 @@ document.addEventListener("click", (e) => {
   // already left the page by the time the tap reaches here, and the same action ran twice (a book's page opened twice, Back pressed twice).
   const b = e.target.closest && e.target.closest("button"); if (!b || e.composedPath().includes($("#sheetroot"))) return;
   if (b.dataset.tab) return goTab(b.dataset.tab);
+  if (b.dataset.copyclaude) return copyForClaude(b.dataset.tid || S.textId, b.dataset.copyclaude === "*" ? [] : b.dataset.copyclaude.split(","), b.dataset.from || "");
   if (b.id === "addtext") return textSheet(null);
   if (b.id === "back") return back();
   if (b.dataset.open) return go({ screen: "text", textId: b.dataset.open });

@@ -264,7 +264,8 @@ function syllabusHTML(P) {
     const s = states[k], b = pathBook(st), active = k === selected;
     const chapters = st.secs.length ? (s.secs.map((sec) => sec.label).join(" · ") || "Chapters unavailable") : "Whole book";
     const missing = s.t && s.secs.length < st.secs.length;
-    const action = s.t ? `<button class="btn primary" data-pathread="${esc(st.book)}|${esc(st.secs.join(","))}">${s.done ? "Read again" : progressIn(st) ? "Continue" : "Read assignment"}</button><button class="linkbtn" data-open="${esc(st.book)}">The book’s page</button>` : `${CLASSIC_TITLES[st.book] ? `<button class="btn" data-pathadd="${esc(st.book)}">Add the book back</button>` : `<p class="hint">Not on your shelf. Edit this path to choose a copy from your library.</p>`}`;
+    const from = `It is step ${k + 1} of the reading path “${P.n}”${st.why ? `, read for this: ${st.why}` : ""}.${(st.q || []).length ? ` The path gives these questions to read it with: ${st.q.join(" ")}` : ""}`;
+    const action = s.t ? `<button class="btn primary" data-pathread="${esc(st.book)}|${esc(st.secs.join(","))}">${s.done ? "Read again" : progressIn(st) ? "Continue" : "Read assignment"}</button><button class="linkbtn" data-open="${esc(st.book)}">The book’s page</button><button class="linkbtn" data-copyclaude="${esc(st.secs.join(",") || "*")}" data-tid="${esc(st.book)}" data-from="${esc(from)}">Copy for Claude</button>` : `${CLASSIC_TITLES[st.book] ? `<button class="btn" data-pathadd="${esc(st.book)}">Add the book back</button>` : `<p class="hint">Not on your shelf. Edit this path to choose a copy from your library.</p>`}`;
     return `<li class="pstep syllabus-reading${s.done ? " done" : ""}${active ? " selected" : ""}">
       ${active ? `<div class="syllabus-reading-head">${pathCover(st)}<div><span class="syllabus-number">${k + 1}.</span><h3 tabindex="-1" data-selected-reading>${esc(b.title)}</h3>${b.author ? `<p class="syllabus-author">${esc(b.author)}</p>` : ""}<p class="syllabus-assignment">${esc(chapters)}</p>${s.done ? `<p class="syllabus-status">Read</p>` : ""}</div></div>` : `<button class="syllabus-compact" data-pathselect="${esc(P.id)}" data-step="${k}">${pathCover(st)}<span><span class="syllabus-number">${k + 1}.</span><em>${esc(b.title)}</em>${b.author ? `<span>${esc(b.author)}</span>` : ""}<small>${esc(chapters)}${s.done ? " · Read" : ""}</small></span><span class="syllabus-expand">View</span></button>`}
       <div class="syllabus-reading-body"${active ? "" : " hidden"}>
@@ -337,14 +338,19 @@ function closePathHTML(P, tmap) {
     const cite = passageLinks(esc(`(${st.refs.join("; ")})`), P.style);
     const have = new Set(state.t ? notesFor(P.book).filter(([, n]) => n.kind === "question").map(([, n]) => n.gloss) : []);
     const qs = (st.q || []).map((q, i) => `<li><span>${esc(q)}</span>${state.t && s.start >= 0 ? (have.has(q) ? `<small>In your questions</small>` : `<button class="linkbtn" data-askcq="${esc(P.id)}|${esc(st.id)}|${i}">Add to my questions</button>`) : ""}</li>`).join("");
+    // a station can put its questions before the scholarship (qFirst), or ask you to set out a proof on your own before the
+    // scholarship opens (solo: folded until you have a note on the station's passages; it can still be opened)
+    const commentary = (st.deleuze || []).map((d) => `<p><span class="ck">${d.own ? "Deleuze, in his lectures" : "Deleuze, through scholarship"}</span> ${esc(d.says)} <a href="${esc(d.src)}" target="_blank" rel="noopener" class="tsrc">${esc(d.srcName)}</a></p>`).join("") || `<p class="hint nodel">No sourced Deleuze reading yet.</p>`;
     const mine = s.notes.map(([, n]) => `<button class="mention" data-goto-note="${n.at}" data-tid="${esc(P.book)}"><span class="mn"><span>${esc(KINDS[n.kind] || "Note")}</span>${n.page ? `<span>${esc(loc(n.page))}</span>` : ""}</span><span class="ms">${esc(noteSnippet(n, 140))}</span></button>`).join("");
     return `<li class="pstep${read ? " done" : ""}" data-station="${esc(st.id)}"><span class="pn" aria-hidden="true">${read ? "✓" : all.indexOf(st) + 1}</span><div class="pbody">
       <div class="pt"><b>${esc(st.n)}</b></div>
       <div class="pch">${state.t ? cite : esc(`(${st.refs.join("; ")})`)}</div>
       <p><span class="ck">In the text</span> ${esc(st.says)}</p>
-      ${(st.deleuze || []).map((d) => `<p><span class="ck">${d.own ? "Deleuze, in his lectures" : "Deleuze, through scholarship"}</span> ${esc(d.says)} <a href="${esc(d.src)}" target="_blank" rel="noopener" class="tsrc">${esc(d.srcName)}</a></p>`).join("") || `<p class="hint nodel">No sourced Deleuze reading yet.</p>`}
+      ${st.qFirst && qs ? `<div class="qfirst"><span class="ck">Work it out first</span><ol class="readqs">${qs}</ol></div>` : ""}
+      ${st.solo ? `<p class="solo"><span class="ck">On your own first</span> ${esc(st.solo)}</p>` : ""}
+      ${st.solo ? `<details class="readqd"${read ? " open" : ""}><summary>${read ? "The commentary" : "The commentary, once you've set out the proof"}</summary>${commentary}</details>` : commentary}
       ${chipRow("Terms", termChips(st.terms || [], tmap))}
-      ${qs ? `<details class="readqd"><summary>Questions to read with</summary><ol class="readqs">${qs}</ol></details>` : ""}
+      ${qs && !st.qFirst ? `<details class="readqd"><summary>Questions to read with</summary><ol class="readqs">${qs}</ol></details>` : ""}
       ${mine ? `<div class="mgroup"><div class="clabel">Your notes here</div>${mine}</div>` : ""}
     </div></li>`;
   };

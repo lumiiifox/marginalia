@@ -527,7 +527,7 @@ function studyView() {
     ${typeof PATHS !== "undefined" && PATHS.length ? card("openpaths", "Reading paths", `${PATHS.length} routes through the classics on your shelf, chapter by chapter`) : ""}
     ${typeof DISPUTES !== "undefined" && DISPUTES.length ? card("opendisputes", "Disputations", `${DISPUTES.length} arguments to answer, then compare with the classic objection`) : ""}
     ${card("puzzles", "Puzzles", "Guess the thinker, connect two thinkers, order of birth")}
-    ${card("quiz", "Quiz yourself", "Ten questions from the glossary and the thinkers' works")}
+    ${card("quiz", "Quiz yourself", "Ten questions from the checked glossary entries and thinkers")}
     ${card("openplates", "Bookplates", plates ? `${plates} earned from your reading and notes` : "Marks of reading and argument, earned from your notes")}</div>`;
 }
 // Everything in the three reference sections as one searchable list; each row opens its entry, and each group can open its
@@ -863,7 +863,7 @@ function orderPanel() {
   });
 }
 /* quiz: questions made from the glossary's own definitions and the thinkers' key works */
-const QZ = { mode: "def", area: "all", qs: [], k: 0, picked: -1, right: 0, missed: [] };
+const QZ = { mode: "def", area: "all", qs: [], k: 0, picked: -1, right: 0, missed: [], all: false };
 const QZ_MODES = { def: "Name the term", term: "Pick the definition", work: "Who wrote it?", fallacy: "Name the fallacy", valid: "Valid or not?", missing: "Missing premise", words: "Words you looked up" };
 // Fallacies easily mistaken for one another are never offered as each other's wrong answers.
 const FAL_NEAR = [["straw-man", "irrelevant-conclusion"], ["ad-hominem", "genetic-fallacy"], ["post-hoc", "hasty-generalization"], ["begging", "many-questions"], ["appeal-authority", "ad-populum"], ["affirming-consequent", "denying-antecedent"]];
@@ -1037,7 +1037,7 @@ function quizQuestions(mode, area) {
     });
   }
   if (mode === "work") {
-    const all = THINKERS.flatMap((p) => worksOf(p).map((w) => ({ p, w })));
+    const all = THINKERS.filter((p) => QZ.all || isCheckedThinker(p.id)).flatMap((p) => worksOf(p).map((w) => ({ p, w })));
     return shuffle(all).slice(0, 10).map(({ p, w }) => {
       const title = w.replace(/\s*\(.*$/, "").trim().toLowerCase();
       // anyone else listed with the same work (co-authors) or named in it can't be a wrong answer
@@ -1047,7 +1047,9 @@ function quizQuestions(mode, area) {
       return { prompt: `Who wrote <b>${esc(workTitle(w))}</b>?`, opts: opts.map((x) => esc(x.n)), answer: opts.indexOf(p), p };
     });
   }
-  const terms = allTerms().filter((g) => g.d && g.d.length > 20), pool = QZ.set ? QZ.set.terms : area !== "all" && area !== "thinkers" ? terms.filter((g) => g.a === area) : terms;
+  // Study promises checked material: unless you ask for the whole glossary (QZ.all), questions and their wrong answers come from
+  // audited entries only. A shared set is its sender's choice and stays as it is.
+  const terms = allTerms().filter((g) => g.d && g.d.length > 20 && (QZ.all || QZ.set || isCheckedTerm(g))), pool = QZ.set ? QZ.set.terms : area !== "all" && area !== "thinkers" ? terms.filter((g) => g.a === area) : terms;
   return shuffle(pool).slice(0, 10).map((g) => {
     const inSet = QZ.set && QZ.set.terms.length >= 4 ? QZ.set.terms.filter((x) => x.id !== g.id) : null; // a set's own terms are each other's wrong answers
     const same = terms.filter((x) => x.id !== g.id && x.a === g.a), others = inSet || (same.length >= 3 ? same : terms.filter((x) => x.id !== g.id));
@@ -1061,9 +1063,12 @@ function quizStart(mode, area) {
   Object.assign(QZ, { mode, area, qs: quizQuestions(mode, area), k: 0, picked: -1, right: 0, missed: [] });
 }
 function quizHTML() {
-  const modes = `<div class="chips">${quizModes().map(([m, label]) => `<button class="chip ${QZ.mode === m ? "on" : ""}" data-keep="1" data-qzmode="${m}">${label}</button>`).join("")}</div>`;
-  const from = QZ.set ? `the set “${esc(QZ.set.title)}”` : QZ.mode === "missing" ? "arguments made at random" : QZ.mode === "fallacy" ? "the fallacies in the glossary" : QZ.mode === "valid" ? "arguments made at random" : QZ.mode === "words" ? "words you looked up" : QZ.mode === "work" ? "the thinkers' key works" : QZ.area !== "all" && AREAS[QZ.area] ? `terms in ${esc(AREAS[QZ.area])}` : "the whole glossary";
-  if (QZ.qs.length < 4) return `${modes}<p class="hint">There aren't enough entries here for a quiz yet.</p>`;
+  const canAll = !QZ.set && ["def", "term", "work"].includes(QZ.mode);
+  const modes = `<div class="chips">${quizModes().map(([m, label]) => `<button class="chip ${QZ.mode === m ? "on" : ""}" data-keep="1" data-qzmode="${m}">${label}</button>`).join("")}${canAll ? `<button class="chip ${QZ.all ? "on" : ""}" data-keep="1" data-qzall="1" aria-pressed="${QZ.all}">Include unchecked entries</button>` : ""}</div>`;
+  const fal = allTerms().filter((g) => g.fal), falUn = fal.filter((g) => !isCheckedTerm(g)).length;
+  const scope = QZ.all ? ", unchecked ones included" : ", checked ones only";
+  const from = QZ.set ? `the set “${esc(QZ.set.title)}”` : QZ.mode === "missing" ? "arguments made at random" : QZ.mode === "fallacy" ? `the fallacies in the glossary${falUn ? ` (${falUn} of ${fal.length} not yet checked)` : ""}` : QZ.mode === "valid" ? "arguments made at random" : QZ.mode === "words" ? "words you looked up" : QZ.mode === "work" ? `the thinkers' key works${QZ.all ? ", every thinker" : ", checked thinkers only"}` : QZ.area !== "all" && AREAS[QZ.area] ? `terms in ${esc(AREAS[QZ.area])}${scope}` : `glossary entries${scope}`;
+  if (QZ.qs.length < 4) return `${modes}<p class="hint">There aren't enough ${canAll && !QZ.all ? "checked " : ""}entries here for a quiz yet.${canAll && !QZ.all ? " Include unchecked entries to quiz on the rest." : ""}</p>`;
   if (QZ.k >= QZ.qs.length) {
     const n = QZ.qs.length;
     return `${modes}<p class="qz-q"><b>${QZ.right} of ${n}</b> right.</p>
@@ -1105,6 +1110,7 @@ function quizPanel(area, set) {
       if (QZ.picked === q.answer) { QZ.right++; if (q.g && q.g.builtIn && !q.g.edited) earn("term", q.g.id, "ans"); else if (q.p) earn("thinker", q.p.id, "ans"); } else QZ.missed.push(q);
     } else if (b.dataset.qznext) { QZ.k++; QZ.picked = -1; }
     else if (b.dataset.qzmode) quizStart(b.dataset.qzmode, QZ.area);
+    else if (b.dataset.qzall) { QZ.all = !QZ.all; quizStart(QZ.mode, QZ.area); }
     else if (b.dataset.qzagain) quizStart(QZ.mode, QZ.area);
     else if (b.dataset.qzmt) { const m = QZ.qs[QZ.k].m; return truthPanel({ prem: [...m.rest, m.opts[QZ.picked]].join("\n"), concl: m.concl }); }
     else if (b.dataset.qztt) { const v = QZ.qs[QZ.k].v; return truthPanel({ prem: v.prem.join("\n"), concl: v.concl }); }
