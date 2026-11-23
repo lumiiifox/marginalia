@@ -37,6 +37,15 @@ PORT = 8821
 # drop: CSS selectors for parts of those files left out (the Republic leaves out Jowett's book-length Introduction and Analysis,
 # and with it the heading that only told the dialogue from the introduction).
 BOOKS = [
+    dict(id="classic-boethius-consolation", repo="boethius_the-consolation-of-philosophy_h-r-james", files=None,
+         text=dict(title="The Consolation of Philosophy", author="Boethius", edition="trans. H. R. James (1897)", publisher="Standard Ebooks", year="2023", orig="")),
+    dict(id="classic-berkeley-dialogues", text_source=dict(repo="https://github.com/GITenberg/Three-Dialogues-Between-Hylas-and-Philonous-in-Opposition-to-Sceptics-and-Atheists_4724", file="4724.txt", convert="berkeley_dialogues"),
+         cover=dict(title="Three Dialogues Between Hylas and Philonous", size=30, art="stars"),
+         text=dict(title="Three Dialogues Between Hylas and Philonous", author="George Berkeley", publisher="Project Gutenberg", edition="ebook 4724", orig="1713")),
+    dict(id="classic-shelley-frankenstein", repo="mary-shelley_frankenstein", files=None,
+         text=dict(title="Frankenstein", author="Mary Shelley", edition="revised 1831 text", publisher="Standard Ebooks", year="2015", orig="1818")),
+    dict(id="classic-dostoevsky-underground", repo="fyodor-dostoevsky_notes-from-underground_constance-garnett", files=None, parts=True,
+         text=dict(title="Notes from Underground", author="Fyodor Dostoevsky", edition="trans. Constance Garnett", publisher="Standard Ebooks", year="2019", orig="1864")),
     dict(id="classic-plato-socrates", repo="plato_dialogues_benjamin-jowett", files=["euthyphro", "apology", "crito", "phaedo"], cover=dict(title="Euthyphro, Apology, Crito, Phaedo", size=31),
          text=dict(title="Euthyphro, Apology, Crito, Phaedo", author="Plato", edition="trans. Benjamin Jowett", publisher="Standard Ebooks", year="2022", orig="")),
     dict(id="classic-aristotle-ethics", repo="aristotle_nicomachean-ethics_f-h-peters", files=None, skip={"foreword"},
@@ -606,7 +615,21 @@ def gutenberg_epub(folder):
     endnotes = f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Notes</title></head><body><section epub:type="endnotes"><h2>Notes</h2><ol>{ol}</ol></section></body></html>'
     return docs, endnotes
 
-CONVERT = {"kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique, "aristotle_metaphysics": aristotle_metaphysics, "xenophon_memorabilia": xenophon_memorabilia}
+def berkeley_dialogues(raw):
+    from html import escape
+    start = raw.index("THE FIRST DIALOGUE")
+    end = raw.index("End of the Project Gutenberg EBook", start)
+    out = []
+    for paragraph in re.split(r"\n\s*\n", raw[start:end].strip()):
+        text = " ".join(paragraph.split())
+        if re.fullmatch(r"THE (FIRST|SECOND|THIRD) DIALOGUE", text):
+            out.append(f"<h2>{text.title()}</h2>")
+        else:
+            out.append(f"<p>{escape(text)}</p>")
+    return '<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Three Dialogues</title></head><body>' + "".join(out) + "</body></html>"
+
+
+CONVERT = {"berkeley_dialogues": berkeley_dialogues, "kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique, "aristotle_metaphysics": aristotle_metaphysics, "xenophon_memorabilia": xenophon_memorabilia}
 
 def clone(url, dest):
     if not dest.exists():

@@ -423,7 +423,12 @@ function primerHTML(id, t) {
   </div></details></section>`;
 }
 // Titles for steps whose book isn't in the library: the classics' own titles (tests/study_tools.py checks them against data/books/).
-const CLASSIC_TITLES = { "classic-plato-socrates": "Euthyphro, Apology, Crito, Phaedo", "classic-aristotle-ethics": "Nicomachean Ethics", "classic-aristotle-metaphysics": "Metaphysics", "classic-descartes-meditations": "Discourse on the Method and Meditations on First Philosophy",
+const CLASSIC_TITLES = {
+  "classic-dostoevsky-underground": "Notes from Underground",
+  "classic-shelley-frankenstein": "Frankenstein",
+  "classic-berkeley-dialogues": "Three Dialogues Between Hylas and Philonous",
+  "classic-boethius-consolation": "The Consolation of Philosophy",
+  "classic-plato-socrates": "Euthyphro, Apology, Crito, Phaedo", "classic-aristotle-ethics": "Nicomachean Ethics", "classic-aristotle-metaphysics": "Metaphysics", "classic-descartes-meditations": "Discourse on the Method and Meditations on First Philosophy",
   "classic-hobbes-leviathan": "Leviathan", "classic-spinoza-ethics": "Ethics", "classic-hume-treatise": "A Treatise of Human Nature", "classic-hume-enquiry": "An Enquiry Concerning Human Understanding", "classic-rousseau-social-contract": "The Social Contract",
   "classic-kant-critique": "Critique of Pure Reason", "classic-kant-groundwork": "Fundamental Principles of the Metaphysic of Morals", "classic-wollstonecraft-vindication": "A Vindication of the Rights of Woman",
   "classic-marx-engels-manifesto": "The Communist Manifesto", "classic-nietzsche-beyond": "Beyond Good and Evil", "classic-nietzsche-genealogy": "The Genealogy of Morals", "classic-cooper-voice": "A Voice from the South", "classic-du-bois-souls": "The Souls of Black Folk",
@@ -435,6 +440,10 @@ const CLASSIC_TITLES = { "classic-plato-socrates": "Euthyphro, Apology, Crito, P
    ("the Ethics", "Meditations", "the Manifesto") counts only on its author's own card (own), since elsewhere it may name another
    book; "Republic" counts after "Plato's" or "the", or before a book number. Nothing is stored. */
 const CLASSIC_NAMES = {
+  "classic-dostoevsky-underground": { by: [], full: ["Notes from Underground"] },
+  "classic-shelley-frankenstein": { by: [], full: ["Frankenstein"] },
+  "classic-berkeley-dialogues": { by: ["berkeley"], full: ["Three Dialogues Between Hylas and Philonous"] },
+  "classic-boethius-consolation": { by: [], full: ["The Consolation of Philosophy"] },
   "classic-plato-socrates": { by: ["plato", "socrates"], full: ["Euthyphro", "Crito", "Phaedo", "Plato's Apology"], own: ["Apology"] },
   "classic-plato-republic": { by: ["plato"], full: ["Plato's Republic", { s: "Republic", pre: ["the", "The"], notPost: /^ of\b/, notPre: /\bOn the $/ }, { s: "Republic", post: /^ (\d|[IVX]+\b)/, notPre: /\bOn the $/ }], own: ["Republic"] },
   "classic-xenophon-memorabilia": { by: [], full: ["Memorabilia"] },
