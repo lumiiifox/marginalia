@@ -19,7 +19,7 @@ async def main():
         await page.evaluate("localStorage.setItem('mg-classics','1')")
         await page.goto(f'http://localhost:{PORT}/index.html');await page.wait_for_function("S.mode==='ready'")
         check(await page.evaluate("idb.version===DB_VERSION && S.texts.has('ethics') && S.paths.has('p') && S.wishlist.size===0"),'version 9 upgrades without losing books or paths')
-        await page.evaluate("go({screen:'library'})")
+        await page.evaluate("go({screen:'shelf'})")
         await page.click('#openwishlist');await page.click('#newwish')
         await page.fill('#wish-title','A book <em>literal</em>');await page.fill('#wish-author','A scholar')
         await page.fill('#wish-note','For the seminar');await page.select_option('#wish-forBook','ethics')

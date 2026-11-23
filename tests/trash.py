@@ -77,7 +77,7 @@ async def main():
           await trashAndRemove('draft', 'Essay on conatus', [['drafts', 'd1', S.drafts.get('d1')]]);
           await trashAndRemove('comparison', 'Spinoza and Hobbes', [['compares', 'c1', S.compares.get('c1')]]);
           render(); })()""")
-        await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(200)
+        await page.evaluate("go({ screen: 'shelf' })"); await page.wait_for_timeout(200)
         link = await page.evaluate("document.querySelector('#opentrash')?.textContent")
         check(link == "Recently deleted (3)", f"the home screen links to Recently deleted with a count ({link})")
         await page.click("#opentrash"); await page.wait_for_timeout(300)

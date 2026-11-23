@@ -14,11 +14,11 @@ can break that order: keep new code in the file of its area, and check with a te
 | `js/storage.js` | IndexedDB (`STORES`, `idbOpen`, `put`), Recently deleted, covers, toasts and `saveFile`, backup and restore (`VALID`, `planRestore`, `applyRestore`) |
 | `js/cite.js` | citations, tags, the Markdown export of notes |
 | `js/import.js` | parsing PDF (and highlights from a PDF), EPUB, Word, HTML, plain text and Markdown |
-| `js/library.js` | the home screen and a book's page, with what's drawn on them (bookplates, from your margins, notes through the book, reading pace, where you left off), tags and open questions |
+| `js/library.js` | Home and Library (the shelf, your writing, the library's tools) and a book's page, with what's drawn on them (bookplates, from your margins, notes through the book, reading pace, where you left off), tags and open questions |
 | `js/writing.js` | drafts, comparisons, the concordance, search across books, exports and Anki |
 | `js/study.js` | the glossary and Quiz yourself, guess the thinker, puzzles, the reconstruction guide, quiz sets, truth tables |
 | `js/reference.js` | Look up, thinkers and branches, reading paths, disputations |
-| `js/sheets.js` | navigation and the back button, and the sheets (forms) |
+| `js/sheets.js` | navigation, the back button and the tab bar, and the sheets (forms) |
 | `js/wikisource.js` | the Wikisource search and import |
 | `js/bookmenu.js` | a book's More menu (another edition's pages, the paired original), the book menu and arranging the shelf |
 | `js/reader.js` | the reader: layout, swipe pages and the flip, your place and jumps, reading pace, highlights and notes in the text, the pinned passage |
@@ -136,12 +136,23 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - The glossary as the app sees it (`allTerms`, study.js): built-in entries with your own and edited terms, alphabetical (`TERMS_ORDER`).
   Kept in `TERMS_CACHE` until a record in `S.terms` changes (compared by identity each call, so put, delete and restore all show at
   once); each call gets its own copy of the list, the entries frozen. Tested by `terms_cache` in `tests/study_tools.py`.
-- The home screen, top to bottom: search; Continue reading (`continueHTML`, `continueBook`: the unfinished, non-example book with the
-  latest `readAt`, opening the reader at your place via `data-continue`); the bookshelf with Wishlist and Reading recommendations; Across
-  your library; From your margins; term of the day; Glossary, Branches and Thinkers; one Study card (`studyCardHTML`, with the mastery
-  meter); Backups and exports. Study (`studyView`, the `study` screen) holds Mastery, Reading paths, Disputations, Puzzles, Quiz yourself
-  and Bookplates, each opening as it did from home. `.noteacts.boxed` sets a row of bordered buttons on the text's edge. Tested in
-  `tests/smoke.py` (the home screen's order, every way out of it, each Study entry opening).
+- The tab bar (`#tabbar` in index.html; `drawTabs`, `goTab`, `TAB_OF`, in sheets.js): Home (`library`), Library (`shelf`), Study (`study`)
+  and Reference (`reference`), labelled, the current one marked `aria-current`; every other screen belongs to one of them (`TAB_OF`).
+  Hidden in the reader, and on a touch screen while a text field has the cursor (`body.typing`). A tab already in the history is
+  stepped back to through `history.go`, so the phone's Back keeps working and tabs don't pile up; Home is always the first step.
+- Home (`libraryView`), the reading session, top to bottom: backup warnings (`banner`, `cloudBackupWarningHTML`); search (`#q`,
+  `searchHTML`: books, glossary, notes, and Search inside your books); Continue reading (`continueHTML`, `continueBook`: the
+  unfinished, non-example book with the latest `readAt`, one large button opening the reader at your place via `data-continue`, with
+  the page and chapter there (`homePlace`, loading the book's text once, `HOME_LOADING`), your line for next time and the book's page as
+  a text link); one open Question note of yours from that book in your words, newest first (`bookQuestion`, `bookQuestionHTML`); From
+  your margins. With books but none started, Choose a book (`chooseHTML`: a shelf row, unfinished first); with an empty library once
+  loading is done, Add your first text and Restore a backup. Sections with nothing to show are left out.
+- Library (`shelfView`, the `shelf` screen): the shelves (`shelvesHTML`, `shelfRowsHTML`, `shelfBookHTML`), Add text, Wishlist and
+  Reading recommendations as text links, Your writing (`writingHTML`: Drafts, Comparisons, Open questions, Search inside all books,
+  tags), then the library's tools (`backupView`: backup, automatic backups, restore, export, Recently deleted).
+- Study (`studyView`, the `study` screen): Mastery (with its meter), Reading paths, Disputations, Puzzles, Quiz yourself and
+  Bookplates, each opening as before. `.noteacts.boxed` sets a row of bordered buttons on the text's edge. Tested in
+  `tests/smoke.py` (Home's contents, the tabs and Back, every way out of Library, each Study entry opening).
 - Tap areas (end of css/app.css): button chips, text links (`button.src`), the toast's button, the recommendations' source links and the
   small summaries get an invisible `::after` layer reaching past what's drawn, so a tap reaches 32px or more with nothing on screen moving;
   only buttons get one, so a plain label never takes a tap meant for its neighbour. Tested by `tests/tap_targets.py`.
@@ -151,8 +162,8 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   last key, and any redraw while a box has the cursor (a save's included) goes through `drawMain`, which replaces everything around the
   box and keeps the box itself, so the cursor, a selection and a word the keyboard is still composing stay put; when the new screen has
   no box in the same place it is drawn whole and the cursor put back. Tested by `tests/search_box.py`.
-- Views: `render` dispatches to `libraryView`, `textView`, `tagView`, `questionsView`, `draftsView`/`draftView`, `comparesView`/`compareView`, `concordView`, glossary, branches and `thinkersView`. The home screen reaches the reference through three buttons (`referenceHome`) that open
-  `referenceView`: every term, branch or thinker as one list (`S.rk` picks the group, `S.rq` searches), each row opening its entry
+- Views: `render` dispatches to `libraryView`, `textView`, `tagView`, `questionsView`, `draftsView`/`draftView`, `comparesView`/`compareView`, `concordView`, glossary, branches and `thinkersView`. The Reference tab opens
+  `referenceView`: Term of the day, then every term, branch or thinker as one list (`S.rk` picks the group, `S.rq` searches), each row opening its entry
   and each group linking to its full screen.
 - Data: reference content lives in `data/`, loaded by plain `<script>` tags before the app script: `data/glossary.js` (`GLOSSARY`),
   `data/thinkers.js` (`THINKERS`), `data/branches.js` (`BRANCHES`). Edit entries there, not in `js/`. `LINKS`, `THINKER` and `BRANCH`
@@ -204,7 +215,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   once per array of terms and thinkers, `linkSet`). Glossary entries and thinker cards link the same way, never to themselves (`refParas`;
   an entry's text when it opens, `fillLinks`) (accents ignored; names under five
   letters in exact case; `LINK_FULL_ONLY` names, such as Said and Land, only in full; a name two entries share never links).
-- Quiz yourself (`quizPanel`, from the glossary and the home screen's glossary section): questions made from `allTerms()` definitions
+- Quiz yourself (`quizPanel`, from the glossary, Reference and Study): questions made from `allTerms()` definitions
   (the term blanked out by `maskTerm`: its names, title and bracketed other name with their inflections and the words formed from them by
   `MASK_DERIVED`'s suffixes, accidental, Daoists; a single word of a longer name only with its inflections, so a clue keeps its sense;
   tested over every entry in `tests/smoke.py`) and `THINKERS` key works (`worksOf` leaves out works by other authors); nothing is stored.
@@ -217,7 +228,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - Quiz sets to share (`setMaker`, from Quiz yourself; `setLink`, `readSet`): chosen terms travel in a `#set=` link as base64url JSON (built-in ids,
   and your own or edited terms in full, within `SET_LIMITS`); `openFromHash` at start and on `hashchange` opens the quiz with `QZ.set`, or a
   `#path=` link's reading path, then cleans the address. Nothing stored.
-- Term of the day (`termOfDay`, `todHTML`, above the home screen's three buttons): one of the checked entries (`TOD_POOL`: `GLOSSARY` in `VERIFIED_TERMS`) a day by
+- Term of the day (`termOfDay`, `todHTML`, at the top of Reference when nothing is searched): one of the checked entries (`TOD_POOL`: `GLOSSARY` in `VERIFIED_TERMS`) a day by
   `dayNumber`, in an order shuffled once per round so every one comes up before any repeats; your edit of it if you made one. Nothing is stored.
 - Hear it (`sayBtn`, `sayIt`, `CAN_SAY`): on a glossary term and a thinker's card, the phone's own voice (Web Speech API, English) says the name;
   no button where the device has no voice.
@@ -234,7 +245,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   chapter lines once the text is loaded, a dot at `t.pos`; a bar goes to its first note. Nothing stored.
 - Fallacies: glossary entries with `fal` ("formal" or "informal"), listed in the Logic branch by `fallacyCatalogHTML`. A formal one's entry opens
   the truth table on its example (`TT_TERMS` maps an entry to one of `TT_EXAMPLES`), and `ttExampleOf` offers the entry back from the table.
-- Reading paths (`PATHS` at the end of `data/branches.js`; `pathsView`, the `paths` screen, from the home screen and a branch's entry via `pathsFor`):
+- Reading paths (`PATHS` at the end of `data/branches.js`; `pathsView`, the `paths` screen, from Study and a branch's entry via `pathsFor`):
   steps through the classics by book id and section ids. `readStep` opens the reader at the step's first chapter (`stepRange`), or at your place
   when you're inside it; a step is done when its sections are ticked. On a book's page each section's › (`readSection`, `data-readsec`)
   opens the reader at that section's first line through the same `stepRange`, your place kept as for any jump; a section not marked
@@ -250,16 +261,16 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   Nothing stored. Now "spinoza-deleuze", all five parts (30 stations); a Deleuze line marked `own` is his own words from a lecture transcript,
   labelled apart from scholarship; every quotation is checked against the bundled text and each station's
   independent review is in `tests/audit/spinoza-deleuze.json`. Tested by `tests/study_tools.py` (`close_reading`).
-- Bookplates (`platesView`, the `plates` screen, from the home screen's Across your library; a book's own on its page): `bookplates()` works them
+- Bookplates (`platesView`, the `plates` screen, from Study; a book's own on its page): `bookplates()` works them
   out each time from notes, follow-ups, summaries, ticked chapters, shelves, drafts, comparisons and `PATHS` (`FIRSTS`, `bookPlates`; `BACK_MATTER`
   sections don't count as chapters; example books never count). Nothing stored, nothing expires.
 - Primers (`PRIMERS` at the end of `data/branches.js`, keyed by classic id; `primerHTML` on the book's page): what the book is, how it's built,
   (`missing`, optional: passages of the work the bundled edition lacks, shown as "Not in this edition"; the Critique's first-edition passages),
   words to know and its reading paths, with sources; open until you start reading or take a note. Every id in `CLASSICS` needs one (tested).
-- Disputations (`DISPUTES` at the end of `data/branches.js`; `disputesView`, the `disputes` screen, from the home screen; `disputePanel`): an argument
+- Disputations (`DISPUTES` at the end of `data/branches.js`; `disputesView`, the `disputes` screen, from Study; `disputePanel`): an argument
   from a classic (book, section, `find` words to open the reader at), your objection (kept in `DSP` while the app is open), then the classic one,
   paraphrased from its sources. Save makes an ordinary Objection note on the book, tagged #disputation (`disputeNotes` finds them).
-- From your margins (`resurfHTML`, `resurfaced`, on the home screen after the bookshelf): one note made `RESURF_DAYS` or more ago, picked by
+- From your margins (`resurfHTML`, `resurfaced`, on Home after the current book and its question): one note made `RESURF_DAYS` or more ago, picked by
   `dayNumber`; Another (`resurfSkip`) redraws only the card. Nothing stored.
 - A draft for critique (a draft's Export → `exportMenu`: the essay as before, or For critique, saved or copied, `exportCritique`): `critiqueMarkdown`
   writes the draft (guide lines left out) with each quoted passage marked [E1]…, then the evidence: each passage checked against its book's
@@ -284,7 +295,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - Truth table (`truthPanel`, from the Logic branch and the glossary's `TT_TERMS`): `ttLex`/`ttParse` read premises and a conclusion
   (¬ ∧ ∨ → ↔, ASCII or words; → groups right), `ttCheck` builds every row (up to `TT_MAX` letters) and finds counterexamples, `ttShow` writes a
   formula back with only the brackets it needs. Nothing is stored. Tested by `tests/study_tools.py`.
-- Thinkers' timeline (Thinkers → Timeline, `S.tl`; a period on the home screen opens it there): `lifeSpan` reads a thinker's dates line (BCE, centuries, "b. 1929"),
+- Thinkers' timeline (Thinkers → Timeline, `S.tl`; a period in Reference opens it there): `lifeSpan` reads a thinker's dates line (BCE, centuries, "b. 1929"),
   `timelineHTML` draws each period in `TL_ERAS` on its own scale; `contemporariesOf` (lives overlapping 20+ years) is on the thinker card.
 - A chapter's end (`chapterEndCheck`, from `updatePg`): reading on from within about a page of a chapter's end into the next asks
   for a summary (`summarySheet`, saved in `t.summaries`), once a visit and only without one; `RS.sum` "off" stops it. The summary is
@@ -344,7 +355,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   and the reader's bottom buttons and toasts sit above it (`--pin-h`).
 - Your notes on the slider (`drawNavNotes`, `navNoteGroups`, `navNotesOpen`): a mark per note above it, notes within `NAVNOTE_PX` sharing
   a numbered mark that lists them; going to one uses `jumpTo`, so the trail offers ← Your place.
-- The icons (`icon-*.png`, `apple-touch-icon.png`) are drawn by `tools/build_icons.py`: a leaf carved in outline into oak. The home screen's
+- The icons (`icon-*.png`, `apple-touch-icon.png`) are drawn by `tools/build_icons.py`: a leaf carved in outline into oak. Home's
   mark (`LEAF_SVG`) is the same leaf path; change both together.
 - Glossary terms in the text (Reading settings → Glossary terms in this book, or a book's More menu; `termsOn`, `setTermsOn`, the books
   listed in `localStorage` as `mg-terms`, not backed up): `termHits` finds each paragraph run's first mention of each term name of more
@@ -425,7 +436,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   after a note is saved, which reads what's used from that same state (`usedNow`) and celebrates only what that note itself brings
   (`USED_SEEN`, set at start). `celebrate` batches what's earned together into one toast (`flushEarned`: pips, a pop, `navigator.vibrate`).
   `withinReach` unlocks an item when something next to it is met (a station when the one before is read); locked ones fold into one tile.
-  Screens: `masteryCardHTML` on the Study screen and `studyCardHTML` on home (neither loads a book to count stations), `masteryView` (`S.screen` "mastery").
+  Screens: `masteryCardHTML` on the Study screen (it loads no book to count stations), `masteryView` (`S.screen` "mastery").
   Backups carry the store; `planRestore` merges each stage's earlier time (`plan.mastery`), so restoring never takes anything away.
   Tested by `tests/mastery.py`.
 
@@ -437,6 +448,6 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 
 - Checked and unchecked (`isCheckedTerm`, `isCheckedThinker`, `checkMark`, in study.js): a built-in glossary entry or thinker card says
   whether it passed an audit (`VERIFIED_TERMS`, `VERIFIED_THINKERS`): a ✓ line, or "Unchecked: not yet audited against its sources";
-  an unchecked entry's summary line also says "unchecked". Your own or edited terms carry no mark. The home screen's Glossary and
-  Thinkers cards and the two screens' subtitles count the checked ones; the glossary's ✓ Checked only chip (`#gchecked`, `S.gChecked`,
+  an unchecked entry's summary line also says "unchecked". Your own or edited terms carry no mark. Reference's Glossary and
+  Thinkers groups and the two screens' subtitles count the checked ones; the glossary's ✓ Checked only chip (`#gchecked`, `S.gChecked`,
   for this sitting, not stored) lists only those. Tested by `tests/mastery.py`.

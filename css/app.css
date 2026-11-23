@@ -744,18 +744,51 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .studycards { display: grid; gap: 12px; margin-top: 8px; }
 /* a row of bordered buttons sits on the text's edge (.noteacts pulls back 8px only so ghost buttons' words line up) */
 .noteacts.boxed { margin-left: 0; gap: 8px 12px; align-items: center; }
-/* Continue reading: the book you read last, first on the home screen */
-.contcard { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; column-gap: 14px; row-gap: 2px; align-items: center; text-align: left;
-  width: 100%; margin: 18px 0 6px; background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; padding: 14px 16px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12); color: var(--ink); }
-.contcard .cc-cover { grid-column: 1; grid-row: 1 / span 5; width: 56px; align-self: start; }
-.contcard .cc-cover > * { width: 100%; max-width: 56px; }
-.contcard .cc-l { grid-column: 2; font: 500 12.5px/1.3 var(--f-ui); color: var(--muted); }
-.contcard .cc-t { grid-column: 2; font: 700 19px/1.2 var(--f-text); }
-.contcard .cc-a { grid-column: 2; font: italic 400 14.5px/1.3 var(--f-text); color: var(--muted); }
-.contcard .cc-m { grid-column: 2; font: 400 13.5px/1.3 var(--f-ui); color: var(--muted); }
+/* Continue reading: the current book, first and largest on Home; one tap opens the reader at your place */
+.current { display: grid; gap: 8px; }
+.contcard { display: grid; grid-template-columns: clamp(52px, 17vw, 76px) minmax(0, 1fr) auto; column-gap: 16px; row-gap: 3px; align-items: center; text-align: left;
+  width: 100%; margin: 8px 0 0; background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; padding: 18px 16px 18px 18px;
+  box-shadow: var(--paper-shadow); color: var(--ink); }
+.contcard .cc-cover { grid-column: 1; grid-row: 1 / span 6; width: 100%; align-self: start; }
+.contcard .cc-cover > * { width: 100%; max-width: 76px; }
+.contcard .cc-l { grid-column: 2; font: 700 13px/1.3 var(--f-ui); letter-spacing: 0.06em; text-transform: uppercase; color: var(--leather); }
+.contcard .cc-t { grid-column: 2; font: 700 22px/1.2 var(--f-text); overflow-wrap: break-word; hyphens: auto; }
+.contcard .cc-a { grid-column: 2; font: italic 400 15.5px/1.3 var(--f-text); color: var(--muted); }
+.contcard .cc-where { grid-column: 2; font: 500 15.5px/1.35 var(--f-ui); color: var(--ink); margin-top: 4px; overflow-wrap: break-word; }
+.contcard .cc-m { grid-column: 2; font: 400 14px/1.3 var(--f-ui); color: var(--muted); }
 .contcard .cc-meter { grid-column: 2; margin-top: 6px; }
-.contcard .rc-go { grid-column: 3; grid-row: 1 / span 5; font: 400 34px/1 var(--f-text); color: var(--muted); }
+.contcard .rc-go { grid-column: 3; grid-row: 1 / span 6; font: 400 38px/1 var(--f-text); color: var(--leather); }
+.cc-next { margin: 0; font: 400 16px/1.45 var(--f-text); color: var(--ink); }
+.cc-next span { font: 700 12.5px/1 var(--f-ui); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+:root[data-theme="dark"] .contcard .cc-l, :root[data-theme="dark"] .contcard .rc-go { color: var(--link); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .contcard .cc-l, :root:not([data-theme="light"]) .contcard .rc-go { color: var(--link); } }
+/* text links in a row: secondary actions, set apart by space */
+.textlinks { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 20px; align-items: baseline; }
+.textlinks .linkbtn { font-size: 15px; }
+/* sections on Home and Library are set apart by space and a rule */
+#main > .homeq, #main > #resurf, #main > .choose, .writing, .backup { border-top: 1px solid var(--rule); padding-top: 22px; }
+/* the question from the current book, in your words, set to be read */
+.homeq { display: grid; gap: 8px; }
+.homeq .hq { margin: 0; font: 400 19px/1.5 var(--f-text); color: var(--ink); overflow-wrap: break-word; }
+.homeq .hq-ref, .rsurf .rs-src, .rsurf .rs-src span { color: var(--ink); }
+.homeq .hq-ref { margin: 0; font: 500 14.5px/1.35 var(--f-ui); }
+.choose .shelfrow { margin-top: 4px; }
+.firstuse .row { display: flex; flex-wrap: wrap; gap: 10px; }
+.wlinks { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.wlinks .cnt { font-size: 13px; color: var(--ink); text-decoration: none; }
+/* the tab bar: four labelled destinations at the foot of the screen, hidden in the reader and while the keyboard is up */
+.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 12; display: flex; justify-content: center; background: var(--paper);
+  border-top: 1px solid var(--rule); box-shadow: 0 -6px 18px rgba(30, 20, 10, 0.08); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.tabbar .tab { flex: 1 1 0; max-width: 170px; min-height: 58px; display: grid; justify-items: center; align-content: center; gap: 3px; padding: 6px 4px 7px;
+  background: none; border: 0; color: var(--muted); font: 500 13px/1.1 var(--f-ui); }
+.tabbar .tab svg { width: 24px; height: 24px; }
+.tabbar .tab[aria-current="page"] { color: var(--ink); font-weight: 700; }
+.tabbar .tab[aria-current="page"] svg { color: var(--leather); }
+:root[data-theme="dark"] .tabbar .tab[aria-current="page"] svg { color: var(--link); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tabbar .tab[aria-current="page"] svg { color: var(--link); } }
+.tabbar .tab:focus-visible { outline: 2px solid var(--link); outline-offset: -4px; }
+body.typing .tabbar { display: none; }
+#main { padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)); }
 /* truth tables */
 .tt-syms .segb { min-width: 44px; font: 500 18px/1 var(--f-text); padding: 9px 10px; }
 .tt-ascii { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; letter-spacing: 0.04em; }
@@ -912,7 +945,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .backup .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 4px; }
 .filebtn { position: relative; overflow: hidden; display: inline-flex; align-items: center; }
 .filebtn input[type=file] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
-.toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); max-width: calc(100% - 32px); background: var(--plank-edge); color: #f3ede2; padding: 10px 16px; border-radius: 8px; font-size: 15px; z-index: 30; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3); }
+.toast { position: fixed; left: 50%; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); /* above the tab bar */ transform: translateX(-50%); max-width: calc(100% - 32px); background: var(--plank-edge); color: #f3ede2; padding: 10px 16px; border-radius: 8px; font-size: 15px; z-index: 30; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3); }
 /* Front matter retains PDF line breaks and measured whitespace without fixed-width pages. */
 .bfront { text-indent: 0 !important; line-height: 1.25; margin-bottom: 0.25em; overflow-wrap: anywhere; }
 .bfront.fronthead { font-weight: 700; line-height: 1.16; }
@@ -1267,6 +1300,8 @@ button.chip::after, .toastbtn::after, .discovery-source::after { content: ""; po
 .toastbtn::after { inset: -8px -6px; }
 .discovery-source::after { inset: -5px 0; }
 button.src::after { content: ""; position: absolute; inset: -8px -2px; }
+.textlinks .linkbtn, .wlinks .linkbtn, .choose > .linkbtn { position: relative; }
+.textlinks .linkbtn::after, .wlinks .linkbtn::after, .choose > .linkbtn::after { content: ""; position: absolute; inset: -4px -2px; }
 .primer > summary::after, .earlier > summary::after, .readqd summary::after, .optfield > summary::after { content: ""; position: absolute; inset: -7px 0; }
 
 /* A note's actions: Show in text, Edit (and Mark resolved on an open question) in one row; Cite, Add to draft and Follow up open

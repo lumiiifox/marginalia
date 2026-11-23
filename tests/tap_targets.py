@@ -40,7 +40,8 @@ MEASURE = """(sel) => {
   }
   return out; }"""
 PLACES = [
-    ("home", "go({ screen: 'library' })", ["button.chip", "button.src"]),
+    ("home", "go({ screen: 'library' })", ["button.src", "button.linkbtn", "#tabbar .tab"]),
+    ("library", "go({ screen: 'shelf' })", ["button.chip", "button.linkbtn"]),
     ("search", "S.q = 'substance'; go({ screen: 'library' })", [".note button.src", "button.chip"]),
     ("glossary", "S.q = ''; go({ screen: 'glossary' })", ["button.chip"]),
     ("book page", "go({ screen: 'text', textId: 't1' })", ["button.src", "button.chip", ".primer > summary"]),

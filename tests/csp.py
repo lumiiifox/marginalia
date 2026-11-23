@@ -98,7 +98,7 @@ async def main():
         g = await page.evaluate("cloudRequest({ repo: 'me/backups', token: 'github_pat_x' }).then((r) => r.status, (e) => 'failed: ' + e)")
         check(g == 200, f"a request to GitHub, as automatic backups make, goes through ({g})")
         async with page.expect_download(timeout=20000) as dl:
-            await page.evaluate("go({ screen: 'library' })"); await asyncio.sleep(0.3)
+            await page.evaluate("go({ screen: 'shelf' })"); await asyncio.sleep(0.3)
             await page.click("#backup")
         check((await dl.value).suggested_filename.endswith(".json"), "a backup file is saved")
 

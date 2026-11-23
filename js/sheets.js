@@ -50,6 +50,30 @@ function go(view) {
   try { history.pushState({ mg: depth() }, ""); } catch {}
   showView(view, true);
 }
+/* The tab bar (#tabbar): Home (the library screen), Library (shelf), Study and Reference. A tab already in the history is stepped
+   back to, as the phone's Back would (Home is always the first step, so Home then Back leaves the app); any other is a step forward. */
+const TAB_OF = { library: "library", shelf: "shelf", text: "shelf", tag: "shelf", questions: "shelf", drafts: "shelf", draft: "shelf", compares: "shelf", compare: "shelf",
+  concord: "shelf", trash: "shelf", wishlist: "shelf", recommendations: "shelf", study: "study", paths: "study", disputes: "study", mastery: "study", plates: "study",
+  reference: "reference", glossary: "reference", branches: "reference", thinkers: "reference" };
+function drawTabs() {
+  const bar = $("#tabbar"); if (!bar) return;
+  bar.hidden = S.screen === "reader";
+  const on = TAB_OF[S.screen] || "library";
+  for (const b of bar.querySelectorAll("[data-tab]")) { if (b.dataset.tab === on) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); }
+}
+// The phone's keyboard pushes a fixed bar up over what you're typing: the bar steps aside while a text field has the cursor.
+const TYPED = "input:not([type=file]):not([type=range]):not([type=checkbox]):not([type=radio]):not([type=button]), textarea, [contenteditable=true]";
+if (matchMedia("(pointer: coarse)").matches) {
+  document.addEventListener("focusin", (e) => { if (e.target.matches && e.target.matches(TYPED)) document.body.classList.add("typing"); });
+  document.addEventListener("focusout", () => document.body.classList.remove("typing"));
+}
+function goTab(screen) {
+  let k = -1; for (let i = NAV.stack.length - 1; i >= 0; i--) if (NAV.stack[i].screen === screen) { k = i; break; }
+  if (screen === "library") k = 0;
+  if (k === NAV.stack.length - 1 && !NAV.overlay) { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+  if (k >= 0) { try { history.go(k - depth()); } catch {} return; } // the popstate handler steps the app back to it
+  go({ screen });
+}
 function stepBack() {
   if (NAV.overlay) { $("#sheetroot").innerHTML = ""; NAV.overlay = false; return true; }
   if (NAV.stack.length > 1) { NAV.stack.pop(); showView(NAV.stack[NAV.stack.length - 1], false); return true; }

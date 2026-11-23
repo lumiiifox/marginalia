@@ -25,11 +25,11 @@ function render(keep) {
   const reading = S.screen === "reader";
   $("#main").hidden = reading;
   $("#reader").hidden = !reading;
-  syncThemeColor(); drawPin();
+  syncThemeColor(); drawPin(); drawTabs();
   if (reading) { refreshMarks(); return; }
   wakeOff();
   $("#selbar").hidden = true;
-  const views = { wishlist: wishlistView, recommendations: recommendationsView, text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, paths: pathsView, plates: platesView, mastery: masteryView, study: studyView, disputes: disputesView, concord: concordView, compares: comparesView, compare: compareView };
+  const views = { wishlist: wishlistView, recommendations: recommendationsView, text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, paths: pathsView, plates: platesView, mastery: masteryView, shelf: shelfView, study: studyView, disputes: disputesView, concord: concordView, compares: comparesView, compare: compareView };
   drawMain((views[S.screen] || libraryView)(), keep);
 }
 /* Draws the screen. With `keep`, the search box being typed in, everything around the box is replaced and the box itself stays the
@@ -143,62 +143,84 @@ function shelfList(st) {
 // The leaf of the app's icon (tools/build_icons.py draws the icon from the same path).
 const LEAF_SVG = `<svg viewBox="10 17 76 76" aria-hidden="true"><path d="M27.0 75.0 C23 51 42 29 76.0 23.0 C74 53 56 73 27.0 75.0 Z M27.0 75.0 Q50.5 51.5 71.8 27.6 M38.8 62.5 Q43.4 63.4 49.2 62.9 M38.8 62.5 Q37.7 58.4 37.9 52.9 M47.6 53.2 Q52.5 54.0 58.6 53.5 M47.6 53.2 Q46.5 48.8 46.6 43.1 M56.4 43.8 Q60.5 44.6 65.9 44.1 M56.4 43.8 Q55.4 40.1 55.6 35.1 M64.2 35.5 Q66.9 36.2 70.7 35.7 M64.2 35.5 Q63.3 33.2 63.7 29.5 M27.0 75.0 C24.5 78.5 21.5 81.5 16.5 83.5" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const SEARCH_FIRST = 12; // notes a search shows before "Show all"
-function libraryView() {
-  const texts = [...S.texts.entries()];
-  let body = "";
+function searchHTML(texts) {
   // a search shows its first SEARCH_FIRST notes, newest first, then a button for the rest (S.qAll: the search they were all shown for)
-  if (S.q.trim()) {
-    const hits = sortNotes([...S.notes.entries()].filter(([, n]) => matches(n, S.q)), null);
-    const ql = fold(S.q.trim());
-    const th = allTerms().filter((g) => fold(g.t).includes(ql)).slice(0, 6); // accents ignored, as for notes and books
-    const fq = fold(S.q.trim()), who = fq.length > 2 ? THINKERS.filter((p) => thinkerMatches(p, fq)).slice(0, 6) : [];
-    const anyLoaded = [...S.texts.values()].some((t) => t.hasContent);
-    const fb = fold(S.q.trim()), bk = texts.filter(([, t]) => fold(`${t.title} ${t.author || ""}`).includes(fb)).slice(0, 8);
-    const booksHit = bk.length ? `<section class="group"><div class="label">Your books<span class="cnt">${bk.length}</span></div><div class="termhits">${bk.map(([id, t]) => `<button class="termhit" data-open="${esc(id)}"><b>${esc(t.title)}</b><span>${[t.author, `${STATUS[t.status || "reading"] || ""} shelf`].filter(Boolean).map(esc).join(" · ")}</span></button>`).join("")}</div></section>` : "";
-    body = `${booksHit}${anyLoaded && S.q.trim().length > 1 ? `<button class="btn searchbooks" id="searchbooks">Search inside your books for “${esc(S.q.trim())}”</button>` : ""}${th.length || who.length ? `<section class="group"><div class="label">In the glossary</div>${who.length ? `<div class="chips">${thinkerChips(who.map((p) => p.id))}</div>` : ""}${th.length ? `<div class="termhits">${th.map((g) => `<button class="termhit" data-term="${esc(g.id)}"><b>${esc(g.t)}</b><span>${esc(g.d.length > 150 ? g.d.slice(0, 150) + "…" : g.d)}</span></button>`).join("")}</div>` : ""}</section>` : ""}
-      <section class="group"><div class="label">${hits.length ? `${hits.length} note${hits.length === 1 ? "" : "s"} matching “${esc(S.q)}”` : `Notes matching “${esc(S.q)}”`}</div>
-      <div class="noteslist">${(S.qAll === S.q ? hits : hits.slice(0, SEARCH_FIRST)).map(([id, n]) => noteHTML(id, n, S.texts.get(n.textId), true)).join("") || `<p class="empty">No notes match. Search looks through passages, your notes and page numbers.</p>`}</div>
-      ${S.qAll !== S.q && hits.length > SEARCH_FIRST ? `<button class="btn" id="allhits">Show all ${hits.length} notes</button>` : ""}</section>`;
-  } else if (!texts.length && S.mode !== "pending") {
-    body = `<p class="empty"><b>No texts yet.</b> Add a book from a PDF, EPUB, Word or text file, then read it here and save passages as you go.</p>`;
-  } else {
-    const per = shelfPer();
-    // Two books with the same title (two translations, a PDF and an EPUB) each say which they are, under the title.
-    const same = new Map(); for (const [, t] of S.texts) { const k = norm(t.title || ""); same.set(k, (same.get(k) || 0) + 1); }
-    const which = (t) => (same.get(norm(t.title || "")) > 1 ? [t.author, t.edition, t.year].filter(Boolean).join(", ") || [t.source && t.source.kind, t.createdAt ? `added ${new Date(t.createdAt).toLocaleDateString()}` : ""].filter(Boolean).join(", ") : "");
-    body = Object.keys(STATUS).map((st) => {
-      const books = shelfList(st);
-      if (!books.length) return "";
-      // Long shelves show their two most recent rows until you ask for the rest.
-      const cap = per * 2, open = S.shelfOpen.has(st) || books.length <= cap + 1, shown = open ? books : books.slice(0, cap);
-      const rows = []; for (let k = 0; k < shown.length; k += per) rows.push(shown.slice(k, k + per));
-      return `<section class="shelf" data-st="${st}"><div class="label">${STATUS[st]}<span class="cnt">${books.length}</span></div>
-        ${rows.map((row) => `<div class="shelfrow" style="--per:${per}"><div class="plank"></div>${row.map(([id, t]) => {
-          const nc = notesFor(id).length, p0 = progressOf(t), pc = p0 > 0 ? p0 : null;
-          const meta = [pc != null ? `${pc}%` : "", nc ? `${nc} note${nc === 1 ? "" : "s"}` : ""].filter(Boolean).join(", ");
-          const w = which(t);
-          return `<div class="sbwrap"><button class="shelfbook" data-open="${esc(id)}" aria-label="${esc(t.title + (w ? ", " + w : ""))}">
-            ${coverHTML(t, coverURL(id))}
-            <span class="sb-title">${esc(t.title)}</span>${w ? `<span class="sb-which">${esc(w)}</span>` : ""}
-            ${meta ? `<span class="sb-meta">${meta}</span>` : ""}
-            ${pc != null ? `<span class="sb-prog"><i style="width:${pc}%"></i></span>` : ""}
-          </button><button class="sbmenu" data-bookmenu="${esc(id)}" aria-label="More for ${esc(t.title)}">⋯</button></div>`; }).join("")}</div>`).join("")}
-        ${books.length > cap + 1 ? `<button class="btn shelfmore" data-shelf="${st}" aria-expanded="${open}">${open ? "Show fewer" : `Show all ${books.length}`}</button>` : ""}
-      </section>`;
-    }).join("");
-  }
-  const searching = !!S.q.trim();
+  const hits = sortNotes([...S.notes.entries()].filter(([, n]) => matches(n, S.q)), null);
+  const ql = fold(S.q.trim());
+  const th = allTerms().filter((g) => fold(g.t).includes(ql)).slice(0, 6); // accents ignored, as for notes and books
+  const fq = fold(S.q.trim()), who = fq.length > 2 ? THINKERS.filter((p) => thinkerMatches(p, fq)).slice(0, 6) : [];
+  const anyLoaded = [...S.texts.values()].some((t) => t.hasContent);
+  const fb = fold(S.q.trim()), bk = texts.filter(([, t]) => fold(`${t.title} ${t.author || ""}`).includes(fb)).slice(0, 8);
+  const booksHit = bk.length ? `<section class="group"><div class="label">Your books<span class="cnt">${bk.length}</span></div><div class="termhits">${bk.map(([id, t]) => `<button class="termhit" data-open="${esc(id)}"><b>${esc(t.title)}</b><span>${[t.author, `${STATUS[t.status || "reading"] || ""} shelf`].filter(Boolean).map(esc).join(" · ")}</span></button>`).join("")}</div></section>` : "";
+  return `${booksHit}${anyLoaded && S.q.trim().length > 1 ? `<button class="btn searchbooks" id="searchbooks">Search inside your books for “${esc(S.q.trim())}”</button>` : ""}${th.length || who.length ? `<section class="group"><div class="label">In the glossary</div>${who.length ? `<div class="chips">${thinkerChips(who.map((p) => p.id))}</div>` : ""}${th.length ? `<div class="termhits">${th.map((g) => `<button class="termhit" data-term="${esc(g.id)}"><b>${esc(g.t)}</b><span>${esc(g.d.length > 150 ? g.d.slice(0, 150) + "…" : g.d)}</span></button>`).join("")}</div>` : ""}</section>` : ""}
+    <section class="group"><div class="label">${hits.length ? `${hits.length} note${hits.length === 1 ? "" : "s"} matching “${esc(S.q)}”` : `Notes matching “${esc(S.q)}”`}</div>
+    <div class="noteslist">${(S.qAll === S.q ? hits : hits.slice(0, SEARCH_FIRST)).map(([id, n]) => noteHTML(id, n, S.texts.get(n.textId), true)).join("") || `<p class="empty">No notes match. Search looks through passages, your notes and page numbers.</p>`}</div>
+    ${S.qAll !== S.q && hits.length > SEARCH_FIRST ? `<button class="btn" id="allhits">Show all ${hits.length} notes</button>` : ""}</section>`;
+}
+// One book on a shelf row: its cover, title, which copy it is when two share a title, progress and notes.
+function sameTitles() { const same = new Map(); for (const [, t] of S.texts) { const k = norm(t.title || ""); same.set(k, (same.get(k) || 0) + 1); } return same; }
+function shelfBookHTML([id, t], same) {
+  // Two books with the same title (two translations, a PDF and an EPUB) each say which they are, under the title.
+  const w = same.get(norm(t.title || "")) > 1 ? [t.author, t.edition, t.year].filter(Boolean).join(", ") || [t.source && t.source.kind, t.createdAt ? `added ${new Date(t.createdAt).toLocaleDateString()}` : ""].filter(Boolean).join(", ") : "";
+  const nc = notesFor(id).length, p0 = progressOf(t), pc = p0 > 0 ? p0 : null;
+  const meta = [pc != null ? `${pc}%` : "", nc ? `${nc} note${nc === 1 ? "" : "s"}` : ""].filter(Boolean).join(", ");
+  return `<div class="sbwrap"><button class="shelfbook" data-open="${esc(id)}" aria-label="${esc(t.title + (w ? ", " + w : ""))}">
+    ${coverHTML(t, coverURL(id))}
+    <span class="sb-title">${esc(t.title)}</span>${w ? `<span class="sb-which">${esc(w)}</span>` : ""}
+    ${meta ? `<span class="sb-meta">${meta}</span>` : ""}
+    ${pc != null ? `<span class="sb-prog"><i style="width:${pc}%"></i></span>` : ""}
+  </button><button class="sbmenu" data-bookmenu="${esc(id)}" aria-label="More for ${esc(t.title)}">⋯</button></div>`;
+}
+function shelfRowsHTML(books, per, same) {
+  const rows = []; for (let k = 0; k < books.length; k += per) rows.push(books.slice(k, k + per));
+  return rows.map((row) => `<div class="shelfrow" style="--per:${per}"><div class="plank"></div>${row.map((b) => shelfBookHTML(b, same)).join("")}</div>`).join("");
+}
+function shelvesHTML() {
+  const per = shelfPer(), same = sameTitles();
+  return Object.keys(STATUS).map((st) => {
+    const books = shelfList(st);
+    if (!books.length) return "";
+    // Long shelves show their two most recent rows until you ask for the rest.
+    const cap = per * 2, open = S.shelfOpen.has(st) || books.length <= cap + 1, shown = open ? books : books.slice(0, cap);
+    return `<section class="shelf" data-st="${st}"><div class="label">${STATUS[st]}<span class="cnt">${books.length}</span></div>
+      ${shelfRowsHTML(shown, per, same)}
+      ${books.length > cap + 1 ? `<button class="btn shelfmore" data-shelf="${st}" aria-expanded="${open}">${open ? "Show fewer" : `Show all ${books.length}`}</button>` : ""}
+    </section>`;
+  }).join("");
+}
+/* Home: the reading session. The book you're reading at your place, one open question of yours from it, an older note from your
+   margins, and search across everything. The bookshelf and your writing are in Library (shelfView); the rest is in the tab bar. */
+function libraryView() {
+  const texts = [...S.texts.entries()], searching = !!S.q.trim(), ready = S.mode !== "pending";
+  let body = "";
+  if (searching) body = searchHTML(texts);
+  else if (!ready) body = "";
+  else if (continueBook()) body = continueHTML() + bookQuestionHTML() + resurfHTML();
+  else if (texts.length) body = chooseHTML() + resurfHTML();
+  else body = `<section class="home-sec firstuse"><h2>Add your first text</h2><p class="hint">Bring in a book from a PDF, EPUB, Word or text file, then read it here and save passages as you go. If you used Marginalia on another device, restore its backup instead.</p>
+    <div class="row"><button class="btn primary" id="addtext">Add your first text</button><span class="btn filebtn">Restore a backup<input id="restore" type="file" aria-label="Restore from a backup file"></span></div></section>`;
   return `<header class="top"><h1 class="mark-leaf">${LEAF_SVG}<span class="sr">Marginalia</span></h1></header>
     ${banner()}<div id="cloud-warning-slot">${cloudBackupWarningHTML()}</div>
     <input class="search" id="q" type="search" placeholder="Search books, notes, glossary" value="${esc(S.q)}" aria-label="Search your books, notes and the glossary">
-    ${searching ? body : `${continueHTML()}
-    <section class="home-sec">
-      <div class="sec-head"><div><h2>Bookshelf</h2><div class="sub">${S.texts.size} text${S.texts.size === 1 ? "" : "s"}, ${S.notes.size} note${S.notes.size === 1 ? "" : "s"}</div></div><button class="btn primary" id="addtext">Add text</button></div>
-      ${body}
-      <div class="noteacts boxed discovery-home"><button class="btn" id="openwishlist">Wishlist · ${S.wishlist.size}</button><button class="linkbtn" id="openrecommendations">Reading recommendations</button></div>
-      ${S.mode === "pending" ? "" : acrossHTML()}
+    ${body}`;
+}
+// Books on the shelf but none started: a few to choose from, unfinished ones first, in the shelves' order.
+function chooseHTML() {
+  const per = shelfPer(), pick = Object.keys(STATUS).filter((st) => st !== "finished").flatMap((st) => shelfList(st)).slice(0, per);
+  const list = pick.length ? pick : shelfList("finished").slice(0, per);
+  return `<section class="home-sec choose"><h2>Choose a book</h2><p class="hint">Open one and start reading; it will wait here at your place next time.</p>
+    ${shelfRowsHTML(list, per, sameTitles())}<button class="linkbtn" data-tab="shelf">The whole library</button></section>`;
+}
+/* Library: the full bookshelf, the wishlist and recommendations, your writing (drafts, comparisons, open questions, tags) and the
+   library's tools (backup, restore, export, recently deleted). */
+function shelfView() {
+  const texts = [...S.texts.entries()];
+  const shelves = !texts.length && S.mode !== "pending" ? `<p class="empty"><b>No texts yet.</b> Add a book from a PDF, EPUB, Word or text file, then read it here and save passages as you go.</p>` : shelvesHTML();
+  return `${banner()}<header class="gl-head"><div><h1>Library</h1><div class="sub">${S.texts.size} text${S.texts.size === 1 ? "" : "s"}, ${S.notes.size} note${S.notes.size === 1 ? "" : "s"}</div></div><button class="btn primary" id="addtext">Add text</button></header>
+    <section class="home-sec">${shelves}
+      <p class="textlinks discovery-home"><button class="linkbtn" id="openwishlist">Wishlist · ${S.wishlist.size}</button><button class="linkbtn" id="openrecommendations">Reading recommendations</button></p>
     </section>
-    ${S.mode === "pending" ? "" : resurfHTML() + referenceHome() + backupView()}`}`;
+    ${S.mode === "pending" ? "" : writingHTML() + backupView()}`;
 }
 /* Continue reading: the book you read last, at the top of the home screen; one tap opens it at your place. A finished book, an
    example or a book never opened in the reader doesn't show. Nothing stored: it reads each book's readAt. */
@@ -207,15 +229,46 @@ function continueBook() {
   for (const [id, t] of S.texts) if (!t.example && t.hasContent && t.status !== "finished" && t.readAt && (!best || t.readAt > best[1].readAt)) best = [id, t];
   return best;
 }
+// The current book: one large button opening the reader at your place, with the page and chapter you're at (the book's text is
+// loaded once for that, as Where you left off does) and the line you left yourself for next time.
+const HOME_LOADING = new Set();
+function homePlace(id, t) {
+  if (!Number.isInteger(t.pos) || t.pos <= 0 || !t.hasContent) return null;
+  const B = S.content.get(id); if (B) return placeIn(B, t, t.pos);
+  if (!HOME_LOADING.has(id)) { HOME_LOADING.add(id); loadContent(id).then((x) => { if (x && S.screen === "library" && !S.q.trim()) render(); }).catch(() => {}); }
+  return null;
+}
 function continueHTML() {
   const hit = continueBook(); if (!hit) return "";
-  const [id, t] = hit, pc = progressOf(t), d = Math.floor((Date.now() - t.readAt) / DAY);
+  const [id, t] = hit, pc = progressOf(t), d = Math.floor((Date.now() - t.readAt) / DAY), where = homePlace(id, t);
   const when = d < 1 ? "today" : d < 2 ? "yesterday" : d < 14 ? `${d} days ago` : new Date(t.readAt).toLocaleDateString(undefined, { month: "short", day: "numeric" });
-  return `<button class="contcard" data-continue="${esc(id)}" aria-label="${esc(`Continue reading ${t.title}`)}">
+  const place = [where && where.page ? loc(where.page) : "", where && where.label ? `in ${where.label}` : ""].filter(Boolean).join(" ");
+  return `<section class="current"><button class="contcard" data-continue="${esc(id)}" aria-label="${esc(`Continue reading ${t.title}${place ? `, ${place}` : ""}`)}">
     <span class="cc-cover">${coverHTML(t, coverURL(id))}</span>
     <span class="cc-l">Continue reading</span><span class="cc-t">${esc(t.title)}</span>${t.author ? `<span class="cc-a">${esc(t.author)}</span>` : ""}
+    ${place ? `<span class="cc-where">${esc(place)}</span>` : ""}
     <span class="cc-m">${pc > 0 ? `${pc}% · ` : ""}last read ${esc(when)}</span>${pc > 0 ? `<span class="rc-meter cc-meter" aria-hidden="true"><i style="width:${pc}%"></i></span>` : ""}
-    <span class="rc-go" aria-hidden="true">›</span></button>`;
+    <span class="rc-go" aria-hidden="true">›</span></button>
+    ${t.next ? `<p class="cc-next"><span>Next time</span> ${esc(t.next)}</p>` : ""}
+    <p class="textlinks"><button class="linkbtn" data-open="${esc(id)}">The book's page</button></p></section>`;
+}
+// One open question of yours from the current book, in your words (a Question note's gloss), newest first; nothing when there's none.
+function bookQuestion(id) {
+  const open = notesFor(id).filter(([, n]) => n.kind === "question" && !n.resolved && (n.gloss || "").trim());
+  return open.sort((a, b) => (b[1].createdAt || 0) - (a[1].createdAt || 0))[0] || null;
+}
+function askedLabel(ms) {
+  if (!ms) return ""; const d = Math.floor((Date.now() - ms) / DAY);
+  return d < 1 ? "asked today" : d < 2 ? "asked yesterday" : `asked ${agoLabel(ms)}`;
+}
+function bookQuestionHTML() {
+  const hit = continueBook(); if (!hit) return "";
+  const [id, t] = hit, q = bookQuestion(id); if (!q) return "";
+  const [nid, n] = q, more = notesFor(id).filter(([, x]) => OPENABLE.has(x.kind) && !x.resolved).length - 1;
+  return `<section class="group homeq"><div class="label">A question from this book</div>
+    <p class="hq">${esc(n.gloss.trim())}</p>
+    <p class="hq-ref">${[n.page ? loc(n.page) : "", askedLabel(n.createdAt)].filter(Boolean).map(esc).join(" · ")}</p>
+    <p class="textlinks">${t.hasContent && Number.isInteger(n.at) ? `<button class="linkbtn" data-goto-note="${n.at}" data-tid="${esc(id)}">Show in text</button>` : `<button class="linkbtn" data-editnote="${esc(nid)}">Open the note</button>`}${more > 0 ? `<button class="linkbtn" id="openquestions">All open questions</button>` : ""}</p></section>`;
 }
 /* ---------- bookplates: marks of reading, worked out from the library each time; nothing is stored and none expire ----------
    Firsts (your first gloss, question, objection, argument, return to a note, summary, draft, comparison), per book (every chapter
@@ -641,19 +694,15 @@ function questionsView() {
     ${groupsHTML(open) || `<p class="empty"><b>Nothing open.</b> ${all.length ? "Every question and objection is resolved." : "Save a note as a Question or an Objection and it will wait here."}</p>`}
     ${done.length ? `<details class="resolvedlist"><summary class="label">Resolved<span class="cnt">${done.length}</span></summary>${groupsHTML(done)}</details>` : ""}`;
 }
-function acrossHTML() {
+function writingHTML() {
   const qs = questionNotes(), open = qs.filter(([, n]) => !n.resolved).length, tags = allTags();
-  const loaded = [...S.texts.values()].some((t) => t.hasContent), drafts = S.drafts.size;
-  if (!qs.length && !tags.length && !loaded && !drafts && !S.compares.size && !S.notes.size) return "";
-  return `<div class="across"><div class="label">Across your library</div><div class="chips">
-    ${loaded ? `<button class="chip qchip" id="searchall">Search all books</button>` : ""}
-    ${drafts || S.notes.size ? `<button class="chip qchip" id="opendrafts">Drafts<span class="cnt">${drafts}</span></button>` : ""}
-    ${S.compares.size || S.notes.size ? `<button class="chip qchip" id="opencompares">Comparisons<span class="cnt">${S.compares.size}</span></button>` : ""}
-    ${qs.length ? `<button class="chip qchip" id="openquestions">Open questions<span class="cnt">${open}</span></button>` : ""}
-    ${S.notes.size ? (() => { const k = bookplates().count; return k ? `<button class="chip qchip" id="openplates">Bookplates<span class="cnt">${k}</span></button>` : ""; })() : ""}
-    ${tags.slice(0, 8).map(([tg, c]) => `<button class="chip tagchip" data-tag="${esc(tg)}">#${esc(tg)}<span class="cnt">${c}</span></button>`).join("")}
-    ${tags.length > 8 ? `<button class="chip" data-tag="">All ${tags.length} tags</button>` : ""}
-  </div></div>`;
+  const loaded = [...S.texts.values()].some((t) => t.hasContent);
+  const link = (id, name, n) => `<button class="linkbtn wlink" id="${id}">${name}${n != null ? ` <span class="cnt">${n}</span>` : ""}</button>`;
+  return `<section class="home-sec writing"><h2>Your writing</h2><div class="wlinks">
+    ${link("opendrafts", "Drafts", S.drafts.size)}${link("opencompares", "Comparisons", S.compares.size)}${link("openquestions", "Open questions", open)}
+    ${loaded ? link("searchall", "Search inside all books") : ""}</div>
+    ${tags.length ? `<div class="label">Tags</div><div class="chips">${tags.slice(0, 8).map(([tg, c]) => `<button class="chip tagchip" data-tag="${esc(tg)}">#${esc(tg)}<span class="cnt">${c}</span></button>`).join("")}${tags.length > 8 ? `<button class="chip" data-tag="">All ${tags.length} tags</button>` : ""}</div>` : ""}
+  </section>`;
 }
 
 /* ---------- jumping to a note ---------- */

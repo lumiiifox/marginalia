@@ -16,6 +16,7 @@ document.addEventListener("click", (e) => {
   // A button in a panel is the panel's own (openPanel); the path is read as it was when tapped, since a panel that closes on the tap has
   // already left the page by the time the tap reaches here, and the same action ran twice (a book's page opened twice, Back pressed twice).
   const b = e.target.closest && e.target.closest("button"); if (!b || e.composedPath().includes($("#sheetroot"))) return;
+  if (b.dataset.tab) return goTab(b.dataset.tab);
   if (b.id === "addtext") return textSheet(null);
   if (b.id === "back") return back();
   if (b.dataset.open) return go({ screen: "text", textId: b.dataset.open });

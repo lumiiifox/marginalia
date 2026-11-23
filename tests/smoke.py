@@ -7,7 +7,8 @@ Uses made-up records only (never real books). Checks that:
   4. a backup made to run script (markup in fields the app draws) is refused, and such records already stored draw as text;
   5. Quiz yourself: ten questions from the glossary (the term blanked out of its definition), from one area when one is
      chosen, and "Who wrote it?" from the thinkers' works with no co-author among the wrong answers; a score at the end;
-  6. the home screen has one button for the glossary, branches and thinkers, opening all three as one list: every entry,
+  6. Home is the reading session (Continue reading at your place, a question of yours from that book, From your margins,
+     search); Library, Study and Reference are tabs; Reference lists the glossary, branches and thinkers as one list: every entry,
      filters for each, search across them, rows that open their entry, and links to each full screen;
      Thinkers is its own screen (the glossary no longer lists thinkers as an area): in order of birth or on a timeline,
      every dated life read from its dates line, each period on its own scale; a period in the list opens the timeline
@@ -43,7 +44,7 @@ SEED = """async () => {
 }"""
 DUMP = "async (st) => { const o = {}; for (const s of st) o[s] = Object.fromEntries(await idbAll(s)); return o; }"
 READY = "typeof idb !== 'undefined' && idb && S.mode === 'ready'"  # the library read in, not only storage open: the notes load after idb is set
-SCREENS = [("library", {}), ("text", {"textId": "t1"}), ("glossary", {}), ("branches", {}), ("thinkers", {}), ("reference", {}), ("tag", {"tag": "tag"}),
+SCREENS = [("library", {}), ("shelf", {}), ("study", {}), ("text", {"textId": "t1"}), ("glossary", {}), ("branches", {}), ("thinkers", {}), ("reference", {}), ("tag", {"tag": "tag"}),
            ("questions", {}), ("drafts", {}), ("draft", {"draftId": "d1"}), ("concord", {}), ("compares", {}), ("compare", {"cmpId": "c1"}), ("paths", {"pathFocus": None}), ("paths", {"pathFocus": "path-test"}), ("plates", {}), ("mastery", {}), ("disputes", {}), ("wishlist", {}), ("recommendations", {"recBook": None, "recAll": True})]
 
 failures = []
@@ -241,8 +242,8 @@ async def main():
                 figs = await page.evaluate("[GLOSSARY.filter((g) => g.fig && !FIGURES[g.fig]).map((g) => g.id), Object.keys(FIGURES).filter((k) => !GLOSSARY.some((g) => g.fig === k)), (() => { S.gOpen = new Set(GLOSSARY.filter((g) => g.fig).map((g) => g.id)); go({ screen: 'glossary' }); return document.querySelectorAll('.dsvg svg').length; })()]")
                 check(figs[0] == [] and figs[1] == [] and figs[2] == len(await page.evaluate("Object.keys(FIGURES)")), f"every glossary diagram belongs to a term and draws ({figs})")
                 await page.evaluate("S.gOpen = new Set()")
-                home = await page.evaluate("(() => { go({ screen: 'library' }); return [!!document.querySelector('.nudge'), !!document.querySelector('#backup')]; })()")
-                check(home == [False, True], f"the home screen has no backup reminder, and Save backup stays in Backups and exports ({home})")
+                home = await page.evaluate("(() => { go({ screen: 'library' }); const a = !!document.querySelector('.nudge'); go({ screen: 'shelf' }); return [a, !!document.querySelector('#backup')]; })()")
+                check(home == [False, True], f"the home screen has no backup reminder, and Save backup stays in Library's backups and exports ({home})")
             await page.evaluate("S.screen = 'text'; S.textId = 't1'; render()")
             await page.click("#read"); await page.wait_for_timeout(500)
             check("First paragraph" in await page.inner_text("#reader") and not errs, f"{w}px reader opens the book")
@@ -330,31 +331,45 @@ async def main():
         check(got[0] == {"a": -428, "b": -348, "approx": True, "open": False} and got[1]["a"] == 100 and got[1]["b"] == 300 and got[2]["a"] == -500 and got[2]["b"] == -460 and got[3] and got[4]["a"] == 1724,
               f"BCE dates, centuries and living thinkers are read right ({got[:3]})")
         await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(200)
-        heads = await page.evaluate("[...document.querySelectorAll('.home-sec h2')].map((h) => h.textContent)")
-        cards = await page.evaluate("[...document.querySelectorAll('.refcard[data-ref]')].map((c) => [c.dataset.ref, c.querySelector('.rc-t').textContent])")
-        check(not any(h in heads for h in ("Glossary", "Branches", "Thinkers")) and cards == [["glossary", "Glossary"], ["branches", "Branches"], ["thinkers", "Thinkers"]],
-              f"the home screen has three buttons: Glossary, Branches, Thinkers ({cards})")
-        # the rest of the home screen: Continue reading first, one Study card, and every way out it had before still there
-        order = await page.evaluate("""(() => { const m = document.querySelector('#main'), at = (s) => { const el = m.querySelector(s); return el ? [...m.querySelectorAll('*')].indexOf(el) : -1; };
-          return { cont: at('.contcard'), shelf: at('.shelf'), study: at('#openstudy'), backup: at('#backup'), gone: ['#openmastery', '#openpaths', '#opendisputes'].filter((x) => m.querySelector(x)),
-            ways: ['#q', '#addtext', '#openwishlist', '#openrecommendations', '.refcard[data-ref=glossary]', '#openstudy', '#backup', '#cloudbackup', '#restore', '#exportbtn'].filter((x) => !m.querySelector(x)) }; })()""")
+        # Home is the reading session; the shelf, your writing and the library's tools are in Library; four labelled tabs
+        tabs = await page.evaluate("[...document.querySelectorAll('#tabbar [data-tab]')].map((b) => [b.dataset.tab, b.textContent.trim()])")
+        check(tabs == [["library", "Home"], ["shelf", "Library"], ["study", "Study"], ["reference", "Reference"]], f"the tab bar has Home, Library, Study and Reference, each labelled ({tabs})")
+        home = await page.evaluate("(() => { const m = document.querySelector('#main'); return { q: !!m.querySelector('#q'), off: ['.shelf', '#backup', '.refcard[data-ref]', '#openstudy', '.tod', '#opendrafts'].filter((x) => m.querySelector(x)) }; })()")
+        check(home["q"] and not home["off"], f"Home keeps search and leaves the shelf, reference cards, Study card and backups to the tabs ({home})")
+        await page.click("#tabbar [data-tab=library]"); await page.wait_for_timeout(500)  # back to the start of the history
+        await page.click("#tabbar [data-tab=shelf]"); await page.wait_for_timeout(200)
+        ways = await page.evaluate("[S.screen, ['#addtext', '.shelf', '#openwishlist', '#openrecommendations', '#opendrafts', '#opencompares', '#openquestions', '#backup', '#cloudbackup', '#restore', '#exportbtn'].filter((x) => !document.querySelector('#main ' + x))]")
+        check(ways == ["shelf", []], f"Library has the shelf, Add text, wishlist, recommendations, your writing and the backup tools ({ways})")
+        check(await page.evaluate("document.querySelector('#tabbar [aria-current=page]').dataset.tab") == "shelf", "the tab you're on is marked")
+        await page.go_back(); await page.wait_for_timeout(300)
+        check(await page.evaluate("[S.screen, NAV.stack.length]") == ["library", 1], "the phone's Back from a tab returns Home")
+        await page.click("#tabbar [data-tab=study]"); await page.wait_for_timeout(200)
+        await page.click("#tabbar [data-tab=reference]"); await page.wait_for_timeout(200)
+        await page.click("#tabbar [data-tab=study]"); await page.wait_for_timeout(500)
+        check(await page.evaluate("[S.screen, NAV.stack.length]") == ["study", 2], "a tab already in the history is stepped back to, so tabs don't pile up")
+        await page.click("#tabbar [data-tab=library]"); await page.wait_for_timeout(500)
+        check(await page.evaluate("[S.screen, NAV.stack.length]") == ["library", 1], "Home steps back to the start")
         # Continue reading: the book read last, skipping a finished book, an example and one never opened in the reader
         cont = await page.evaluate("""async () => {
           const now = Date.now(), book = (id, extra) => put('texts', id, { title: 'Cont ' + id, author: 'A. Writer', hasContent: true, status: 'reading', pos: 5, total: 11, sections: [], createdAt: 1, updatedAt: 1, ...extra });
           for (const id of [...S.texts.keys()]) { const t = S.texts.get(id); if (t.readAt) await put('texts', id, { ...t, readAt: 0 }); }
-          go({ screen: 'library' }); const none = !document.querySelector('.contcard');
-          await put('content', 'c1', Array.from({ length: 11 }, (_, i) => ({ k: 'p', x: 'Paragraph ' + i + ' of the continued book.' })));
+          go({ screen: 'library' }); const none = !document.querySelector('.contcard'), choose = !!document.querySelector('.choose .shelfbook');
+          await put('content', 'c1', Array.from({ length: 11 }, (_, i) => ({ k: i === 3 ? 'pg' : 'p', x: i === 3 ? '17' : 'Paragraph ' + i + ' of the continued book.' })));
           await book('c1', { readAt: now - 5000 }); await book('c2', { readAt: now - 10, status: 'finished' }); await book('c3', { readAt: now - 5, example: true }); await book('c4', {});
-          go({ screen: 'library' }); const c = document.querySelector('.contcard');
-          return [none, c?.dataset.continue, c?.querySelector('.cc-m')?.textContent, [...document.querySelector('#main').children].findIndex((x) => x === c) < [...document.querySelector('#main').children].findIndex((x) => x.classList.contains('home-sec'))]; }""")
-        check(cont[0], "with no book opened in the reader there is no Continue reading card")
-        check(cont[1:] == ["c1", "50% · last read today", True], f"Continue reading shows the book read last, unfinished, above the shelf ({cont})")
+          go({ screen: 'library' }); await new Promise((r) => setTimeout(r, 300)); const c = document.querySelector('.contcard'), kids = [...document.querySelector('#main').children];
+          return [none, choose, c?.dataset.continue, c?.querySelector('.cc-m')?.textContent, c?.querySelector('.cc-where')?.textContent, kids.findIndex((x) => x.contains(c)) === kids.findIndex((x) => x.id === 'q') + 1]; }""")
+        check(cont[0] and cont[1], f"with no book started there is no Continue reading card, and Choose a book offers the shelf ({cont[:2]})")
+        check(cont[2:] == ["c1", "50% · last read today", "p. 17", True], f"Continue reading shows the book read last, unfinished, at its page, first under search ({cont})")
+        q = await page.evaluate("""async () => { const now = Date.now(), long = 'Why does the proof need this step? '.repeat(8).trim();
+          await put('notes', 'hq1', { textId: 'c1', kind: 'question', passage: 'Paragraph 2', gloss: long, page: '17', at: 2, createdAt: now - 1000, updatedAt: now });
+          await put('notes', 'hq2', { textId: 'c1', kind: 'question', passage: 'x', gloss: 'An answered one', at: 1, resolved: true, createdAt: now, updatedAt: now });
+          go({ screen: 'library' }); const h = document.querySelector('.homeq'); const out = [h?.querySelector('.hq')?.textContent === long, h?.querySelector('.hq-ref')?.textContent];
+          await del('notes', 'hq1'); await del('notes', 'hq2'); go({ screen: 'library' }); out.push(!document.querySelector('.homeq')); return out; }""")
+        check(q == [True, "p. 17 · asked today", True], f"Home shows an open question from the current book in your words, and nothing when there is none ({q})")
         await page.click(".contcard"); await page.wait_for_timeout(500)
-        check(await page.evaluate("[S.screen, S.textId, R.saved]") == ["reader", "c1", 5], "Continue reading opens the book at your place")
+        check(await page.evaluate("[S.screen, S.textId, R.saved, document.querySelector('#tabbar').hidden]") == ["reader", "c1", 5, True], "Continue reading opens the book at your place, with the tab bar hidden")
         await page.evaluate("(async () => { for (const id of ['c1', 'c2', 'c3', 'c4']) { await del('texts', id); } await del('content', 'c1'); go({ screen: 'library' }); })()"); await page.wait_for_timeout(200)
-        check(order["study"] > 0 and order["backup"] > order["study"] and not order["gone"], f"Mastery, reading paths and disputations sit behind one Study card, backups below it ({order})")
-        check(not order["ways"], f"every way out of the home screen it had is still there ({order['ways']})")
-        await page.click("#openstudy"); await page.wait_for_timeout(200)
+        await page.click("#tabbar [data-tab=study]"); await page.wait_for_timeout(200)
         study = await page.evaluate("[S.screen, ['#openmastery', '#openpaths', '#opendisputes', '#puzzles', '#quiz', '#openplates'].filter((x) => !document.querySelector('#main ' + x))]")
         check(study == ["study", []], f"Study lists mastery, reading paths, disputations, puzzles, Quiz yourself and bookplates ({study})")
         opens = []
@@ -364,13 +379,14 @@ async def main():
             got = await page.evaluate("NAV.overlay ? 'panel' : 'screen:' + S.screen")
             if got != want: opens.append([sel, got])
             if got == "panel": await page.evaluate("stepBack()")
-        check(not opens, f"each of them opens as it did from the home screen ({opens})")
-        await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(200)
+        check(not opens, f"each of them opens from Study ({opens})")
+        await page.evaluate("go({ screen: 'reference' })"); await page.wait_for_timeout(200)
+        check(await page.evaluate("!!document.querySelector('#main .tod')"), "Term of the day is on Reference")
         rows = "[document.querySelectorAll('.refrow[data-term]').length, document.querySelectorAll('.refrow[data-branch]').length, document.querySelectorAll('.refrow[data-thinker]').length]"
         n = await page.evaluate("[allTerms().length, BRANCHES.length, THINKERS.length]")
         for k, want, title in (("glossary", [n[0], 0, 0], "Glossary"), ("branches", [0, n[1], 0], "Branches"), ("thinkers", [0, 0, n[2]], "Thinkers")):
-            await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(200)
-            await page.click(f".refcard[data-ref={k}]"); await page.wait_for_selector(".refrow")
+            await page.evaluate("go({ screen: 'reference' })"); await page.wait_for_timeout(200)
+            await page.click(f"[data-rk={k}]"); await page.wait_for_selector(".refrow")
             got = await page.evaluate(rows)
             check(got == want and await page.inner_text("h1") == title, f"{title} opens all of its entries as a list, and only those ({got})")
         await page.click("[data-rk=all]"); await page.fill("#rq", "kant"); await page.wait_for_timeout(400)
@@ -477,7 +493,7 @@ async def main():
         await page.route("https://commons.wikimedia.org/**", lambda r: r.abort())
         await page.goto(URL); await page.wait_for_function(READY); await page.evaluate(SEED)
         await page.evaluate("put('texts', 'tdel', { title: 'To Delete', author: 'Nobody', createdAt: 1, updatedAt: 1 })")
-        await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(300)
+        await page.evaluate("go({ screen: 'shelf' })"); await page.wait_for_timeout(300)
         cdp = await ctx.new_cdp_session(page)
         async def touch(sel, hold_ms, dy=0):
             box = await page.evaluate(f"(() => {{ const r = document.querySelector(`{sel}`).getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 3]; }})()")
@@ -490,7 +506,7 @@ async def main():
             await page.wait_for_timeout(500)
         await touch(".shelfbook[data-open='t1']", 750)
         menu = await page.evaluate("[S.screen, [...document.querySelectorAll('.sheet .menuitem')].map((b) => b.textContent.trim()), document.querySelector('.sheet .hint')?.textContent]")
-        check(menu[0] == "library" and menu[1] == ["Start reading", "Open the book's page", "Edit details and cover", "Move to Queued", "Move to Finished", "Delete this text"] and "Reading shelf" in (menu[2] or ""),
+        check(menu[0] == "shelf" and menu[1] == ["Start reading", "Open the book's page", "Edit details and cover", "Move to Queued", "Move to Finished", "Delete this text"] and "Reading shelf" in (menu[2] or ""),
               f"holding a book opens its menu: read, open, edit, move to another shelf, delete; letting go doesn't open the book ({menu})")
         await page.click(".sheet [data-move='finished']"); await page.wait_for_timeout(400)
         moved = await page.evaluate("[S.texts.get('t1').status, document.querySelector('#toast').textContent, [...document.querySelectorAll('.shelf')].map((s) => s.querySelector('.label').textContent + ':' + [...s.querySelectorAll('.shelfbook')].map((b) => b.dataset.open).join(','))]")
@@ -498,7 +514,7 @@ async def main():
         await page.click("#toast .toastbtn"); await page.wait_for_timeout(400)
         check(await page.evaluate("(S.texts.get('t1').status || 'reading') === 'reading'"), "Undo puts it back on its shelf")
         await touch(".shelfbook[data-open='t1']", 600, dy=60)
-        check(await page.evaluate("!document.querySelector('.sheet') && S.screen === 'library'"), "a finger that moves while held scrolls, and opens nothing")
+        check(await page.evaluate("!document.querySelector('.sheet') && S.screen === 'shelf'"), "a finger that moves while held scrolls, and opens nothing")
         await touch(".shelfbook[data-open='t1']", 750)
         await page.click("#bm-edit"); await page.wait_for_timeout(400)
         check(await page.evaluate("document.querySelector('#f-title')?.value") == "Test Book", "Edit opens the book's details")
@@ -506,13 +522,13 @@ async def main():
         await touch(".shelfbook[data-open='tdel']", 750)
         await page.click("#bm-delete"); await page.wait_for_timeout(300)
         await page.click("#m-delete-yes"); await page.wait_for_timeout(500)
-        check(await page.evaluate("!S.texts.has('tdel') && S.screen === 'library' && !document.querySelector(\".shelfbook[data-open='tdel']\")"), "Delete, once confirmed, removes the book and stays on the shelf")
+        check(await page.evaluate("!S.texts.has('tdel') && S.screen === 'shelf' && !document.querySelector(\".shelfbook[data-open='tdel']\")"), "Delete, once confirmed, removes the book and stays on the shelf")
         await touch(".shelfbook[data-open='t1']", 60)
         check(await page.evaluate("S.screen === 'text' && S.textId === 't1'"), "a quick tap still opens the book's page")
 
         # carrying a book: hold, then move; set it down beside another, or on another shelf
         await page.evaluate("""(async () => { for (const [id, k] of [['r1', 4], ['r2', 3], ['r3', 2], ['r4', 1]]) await put('texts', id, { title: 'Book ' + id, createdAt: k, updatedAt: k });
-          await put('texts', 'q1', { title: 'Queued one', status: 'queued', createdAt: 1, updatedAt: 1 }); go({ screen: 'library' }); })()"""); await page.wait_for_timeout(400)
+          await put('texts', 'q1', { title: 'Queued one', status: 'queued', createdAt: 1, updatedAt: 1 }); go({ screen: 'shelf' }); })()"""); await page.wait_for_timeout(400)
         SHELF = "(st) => shelfList(st).map(([x]) => x)"
         async def spot(sel, fx=0.5):
             return await page.evaluate(f"(() => {{ const r = document.querySelector(`{sel} .cover`).getBoundingClientRect(); return [r.left + r.width * {fx}, r.top + r.height / 2]; }})()")
@@ -531,7 +547,7 @@ async def main():
         after = await page.evaluate(SHELF, "reading")
         check(before == ["t1", "r1", "r2", "r3", "r4"] and mid == [False, True, True] and after == ["r3", "t1", "r1", "r2", "r4"],
               f"holding a book then moving it puts the menu away, carries it with a marker where it will go, and sets it down there ({before} → {after}, {mid})")
-        check(await page.evaluate("[S.screen, document.querySelector('#toast').textContent, ['r3', 't1', 'r1', 'r2', 'r4'].map((x) => S.texts.get(x).rank)]") == ["library", "Moved.Undo", [0, 1, 2, 3, 4]], "the shelf keeps that order (each book's place is saved), and letting go opens nothing")
+        check(await page.evaluate("[S.screen, document.querySelector('#toast').textContent, ['r3', 't1', 'r1', 'r2', 'r4'].map((x) => S.texts.get(x).rank)]") == ["shelf", "Moved.Undo", [0, 1, 2, 3, 4]], "the shelf keeps that order (each book's place is saved), and letting go opens nothing")
         await page.click("#toast .toastbtn"); await page.wait_for_timeout(400)
         check(await page.evaluate(SHELF, "reading") == before and await page.evaluate("['r3', 't1', 'r1'].every((x) => S.texts.get(x).rank === undefined)"), "Undo puts the shelf back as it was, in order of use")
         await carry(".shelfbook[data-open='r1']", ".shelfbook[data-open='t1']", 0.75)
@@ -542,7 +558,7 @@ async def main():
         check(cross == ["queued", ["r4", "q1"], "Moved to Queued.Undo"], f"carried onto another shelf, it moves there, in the place it was set down ({cross})")
         await page.evaluate("window.scrollTo(0, 0)"); await page.wait_for_timeout(200)
         await carry(".shelfbook[data-open='r2']", ".shelfbook[data-open='t1']", 0.25)
-        await page.reload(); await page.wait_for_function(READY); await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(300)
+        await page.reload(); await page.wait_for_function(READY); await page.evaluate("go({ screen: 'shelf' })"); await page.wait_for_timeout(300)
         check(await page.evaluate(SHELF, "reading") == ["r2", "t1", "r1", "r3"], "the order is still there after closing and opening the app")
         await page.evaluate("(async () => { await put('texts', 'new1', { title: 'Just added', createdAt: Date.now(), updatedAt: Date.now() }); await put('texts', 'r1', { ...S.texts.get('r1'), readAt: Date.now() + 5 }); })()"); await page.wait_for_timeout(300)
         check(await page.evaluate(SHELF, "reading") == ["new1", "r2", "t1", "r1", "r3"], "on an arranged shelf a new book arrives at the front, and reading a book doesn't move it")
@@ -551,19 +567,19 @@ async def main():
         check(not errs, "no script errors holding books" + (f": {errs}" if errs else ""))
         await ctx.close()
         page, errs = await fresh_page(browser, 1280, 800)
-        await page.evaluate("go({ screen: 'library' })"); await page.wait_for_timeout(300)
+        await page.evaluate("go({ screen: 'shelf' })"); await page.wait_for_timeout(300)
         await page.click(".shelfbook[data-open='t1']", button="right"); await page.wait_for_timeout(400)
-        check(await page.evaluate("S.screen === 'library' && !!document.querySelector('#bm-open')"), "on a computer, right-clicking a book opens the same menu")
+        check(await page.evaluate("S.screen === 'shelf' && !!document.querySelector('#bm-open')"), "on a computer, right-clicking a book opens the same menu")
         await page.click("#bm-open"); await page.wait_for_timeout(400)
         check(await page.evaluate("S.screen === 'text' && S.textId === 't1'"), "Open the book's page opens it")
         # with a mouse, dragging a book carries it straight away
-        await page.evaluate("(async () => { await put('texts', 'm1', { title: 'Mouse one', createdAt: 2, updatedAt: 2 }); await put('texts', 'm2', { title: 'Mouse two', createdAt: 1, updatedAt: 1 }); go({ screen: 'library' }); })()"); await page.wait_for_timeout(400)
+        await page.evaluate("(async () => { await put('texts', 'm1', { title: 'Mouse one', createdAt: 2, updatedAt: 2 }); await put('texts', 'm2', { title: 'Mouse two', createdAt: 1, updatedAt: 1 }); go({ screen: 'shelf' }); })()"); await page.wait_for_timeout(400)
         box = lambda sel, fx: page.evaluate(f"(() => {{ const r = document.querySelector(`{sel} .cover`).getBoundingClientRect(); return [r.left + r.width * {fx}, r.top + r.height / 2]; }})()")
         a, b = await box(".shelfbook[data-open='m2']", 0.5), await box(".shelfbook[data-open='t1']", 0.2)
         await page.mouse.move(*a); await page.mouse.down()
         for k in range(1, 11): await page.mouse.move(a[0] + (b[0] - a[0]) * k / 10, a[1] + (b[1] - a[1]) * k / 10); await page.wait_for_timeout(20)
         await page.mouse.up(); await page.wait_for_timeout(500)
-        check(await page.evaluate("[S.screen, shelfList('reading').map(([x]) => x)]") == ["library", ["m2", "t1", "m1"]], "with a mouse, dragging a book moves it, and the drag doesn't open it")
+        check(await page.evaluate("[S.screen, shelfList('reading').map(([x]) => x)]") == ["shelf", ["m2", "t1", "m1"]], "with a mouse, dragging a book moves it, and the drag doesn't open it")
         await cloud_backups(browser)
         await offline(browser)
         await browser.close()

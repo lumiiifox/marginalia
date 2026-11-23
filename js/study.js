@@ -503,7 +503,7 @@ function thinkersView() {
 // Term of the day: one of the glossary's own entries a day, in an order shuffled once per round so every term comes up before any
 // repeats. Worked out from the date, so nothing is stored and every device shows the same term.
 const dayNumber = (d = new Date()) => Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / DAY);
-// Drawn only from the entries that passed an audit (VERIFIED_TERMS): the home screen puts it in front of you every day.
+// Drawn only from the entries that passed an audit (VERIFIED_TERMS): shown at the top of Reference every day.
 const TOD_POOL = () => GLOSSARY.filter((g) => VERIFIED_TERMS.includes(g.id));
 function termOfDay(day = dayNumber()) {
   const pool = TOD_POOL(), n = pool.length; if (!n) return null;
@@ -517,27 +517,12 @@ function todHTML() {
   const g = termOfDay(); if (!g) return "";
   return `<button class="refcard tod" data-term="${esc(g.id)}"><span class="tod-l">Term of the day<span>${esc(AREAS[g.a] || "")}</span></span><span class="rc-t">${esc(g.t)}</span><span class="rc-s">${esc(g.d)}</span><span class="rc-go" aria-hidden="true">›</span></button>`;
 }
-// The home screen's way into the reference sections: three buttons, each opening its whole contents as a list.
-function referenceHome() {
-  const card = (rk, title, sub) => `<button class="refcard" data-ref="${rk}"><span class="rc-t">${title}</span><span class="rc-s">${sub}</span><span class="rc-go" aria-hidden="true">›</span></button>`;
-  return `<section class="home-sec">${todHTML()}<div class="refcards">
-    ${card("glossary", "Glossary", `${allTerms().length} terms, ${allTerms().filter(isCheckedTerm).length} checked`)}
-    ${card("branches", "Branches", `${BRANCHES.filter((b) => b.k === "branch").length} branches, ${BRANCHES.filter((b) => b.k === "tradition").length} traditions`)}
-    ${card("thinkers", "Thinkers", `${THINKERS.length} philosophers and theorists, ${THINKERS.filter((p) => isCheckedThinker(p.id)).length} checked`)}
-  </div>${studyCardHTML()}</section>`;
-}
-/* Study: one card on the home screen, with your mastery's meter on it, opening the study screen: Mastery, reading paths,
-   disputations, puzzles, Quiz yourself and bookplates, each opening as before. */
-function studyCardHTML() {
-  const M = S.mastery ? masteryState({ noLoad: true }) : null;
-  const line = M ? (M.got ? `Mastery ${M.pct}% · ${M.mastered} of ${M.items.length} mastered` : `${M.items.length} checked concepts, thinkers, connections and stations to master`) : "";
-  return `<button class="refcard pathcard" id="openstudy"><span class="rc-t">Study</span><span class="rc-s">${line ? `${line}. ` : ""}Reading paths, disputations, puzzles and quizzes</span>${M ? `<span class="rc-meter" aria-hidden="true"><i style="width:${M.pct}%"></i></span>` : ""}<span class="rc-go" aria-hidden="true">›</span></button>`;
-}
+/* Study (the `study` tab): Mastery, reading paths, disputations, puzzles, Quiz yourself and bookplates, each opening its own screen
+   or panel. */
 function studyView() {
   const card = (id, title, sub) => `<button class="refcard pathcard" id="${id}"><span class="rc-t">${title}</span><span class="rc-s">${sub}</span><span class="rc-go" aria-hidden="true">›</span></button>`;
   const plates = S.notes.size ? bookplates().count : 0;
-  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
-    <header class="gl-head"><div><h1>Study</h1><div class="sub">Practice on checked material, and what you've earned</div></div></header>
+  return `<header class="gl-head"><div><h1>Study</h1><div class="sub">Practice on checked material, and what you've earned</div></div></header>
     <div class="studycards">${masteryCardHTML()}
     ${typeof PATHS !== "undefined" && PATHS.length ? card("openpaths", "Reading paths", `${PATHS.length} routes through the classics on your shelf, chapter by chapter`) : ""}
     ${typeof DISPUTES !== "undefined" && DISPUTES.length ? card("opendisputes", "Disputations", `${DISPUTES.length} arguments to answer, then compare with the classic objection`) : ""}
@@ -558,17 +543,17 @@ function referenceView() {
   const eras = TL_ERAS.map(([name, lo, hi]) => [name, THINKERS.filter((p) => { const s = lifeSpan(p.y); return s && s.a >= lo && s.a < hi; }).length]).filter(([, n]) => n);
   // one group: its rows, with a button to its full screen; with All, each group under its own heading
   const group = (id, title, n, open, extra, rows) => (k !== "all" && k !== id) || (q && !n) ? "" : `<section class="refgroup">
-    <div class="sec-head"><div>${k === "all" ? `<h2>${title}</h2>` : ""}<div class="sub">${n} ${{ glossary: n === 1 ? "term" : "terms", branches: n === 1 ? "branch or tradition" : "branches and traditions", thinkers: n === 1 ? "thinker" : "thinkers" }[id]}${q ? " matching" : ""}</div></div><button class="btn" id="${open}">${{ glossary: "Areas and your terms", branches: "Questions and reading", thinkers: "Timeline" }[id]}</button></div>
+    <div class="sec-head"><div>${k === "all" ? `<h2>${title}</h2>` : ""}<div class="sub">${n} ${{ glossary: n === 1 ? "term" : "terms", branches: n === 1 ? "branch or tradition" : "branches and traditions", thinkers: n === 1 ? "thinker" : "thinkers" }[id]}${q ? " matching" : id === "glossary" ? `, ${terms.filter(isCheckedTerm).length} checked` : id === "thinkers" ? `, ${thinkers.filter((p) => isCheckedThinker(p.id)).length} checked` : ""}</div></div><button class="btn" id="${open}">${{ glossary: "Areas and your terms", branches: "Questions and reading", thinkers: "Timeline" }[id]}</button></div>
     ${extra}<div class="reflist">${rows || `<p class="empty">Nothing here yet.</p>`}</div></section>`;
   const chip = (id, label) => `<button class="chip ${k === id ? "on" : ""}" data-rk="${id}">${label}</button>`;
   const body = group("glossary", "Glossary", terms.length, "openglossary", "", terms.map((g) => row(`data-term="${esc(g.id)}"`, g.t, AREAS[g.a] || "Your term", g.d)).join(""))
     + group("branches", "Branches", branches.length, "openbranches", "", branches.map((b) => row(`data-branch="${esc(b.id)}"`, b.n, b.k === "branch" ? "Branch" : "Tradition", b.d)).join(""))
     + group("thinkers", "Thinkers", thinkers.length, "openthinkers", q ? "" : `<div class="label">On the timeline</div><div class="chips bchips">${eras.map(([name, n]) => `<button class="chip bchip" data-era="${esc(name)}">${esc(name)} <span class="cnt">${n}</span></button>`).join("")}</div>`,
       thinkers.map((p) => row(`data-thinker="${esc(p.id)}"`, p.n, p.y, p.d)).join(""));
-  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
-    <header class="gl-head"><div><h1>${{ all: "Glossary, branches and thinkers", glossary: "Glossary", branches: "Branches", thinkers: "Thinkers" }[k] || "Glossary"}</h1></div><div class="gl-acts"><button class="btn" id="quiz">${k === "thinkers" ? "Who wrote it?" : "Quiz yourself"}</button></div></header>
+  return `<header class="gl-head"><div><h1>${{ all: "Reference", glossary: "Glossary", branches: "Branches", thinkers: "Thinkers" }[k] || "Glossary"}</h1></div><div class="gl-acts"><button class="btn" id="quiz">${k === "thinkers" ? "Who wrote it?" : "Quiz yourself"}</button></div></header>
     <input class="search" id="rq" type="search" placeholder="${{ all: "Search terms, branches and thinkers", glossary: "Search terms and definitions", branches: "Search branches and traditions", thinkers: "Search names, descriptions and works" }[k] || "Search"}" value="${esc(S.rq || "")}" aria-label="Search the glossary, branches and thinkers">
     <div class="chips">${chip("all", "All")}${chip("glossary", "Glossary")}${chip("branches", "Branches")}${chip("thinkers", "Thinkers")}</div>
+    ${q ? "" : todHTML()}
     ${body || `<p class="empty">Nothing matches.</p>`}`;
 }
 function openTerm(id) {
