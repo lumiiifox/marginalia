@@ -37,6 +37,19 @@ PORT = 8821
 # drop: CSS selectors for parts of those files left out (the Republic leaves out Jowett's book-length Introduction and Analysis,
 # and with it the heading that only told the dialogue from the introduction).
 BOOKS = [
+    # Burke (died 1797): the Inquiry (1757) in vol. I of The Works of the Right Honourable Edmund Burke (London: John C. Nimmo, 1887),
+    # Gutenberg 15043; cover drawn here. Schopenhauer (died 1860): Studies in Pessimism, selected and translated by T. Bailey Saunders
+    # (1860–1928), London 1891, Gutenberg 10732; cover drawn here. Lovecraft (died 1937): "The Call of Cthulhu", Weird Tales, February
+    # 1928, the Standard Ebooks text (from that printing); cover adapted from Standard Ebooks' Short Fiction cover, Arnold Böcklin,
+    # The Sacred Grove (1882). All public domain in the US (published before 1931) and in Canada (died before 1972).
+    dict(id="classic-burke-sublime", text_source=dict(repo="https://github.com/GITenberg/The-Works-of-the-Right-Honourable-Edmund-Burke-Vol.-01--of-12-_15043",
+         file="15043-h/15043-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="burke_sublime"),
+         cover=dict(title="On the Sublime and Beautiful", size=31, art="stars"), text=dict(title="A Philosophical Inquiry into the Origin of Our Ideas of the Sublime and Beautiful", author="Edmund Burke", edition="Works, vol. I (London: John C. Nimmo, 1887)", publisher="Project Gutenberg", orig="1757")),
+    dict(id="classic-schopenhauer-pessimism", text_source=dict(repo="https://github.com/GITenberg/The-Essays-of-Arthur-Schopenhauer--Studies-in-Pessimism_10732",
+         file="10732-8.txt", encoding="latin-1", source_name="Project Gutenberg", convert="schopenhauer_pessimism"),
+         cover=dict(title="Studies in Pessimism", size=35, art="stars"), text=dict(title="Studies in Pessimism", author="Arthur Schopenhauer", edition="trans. T. Bailey Saunders", publisher="Project Gutenberg", orig="1851")),
+    dict(id="classic-lovecraft-cthulhu", repo="h-p-lovecraft_short-fiction", files=["the-call-of-cthulhu"], cover=dict(title="The Call of Cthulhu", size=35),
+         text=dict(title="The Call of Cthulhu", author="H. P. Lovecraft", edition="text of the Weird Tales printing, February 1928", orig="1928", year="2022", publisher="Standard Ebooks")),
     dict(id="classic-mckay-harlem", text_source=dict(repo="https://github.com/GITenberg/Harlem-Shadows-The-Poems-of-Claude-McKay_64989",
          file="64989-h/64989-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="harlem_shadows"),
          cover=dict(title="Harlem Shadows", size=35, art="stars"), text=dict(title="Harlem Shadows", author="Claude McKay", edition="1922 collection", publisher="Project Gutenberg", orig="1922")),
@@ -453,17 +466,18 @@ def kant_critique(raw):
     def fn_ref(_):
         nonlocal refs
         refs += 1
-        return f"<sup>{refs}</sup>"
+        return f"\x00{refs}\x00"
     def para(x):
         nonlocal prev_p
         inl = []
         def take(m):
             nonlocal refs
             refs += 1; inl.append((refs, m.group(1)))
-            return f"<sup>{refs}</sup>"
+            return f"\x00{refs}\x00"
         x = re.sub(r" ?\[Footnote: ([^\]]+)\]", take, x)
         x = re.sub(r"(?<=[\w.,;:’”)])\*+(?:\[2\])?", fn_ref, x)
-        out.append("<p>" + inline(x) + "</p>"); prev_p = len(out) - 1
+        # the references go in as markers and become <sup> after escaping, so they reach the app as superscripts, not as text
+        out.append("<p>" + re.sub(r"\x00(\d+)\x00", r"<sup>\1</sup>", inline(x)) + "</p>"); prev_p = len(out) - 1
         for n, body in inl:
             nonlocal_notes(n, body)
     def nonlocal_notes(n, body):
@@ -833,6 +847,11 @@ def bergson_time(raw):
         label.text = label.getparent().get("href").rsplit("_", 1)[-1] + "."
     for side in doc.find_class("sidenote"):
         side.tag = "h3"
+        if side.text and side.text.lstrip().startswith("[Sidenote:"):  # one sidenote keeps the transcriber's bracket
+            side.text = side.text.lstrip()[len("[Sidenote:"):].lstrip()
+            last = side if not len(side) else side[-1]
+            if last is side: side.text = side.text.rstrip().rstrip("]")
+            else: last.tail = (last.tail or "").rstrip().rstrip("]")
     figures = ["A line from M branches at O toward X and Y.",
                "A single curve runs from M through O and X to Y."]
     for image, description in zip(doc.xpath("//div[@class='figleft']/img"), figures, strict=True):
@@ -867,11 +886,120 @@ def berkeley_dialogues(raw):
         if re.fullmatch(r"THE (FIRST|SECOND|THIRD) DIALOGUE", text):
             out.append(f"<h2>{text.title()}</h2>")
         else:
-            out.append(f"<p>{escape(text)}</p>")
+            # the transcription's _emphasis_ as italics, "--" as a dash and straight quotes as curly ones
+            out.append(f"<p>{typo_dashes(re.sub(r'(?<![A-Za-z0-9])_([^_]+)_(?![A-Za-z0-9])', r'<i>\1</i>', escape(text, quote=False)))}</p>")
     return '<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Three Dialogues</title></head><body>' + "".join(out) + "</body></html>"
 
 
-CONVERT = {"dawn_of_day": dawn_of_day, "harlem_shadows": harlem_shadows, "sacred_wood": sacred_wood, "gilman-wallpaper": gilman_wallpaper, "burnet-early": burnet_early, "lucretius-nature": lucretius_nature, "augustine_confessions": augustine_confessions, "bergson_time": bergson_time, "berkeley_dialogues": berkeley_dialogues, "kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique, "aristotle_metaphysics": aristotle_metaphysics, "aristotle_physics": aristotle_physics, "xenophon_memorabilia": xenophon_memorabilia}
+def burke_sublime(raw):
+    """The Inquiry alone, out of the first volume of Nimmo's Works: from its title to the next work, the Nimmo page numbers kept as
+    page breaks, the Gutenberg footnotes (numbered through the volume) as superscripts and notes, the book's own contents list left
+    out (the app draws its own), each Part a chapter and each Section under it."""
+    from lxml import html
+    doc = html.fromstring(raw.encode(), parser=html.HTMLParser(encoding="utf-8"))
+    for page in doc.find_class("pagenum"):
+        page.set("role", "doc-pagebreak"); page.set("title", page.get("title") or page.get("id", "").removeprefix("Page_"))
+    for a in doc.find_class("fnanchor"):
+        n = re.search(r"Footnote_(\d+)_", a.get("href", "")).group(1)
+        a.clear(keep_tail=True); a.tag = "sup"; a.text = n
+        for k in list(a.attrib): del a.attrib[k]
+    for fn in doc.find_class("footnote"):
+        ps = fn.xpath("./p")
+        rest = [el for el in fn if el is not (ps[0] if ps else None)]
+        if ps and rest:  # a note set over several parts (a line of verse and its author): one paragraph, its parts apart
+            words = [" ".join(el.text_content().split()) for el in rest]
+            ps[0].append(html.fromstring(f"<span>{esc(' — '.join(w for w in words if w))}</span>"))
+            for el in rest: el.drop_tree()
+        label = fn.find_class("label")
+        if label:
+            n = label[0].text_content().strip("[] ")
+            parent = label[0].getparent()
+            parent.drop_tree() if parent.tag == "a" else label[0].drop_tree()
+            first = fn.find(".//p")
+            (first if first is not None else fn).text = n + ". " + ((first if first is not None else fn).text or "").lstrip()
+    for h in doc.xpath("//h2|//h3"):
+        for br in h.xpath(".//br"): br.tail = " " + (br.tail or ""); br.drop_tree()
+    def tc(x):
+        x = title_case(x)
+        x = re.sub(r"\b(Ii|Iii|Iv|Vi|Vii|Viii|Ix|Xi|Xii|Xiii|Xiv|Xv|Xvi|Xvii|Xviii|Xix|Xx|Xxi|Xxii|Xxiii|Xxiv|Xxv|Xxvi|Xxvii)\b", lambda m: m[1].upper(), x)
+        return re.sub(r"(?<=\s)(Into|With|Concerning|Not|Further|Why|How)(?=\s)", lambda m: m[1].lower() if m[1] in ("Into", "With") else m[1], x)
+    heads = doc.xpath("//h2")
+    start = next(h for h in heads if " ".join(h.text_content().split()).startswith("A PHILOSOPHICAL INQUIRY"))
+    stop = next(h for h in heads if " ".join(h.text_content().split()).startswith("A SHORT ACCOUNT"))
+    out = []
+    body = start.getparent()
+    kids = list(body)
+    i0, i1 = kids.index(start), kids.index(stop)
+    for el in kids[i0:i1]:
+        if not isinstance(el.tag, str): continue  # comments
+        t = " ".join(el.text_content().split()) if el.tag in ("h2", "h3") else ""
+        if el.tag == "h2": el.text = tc(t.rstrip(".")) if t != t.lower() else t
+        if el.tag == "h3":
+            m = re.match(r"(SECTION [IVXL\[\]]+)\.?\s*(.*)", t)
+            el.text = ("Section " + m[1].split(" ", 1)[1] + ". " + tc(m[2].rstrip("."))) if m else tc(t.rstrip(":").rstrip("."))
+            for c in list(el): el.remove(c)
+        if el.tag == "h2": [el.remove(c) for c in list(el)]
+        out.append(el)
+    # the book's own contents list: from its heading to the Introduction, left out
+    keep, skip = [], False
+    for el in out:
+        t = " ".join(el.text_content().split())
+        if el.tag == "h2" and t.lower().startswith("contents"): skip = True; continue
+        if el.tag == "h2" and skip and t.lower().startswith("introduction"): skip = False
+        if not skip: keep.append(el)
+    return xhtml_body(keep)
+
+
+def schopenhauer_pessimism(raw):
+    """Saunders's Studies in Pessimism from Gutenberg's 8-bit plain text: the translator's note and the nine essays, each a chapter;
+    paragraphs from blank lines, _italics_, indented verse and quotations as quotations with their line breaks, the
+    "[Footnote n: …]" notes numbered through the book and set as notes, and the rows of asterisks between observations left out."""
+    raw = raw.replace("\r\n", "\n")
+    body = raw[raw.index("\nNOTE.\n"):raw.index("***END OF THE PROJECT GUTENBERG")]
+    heads = {"NOTE.": "Translator\u2019s Note", "ON THE SUFFERINGS OF THE WORLD.": "On the Sufferings of the World", "THE VANITY OF EXISTENCE.": "The Vanity of Existence",
+             "ON SUICIDE.": "On Suicide", "IMMORTALITY:[1] A DIALOGUE.": "Immortality: A Dialogue", "PSYCHOLOGICAL OBSERVATIONS.": "Psychological Observations",
+             "ON EDUCATION.": "On Education", "OF WOMEN.": "Of Women", "ON NOISE.": "On Noise", "A FEW PARABLES.": "A Few Parables"}
+    paras = [p for p in re.split(r"\n\s*\n", body) if p.strip()]
+    out, count, local = [], 0, {}
+    def inline(x):
+        x = esc(x)
+        x = re.sub(r"_([^_]+)_", r"<i>\1</i>", x)
+        x = re.sub(r"\[Greek: ([^\]]+)\]", r"<i>\1</i>", x)  # Gutenberg's transliteration of Saunders's Greek, set as a foreign word
+        x = re.sub(r"\[(\d+)\]", lambda m: f"<sup>{local[m[1]]}</sup>" if m[1] in local else m[0], x)
+        return typo_dashes(x)
+    for p in paras:
+        lines = [l for l in p.split("\n") if l.strip()]; one = " ".join(l.strip() for l in lines)
+        if one in heads:
+            local.clear()
+            out.append(f"<h2>{esc(heads[one])}</h2>")
+            # the note on the dialogue's title word comes under the title, as the translator's remark on it
+            if "[1]" in one: local["title"] = True
+            continue
+        if re.fullmatch(r"[\s*]+", p): continue
+        m = re.match(r"\[Footnote:? (\d+):\s*(.*)\]$", one, re.S)
+        if m and local.pop("title", None):
+            out.append(f"<p>{inline(m[2])}</p>"); continue
+        if m:
+            n = local.get(m[1]) or count
+            out.append(f'<div class="footnote"><p>{n}. {inline(m[2])}</p></div>'); continue
+        # note references in this paragraph get the book's next numbers, in order
+        for r in re.findall(r"\[(\d+)\]", one): count += 1; local[r] = count
+        if all(l.startswith("  ") for l in lines if l.strip()) and not one.startswith("*"):
+            out.append("<blockquote><p>" + " / ".join(inline(l.strip()) for l in lines if l.strip()) + "</p></blockquote>"); continue
+        out.append("<p>" + inline(one) + "</p>")
+    return '<html xmlns="http://www.w3.org/1999/xhtml"><head/><body>' + "\n".join(out) + '</body></html>'
+
+
+def typo_dashes(x):
+    """A plain transcription's "--" as an em dash and straight quotes as curly ones."""
+    x = x.replace("--", "\u2014")
+    x = re.sub(r'(^|[\s(\[\u2014>])"', "\\1\u201c", x).replace('"', "\u201d")
+    x = re.sub(r"(?<=\w)'(?=\w)", "\u2019", x)
+    x = re.sub(r"(^|[\s(\[\u2014\u201c>])'", "\\1\u2018", x).replace("'", "\u2019")
+    return x
+
+
+CONVERT = {"burke_sublime": burke_sublime, "schopenhauer_pessimism": schopenhauer_pessimism, "dawn_of_day": dawn_of_day, "harlem_shadows": harlem_shadows, "sacred_wood": sacred_wood, "gilman-wallpaper": gilman_wallpaper, "burnet-early": burnet_early, "lucretius-nature": lucretius_nature, "augustine_confessions": augustine_confessions, "bergson_time": bergson_time, "berkeley_dialogues": berkeley_dialogues, "kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique, "aristotle_metaphysics": aristotle_metaphysics, "aristotle_physics": aristotle_physics, "xenophon_memorabilia": xenophon_memorabilia}
 
 def clone(url, dest):
     if not dest.exists():

@@ -424,6 +424,9 @@ function primerHTML(id, t) {
 }
 // Titles for steps whose book isn't in the library: the classics' own titles (tests/study_tools.py checks them against data/books/).
 const CLASSIC_TITLES = {
+  "classic-lovecraft-cthulhu": "The Call of Cthulhu",
+  "classic-burke-sublime": "A Philosophical Inquiry into the Origin of Our Ideas of the Sublime and Beautiful",
+  "classic-schopenhauer-pessimism": "Studies in Pessimism",
   "classic-mckay-harlem": "Harlem Shadows",
   "classic-eliot-sacred": "The Sacred Wood",
   "classic-nietzsche-dawn": "The Dawn of Day",
@@ -454,6 +457,9 @@ const CLASSIC_TITLES = {
    ("the Ethics", "Meditations", "the Manifesto") counts only on its author's own card (own), since elsewhere it may name another
    book; "Republic" counts after "Plato's" or "the", or before a book number. Nothing is stored. */
 const CLASSIC_NAMES = {
+  "classic-lovecraft-cthulhu": { by: [], full: ["The Call of Cthulhu"] },
+  "classic-burke-sublime": { by: [], full: ["A Philosophical Inquiry into the Origin of Our Ideas of the Sublime and Beautiful", "Philosophical Enquiry into the Origin of Our Ideas of the Sublime and Beautiful"] },
+  "classic-schopenhauer-pessimism": { by: [], full: ["Studies in Pessimism"] },
   "classic-mckay-harlem": { by: [], full: ["Harlem Shadows"] },
   "classic-eliot-sacred": { by: [], full: ["The Sacred Wood"] },
   "classic-nietzsche-dawn": { by: ["nietzsche"], full: ["The Dawn of Day"] },

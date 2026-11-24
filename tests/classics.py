@@ -50,7 +50,7 @@ async def main():
         recs = await page.evaluate("""(async () => { const out = {}; for (const id of CLASSICS) { const t = S.texts.get(id), c = await idbGet('content', id), cv = await idbGet('covers', id);
           out[id] = { title: t && t.title, status: t && t.status, has: t && t.hasContent, total: t && t.total, blocks: c && c.length, secs: (t && t.sections || []).length,
             tied: c ? c.filter((b) => b.s).length : 0, cover: cv ? cv.type + ' ' + cv.size : null }; } return out; })()""")
-        bad = {k: v for k, v in recs.items() if not (v["status"] == "queued" and v["has"] and v["total"] == v["blocks"] and v["blocks"] > 50 and (v["secs"] == 1 if k == "classic-gilman-wallpaper" else v["secs"] == 3 if k in ("classic-berkeley-dialogues", "classic-sophocles-antigone") else v["secs"] >= 4) and v["tied"] == v["secs"] and v["cover"] and v["cover"].startswith("image/jpeg"))}
+        bad = {k: v for k, v in recs.items() if not (v["status"] == "queued" and v["has"] and v["total"] == v["blocks"] and v["blocks"] > 50 and (v["secs"] == 1 if k == "classic-gilman-wallpaper" else v["secs"] == 3 if k in ("classic-berkeley-dialogues", "classic-sophocles-antigone", "classic-lovecraft-cthulhu") else v["secs"] >= 4) and v["tied"] == v["secs"] and v["cover"] and v["cover"].startswith("image/jpeg"))}
         check(len(recs) == len(IDS) and not bad, f"every classic is in the library, queued, with its text, chapters and cover ({bad or len(recs)})")
         await page.evaluate("go({ screen: 'shelf' })"); await page.wait_for_timeout(300)
         # two books with one title say which each is; a title of its own says nothing more
@@ -97,6 +97,14 @@ async def main():
         panel = await page.evaluate("document.querySelector('.sheet') ? document.querySelector('.sheet').innerText : ''")
         check("Note 4" in panel and words in panel, f"tapping a note number in the Manifesto shows its note ({panel[:120]!r})")
         await page.evaluate("document.querySelector('#pclose') && document.querySelector('#pclose').click()"); await page.wait_for_timeout(300)
+
+        # Harlem Shadows: a poem's stanzas are set apart; a stanza's lines and its continuation over a page are not
+        await page.evaluate("go({ screen: 'reader', textId: 'classic-mckay-harlem' })"); await page.wait_for_selector("#book .bp"); await page.wait_for_timeout(500)
+        k = await page.evaluate("R.blocks.findIndex((b) => b.k === 'h' && plain(b.x) === 'AFTER THE WINTER')")
+        await page.evaluate(f"jumpTo({k + 1}, true, true)"); await page.wait_for_timeout(500)
+        gap = await page.evaluate(f"""(() => {{ const a = document.querySelector('#book [data-i="{k + 1}"]'), b = document.querySelector('#book [data-i="{k + 2}"]');
+          return [a.className, b.className, parseFloat(getComputedStyle(a).marginTop), parseFloat(getComputedStyle(b).marginTop), b.innerText.split('\\n').length]; }})()""")
+        check("verse" in gap[0] and "verse" in gap[1] and gap[3] > 8 and gap[4] >= 8, f"Harlem Shadows: the second stanza of “After the Winter” starts a line's space below the first, its lines kept ({gap})")
 
         # 5 the book's page: edition and citation
         await page.evaluate("go({ screen: 'text', textId: 'classic-plato-socrates' })"); await page.wait_for_timeout(400)
