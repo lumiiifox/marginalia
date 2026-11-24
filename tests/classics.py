@@ -106,6 +106,17 @@ async def main():
           return [a.className, b.className, parseFloat(getComputedStyle(a).marginTop), parseFloat(getComputedStyle(b).marginTop), b.innerText.split('\\n').length]; }})()""")
         check("verse" in gap[0] and "verse" in gap[1] and gap[3] > 8 and gap[4] >= 8, f"Harlem Shadows: the second stanza of “After the Winter” starts a line's space below the first, its lines kept ({gap})")
 
+        # an old bundled cover is replaced by the new one; a cover of your own stays; a missing one is filled in
+        cv = await page.evaluate("""(async () => {
+          const hex = (buf) => [...new Uint8Array(buf)].map((x) => x.toString(16).padStart(2, '0')).join('');
+          const old = new Blob([new Uint8Array([1, 2, 3, 4])], { type: 'image/jpeg' }), mine = new Blob([new Uint8Array([9, 9, 9])], { type: 'image/jpeg' });
+          OLD_CLASSIC_COVERS['classic-kant-critique'] = hex(await crypto.subtle.digest('SHA-256', await old.arrayBuffer()));
+          await put('covers', 'classic-kant-critique', old); await put('covers', 'classic-spinoza-ethics', mine); await del('covers', 'classic-mill-liberty');
+          const done = await refreshClassicCovers(true), size = async (id) => (await idbGet('covers', id))?.size ?? 0;
+          const want = async (id) => (await (await fetch('data/books/' + id + '.jpg')).blob()).size;
+          return [done.sort(), await size('classic-kant-critique') === await want('classic-kant-critique'), await size('classic-spinoza-ethics'), await size('classic-mill-liberty') === await want('classic-mill-liberty')]; })()""")
+        check(cv == [["classic-kant-critique", "classic-mill-liberty"], True, 3, True], f"an old bundled cover is replaced, your own cover stays, a missing one is filled in ({cv})")
+
         # 5 the book's page: edition and citation
         await page.evaluate("go({ screen: 'text', textId: 'classic-plato-socrates' })"); await page.wait_for_timeout(400)
         head = await page.inner_text("#main header")

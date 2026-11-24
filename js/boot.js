@@ -267,6 +267,46 @@ async function addClassics(force) {
   return added;
 }
 
+/* A classic's cover drawn anew (the star-field covers given paintings, 2026-11-24): a library that still holds the old bundled cover,
+   byte for byte, gets the new one; a cover you chose yourself is never touched. A classic that came without its cover (the picture
+   couldn't be fetched when it was added) gets it too. Runs at start, after addClassics; nothing new is stored beyond the covers. */
+const OLD_CLASSIC_COVERS = {
+  "classic-aristotle-metaphysics": "cf3c4a356d1ada6f4471670f0b133dcf63b30b4a27ae113a5ae86368bbe7e6ab",
+  "classic-aristotle-physics": "7bf2230a51e7464f63fbb4f5d22ff14a2eb11963d912b52388a2fd1957067c78",
+  "classic-augustine-confessions": "0b1a8232f795d09c987df32ee8d426be60fb2096925150bbd17fc48957f124da",
+  "classic-bergson-time": "15cb96247f224c1237a2c569c095e45344c26ae649743dc679386bdcf558cecc",
+  "classic-berkeley-dialogues": "e9f9007651af373bf309f4fe9af855174c2213cde0740b7610416d389c857de5",
+  "classic-burke-sublime": "9293312e0b0d785c9c3b9b0bc9ddb34338ce3deab9a59acca201375cc499e2b2",
+  "classic-burnet-early": "913f462f8bf3bf0b3613962ea1ff97a35c3e38815b35fdbc126a7105d4408e2d",
+  "classic-eliot-sacred": "d7e1d7f38be63c158f8448cc0354a015de39c5b672d8fee0dfc488eba7425d95",
+  "classic-freud-dreams": "7fcea91add2c3961ae4106c4595e8e222be5e82731477dc5a4b874b501aae94a",
+  "classic-freud-pleasure": "ec4772d0e29ace87f9da4aa3e2ceac6171dc9e2af728c85cb4af739cc760b1f4",
+  "classic-gilman-wallpaper": "37e34c7b5e4b280ffeab5eeaaddb43026e1d9cdea76935f7953606d1b7677af9",
+  "classic-kant-critique": "c612a63a397654925da9e64d25b34bb85b162819dd34caac7fb6add7dd38562b",
+  "classic-kant-groundwork": "52abc43922b79340cbadb67b1e3b54d6fe2db6ae2cb1a92d8db7fb5f884ac8a3",
+  "classic-lucretius-nature": "51f36320561d75b208f70be69175031f6102657237374b58dd47bac8c340cd91",
+  "classic-mckay-harlem": "021a1eaed89c21eec9783e3d2a5ebad22ea9dc4143474f44e8af5396c36aef85",
+  "classic-nietzsche-dawn": "99a3bf8dc193e82864b44170915af7fde1c3f5a29d468522ced5c57f90d6e273",
+  "classic-schopenhauer-pessimism": "63caadfb0504b07610bc180ac0c80d7f1080b363e6f99877ca6c297d103a175e",
+  "classic-spinoza-ethics": "60a233544f3efbfba803e7da7b2839361e3356430933bc11fc5171ceb9362175",
+  "classic-xenophon-memorabilia": "e30f2aac439496109a67bb3ff0c10c35a669e5d9de2a4300c59ecc13e1171e68"
+};
+async function refreshClassicCovers(force) {
+  if (!idb || S.mode !== "ready" || (navigator.webdriver && !force) || !window.crypto?.subtle) return [];
+  const hex = (buf) => [...new Uint8Array(buf)].map((x) => x.toString(16).padStart(2, "0")).join(""), done = [];
+  for (const id of CLASSICS) {
+    if (!S.texts.has(id)) continue;
+    const have = S.covers.get(id);
+    try {
+      if (have) { const old = OLD_CLASSIC_COVERS[id]; if (!old || hex(await crypto.subtle.digest("SHA-256", await have.arrayBuffer())) !== old) continue; }
+      const r = await fetch(`data/books/${id}.jpg`); if (!r.ok || !/^image\//.test(r.headers.get("content-type") || "")) continue;
+      await put("covers", id, await r.blob()); done.push(id);
+    } catch {} // offline: next time
+  }
+  if (done.length) render();
+  return done;
+}
+
 /* ---------- boot ---------- */
 // Opening never fails silently: a step that throws, or storage that takes too long to open, says so on screen.
 function bootProblem(msg) {
@@ -302,7 +342,7 @@ const bootSlow = setTimeout(() => {
   try { render(); } catch (e) { S.renderFailed = true; bootErr(e); return; }
   try { openFromHash(); } catch {}
   if (S.openErr && S.openErr.name && !["InvalidStateError", "SecurityError", "UnknownError"].includes(S.openErr.name)) bootProblem(`Storage didn't open (${S.openErr.name}: ${S.openErr.message}). Close every copy of the app and open it again; your books and notes are still on this device.`);
-  addClassics().catch(() => {});
+  addClassics().then(() => refreshClassicCovers()).catch(() => {});
   try { USED_SEEN = usedNow(); } catch {} // what your notes already use, so only new uses are celebrated
   startCloudBackups();
   try { if (navigator.storage && navigator.storage.persist) S.persisted = await navigator.storage.persist(); } catch {}

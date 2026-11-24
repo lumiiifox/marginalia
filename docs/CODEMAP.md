@@ -348,7 +348,9 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - The Dawn of Day (Kennedy), The Sacred Wood and Harlem Shadows use Gutenberg transcriptions. Their primers use `srcs` for Oskar’s recordings of the individual selections.
 - Classics (`CLASSICS`, `addClassics`, at start): public-domain books that come with the app, each added to the library once, queued,
   from `data/books/<id>.json` (`{ text, content }`, the shapes a backup holds) and its cover `<id>.jpg`. `mg-classics` lists those added,
-  so a deleted classic stays deleted; one that can't be fetched is tried next time. Skipped in automated browsers unless a test passes
+  so a deleted classic stays deleted; one that can't be fetched is tried next time. A classic whose bundled cover was redrawn gets the new one at start (`refreshClassicCovers`) when the library
+  still holds the old one byte for byte (`OLD_CLASSIC_COVERS`, SHA-256) or none at all; a cover the owner chose stays. Covers drawn from
+  another Standard Ebooks edition's painting name it in the build entry (`art_repo`, `credit`); `--covers` redraws covers alone. Skipped in automated browsers unless a test passes
   `true`. Burke's Inquiry comes from the first volume of Nimmo's Works and Schopenhauer's Studies in Pessimism from Gutenberg's
   text (`burke_sublime`, `schopenhauer_pessimism`); The Call of Cthulhu is one file of Standard Ebooks' Lovecraft Short Fiction.
   Two audits run on demand, outside CI: `tools/check_classics_structure.py` (in the app: broken characters and leftover markup,

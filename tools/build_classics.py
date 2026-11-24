@@ -44,45 +44,45 @@ BOOKS = [
     # The Sacred Grove (1882). All public domain in the US (published before 1931) and in Canada (died before 1972).
     dict(id="classic-burke-sublime", text_source=dict(repo="https://github.com/GITenberg/The-Works-of-the-Right-Honourable-Edmund-Burke-Vol.-01--of-12-_15043",
          file="15043-h/15043-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="burke_sublime"),
-         cover=dict(title="On the Sublime and Beautiful", size=31, art="stars"), text=dict(title="A Philosophical Inquiry into the Origin of Our Ideas of the Sublime and Beautiful", author="Edmund Burke", edition="Works, vol. I (London: John C. Nimmo, 1887)", publisher="Project Gutenberg", orig="1757")),
+         cover=dict(title="On the Sublime and Beautiful", size=31, art_repo="clark-ashton-smith_short-fiction", credit="Henry Fuseli, The Nightmare (1781)"), text=dict(title="A Philosophical Inquiry into the Origin of Our Ideas of the Sublime and Beautiful", author="Edmund Burke", edition="Works, vol. I (London: John C. Nimmo, 1887)", publisher="Project Gutenberg", orig="1757")),
     dict(id="classic-schopenhauer-pessimism", text_source=dict(repo="https://github.com/GITenberg/The-Essays-of-Arthur-Schopenhauer--Studies-in-Pessimism_10732",
          file="10732-8.txt", encoding="latin-1", source_name="Project Gutenberg", convert="schopenhauer_pessimism"),
-         cover=dict(title="Studies in Pessimism", size=35, art="stars"), text=dict(title="Studies in Pessimism", author="Arthur Schopenhauer", edition="trans. T. Bailey Saunders", publisher="Project Gutenberg", orig="1851")),
+         cover=dict(title="Studies in Pessimism", size=35, art_repo="edgar-allan-poe_poetry", credit="Odilon Redon, Melancholy (1876)"), text=dict(title="Studies in Pessimism", author="Arthur Schopenhauer", edition="trans. T. Bailey Saunders", publisher="Project Gutenberg", orig="1851")),
     dict(id="classic-lovecraft-cthulhu", repo="h-p-lovecraft_short-fiction", files=["the-call-of-cthulhu"], cover=dict(title="The Call of Cthulhu", size=35),
          text=dict(title="The Call of Cthulhu", author="H. P. Lovecraft", edition="text of the Weird Tales printing, February 1928", orig="1928", year="2022", publisher="Standard Ebooks")),
     dict(id="classic-mckay-harlem", text_source=dict(repo="https://github.com/GITenberg/Harlem-Shadows-The-Poems-of-Claude-McKay_64989",
          file="64989-h/64989-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="harlem_shadows"),
-         cover=dict(title="Harlem Shadows", size=35, art="stars"), text=dict(title="Harlem Shadows", author="Claude McKay", edition="1922 collection", publisher="Project Gutenberg", orig="1922")),
+         cover=dict(title="Harlem Shadows", size=35, art_repo="lord-dunsany_the-gods-of-pegana", credit="Joseph Stella, Battle of Lights, Coney Island (1913)"), text=dict(title="Harlem Shadows", author="Claude McKay", edition="1922 collection", publisher="Project Gutenberg", orig="1922")),
     dict(id="classic-eliot-sacred", text_source=dict(repo="https://github.com/GITenberg/The-Sacred-Wood-Essays-on-Poetry-and-Criticism_57795",
          file="57795-h/57795-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="sacred_wood"),
-         cover=dict(title="The Sacred Wood", size=35, art="stars"), text=dict(title="The Sacred Wood", author="T. S. Eliot", edition="Essays on Poetry and Criticism", publisher="Project Gutenberg", orig="1920")),
+         cover=dict(title="The Sacred Wood", size=35, art_repo="matthew-arnold_culture-and-anarchy", credit="Pierre Puvis de Chavannes, The Sacred Grove, Beloved of the Arts and the Muses (1884–1889)"), text=dict(title="The Sacred Wood", author="T. S. Eliot", edition="Essays on Poetry and Criticism", publisher="Project Gutenberg", orig="1920")),
     dict(id="classic-nietzsche-dawn", text_source=dict(repo="https://github.com/GITenberg/The-Dawn-of-Day_39955",
          file="39955-h/39955-h.html", encoding="utf-8", source_name="Project Gutenberg", convert="dawn_of_day"),
-         cover=dict(title="The Dawn of Day", size=35, art="stars"), text=dict(title="The Dawn of Day", author="Friedrich Nietzsche", edition="trans. J. M. Kennedy", publisher="Project Gutenberg", orig="1881")),
+         cover=dict(title="The Dawn of Day", size=35, art_repo="friedrich-nietzsche_thus-spake-zarathustra_thomas-common", credit="Albert Bierstadt, Sunrise on the Matterhorn (after 1875)"), text=dict(title="The Dawn of Day", author="Friedrich Nietzsche", edition="trans. J. M. Kennedy", publisher="Project Gutenberg", orig="1881")),
     dict(id="classic-sophocles-antigone", repo="sophocles_antigone_francis-storr", files=None, heading_file="antigone",
          text=dict(title="Antigone", author="Sophocles", edition="trans. Francis Storr", year="2025", publisher="Standard Ebooks")),
     dict(id="classic-lucretius-nature", text_source=dict(repo="https://github.com/GITenberg/On-the-Nature-of-Things_785", file="785-h/785-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="lucretius-nature"),
-         cover=dict(title="Of the Nature of Things", size=32, art="stars"),
+         cover=dict(title="Of the Nature of Things", size=32, art_repo="arthur-machen_short-fiction", credit="Arnold Böcklin, Idyll (Pan Amidst Columns) (1875)"),
          text=dict(title="Of the Nature of Things", author="Titus Lucretius Carus", edition="trans. William Ellery Leonard", publisher="Project Gutenberg")),
     dict(id="classic-douglass-narrative", repo="frederick-douglass_narrative-of-the-life-of-frederick-douglass", files=None,
          text=dict(title="Narrative of the Life of Frederick Douglass", author="Frederick Douglass", orig="1845", year="2020", publisher="Standard Ebooks")),
     dict(id="classic-stevenson-jekyll", repo="robert-louis-stevenson_the-strange-case-of-dr-jekyll-and-mr-hyde", files=None,
          text=dict(title="The Strange Case of Dr. Jekyll and Mr. Hyde", author="Robert Louis Stevenson", orig="1886", year="2015", publisher="Standard Ebooks")),
     dict(id="classic-gilman-wallpaper", text_source=dict(repo="https://github.com/GITenberg/The-Yellow-Wallpaper_1952", file="1952-h/1952-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="gilman-wallpaper"),
-         cover=dict(title="The Yellow Wallpaper", size=32, art="stars"), parts=True,
+         cover=dict(title="The Yellow Wallpaper", size=32, art_repo="charlotte-perkins-gilman_women-and-economics", credit="Edgar Degas, Sulking (1870)"), parts=True,
          text=dict(title="The Yellow Wallpaper", author="Charlotte Perkins Gilman", orig="1892", publisher="Project Gutenberg")),
     dict(id="classic-stoker-dracula", repo="bram-stoker_dracula", files=None, unwrap="section > blockquote",
          text=dict(title="Dracula", author="Bram Stoker", orig="1897", year="2014", publisher="Standard Ebooks")),
     dict(id="classic-burnet-early", text_source=dict(repo="https://github.com/GITenberg/Early-Greek-philosophy_67097", file="67097-h/67097-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="burnet-early"),
-         cover=dict(title="Early Greek Philosophy", size=32, art="stars"),
+         cover=dict(title="Early Greek Philosophy", size=32, art_repo="epictetus_short-works_george-long", credit="Lawrence Alma-Tadema, A Reading from Homer (1885)"),
          text=dict(title="Early Greek Philosophy", author="John Burnet", edition="second edition (1908)", orig="1892", publisher="Project Gutenberg")),
     dict(id="classic-augustine-confessions", text_source=dict(repo="https://github.com/GITenberg/The-Confessions-of-St.-Augustine_3296",
          file="3296-h/3296-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="augustine_confessions"),
-         cover=dict(title="Confessions", size=40, art="stars"),
+         cover=dict(title="Confessions", size=40, art_repo="augustine-of-hippo_the-city-of-god_marcus-dods_george-wilson_j-j-smith", credit="Jan van Eyck, The Last Judgment (1436–1438)"),
          text=dict(title="Confessions", author="Augustine of Hippo", edition="trans. E. B. Pusey", publisher="Project Gutenberg")),
     dict(id="classic-bergson-time", text_source=dict(repo="https://github.com/GITenberg/Time-and-Free-Will-An-Essay-on-the-Immediate-Data-of-Consciousness_56852",
          file="56852-h/56852-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="bergson_time"),
-         cover=dict(title="Time and Free Will", size=40, art="stars"),
+         cover=dict(title="Time and Free Will", size=40, art_repo="edgar-allan-poe_short-fiction", credit="Robert Delaunay, Saint-Séverin (1909)"),
          text=dict(title="Time and Free Will", author="Henri Bergson", edition="trans. F. L. Pogson, 1913 edition", publisher="Project Gutenberg", orig="1889")),
     dict(id="classic-melville-short-fiction", repo="herman-melville_short-fiction", files=None,
          text=dict(title="Short Fiction", author="Herman Melville", publisher="Standard Ebooks", year="2020")),
@@ -91,7 +91,7 @@ BOOKS = [
     dict(id="classic-boethius-consolation", repo="boethius_the-consolation-of-philosophy_h-r-james", files=None,
          text=dict(title="The Consolation of Philosophy", author="Boethius", edition="trans. H. R. James (1897)", publisher="Standard Ebooks", year="2023", orig="")),
     dict(id="classic-berkeley-dialogues", text_source=dict(repo="https://github.com/GITenberg/Three-Dialogues-Between-Hylas-and-Philonous-in-Opposition-to-Sceptics-and-Atheists_4724", file="4724.txt", convert="berkeley_dialogues"),
-         cover=dict(title="Three Dialogues Between Hylas and Philonous", size=30, art="stars"),
+         cover=dict(title="Three Dialogues Between Hylas and Philonous", size=30, art_repo="seneca_dialogues_aubrey-stewart", credit="Ferdinand Georg Waldmüller, The Roman Ruins in Schönbrunn (1832)"),
          text=dict(title="Three Dialogues Between Hylas and Philonous", author="George Berkeley", publisher="Project Gutenberg", edition="ebook 4724", orig="1713")),
     dict(id="classic-shelley-frankenstein", repo="mary-shelley_frankenstein", files=None,
          text=dict(title="Frankenstein", author="Mary Shelley", edition="revised 1831 text", publisher="Standard Ebooks", year="2015", orig="1818")),
@@ -106,36 +106,36 @@ BOOKS = [
     dict(id="classic-descartes-meditations", repo="rene-descartes_philosophical-works_john-veitch", files=["discourse-on-the-method", "meditations-on-the-first-philosophy"], flatten=True, partOf="Discourse", cover=dict(title="Discourse on the Method and Meditations on First Philosophy", size=25),
          text=dict(title="Discourse on the Method and Meditations on First Philosophy", author="René Descartes", edition="trans. John Veitch", publisher="Standard Ebooks", year="2025", orig="1637–41")),
     dict(id="classic-spinoza-ethics", text_source=dict(repo="https://github.com/GITenberg/Ethics_3800", file="3800.txt", convert="spinoza_ethics"),
-         cover=dict(title="Ethics", size=40, art="stars"),
+         cover=dict(title="Ethics", size=40, art_repo="william-james_pragmatism", credit="Johannes Vermeer, Woman Holding a Balance (1664)"),
          text=dict(title="Ethics", author="Benedict de Spinoza", edition="trans. R. H. M. Elwes", orig="1677")),
     dict(id="classic-hume-treatise", repo="david-hume_a-treatise-of-human-nature", files=None,
          text=dict(title="A Treatise of Human Nature", author="David Hume", edition="", publisher="Standard Ebooks", year="2026", orig="1739–40")),
     dict(id="classic-hume-enquiry", repo="david-hume_an-enquiry-concerning-human-understanding", files=None,
          text=dict(title="An Enquiry Concerning Human Understanding", author="David Hume", edition="", publisher="Standard Ebooks", year="2024", orig="1748")),
     dict(id="classic-kant-groundwork", text_source=dict(repo="https://github.com/GITenberg/Fundamental-Principles-of-the-Metaphysic-of-Morals_5682", file="5682.txt", convert="kant_groundwork"),
-         cover=dict(title="Fundamental Principles of the Metaphysic of Morals", size=25, art="stars"),
+         cover=dict(title="Fundamental Principles of the Metaphysic of Morals", size=25, art_repo="matthew-arnold_poetry", credit="Edvard Munch, Starry Night (1893)"),
          text=dict(title="Fundamental Principles of the Metaphysic of Morals", author="Immanuel Kant", edition="trans. Thomas Kingsmill Abbott", orig="1785")),
     dict(id="classic-kant-critique", text_source=dict(repo="https://github.com/GITenberg/The-Critique-of-Pure-Reason_4280", file="4280-0.txt", encoding="utf-8", convert="kant_critique"),
-         cover=dict(title="Critique of Pure Reason", size=40, art="stars"),
+         cover=dict(title="Critique of Pure Reason", size=40, art_repo="william-wordsworth_samuel-taylor-coleridge_lyrical-ballads", credit="Caspar David Friedrich, Wanderer above the Sea of Fog (1818)"),
          text=dict(title="Critique of Pure Reason", author="Immanuel Kant", edition="trans. J. M. D. Meiklejohn", orig="1781–87")),
     # Ross's translation (W. D. Ross died 1971) as the Internet Classics Archive transcribes it (classics.mit.edu, metaphysics.mb.txt), taken
     # from a git repository's first commit, which keeps that file's words, spelling and punctuation and only splits it by book. A later commit
     # of the same repository marks the verse quotations; it is read only to tell verse lines from prose (its own wording is edited, so unused).
     dict(id="classic-aristotle-metaphysics", text_source=dict(repo="https://github.com/jeonghyeon-net/metaphysics", commit="dd0af2399591ffd0be8e851a105d9d2b31775db6",
          files=[f"books/book-{i:02d}.md" for i in range(1, 15)], verse_commit="8dc2dc1", verse_dir="en/", encoding="utf-8", convert="aristotle_metaphysics"),
-         cover=dict(title="Metaphysics", size=44, art="stars"),
+         cover=dict(title="Metaphysics", size=44, art_repo="william-james_a-pluralistic-universe", credit="Giovanni Battista Tiepolo, Allegory of the Planets and Continents (1752)"),
          text=dict(title="Metaphysics", author="Aristotle", edition="trans. W. D. Ross", orig="")),
     # Hardie and Gaye's translation (Physica, The Works of Aristotle vol. II, Oxford: Clarendon Press, 1930; R. P. Hardie died 1942,
     # R. K. Gaye 1909), as the Internet Classics Archive transcribes it (classics.mit.edu, physics.mb.txt), from the archive's own git
     # repository at the commit that added it; the file is unchanged at the repository's head.
     dict(id="classic-aristotle-physics", text_source=dict(repo="https://github.com/TheMITTech/classics", commit="494702c",
          files=["Aristotle/physics.mb.txt"], encoding="utf-8", convert="aristotle_physics"),
-         cover=dict(title="Physics", size=44, art="stars"),
+         cover=dict(title="Physics", size=44, art_repo="edgar-allan-poe_the-narrative-of-arthur-gordon-pym-of-nantucket", credit="Willem van de Velde the Younger, A Gust of Wind (De Windstoot, c. 1680)"),
          text=dict(title="Physics", author="Aristotle", edition="trans. R. P. Hardie and R. K. Gaye", orig="")),
     # Dakyns's translation (The Works of Xenophon, vol. III, part 1, Macmillan, 1897; H. G. Dakyns died 1911), as Project Gutenberg
     # transcribes it (ebook 1177), from its GITenberg repository.
     dict(id="classic-xenophon-memorabilia", text_source=dict(repo="https://github.com/GITenberg/The-Memorabilia_1177", file="1177.txt", convert="xenophon_memorabilia"),
-         cover=dict(title="Memorabilia", size=44, art="stars"),
+         cover=dict(title="Memorabilia", size=44, art_repo="epictetus_discourses_george-long", credit="William Blake Richmond, An Audience in Athens During Agamemnon by Aeschylus (1884)"),
          text=dict(title="Memorabilia", author="Xenophon", edition="trans. H. G. Dakyns", orig="")),
     dict(id="classic-rousseau-social-contract", repo="jean-jacques-rousseau_the-social-contract_g-d-h-cole", files=None,
          text=dict(title="The Social Contract", author="Jean-Jacques Rousseau", edition="trans. G. D. H. Cole", publisher="Standard Ebooks", year="2024", orig="1762")),
@@ -156,10 +156,10 @@ BOOKS = [
     dict(id="classic-nietzsche-genealogy", repo="friedrich-nietzsche_the-genealogy-of-morals_horace-b-samuel", files=None,
          text=dict(title="The Genealogy of Morals", author="Friedrich Nietzsche", edition="trans. Horace B. Samuel", publisher="Standard Ebooks", year="2023", orig="1887")),
     dict(id="classic-freud-pleasure", epub_source=dict(file="pg76031-images-3.epub", url="https://www.gutenberg.org/cache/epub/76031/pg76031-images-3.epub", convert="gutenberg_epub"),
-         cover=dict(title="Beyond the Pleasure Principle", size=36, art="stars"),
+         cover=dict(title="Beyond the Pleasure Principle", size=36, art_repo="dante-alighieri_the-divine-comedy_henry-wadsworth-longfellow", credit="Hieronymus Bosch, The Garden of Earthly Delights, right panel (c. 1510)"),
          text=dict(title="Beyond the Pleasure Principle", author="Sigmund Freud", edition="trans. C. J. M. Hubback, with an editorial preface by Ernest Jones", orig="1920")),
     dict(id="classic-freud-dreams", epub_source=dict(file="pg66048-images-3.epub", url="https://www.gutenberg.org/cache/epub/66048/pg66048-images-3.epub", convert="gutenberg_epub"),
-         cover=dict(title="The Interpretation of Dreams", size=36, art="stars"),
+         cover=dict(title="The Interpretation of Dreams", size=36, art_repo="charlotte-perkins-gilman_herland", credit="Odilon Redon, Pandora (c. 1914)"),
          text=dict(title="The Interpretation of Dreams", author="Sigmund Freud", edition="trans. A. A. Brill", orig="1900")),
     dict(id="classic-nietzsche-beyond", repo="friedrich-nietzsche_beyond-good-and-evil_helen-zimmern", files=None,
          text=dict(title="Beyond Good and Evil", author="Friedrich Nietzsche", edition="trans. Helen Zimmern", publisher="Standard Ebooks", year="2014", orig="1886")),
@@ -1021,7 +1021,10 @@ async def cover(browser, bk, path):
     svg = (SE / bk["repo"] / "src/epub/images/cover.svg").read_text(encoding="utf-8") if bk.get("repo") else ""
     page = await browser.new_page(viewport={"width": 400, "height": 600})
     if bk.get("cover"):
-        art = "none" if bk["cover"].get("art") == "stars" else "url(" + re.search(r'xlink:href="(data:image/jpeg;base64,[^"]+)"', svg).group(1) + ") center/cover"
+        if bk["cover"].get("art_repo"):  # the painting another Standard Ebooks edition uses (its images/cover.jpg, public domain)
+            jpg = SE / bk["cover"]["art_repo"] / "images" / "cover.jpg"
+            art = "url(data:image/jpeg;base64," + base64.b64encode(jpg.read_bytes()).decode() + ") center/cover"
+        else: art = "none" if bk["cover"].get("art") == "stars" else "url(" + re.search(r'xlink:href="(data:image/jpeg;base64,[^"]+)"', svg).group(1) + ") center/cover"
         font = lambda w: "data:font/woff2;base64," + base64.b64encode((FONT / f"LeagueSpartan-{w}.woff2").read_bytes()).decode()
         c = bk["cover"]
         await page.set_content(f"""<style>@font-face{{font-family:LS;font-weight:700;src:url({font('Bold')})}}@font-face{{font-family:LS;font-weight:600;src:url({font('SemiBold')})}}
@@ -1036,8 +1039,29 @@ async def cover(browser, bk, path):
     await page.screenshot(path=str(path), type="jpeg", quality=82)
     await page.close()
 
+def art_clone(repo):
+    """Only the painting and the colophon that credits it, from a Standard Ebooks repository."""
+    dest = SE / repo
+    if (dest / "images" / "cover.jpg").exists(): return
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    subprocess.run(["git", "clone", "-q", "--depth", "1", "--filter=blob:none", "--sparse", f"https://github.com/standardebooks/{repo}", str(dest)], check=True)
+    subprocess.run(["git", "-C", str(dest), "sparse-checkout", "set", "--no-cone", "/images/cover.jpg", "/src/epub/text/colophon.xhtml"], check=True)
+
+async def covers_only(books):
+    """python3 tools/build_classics.py --covers [ID ...]: redraw the covers alone, leaving the texts as they are."""
+    for bk in books:
+        if bk.get("cover", {}).get("art_repo"): art_clone(bk["cover"]["art_repo"])
+        elif bk.get("repo"): clone(f"https://github.com/standardebooks/{bk['repo']}", SE / bk["repo"])
+    clone("https://github.com/theleagueof/league-spartan", FONT.parent.parent)
+    async with async_playwright() as p:
+        browser = await p.chromium.launch()
+        for bk in books:
+            await cover(browser, bk, OUT / f"{bk['id']}.jpg"); print(f"{bk['id']}: cover")
+        await browser.close()
+
 async def main(only):
     books = [b for b in BOOKS if not only or b["id"] in only]
+    if COVERS: return await covers_only(books)
     for bk in books:
         if bk.get("repo"): clone(f"https://github.com/standardebooks/{bk['repo']}", SE / bk["repo"])
         elif bk.get("epub_source"):
@@ -1051,6 +1075,8 @@ async def main(only):
             dest = TEXTS / bk["id"]
             if not dest.exists(): dest.parent.mkdir(parents=True, exist_ok=True); subprocess.run(["git", "clone", "-q", bk["text_source"]["repo"], str(dest)], check=True)
         else: clone(bk["text_source"]["repo"], TEXTS / bk["id"])
+    for bk in books:
+        if bk.get("cover", {}).get("art_repo"): art_clone(bk["cover"]["art_repo"])
     if any(b.get("cover") for b in books): clone("https://github.com/theleagueof/league-spartan", FONT.parent.parent)
     OUT.mkdir(parents=True, exist_ok=True)
     srv = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(APP)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -1097,4 +1123,5 @@ async def main(only):
     finally:
         srv.terminate()
 
-asyncio.run(main(set(sys.argv[1:])))
+COVERS = "--covers" in sys.argv
+asyncio.run(main(set(a for a in sys.argv[1:] if not a.startswith("--"))))
