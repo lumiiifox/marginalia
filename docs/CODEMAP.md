@@ -188,7 +188,8 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   "plato-republic" ("(Rep. V)"), "plato-socrates" ("(Apology)"), "plato-republic-st" and "plato-socrates-st" ("(Rep. 433a)", "(Phaedo 74c)",
   "(Euthyphro 10a)", "(Apology 21d)": only the Stephanus numbers listed in `PLATO_ST`, each found by words of its passage inside its own dialogue
   (`stephBlocks`; a section of short exchanges lists several blocks and opens the first), since Jowett prints none; each was matched to Burnet's Greek), "xenophon-memorabilia" ("(Mem. IV.6)", or a section, "(Mem. IV.6.4)": only those listed in `XEN_MEM`, found by words of their first block in the chapter, since Dakyns prints no section numbers; each matched to the Greek sections Perseus marks), "kant-groundwork" ("(G II)"), "kant-critique" ("(A26/B42)", "(Bxvi)": only the A/B pages listed in `KANT_AB`, each found by
-  words of its passage, since Meiklejohn prints no A/B numbers; the table notes where each number comes from), "marx-engels-manifesto" ("(CM I)"), "du-bois-souls"
+  words of its passage, since Meiklejohn prints no A/B numbers; the table notes where each number comes from), "kant-universal-history" ("(AA 8:20)", "(AA 8:29–30)":
+  the Akademie pages 8:15–31 of the "Idea for a Universal History", each listed in `KANT_IUH_AA` with Hastie's words for the German that opens it), "marx-engels-manifesto" ("(CM I)"), "du-bois-souls"
   ("(Souls I)", "(Souls Forethought)"), "mill-liberty" ("(OL I)") and "russell-problems" ("(PP VII)", a chapter of The Problems of Philosophy), all but Spinoza's found by headings (`headPath`). `passageLinks` turns a bracket into links
   when every "; "-joined item matches one style; anything else stays text. `openPassage` opens the classic there, adding it back if deleted.
   A reference added to an audited article is checked against the bundled edition and logged in its audit record. Tested by `tests/links.py`.
@@ -338,6 +339,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - Four shelf editions: Boethius (H. R. James), Shelley (1831 revision) and Dostoevsky (Constance Garnett) use Standard Ebooks. Berkeley’s three dialogues use the Project Gutenberg no. 4724 transcription. Edition details and primers are on each book page.
 - Augustine (Pusey, Gutenberg 3296) and Bergson (Pogson, Gutenberg 56852) use the HTML transcriptions. Butler’s Erewhon and Melville’s Short Fiction use the Standard Ebooks editions.
 - Antigone (Storr), Douglass’s Narrative, Dracula and Jekyll and Hyde use Standard Ebooks. Gilman (1952), Lucretius (785, Leonard) and Burnet (67097, 1908 edition) use the numbered Project Gutenberg transcriptions.
+- Kant's "Idea for a Universal History" (Hastie, 1891) is the first essay of the Online Library of Liberty's EPUB of Kant's Principles of Politics (`oll_source` in tools/build_classics.py, `kant_universal_history`); neither Standard Ebooks nor Gutenberg has it.
 - The Dawn of Day (Kennedy), The Sacred Wood and Harlem Shadows use Gutenberg transcriptions. Their primers use `srcs` for Oskar’s recordings of the individual selections.
 - Classics (`CLASSICS`, `addClassics`, at start): public-domain books that come with the app, each added to the library once, queued,
   from `data/books/<id>.json` (`{ text, content }`, the shapes a backup holds) and its cover `<id>.jpg`. `mg-classics` lists those added,

@@ -444,7 +444,7 @@ const CLASSIC_TITLES = {
   "classic-boethius-consolation": "The Consolation of Philosophy",
   "classic-plato-socrates": "Euthyphro, Apology, Crito, Phaedo", "classic-aristotle-ethics": "Nicomachean Ethics", "classic-aristotle-metaphysics": "Metaphysics", "classic-descartes-meditations": "Discourse on the Method and Meditations on First Philosophy",
   "classic-hobbes-leviathan": "Leviathan", "classic-spinoza-ethics": "Ethics", "classic-hume-treatise": "A Treatise of Human Nature", "classic-hume-enquiry": "An Enquiry Concerning Human Understanding", "classic-rousseau-social-contract": "The Social Contract",
-  "classic-kant-critique": "Critique of Pure Reason", "classic-kant-groundwork": "Fundamental Principles of the Metaphysic of Morals", "classic-wollstonecraft-vindication": "A Vindication of the Rights of Woman",
+  "classic-kant-critique": "Critique of Pure Reason", "classic-kant-universal-history": "Idea for a Universal History from a Cosmopolitan Point of View", "classic-kant-groundwork": "Fundamental Principles of the Metaphysic of Morals", "classic-wollstonecraft-vindication": "A Vindication of the Rights of Woman",
   "classic-marx-engels-manifesto": "The Communist Manifesto", "classic-nietzsche-beyond": "Beyond Good and Evil", "classic-nietzsche-genealogy": "The Genealogy of Morals", "classic-cooper-voice": "A Voice from the South", "classic-du-bois-souls": "The Souls of Black Folk",
   "classic-plato-republic": "The Republic", "classic-xenophon-memorabilia": "Memorabilia", "classic-mill-liberty": "On Liberty", "classic-russell-problems": "The Problems of Philosophy",
   "classic-freud-dreams": "The Interpretation of Dreams", "classic-freud-pleasure": "Beyond the Pleasure Principle" };
@@ -484,6 +484,7 @@ const CLASSIC_NAMES = {
   "classic-hume-enquiry": { by: ["hume"], full: ["Enquiry concerning Human Understanding", "Enquiry Concerning Human Understanding", "first Enquiry"] },
   "classic-rousseau-social-contract": { by: ["rousseau"], full: ["The Social Contract", "Of the Social Contract", { s: "Social Contract", post: /^ \(1762\)/ }] },
   "classic-kant-critique": { by: ["kant"], full: ["Critique of Pure Reason"] },
+  "classic-kant-universal-history": { by: ["kant"], full: ["Idea for a Universal History from a Cosmopolitan Point of View", "Idea for a Universal History with a Cosmopolitan Purpose", "Idea for a Universal History"] },
   "classic-kant-groundwork": { by: ["kant"], full: ["Groundwork of the Metaphysics of Morals", "Groundwork of the Metaphysic of Morals", "Fundamental Principles of the Metaphysic of Morals"], own: ["Groundwork"] },
   "classic-wollstonecraft-vindication": { by: ["wollstonecraft"], full: ["A Vindication of the Rights of Woman", "Vindication of the Rights of Woman"] },
   "classic-marx-engels-manifesto": { by: ["marx", "engels"], full: ["The Communist Manifesto", "Communist Manifesto", "Manifesto of the Communist Party"], own: [{ s: "Manifesto", pre: ["the", "The"] }] },
@@ -880,6 +881,27 @@ const KANT_AB = {
 // Peters's revised edition follows; Perseus Digital Library edition), whose Bekker page, column and five-line markers place it; the
 // line comes from a named scholar who cites the passage and is checked to fall inside that window. tests/audit/glossary-aristotle-texts.json
 // records each match. [chapter, the passage's words in Peters, where the line comes from]
+// Kant, "Idea for a Universal History" (Hastie): Hastie prints no Akademie pages, so each page of the essay (AA 8:15–31) is listed with
+// Hastie's words for the German that opens it, found by reading the Akademie text beside his (tests/audit/history.json records it).
+// A page opening on a Proposition gives the heading. [Hastie's words, the German that opens the page]
+const KANT_IUH_AA = {
+  15: ["The Natural Principle of the Political Order", "Idee zu einer allgemeinen Geschichte (title)"],
+  17: ["Whatever metaphysical theory may be formed", "Was man sich auch in metaphysischer Absicht"],
+  18: ["With glimpses of wisdom appearing in individuals", "bei hin und wieder anscheinender Weisheit"],
+  19: ["it knows no limit in its efforts", "keine Grenzen ihrer Entwürfe"],
+  20: ["measured her animal equipments very sparingly", "so knapp, so genau"],
+  21: ["a great tendency to individualise himself", "Er hat aber auch einen großen Hang sich zu vereinzelnen"],
+  22: ["Hence they clearly manifest the arrangement of a wise Creator", "verrathen also wohl die Anordnung eines weisen Schöpfers"],
+  23: ["Sixth Proposition", "Sechster Satz"],
+  24: ["Seventh Proposition", "Siebenter Satz"],
+  25: ["to bring about new relations between the Nations", "neue Verhältnisse der Staaten zu Stande zu bringen"],
+  26: ["barbarian freedom of the States when once they were founded", "die barbarische Freiheit der schon gestifteten Staaten"],
+  27: ["Eighth Proposition", "Achter Satz"],
+  28: ["This Liberty, moreover, gradually advances further", "Diese Freiheit geht aber allmählig weiter"],
+  29: ["Ninth Proposition", "Neunter Satz"],
+  30: ["Applying the same method of study everywhere", "ferner allenthalben nur auf die bürgerliche Verfassung"],
+  31: ["after a few centuries", "einigen Jahrhunderten hinterlassen möchten"],
+};
 const NE_BEKKER = {
   "1097b22–1098a20": ["I.7", "the good of man is exercise of his faculties", "Kraut §2"],
   "1099a31–b6": ["I.8", "without some furniture of fortune", "Kraut §2"],
@@ -1081,6 +1103,10 @@ const PASSAGE_STYLES = {
     find: (B, [n]) => headPath(B, [[2, (t) => /^[IVX]+$/.test(n) ? t.startsWith(`${n}. `) : t === `The ${n}`]]) },
   // Mill, On Liberty: chapter, "OL I".
   "mill-liberty": { book: "classic-mill-liberty", item: /^OL (I|II|III|IV|V)$/, find: (B, [n]) => headPath(B, [[2, (t) => t.startsWith(`${n}. `)]]) },
+  // Kant, "Idea for a Universal History" (Hastie): Akademie page, "AA 8:20", or a run of pages, "AA 8:29–30" (opens the first), found
+  // by Hastie's words for the page's opening (KANT_IUH_AA).
+  "kant-universal-history": { book: "classic-kant-universal-history", item: /^AA 8:(\d+)(?:–\d+)?$/,
+    find: (B, [pg]) => { const e = KANT_IUH_AA[+pg]; return e ? B.findIndex((b) => b.k !== "fn" && kantFlat(b).includes(e[0])) : -1; } },
   // Kant, Critique of Pure Reason: A/B pages, "A26/B42", "Bxvi" (only those listed in KANT_AB), found by the passage's words.
   "kant-critique": { book: "classic-kant-critique", item: new RegExp(`^(${Object.keys(KANT_AB).map((k) => k.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&")).join("|")})$`),
     find: (B, [ref]) => { const e = KANT_AB[ref]; return e ? B.findIndex((b) => b.k !== "fn" && kantFlat(b).includes(e[0])) : -1; } },

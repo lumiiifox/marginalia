@@ -134,7 +134,7 @@ async def main():
               const B = books[st], at = a.dataset.passageAt, i = passageBlock(B, at, st), t = i >= 0 ? plain(B[i].x).trim() : '';
               out.n[st] = (out.n[st] || 0) + 1;
               // a style found by its passage's words (Kant's A/B pages, Stephanus numbers) must open the block holding them
-              const words = { 'kant-critique': (r) => KANT_AB[r][0], 'plato-republic-st': (r) => PLATO_ST[r][0][0], 'plato-socrates-st': (r) => PLATO_ST[r][0][0] }[st];
+              const words = { 'kant-critique': (r) => KANT_AB[r][0], 'kant-universal-history': (r) => KANT_IUH_AA[+r][0], 'plato-republic-st': (r) => PLATO_ST[r][0][0], 'plato-socrates-st': (r) => PLATO_ST[r][0][0] }[st];
               if (words) { if (i < 0 || !kantFlat(B[i]).includes(words(at))) out.bad.push(b.id + ': ' + a.textContent + ' -> ' + t.slice(0, 30)); continue; }
               if (i < 0 || B[i].k !== 'h' || !t.startsWith(label[st](at.split('|')))) out.bad.push(b.id + ': ' + a.textContent + ' -> ' + t.slice(0, 30));
             }
@@ -166,7 +166,7 @@ async def main():
         check(all((w is None and g is None) or (g and g.startswith(w)) for g, w in zip(more, want)) and more[6] == "Apology",
               f"the Enquiry, Descartes, the Republic, the Socratic dialogues, the Groundwork, the Manifesto, Souls, On Liberty, Beyond Good and Evil and The Problems of Philosophy find their chapters, and a missing one finds nothing ({more})")
         unl = await page.evaluate("""() => { const bad = []; for (const b of BRANCHES) { const d = document.createElement('div'); d.innerHTML = articleHTML(b, allTerms()); d.querySelectorAll('.cite-nb').forEach((x) => x.remove());
-          const m = d.textContent.match(/\\((?:EHU [IVX]+(?:\\.\\d)?|Med\\. [IVX]+|Disc\\. [IVX]+|Rep\\. [IVX]+|G (?:Preface|I|II|III)|CM [IV]+|Souls (?:[IVX]+|Forethought|Afterthought)|OL [IV]+|PP [IVX]+|Rep\\. \\d+[a-e](?:–(?:\\d+)?[a-e])?|Met\\. [IVX]+\\.\\d+|A\\d+\\/B\\d+|B\\d+|T \\d\\.\\d+\\.\\d+|BGE (?:§?\\d+A?|Preface))\\)/g); if (m) bad.push(b.id + ': ' + m.join(' ')); } return bad; }""")
+          const m = d.textContent.match(/\\((?:EHU [IVX]+(?:\\.\\d)?|Med\\. [IVX]+|Disc\\. [IVX]+|Rep\\. [IVX]+|G (?:Preface|I|II|III)|CM [IV]+|Souls (?:[IVX]+|Forethought|Afterthought)|OL [IV]+|PP [IVX]+|Rep\\. \\d+[a-e](?:–(?:\\d+)?[a-e])?|Met\\. [IVX]+\\.\\d+|AA 8:\\d+(?:–\\d+)?|A\\d+\\/B\\d+|B\\d+|T \\d\\.\\d+\\.\\d+|BGE (?:§?\\d+A?|Preface))\\)/g); if (m) bad.push(b.id + ': ' + m.join(' ')); } return bad; }""")
         check(unl == [], f"every reference to these classics in the articles is a link ({unl})")
         # the classics' titles
         hits = await page.evaluate("""() => [
@@ -273,6 +273,12 @@ async def main():
           for (const [ref, [w]] of Object.entries(KANT_AB)) { const i = passageBlock(B, ref, 'kant-critique'); if (i < 0) bad.push(ref); }
           return { n: Object.keys(KANT_AB).length, bad }; })()""")
         check(kab["n"] >= 20 and not kab["bad"], f"every A/B page listed for the Critique of Pure Reason opens a passage in Meiklejohn ({kab})")
+        # every Akademie page listed for Kant's "Idea for a Universal History" opens the paragraph holding Hastie's words for its opening,
+        # in page order, and a page outside the essay finds nothing
+        iuh = await page.evaluate("""(async () => { const B = (await (await fetch('data/books/classic-kant-universal-history.json')).json()).content, bad = [], at = [];
+          for (const pg of Object.keys(KANT_IUH_AA)) { const i = passageBlock(B, pg, 'kant-universal-history'); at.push(i); if (i < 0) bad.push(pg); }
+          return { n: Object.keys(KANT_IUH_AA).length, bad, ordered: at.every((x, k) => !k || x >= at[k - 1]), outside: passageBlock(B, '40', 'kant-universal-history') }; })()""")
+        check(iuh["n"] == 16 and not iuh["bad"] and iuh["ordered"] and iuh["outside"] == -1, f"every Akademie page of Kant's Idea for a Universal History opens its passage in Hastie, in page order ({iuh})")
         # every Stephanus number listed for Plato finds each of its passages inside its own dialogue in the bundled Jowett
         pst = await page.evaluate("""(async () => { const bk = {}, bad = [];
           for (const [ref, [ws]] of Object.entries(PLATO_ST)) { const id = ref.startsWith('Rep.') ? 'classic-plato-republic' : 'classic-plato-socrates';

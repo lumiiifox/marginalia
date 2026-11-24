@@ -530,7 +530,7 @@
   },
   {
    "section": "Kant and Hegel: a plan in history",
-   "text": "Nature's means, the Fourth Proposition says, is human antagonism, \u201cthe unsocial sociability of men\u201d (AA 8:20); its hardest problem, a perfectly just civil constitution, can only be approached, since \u201cout of such crooked material as man is made of nothing can be hammered quite straight\u201d (AA 8:23).",
+   "text": "Nature's means, the Fourth Proposition says, is human antagonism, \u201cthe unsocial sociability of men\u201d (AA 8:20); its hardest problem, a perfectly just civil constitution, can only be approached, since \u201cOut of such crooked material as man is made of nothing can be hammered quite straight\u201d (AA 8:23).",
    "claims": [
     {
      "type": "textual",
@@ -1449,6 +1449,15 @@
    "kind": "source moved",
    "note": "SEP replaced Daniel Little's \u201cPhilosophy of History\u201d with a new entry by Jouni-Matti Kuukkanen on 18 November 2026. The sentences checked against Little now cite his archived version (substantive revision 14 May 2025, https://plato.stanford.edu/archives/fall2026/entries/history/); all seven excerpts were re-found there literally (\u00a7\u00a71.3, 2.1, 2.2, 2.4, 3, 3.1, 3.4).",
    "checked_against": "the archived entry, read literally in two passes"
+  },
+  {
+   "date": "2026-11-24",
+   "what": "Kant's \"Idea for a Universal History\" bundled (classic-kant-universal-history, Hastie 1891, from the Online Library of Liberty's EPUB of Kant's Principles of Politics); the article's (AA 8:N) citations now open it (style kant-universal-history).",
+   "aa_pages": "Each Akademie page 8:15-31 is listed in KANT_IUH_AA (js/reference.js) with Hastie's words for the German that opens it, found by reading the Akademie text (spookyuser/kant-akademieausgabe-corpus, aa08.txt) beside Hastie's; none estimated. A page that opens mid-sentence (8:19, 8:20, 8:22, 8:30, 8:31) points to the paragraph holding Hastie's rendering of those words.",
+   "quotations_rechecked": "Every Kant quotation in the article was found again in the bundled text and on the cited page: 'a clue to such a History' 8:18 (cited 8:17-18); 'the unsocial sociability of men' 8:20; 'Out of such crooked material as man is made of nothing can be hammered quite straight' 8:23; 'a hidden plan of Nature' 8:27; 'must be regarded as possible' 8:29 and 'to supplant the empirical cultivation of History' 8:30 (cited 8:29-30).",
+   "fix": "The crooked-timber quotation began with a lowercase 'out'; Hastie prints 'Out', so the quotation now reads as printed.",
+   "hastie_title": "Hastie's own title, previously unconfirmed, is 'The Natural Principle of the Political Order considered in connection with the Idea of a Universal Cosmopolitical History' (essay I of the volume).",
+   "missing": "Hastie omits Kant's footnote to the title (AA 8:15); Kant's notes at 8:23 and 8:29 are translated. Word counts per Proposition, German against English, show no other omission (ratios 1.1-1.4, lower only where a German page holds a footnote)."
   }
  ]
 }

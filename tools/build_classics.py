@@ -102,6 +102,11 @@ BOOKS = [
     dict(id="classic-kant-groundwork", text_source=dict(repo="https://github.com/GITenberg/Fundamental-Principles-of-the-Metaphysic-of-Morals_5682", file="5682.txt", convert="kant_groundwork"),
          cover=dict(title="Fundamental Principles of the Metaphysic of Morals", size=25, art="stars"),
          text=dict(title="Fundamental Principles of the Metaphysic of Morals", author="Immanuel Kant", edition="trans. Thomas Kingsmill Abbott", orig="1785")),
+    # Hastie's translation (Kant's Principles of Politics, T. & T. Clark, Edinburgh, 1891; W. Hastie died 1903): the first essay only, as the
+    # Online Library of Liberty transcribes it (its EPUB of the volume, title 358). Neither Standard Ebooks nor Project Gutenberg has it.
+    dict(id="classic-kant-universal-history", oll_source=dict(file="oll-358-kant-principles-of-politics.epub", url="https://oll-resources.s3.us-east-2.amazonaws.com/oll3/store/titles/358/kant-kants-principles-of-politics-including-his-essay-on-perpetual-peace.epub", convert="kant_universal_history"),
+         cover=dict(title="Idea for a Universal History", size=34, art="stars"),
+         text=dict(title="Idea for a Universal History from a Cosmopolitan Point of View", author="Immanuel Kant", edition="trans. W. Hastie", orig="1784")),
     dict(id="classic-kant-critique", text_source=dict(repo="https://github.com/GITenberg/The-Critique-of-Pure-Reason_4280", file="4280-0.txt", encoding="utf-8", convert="kant_critique"),
          cover=dict(title="Critique of Pure Reason", size=40, art="stars"),
          text=dict(title="Critique of Pure Reason", author="Immanuel Kant", edition="trans. J. M. D. Meiklejohn", orig="1781–87")),
@@ -514,6 +519,7 @@ def kant_critique(raw):
     return f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Critique of Pure Reason</title></head><body>{"".join(out)}</body></html>'
 
 GUTENBERG = CACHE / "gutenberg"
+OLL = CACHE / "oll"  # Online Library of Liberty EPUBs (oll_source), fetched from its public file store
 MET_BOOKS = ["Alpha", "Little Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu"]
 def aristotle_metaphysics(raw, verse):
     """Ross's translation of the Metaphysics, from the Internet Classics Archive's transcription split by book ("# Metaphysics — Book V",
@@ -653,6 +659,45 @@ def gutenberg_epub(folder):
     ol = "".join(f'<li id="{nid}">{"".join(str(c) for c in fn.find_all("p", recursive=False)) or "<p>" + fn.get_text(" ") + "</p>"}</li>' for nid, fn in notes.items())
     endnotes = f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Notes</title></head><body><section epub:type="endnotes"><h2>Notes</h2><ol>{ol}</ol></section></body></html>'
     return docs, endnotes
+
+def kant_universal_history(folder):
+    """Kant's "Idea for a Universal History" in Hastie's translation (Kant's Principles of Politics, T. & T. Clark, 1891, essay I,
+    "The Natural Principle of the Political Order considered in connection with the Idea of a Universal Cosmopolitical History"), as
+    the Online Library of Liberty transcribes it in its EPUB of the volume (one file, Kant_0056.html). Takes the essay only, from its
+    title to the next essay's: the preamble under Hastie's heading, then the nine Propositions; Hastie's
+    printed pages become page breaks and Kant's two footnotes (OLL keeps them at the end of the file) numbered endnotes."""
+    from bs4 import BeautifulSoup
+    raw = next(folder.rglob("Kant_0056.html")).read_text(encoding="utf-8")
+    soup = BeautifulSoup(raw, "html.parser")
+    start, stop = soup.find(id="lf0056_head_004"), soup.find(id="lf0056_label_032")
+    out, notes = [], {}
+    def inline(el):
+        for pb in el.select("span.pb"):
+            n = pb.get_text().split("[")[-1].strip(" ]")
+            pb.replace_with(BeautifulSoup(f'<span epub:type="pagebreak" title="{n}"></span>', "html.parser"))
+        for a in el.select("a.footnote-link"):
+            nid = a["href"][1:]; notes[nid] = soup.find(id=nid)
+            a.replace_with(BeautifulSoup(f'<a epub:type="noteref" href="endnotes.xhtml#{nid}">*</a>', "html.parser"))
+        for sp in el.select("span.ital"): sp.name = "i"; sp.attrs = {}
+        for sp in el.find_all("span"):
+            if sp.get("epub:type") != "pagebreak": sp.unwrap()
+        return "".join(str(c) for c in el.contents).strip()
+    top = []
+    for el in [start, *start.find_all_next(["h2", "p", "span"])]:
+        if el is stop: break
+        if el.find_parent(["p", "h2"]) is None and (el.name != "span" or "pb" in (el.get("class") or [])): top.append(el)
+    for el in top:
+        if el.name == "h2": out.append(f"<h2>{heading_text(el.get_text(' ')).rstrip('.')}</h2>")
+        elif el.name == "p":
+            out.append(f"<p>{inline(el)}</p>")
+        elif "pb" in (el.get("class") or []):
+            n = el.get_text().split("[")[-1].strip(" ]"); out.append(f'<span epub:type="pagebreak" title="{n}"></span>')
+    assert sum(x.startswith("<h2>") for x in out) == 10 and len(notes) == 2, (len(out), len(notes))
+    body = "".join(out)
+    doc = f'<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>x</title></head><body>{body}</body></html>'
+    ol = "".join(f'<li id="{nid}"><p>{inline(BeautifulSoup(str(fn.find("p")), "html.parser").p)}</p></li>' for nid, fn in notes.items())
+    endnotes = f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Notes</title></head><body><section epub:type="endnotes"><h2>Notes</h2><ol>{ol}</ol></section></body></html>'
+    return [doc], endnotes
 
 def xhtml_body(elements):
     from lxml import etree
@@ -846,7 +891,7 @@ def berkeley_dialogues(raw):
     return '<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Three Dialogues</title></head><body>' + "".join(out) + "</body></html>"
 
 
-CONVERT = {"dawn_of_day": dawn_of_day, "harlem_shadows": harlem_shadows, "sacred_wood": sacred_wood, "gilman-wallpaper": gilman_wallpaper, "burnet-early": burnet_early, "lucretius-nature": lucretius_nature, "augustine_confessions": augustine_confessions, "bergson_time": bergson_time, "berkeley_dialogues": berkeley_dialogues, "kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique, "aristotle_metaphysics": aristotle_metaphysics, "xenophon_memorabilia": xenophon_memorabilia}
+CONVERT = {"kant_universal_history": kant_universal_history, "dawn_of_day": dawn_of_day, "harlem_shadows": harlem_shadows, "sacred_wood": sacred_wood, "gilman-wallpaper": gilman_wallpaper, "burnet-early": burnet_early, "lucretius-nature": lucretius_nature, "augustine_confessions": augustine_confessions, "bergson_time": bergson_time, "berkeley_dialogues": berkeley_dialogues, "kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique, "aristotle_metaphysics": aristotle_metaphysics, "xenophon_memorabilia": xenophon_memorabilia}
 
 def clone(url, dest):
     if not dest.exists():
@@ -894,6 +939,13 @@ async def main(only):
             dest = TEXTS / bk["id"]
             if not dest.exists():
                 import zipfile; zipfile.ZipFile(f).extractall(dest)
+        elif bk.get("oll_source"):
+            es = bk["oll_source"]; OLL.mkdir(parents=True, exist_ok=True); f = OLL / es["file"]
+            if not f.exists():
+                import urllib.request; urllib.request.urlretrieve(es["url"], f)
+            dest = TEXTS / bk["id"]
+            if not dest.exists():
+                import zipfile; zipfile.ZipFile(f).extractall(dest)
         elif bk["text_source"].get("commit"):
             dest = TEXTS / bk["id"]
             if not dest.exists(): dest.parent.mkdir(parents=True, exist_ok=True); subprocess.run(["git", "clone", "-q", bk["text_source"]["repo"], str(dest)], check=True)
@@ -920,6 +972,9 @@ async def main(only):
                 elif bk.get("epub_source"):
                     names = []
                     files, endnotes = gutenberg_epub(TEXTS / bk["id"])
+                elif bk.get("oll_source"):
+                    names = []
+                    files, endnotes = CONVERT[bk["oll_source"]["convert"]](TEXTS / bk["id"])
                 else:
                     names = []
                     ts = bk["text_source"]
@@ -936,7 +991,7 @@ async def main(only):
                 for s in r["sections"]:
                     if bk.get("partOf") and re.fullmatch(r"Part [IVX]+", s["label"]): s["label"] = f'{bk["partOf"]}, {s["label"]}'
                 rec = {**{k: v for k, v in bk["text"].items() if v}, "lang": r["lang"], "sections": r["sections"],
-                       "source": {"name": "Standard Ebooks", "kind": "EPUB", "pages": 0} if bk.get("repo") else {"name": "Project Gutenberg", "kind": "EPUB", "pages": 0} if bk.get("epub_source") else {"name": bk["text_source"].get("source_name", "a public-domain transcription"), "kind": "Text", "pages": 0}}
+                       "source": {"name": "Standard Ebooks", "kind": "EPUB", "pages": 0} if bk.get("repo") else {"name": "Project Gutenberg", "kind": "EPUB", "pages": 0} if bk.get("epub_source") else {"name": "Online Library of Liberty", "kind": "EPUB", "pages": 0} if bk.get("oll_source") else {"name": bk["text_source"].get("source_name", "a public-domain transcription"), "kind": "Text", "pages": 0}}
                 (OUT / f"{bk['id']}.json").write_text(json.dumps({"text": rec, "content": r["blocks"]}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
                 await cover(browser, bk, OUT / f"{bk['id']}.jpg")
                 print(f"{bk['id']}: {len(r['blocks'])} blocks, {r['notes']} notes, {len(r['sections'])} chapters, {(OUT / (bk['id'] + '.json')).stat().st_size // 1024} KB")
