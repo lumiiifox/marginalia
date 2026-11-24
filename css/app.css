@@ -1349,19 +1349,55 @@ button.src::after { content: ""; position: absolute; inset: -8px -2px; }
 .tdisp .tmore { margin: 6px 0; }
 .pgwrap { white-space: nowrap; } /* a page reference that opens your copy (pageLinks) keeps its brackets on its line */
 
-/* A consistent high-contrast reading surface in both app themes. */
-.course-page, .courselead.refcard { background:#211b16; color:#fff9ed; border:2px solid #e5d7bd; border-radius:.65rem; padding:clamp(.9rem,3vw,2rem); }
-.course-page { max-width:48rem; margin:auto; font-size:1.18rem; line-height:1.55; overflow-wrap:anywhere; }
-.course-page :is(h1,h2,h3,strong,p,small,summary,label), .courselead.refcard :is(.rc-t,.rc-s) { color:#fff9ed; }
-.courselead.refcard .rc-s { font-size:1.15rem; }
-.course-page section { border-top:2px solid #b7a994; margin-top:1.5rem; padding-top:.5rem; }
-.course-page button,.course-page select { background:#fff9ed; color:#281e17; border:2px solid #84735e; min-height:46px; font-size:1.1rem; white-space:normal; }
-.course-page button strong,.course-page button small { color:inherit; }
-.course-page button:disabled { opacity:1; background:#403931; color:#eee5d8; border-color:#998e7c; }
-.course-page a { color:#bce9ff; text-decoration:underline; }
-.course-page footer { font-size:1rem; line-height:1.55; }
-.course-page mark { color:#20180d; background:#ffdf77; }
-.course-page :focus-visible,.courselead:focus-visible { outline:3px solid #ffcf53; outline-offset:3px; }
-.course-row { width:100%; display:grid; gap:.25rem; text-align:left; margin:.55rem 0; padding:.65rem .85rem; border-radius:.4rem; }
-.course-page nav,.course-next { display:flex; flex-wrap:wrap; gap:.4rem; margin:1rem 0; }
-.course-page button[aria-current="step"] { box-shadow:inset 0 -5px #256349; }
+/* The course: a sheet of paper on the desk, like the reader. Text is the app's ink at full strength and large, for legibility;
+   actions are green leather; marks of progress are brass. */
+.course-page { max-width: 48rem; margin: auto; background: var(--paper); color: var(--ink); border: 1px solid var(--rule); border-radius: 12px;
+  box-shadow: var(--paper-shadow); padding: clamp(18px, 4vw, 34px); font: 400 1.2rem/1.6 var(--f-text); overflow-wrap: break-word; }
+.course-page :is(h1, h2, h3) { font-family: var(--f-text); font-weight: 700; color: var(--ink); line-height: 1.2; }
+.course-page h1 { font-size: 2.1rem; margin: 12px 0 10px; }
+.course-page h2 { font-size: 1.5rem; margin: 6px 0 10px; }
+.course-page :is(p, label, summary, footer) { color: var(--ink); }
+.course-page .course-kicker { margin: 14px 0 0; font: 400 13.5px/1.4 var(--f-mark); letter-spacing: 0.05em; text-transform: lowercase; color: color-mix(in srgb, var(--brass) 70%, var(--ink)); }
+.course-page section { border-top: 1px solid var(--rule); margin-top: 26px; padding-top: 14px; }
+.course-page label { display: grid; gap: 6px; font: 500 1.05rem/1.3 var(--f-ui); }
+.course-page select { justify-self: start; min-height: 46px; font: 500 1.05rem/1.2 var(--f-ui); color: var(--ink); background: var(--field);
+  border: 1px solid var(--rule); border-radius: 8px; padding: 8px 12px; }
+.course-page .btn { min-height: 46px; font-size: 1.05rem; white-space: normal; background: var(--field); color: var(--ink); border-color: var(--rule); margin: 4px 4px 4px 0; }
+.course-page .btn:disabled { opacity: 1; color: var(--muted); background: transparent; border-style: dashed; }
+.course-page .btn:is([data-course-act="learn"], [data-course-act="start"], [data-course-act="test"], [data-course-act="advance"], [data-course-act="next"]):not(:disabled) {
+  background: linear-gradient(rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0.08)), var(--leather); color: var(--leather-ink); border-color: transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 1px 2px rgba(0, 0, 0, 0.25); }
+.course-page #back { background: transparent; border-color: transparent; padding-inline: 4px; color: var(--ink); font-weight: 600; }
+.course-page nav { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 18px; }
+.course-page nav .btn { margin: 0; border-radius: 999px; padding-inline: 16px; }
+.course-page nav .btn[aria-current="step"] { background: var(--leather); color: var(--leather-ink); border-color: transparent; }
+.course-page .course-next { display: flex; flex-wrap: wrap; gap: 6px; margin: 22px 0 0; }
+.course-page a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
+.course-page footer { margin-top: 10px; font: 400 0.98rem/1.5 var(--f-ui); color: var(--muted); }
+.course-page footer a { color: var(--link); }
+.course-page mark { color: #20180d; background: #f3d77e; border-radius: 3px; padding: 0 2px; }
+.course-page :focus-visible, .courselead:focus-visible { outline: 3px solid var(--brass); outline-offset: 3px; }
+.course-page details { margin-top: 20px; font-family: var(--f-ui); }
+.course-page [role="status"] { margin: 14px 0 8px; padding: 4px 0 4px 14px; border-left: 4px solid var(--brass); }
+/* a module, an answer or a research lesson: a card on the sheet */
+.course-row { width: 100%; display: grid; gap: 3px; text-align: left; margin: 10px 0; padding: 14px 16px; border-radius: 10px;
+  background: var(--field); color: var(--ink); border: 1px solid var(--rule); font: 400 1.1rem/1.4 var(--f-text); }
+.course-row:disabled { opacity: 1; }
+.course-row strong { font-weight: 700; font-size: 1.22rem; color: var(--ink); }
+.course-row small { font: 400 0.95rem/1.4 var(--f-ui); color: var(--muted); }
+.course-row.mod { grid-template-columns: 26px minmax(0, 1fr); column-gap: 12px; border-left: 4px solid var(--rule); }
+.course-row.mod > :not(.cr-ic) { grid-column: 2; }
+.course-row .cr-ic { grid-row: 1 / span 3; padding-top: 3px; color: var(--brass); }
+.course-row .cr-st { font: 500 1.02rem/1.35 var(--f-ui); }
+.course-row.is-open { border-left-color: var(--leather); box-shadow: var(--paper-shadow); }
+.course-row.is-open .cr-st { color: var(--link); }
+.course-row.is-open .cr-ic { color: var(--link); }
+.course-row.is-passed { border-left-color: var(--brass); }
+.course-row.is-passed .cr-st { color: var(--ink); }
+.course-row.is-locked { background: transparent; }
+.course-row.is-locked strong { color: var(--ink); font-weight: 600; }
+.course-row.is-locked .cr-st { color: var(--muted); }
+/* the Learning card that leads the Study screen */
+.courselead.refcard { border-left: 4px solid var(--leather); }
+.courselead.refcard .rc-s { font-size: 15.5px; color: var(--ink); }
+.courselead.refcard .rc-s + .rc-s { color: var(--muted); }

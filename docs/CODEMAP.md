@@ -27,7 +27,7 @@ can break that order: keep new code in the file of its area, and check with a te
 | `js/daily.js` | Today's question on the home screen, the Daily questions screen, and your answers to them |
 | `js/discovery.js` | wishlist records and forms, sourced reading recommendations, and companion books |
 | `js/learning.js` | Optional research track and previous response portfolio. Each response is an ordinary draft keyed by the stable lesson id. |
-| `data/course.js`, `js/course.js` | Chronological lessons and question pools, exact passage anchors, test and period gates, and assignment export. |
+| `data/course.js`, `js/course.js` | Chronological lessons and question pools, exact passage anchors, test and period gates, and assignment export. Overview rows come from `courseRow` (open, passed or locked, each with a small brass mark drawn in SVG); styles under "The course" in css/app.css use the app's paper, ink, leather and brass colours. |
 | `js/boot.js` | events for the whole app, the classics (`CLASSICS`) and starting up |
 
 Each entry below names its functions; `grep -n` over `js/` finds them.

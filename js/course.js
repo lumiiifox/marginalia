@@ -46,6 +46,13 @@ function courseCard() {
   const m = courseNext(), n = COURSE.slice(1).filter(coursePassed).length;
   return `<button class="refcard pathcard courselead" id="opencourse"><span class="rc-t">Learning</span><span class="rc-s">${m ? esc(m.period + " · " + m.title) : "Ancient period assignment"}</span><span class="rc-s">${m ? (courseHas(m,"learn") ? "Resume at the test" : "Begin the lesson") + " · " : ""}${n} of 11 Ancient modules passed</span></button>`;
 }
+// One module in the overview: a small brass mark (a padlock, a tick or an open dot) beside its title, its state and its tags.
+const COURSE_ICONS = {
+  locked: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+  passed: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5" stroke-width="1.6"/><path d="M7.5 12.5l3 3 6-6.5"/></svg>',
+  open: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/></svg>'
+};
+const courseRow = (state, attr, title, status, tags = "") => `<button class="course-row mod is-${state}" ${attr} ${state === "locked" ? "disabled" : ""}><span class="cr-ic" aria-hidden="true">${COURSE_ICONS[state]}</span><strong>${esc(title)}</strong><span class="cr-st">${esc(status)}</span>${tags ? `<small>${esc(tags)}</small>` : ""}</button>`;
 function courseOverview() {
   const filterOptions = [...new Set(COURSE.flatMap(m => m.tags))].sort();
   return `<h1>Learning</h1><p>Begin with the branches of philosophy. Follow the questions through history, one argument at a time.</p>
@@ -54,10 +61,11 @@ function courseOverview() {
       const all = COURSE.filter(m => m.period === period);
       const rows = all.filter(m => !courseFilter || m.tags.includes(courseFilter)).map(m => {
         const open = courseAvailable(m), previous = COURSE[COURSE.indexOf(m)-1];
-        const status = coursePassed(m) ? "Test passed" : open ? (courseHas(m,"learn") ? "Continue to the test" : "Begin lesson") : "🔒 Pass " + previous.title;
-        return `<button class="course-row" data-course-module="${m.id}" ${open ? "" : "disabled"}><strong>${esc(m.title)}</strong><span>${esc(status)}</span><small>${esc(m.tags.join(" · "))}</small></button>`;
+        const passed = coursePassed(m), state = passed ? "passed" : open ? "open" : "locked";
+        const status = passed ? "Test passed" : open ? (courseHas(m,"learn") ? "Continue to the test" : "Begin the lesson") : "Opens after " + previous.title;
+        return courseRow(state, `data-course-module="${m.id}"`, m.title, status, m.tags.join(" · "));
       }).join("");
-      return `<section><h2>${period}</h2><p>${all.length ? all.filter(coursePassed).length + " of " + all.length + " passed" : "Planned after the Ancient pilot review"}</p>${rows || (all.length ? "<p>No modules match this filter.</p>" : "")}${period === "Ancient" ? courseButton("assignment",courseNext() ? "🔒 Assignment · Pass every Ancient test" : "Open Ancient assignment",!!courseNext()) : ""}</section>`;
+      return `<section><h2>${period}</h2><p>${all.length ? all.filter(coursePassed).length + " of " + all.length + " passed" : "Planned after the Ancient pilot review"}</p>${rows || (all.length ? "<p>No modules match this filter.</p>" : "")}${period === "Ancient" ? courseRow(courseNext() ? "locked" : "open", 'data-course-act="assignment"', "Ancient period assignment", courseNext() ? "Opens after every Ancient test is passed" : "Write the assignment") : ""}</section>`;
     }).join("")}
     <section><h2>Optional research track</h2><p>After the course, develop an annotated bibliography, referee report and research paper.</p>${researchLessons.map(l => `<button class="course-row" data-lesson="${l.id}">${esc(l.title)}</button>`).join("")}</section>
     <details><summary>Previous learning portfolio</summary><p>Revisit the earlier exercises and your saved responses.</p><button class="btn" id="openlearning">Open portfolio</button></details>`;
@@ -101,7 +109,7 @@ function courseView() {
     const step = courseHas(m,"learn") ? (v.step || "learn") : "learn";
     const next = COURSE[COURSE.indexOf(m)+1];
     const read = `<h2>Optional primary passage</h2><p>${esc(m.read)}</p>${courseButton("read",m.citation)} ${courseButton("test","Continue to test")}`;
-    body = `<p>${esc(m.period)} · ${esc(m.tags.join(" · "))}</p><h1>${esc(m.title)}</h1><nav aria-label="Module steps">${["learn","passage","test"].map((s,i) => `<button class="btn" data-course-step="${s}" ${s===step ? 'aria-current="step"' : ""} ${i && !courseHas(m,"learn") ? "disabled" : ""}>${["1 Learn","2 Read (optional)","3 Test"][i]}</button>`).join("")}</nav>
+    body = `<p class="course-kicker">${esc(m.period)} · ${esc(m.tags.join(" · "))}</p><h1>${esc(m.title)}</h1><nav aria-label="Module steps">${["learn","passage","test"].map((s,i) => `<button class="btn" data-course-step="${s}" ${s===step ? 'aria-current="step"' : ""} ${i && !courseHas(m,"learn") ? "disabled" : ""}>${["1 Learn","2 Read (optional)","3 Test"][i]}</button>`).join("")}</nav>
       ${step === "test" ? courseTest(m) : step === "passage" ? read : courseLesson(m,v.evidence)}
       <div class="course-next">${courseButton("next",next ? "Next · "+next.title : "Ancient period assignment",!coursePassed(m))}</div>`;
   }
