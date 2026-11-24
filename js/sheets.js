@@ -53,7 +53,7 @@ function go(view) {
 /* The tab bar (#tabbar): Home (the library screen), Library (shelf), Study and Reference. A tab already in the history is stepped
    back to, as the phone's Back would (Home is always the first step, so Home then Back leaves the app); any other is a step forward. */
 const TAB_OF = { library: "library", shelf: "shelf", text: "shelf", tag: "shelf", questions: "shelf", drafts: "shelf", draft: "shelf", compares: "shelf", compare: "shelf",
-  concord: "shelf", trash: "shelf", wishlist: "shelf", recommendations: "shelf", study: "study", paths: "study", disputes: "study", mastery: "study", plates: "study",
+  concord: "shelf", trash: "shelf", wishlist: "shelf", recommendations: "shelf", study: "study", learning: "study", paths: "study", disputes: "study", mastery: "study", plates: "study",
   reference: "reference", glossary: "reference", branches: "reference", thinkers: "reference" };
 function drawTabs() {
   const bar = $("#tabbar"); if (!bar) return;
