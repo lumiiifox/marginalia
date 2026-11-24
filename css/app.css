@@ -742,6 +742,9 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .pbody .noteacts .hint { margin: 0; }
 .refcard.pathcard { margin-top: 0; }
 .studycards { display: grid; gap: 12px; margin-top: 8px; }
+/* Practice: its heading sits on its cards, set apart from Learning above by the page's own spacing */
+.studygroup { display: grid; gap: 4px; }
+.studygroup > h2 { margin: 0; font: 700 1.5rem/1.2 var(--f-text); }
 /* a row of bordered buttons sits on the text's edge (.noteacts pulls back 8px only so ghost buttons' words line up) */
 .noteacts.boxed { margin-left: 0; gap: 8px 12px; align-items: center; }
 /* Continue reading: the current book, first and largest on Home; one tap opens the reader at your place */
@@ -1364,7 +1367,7 @@ button.src::after { content: ""; position: absolute; inset: -8px -2px; }
   border: 1px solid var(--rule); border-radius: 8px; padding: 8px 12px; }
 .course-page .btn { min-height: 46px; font-size: 1.05rem; white-space: normal; background: var(--field); color: var(--ink); border-color: var(--rule); margin: 4px 4px 4px 0; }
 .course-page .btn:disabled { opacity: 1; color: var(--muted); background: transparent; border-style: dashed; }
-.course-page .btn:is([data-course-act="learn"], [data-course-act="start"], [data-course-act="test"], [data-course-act="advance"], [data-course-act="next"]):not(:disabled) {
+.course-page .btn:is([data-course-act="learn"], [data-course-act="notes"], [data-course-act="start"], [data-course-act="test"], [data-course-act="advance"], [data-course-act="next"]):not(:disabled) {
   background: linear-gradient(rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0.08)), var(--leather); color: var(--leather-ink); border-color: transparent;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 1px 2px rgba(0, 0, 0, 0.25); }
 .course-page #back { background: transparent; border-color: transparent; padding-inline: 4px; color: var(--ink); font-weight: 600; }
@@ -1373,6 +1376,13 @@ button.src::after { content: ""; position: absolute; inset: -8px -2px; }
 .course-page nav .btn[aria-current="step"] { background: var(--leather); color: var(--leather-ink); border-color: transparent; }
 .course-page .course-next { display: flex; flex-wrap: wrap; gap: 6px; margin: 22px 0 0; }
 .course-page a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
+/* lesson notes: a question per concept; a right answer stays, marked, as it now stands in the notes */
+.course-page .nq { margin: 14px 0 0; }
+.course-page .nq > p:first-child { font-weight: 600; margin: 0 0 6px; }
+.course-page .nq.done .nq-a { margin: 0; color: var(--ink); }
+.course-page .nq.done .nq-a span, .course-page .nq-hint { color: var(--muted); font: 400 0.98rem/1.4 var(--f-ui); }
+.course-page textarea { width: 100%; min-height: 6.5em; font: 400 1.05rem/1.45 var(--f-text); color: var(--ink); background: var(--field); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; }
+.course-page .course-progress { margin: 18px 0 4px; font: 600 1.02rem/1.3 var(--f-ui); }
 .course-page footer { margin-top: 10px; font: 400 0.98rem/1.5 var(--f-ui); color: var(--muted); }
 .course-page footer a { color: var(--link); }
 .course-page mark { color: #20180d; background: #f3d77e; border-radius: 3px; padding: 0 2px; }

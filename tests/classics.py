@@ -146,10 +146,27 @@ async def main():
         await page.click('#opencourse')
         check(await page.locator('[data-course-module="milesians"]').is_disabled(), "Ancient begins locked")
         await page.click('[data-course-module="foundations"]')
-        await page.click('[data-course-act="learn"]')
+        # the lesson ends in lesson notes: an outline with a prompt per section and questions whose right answers join the notes
+        await page.click('[data-course-act="notes"]')
+        outline = await page.evaluate("[[...document.querySelectorAll('.course-page section h3')].map((h) => h.textContent), COURSE[0].sections.map((s) => s[0]), document.querySelectorAll('textarea[data-notes-sec]').length, document.querySelectorAll('.nq').length, document.querySelector('[data-course-act=learn]').disabled]")
+        check(outline[0] == outline[1] and outline[2] == len(outline[1]) and outline[3] == 10 and outline[4], f"lesson notes: the lesson's outline, a prompt per section, ten questions, Finish closed until they're answered ({outline[2:]})")
+        await page.fill('textarea[data-notes-sec="0"]', "Philosophy asks what entitles us to what we rely on.")
+        await page.click('[data-notes-q="1"][data-notes-opt="1"]'); await page.wait_for_selector('.nq-hint')
+        wrong = await page.evaluate("[!!document.querySelector('[data-notes-q=\"1\"][data-notes-opt=\"1\"]:disabled'), document.querySelector('.nq-hint')?.textContent || '', courseHas(COURSE[0], 'n1')]")
+        check(wrong[0] and COURSE_SEC0 in wrong[1] and not wrong[2] if (COURSE_SEC0 := await page.evaluate("COURSE[0].sections[0][0]")) else False, f"a wrong answer is set aside and the section to reread is named ({wrong})")
+        for k, qi in enumerate(range(1, 20, 2)):
+            await page.click(f'[data-notes-q="{qi}"][data-notes-opt="0"]'); await page.wait_for_function(f"document.querySelectorAll('.nq.done').length === {k + 1}")
+        await page.wait_for_function("(S.drafts.get('course-notes-foundations')?.items || []).filter((i) => i.x.startsWith('✓ ')).length === 10")
+        notes = await page.evaluate("""(() => { const d = S.drafts.get('course-notes-foundations'), q = COURSE_BANK.foundations[1];
+          return [d?.title, d?.items[0], d?.items[1]?.x, d?.items.filter((i) => i.x.startsWith('✓ ')).length, d?.items.some((i) => i.x === '✓ ' + q.q + ' ' + q.options[0]), VALID.drafts(d)]; })()""")
+        check(notes[0] == "Lesson notes · What is philosophy?" and notes[1] == {"t": "h", "x": outline[1][0]} and notes[2] == "Philosophy asks what entitles us to what we rely on." and notes[3] == 10 and notes[4] and notes[5],
+              f"each right answer is added to the notes under its heading, after your own words; the notes are an ordinary draft ({notes[:4]})")
+        await page.click('[data-course-act="learn"]'); await page.wait_for_function("courseRoute().step === 'passage'")
+        check(await page.evaluate("courseHas(COURSE[0], 'learn')"), "answering every question finishes the lesson")
         await page.click('[data-course-act="test"]')
         await page.click('[data-course-act="start"]')
         first = await page.evaluate("courseAttempt(COURSE[0]).order.slice()")
+        check(all(i % 2 == 0 for i in first), f"the first test asks the questions the notes didn't ({first})")
         for i in range(10):
             await page.click(f'[data-course-answer="{1 if i < 3 else 0}"]')
             if i == 0:

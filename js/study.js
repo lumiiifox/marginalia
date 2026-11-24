@@ -523,13 +523,13 @@ function studyView() {
   const card = (id, title, sub) => `<button class="refcard pathcard" id="${id}"><span class="rc-t">${title}</span><span class="rc-s">${sub}</span><span class="rc-go" aria-hidden="true">›</span></button>`;
   const plates = S.notes.size ? bookplates().count : 0;
   return `<header class="gl-head"><div><h1>Study</h1><div class="sub">Practice on checked material, and what you've earned</div></div></header>
-    <div class="studycards">${courseCard()}</div><h2>Practice</h2><div class="studycards">${masteryCardHTML()}
+    <div class="studycards">${courseCard()}</div><section class="studygroup"><h2>Practice</h2><div class="studycards">${masteryCardHTML()}
     ${typeof PATHS !== "undefined" && PATHS.length ? card("openpaths", "Reading paths", `${PATHS.length} routes through the classics on your shelf, chapter by chapter`) : ""}
     ${typeof DAILY_QUESTIONS !== "undefined" && DAILY_QUESTIONS.length ? card("opendaily", "Daily questions", (() => { const n = S.daily.size, a = [...S.daily.values()].filter((r) => r.answer).length; return n ? `${n} seen, ${a} answered. Each one you have seen on the home screen, dated` : "The question on your home screen each day, dated, answered or not"; })()) : ""}
     ${typeof DISPUTES !== "undefined" && DISPUTES.length ? card("opendisputes", "Disputations", `${DISPUTES.length} arguments to answer, then compare with the classic objection`) : ""}
     ${card("puzzles", "Puzzles", "Guess the thinker, connect two thinkers, order of birth")}
     ${card("quiz", "Quiz yourself", "Ten questions from the checked glossary entries and thinkers")}
-    ${card("openplates", "Bookplates", plates ? `${plates} earned from your reading and notes` : "Marks of reading and argument, earned from your notes")}</div>`;
+    ${card("openplates", "Bookplates", plates ? `${plates} earned from your reading and notes` : "Marks of reading and argument, earned from your notes")}</div></section>`;
 }
 // Everything in the three reference sections as one searchable list; each row opens its entry, and each group can open its
 // full screen (the glossary's areas and quiz, a branch's questions and reading, the thinkers' timeline).

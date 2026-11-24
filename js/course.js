@@ -37,7 +37,8 @@ function startCourseTest(m) {
   const bank = COURSE_BANK[m.id], previous = courseAttempt(m);
   const ids = bank.map((_, i) => i);
   // Each pair tests a different concept. Draw one question per concept, then its companion on a retake.
-  const fresh = previous ? ids.filter(i => !previous.order.includes(i)) : Array.from({length: 10}, (_, i) => 2*i + Math.floor(Math.random()*2));
+  // The lesson notes ask the second of each pair (notesQs), so a first test asks the other one.
+  const fresh = previous ? ids.filter(i => !previous.order.includes(i)) : Array.from({length: 10}, (_, i) => 2*i);
   const order = courseShuffle(fresh).slice(0, 10);
   storeAttempt(m, { order, choices: order.map(i => courseShuffle(bank[i].options.map((_, n) => n))), answers: [] });
 }
@@ -81,7 +82,57 @@ function courseLesson(m, evidence) {
   return m.sections.map(([title,...ps],i) => `<section><h2>${esc(title)}</h2>${ps.map(p => {
     const at = target ? p.indexOf(target) : -1;
     return "<p>" + (at < 0 ? esc(p) : esc(p.slice(0,at)) + '<mark id="course-evidence" tabindex="-1">' + esc(target) + "</mark>" + esc(p.slice(at+target.length))) + "</p>";
-  }).join("")}<footer>Sources · ${m.refs[i].map(([name,url]) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(name)}</a>`).join(" · ")}</footer></section>`).join("") + courseTools(m) + courseButton("learn","Finish lesson and continue");
+  }).join("")}<footer>Sources · ${m.refs[i].map(([name,url]) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(name)}</a>`).join(" · ")}</footer></section>`).join("") + courseTools(m) + courseButton("notes", notesDraft(m) ? "Continue your lesson notes" : "Write lesson notes");
+}
+/* Lesson notes: an outline of the lesson, one section a heading, each with a prompt for your own words and the multiple-choice
+   questions on that section (the second of each pair in COURSE_BANK). A right answer goes into the notes under its heading; a
+   wrong one is set aside and the section named to reread. Every question answered right finishes the lesson. The notes are an
+   ordinary draft (course-notes-<module>, in Drafts and in backups); the answers solved are mastery records ("course:<id>:n<q>"). */
+const notesID = m => "course-notes-" + m.id;
+const notesDraft = m => S.drafts.get(notesID(m));
+const notesQs = m => COURSE_BANK[m.id].map((q, i) => [q, i]).filter(([, i]) => i % 2 === 1);
+const notesSec = (m, q) => Number.isInteger(q.s) ? q.s : Math.max(0, m.sections.findIndex(s => q.target && s.slice(1).join(" ").includes(q.target)));
+const NOTE_MARK = "✓ ", NOTES_WRONG = new Map(), NOTES_ORDER = new Map();
+// your own words for each section, read back from the draft (a line of a right answer starts with NOTE_MARK)
+function notesMine(m) {
+  const out = m.sections.map(() => ""), d = notesDraft(m); if (!d) return out;
+  let k = -1;
+  for (const it of d.items) { if (it.t === "h") { k = m.sections.findIndex(s => s[0] === it.x); continue; } if (k >= 0 && it.t === "p" && !it.x.startsWith(NOTE_MARK) && !out[k]) out[k] = it.x; }
+  return out;
+}
+// what's typed on screen wins over what was saved, so an answer tapped while a box still has the cursor keeps its words
+function notesTyped(m) {
+  const mine = notesMine(m);
+  document.querySelectorAll("textarea[data-notes-sec]").forEach(t => { mine[+t.dataset.notesSec] = t.value; });
+  return mine;
+}
+async function saveNotes(m, mine, quiet) {
+  const items = [];
+  m.sections.forEach(([title], k) => {
+    items.push({ t: "h", x: title });
+    if ((mine[k] || "").trim()) items.push({ t: "p", x: mine[k].trim() });
+    for (const [q, i] of notesQs(m)) if (notesSec(m, q) === k && courseHas(m, "n" + i)) items.push({ t: "p", x: NOTE_MARK + q.q + " " + q.options[0] });
+  });
+  const prev = notesDraft(m), now = Date.now(), rec = { ...prev, title: "Lesson notes · " + m.title, items, createdAt: prev?.createdAt || now, updatedAt: now };
+  // words saved as you type are written without redrawing, so the box keeps the cursor and a tap on an answer still lands
+  if (quiet) { S.drafts.set(notesID(m), rec); if (idb) await idbDo("drafts", (st) => st.put(rec, notesID(m))); return; }
+  await put("drafts", notesID(m), rec);
+}
+function notesQuestion(m, q, i) {
+  if (courseHas(m, "n" + i)) return `<div class="nq done"><p>${esc(q.q)}</p><p class="nq-a">✓ ${esc(q.options[0])} <span>· added to your notes</span></p></div>`;
+  const key = m.id + ":" + i, wrong = NOTES_WRONG.get(key) || new Set();
+  if (!NOTES_ORDER.has(key)) NOTES_ORDER.set(key, courseShuffle(q.options.map((_, n) => n)));
+  return `<div class="nq"><p>${esc(q.q)}</p>${NOTES_ORDER.get(key).map(n => `<button class="course-row" data-course-act="noteq" data-notes-q="${i}" data-notes-opt="${n}" ${wrong.has(n) ? "disabled" : ""}>${esc(q.options[n])}${wrong.has(n) ? " · not this one" : ""}</button>`).join("")}
+    ${wrong.size ? `<p class="nq-hint" role="status">Not this one. Reread “${esc(m.sections[notesSec(m, q)][0])}” and try again.</p>` : ""}</div>`;
+}
+function courseNotes(m) {
+  const mine = notesMine(m), qs = notesQs(m), solved = qs.filter(([, i]) => courseHas(m, "n" + i)).length;
+  return `<h2>Lesson notes</h2><p>The lesson's outline, a section at a time. Put each section's point in your own words, then answer its questions: each right answer is added to your notes under its heading. Answer all ${qs.length} to finish the lesson. Your notes are kept in Drafts.</p>
+    ${m.sections.map(([title], k) => `<section><h3>${esc(title)}</h3>
+      <label>In your own words: what does this section claim, and on what grounds?<textarea data-notes-sec="${k}" rows="4">${esc(mine[k])}</textarea></label>
+      ${qs.filter(([q]) => notesSec(m, q) === k).map(([q, i]) => notesQuestion(m, q, i)).join("")}</section>`).join("")}
+    <p class="course-progress" role="status">${solved} of ${qs.length} answered</p>
+    ${courseButton("learn", "Finish notes and continue", solved < qs.length)} ${courseButton("lesson", "Back to the lesson")}`;
 }
 function courseTest(m) {
   const a = courseAttempt(m);
@@ -106,11 +157,11 @@ function courseView() {
   if (v.assignment && !courseNext()) body = courseAssignment();
   else if (!m || !courseAvailable(m)) body = courseOverview();
   else {
-    const step = courseHas(m,"learn") ? (v.step || "learn") : "learn";
+    const step = courseHas(m,"learn") ? (v.step || "learn") : v.step === "notes" ? "notes" : "learn";
     const next = COURSE[COURSE.indexOf(m)+1];
     const read = `<h2>Optional primary passage</h2><p>${esc(m.read)}</p>${courseButton("read",m.citation)} ${courseButton("test","Continue to test")}`;
-    body = `<p class="course-kicker">${esc(m.period)} · ${esc(m.tags.join(" · "))}</p><h1>${esc(m.title)}</h1><nav aria-label="Module steps">${["learn","passage","test"].map((s,i) => `<button class="btn" data-course-step="${s}" ${s===step ? 'aria-current="step"' : ""} ${i && !courseHas(m,"learn") ? "disabled" : ""}>${["1 Learn","2 Read (optional)","3 Test"][i]}</button>`).join("")}</nav>
-      ${step === "test" ? courseTest(m) : step === "passage" ? read : courseLesson(m,v.evidence)}
+    body = `<p class="course-kicker">${esc(m.period)} · ${esc(m.tags.join(" · "))}</p><h1>${esc(m.title)}</h1><nav aria-label="Module steps">${["learn","passage","test"].map((s,i) => `<button class="btn" data-course-step="${s}" ${s===step || (s === "learn" && step === "notes") ? 'aria-current="step"' : ""} ${i && !courseHas(m,"learn") ? "disabled" : ""}>${["1 Learn","2 Read (optional)","3 Test"][i]}</button>`).join("")}</nav>
+      ${step === "test" ? courseTest(m) : step === "passage" ? read : step === "notes" ? courseNotes(m) : courseLesson(m,v.evidence)}
       <div class="course-next">${courseButton("next",next ? "Next · "+next.title : "Ancient period assignment",!coursePassed(m))}</div>`;
   }
   return `<article class="course-page">${courseBack}${body}</article>`;
@@ -140,7 +191,20 @@ async function courseAction(b) {
     });
   }
   if (!m || !courseAvailable(m)) return;
-  if (act === "learn") { await put("mastery",courseKey(m,"learn"),{met:Date.now()}); return route(m,"passage"); }
+  if (act === "notes") return route(m,"notes");
+  if (act === "lesson") { await saveNotes(m, notesTyped(m)); return route(m,"learn"); }
+  if (act === "noteq") {
+    const i = +b.dataset.notesQ, n = +b.dataset.notesOpt, q = COURSE_BANK[m.id][i], mine = notesTyped(m);
+    if (!q || courseHas(m,"n"+i) || i % 2 !== 1) return;
+    if (n === 0) { await put("mastery",courseKey(m,"n"+i),{ans:Date.now()}); await saveNotes(m, mine); return; }
+    const key = m.id + ":" + i; NOTES_WRONG.set(key, new Set([...(NOTES_WRONG.get(key) || []), n]));
+    if (notesDraft(m) || mine.some(x => x.trim())) await saveNotes(m, mine); else render();
+    return;
+  }
+  if (act === "learn") {
+    if (notesQs(m).some(([, i]) => !courseHas(m,"n"+i))) return toast("Answer every question in your notes first.");
+    await saveNotes(m, notesTyped(m)); await put("mastery",courseKey(m,"learn"),{met:Date.now()}); return route(m,"passage");
+  }
   if (b.dataset.courseStep === "learn") return route(m,"learn");
   if (!courseHas(m,"learn")) return;
   if (b.dataset.courseStep) return route(m,b.dataset.courseStep);
@@ -178,4 +242,12 @@ async function courseAction(b) {
   } else return;
   storeAttempt(m,a); render();
 }
-document.addEventListener("change",e => { if (e.target.id === "course-filter") {courseFilter=e.target.value; render(); document.getElementById("course-filter")?.focus();} });
+let notesTimer = 0;
+document.addEventListener("input",e => {
+  if (!(e.target.dataset && e.target.dataset.notesSec !== undefined && S.screen === "course")) return;
+  clearTimeout(notesTimer);
+  notesTimer = setTimeout(() => { const m = COURSE.find(x => x.id === courseRoute().module); if (m) saveNotes(m, notesTyped(m), true).catch(err => toast(failMsg(err))); }, 500);
+});
+document.addEventListener("change",e => {
+  if (e.target.dataset && e.target.dataset.notesSec !== undefined && S.screen === "course") { clearTimeout(notesTimer); const m = COURSE.find(x => x.id === courseRoute().module); if (m) saveNotes(m, notesTyped(m), true).catch(err => toast(failMsg(err))); return; }
+  if (e.target.id === "course-filter") {courseFilter=e.target.value; render(); document.getElementById("course-filter")?.focus();} });
