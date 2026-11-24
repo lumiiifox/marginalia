@@ -64,8 +64,10 @@ function drawTabs() {
 // The phone's keyboard pushes a fixed bar up over what you're typing: the bar steps aside while a text field has the cursor.
 const TYPED = "input:not([type=file]):not([type=range]):not([type=checkbox]):not([type=radio]):not([type=button]), textarea, [contenteditable=true]";
 if (matchMedia("(pointer: coarse)").matches) {
-  document.addEventListener("focusin", (e) => { if (e.target.matches && e.target.matches(TYPED)) document.body.classList.add("typing"); });
-  document.addEventListener("focusout", () => document.body.classList.remove("typing"));
+  // the bar comes back a moment after the cursor leaves, so a tap that moved it (an answer below a box you typed in) lands where aimed
+  let typingOff = 0;
+  document.addEventListener("focusin", (e) => { if (e.target.matches && e.target.matches(TYPED)) { clearTimeout(typingOff); document.body.classList.add("typing"); } });
+  document.addEventListener("focusout", () => { clearTimeout(typingOff); typingOff = setTimeout(() => { if (!(document.activeElement && document.activeElement.matches && document.activeElement.matches(TYPED))) document.body.classList.remove("typing"); }, 400); });
 }
 function goTab(screen) {
   let k = -1; for (let i = NAV.stack.length - 1; i >= 0; i--) if (NAV.stack[i].screen === screen) { k = i; break; }

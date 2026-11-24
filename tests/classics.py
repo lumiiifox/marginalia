@@ -148,7 +148,7 @@ async def main():
         await page.click('[data-course-module="foundations"]')
         # the lesson ends in lesson notes: an outline with a prompt per section and questions whose right answers join the notes
         await page.click('[data-course-act="notes"]')
-        outline = await page.evaluate("[[...document.querySelectorAll('.course-page section h3')].map((h) => h.textContent), COURSE[0].sections.map((s) => s[0]), document.querySelectorAll('textarea[data-notes-sec]').length, document.querySelectorAll('.nq').length, document.querySelector('[data-course-act=learn]').disabled]")
+        outline = await page.evaluate("[[...document.querySelectorAll('.course-page section:not(.cloze) h3')].map((h) => h.textContent), COURSE[0].sections.map((s) => s[0]), document.querySelectorAll('textarea[data-notes-sec]').length, document.querySelectorAll('.nq').length, document.querySelector('[data-course-act=learn]').disabled]")
         check(outline[0] == outline[1] and outline[2] == len(outline[1]) and outline[3] == 10 and outline[4], f"lesson notes: the lesson's outline, a prompt per section, ten questions, Finish closed until they're answered ({outline[2:]})")
         await page.fill('textarea[data-notes-sec="0"]', "Philosophy asks what entitles us to what we rely on.")
         await page.click('[data-notes-q="1"][data-notes-opt="1"]'); await page.wait_for_selector('.nq-hint')
@@ -157,8 +157,23 @@ async def main():
         for k, qi in enumerate(range(1, 20, 2)):
             await page.click(f'[data-notes-q="{qi}"][data-notes-opt="0"]'); await page.wait_for_function(f"document.querySelectorAll('.nq.done').length === {k + 1}")
         await page.wait_for_function("(S.drafts.get('course-notes-foundations')?.items || []).filter((i) => i.x.startsWith('✓ ')).length === 10")
+        check(await page.evaluate("document.querySelector('[data-course-act=learn]').disabled"), "with the blanks still to fill, Finish stays closed")
+        # fill in the blanks: every blank is the lesson's own words, once in its paragraph; a wrong word is marked, a right one turns to text
+        bad = await page.evaluate("""COURSE.flatMap((m) => (COURSE_CLOZE[m.id] || []).flatMap((c, k) => { const para = m.sections[c.s]?.[c.p + 1] || '';
+          return c.blanks.filter((b) => para.split(b).length !== 2).map((b) => m.id + ' ' + k + ': ' + b); })).concat(COURSE.filter((m) => !(COURSE_CLOZE[m.id] || []).length).map((m) => m.id + ' has none'))""")
+        check(not bad, f"every module has blanks, each the lesson's own words, once in its paragraph ({bad[:4]})")
+        await page.fill('input.cz[data-cz="0:0"]', "ontology"); await page.press('input.cz[data-cz="0:0"]', "Enter")
+        check(await page.evaluate("document.querySelector('input.cz[data-cz=\"0:0\"]').getAttribute('aria-invalid')") == "true", "a wrong word in a blank is marked")
+        answers = await page.evaluate("COURSE_CLOZE.foundations.flatMap((c, k) => c.blanks.map((b, j) => [k + ':' + j, b]))")
+        for key, word in answers:
+            await page.fill(f'input.cz[data-cz="{key}"]', word.upper() if key == "0:1" else word)
+        await page.wait_for_function("COURSE_CLOZE.foundations.every((_, k) => courseHas(COURSE[0], 'c' + k))")
+        await page.wait_for_function("(S.drafts.get('course-notes-foundations')?.items || []).filter((i) => i.x.startsWith('✓ ')).length === 12")
+        cz = await page.evaluate("""(() => { const c = COURSE_CLOZE.foundations[0], para = COURSE[0].sections[c.s][c.p + 1], d = S.drafts.get('course-notes-foundations');
+          const at = d.items.findIndex((i) => i.x === '✓ ' + para), head = d.items.slice(0, at).reverse().find((i) => i.t === 'h'); return [at > 0, head?.x === COURSE[0].sections[c.s][0], document.querySelectorAll('input.cz').length]; })()""")
+        check(cz == [True, True, 0], f"right words (in any case) fill the blanks, and each finished paragraph joins the notes under its section ({cz})")
         notes = await page.evaluate("""(() => { const d = S.drafts.get('course-notes-foundations'), q = COURSE_BANK.foundations[1];
-          return [d?.title, d?.items[0], d?.items[1]?.x, d?.items.filter((i) => i.x.startsWith('✓ ')).length, d?.items.some((i) => i.x === '✓ ' + q.q + ' ' + q.options[0]), VALID.drafts(d)]; })()""")
+          return [d?.title, d?.items[0], d?.items[1]?.x, d?.items.filter((i) => i.x.startsWith('✓ ') && !COURSE_CLOZE.foundations.some((c) => i.x === '✓ ' + COURSE[0].sections[c.s][c.p + 1])).length, d?.items.some((i) => i.x === '✓ ' + q.q + ' ' + q.options[0]), VALID.drafts(d)]; })()""")
         check(notes[0] == "Lesson notes · What is philosophy?" and notes[1] == {"t": "h", "x": outline[1][0]} and notes[2] == "Philosophy asks what entitles us to what we rely on." and notes[3] == 10 and notes[4] and notes[5],
               f"each right answer is added to the notes under its heading, after your own words; the notes are an ordinary draft ({notes[:4]})")
         await page.click('[data-course-act="learn"]'); await page.wait_for_function("courseRoute().step === 'passage'")

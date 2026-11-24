@@ -4040,3 +4040,275 @@ const COURSE_BANK = {
     }
   ]
 };
+
+// Fill in the blanks in the lesson notes: two of the lesson's own paragraphs per module (section s, paragraph p, counting the
+// section's first paragraph as 0), each with the exact words to leave out (each occurs once in its paragraph; tests/classics.py checks).
+const COURSE_CLOZE = {
+ "foundations": [
+  {
+   "s": 1,
+   "p": 0,
+   "blanks": [
+    "Metaphysics",
+    "what exists",
+    "Epistemology",
+    "what justifies a belief"
+   ]
+  },
+  {
+   "s": 5,
+   "p": 0,
+   "blanks": [
+    "Validity",
+    "the link",
+    "actually true",
+    "sound"
+   ]
+  }
+ ],
+ "milesians": [
+  {
+   "s": 1,
+   "p": 2,
+   "blanks": [
+    "archē",
+    "a first principle",
+    "full of gods",
+    "a natural principle"
+   ]
+  },
+  {
+   "s": 3,
+   "p": 1,
+   "blanks": [
+    "Thales’ water",
+    "apeiron",
+    "the boundless",
+    "separate out"
+   ]
+  }
+ ],
+ "change": [
+  {
+   "s": 0,
+   "p": 1,
+   "blanks": [
+    "logos",
+    "opposites",
+    "in tension",
+    "strife"
+   ]
+  },
+  {
+   "s": 3,
+   "p": 1,
+   "blanks": [
+    "change, motion and division",
+    "where it is not",
+    "gaps of nothing",
+    "unmoving"
+   ]
+  }
+ ],
+ "socrates": [
+  {
+   "s": 2,
+   "p": 0,
+   "blanks": [
+    "elenchus",
+    "cross-examination",
+    "a definition",
+    "contradict"
+   ]
+  },
+  {
+   "s": 3,
+   "p": 2,
+   "blanks": [
+    "the gods love it",
+    "a consequence of piety",
+    "Euthyphro dilemma",
+    "what a god commands"
+   ]
+  }
+ ],
+ "justice": [
+  {
+   "s": 0,
+   "p": 2,
+   "blanks": [
+    "Thrasymachus",
+    "rhetoric",
+    "advantage of the stronger",
+    "get away with injustice"
+   ]
+  },
+  {
+   "s": 3,
+   "p": 0,
+   "blanks": [
+    "its own work",
+    "appetite",
+    "Wisdom",
+    "courage",
+    "moderation"
+   ]
+  }
+ ],
+ "cave": [
+  {
+   "s": 1,
+   "p": 0,
+   "blanks": [
+    "the Forms",
+    "beauty itself",
+    "participate"
+   ]
+  },
+  {
+   "s": 3,
+   "p": 0,
+   "blanks": [
+    "intelligible world",
+    "Form of the good",
+    "knowable",
+    "source of their being"
+   ]
+  }
+ ],
+ "causes": [
+  {
+   "s": 1,
+   "p": 1,
+   "blanks": [
+    "material cause",
+    "formal cause",
+    "efficient cause",
+    "final cause"
+   ]
+  },
+  {
+   "s": 3,
+   "p": 1,
+   "blanks": [
+    "potentiality",
+    "actuality",
+    "sheer nothing",
+    "the capacity"
+   ]
+  }
+ ],
+ "character": [
+  {
+   "s": 1,
+   "p": 1,
+   "blanks": [
+    "nutrition and growth",
+    "perception",
+    "live by reason",
+    "activity of the soul",
+    "excellence"
+   ]
+  },
+  {
+   "s": 3,
+   "p": 0,
+   "blanks": [
+    "a mean",
+    "excess",
+    "deficiency",
+    "cowardice",
+    "rashness"
+   ]
+  }
+ ],
+ "garden": [
+  {
+   "s": 2,
+   "p": 1,
+   "blanks": [
+    "Letter to Menoeceus",
+    "natural and necessary",
+    "natural but unnecessary",
+    "empty",
+    "false beliefs"
+   ]
+  },
+  {
+   "s": 3,
+   "p": 0,
+   "blanks": [
+    "the end of sensation",
+    "nothing to us",
+    "we no longer exist"
+   ]
+  }
+ ],
+ "stoics": [
+  {
+   "s": 2,
+   "p": 0,
+   "blanks": [
+    "Handbook",
+    "our judgments",
+    "our bodies",
+    "by nature free"
+   ]
+  },
+  {
+   "s": 3,
+   "p": 1,
+   "blanks": [
+    "the only good",
+    "the only evil",
+    "indifferents",
+    "naturally preferred"
+   ]
+  }
+ ],
+ "way": [
+  {
+   "s": 1,
+   "p": 0,
+   "blanks": [
+    "humaneness or benevolence",
+    "care for others",
+    "love people",
+    "golden rule"
+   ]
+  },
+  {
+   "s": 3,
+   "p": 1,
+   "blanks": [
+    "dao",
+    "wuwei",
+    "non-action",
+    "without forcing"
+   ]
+  }
+ ],
+ "buddhism": [
+  {
+   "s": 1,
+   "p": 0,
+   "blanks": [
+    "four noble truths",
+    "dukkha",
+    "craving",
+    "nirvana",
+    "eightfold path"
+   ]
+  },
+  {
+   "s": 3,
+   "p": 1,
+   "blanks": [
+    "in charge",
+    "under your control",
+    "turn against you",
+    "consciousness"
+   ]
+  }
+ ]
+};

@@ -1382,6 +1382,15 @@ button.src::after { content: ""; position: absolute; inset: -8px -2px; }
 .course-page .nq.done .nq-a { margin: 0; color: var(--ink); }
 .course-page .nq.done .nq-a span, .course-page .nq-hint { color: var(--muted); font: 400 0.98rem/1.4 var(--f-ui); }
 .course-page textarea { width: 100%; min-height: 6.5em; font: 400 1.05rem/1.45 var(--f-text); color: var(--ink); background: var(--field); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; }
+/* fill in the blanks: gaps sized to their words, a right one set as text, a wrong one outlined until it's changed */
+.course-page .cz-label { margin: 16px 0 4px; font: 600 0.98rem/1.3 var(--f-ui); color: var(--muted); }
+.course-page .cz-text { line-height: 2.1; }
+.course-page input.cz { font: 400 1.02rem/1.2 var(--f-text); color: var(--ink); background: var(--field); border: 0; border-bottom: 2px solid var(--brass); border-radius: 4px 4px 0 0; padding: 2px 6px; min-width: 6ch; max-width: 100%; }
+.course-page input.cz:focus { outline: 2px solid var(--link); outline-offset: 1px; }
+.course-page input.cz.cz-no { border-bottom-color: var(--warn); background: color-mix(in srgb, var(--warn) 12%, var(--field)); }
+.course-page .cz-ok { font-weight: 700; color: var(--ink); border-bottom: 2px solid color-mix(in srgb, var(--leather) 70%, transparent); }
+.course-page .cz-bank summary { font: 500 0.98rem/1.3 var(--f-ui); color: var(--link); cursor: pointer; }
+.course-page .cz-bank p { margin: 6px 0 0; font: 400 1rem/1.5 var(--f-ui); color: var(--ink); }
 .course-page .course-progress { margin: 18px 0 4px; font: 600 1.02rem/1.3 var(--f-ui); }
 .course-page footer { margin-top: 10px; font: 400 0.98rem/1.5 var(--f-ui); color: var(--muted); }
 .course-page footer a { color: var(--link); }

@@ -112,11 +112,49 @@ async function saveNotes(m, mine, quiet) {
     items.push({ t: "h", x: title });
     if ((mine[k] || "").trim()) items.push({ t: "p", x: mine[k].trim() });
     for (const [q, i] of notesQs(m)) if (notesSec(m, q) === k && courseHas(m, "n" + i)) items.push({ t: "p", x: NOTE_MARK + q.q + " " + q.options[0] });
+    clozes(m).forEach((c, j) => { if (c.s === k && courseHas(m, "c" + j)) items.push({ t: "p", x: NOTE_MARK + clozeText(m, c) }); });
   });
   const prev = notesDraft(m), now = Date.now(), rec = { ...prev, title: "Lesson notes · " + m.title, items, createdAt: prev?.createdAt || now, updatedAt: now };
   // words saved as you type are written without redrawing, so the box keeps the cursor and a tap on an answer still lands
   if (quiet) { S.drafts.set(notesID(m), rec); if (idb) await idbDo("drafts", (st) => st.put(rec, notesID(m))); return; }
   await put("drafts", notesID(m), rec);
+}
+/* Fill in the blanks: two of the lesson's own paragraphs (COURSE_CLOZE) with key words left out, typed back in. A blank is right
+   when it matches the lesson's words, case, accents, punctuation and a leading "the" or "a" aside; it then shows as text. A paragraph
+   with every blank right is recorded (mastery "course:<id>:c<k>") and added, whole, to the notes under its section. The words
+   can be shown, shuffled, under each paragraph. Blanks right in a paragraph not yet finished are kept for this sitting only. */
+const clozes = m => (typeof COURSE_CLOZE !== "undefined" && COURSE_CLOZE[m.id]) || [];
+const clozeText = (m, c) => m.sections[c.s][c.p + 1];
+const CLOZE_GOT = new Set(), CLOZE_BANK = new Map();
+const foldAns = x => fold(String(x || "")).toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, "").replace(/\s+/g, " ").trim().replace(/^(the|a|an) /, "");
+function clozeParts(m, c) {
+  const para = clozeText(m, c), at = c.blanks.map((b, j) => [para.indexOf(b), j]).sort((a, b) => a[0] - b[0]), out = [];
+  let pos = 0;
+  for (const [i, j] of at) { out.push(para.slice(pos, i), j); pos = i + c.blanks[j].length; }
+  out.push(para.slice(pos)); return out;
+}
+function clozeHTML(m, c, k) {
+  const done = courseHas(m, "c" + k), key = m.id + ":" + k;
+  if (!CLOZE_BANK.has(key)) CLOZE_BANK.set(key, courseShuffle(c.blanks));
+  const parts = clozeParts(m, c).map(x => typeof x !== "number" ? esc(x)
+    : done || CLOZE_GOT.has(key + ":" + x) ? `<b class="cz-ok">${esc(c.blanks[x])}</b>`
+    : `<input class="cz" data-cz="${k}:${x}" aria-label="Blank ${x + 1} from “${esc(m.sections[c.s][0])}”" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="next" style="width:${Math.min(22, Math.max(6, c.blanks[x].length + 2))}ch">`).join("");
+  return `<div class="czp${done ? " done" : ""}"><p class="cz-label">From “${esc(m.sections[c.s][0])}”</p><p class="cz-text">${parts}</p>
+    ${done ? `<p class="nq-a">✓ <span>added to your notes</span></p>` : `<details class="cz-bank"><summary>Show the words to choose from</summary><p>${CLOZE_BANK.get(key).map(esc).join(" · ")}</p></details>`}</div>`;
+}
+const notesDone = m => notesQs(m).every(([, i]) => courseHas(m, "n" + i)) && clozes(m).every((_, k) => courseHas(m, "c" + k));
+// a blank typed: right, it becomes text and the next blank takes the cursor; a finished paragraph is saved into the notes
+async function clozeInput(t) {
+  const m = COURSE.find(x => x.id === courseRoute().module); if (!m) return;
+  const [k, j] = t.dataset.cz.split(":").map(Number), c = clozes(m)[k]; if (!c) return;
+  t.classList.remove("cz-no"); t.removeAttribute("aria-invalid");
+  if (foldAns(t.value) !== foldAns(c.blanks[j])) return;
+  CLOZE_GOT.add(m.id + ":" + k + ":" + j);
+  const box = t.closest(".czp"), b = document.createElement("b"); b.className = "cz-ok"; b.textContent = c.blanks[j]; t.replaceWith(b);
+  const next = box && box.querySelector("input.cz"); if (next) { next.focus(); return; }
+  const mine = notesTyped(m);
+  await put("mastery", courseKey(m, "c" + k), { ans: Date.now() }); await saveNotes(m, mine);
+  document.querySelectorAll("input.cz")[0]?.focus();
 }
 function notesQuestion(m, q, i) {
   if (courseHas(m, "n" + i)) return `<div class="nq done"><p>${esc(q.q)}</p><p class="nq-a">✓ ${esc(q.options[0])} <span>· added to your notes</span></p></div>`;
@@ -126,13 +164,15 @@ function notesQuestion(m, q, i) {
     ${wrong.size ? `<p class="nq-hint" role="status">Not this one. Reread “${esc(m.sections[notesSec(m, q)][0])}” and try again.</p>` : ""}</div>`;
 }
 function courseNotes(m) {
-  const mine = notesMine(m), qs = notesQs(m), solved = qs.filter(([, i]) => courseHas(m, "n" + i)).length;
-  return `<h2>Lesson notes</h2><p>The lesson's outline, a section at a time. Put each section's point in your own words, then answer its questions: each right answer is added to your notes under its heading. Answer all ${qs.length} to finish the lesson. Your notes are kept in Drafts.</p>
+  const mine = notesMine(m), qs = notesQs(m), cz = clozes(m);
+  const solved = qs.filter(([, i]) => courseHas(m, "n" + i)).length + cz.filter((_, k) => courseHas(m, "c" + k)).length, all = qs.length + cz.length;
+  return `<h2>Lesson notes</h2><p>The lesson's outline, a section at a time. Put each section's point in your own words, then answer its questions: each right answer is added to your notes under its heading. Then fill in the blanks in ${cz.length === 1 ? "a paragraph" : cz.length + " paragraphs"} from the lesson. Finish all ${all} to finish the lesson. Your notes are kept in Drafts.</p>
     ${m.sections.map(([title], k) => `<section><h3>${esc(title)}</h3>
       <label>In your own words: what does this section claim, and on what grounds?<textarea data-notes-sec="${k}" rows="4">${esc(mine[k])}</textarea></label>
       ${qs.filter(([q]) => notesSec(m, q) === k).map(([q, i]) => notesQuestion(m, q, i)).join("")}</section>`).join("")}
-    <p class="course-progress" role="status">${solved} of ${qs.length} answered</p>
-    ${courseButton("learn", "Finish notes and continue", solved < qs.length)} ${courseButton("lesson", "Back to the lesson")}`;
+    ${cz.length ? `<section class="cloze"><h3>Fill in the blanks</h3><p>Type the lesson's word or phrase into each gap. A right answer turns into text; each finished paragraph is added to your notes.</p>${cz.map((c, k) => clozeHTML(m, c, k)).join("")}</section>` : ""}
+    <p class="course-progress" role="status">${solved} of ${all} done</p>
+    ${courseButton("learn", "Finish notes and continue", solved < all)} ${courseButton("lesson", "Back to the lesson")}`;
 }
 function courseTest(m) {
   const a = courseAttempt(m);
@@ -202,7 +242,7 @@ async function courseAction(b) {
     return;
   }
   if (act === "learn") {
-    if (notesQs(m).some(([, i]) => !courseHas(m,"n"+i))) return toast("Answer every question in your notes first.");
+    if (!notesDone(m)) return toast("Answer every question and fill every blank in your notes first.");
     await saveNotes(m, notesTyped(m)); await put("mastery",courseKey(m,"learn"),{met:Date.now()}); return route(m,"passage");
   }
   if (b.dataset.courseStep === "learn") return route(m,"learn");
@@ -243,11 +283,15 @@ async function courseAction(b) {
   storeAttempt(m,a); render();
 }
 let notesTimer = 0;
+document.addEventListener("input",e => { if (e.target.matches && e.target.matches("input.cz") && S.screen === "course") clozeInput(e.target).catch(err => toast(failMsg(err))); });
+const clozeWrong = t => { if (t.matches && t.matches("input.cz") && t.isConnected && t.value.trim()) { t.classList.add("cz-no"); t.setAttribute("aria-invalid", "true"); } };
+document.addEventListener("keydown",e => { if (e.key === "Enter" && e.target.matches && e.target.matches("input.cz")) { e.preventDefault(); clozeWrong(e.target); } });
 document.addEventListener("input",e => {
   if (!(e.target.dataset && e.target.dataset.notesSec !== undefined && S.screen === "course")) return;
   clearTimeout(notesTimer);
   notesTimer = setTimeout(() => { const m = COURSE.find(x => x.id === courseRoute().module); if (m) saveNotes(m, notesTyped(m), true).catch(err => toast(failMsg(err))); }, 500);
 });
 document.addEventListener("change",e => {
+  if (e.target.matches && e.target.matches("input.cz")) return clozeWrong(e.target);
   if (e.target.dataset && e.target.dataset.notesSec !== undefined && S.screen === "course") { clearTimeout(notesTimer); const m = COURSE.find(x => x.id === courseRoute().module); if (m) saveNotes(m, notesTyped(m), true).catch(err => toast(failMsg(err))); return; }
   if (e.target.id === "course-filter") {courseFilter=e.target.value; render(); document.getElementById("course-filter")?.focus();} });
