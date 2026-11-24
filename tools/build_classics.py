@@ -37,6 +37,16 @@ PORT = 8821
 # drop: CSS selectors for parts of those files left out (the Republic leaves out Jowett's book-length Introduction and Analysis,
 # and with it the heading that only told the dialogue from the introduction).
 BOOKS = [
+    dict(id="classic-seneca-dialogues", repo="seneca_dialogues_aubrey-stewart", files=None,
+         text=dict(title="Dialogues", author="Seneca", edition="trans. Aubrey Stewart", year="2016", publisher="Standard Ebooks")),
+    dict(id="classic-aurelius-meditations", repo="marcus-aurelius_meditations_george-long", files=None,
+         text=dict(title="Meditations", author="Marcus Aurelius", edition="trans. George Long", year="2014", publisher="Standard Ebooks")),
+    dict(id="classic-machiavelli-prince", repo="niccolo-machiavelli_the-prince_w-k-marriott", files=None,
+         text=dict(title="The Prince", author="Niccolò Machiavelli", edition="trans. W. K. Marriott", orig="1532", year="2014", publisher="Standard Ebooks")),
+    dict(id="classic-james-pragmatism", repo="william-james_pragmatism", files=None,
+         text=dict(title="Pragmatism", author="William James", orig="1907", year="2023", publisher="Standard Ebooks")),
+    dict(id="classic-wilde-dorian-gray", repo="oscar-wilde_the-picture-of-dorian-gray", files=None,
+         text=dict(title="The Picture of Dorian Gray", author="Oscar Wilde", edition="expanded 1891 novel", orig="1890", year="2014", publisher="Standard Ebooks")),
     # Burke (died 1797): the Inquiry (1757) in vol. I of The Works of the Right Honourable Edmund Burke (London: John C. Nimmo, 1887),
     # Gutenberg 15043; cover drawn here. Schopenhauer (died 1860): Studies in Pessimism, selected and translated by T. Bailey Saunders
     # (1860–1928), London 1891, Gutenberg 10732; cover drawn here. Lovecraft (died 1937): "The Call of Cthulhu", Weird Tales, February
