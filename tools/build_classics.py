@@ -37,6 +37,23 @@ PORT = 8821
 # drop: CSS selectors for parts of those files left out (the Republic leaves out Jowett's book-length Introduction and Analysis,
 # and with it the heading that only told the dialogue from the introduction).
 BOOKS = [
+    dict(id="classic-sophocles-antigone", repo="sophocles_antigone_francis-storr", files=None, heading_file="antigone",
+         text=dict(title="Antigone", author="Sophocles", edition="trans. Francis Storr", year="2025", publisher="Standard Ebooks")),
+    dict(id="classic-lucretius-nature", text_source=dict(repo="https://github.com/GITenberg/On-the-Nature-of-Things_785", file="785-h/785-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="lucretius-nature"),
+         cover=dict(title="Of the Nature of Things", size=32, art="stars"),
+         text=dict(title="Of the Nature of Things", author="Titus Lucretius Carus", edition="trans. William Ellery Leonard", publisher="Project Gutenberg")),
+    dict(id="classic-douglass-narrative", repo="frederick-douglass_narrative-of-the-life-of-frederick-douglass", files=None,
+         text=dict(title="Narrative of the Life of Frederick Douglass", author="Frederick Douglass", orig="1845", year="2020", publisher="Standard Ebooks")),
+    dict(id="classic-stevenson-jekyll", repo="robert-louis-stevenson_the-strange-case-of-dr-jekyll-and-mr-hyde", files=None,
+         text=dict(title="The Strange Case of Dr. Jekyll and Mr. Hyde", author="Robert Louis Stevenson", orig="1886", year="2015", publisher="Standard Ebooks")),
+    dict(id="classic-gilman-wallpaper", text_source=dict(repo="https://github.com/GITenberg/The-Yellow-Wallpaper_1952", file="1952-h/1952-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="gilman-wallpaper"),
+         cover=dict(title="The Yellow Wallpaper", size=32, art="stars"), parts=True,
+         text=dict(title="The Yellow Wallpaper", author="Charlotte Perkins Gilman", orig="1892", publisher="Project Gutenberg")),
+    dict(id="classic-stoker-dracula", repo="bram-stoker_dracula", files=None, unwrap="section > blockquote",
+         text=dict(title="Dracula", author="Bram Stoker", orig="1897", year="2014", publisher="Standard Ebooks")),
+    dict(id="classic-burnet-early", text_source=dict(repo="https://github.com/GITenberg/Early-Greek-philosophy_67097", file="67097-h/67097-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="burnet-early"),
+         cover=dict(title="Early Greek Philosophy", size=32, art="stars"),
+         text=dict(title="Early Greek Philosophy", author="John Burnet", edition="second edition (1908)", orig="1892", publisher="Project Gutenberg")),
     dict(id="classic-augustine-confessions", text_source=dict(repo="https://github.com/GITenberg/The-Confessions-of-St.-Augustine_3296",
          file="3296-h/3296-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="augustine_confessions"),
          cover=dict(title="Confessions", size=40, art="stars"),
@@ -120,12 +137,13 @@ BOOKS = [
 ]
 SKIP = {"titlepage", "imprint", "halftitlepage", "colophon", "uncopyright", "endnotes", "loi"}
 
-BUILD = r"""async ({ id, files, endnotes, flatten, parts, drop }) => {
+BUILD = r"""async ({ id, files, endnotes, flatten, parts, drop, unwrap }) => {
   const XH = "http://www.w3.org/1999/xhtml", P = new DOMParser();
   const parse = (s) => P.parseFromString(s.replace(/\u2060/g, ""), "application/xhtml+xml");
   const et = (el) => (el && el.getAttribute && el.getAttribute("epub:type")) || "";
   const docs = files.map(parse), EN = endnotes ? parse(endnotes) : null;
   for (const d of docs) for (const sel of drop || []) d.querySelectorAll(sel).forEach((el) => el.remove()); // parts left out (an editor's long introduction)
+  if (unwrap) for (const d of docs) for (const el of d.querySelectorAll(unwrap)) el.replaceWith(...el.childNodes);
   const notes = new Map(); if (EN) for (const li of EN.getElementsByTagName("li")) if (li.getAttribute("id")) notes.set(li.getAttribute("id"), li);
   const num = new Map();
   const isTitlePart = (el) => el.localName === "p" && /(^|\s)(title|subtitle|se:bridgehead)(\s|$)/.test(et(el));
@@ -136,7 +154,7 @@ BUILD = r"""async ({ id, files, endnotes, flatten, parts, drop }) => {
       if (!extra) { p.remove(); continue; }
       if (base.length + extra.length > 220) continue; // too long for one heading: the line stays below it
       const tail = h.lastChild; if (tail && tail.nodeType === 3) tail.nodeValue = tail.nodeValue.replace(/\s+$/, "");
-      h.appendChild(d.createTextNode(/\)$/.test(base) ? " " : /ordinal/.test(et(h)) ? ". " : ": "));
+      h.appendChild(d.createTextNode(/[.)]$/.test(base) ? " " : /ordinal/.test(et(h)) ? ". " : ": "));
       while (p.firstChild) h.appendChild(p.firstChild);
       p.remove();
     }
@@ -633,6 +651,55 @@ def xhtml_body(elements):
     return '<html xmlns="http://www.w3.org/1999/xhtml"><head/><body>' + body + '</body></html>'
 
 
+def gilman_wallpaper(raw):
+    from lxml import html
+    doc = html.fromstring(raw.encode(), parser=html.HTMLParser(encoding="utf-8"))
+    elements = [html.fromstring("<h2>The Yellow Wallpaper</h2>")]
+    for el in doc.xpath("//body/hr")[0].itersiblings():
+        if el.tag == "pre": break
+        if el.tag == "p" and el.text_content().strip(): elements.append(el)
+    return xhtml_body(elements)
+
+
+def lucretius_nature(raw):
+    from lxml import html
+    doc = html.fromstring(raw.encode(), parser=html.HTMLParser(encoding="utf-8"))
+    first = next(h for h in doc.xpath("//h2") if h.text_content().strip() == "BOOK I")
+    elements = []
+    for el in [first, *first.itersiblings()]:
+        words = el.text_content().strip()
+        if not words: continue
+        if el.tag == "pre":
+            if "End of the Project Gutenberg" in words: break
+            for stanza in re.split(r"\n\s*\n", words):
+                verse = html.Element("p")
+                verse.text = " / ".join(line.strip() for line in stanza.splitlines())
+                elements.append(verse)
+        elif el.tag in ("h2", "p"):
+            book = re.fullmatch(r"BOOK ([IVX]+)", words)
+            heading = html.Element("h2" if book else "h3")
+            heading.text = "Book " + book[1] if book else heading_text(words)
+            elements.append(heading)
+    assert sum(h.tag == "h2" for h in elements) == 6
+    return xhtml_body(elements)
+
+
+def burnet_early(raw):
+    from lxml import html
+    doc = html.fromstring(raw.encode(), parser=html.HTMLParser(encoding="utf-8"))
+    first = doc.xpath("//h2")[0].getparent()
+    for pg in doc.find_class("pageno"):
+        pg.set("role", "doc-pagebreak")
+        pg.set("title", pg.text_content().strip())
+    for a in doc.xpath("//a[starts-with(@href,'#f')]/sup"):
+        if re.fullmatch(r"\[\d+\]", a.text or ""): a.text = a.text.strip("[]")
+    elements = []
+    for el in [first, *first.itersiblings()]:
+        if "END OF THE PROJECT GUTENBERG" in el.text_content()[:100]: break
+        elements.append(el)
+    return xhtml_body(elements)
+
+
 def augustine_confessions(raw):
     from lxml import html
     doc = html.fromstring(raw.encode("utf-8"), parser=html.HTMLParser(encoding="utf-8"))
@@ -702,7 +769,7 @@ def berkeley_dialogues(raw):
     return '<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Three Dialogues</title></head><body>' + "".join(out) + "</body></html>"
 
 
-CONVERT = {"augustine_confessions": augustine_confessions, "bergson_time": bergson_time, "berkeley_dialogues": berkeley_dialogues, "kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique, "aristotle_metaphysics": aristotle_metaphysics, "xenophon_memorabilia": xenophon_memorabilia}
+CONVERT = {"gilman-wallpaper": gilman_wallpaper, "burnet-early": burnet_early, "lucretius-nature": lucretius_nature, "augustine_confessions": augustine_confessions, "bergson_time": bergson_time, "berkeley_dialogues": berkeley_dialogues, "kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique, "aristotle_metaphysics": aristotle_metaphysics, "xenophon_memorabilia": xenophon_memorabilia}
 
 def clone(url, dest):
     if not dest.exists():
@@ -769,6 +836,9 @@ async def main(only):
                     text_dir = SE / bk["repo"] / "src/epub/text"
                     names = bk.get("files") or [n for n in spine(bk["repo"]) if n not in SKIP | bk.get("skip", set())]
                     files = [(text_dir / f"{n}.xhtml").read_text(encoding="utf-8") for n in names]
+                    if bk.get("heading_file"):
+                        index = names.index(bk["heading_file"])
+                        files[index] = re.sub(r"(<body[^>]*>)", lambda m: m[1] + "<h2>" + esc(bk["text"]["title"]) + "</h2>", files[index], count=1)
                     en = text_dir / "endnotes.xhtml"; endnotes = en.read_text(encoding="utf-8") if en.exists() else None
                 elif bk.get("epub_source"):
                     names = []
@@ -784,7 +854,7 @@ async def main(only):
                         files, endnotes = [CONVERT[ts["convert"]](raw, verse)], None
                     else:
                         files, endnotes = [CONVERT[ts["convert"]]((TEXTS / bk["id"] / ts["file"]).read_text(encoding=ts.get("encoding", "latin-1")))], None
-                r = await page.evaluate(BUILD, {"id": bk["id"], "flatten": bool(bk.get("flatten")), "files": files, "endnotes": endnotes, "drop": bk.get("drop") or [],
+                r = await page.evaluate(BUILD, {"id": bk["id"], "flatten": bool(bk.get("flatten")), "files": files, "endnotes": endnotes, "unwrap": bk.get("unwrap"), "drop": bk.get("drop") or [],
                                                 "parts": [n.startswith("part-") for n in names] if bk.get("parts") else None})
                 for s in r["sections"]:
                     if bk.get("partOf") and re.fullmatch(r"Part [IVX]+", s["label"]): s["label"] = f'{bk["partOf"]}, {s["label"]}'

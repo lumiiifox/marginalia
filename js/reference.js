@@ -424,6 +424,13 @@ function primerHTML(id, t) {
 }
 // Titles for steps whose book isn't in the library: the classics' own titles (tests/study_tools.py checks them against data/books/).
 const CLASSIC_TITLES = {
+  "classic-burnet-early": "Early Greek Philosophy",
+  "classic-stoker-dracula": "Dracula",
+  "classic-gilman-wallpaper": "The Yellow Wallpaper",
+  "classic-stevenson-jekyll": "The Strange Case of Dr. Jekyll and Mr. Hyde",
+  "classic-douglass-narrative": "Narrative of the Life of Frederick Douglass",
+  "classic-lucretius-nature": "Of the Nature of Things",
+  "classic-sophocles-antigone": "Antigone",
   "classic-augustine-confessions": "Confessions",
   "classic-bergson-time": "Time and Free Will",
   "classic-melville-short-fiction": "Short Fiction",
@@ -444,6 +451,13 @@ const CLASSIC_TITLES = {
    ("the Ethics", "Meditations", "the Manifesto") counts only on its author's own card (own), since elsewhere it may name another
    book; "Republic" counts after "Plato's" or "the", or before a book number. Nothing is stored. */
 const CLASSIC_NAMES = {
+  "classic-burnet-early": { by: [], full: ["Early Greek Philosophy"] },
+  "classic-stoker-dracula": { by: [], full: ["Dracula"] },
+  "classic-gilman-wallpaper": { by: [], full: ["The Yellow Wallpaper"] },
+  "classic-stevenson-jekyll": { by: [], full: ["The Strange Case of Dr. Jekyll and Mr. Hyde"] },
+  "classic-douglass-narrative": { by: [], full: ["Narrative of the Life of Frederick Douglass"] },
+  "classic-lucretius-nature": { by: [], full: ["Of the Nature of Things"] },
+  "classic-sophocles-antigone": { by: [], full: ["Antigone"] },
   "classic-augustine-confessions": { by: ["augustine"], full: ["Augustine’s Confessions", "Augustine's Confessions"], own: ["Confessions"] },
   "classic-bergson-time": { by: ["bergson"], full: ["Time and Free Will"] },
   "classic-melville-short-fiction": { by: ["melville"], full: ["Bartleby, the Scrivener"], own: ["Short Fiction"] },

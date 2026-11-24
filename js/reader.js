@@ -316,7 +316,7 @@ function saveRS() { try { localStorage.setItem("mg-reader", JSON.stringify(RS));
 const barH = () => $(".rbar")?.offsetHeight || 0;
 
 // A note number printed as a superscript (¹², as the import writes them) can be tapped to read its note.
-const FNREF = /[⁰¹²³⁴⁵⁶⁷⁸⁹]{1,3}/g;
+const FNREF = /[⁰¹²³⁴⁵⁶⁷⁸⁹]{1,4}/g;
 const fnRefs = (html) => html.replace(FNREF, (m) => `<span class="fnref" data-fn="${[...m].map((c) => "⁰¹²³⁴⁵⁶⁷⁸⁹".indexOf(c)).join("")}" role="button" tabindex="0" aria-label="Note ${[...m].map((c) => "⁰¹²³⁴⁵⁶⁷⁸⁹".indexOf(c)).join("")}">${m}</span>`);
 // Verse, stored with " / " between its lines (as verse is quoted): a block whose every part is a line's length is drawn line by
 // line. The slash stays in the page, hidden, so a passage chosen from it is quoted as stored and keeps its place.
@@ -1106,7 +1106,7 @@ function keepPdfSheet(tid) {
 
 /* notes to the text: a tapped note number shows its note. Footnotes are found near the number; endnotes at the back of the
    book, in the run of numbered notes that belongs to this chapter. */
-const NOTE_START = /^\s*(?:(\d{1,3})(?:[.)]\s*|\s+)|([⁰¹²³⁴⁵⁶⁷⁸⁹]{1,3})\s*)(?=\S)/u;
+const NOTE_START = /^\s*(?:(\d{1,4})(?:[.)]\s*|\s+)|([⁰¹²³⁴⁵⁶⁷⁸⁹]{1,4})\s*)(?=\S)/u;
 const supNum = (m) => +[...m].map((c) => "⁰¹²³⁴⁵⁶⁷⁸⁹".indexOf(c)).join("");
 function noteRuns() {
   if (R.noteRuns && R.noteRunsOf === R.blocks) return R.noteRuns;
