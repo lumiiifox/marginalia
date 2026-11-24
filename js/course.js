@@ -153,8 +153,12 @@ async function courseAction(b) {
   const i = a.cursor ?? 0, qid = a.order[i];
   if (b.dataset.courseAnswer !== undefined && a.answers.length === i) {
     const ans = Number(b.dataset.courseAnswer);
-    if (ans === 0) await put("mastery",courseKey(m,"q"+qid),{ans:Date.now()});
     a.answers.push(ans);
+    try {
+      if (ans === 0 && !courseHas(m,"q"+qid)) await put("mastery",courseKey(m,"q"+qid),{ans:Date.now()});
+    } catch (err) {
+      a.answers.pop(); render(); throw err;
+    }
   } else if (act === "evidence" && a.answers.length > i) {
     go({screen:"course",module:m.id,step:"learn",evidence:qid});
     const mark = document.getElementById("course-evidence"); mark?.focus(); mark?.scrollIntoView({block:"center"}); return;

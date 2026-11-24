@@ -90,10 +90,18 @@ const COURSE = [
         [
           "OpenStax · An Overview of Contemporary Philosophy",
           "https://openstax.org/books/introduction-philosophy/pages/1-4-an-overview-of-contemporary-philosophy"
-        ],
+        ]
+      ],
+      [
         [
-          "forall x: Calgary · Arguments and validity",
-          "https://forallx.openlogicproject.org/"
+          "OpenStax · An Overview of Contemporary Philosophy",
+          "https://openstax.org/books/introduction-philosophy/pages/1-4-an-overview-of-contemporary-philosophy"
+        ]
+      ],
+      [
+        [
+          "OpenStax · An Overview of Contemporary Philosophy",
+          "https://openstax.org/books/introduction-philosophy/pages/1-4-an-overview-of-contemporary-philosophy"
         ]
       ],
       [
@@ -108,9 +116,11 @@ const COURSE = [
       ],
       [
         [
-          "OpenStax · An Overview of Contemporary Philosophy",
-          "https://openstax.org/books/introduction-philosophy/pages/1-4-an-overview-of-contemporary-philosophy"
-        ],
+          "forall x: Calgary · Arguments and validity",
+          "https://forallx.openlogicproject.org/"
+        ]
+      ],
+      [
         [
           "forall x: Calgary · Arguments and validity",
           "https://forallx.openlogicproject.org/"
@@ -118,42 +128,8 @@ const COURSE = [
       ],
       [
         [
-          "OpenStax · An Overview of Contemporary Philosophy",
-          "https://openstax.org/books/introduction-philosophy/pages/1-4-an-overview-of-contemporary-philosophy"
-        ],
-        [
-          "forall x: Calgary · Arguments and validity",
-          "https://forallx.openlogicproject.org/"
-        ]
-      ],
-      [
-        [
-          "OpenStax · An Overview of Contemporary Philosophy",
-          "https://openstax.org/books/introduction-philosophy/pages/1-4-an-overview-of-contemporary-philosophy"
-        ],
-        [
-          "forall x: Calgary · Arguments and validity",
-          "https://forallx.openlogicproject.org/"
-        ]
-      ],
-      [
-        [
-          "OpenStax · An Overview of Contemporary Philosophy",
-          "https://openstax.org/books/introduction-philosophy/pages/1-4-an-overview-of-contemporary-philosophy"
-        ],
-        [
-          "forall x: Calgary · Arguments and validity",
-          "https://forallx.openlogicproject.org/"
-        ]
-      ],
-      [
-        [
-          "OpenStax · An Overview of Contemporary Philosophy",
-          "https://openstax.org/books/introduction-philosophy/pages/1-4-an-overview-of-contemporary-philosophy"
-        ],
-        [
-          "forall x: Calgary · Arguments and validity",
-          "https://forallx.openlogicproject.org/"
+          "Bertrand Russell · The Problems of Philosophy, chapter I",
+          "https://standardebooks.org/ebooks/bertrand-russell/the-problems-of-philosophy/text/chapter-1"
         ]
       ],
       [
@@ -235,8 +211,8 @@ const COURSE = [
         "What can change and still be one thing?",
         "Set the three proposals beside a cup of water. A question about origin asks where the water came from. A question about constitution asks what it is made of now. A question about change asks what happens when steam appears above the cup. An account that answers one of these questions has earned no automatic victory over the others. Aristotle’s own interest in kinds of cause helps explain why he presents the early thinkers as he does. His classification is part of the history we are trying to understand.",
         "The Milesian proposals share a demand for an account with broad reach. Their disagreements concern the nature of the source and the work required to get from one source to many things. The surviving evidence supports those contrasts more securely than a tidy story of teachers staging formal debates with pupils. Read the optional paragraph from Aristotle with that difference in view. Its cautious wording is itself part of the evidence.",
-        "Now picture a river running through a city. The water passing the bridge at noon will have gone downstream by evening. Yet people promise to meet beside the same river tomorrow. Perhaps the changing water helps explain how the river endures. Or perhaps our easy talk of coming and going conceals a deeper difficulty about what can be. Those possibilities bring Heraclitus and Parmenides into the story.",
-        "Naming the principle identifies what diverse things come from. Describing successive changes in density gives a proposed mechanism."
+        "Naming the principle identifies what diverse things come from. Describing successive changes in density gives a proposed mechanism.",
+        "Now picture a river running through a city. The water passing the bridge at noon will have gone downstream by evening. Yet people promise to meet beside the same river tomorrow. Perhaps the changing water helps explain how the river endures. Or perhaps our easy talk of coming and going conceals a deeper difficulty about what can be. Those possibilities bring Heraclitus and Parmenides into the story."
       ]
     ],
     "refs": [
@@ -366,8 +342,8 @@ const COURSE = [
       [
         "A distinction to take into Athens",
         "A modern reader may object by pointing to the ferry. Its journey obviously begins, and both passengers know where it began. That reply establishes that an ordinary change can be described. It leaves the goddess’s demand for a coherent account of coming to be unanswered. Conversely, a reconstruction that makes it impossible to tell why so much of the poem discusses the visible world owes the reader an account of the second part. The evidence constrains an interpretation in both directions.",
-        "Compare the river and the poem by choosing one exact question: can something undergoing change remain an object of intelligible inquiry? Heraclitus supplies examples in which order and change appear together. Parmenides asks what could qualify as an object of a secure inquiry in the first place. Their arguments can illuminate each other without a claim that a surviving text records a face-to-face debate. In Athens Socrates turns that demand for an exact object toward a practical decision. A man is about to prosecute his father. What does he need to understand before he can confidently call that action pious?",
-        "A continuing pattern may require changes in its constituents. An explanation of becoming must say what it means for something to come to be."
+        "A continuing pattern may require changes in its constituents. An explanation of becoming must say what it means for something to come to be.",
+        "Compare the river and the poem by choosing one exact question: can something undergoing change remain an object of intelligible inquiry? Heraclitus supplies examples in which order and change appear together. Parmenides asks what could qualify as an object of a secure inquiry in the first place. Their arguments can illuminate each other without a claim that a surviving text records a face-to-face debate. In Athens Socrates turns that demand for an exact object toward a practical decision. A man is about to prosecute his father. What does he need to understand before he can confidently call that action pious?"
       ]
     ],
     "refs": [
@@ -496,8 +472,8 @@ const COURSE = [
       [
         "What an unresolved ending can teach",
         "Euthyphro’s departure leaves a reader without a settled definition. The discussion nevertheless changes what a successful answer must do. It must apply across cases, handle disagreement among the gods, and explain the relation between piety and divine approval. One useful result of philosophical inquiry is an exact account of why a once-plausible answer fails. That result can guide the next attempt.",
-        "Plato supplies the conversation in which this happens. Readers have to distinguish the claims made by individual speakers, the design of the dialogue and the beliefs historians can responsibly attribute to the historical Socrates. In the Republic a younger interlocutor will agree with a conclusion and still insist that Socrates defend it better. Why should anyone choose justice when acting unjustly would pay?",
-        "A dialogue can expose defects in every answer so far offered. Declaring a satisfactory answer impossible requires excluding further proposals."
+        "A dialogue can expose defects in every answer so far offered. Declaring a satisfactory answer impossible requires excluding further proposals.",
+        "Plato supplies the conversation in which this happens. Readers have to distinguish the claims made by individual speakers, the design of the dialogue and the beliefs historians can responsibly attribute to the historical Socrates. In the Republic a younger interlocutor will agree with a conclusion and still insist that Socrates defend it better. Why should anyone choose justice when acting unjustly would pay?"
       ]
     ],
     "refs": [
@@ -613,8 +589,8 @@ const COURSE = [
       [
         "A just person outside the argument",
         "There is a distance between the harmonious person described by the argument and the ordinary demands of justice. Consider somebody who is organized, steady under pressure and exceptionally good at planning a fraud. Any account equating justice with mere internal efficiency would give a startling verdict. The challenge to Plato is to show why a soul properly ordered by reason could not choose that plan. Say what reason understands and why that understanding would govern action. Simply repeating the word harmony leaves the critic’s example untouched.",
-        "Now reverse the pressure. A person might return a deposit solely for fear of being discovered. The act fits an ordinary demand of justice even as fear, calculation and greed pull against one another. Plato’s account gives us a reason to distinguish doing what a just person would do on this occasion from having a just character. Both examples test how much explanatory work the idea of order can carry. In the next module Socrates must say how reason can learn to govern well. The picture he offers is a prisoner whose first encounter with the light hurts.",
-        "Plato connects justice with a rightly ordered relation among the soul’s parts. A person can obey a rule solely to preserve a good reputation."
+        "Plato connects justice with a rightly ordered relation among the soul’s parts. A person can obey a rule solely to preserve a good reputation.",
+        "Now reverse the pressure. A person might return a deposit solely for fear of being discovered. The act fits an ordinary demand of justice even as fear, calculation and greed pull against one another. Plato’s account gives us a reason to distinguish doing what a just person would do on this occasion from having a just character. Both examples test how much explanatory work the idea of order can carry. In the next module Socrates must say how reason can learn to govern well. The picture he offers is a prisoner whose first encounter with the light hurts."
       ]
     ],
     "refs": [
@@ -729,8 +705,8 @@ const COURSE = [
       [
         "The trip back down",
         "The story does not end when the prisoner sees outside. Socrates asks what will happen when someone accustomed to daylight returns to judge shadows beside people who never left. For a time that person may look clumsy. The practical question is who should govern and what a political community can ask of those it educates. Glaucon objects to sending people who could enjoy a better life back into public responsibilities. Socrates’ defence concerns the good of the city as a whole.",
-        "There are now two objections a careful reader can keep apart. One questions what the liberated prisoner has learned: why accept the proposed higher objects of knowledge? The other grants that the education succeeds and asks whether the graduate owes service to the city. A response about the value of truth may leave the political obligation unexplained. A response about civic duty may leave the theory of knowledge untouched. Aristotle, who studied in Plato’s Academy, will insist on beginning an inquiry into nature by distinguishing several senses of an ordinary question: why?",
-        "A returning prisoner needs time to see in the dark again. The education of a guardian raises the question of service to fellow citizens."
+        "A returning prisoner needs time to see in the dark again. The education of a guardian raises the question of service to fellow citizens.",
+        "There are now two objections a careful reader can keep apart. One questions what the liberated prisoner has learned: why accept the proposed higher objects of knowledge? The other grants that the education succeeds and asks whether the graduate owes service to the city. A response about the value of truth may leave the political obligation unexplained. A response about civic duty may leave the theory of knowledge untouched. Aristotle, who studied in Plato’s Academy, will insist on beginning an inquiry into nature by distinguishing several senses of an ordinary question: why?"
       ]
     ],
     "refs": [
@@ -848,8 +824,8 @@ const COURSE = [
         "Does a purpose require a planner?",
         "A final cause is the end for the sake of which something occurs. An artist can state a purpose aloud. A living thing can grow roots even in the absence of anyone who planted it. Aristotle extends explanation by ends into nature. This is the issue called teleology. Consider the difference between saying that rain happens to save a crop and saying that roots grow in a way that enables a plant to obtain nourishment. For Aristotle, the regular organization of parts toward an activity is evidence worth explaining.",
         "A rival can accept the organization while disputing the proposed explanation. Suppose a critic says that useful arrangements survive and others perish. That account offers a way to explain a fit between structure and function without assuming that the fit was already an end directing formation. In Physics II.8 Aristotle considers a challenge involving teeth that happen to be suitable for biting and grinding. His response appeals to the regular occurrence of the fit. A modern reader should distinguish that ancient exchange from a modern account of evolution with its own mechanisms and evidence.",
-        "Return to the apprentice. Asking what the object is for may be easy when the object is a commission and difficult when the object is alive. The vocabulary of an end becomes still harder when Aristotle asks what a human life is for. Does someone who wants wealth, honour and friends want three final ends, or do those pursuits answer to a further conception of living well?",
-        "A part’s contribution to a living whole can explain its characteristic development. A plan formed by a thinking agent explains deliberate production."
+        "A part’s contribution to a living whole can explain its characteristic development. A plan formed by a thinking agent explains deliberate production.",
+        "Return to the apprentice. Asking what the object is for may be easy when the object is a commission and difficult when the object is alive. The vocabulary of an end becomes still harder when Aristotle asks what a human life is for. Does someone who wants wealth, honour and friends want three final ends, or do those pursuits answer to a further conception of living well?"
       ]
     ],
     "refs": [
@@ -960,8 +936,8 @@ const COURSE = [
       [
         "When a rule runs out",
         "Practical wisdom is the capacity to deliberate well about action in particular circumstances. Imagine a precise rule: give the same amount to every person who asks. It eliminates some forms of favouritism, yet it can direct a rich giver to contribute very little in an emergency and a poor giver to abandon a dependent. One possible objection to Aristotle is that invoking good judgment can sound like telling a beginner to do whatever the wise person does. How could a learner recognize that person without already knowing the right answers?",
-        "Look again at the order of education. Examples, corrections and habits can teach a learner to notice relevant features before the learner can formulate a general account. Giving reasons then makes those judgments available for criticism. The success of that account depends on whether habits can be corrected when a whole community trains its citizens badly. The Epicureans and the Stoics will each offer a strikingly different way to assess which parts of a life deserve our concern.",
-        "Practical wisdom judges what is good to do in particular circumstances. Technical skill enables a person to produce a result proficiently."
+        "Practical wisdom judges what is good to do in particular circumstances. Technical skill enables a person to produce a result proficiently.",
+        "Look again at the order of education. Examples, corrections and habits can teach a learner to notice relevant features before the learner can formulate a general account. Giving reasons then makes those judgments available for criticism. The success of that account depends on whether habits can be corrected when a whole community trains its citizens badly. The Epicureans and the Stoics will each offer a strikingly different way to assess which parts of a life deserve our concern."
       ]
     ],
     "refs": [
@@ -1059,8 +1035,8 @@ const COURSE = [
         "Who would experience the harm?",
         "The argument about death connects ethics to the Epicurean account of nature. If consciousness depends on the organization of a material body, the dissolution of that organization ends a subject’s sensations. A person can experience fear now. They may also experience pain while dying. The argument concerns what could happen to them in the condition of being dead. To turn the absence of sensation into a conclusion about harm, one needs a premise connecting harm to possible experience.",
         "A familiar objection grants the absence of sensation and challenges that connection. Death might deprive a person of years of rewarding activity. An event could be bad for them by comparison with the life otherwise available, even if they never feel the deprivation. This reply identifies the disputed premise. Telling the critic once again that a corpse feels nothing would repeat common ground. The question has shifted from what the dead can experience to what it means for something to be bad for a person.",
-        "The issue carries a practical stake. An argument that removes one ground of fear may leave grief, care for dependents and the pain of dying entirely intelligible. A philosophical treatment succeeds to the extent that it identifies which fear its reasons address. The Stoics make another proposal about what can truly harm a person, and that proposal puts the person’s own judgments at the centre.",
-        "The Epicurean argument links harm of the relevant kind to experience. A critic may argue that losing a valuable future can harm someone without a painful experience."
+        "The Epicurean argument links harm of the relevant kind to experience. A critic may argue that losing a valuable future can harm someone without a painful experience.",
+        "The issue carries a practical stake. An argument that removes one ground of fear may leave grief, care for dependents and the pain of dying entirely intelligible. A philosophical treatment succeeds to the extent that it identifies which fear its reasons address. The Stoics make another proposal about what can truly harm a person, and that proposal puts the person’s own judgments at the centre."
       ]
     ],
     "refs": [
@@ -1175,8 +1151,8 @@ const COURSE = [
         "Why a Stoic still owes something to others",
         "Return to the hearing. If the insult cannot take away your good judgment, are you entitled to leave the room and ignore the public business? Marcus’s answer turns on our relation to other human beings. The person who behaves badly remains someone with whom we share rational capacities and a life in common. The duty to cooperate changes what a good response looks like. Correcting a harmful decision can be appropriate. Taking revenge in order to repair an injured sense of status needs a different justification.",
         "Compare two people who both sit quietly after an insult. One suppresses anger because their position is precarious. The other examines the claim that their good has been damaged and rejects it. An observer recording only the silence would miss the difference. Stoic practice concerns judgments and reasons as well as behaviour. Judging that an insult leaves your moral agency intact can give you a reason to speak clearly on behalf of someone else.",
-        "In the next comparison, we turn to texts from ancient China and reset the historical clock. Arranging a course by period still leaves room to place different teaching traditions side by side within a period. The Analects asks how the conduct of a person in authority shapes people around them. The Daodejing asks what a ruler’s best work might look like from the viewpoint of those being ruled.",
-        "Shared rational and social life gives reasons to assist difficult people. Treating applause as necessary for a good life makes the agent hostage to others’ judgments."
+        "Shared rational and social life gives reasons to assist difficult people. Treating applause as necessary for a good life makes the agent hostage to others’ judgments.",
+        "In the next comparison, we turn to texts from ancient China and reset the historical clock. Arranging a course by period still leaves room to place different teaching traditions side by side within a period. The Analects asks how the conduct of a person in authority shapes people around them. The Daodejing asks what a ruler’s best work might look like from the viewpoint of those being ruled."
       ]
     ],
     "refs": [
@@ -1311,8 +1287,8 @@ const COURSE = [
         "Two ways a good ruler might disappear",
         "The Daodejing’s chapter 17 imagines a successful undertaking whose participants attribute the achievement to themselves. Wuwei, often rendered nonaction, names an approach to action that raises a difficulty for translators. A ruler might intervene constantly and damage the very cooperation the interventions aim to secure. Giving space for others to act requires discernment; one cannot tell from the bare fact that a ruler stayed seated whether this was wise restraint or simple neglect.",
         "Try the difference on a village irrigation channel. A coordinator can make an indispensable contribution by ensuring everyone knows when the gates open. A coordinator who gives orders at every gate may displace the knowledge of the people who maintain them. A third might leave a broken gate unrepaired out of indifference. The contrast between the last two cases matters. Reducing interference is defensible when it supports the conditions in which people can act. Avoiding responsibility has a different structure even if it looks similarly quiet from a distance.",
-        "The two texts place different pressures on the reader. A Confucian response can ask how people acquired the habits that make self-direction possible. A Daoist response can ask whether conspicuous efforts to instil virtue themselves provoke competition over appearances. Each question tests a real premise of the other outlook. Neither requires pretending that all later Confucians or Daoists speak with one voice. Next we move to an early Buddhist discourse in which the demand for command is directed inward: if the body were my self, how much authority should I have over it?",
-        "A ruler who needs acclaim depends on subjects publicly recognizing the ruler’s work. Chapter seventeen pictures people attributing the accomplished work to themselves."
+        "A ruler who needs acclaim depends on subjects publicly recognizing the ruler’s work. Chapter seventeen pictures people attributing the accomplished work to themselves.",
+        "The two texts place different pressures on the reader. A Confucian response can ask how people acquired the habits that make self-direction possible. A Daoist response can ask whether conspicuous efforts to instil virtue themselves provoke competition over appearances. Each question tests a real premise of the other outlook. Neither requires pretending that all later Confucians or Daoists speak with one voice. Next we move to an early Buddhist discourse in which the demand for command is directed inward: if the body were my self, how much authority should I have over it?"
       ]
     ],
     "refs": [
@@ -1443,8 +1419,8 @@ const COURSE = [
       [
         "Return to the ancient questions",
         "Think back to Heraclitus’ river. The idea that continuity might depend on change can help you formulate a question about a person. It cannot establish by analogy that the river fragments and the Buddhist discourse share a doctrine. The discourse directs its analysis toward ending grasping. Your comparison should name that purpose and ask whether the Greek passage sets itself a comparable task.",
-        "The Ancient assignment asks you to choose one argument you can reconstruct closely enough for another reader to challenge. If you choose this discourse, identify the aggregate, the premise about control or change, and the conclusion about identification. Then give the best reply you can on behalf of someone who accepts the observation and rejects the inference. That is a concrete measure of what this period of study has taught you to do.",
-        "An earlier practice can shape a later response through causal connections. A permanent subject would retain its identity independently of changes in the aggregates."
+        "An earlier practice can shape a later response through causal connections. A permanent subject would retain its identity independently of changes in the aggregates.",
+        "The Ancient assignment asks you to choose one argument you can reconstruct closely enough for another reader to challenge. If you choose this discourse, identify the aggregate, the premise about control or change, and the conclusion about identification. Then give the best reply you can on behalf of someone who accepts the observation and rejects the inference. That is a concrete measure of what this period of study has taught you to do."
       ]
     ],
     "refs": [
@@ -1546,18 +1522,18 @@ const COURSE_BANK = {
         "Which group appears first in the register?"
       ],
       "e": "A booking record supplies a fact. Turning that fact into a fair decision requires a principle.",
-      "target": "At the desk of a public library, a librarian holds two requests for the last rehearsal room."
+      "target": "Their disagreement concerns the principle by which a fact about arrival becomes a reason for awarding a room."
     },
     {
-      "s": 0,
-      "q": "What would most directly settle a dispute about when a booking arrived?",
+      "s": 1,
+      "q": "The violin now has none of its original wood. Which question concerns metaphysics?",
       "options": [
-        "Inspect a reliable timestamp.",
-        "Define fairness.",
-        "Ask which rule the library ought to adopt."
+        "What makes it the same instrument through these repairs?",
+        "How trustworthy is the restorer’s inventory?",
+        "Would selling it to the highest bidder be fair?"
       ],
-      "e": "The dispute concerns a recorded event. A moral principle becomes relevant when deciding what should follow.",
-      "target": "At the desk of a public library, a librarian holds two requests for the last rehearsal room."
+      "e": "The inventory can record every material change while leaving the identity of the violin open.",
+      "target": "That question about identity belongs to metaphysics."
     },
     {
       "s": 7,
@@ -1579,7 +1555,7 @@ const COURSE_BANK = {
         "Their agreement establishes who owned the violin."
       ],
       "e": "Both reports inherit a weakness from one source. This concerns the justification of belief.",
-      "target": "Metaphysics asks what exists and what makes something the thing it is."
+      "target": "An inscription might be forged, a witness might be mistaken, and two witnesses might both have copied one unreliable source."
     },
     {
       "s": 7,
@@ -1601,7 +1577,7 @@ const COURSE_BANK = {
         "How many seats were vacant?"
       ],
       "e": "Ethics asks what the agent ought to do and which reasons bear on that decision.",
-      "target": "Ethics examines how we ought to act and live."
+      "target": "An ethical question concerns what you should do and why: the force of a promise, the urgency of the need, or what a dependable friend owes another person."
     },
     {
       "s": 2,
@@ -1612,7 +1588,7 @@ const COURSE_BANK = {
         "Do any two voters remember the same speech?"
       ],
       "e": "Legitimacy concerns the justification of public power.",
-      "target": "Ethics examines how we ought to act and live."
+      "target": "Political philosophy examines public power, justice, and the terms on which people live together."
     },
     {
       "s": 2,
@@ -1623,7 +1599,7 @@ const COURSE_BANK = {
         "Political philosophy only counts the votes."
       ],
       "e": "A single reason can support claims about what an individual owes and how an institution should act.",
-      "target": "Ethics examines how we ought to act and live."
+      "target": "The branches overlap wherever the reasons for an individual decision bear on the rules everyone must follow."
     },
     {
       "s": 3,
@@ -1634,7 +1610,7 @@ const COURSE_BANK = {
         "More people attended than last year."
       ],
       "e": "It identifies a feature of the performance that listeners can examine when judging its expression.",
-      "target": "Aesthetics examines art, beauty and aesthetic judgment."
+      "target": "Each might point to the timing of the following note and invite the other to listen again."
     },
     {
       "s": 3,
@@ -1645,7 +1621,7 @@ const COURSE_BANK = {
         "That audiences sometimes make sounds."
       ],
       "e": "Popularity alone leaves the aesthetic judgment open.",
-      "target": "Aesthetics examines art, beauty and aesthetic judgment."
+      "target": "It would take another premise to make popularity evidence of the performance’s artistic merit."
     },
     {
       "s": 3,
@@ -1656,7 +1632,7 @@ const COURSE_BANK = {
         "A silent audience that disliked a performance."
       ],
       "e": "Courtesy applause can make both premises true while the conclusion is false.",
-      "target": "Aesthetics examines art, beauty and aesthetic judgment."
+      "target": "The audience might have applauded out of courtesy."
     },
     {
       "s": 4,
@@ -1667,7 +1643,7 @@ const COURSE_BANK = {
         "The group submitted a booking."
       ],
       "e": "The conclusion is the decision the argument asks us to accept.",
-      "target": "A conclusion is what an argument asks you to accept."
+      "target": "The booking decision is the conclusion."
     },
     {
       "s": 4,
@@ -1678,7 +1654,7 @@ const COURSE_BANK = {
         "Some rooms have good acoustics."
       ],
       "e": "The added principle explains why the circumstance counts in favour of the decision.",
-      "target": "A conclusion is what an argument asks you to accept."
+      "target": "One further idea connects them: when other relevant claims are equal, the group without an alternative deserves priority."
     },
     {
       "s": 4,
@@ -1689,7 +1665,7 @@ const COURSE_BANK = {
         "An assertion that it is beyond dispute."
       ],
       "e": "Marking a supplied premise separates interpretation from what the passage explicitly says.",
-      "target": "A conclusion is what an argument asks you to accept."
+      "target": "Mark any reason you supplied yourself."
     },
     {
       "s": 5,
@@ -1700,7 +1676,7 @@ const COURSE_BANK = {
         "The meaning of a conclusion."
       ],
       "e": "A steel lamp falsifies the universal premise. The original inference still has a valid form.",
-      "target": "A deduction is valid when its premises cannot all be true while its conclusion is false."
+      "target": "You have discovered a false premise in a valid deduction."
     },
     {
       "s": 5,
@@ -1711,7 +1687,7 @@ const COURSE_BANK = {
         "The conclusion unfamiliar to the reader."
       ],
       "e": "Validity rules out exactly the first combination.",
-      "target": "A deduction is valid when its premises cannot all be true while its conclusion is false."
+      "target": "To show invalidity, give a counterexample to the inference: a possible situation with true premises and a false conclusion."
     },
     {
       "s": 5,
@@ -1722,7 +1698,7 @@ const COURSE_BANK = {
         "A second phrasing of the conclusion."
       ],
       "e": "Soundness requires both validity and true premises.",
-      "target": "A deduction is valid when its premises cannot all be true while its conclusion is false."
+      "target": "A sound deduction is valid and has true premises."
     },
     {
       "s": 5,
@@ -1733,7 +1709,7 @@ const COURSE_BANK = {
         "Treat probability as a guarantee."
       ],
       "e": "The standard of assessment should fit the strength the forecast claims.",
-      "target": "A deduction is valid when its premises cannot all be true while its conclusion is false."
+      "target": "First establish the strength the author claims, then ask whether the evidence supplies it."
     },
     {
       "s": 6,
@@ -1744,7 +1720,7 @@ const COURSE_BANK = {
         "The table exists independently of every observer."
       ],
       "e": "The first sentence ties the observation to a position; the others make claims beyond that report.",
-      "target": "Separate what the observer experiences from what the observer infers about the object."
+      "target": "One should report something a person can see from a particular place."
     },
     {
       "s": 6,
@@ -1755,7 +1731,7 @@ const COURSE_BANK = {
         "Physical objects cannot exist."
       ],
       "e": "The reports support a limited claim about appearances. The stronger conclusions need additional reasons.",
-      "target": "Separate what the observer experiences from what the observer infers about the object."
+      "target": "A bright patch travels across your view; your companion sees a different pattern."
     }
   ],
   "milesians": [

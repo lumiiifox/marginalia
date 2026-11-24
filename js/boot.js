@@ -106,8 +106,9 @@ document.addEventListener("click", (e) => {
   if (b.dataset.dispute) return disputePanel(b.dataset.dispute);
   if (b.id === "openplates") return go({ screen: "plates" });
   if (b.matches("#opencourse,[data-course-act],[data-course-module],[data-course-step],[data-course-answer]")) {
-    b.disabled = true;
-    return courseAction(b).catch(e => toast(failMsg(e))).finally(() => { if (b.isConnected) b.disabled = false; });
+    if (courseAction.busy) return;
+    courseAction.busy = true;
+    return courseAction(b).catch(e => toast(failMsg(e))).finally(() => { courseAction.busy = false; });
   }
   if (b.id === "openlearning") return go({ screen: "learning" });
   if (b.dataset.lesson) return go({ screen: "learning", lesson: b.dataset.lesson });
