@@ -127,16 +127,15 @@ function learningView() {
   const current = nextLesson();
   const count = learningCount();
   const lesson = LEARNING.find((l) => l.id === NAV.stack[NAV.stack.length - 1].lesson);
-  const backBtn = '<button class="btn ghost backbtn" id="back">← Back</button>';
   if (!lesson) {
     const groups = [...new Set(portfolioLessons.map((l) => l.stage))];
-    return backBtn + `<header class="gl-head"><div><h1>Previous learning portfolio</h1><p>Revisit your earlier exercises, responses and feedback.</p><div class="sub">${count} of ${portfolioLessons.length} responses saved</div></div></header>
+    return `<header class="gl-head"><div><h1>Previous learning portfolio</h1><p>Revisit your earlier exercises, responses and feedback.</p><div class="sub">${count} of ${portfolioLessons.length} responses saved</div></div></header>
       ${current ? `<button class="btn primary" data-lesson="${current.id}">${count ? "Continue" : "Begin"} · ${esc(current.title)}</button>` : '<p>You have saved a response to every lesson. Reopen a lesson to revise its argument.</p>'}
       ${groups.map((g) => `<section class="group"><h2>${groups.indexOf(g) + 1}. ${g}</h2><div class="gl-list">${LEARNING.filter((l) => l.stage === g).map((l) => `<button class="thinkrow" data-lesson="${l.id}"><b>${LEARNING.indexOf(l) + 1}. ${esc(l.title)}</b><span class="td">${l.gate ? "Phase checkpoint · " : ""}${learningAnswered(l) ? "Response saved" : l.readings.map((r) => esc(r[2].split(" · ")[0])).join(" and ") || "Work from your research"}${S.drafts.get(learningDraft(l))?.critiques?.length ? " · Feedback recorded" : ""}</span></button>`).join("")}</div></section>`).join("")}`;
   }
   const track = researchLessons.includes(lesson) ? researchLessons : portfolioLessons;
   const id = learningDraft(lesson), draft = S.drafts.get(id), index = track.indexOf(lesson), next = track[index + 1];
-  return backBtn + `<header class="gl-head"><div><div class="sub">${track === researchLessons ? "Optional research" : "Portfolio exercise"} ${index + 1} of ${track.length} · ${lesson.stage}${lesson.gate ? " · Phase checkpoint" : ""}</div><h1>${lesson.title}</h1></div></header>
+  return `<header class="gl-head"><div><div class="sub">${track === researchLessons ? "Optional research" : "Portfolio exercise"} ${index + 1} of ${track.length} · ${lesson.stage}${lesson.gate ? " · Phase checkpoint" : ""}</div><h1>${lesson.title}</h1></div></header>
     <section class="group"><p>${lesson.idea}</p>${lesson.readings.map(([slug, , label], i) => S.texts.has("classic-" + slug)
       ? `<button class="btn" data-learning-read="${i}">${esc(label)}</button>`
       : `<button class="btn" data-pathadd="classic-${slug}">Add reading · ${esc(label)}</button>`).join(" ")}

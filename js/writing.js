@@ -10,7 +10,7 @@ function draftStats(d) {
 }
 function draftsView() {
   const list = draftsList();
-  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>${banner()}
+  return `${banner()}
     <header class="gl-head"><div><h1>Drafts</h1><div class="sub">${list.length} draft${list.length === 1 ? "" : "s"}</div></div><button class="btn primary" id="newdraft">New draft</button></header>
     <p class="hint">Gather notes from any of your texts, put them in order, add headings and your own paragraphs, then export an outline with footnotes and a bibliography in your citation style.</p>
     ${list.length ? `<div class="gl-list">${list.map(([id, d]) => { const st = draftStats(d); return `<button class="thinkrow" data-draft="${esc(id)}"><b>${esc(d.title || "Untitled draft")}</b><span class="ty">${esc(fmtDate(d.updatedAt))}</span><span class="td">${st.notes} note${st.notes === 1 ? "" : "s"}${st.texts ? ` from ${st.texts} text${st.texts === 1 ? "" : "s"}` : ""}${st.paras ? `, ${st.paras} paragraph${st.paras === 1 ? "" : "s"} of your own` : ""}</span></button>`; }).join("")}</div>`
@@ -42,7 +42,7 @@ function draftView() {
   const id = S.draftId, d = S.drafts.get(id); if (!d) return draftsView();
   const items = d.items || [], st = draftStats(d);
   const src = d.from && S.compares.get(d.from);
-  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Drafts</button></div>${banner()}
+  return `${banner()}
     <header class="head">
       <h1>${esc(d.title || "Untitled draft")}</h1>
       ${src ? `<button class="src fromcmp" data-cmp="${esc(d.from)}">Made from the comparison “${esc(src.title || "Untitled comparison")}”</button>` : ""}
@@ -559,7 +559,7 @@ async function saveCmp(id, change) {
 
 function comparesView() {
   const list = cmpList();
-  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>${banner()}
+  return `${banner()}
     <header class="gl-head"><div><h1>Comparisons</h1><div class="sub">${list.length} comparison${list.length === 1 ? "" : "s"}</div></div><button class="btn primary" id="newcmp">New comparison</button></header>
     <p class="hint">Put two to four thinkers, texts or concepts side by side and answer the same questions for each, backing every answer with passages from your notes. Empty answers, and answers about a text with no passage behind them, show up as gaps.</p>
     ${list.length ? `<div class="gl-list">${list.map(([id, c]) => { const st = cmpStats(c); return `<button class="thinkrow" data-cmp="${esc(id)}"><b>${esc(c.title || "Untitled comparison")}</b><span class="ty">${esc(fmtDate(c.updatedAt))}</span><span class="td">${esc((c.cols || []).map((x) => x.label).join(" · "))}${st.total ? `. ${st.answered} of ${st.total} answered` : ""}</span></button>`; }).join("")}</div>`
@@ -607,7 +607,7 @@ function compareView() {
   const body = !ready ? `<p class="empty"><b>${cols.length ? "No questions yet." : "No sides yet."}</b> ${cols.length ? "Ask something each side can answer on its own terms." : "Add a thinker, a text or one of your tags as a side."}</p>`
     : !shown.length ? `<p class="empty"><b>No gaps.</b> Every side has answered every question, and every answer about the texts has a passage behind it.</p>`
     : cmpMode === "table" ? cmpTableHTML(c, shown) : cmpRowsHTML(c, shown);
-  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Comparisons</button></div>${banner()}
+  return `${banner()}
     <header class="head">
       <h1>${esc(c.title || "Untitled comparison")}</h1>
       ${c.q ? `<p class="cmp-q">${esc(c.q)}</p>` : ""}
@@ -994,7 +994,7 @@ function hitsIn(blocks, q, max) {
 const pagesOf = (blocks) => { const out = []; let pg = ""; blocks.forEach((b, i) => { if (b.k === "pg") pg = b.x; out[i] = pg; }); return out; };
 function concordView() {
   const books = [...S.texts.values()].filter((t) => t.hasContent).length;
-  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>${banner()}
+  return `${banner()}
     <header class="gl-head"><div><h1>Search all books</h1><div class="sub">${books} loaded text${books === 1 ? "" : "s"}</div></div></header>
     <input class="search" id="cq" type="search" placeholder="A word or phrase" value="${esc(CONC.q)}" autocomplete="off" aria-label="Search the full text of your books">
     <p class="hint">Finds the exact word or phrase in every text you've loaded, ignoring accents and capitals. Type a stem such as “striv” to catch every form of a word. Tap a result to open the book there.</p>

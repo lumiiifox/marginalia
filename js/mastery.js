@@ -192,7 +192,7 @@ function masteryView() {
   const known = M.items.filter((it) => (it.kind === "term" || it.kind === "thinker") && it.s.used);
   const explain = known.length ? `<section class="group"><div class="label">In your own words<span class="cnt">${known.length}</span></div>
     <p class="hint">Checked concepts and thinkers that your notes now use.</p><div class="chips">${known.map((it) => `<button class="chip" ${it.kind === "term" ? `data-term="${esc(it.id)}"` : `data-thinker="${esc(it.id)}"`}>${esc(it.name)}</button>`).join("")}</div></section>` : "";
-  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
+  return `
     <header class="gl-head"><div><h1>Mastery</h1><div class="sub">${M.got ? `${M.pct}% of every stage, ${M.mastered} of ${M.items.length} mastered` : "Nothing collected yet"}</div></div></header>
     <div class="mmeter" role="img" aria-label="${M.pct}% collected"><i style="width:${M.pct}%"></i></div>
     <p class="hint">Only entries that passed a checked audit count, so everything here rests on sources. Open an entry to meet it, get it right in a puzzle to answer it, and use it in a note of your own. More arrive as audits land.</p>

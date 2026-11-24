@@ -127,7 +127,7 @@ function dailyView() {
   const today = dqToday(), ids = new Set([...S.daily.keys()]); if (today) ids.add(today.id);
   const last = (v) => (v.rec ? (v.rec.seen || []).slice(-1)[0] || v.rec.first : dqDayKey());
   const list = [...ids].map(dqView).filter(Boolean).sort((a, b) => last(b).localeCompare(last(a)));
-  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
+  return `
     <header class="gl-head"><div><h1>Daily questions</h1><div class="sub">${list.length} shown, ${list.filter((v) => v.answer).length} answered</div></div></header>
     <p class="hint">One question a day appears on the home screen. Each one you have seen stays here, dated, whether or not you answered it.</p>
     <div class="gl-list">${list.map((v) => `<button class="thinkrow dqrow" data-dqopen="${esc(v.id)}"><b>${esc(v.q)}</b><span class="ty">${esc(v.rec ? `${dqDayLabel(v.rec.first)} · ${dqState(v)}` : "today · Unanswered")}</span><span class="dq-who">${esc(v.who)}</span></button>`).join("")}</div>`;

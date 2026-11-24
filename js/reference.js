@@ -291,7 +291,7 @@ function pathsView() {
   const list = allPaths(), P = list.find((p) => p.id === S.pathFocus);
   if (P) return P.kind === "close" ? `<div><button class="btn ghost backbtn" id="allpaths">← Reading paths</button></div>${closePathHTML(P, termMap())}` : syllabusHTML(P);
   const group = (paths, label) => paths.length ? `<section class="path-catalogue"><h2>${label}</h2>${paths.map((P) => `<section class="path path-entry" data-path-id="${esc(P.id)}"><div class="sec-head"><h3><button class="path-title-link" data-path="${esc(P.id)}">${esc(P.n)}</button></h3>${P.custom ? pathActions(P) : ""}</div><div class="sub">${P.kind === "close" ? "Close reading" : `${P.steps.length} readings`}</div><p>${esc(P.d || "Arrange readings around your own questions.")}</p></section>`).join("")}</section>` : "";
-  return `<div><button class="btn ghost backbtn" id="back">← Back</button></div><header class="paths-title"><h1>Reading paths</h1><p>Reading sequences shaped around a question.</p><div class="noteacts"><button class="btn primary" id="newpath">Create a reading path</button><button class="linkbtn" id="importpath">Import a path</button></div></header>${group(list.filter((p) => p.custom), "Your paths")}${group(list.filter((p) => !p.custom), "From the reference library")}`;
+  return `<header class="paths-title"><h1>Reading paths</h1><p>Reading sequences shaped around a question.</p><div class="noteacts"><button class="btn primary" id="newpath">Create a reading path</button><button class="linkbtn" id="importpath">Import a path</button></div></header>${group(list.filter((p) => p.custom), "Your paths")}${group(list.filter((p) => !p.custom), "From the reference library")}`;
 }
 // The toggle event arrives a task later, so a render in between would reopen the outline: record the new state on the click itself.
 document.addEventListener("click", (e) => {
@@ -675,7 +675,7 @@ const DSP = { text: {}, shown: new Set() };
 const disputeNotes = (d) => notesFor(d.book).filter(([, n]) => n.kind === "objection" && n.sectionId === d.sec && /#disputation\b/.test(n.gloss || ""));
 function disputesView() {
   const list = typeof DISPUTES === "undefined" ? [] : DISPUTES;
-  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
+  return `
     <header class="gl-head"><div><h1>Disputations</h1><div class="sub">${list.length} arguments from the classics on your shelf</div></div></header>
     <p class="hint">Read the argument, write the strongest objection you can, then compare it with the classic objection from the history of the debate. Save yours as an Objection note on the book if you want to keep it.</p>
     <div class="gl-list">${list.map((d) => { const k = disputeNotes(d).length; return `<button class="thinkrow" data-dispute="${esc(d.id)}"><b>${esc(d.n)}</b><span class="ty">${esc(d.where)}</span><span class="td">${k ? `Your objection${k === 1 ? "" : "s"} saved: ${k}.` : "Not answered yet."}</span></button>`; }).join("")}</div>`;
@@ -1217,7 +1217,7 @@ function branchesView() {
         <div class="label">Where to start</div>
         <ul class="bq-list">${b.st.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>
       </div></details>`; }).join("")}</div></section>`;
-  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
+  return `
     <header class="gl-head"><div><h1>Branches of philosophy</h1><div class="sub">${BRANCHES.filter((b) => b.k === "branch").length} branches and ${BRANCHES.filter((b) => b.k === "tradition").length} traditions</div></div></header>
     ${sec("branch", "Branches by subject", "The main fields of philosophy, defined by the questions they ask.")}
     ${sec("tradition", "Traditions and approaches", "Schools and lineages, defined by shared methods, problems and texts. They cut across the branches above.")}`;

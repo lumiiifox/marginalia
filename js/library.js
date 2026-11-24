@@ -326,7 +326,7 @@ function plateHTML(x) {
 function platesView() {
   const P = bookplates(), grid = (list) => `<div class="plates">${list.map(plateHTML).join("")}</div>`;
   const sec = (title, list) => (list.length ? `<section class="group"><div class="label">${title}<span class="cnt">${list.length}</span></div>${grid(list)}</section>` : "");
-  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
+  return `
     <header class="gl-head"><div><h1>Bookplates</h1><div class="sub">${P.count ? `${P.count} earned` : "None yet"}</div></div></header>
     <p class="hint">Marks of reading and argument, worked out from your library each time you look. Nothing is counted for you to keep up, and none expire.</p>
     ${sec("Firsts", P.firsts)}${sec("Books", P.books)}${sec("Reading paths", P.paths)}
@@ -392,7 +392,7 @@ function trashView() {
   const what = (e) => e.kind === "text" ? `“${esc(e.title)}”${e.notes ? ` and its ${e.notes === 1 ? "note" : `${e.notes} notes`}` : ""}`
     : e.kind === "note" ? `A note${e.title ? ` in “${esc(e.title)}”` : ""}` : `${e.kind === "draft" ? "Draft" : e.kind === "path" ? "Reading path" : e.kind === "wish" ? "Wishlist book" : "Comparison"} “${esc(e.title)}”`;
   const left = (e) => { const d = Math.max(1, Math.ceil((e.at + TRASH_DAYS * DAY - Date.now()) / DAY)); return `${d} day${d === 1 ? "" : "s"} left`; };
-  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>${banner()}
+  return `${banner()}
     <header class="gl-head"><div><h1>Recently deleted</h1><div class="sub">${list.length} item${list.length === 1 ? "" : "s"}</div></div>${list.length > 1 ? `<button class="btn ghost danger" id="trash-empty">Empty</button>` : ""}</header>
     <p class="hint">Books, notes, drafts, comparisons, reading paths and wishlist books you delete stay here for ${TRASH_DAYS} days, then go for good. Backups don't include them.</p>
     ${list.length ? `<div class="gl-list">${list.map(([id, e]) => `<div class="thinkrow trashrow"><b>${what(e)}</b><span class="ty">${esc(fmtDate(e.at))}</span>
@@ -410,7 +410,7 @@ function textView() {
   const list = sortNotes(all.filter(([, n]) => (S.sec === "all" || n.sectionId === S.sec) && (S.kind === "all" || n.kind === S.kind) && matches(n, S.tq)), t);
   const secName = S.sec === "all" ? null : secs.find((s) => s.id === S.sec)?.label;
   const sums = t.summaries || {}, sum = secName ? sums[S.sec] || "" : "";
-  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Library</button></div>
+  return `
     ${banner()}
     <header class="head">
       <div class="headrow">
@@ -688,7 +688,7 @@ function groupsHTML(list) {
 }
 const taggedWith = (tg) => [...S.notes.entries()].filter(([, n]) => tagsOf(n).includes(tg));
 function tagView() {
-  const head = `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>${banner()}`;
+  const head = `${banner()}`;
   if (!S.tag) {
     const tags = allTags();
     return `${head}<header class="gl-head"><div><h1>Tags</h1><div class="sub">${tags.length} tag${tags.length === 1 ? "" : "s"} in your notes</div></div></header>
@@ -706,7 +706,7 @@ function tagView() {
 const questionNotes = () => [...S.notes.entries()].filter(([, n]) => OPENABLE.has(n.kind));
 function questionsView() {
   const all = questionNotes(), open = all.filter(([, n]) => !n.resolved), done = all.filter(([, n]) => n.resolved);
-  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>${banner()}
+  return `${banner()}
     <header class="gl-head"><div><h1>Open questions</h1><div class="sub">${open.length} open, ${done.length} resolved</div></div>${open.length ? `<button class="btn" id="exportquestions">Export</button>` : ""}</header>
     <p class="hint">Every note of the kind Question or Objection stays here until you mark it resolved. Edit the note to record the answer you found.</p>
     ${dqKeptHTML()}

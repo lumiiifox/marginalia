@@ -9,7 +9,6 @@ const courseAvailable = m => COURSE.indexOf(m) <= (courseNext() ? COURSE.indexOf
 const assignmentID = "course-writing-ancient";
 const assignmentPrompt = "Choose one Ancient argument. Reconstruct it in 300–500 words. Identify the passage, state the conclusion and give the premises in your own words. Mark one assumption you supply. Present a serious objection and a reply that the author could defend.";
 const assignmentRubric = "Assess textual accuracy, the link between premises and conclusion, the force of the objection, and the reply. Give 0–2 points for each, cite a sentence from the submission for each judgment, and suggest one specific revision. Flag any source you could not verify.";
-const courseBack = '<button class="btn" id="back">← Back</button>';
 let courseFilter = "";
 const COURSE_ATTEMPTS = new Map();
 function courseAttempt(m) {
@@ -99,7 +98,7 @@ function lessonNotesView() {
     const d = notesDraft(m), done = courseHas(m, "learn"), got = d.items.filter(it => it.t === "p" && it.x.startsWith(NOTE_MARK)).length;
     return `<button class="thinkrow" data-draft="${esc(notesID(m))}"><b>${esc(m.title)}</b><span class="ty">${done ? "Finished" : "In progress"}</span><span class="td">${esc(m.period)} · ${got} answer${got === 1 ? "" : "s"} recorded · ${esc(fmtDate(d.updatedAt))}</span></button>`;
   });
-  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
+  return `
     <header class="gl-head"><div><h1>Lesson notes</h1><div class="sub">${rows.length ? `${rows.length} lesson${rows.length === 1 ? "" : "s"}` : "None yet"}</div></div></header>
     ${rows.length ? `<div class="gl-list">${rows.join("")}</div>` : `<p class="empty"><b>No lesson notes yet.</b> Write them at the end of a lesson in Learning; they appear here as you go.</p>`}`;
 }
@@ -216,7 +215,7 @@ function courseView() {
       ${step === "test" ? courseTest(m) : step === "passage" ? read : step === "notes" ? courseNotes(m) : courseLesson(m,v.evidence)}
       <div class="course-next">${courseButton("next",next ? "Next · "+next.title : "Ancient period assignment",!coursePassed(m))}</div>`;
   }
-  return `<article class="course-page">${courseBack}${body}</article>`;
+  return `<article class="course-page">${body}</article>`;
 }
 async function courseAction(b) {
   const v = courseRoute(), m = COURSE.find(x => x.id === v.module), act = b.dataset.courseAct;

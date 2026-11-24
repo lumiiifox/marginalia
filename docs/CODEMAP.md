@@ -432,7 +432,8 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   Tested by `tests/slow_network.py` (a server that holds its answers), `tests/deploy.py` (a deploy within the ten minutes) and the
   offline check in `tests/smoke.py`.
 - Navigation (`NAV`, `go`, `back`, `histBack`, the `popstate` handler in sheets.js): every step adds a history entry, so the phone's back
-  button steps back through the app. A sheet you have typed in isn't closed by one Back, Escape or tap beside it (`sheetGuard`; the form's
+  button steps back through the app. Screens carry no "← Back" button of their own (owner's request: the phone's Back and the tab bar
+  cover it); the reader keeps its `#rback`, since the tab bar is hidden there, and a reading path keeps "← Reading paths". A sheet you have typed in isn't closed by one Back, Escape or tap beside it (`sheetGuard`; the form's
   `data-dirty`, set by typing in a text field, not a search box): the first says your words aren't saved, the second leaves them; Cancel leaves them at once. The browser's Forward can't
   go forward again, so the history is put back where the app is and the next Back still works. Tested by `tests/reader_details.py`.
 - A save made in passing (reading place, status, a ticked chapter, last active) that fails says so, at most once a minute (`saveFailed`, core.js).

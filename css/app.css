@@ -1155,7 +1155,7 @@ span.bhid { display: inline; }
 .syllabus { padding: 0; margin: 0; border: 0; background: transparent; }
 .syllabus-nav { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 24px; }
 .syllabus-nav .linkbtn { font-size: 17px; }
-.backbtn { padding-left: 0; } /* a screen's way back, the same on every screen: "← Back" at the top left */
+.backbtn { padding-left: 0; } /* "← Reading paths" at the top left of a path; other screens go back with the phone's Back or the tab bar */
 .syllabus-title { margin-bottom: 22px; }
 .syllabus-title > p { font: 400 18px/1.4 var(--f-text); color: var(--muted); margin: 18px 0 12px; overflow-wrap: anywhere; max-width: 65ch; }
 .syllabus-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
