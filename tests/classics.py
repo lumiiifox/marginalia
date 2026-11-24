@@ -46,6 +46,32 @@ async def main():
         again = await page.evaluate("addClassics(true)")
         check(again == ["The Souls of Black Folk"], f"...and added the next time ({again})")
 
+        # The main course uses exact passages and saves written responses as normal drafts.
+        missing = await page.evaluate("""async () => {
+          const bad = [];
+          for (const l of LEARNING) for (const [slug, sec, label, phrase] of l.readings) {
+            const id = 'classic-' + slug, B = await loadContent(id), r = stepRange(B, [id + '-s' + sec]);
+            if (!r || B.slice(...r).filter(b => plain(b.x).includes(phrase)).length !== 1) bad.push(label);
+          } return bad;
+        }""")
+        check(not missing, f"all course readings identify one passage in the assigned section ({missing})")
+        await page.evaluate("go({screen:'study'})")
+        check(await page.locator('.studycards button').first.get_attribute('id') == 'openlearning', "Learning leads the Study screen")
+        await page.click('#openlearning')
+        await page.click('button.btn.primary[data-lesson]')
+        await page.click('[data-learning-read="0"]')
+        await page.wait_for_selector('#book .bp')
+        check(await page.evaluate("R.tid") == "classic-russell-problems", "the first lesson opens Russell in the reader")
+        await page.evaluate("back()")
+        await page.click('#learning-answer')
+        await page.fill('#learning-text', 'The reflection changes when the observer moves.')
+        await page.click('#sheetroot button[type=submit]')
+        await page.wait_for_selector('[data-draft="learning-appearance"]')
+        await page.reload(); await page.wait_for_function(READY)
+        await page.evaluate("go({screen:'learning'})")
+        check(await page.locator('button.btn.primary[data-lesson]').get_attribute('data-lesson') == 'definition',
+              "a saved response survives reload and the course resumes with the next exercise")
+
         # 2 all of them, queued, with text, chapters and cover
         recs = await page.evaluate("""(async () => { const out = {}; for (const id of CLASSICS) { const t = S.texts.get(id), c = await idbGet('content', id), cv = await idbGet('covers', id);
           out[id] = { title: t && t.title, status: t && t.status, has: t && t.hasContent, total: t && t.total, blocks: c && c.length, secs: (t && t.sections || []).length,

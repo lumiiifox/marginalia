@@ -105,6 +105,10 @@ document.addEventListener("click", (e) => {
   if (b.id === "opendisputes") return go({ screen: "disputes" });
   if (b.dataset.dispute) return disputePanel(b.dataset.dispute);
   if (b.id === "openplates") return go({ screen: "plates" });
+  if (b.id === "openlearning") return go({ screen: "learning" });
+  if (b.dataset.lesson) return go({ screen: "learning", lesson: b.dataset.lesson });
+  if (b.dataset.learningRead !== undefined) return readLearningPassage(Number(b.dataset.learningRead));
+  if (b.id === "learning-answer") return writeLearningResponse();
   if (b.id === "openmastery") return go({ screen: "mastery" });
   if (b.id === "openstudy") return go({ screen: "study" });
   if (b.id === "opendaily") return go({ screen: "daily" });

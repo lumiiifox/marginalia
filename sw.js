@@ -1,11 +1,11 @@
 // Marginalia service worker: lets the app open offline and caches the reading libraries.
 // Pages from this site are fetched fresh when the connection answers in time, so updates show up on the next open; on a connection
 // that stalls the app opens from its saved copy within a few seconds.
-const CACHE = "marginalia-v8";
+const CACHE = "marginalia-v9";
 // Every file index.html loads (tests/smoke.py checks this list against index.html).
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./css/app.css",
   "./data/glossary.js", "./data/thinkers.js", "./data/branches.js", "./data/recommendations.js",
-  "./js/core.js", "./js/storage.js", "./js/cite.js", "./js/import.js", "./js/library.js", "./js/writing.js", "./js/study.js",
+  "./js/core.js", "./js/storage.js", "./js/cite.js", "./js/import.js", "./js/library.js", "./js/writing.js", "./js/study.js", "./js/learning.js",
   "./js/reference.js", "./js/sheets.js", "./js/wikisource.js", "./js/bookmenu.js", "./js/reader.js", "./js/structure.js", "./js/discovery.js", "./js/mastery.js", "./js/daily.js", "./js/cloud-backup.js", "./js/boot.js"];
 // How long an opening waits for the page itself before using the saved copy, and how long one of its files waits once the page came.
 const PAGE_WAIT = 3000, FILE_WAIT = 8000;
