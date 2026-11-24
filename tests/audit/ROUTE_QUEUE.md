@@ -57,8 +57,7 @@ The route turns to Plato and Aristotle after Deleuze. Read 2026-11-22 in the bun
 `superseded` in glossary-aristotle.json), and virtue-mean, phronesis and akrasia (new), in glossary-aristotle-texts.json, with Bekker numbers
 taken from Kraut's Stanford entry and checked against Bywater's Greek. Ross's Metaphysics bundled the same day, and four-causes,
 potentiality, essence and substance re-read against it (same audit file; the old records under `superseded` in glossary-aristotle.json
-and glossary-spinoza.json). The Physics is not yet bundled (Hardie and Gaye's translation is plain text in the MIT archive; next step), so four-causes
-rests on Met. I.3 and V.2 for now. Still unread: the scholarship Kraut only cites, Cohen and Reeve past §8, the Physics (the audit's `unread`).
+and glossary-spinoza.json). The Physics (Hardie and Gaye, 1930) was bundled 2026-11-24 (PR #125), and four-causes re-read against Phys. II.3 and II.7. Still unread: the scholarship Kraut only cites, Cohen and Reeve past §8 (the audit's `unread`).
 
 ### Plato, read in his own dialogues (owner's request, 2026-11-22)
 

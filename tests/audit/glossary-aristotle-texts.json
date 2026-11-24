@@ -104,11 +104,11 @@
   {
    "source": "Aristotle, Physics",
    "part": "the whole book (II.3 and II.7 on the causes)",
-   "why": "not yet bundled. None in Standard Ebooks or Project Gutenberg; the drafter took Hardie and Gaye's translation to exist only as archive.org scans, and the reviewer found it as plain text in the MIT Internet Classics Archive (classics.mit.edu/Aristotle/physics.2.ii.html), the archive the bundled Ross comes from. Hardie and Gaye's death years are to be confirmed before it is bundled",
+   "why": "not yet bundled. None in Standard Ebooks or Project Gutenberg; the drafter took Hardie and Gaye's translation to exist only as archive.org scans, and the reviewer found it as plain text in the MIT Internet Classics Archive (classics.mit.edu/Aristotle/physics.2.ii.html), the archive the bundled Ross comes from. Hardie and Gaye's death years are to be confirmed before it is bundled. Bundled 2026-11-24 (PR #125); this gap is closed",
    "terms": [
     "four-causes"
    ],
-   "effect": "four-causes rests on Metaphysics I.3 and V.2 and says so; its two Physics references come from Falcon. Bundling the Physics is the next step"
+   "effect": "closed: four-causes now reads Phys. II.3 and II.7"
   },
   {
    "source": "Cohen and Reeve, “Aristotle's Metaphysics” (SEP)",
@@ -1253,6 +1253,9 @@
      "text": "Aristotle's four kinds of cause: material (what a thing comes from and is made of), formal (its form, the definition of its essence), efficient (where the change begins) and final (the end, what it is for).",
      "claims": [
       {
+       "by": "PHYS II.3"
+      },
+      {
        "by": "MET I.3, V.2"
       }
      ]
@@ -1268,50 +1271,60 @@
      ]
     },
     {
-     "text": "Aristotle gives his general account of the four causes in Physics II.3 and Metaphysics V.2.",
+     "text": "Aristotle gives his general account of the four causes in Physics II.3 and Metaphysics V.2, two chapters that give the same four senses with the same examples.",
      "claims": [
       {
-       "by": "FAL §1–2"
+       "by": "FAL §1–2; PHYS II.3 and MET V.2 read side by side"
       }
      ]
     },
     {
-     "text": "The Physics is not yet among the bundled books, so this entry rests on the Metaphysics.",
+     "text": "Physics II.3 starts from knowledge: we think we know a thing only when we have grasped its ‘why’, its primary cause (Phys. II.3).",
      "claims": [
       {
-       "by": "editorial: the bundled library; see unread (Aristotle, Physics)"
+       "by": "PHYS II.3"
       }
-     ]
+     ],
+     "paragraph": "starts a new paragraph"
     },
     {
-     "text": "Metaphysics I.3 begins its history of earlier philosophy by saying that “causes are spoken of in four senses” (Met. I.3): the substance or essence, the matter or substratum, the source of the change, and the purpose and the good, “the end of all generation and change” (Met. I.3).",
+     "text": "It then names four senses of ‘cause’: “that out of which a thing comes to be and which persists” (Phys. II.3), as the bronze of the statue; the form, “the statement of the essence” (Phys. II.3), as the ratio 2:1 of the octave; “the primary source of the change or coming to rest” (Phys. II.3), as the father of the child; and the end, “‘that for the sake of which’ a thing is done” (Phys. II.3), as health is the cause of walking about.",
      "claims": [
       {
-       "by": "MET I.3"
+       "by": "PHYS II.3"
+      },
+      {
+       "by": "PHYS II.3"
+      },
+      {
+       "by": "PHYS II.3"
+      },
+      {
+       "by": "PHYS II.3"
+      }
+     ],
+     "quotes": "the translation's words, checked by script (tests/links.py) against the chapter cited, under 15 words"
+    },
+    {
+     "text": "One thing can have several causes: the art of the sculptor and the bronze both cause the statue, “the one being the material cause, the other the cause whence the motion comes” (Phys. II.3).",
+     "claims": [
+      {
+       "by": "PHYS II.3"
+      }
+     ],
+     "quotes": "the translation's words, checked by script (tests/links.py) against the chapter cited, under 15 words"
+    },
+    {
+     "text": "Metaphysics V.2 repeats the list with the same examples (Met. V.2), and Metaphysics I.3 opens its history of earlier philosophy by saying that “causes are spoken of in four senses” (Met. I.3).",
+     "claims": [
+      {
+       "by": "MET V.2"
       },
       {
        "by": "MET I.3"
       }
      ],
-     "quotes": "Ross verbatim, checked by script (tests/links.py) against the chapter cited, under 15 words",
-     "paragraph": "starts a new paragraph"
-    },
-    {
-     "text": "Book V (Delta), chapter 2, gives an example of each: the bronze of the statue, the ratio 2:1 of the octave, the father of the child, and health as the end of walking (Met. V.2).",
-     "claims": [
-      {
-       "by": "MET V.2"
-      }
-     ]
-    },
-    {
-     "text": "One thing can have several causes: the art of sculpture and the bronze both cause the statue, “the one as matter and the other as source of the movement” (Met. V.2).",
-     "claims": [
-      {
-       "by": "MET V.2"
-      }
-     ],
-     "quotes": "Ross verbatim, checked by script (tests/links.py) against the chapter cited, under 15 words"
+     "quotes": "the translation's words, checked by script (tests/links.py) against the chapter cited, under 15 words"
     },
     {
      "text": "Falcon reads Metaphysics I.3–7 as a review in which Aristotle's predecessors “merely touched upon these causes”.",
@@ -1322,12 +1335,31 @@
      ]
     },
     {
-     "text": "Falcon sums up Physics II.7: in nature “the form and the end often coincide”.",
+     "text": "Physics II.7 ties the causes to the question ‘why’: there are as many causes as there are things the question asks after (Phys. II.7).",
      "claims": [
       {
-       "by": "FAL §3 (Falcon's own prose, citing Phys. II 7, 198a23–26)"
+       "by": "PHYS II.7"
       }
-     ]
+     ],
+     "paragraph": "starts a new paragraph"
+    },
+    {
+     "text": "The physicist must know all four, “the matter, the form, the mover, ‘that for the sake of which’” (Phys. II.7), and the last three “often coincide” (Phys. II.7): the form and the end are one, and “the primary source of motion is the same in species as these” (Phys. II.7), “for man generates man” (Phys. II.7).",
+     "claims": [
+      {
+       "by": "PHYS II.7"
+      },
+      {
+       "by": "PHYS II.7"
+      },
+      {
+       "by": "PHYS II.7"
+      },
+      {
+       "by": "PHYS II.7"
+      }
+     ],
+     "quotes": "the translation's words, checked by script (tests/links.py) against the chapter cited, under 15 words"
     },
     {
      "text": "Hobbes and Descartes took William Harvey's work as a turn away from Galenic and Aristotelian anatomy, with its appeal to final causes, toward mechanistic science.",
@@ -1336,37 +1368,33 @@
        "by": "TEL"
       }
      ],
-     "unchanged": "kept word for word from the earlier record; not re-read in this batch",
+     "unchanged": "kept word for word; not re-read in this batch",
      "paragraph": "starts a new paragraph"
     }
    ],
-   "s": "Aristotle, Metaphysics I.3, V.2 (Ross trans.); Physics II.3, II.7 (unbundled, cited from Falcon)",
+   "s": "Aristotle, Physics II.3, II.7 (Hardie and Gaye trans.); Metaphysics I.3, V.2 (Ross trans.)",
    "src": "FAL",
+   "srcs": [
+    "TEL"
+   ],
    "reread": {
-    "of": "glossary-aristotle.json, kept there under superseded",
+    "of": "this file's Metaphysics batch (2026-11-22), kept under superseded",
     "old": [
      {
-      "text": "The Greek word is aitia, and Andrea Falcon suggests that “it can be useful to think of a cause as a certain type of explanation”.",
-      "verdict": "Falcon's sentence verbatim in his §2 (read 2026-11-22); kept"
+      "text": "The Physics is not yet among the bundled books, so this entry rests on the Metaphysics.",
+      "verdict": "no longer true: the Physics is bundled (PR #125, 2026-11-24); sentence dropped"
      },
      {
-      "text": "Aristotle gives his general account of the four causes in Physics II 3 and Metaphysics V 2.",
-      "verdict": "verbatim in Falcon §2; kept, now followed by a sentence saying the Physics is unbundled"
+      "text": "Falcon sums up Physics II.7: in nature “the form and the end often coincide”.",
+      "verdict": "supported (Falcon §3, his prose); replaced by Hardie and Gaye's own words in Phys. II.7: the last three “often coincide”"
      },
      {
-      "text": "In the making of a bronze statue, the bronze enters the explanation as the material cause, and the statue enters the explanation of each step of the work as the final cause.",
-      "verdict": "supported (Falcon §2, verbatim); replaced by the four examples Met. V.2 gives in Ross"
-     },
-     {
-      "text": "In nature, Aristotle observes, “the form and the end often coincide, and they are formally the same as that which produces the change”.",
-      "verdict": "Falcon §3 writes this in his own prose, citing Phys. II 7, 198a23–26, so the old text's “Aristotle observes” presented Falcon's paraphrase as Aristotle's words; it was also 19 words, over the 15-word limit. Now seven words, credited to Falcon as his summary of Physics II.7"
-     },
-     {
-      "text": "Hobbes and Descartes took William Harvey's work as a turn away from Galenic and Aristotelian anatomy, with its appeal to final causes, toward mechanistic science.",
-      "verdict": "kept unchanged (TEL)"
+      "text": "Metaphysics I.3 … Book V (Delta), chapter 2, gives an example of each …",
+      "verdict": "supported (Ross); kept in short form after the Physics II.3 account, which gives the same four senses and examples"
      }
     ]
-   }
+   },
+   "bekker": "none added: the transcription prints none, and no reference in the entry needs a passage narrower than a chapter"
   },
   "potentiality": {
    "new_d": [
@@ -1722,6 +1750,138 @@
    "scope": "Re-read of four-causes, potentiality, essence and substance against the newly bundled Ross Metaphysics (owner's request, item 3). Only the Aristotle sentences of essence and substance were re-read; their Ibn Sīnā, Locke, Sartre, Descartes and Spinoza sentences are kept word for word from glossary-aristotle.json and glossary-spinoza.json, whose records of these four terms move under superseded.",
    "first_pass": "Claude (Opus 5.5), 2026-11-22: every Aristotle sentence drafted from the bundled Ross; every quotation followed by a (Met. …) reference checked by script against the chapter it opens; Falcon and Cohen and Reeve read through the web-fetch tool, quoting only what it returned as page text",
    "review": "Independent reviewer (separate agent, fresh context), 2026-11-22: checked by its own script all 16 (Met. …) quotations against the chapter split of the bundled Ross (all verbatim, 4 to 14 words); read the cited chapters for every paraphrase; confirmed the Falcon and Cohen and Reeve quotations as page text, including Cohen and Reeve §12; checked the kept sentences are unchanged and the superseded records identical; ran content and links (6 of 6). Required fixes, all applied: the claim that no Physics translation is available as text was false (Hardie and Gaye is plain text in the MIT archive), now “not yet bundled”; Falcon's prose on Physics II.7 credited to Falcon; two misplaced “concludes” (VII.4, IX.8) corrected, with VII.4's qualification that essence belongs in the primary sense to substances; the VII.17 sentence split from Cohen and Reeve's reading; this record's sentence split repaired and each sentence tagged with its chapter or section; Cohen and Reeve §12 marked verified. Not checked: the kept sentences, Ross's edition, Hardie's and Gaye's death years, Falcon §8 onward. Verdict: pass after the required fixes."
+  },
+  "physics": {
+   "audited": "2026-11-24",
+   "scope": "four-causes re-read against Physics II.3 and II.7 in the bundled Hardie and Gaye, after the Physics was bundled (owner's request, 2026-11-23); the note that the Physics is unbundled dropped.",
+   "first_pass": "Claude (Opus 5.5), 2026-11-24: every Physics sentence drafted from the bundled text; quotations checked by script against the chapter cited",
+   "review": "Independent reviewer (separate agent, fresh context), 2026-11-24: checked by its own script every Phys. and Met. quotation (all verbatim in the chapter cited, under 15 words); read Phys. II.3, II.7 and Met. I.3, V.2 for each paraphrase (Phys. II.3 and Met. V.2 confirmed near-duplicates with the same examples); checked the audit tags, reread verdicts, unread entry and ROUTE_QUEUE; ran content and links (7 of 7). Required fix, applied: Hardie and Gaye's words “the primary source of motion is the same in species as these” quoted with their own reference. Optional, applied: new_d credited to Phys. II.3 as well. Not re-fetched: Falcon (unchanged from the batch verified 2026-11-22). Verdict: pass after the required fix."
+  }
+ },
+ "superseded": {
+  "note": "Earlier records of terms re-read again in this file.",
+  "terms": {
+   "four-causes": {
+    "new_d": [
+     {
+      "text": "Aristotle's four kinds of cause: material (what a thing comes from and is made of), formal (its form, the definition of its essence), efficient (where the change begins) and final (the end, what it is for).",
+      "claims": [
+       {
+        "by": "MET I.3, V.2"
+       }
+      ]
+     }
+    ],
+    "new_text": [
+     {
+      "text": "The Greek word is aitia, and Andrea Falcon suggests that “it can be useful to think of a cause as a certain type of explanation”.",
+      "claims": [
+       {
+        "by": "FAL §2"
+       }
+      ]
+     },
+     {
+      "text": "Aristotle gives his general account of the four causes in Physics II.3 and Metaphysics V.2.",
+      "claims": [
+       {
+        "by": "FAL §1–2"
+       }
+      ]
+     },
+     {
+      "text": "The Physics is not yet among the bundled books, so this entry rests on the Metaphysics.",
+      "claims": [
+       {
+        "by": "editorial: the bundled library; see unread (Aristotle, Physics)"
+       }
+      ]
+     },
+     {
+      "text": "Metaphysics I.3 begins its history of earlier philosophy by saying that “causes are spoken of in four senses” (Met. I.3): the substance or essence, the matter or substratum, the source of the change, and the purpose and the good, “the end of all generation and change” (Met. I.3).",
+      "claims": [
+       {
+        "by": "MET I.3"
+       },
+       {
+        "by": "MET I.3"
+       }
+      ],
+      "quotes": "Ross verbatim, checked by script (tests/links.py) against the chapter cited, under 15 words",
+      "paragraph": "starts a new paragraph"
+     },
+     {
+      "text": "Book V (Delta), chapter 2, gives an example of each: the bronze of the statue, the ratio 2:1 of the octave, the father of the child, and health as the end of walking (Met. V.2).",
+      "claims": [
+       {
+        "by": "MET V.2"
+       }
+      ]
+     },
+     {
+      "text": "One thing can have several causes: the art of sculpture and the bronze both cause the statue, “the one as matter and the other as source of the movement” (Met. V.2).",
+      "claims": [
+       {
+        "by": "MET V.2"
+       }
+      ],
+      "quotes": "Ross verbatim, checked by script (tests/links.py) against the chapter cited, under 15 words"
+     },
+     {
+      "text": "Falcon reads Metaphysics I.3–7 as a review in which Aristotle's predecessors “merely touched upon these causes”.",
+      "claims": [
+       {
+        "by": "FAL §1"
+       }
+      ]
+     },
+     {
+      "text": "Falcon sums up Physics II.7: in nature “the form and the end often coincide”.",
+      "claims": [
+       {
+        "by": "FAL §3 (Falcon's own prose, citing Phys. II 7, 198a23–26)"
+       }
+      ]
+     },
+     {
+      "text": "Hobbes and Descartes took William Harvey's work as a turn away from Galenic and Aristotelian anatomy, with its appeal to final causes, toward mechanistic science.",
+      "claims": [
+       {
+        "by": "TEL"
+       }
+      ],
+      "unchanged": "kept word for word from the earlier record; not re-read in this batch",
+      "paragraph": "starts a new paragraph"
+     }
+    ],
+    "s": "Aristotle, Metaphysics I.3, V.2 (Ross trans.); Physics II.3, II.7 (unbundled, cited from Falcon)",
+    "src": "FAL",
+    "reread": {
+     "of": "glossary-aristotle.json, kept there under superseded",
+     "old": [
+      {
+       "text": "The Greek word is aitia, and Andrea Falcon suggests that “it can be useful to think of a cause as a certain type of explanation”.",
+       "verdict": "Falcon's sentence verbatim in his §2 (read 2026-11-22); kept"
+      },
+      {
+       "text": "Aristotle gives his general account of the four causes in Physics II 3 and Metaphysics V 2.",
+       "verdict": "verbatim in Falcon §2; kept, now followed by a sentence saying the Physics is unbundled"
+      },
+      {
+       "text": "In the making of a bronze statue, the bronze enters the explanation as the material cause, and the statue enters the explanation of each step of the work as the final cause.",
+       "verdict": "supported (Falcon §2, verbatim); replaced by the four examples Met. V.2 gives in Ross"
+      },
+      {
+       "text": "In nature, Aristotle observes, “the form and the end often coincide, and they are formally the same as that which produces the change”.",
+       "verdict": "Falcon §3 writes this in his own prose, citing Phys. II 7, 198a23–26, so the old text's “Aristotle observes” presented Falcon's paraphrase as Aristotle's words; it was also 19 words, over the 15-word limit. Now seven words, credited to Falcon as his summary of Physics II.7"
+      },
+      {
+       "text": "Hobbes and Descartes took William Harvey's work as a turn away from Galenic and Aristotelian anatomy, with its appeal to final causes, toward mechanistic science.",
+       "verdict": "kept unchanged (TEL)"
+      }
+     ]
+    }
+   }
   }
  }
 }

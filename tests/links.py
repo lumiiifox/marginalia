@@ -254,7 +254,7 @@ async def main():
                 // a Stephanus reference: every block listed for it (a section of short exchanges can run over several)
                 const ix = st.endsWith('-st') ? stephBlocks(books[st], a.dataset.passageAt) : [i];
                 at[a.textContent] = (at[a.textContent] || '') + ' ' + ix.map((k) => span(books[st], k)).join(' '); }
-              for (const m of para.matchAll(/“([^”]*)”([^“]*?)\\(((?:T|EHU|NE|Met\\.|Rep\\.|Phaedo|Euthyphro|Apology) [^()]+|[AB][\\dxvi][^()]*)\\)/g)) {
+              for (const m of para.matchAll(/“([^”]*)”([^“]*?)\\(((?:T|EHU|NE|Met\\.|Phys\\.|Rep\\.|Phaedo|Euthyphro|Apology) [^()]+|[AB][\\dxvi][^()]*)\\)/g)) {
                 if (/[.;]\\s/.test(m[2])) continue;  // the reference belongs to a later sentence
                 out.quotes++; const q = m[1].replace(/[,.]$/, ''), txt = m[3].split('; ').map((r) => at[r] || '').join(' ');
                 if (!txt.includes(q)) out.bad.push(g.id + ' quote ' + q);
