@@ -93,6 +93,18 @@ const notesDraft = m => S.drafts.get(notesID(m));
 const notesQs = m => COURSE_BANK[m.id].map((q, i) => [q, i]).filter(([, i]) => i % 2 === 1);
 const notesSec = (m, q) => Number.isInteger(q.s) ? q.s : Math.max(0, m.sections.findIndex(s => q.target && s.slice(1).join(" ").includes(q.target)));
 const NOTE_MARK = "✓ ", NOTES_WRONG = new Map(), NOTES_ORDER = new Map();
+// Study → Lesson notes: each module's notes in course order, marked Finished once the lesson is done; each row opens its draft.
+function lessonNotesView() {
+  const rows = COURSE.filter(m => notesDraft(m)).map(m => {
+    const d = notesDraft(m), done = courseHas(m, "learn"), got = d.items.filter(it => it.t === "p" && it.x.startsWith(NOTE_MARK)).length;
+    return `<button class="thinkrow" data-draft="${esc(notesID(m))}"><b>${esc(m.title)}</b><span class="ty">${done ? "Finished" : "In progress"}</span><span class="td">${esc(m.period)} · ${got} answer${got === 1 ? "" : "s"} recorded · ${esc(fmtDate(d.updatedAt))}</span></button>`;
+  });
+  return `<div><button class="btn ghost" id="back" style="padding-left:0">← Back</button></div>
+    <header class="gl-head"><div><h1>Lesson notes</h1><div class="sub">${rows.length ? `${rows.length} lesson${rows.length === 1 ? "" : "s"}` : "None yet"}</div></div></header>
+    ${rows.length ? `<div class="gl-list">${rows.join("")}</div>` : `<p class="empty"><b>No lesson notes yet.</b> Write them at the end of a lesson in Learning; they appear here as you go.</p>`}`;
+}
+const lessonNotesSub = () => { const ms = COURSE.filter(m => notesDraft(m)), f = ms.filter(m => courseHas(m, "learn")).length;
+  return ms.length ? `${f} finished${ms.length > f ? `, ${ms.length - f} in progress` : ""}: your outline, own words and checked answers for each lesson` : "Your notes from each lesson, kept here once you write them"; };
 // your own words for each section, read back from the draft (a line of a right answer starts with NOTE_MARK)
 function notesMine(m) {
   const out = m.sections.map(() => ""), d = notesDraft(m); if (!d) return out;

@@ -105,6 +105,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "opendisputes") return go({ screen: "disputes" });
   if (b.dataset.dispute) return disputePanel(b.dataset.dispute);
   if (b.id === "openplates") return go({ screen: "plates" });
+  if (b.id === "opennotes") return go({ screen: "lessonnotes" });
   if (b.matches("#opencourse,[data-course-act],[data-course-module],[data-course-step],[data-course-answer]")) {
     if (courseAction.busy) return;
     courseAction.busy = true;

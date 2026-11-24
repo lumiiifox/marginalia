@@ -517,13 +517,14 @@ function todHTML() {
   const g = termOfDay(); if (!g) return "";
   return `<button class="refcard tod" data-term="${esc(g.id)}"><span class="tod-l">Term of the day<span>${esc(AREAS[g.a] || "")}</span></span><span class="rc-t">${esc(g.t)}</span><span class="rc-s">${esc(g.d)}</span><span class="rc-go" aria-hidden="true">›</span></button>`;
 }
-/* Study (the `study` tab): Mastery, reading paths, disputations, puzzles, Quiz yourself and bookplates, each opening its own screen
+/* Study (the `study` tab): Lesson notes, Mastery, reading paths, disputations, puzzles, Quiz yourself and bookplates, each opening its own screen
    or panel. */
 function studyView() {
   const card = (id, title, sub) => `<button class="refcard pathcard" id="${id}"><span class="rc-t">${title}</span><span class="rc-s">${sub}</span><span class="rc-go" aria-hidden="true">›</span></button>`;
   const plates = S.notes.size ? bookplates().count : 0;
   return `<header class="gl-head"><div><h1>Study</h1><div class="sub">Practice on checked material, and what you've earned</div></div></header>
-    <div class="studycards">${courseCard()}</div><section class="studygroup"><h2>Practice</h2><div class="studycards">${masteryCardHTML()}
+    <div class="studycards">${courseCard()}</div><section class="studygroup"><h2>Practice</h2><div class="studycards">${card("opennotes", "Lesson notes", lessonNotesSub())}
+    ${masteryCardHTML()}
     ${typeof PATHS !== "undefined" && PATHS.length ? card("openpaths", "Reading paths", `${PATHS.length} routes through the classics on your shelf, chapter by chapter`) : ""}
     ${typeof DAILY_QUESTIONS !== "undefined" && DAILY_QUESTIONS.length ? card("opendaily", "Daily questions", (() => { const n = S.daily.size, a = [...S.daily.values()].filter((r) => r.answer).length; return n ? `${n} seen, ${a} answered. Each one you have seen on the home screen, dated` : "The question on your home screen each day, dated, answered or not"; })()) : ""}
     ${typeof DISPUTES !== "undefined" && DISPUTES.length ? card("opendisputes", "Disputations", `${DISPUTES.length} arguments to answer, then compare with the classic objection`) : ""}

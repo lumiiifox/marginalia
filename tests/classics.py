@@ -178,6 +178,9 @@ async def main():
               f"each right answer is added to the notes under its heading, after your own words; the notes are an ordinary draft ({notes[:4]})")
         await page.click('[data-course-act="learn"]'); await page.wait_for_function("courseRoute().step === 'passage'")
         check(await page.evaluate("courseHas(COURSE[0], 'learn')"), "answering every question finishes the lesson")
+        ln = await page.evaluate("""(() => { const s = document.createElement('div'), l = document.createElement('div'); s.innerHTML = studyView(); l.innerHTML = lessonNotesView();
+          const rows = [...l.querySelectorAll('[data-draft]')]; return [s.querySelector('#opennotes .rc-s')?.textContent.startsWith('1 finished'), rows.map((r) => r.dataset.draft), rows[0]?.querySelector('.ty')?.textContent]; })()""")
+        check(ln == [True, ["course-notes-foundations"], "Finished"], f"Study's Lesson notes card counts the finished notes, and its list opens them ({ln})")
         await page.click('[data-course-act="test"]')
         await page.click('[data-course-act="start"]')
         first = await page.evaluate("courseAttempt(COURSE[0]).order.slice()")

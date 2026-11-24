@@ -45,7 +45,7 @@ SEED = """async () => {
 DUMP = "async (st) => { const o = {}; for (const s of st) o[s] = Object.fromEntries(await idbAll(s)); return o; }"
 READY = "typeof idb !== 'undefined' && idb && S.mode === 'ready'"  # the library read in, not only storage open: the notes load after idb is set
 SCREENS = [("library", {}), ("shelf", {}), ("study", {}), ("text", {"textId": "t1"}), ("glossary", {}), ("branches", {}), ("thinkers", {}), ("reference", {}), ("tag", {"tag": "tag"}),
-           ("questions", {}), ("drafts", {}), ("draft", {"draftId": "d1"}), ("concord", {}), ("compares", {}), ("compare", {"cmpId": "c1"}), ("paths", {"pathFocus": None}), ("paths", {"pathFocus": "path-test"}), ("plates", {}), ("mastery", {}), ("disputes", {}), ("wishlist", {}), ("recommendations", {"recBook": None, "recAll": True})]
+           ("questions", {}), ("drafts", {}), ("draft", {"draftId": "d1"}), ("concord", {}), ("compares", {}), ("compare", {"cmpId": "c1"}), ("paths", {"pathFocus": None}), ("paths", {"pathFocus": "path-test"}), ("plates", {}), ("lessonnotes", {}), ("mastery", {}), ("disputes", {}), ("wishlist", {}), ("recommendations", {"recBook": None, "recAll": True})]
 
 failures = []
 def check(ok, what):
@@ -375,10 +375,10 @@ async def main():
         check(await page.evaluate("[S.screen, S.textId, R.saved, document.querySelector('#tabbar').hidden]") == ["reader", "c1", 5, True], "Continue reading opens the book at your place, with the tab bar hidden")
         await page.evaluate("(async () => { for (const id of ['c1', 'c2', 'c3', 'c4']) { await del('texts', id); } await del('content', 'c1'); go({ screen: 'library' }); })()"); await page.wait_for_timeout(200)
         await page.click("#tabbar [data-tab=study]"); await page.wait_for_timeout(200)
-        study = await page.evaluate("[S.screen, ['#openmastery', '#openpaths', '#opendisputes', '#puzzles', '#quiz', '#openplates'].filter((x) => !document.querySelector('#main ' + x))]")
-        check(study == ["study", []], f"Study lists mastery, reading paths, disputations, puzzles, Quiz yourself and bookplates ({study})")
+        study = await page.evaluate("[S.screen, ['#opennotes', '#openmastery', '#openpaths', '#opendisputes', '#puzzles', '#quiz', '#openplates'].filter((x) => !document.querySelector('#main ' + x))]")
+        check(study == ["study", []], f"Study lists lesson notes, mastery, reading paths, disputations, puzzles, Quiz yourself and bookplates ({study})")
         opens = []
-        for sel, want in (("#opencourse", "screen:course"), ("#openmastery", "screen:mastery"), ("#openpaths", "screen:paths"), ("#opendisputes", "screen:disputes"), ("#openplates", "screen:plates"), ("#puzzles", "panel"), ("#quiz", "panel")):
+        for sel, want in (("#opencourse", "screen:course"), ("#opennotes", "screen:lessonnotes"), ("#openmastery", "screen:mastery"), ("#openpaths", "screen:paths"), ("#opendisputes", "screen:disputes"), ("#openplates", "screen:plates"), ("#puzzles", "panel"), ("#quiz", "panel")):
             await page.evaluate("go({ screen: 'study' })"); await page.wait_for_timeout(100)
             await page.click(f"#main {sel}"); await page.wait_for_timeout(250)
             got = await page.evaluate("NAV.overlay ? 'panel' : 'screen:' + S.screen")
