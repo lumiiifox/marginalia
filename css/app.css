@@ -1015,6 +1015,8 @@ body.typing .tabbar { display: none; }
 #reader.paged-reader.justify.short-lines :is(#book, #flipbook) :is(.bp, .bq, .bfn) { hyphens: auto; -webkit-hyphens: auto; }
 #reader.paged-reader:is(:not(.justify), .short-lines) :is(#book, #flipbook) :is(.bp, .bq) { text-wrap: pretty; }
 /* Verse line by line (isVerse): never justified, a long line's run-over hanging under it */
+/* a stanza after a stanza: verse is stored a stanza a block, so the break between stanzas is a line's space (Harlem Shadows) */
+#reader :is(#book, #flipbook) :is(.verse + .verse, .verse + .bpg + .verse):not(.cont) { margin-top: 0.9em; }
 #reader :is(#book, #flipbook) .verse { text-align: left !important; text-align-last: auto !important; hyphens: manual !important; -webkit-hyphens: manual !important; word-spacing: normal !important; text-indent: 1.5em hanging each-line; text-wrap: wrap; }
 .book .vs { display: none; }
 /* A table's rows (cells stored with " · " between them): a grid whose columns line up from row to row, ruled between rows. */
