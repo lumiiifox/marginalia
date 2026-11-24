@@ -35,3 +35,11 @@ items below connect these into one loop: read → recall → reconstruct → fee
 Items from the earlier backlog stay here until a reading calls for them: two-edition page concordance (English/Minuit),
 original text beside translation, import PDF highlights, reading pace per book, density gauge, hear names pronounced, term
 histories on the timeline.
+
+**News tab with live headlines** (owner's request, 2026-11-24; parked until the owner picks it up). A fifth tab beside Home,
+Library, Study and Reference showing the latest posts as title, source and date, each opening the full post in the browser.
+Sources: Daily Nous, Leiter Reports, the Blog of the APA and PEA Soup; for science, tech, sociology and psychology, proposed
+Quanta Magazine, Ars Technica, Aeon/Psyche and The Conversation (owner to confirm). Chosen approach: a scheduled GitHub
+Action fetches the feeds every few hours and commits a small headlines file (titles, dates, links only), so the app calls no
+outside service, needs no new CSP host and still shows the last batch offline. Check each feed exists before building. Keep it
+calm: no badges, no "new" counters, nothing on Home. Needs a new data file in `SHELL` and a `CACHE` bump.
