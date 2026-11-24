@@ -1163,6 +1163,577 @@
      "accuracy": "non-assertive"
     }
    ]
+  },
+  {
+   "text": "Frege argued for logicism in Die Grundlagen der Arithmetik (1884) and tried to carry it out in the Grundgesetze, whose first volume appeared in 1893; in June 1902, while he was correcting the proofs of volume II, Russell wrote to tell him that a contradiction could be derived in his system.",
+   "section": "Logicism, intuitionism, and formalism",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "historical",
+     "by": "SEP, Zalta, “Gottlob Frege” (rev. 1 Aug 2026) §1, §2.5",
+     "excerpt": "he received a letter from Bertrand Russell",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Edward Zalta’s SEP entry reports that Frege’s attempts to save the work by restricting Basic Law V failed, and that his kind of reduction now has few defenders.",
+   "section": "Logicism, intuitionism, and formalism",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Zalta, “Gottlob Frege” (rev. 1 Aug 2026) §1, §2.4.2",
+     "excerpt": "Few philosophers today believe that mathematics can be reduced to logic",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Crispin Wright (1983) showed how the Dedekind–Peano axioms can be derived from Hume’s Principle, that the number of Fs is the number of Gs just when F and G are equinumerous, a derivation now called Frege’s Theorem, and Richard Heck (1993) showed that Frege himself had validly derived the basic laws of arithmetic from that principle.",
+   "section": "Logicism, intuitionism, and formalism",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "historical",
+     "by": "SEP, Zalta, “Gottlob Frege” (rev. 1 Aug 2026) §2.6; SEP, Zalta, “Frege’s Theorem and Foundations for Arithmetic” (rev. 5 Aug 2023) §§2.7, 3.2",
+     "excerpt": "philosophers today call the derivation",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Hilbert’s programme, which he put forward in the early 1920s, asked for all of mathematics to be set out as axiom systems and for their consistency to be proved by finitary methods alone.",
+   "section": "Logicism, intuitionism, and formalism",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "historical",
+     "by": "SEP, Zach, “Hilbert’s Program” (rev. 29 Sep 2023) introduction",
+     "excerpt": "It calls for a formalization of all of mathematics in axiomatic form",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Gödel’s first incompleteness theorem (1931) shows that any consistent formal system in which “a certain amount of elementary arithmetic” can be carried out is incomplete, and the second that such a system cannot prove its own consistency.",
+   "section": "Logicism, intuitionism, and formalism",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "historical",
+     "by": "SEP, Raatikainen, “Gödel’s Incompleteness Theorems” (rev. 8 Oct 2025) §1.1",
+     "excerpt": "a certain amount of elementary arithmetic can be carried out is incomplete",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Panu Raatikainen’s SEP entry calls it a common misunderstanding to read the first theorem as showing that some truths cannot be proved at all, since it concerns provability in one formal system or another, and notes that Gödel seems to have reached it while trying to contribute to Hilbert’s programme.",
+   "section": "Logicism, intuitionism, and formalism",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Raatikainen, “Gödel’s Incompleteness Theorems” (rev. 8 Oct 2025) §1.1, §5",
+     "excerpt": "A common misunderstanding is to interpret Gödel’s first theorem",
+     "accuracy": "supported"
+    },
+    {
+     "type": "historical",
+     "by": "SEP, Raatikainen, “Gödel’s Incompleteness Theorems” (rev. 8 Oct 2025) §1.1, §5",
+     "excerpt": "it seems that Gödel actually arrived at",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Richard Zach’s SEP entry reports that Gödel’s work is generally taken to show that the programme cannot be carried out, while scholars dispute which theorem delivers the decisive blow: Smoryński credits the first, and Detlefsen resists the arguments from both.",
+   "section": "Logicism, intuitionism, and formalism",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Zach, “Hilbert’s Program” (rev. 29 Sep 2023) introduction, §4",
+     "excerpt": "generally taken to show that Hilbert’s Program cannot be carried out",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Modified versions continue it: Gentzen proved arithmetic consistent by transfinite induction up to the ordinal ε0, a method that arithmetic itself cannot formalize, and reverse mathematics asks how much of classical mathematics can be proved in weak systems that reduce to finitary mathematics.",
+   "section": "Logicism, intuitionism, and formalism",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "historical",
+     "by": "SEP, Zach, “Hilbert’s Program” (rev. 29 Sep 2023) §1.4, §5",
+     "excerpt": "Gentzen’s proof used methods that could not be formalized in PA itself",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Rosalie Iemhoff’s SEP entry describes intuitionism as “based on the idea that mathematics is a creation of the mind”; Brouwer’s choice sequences, whose terms the mathematician picks one after another, are his means of treating the continuum, and in Brouwer’s intuitionistic analysis every total real function is continuous.",
+   "section": "Logicism, intuitionism, and formalism",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Iemhoff, “Intuitionism in the Philosophy of Mathematics” (rev. 11 Jun 2019) introduction (quoted), §§3.4–3.5",
+     "excerpt": "based on the idea that mathematics is a creation of the mind",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Brouwer’s conflict with Hilbert, part of the Grundlagenstreit, ended with his removal from the board of the Mathematische Annalen; in 1934 his former student Arend Heyting introduced what became the Brouwer–Heyting–Kolmogorov interpretation of the logical constants, and Michael Dummett later defended intuitionistic logic from a theory of meaning whose central notion is proof.",
+   "section": "Logicism, intuitionism, and formalism",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "historical",
+     "by": "SEP, Iemhoff, “Intuitionism in the Philosophy of Mathematics” (rev. 11 Jun 2019) §1, §3.1, §6.3",
+     "excerpt": "the central notion in the theory of meaning for mathematics",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Benacerraf’s “What Numbers Could Not Be” (1965) notes that the natural numbers can be identified with different sequences of sets, so that nothing settles whether 3 is the fourth von Neumann ordinal, and concludes that numbers are not objects at all; his “Mathematical Truth” (1973) asks how we could know about abstract objects, an objection Hartry Field (1989) recast as a demand to explain how mathematicians’ beliefs could be reliable.",
+   "section": "Platonism and its challengers",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "historical",
+     "by": "SEP, Linnebo, “Platonism in the Philosophy of Mathematics” (rev. 28 Mar 2023) §§3.1–3.2",
+     "excerpt": "we will never know whether 3 is identical with the fourth von Neumann ordinal",
+     "accuracy": "supported"
+    },
+    {
+     "type": "historical",
+     "by": "SEP, Horsten, “Philosophy of Mathematics” (rev. 25 Jan 2022) §4.1",
+     "excerpt": "Benacerraf’s identification problem",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Mark Colyvan’s SEP entry states the Quine–Putnam argument in two premises: we ought to be committed to all and only the entities indispensable to our best scientific theories, and mathematical entities are indispensable to them; the version, he notes, is usually credited to Quine and Putnam and differs from what each wrote.",
+   "section": "Platonism and its challengers",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Colyvan, “Indispensability Arguments in the Philosophy of Mathematics” (rev. 6 Mar 2023) §§1–2",
+     "excerpt": "Mathematical entities are indispensable to our best scientific theories.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Field denies the second premise, Penelope Maddy observes that working scientists do not treat every part of a well-confirmed theory alike, Elliott Sober doubts that mathematics shares a theory’s empirical support, and explanatory versions of the argument, such as Alan Baker’s case of the periodic cicadas, ask whether mathematics explains physical and biological facts.",
+   "section": "Platonism and its challengers",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Colyvan, “Indispensability Arguments in the Philosophy of Mathematics” (rev. 6 Mar 2023) §§4–5",
+     "excerpt": "the actual attitudes of working scientists",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Georg Schiemer’s SEP entry treats Benacerraf’s 1965 paper as central to structuralism, on which numbers are positions in an abstract structure, as mathematical objects are for Michael Resnik positions in patterns.",
+   "section": "Structuralism and fictionalism",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Schiemer, “Structuralism in the Philosophy of Mathematics” (rev. 17 Sep 2025) §§1.1–1.2, 4.3",
+     "excerpt": "numbers should not be identified with particular sets",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Versions differ over what structures are: set-theoretic structuralism lets one system, chosen among several isomorphic ones, stand in for the structure, Stewart Shapiro’s ante rem structuralism lets structures exist independently of the systems that instantiate them, Geoffrey Hellman’s modal structuralism does without structures, and Steve Awodey’s category-theoretic structuralism is anti-foundationalist.",
+   "section": "Structuralism and fictionalism",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Schiemer, “Structuralism in the Philosophy of Mathematics” (rev. 17 Sep 2025) §§2.2–2.3, 4.2",
+     "excerpt": "Shapiro’s is explicitly an example of ante rem structuralism.",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Structures with symmetries raise an identity problem, since in the complex numbers the structure alone does not distinguish i from −i (Keränen 2001).",
+   "section": "Structuralism and fictionalism",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Schiemer, “Structuralism in the Philosophy of Mathematics” (rev. 17 Sep 2025) §2.1",
+     "excerpt": "the conjugate numbers i and −i",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Mark Balaguer’s SEP entry defines fictionalism as the view that there are no abstract objects, so that our mathematical theories are not true, and credits its introduction to Field.",
+   "section": "Structuralism and fictionalism",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Balaguer, “Fictionalism in the Philosophy of Mathematics” (rev. 23 Jul 2018) introduction",
+     "excerpt": "Fictionalism was first introduced by Field",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Field’s Science without Numbers (1980) took the hard road, nominalizing a large part of Newtonian gravitational theory and arguing that mathematics need only be conservative over nominalistic science; Balaguer’s easy road grants that mathematics is indispensable and treats it as a descriptive aid, and David Malament (1982) argued that Field’s strategy would not work for quantum mechanics.",
+   "section": "Structuralism and fictionalism",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Colyvan, “Indispensability Arguments in the Philosophy of Mathematics” (rev. 6 Mar 2023) §4",
+     "excerpt": "a large fragment of Newtonian gravitational theory",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "SEP, Balaguer, “Fictionalism in the Philosophy of Mathematics” (rev. 23 Jul 2018) §2.1 (hard road, easy road, Malament 1982)",
+     "excerpt": "Field’s hard-road response is based on the rejection of premise (i).",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Whether mathematics “is in fact conservative over physics” is, Horsten writes, “currently a matter of controversy.”",
+   "section": "Structuralism and fictionalism",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Horsten, “Philosophy of Mathematics” (rev. 25 Jan 2022) §4.5",
+     "excerpt": "is currently a matter of controversy",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Is Hume’s Principle analytic, and so a basis for a revived logicism? Zalta reports a debate (citing Boolos 1997 and Wright 1999), and Horsten reports that most philosophers of mathematics doubt it is a principle of logic.",
+   "section": "Open questions",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "question",
+     "by": "SEP, Zalta, “Gottlob Frege” (rev. 1 Aug 2026) §2.7; SEP, Horsten, “Philosophy of Mathematics” (rev. 25 Jan 2022) §2.1",
+     "excerpt": "Some philosophers think Hume’s Principle is analytically true",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "Which incompleteness theorem defeats Hilbert’s programme, and how far do finitary methods reach (Tait’s primitive recursive arithmetic or Kreisel’s Peano arithmetic), questions Zach reports as disputed?",
+   "section": "Open questions",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "question",
+     "by": "SEP, Zach, “Hilbert’s Program” (rev. 29 Sep 2023) §2.3, §4",
+     "excerpt": "the thesis that finitism coincides with primitive recursive reasoning",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "Is non-eliminative structuralism coherent, as Schiemer asks, given the identity problem?",
+   "section": "Open questions",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "question",
+     "by": "SEP, Schiemer, “Structuralism in the Philosophy of Mathematics” (rev. 17 Sep 2025) §2.1",
+     "excerpt": "Is structuralism (of the non-eliminative kind) simply incoherent",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "Does mathematics explain physical facts, or only describe them (Colyvan §5 on the cicadas; Balaguer’s easy road)?",
+   "section": "Open questions",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "question",
+     "by": "SEP, Colyvan, “Indispensability Arguments in the Philosophy of Mathematics” (rev. 6 Mar 2023) §5",
+     "excerpt": "whether the mathematics is really contributing to the explanation",
+     "accuracy": "non-assertive"
+    }
+   ]
+  },
+  {
+   "text": "Chapter 4 of Deleuze’s Difference and Repetition (1968; trans. Paul Patton, 1994, whose pages are cited here) turns to the differential calculus to set out its account of Ideas, opposing dx, the symbol of difference, to the symbol of contradiction (p. 170).",
+   "section": "Deleuze and the differential calculus",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Deleuze, Difference and Repetition (trans. Patton, 1994), owner's copy, ch. 4 text file, p. 170",
+     "excerpt": "the symbol of difference [Differenzphilosophie] to that of contradiction",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "It is a mistake, he writes, to tie the value of dx to the existence of infinitesimals, and equally a mistake to refuse it any ontological or epistemic value, since there is “a treasure buried within the old so-called barbaric or pre-scientific interpretations” of the calculus (p. 170).",
+   "section": "Deleuze and the differential calculus",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Deleuze, Difference and Repetition (trans. Patton, 1994), owner's copy, ch. 4 text file, p. 170",
+     "excerpt": "tie the value of the symbol dx to the existence of infinitesimals",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "He finds that treasure in three readers whom he calls “a Leibniz, a Kant and a Plato of the calculus”: Salomon Maimon (1790), Hoene Wronski (1814) and Jean Bordas-Demoulin (1843) (pp. 170–1).",
+   "section": "Deleuze and the differential calculus",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Deleuze, Difference and Repetition (trans. Patton, 1994), owner's copy, ch. 4 text file, pp. 170–1",
+     "excerpt": "A Leibniz, a Kant and a Plato of",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "On this reading dx is undetermined in relation to x, the relation dy/dx is determinable, and its values are determined, so that “dx is the Idea” (p. 171); Ideas form a system of differential relations between reciprocally determined elements (pp. 173–4).",
+   "section": "Deleuze and the differential calculus",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Deleuze, Difference and Repetition (trans. Patton, 1994), owner's copy, ch. 4 text file, p. 171",
+     "excerpt": "In short, dx is the Idea",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "Deleuze, Difference and Repetition (trans. Patton, 1994), owner's copy, ch. 4 text file, pp. 173–4",
+     "excerpt": "a system of differential relations between",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Through Maimon he rereads Kant’s example that the straight line is the shortest: “shortest” becomes an Idea that internalizes the difference between straight and curved, where Kant had a schema of the imagination standing between concept and intuition (p. 174).",
+   "section": "Deleuze and the differential calculus",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Deleuze, Difference and Repetition (trans. Patton, 1994), owner's copy, ch. 4 text file, p. 174",
+     "excerpt": "The shortest is not a schema but an Idea",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Deleuze sets out the modern reading, on which the limit involves only static considerations and set theory gives the calculus a strictly finite interpretation (p. 176).",
+   "section": "Deleuze and the differential calculus",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Deleuze, Difference and Repetition (trans. Patton, 1994), owner's copy, ch. 4 text file, p. 176",
+     "excerpt": "the notion of limit has lost its phoronomic character",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Of the two old alternatives he says the first, whether differentials are real or fictive, collapses, since differentials “express the nature of a problematic as such”; the second, between infinite and finite representation, perhaps collapses as well, and modern mathematics, he writes, leaves an antinomy, since its finite interpretation presupposes an axiom of infinity (p. 178).",
+   "section": "Deleuze and the differential calculus",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Deleuze, Difference and Repetition (trans. Patton, 1994), owner's copy, ch. 4 text file, p. 178",
+     "excerpt": "Neither real nor fictive, differentials express the nature of a problematic",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "Deleuze, Difference and Repetition (trans. Patton, 1994), owner's copy, ch. 4 text file, p. 178",
+     "excerpt": "Perhaps the other alternative collapses as well",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "Deleuze, Difference and Repetition (trans. Patton, 1994), owner's copy, ch. 4 text file, p. 178",
+     "excerpt": "modern mathematics also leaves us in a state of antinomy",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Following Albert Lautman, he takes a problem to differ in kind from its solutions, to transcend them and to be immanent in them; the calculus is “an entirely mathematical instrument,” yet “Problems are always dialectical” and what is mathematical “are the solutions” (pp. 178–9).",
+   "section": "Deleuze and the differential calculus",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Deleuze, Difference and Repetition (trans. Patton, 1994), owner's copy, ch. 4 text file, pp. 178–9",
+     "excerpt": "Following Lautman's general theses, a problem has three aspects",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "Deleuze, Difference and Repetition (trans. Patton, 1994), owner's copy, ch. 4 text file, p. 179",
+     "excerpt": "it is an entirely mathematical instrument",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "Deleuze, Difference and Repetition (trans. Patton, 1994), owner's copy, ch. 4 text file, p. 179",
+     "excerpt": "Problems are always dialectical",
+     "accuracy": "supported"
+    },
+    {
+     "type": "textual",
+     "by": "Deleuze, Difference and Repetition (trans. Patton, 1994), owner's copy, ch. 4 text file, p. 179",
+     "excerpt": "sociological) are the solutions",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "He adds that the calculus is one mathematical expression of problems among others, and credits Abel and Galois with methods in which solvability follows from the form of the problem (pp. 179–80).",
+   "section": "Deleuze and the differential calculus",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "textual",
+     "by": "Deleuze, Difference and Repetition (trans. Patton, 1994), owner's copy, ch. 4 text file, pp. 179–80",
+     "excerpt": "solvability must follow from the form of the problem",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Henry Somers-Hall’s guide (2013) explains that Deleuze rejects both the infinitesimal reading and the modern reading by limits, which gives the differential only a formal meaning, and so “returns to the metaphysical readings of the eighteenth and nineteenth centuries”; he links the result to Plato’s divided line, since Deleuze sets a dialectic over mathematics while keeping the calculus inside mathematics.",
+   "section": "Deleuze and the differential calculus",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "Somers-Hall 2013, pp. 133–4, 141",
+     "excerpt": "Deleuze, however, holds that this reading is also a mistake",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "Somers-Hall 2013, p. 141 (§4.3)",
+     "excerpt": "When we looked at Plato’s simile of the divided line",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Daniel W. Smith reads the calculus as a model: Deleuze “finds in the calculus a model of pure difference” and uses it to develop “a properly philosophical concept of difference” (Smith 2020, p. 43); in another essay, “Axiomatics and Problematics,” Smith sets the problematics Deleuze favours, which moves from a problem to the events that condition it, against axiomatics, which moves from axioms to theorems.",
+   "section": "Deleuze and the differential calculus",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "Smith 2020, Deleuze and Guattari Studies 14.1, p. 43",
+     "excerpt": "Deleuze finds in the calculus a model of pure difference",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "Smith, “Axiomatics and Problematics”, p. 146",
+     "excerpt": "in problematics a deduction moves from the problem",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Daniela Voss’s SEP entry likewise reads the dx passage as aimed at “a properly philosophical concept of difference,” and holds that Deleuze knew of the finitist revolution in the calculus, which Sokal and Bricmont (1999) had doubted.",
+   "section": "Deleuze and the differential calculus",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "SEP, Voss, “Gilles Deleuze” (rev. 3 Jun 2022) §6.3",
+     "excerpt": "Deleuze was aware of the finitist revolution",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "SEP, Voss, “Gilles Deleuze” (rev. 3 Jun 2022) §6.3",
+     "excerpt": "despite Sokal and Bricmont’s 1999 intimations otherwise",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "Simon Duffy traces Deleuze’s sources in the history of mathematics in detail: his chapter on Lautman (2009) says Deleuze understands the calculus essentially as a “calculus of problems,” and Aden Evens’s review of Duffy’s Deleuze and the History of Mathematics (2013) reports that Deleuze “redeploys” Weierstrass’s mathematics of singularities as ontology, a reading that, Evens objects, “pins the discussion to a mathematical discourse.”",
+   "section": "Deleuze and the differential calculus",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "interpretive",
+     "by": "Duffy 2009, p. 369",
+     "excerpt": "Deleuze understands the differential calculus essentially as a ‘calculus of problems’",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "Evens, NDPR 2014.02.03",
+     "excerpt": "it pins the discussion to a mathematical discourse",
+     "accuracy": "supported"
+    },
+    {
+     "type": "interpretive",
+     "by": "Evens, NDPR 2014.02.03",
+     "excerpt": "redeploys",
+     "accuracy": "supported"
+    }
+   ]
+  },
+  {
+   "text": "How literally does Deleuze take the calculus? Smith reads it as a model, and Voss as a source from which Deleuze extracts a philosophical concept of difference; Duffy traces a close correspondence between mathematical and philosophical concepts, though he too speaks of concepts “modelled on” mathematical theories, and his reviewer Evens objects that the reading pins philosophy to mathematical discourse; and Sokal and Bricmont, as Voss reports, doubted Deleuze’s grasp of the modern calculus.",
+   "section": "Open questions",
+   "added": "2026-11-23 (task 2)",
+   "claims": [
+    {
+     "type": "question",
+     "by": "Smith 2020 pp. 41–3; Voss §6.3; Evens 2014",
+     "excerpt": "structural correspondence",
+     "accuracy": "non-assertive"
+    },
+    {
+     "type": "interpretive",
+     "by": "Duffy 2009, pp. 370–2 (per the independent reviewer's reading of the philarchive text)",
+     "excerpt": "modelled on",
+     "accuracy": "supported"
+    }
+   ]
   }
  ],
  "applied": {
@@ -1285,6 +1856,81 @@
     }
    ],
    "review": "Independent reviewer (separate agent, fresh context), 2026-11-23: re-read every cited passage in the bundled books, all 11 Stephanus numbers in Burnet's Greek, AA 3:469, and all eight SEP entries (revision dates confirmed); PASS after fixes, all applied: seven runs of SEP wording quoted or reworded (Linnebo, Shabel twice, Mendell twice, Qu and Radcliffe, Irvine, Silverman); Silverman's 'seems' restored; 'a priori' in the Kant sentence moved to Shabel's reading, since B14 is not in KANT_AB; 'turn the rulers toward being' reworded to Silverman §14; missing excerpts added; KANT_AB kept in page order; unlinked-reference check extended to Stephanus numbers, Met. and A/B pages; 'textual' added to the README's claim types."
+  },
+  {
+   "date": "2026-11-23",
+   "task": "Mathematics since Frege, and Deleuze on the calculus (owner's request, task 2 of 2)",
+   "sections": [
+    "Logicism, intuitionism, and formalism (deepened)",
+    "Platonism and its challengers (deepened)",
+    "Structuralism and fictionalism (new)",
+    "Deleuze and the differential calculus (new)",
+    "Open questions"
+   ],
+   "method": "Foundations from current SEP entries read through the web-fetch tool in literal text; Deleuze read in the owner's copy of Difference and Repetition (Patton, 1994), chapter 4, pp. 168–221 and notes pp. 323–328, as a page-marked text file the owner made from the PDF's text layer (Drive id 1Gou5nAMAMdfmgoFc8O8vQNHQ2WO6cX_H); every DR quotation checked by script against that file; scholarship from the sources below. Records in new_text, marked added 2026-11-23 (task 2).",
+   "sources": {
+    "Zalta, Gottlob Frege": "first published 14 Sep 1995; substantive revision 1 Aug 2026",
+    "Zalta, Frege's Theorem and Foundations for Arithmetic": "first published 10 Jun 1998; substantive revision 5 Aug 2023",
+    "Zach, Hilbert's Program": "first published 31 Jul 2003; substantive revision 29 Sep 2023",
+    "Raatikainen, Gödel's Incompleteness Theorems": "first published 11 Nov 2013; substantive revision 8 Oct 2025",
+    "Iemhoff, Intuitionism in the Philosophy of Mathematics": "first published 4 Sep 2008; substantive revision 11 Jun 2019",
+    "Colyvan, Indispensability Arguments in the Philosophy of Mathematics": "first published 21 Dec 1998; substantive revision 6 Mar 2023",
+    "Balaguer, Fictionalism in the Philosophy of Mathematics": "first published 22 Apr 2008; substantive revision 23 Jul 2018",
+    "Schiemer, Structuralism in the Philosophy of Mathematics": "first published 18 Nov 2019; substantive revision 17 Sep 2025",
+    "Linnebo and Horsten": "as in the first expansion",
+    "Voss, Gilles Deleuze": "first published 23 May 2008; substantive revision 3 Jun 2022",
+    "Somers-Hall 2013": "Deleuze's Difference and Repetition: An Edinburgh Philosophical Guide (Edinburgh UP), owner's Drive copy, §§4.2–4.3, pp. 131–42",
+    "Smith 2020": "'The Deleuzian Revolution: Ten Innovations in Difference and Repetition', Deleuze and Guattari Studies 14.1: 34–49 (philarchive SMITDR-4), read whole",
+    "Smith, Axiomatics and Problematics": "philarchive SMIAAP-8, printed pp. 146–58 read literally",
+    "Duffy 2009": "'Albert Lautman', in Jones and Roffe (eds.), Deleuze's Philosophical Lineage (Edinburgh UP, 2009), pp. 356–70 read literally (philarchive DUFDAT-2)",
+    "Evens 2014": "NDPR review 2014.02.03 of Duffy, Deleuze and the History of Mathematics (Bloomsbury, 2013), read whole"
+   },
+   "connections": [
+    "Deleuze → Kant (reinterpretation): DR p. 174 rereads Kant's 'the straight line is the shortest' (B15–16 example) through Maimon as an Idea",
+    "Deleuze → Plato (reinterpretation): DR p. 179 on 'the Platonic evidence of a dialectic superior to mathematics'; Somers-Hall §4.3 links it to the divided line",
+    "Deleuze → Lautman (influence): DR pp. 178–9 'Following Lautman's general theses'; Somers-Hall's note to 4.2; Duffy 2009",
+    "None of these is added to CONNECTIONS; each rests on the passage cited here"
+   ],
+   "disputes": [
+    "How literally Deleuze takes the calculus: a model (Smith 2020) or a source from which a philosophical concept of difference is extracted (Voss §6.3) vs close structural correspondence (Duffy 2009; Duffy 2013 per Evens), with Evens's objection; Sokal and Bricmont's doubt (as reported by Voss; their book not read)",
+    "Whether Hume's Principle is analytic (Zalta §2.7; Horsten §2.1)",
+    "Which incompleteness theorem defeats Hilbert's programme; the reach of finitism (Zach §§2.3, 4)",
+    "Coherence of non-eliminative structuralism (Schiemer §2.1)",
+    "Whether mathematics explains physical facts (Colyvan §5)"
+   ],
+   "unread": [
+    {
+     "part": "Duffy, Deleuze and the History of Mathematics (2013)",
+     "why": "not available; known through Evens's review only",
+     "effect": "Duffy's 2013 position rests on the review; his 2009 chapter is read directly"
+    },
+    {
+     "part": "Smith, Axiomatics and Problematics, pp. 159–65",
+     "why": "fetch returned only a summary",
+     "effect": "Abel, Galois and any reply to critics in that essay unread"
+    },
+    {
+     "part": "Raatikainen §6 (philosophical misuses, Lucas–Penrose)",
+     "why": "summary only",
+     "effect": "not cited"
+    },
+    {
+     "part": "Voss bibliography after 'Moulard-Leonard'",
+     "why": "cut by the fetching tool",
+     "effect": "Sokal and Bricmont's reference not seen; their date given as Voss prints it in the text (1999)"
+    },
+    {
+     "part": "Sokal and Bricmont, Fashionable Nonsense",
+     "why": "not read",
+     "effect": "cited only as Voss reports them"
+    },
+    {
+     "part": "DR quotations against the PDF image",
+     "why": "PDF over the 10 MB download limit; the text file comes from its text layer",
+     "effect": "owner asked for screenshots of pp. 170, 171, 174, 178, 179 before shipping"
+    }
+   ],
+   "review": "Independent review 2026-11-24: PASS WITH FIXES, 11 required fixes, all applied (DR p. 176–8 alternatives restated; p. 179 phrases quoted; Patton edition named; Raatikainen's 'seems' restored; Zalta's Boolos/Wright citation no longer assigned sides; Voss no longer said to use 'model'; Evens's objection quoted and limited to Weierstrass; copied SEP wording quoted or reworded; Field record split between Colyvan §4 and Balaguer §2.1; reverse mathematics tied to finitary reduction). Optional: Duffy's 'modelled on' added to the open question; Smith 2020 cited p. 43."
   }
  ]
 }
