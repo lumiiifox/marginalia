@@ -338,6 +338,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 - Four shelf editions: Boethius (H. R. James), Shelley (1831 revision) and Dostoevsky (Constance Garnett) use Standard Ebooks. Berkeley’s three dialogues use the Project Gutenberg no. 4724 transcription. Edition details and primers are on each book page.
 - Augustine (Pusey, Gutenberg 3296) and Bergson (Pogson, Gutenberg 56852) use the HTML transcriptions. Butler’s Erewhon and Melville’s Short Fiction use the Standard Ebooks editions.
 - Antigone (Storr), Douglass’s Narrative, Dracula and Jekyll and Hyde use Standard Ebooks. Gilman (1952), Lucretius (785, Leonard) and Burnet (67097, 1908 edition) use the numbered Project Gutenberg transcriptions.
+- The Dawn of Day (Kennedy), The Sacred Wood and Harlem Shadows use Gutenberg transcriptions. Their primers use `srcs` for Oskar’s recordings of the individual selections.
 - Classics (`CLASSICS`, `addClassics`, at start): public-domain books that come with the app, each added to the library once, queued,
   from `data/books/<id>.json` (`{ text, content }`, the shapes a backup holds) and its cover `<id>.jpg`. `mg-classics` lists those added,
   so a deleted classic stays deleted; one that can't be fetched is tried next time. Skipped in automated browsers unless a test passes

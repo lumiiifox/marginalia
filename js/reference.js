@@ -424,6 +424,9 @@ function primerHTML(id, t) {
 }
 // Titles for steps whose book isn't in the library: the classics' own titles (tests/study_tools.py checks them against data/books/).
 const CLASSIC_TITLES = {
+  "classic-mckay-harlem": "Harlem Shadows",
+  "classic-eliot-sacred": "The Sacred Wood",
+  "classic-nietzsche-dawn": "The Dawn of Day",
   "classic-burnet-early": "Early Greek Philosophy",
   "classic-stoker-dracula": "Dracula",
   "classic-gilman-wallpaper": "The Yellow Wallpaper",
@@ -451,6 +454,9 @@ const CLASSIC_TITLES = {
    ("the Ethics", "Meditations", "the Manifesto") counts only on its author's own card (own), since elsewhere it may name another
    book; "Republic" counts after "Plato's" or "the", or before a book number. Nothing is stored. */
 const CLASSIC_NAMES = {
+  "classic-mckay-harlem": { by: [], full: ["Harlem Shadows"] },
+  "classic-eliot-sacred": { by: [], full: ["The Sacred Wood"] },
+  "classic-nietzsche-dawn": { by: ["nietzsche"], full: ["The Dawn of Day"] },
   "classic-burnet-early": { by: [], full: ["Early Greek Philosophy"] },
   "classic-stoker-dracula": { by: [], full: ["Dracula"] },
   "classic-gilman-wallpaper": { by: [], full: ["The Yellow Wallpaper"] },

@@ -37,6 +37,15 @@ PORT = 8821
 # drop: CSS selectors for parts of those files left out (the Republic leaves out Jowett's book-length Introduction and Analysis,
 # and with it the heading that only told the dialogue from the introduction).
 BOOKS = [
+    dict(id="classic-mckay-harlem", text_source=dict(repo="https://github.com/GITenberg/Harlem-Shadows-The-Poems-of-Claude-McKay_64989",
+         file="64989-h/64989-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="harlem_shadows"),
+         cover=dict(title="Harlem Shadows", size=35, art="stars"), text=dict(title="Harlem Shadows", author="Claude McKay", edition="1922 collection", publisher="Project Gutenberg", orig="1922")),
+    dict(id="classic-eliot-sacred", text_source=dict(repo="https://github.com/GITenberg/The-Sacred-Wood-Essays-on-Poetry-and-Criticism_57795",
+         file="57795-h/57795-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="sacred_wood"),
+         cover=dict(title="The Sacred Wood", size=35, art="stars"), text=dict(title="The Sacred Wood", author="T. S. Eliot", edition="Essays on Poetry and Criticism", publisher="Project Gutenberg", orig="1920")),
+    dict(id="classic-nietzsche-dawn", text_source=dict(repo="https://github.com/GITenberg/The-Dawn-of-Day_39955",
+         file="39955-h/39955-h.html", encoding="utf-8", source_name="Project Gutenberg", convert="dawn_of_day"),
+         cover=dict(title="The Dawn of Day", size=35, art="stars"), text=dict(title="The Dawn of Day", author="Friedrich Nietzsche", edition="trans. J. M. Kennedy", publisher="Project Gutenberg", orig="1881")),
     dict(id="classic-sophocles-antigone", repo="sophocles_antigone_francis-storr", files=None, heading_file="antigone",
          text=dict(title="Antigone", author="Sophocles", edition="trans. Francis Storr", year="2025", publisher="Standard Ebooks")),
     dict(id="classic-lucretius-nature", text_source=dict(repo="https://github.com/GITenberg/On-the-Nature-of-Things_785", file="785-h/785-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="lucretius-nature"),
@@ -684,6 +693,74 @@ def lucretius_nature(raw):
     return xhtml_body(elements)
 
 
+def dawn_of_day(raw):
+    from lxml import html
+    doc = html.fromstring(raw.encode(), parser=html.HTMLParser(encoding="utf-8"))
+    for page in doc.find_class("tei-pb"):
+        page.set("role", "doc-pagebreak")
+        page.set("title", page.get("id", "").removeprefix("page"))
+    for a in doc.xpath("//a[starts-with(@href, '#note_')]"):
+        number = a.get("href").split("_")[-1]
+        a.clear(keep_tail=True)
+        a.tag = "sup"
+        a.text = number
+    for span in doc.xpath("//span[contains(@style,'italic')]"):
+        span.tag = "i"
+    chapters = []
+    for heading in doc.xpath("//h1"):
+        title = heading.text_content().strip()
+        if title in ("Introduction.", "Author's Preface.", "Footnotes") or re.fullmatch(r"Book [IV]+\.", title):
+            chapter = heading.getparent()
+            for sub in chapter.xpath(".//h2"): sub.tag = "h3"
+            heading.tag = "h2"
+            chapters.append(chapter)
+    for dt in doc.find_class("tei-notelabel"):
+        dd = dt.getnext()
+        if dd is not None and dd.tag == "dd":
+            dd.tag = "div"
+            dd.set("class", "footnote")
+            dd.text = dt.text_content().strip() + " " + (dd.text or "")
+            dt.drop_tree()
+    assert len(chapters) == 8
+    return xhtml_body(chapters)
+
+
+def harlem_shadows(raw):
+    from lxml import html
+    doc = html.fromstring(raw.encode(), parser=html.HTMLParser(encoding="utf-8"))
+    for page in doc.find_class("pagenum"): page.drop_tree()
+    for stanza in doc.find_class("stanza"):
+        lines = [" ".join(line.text_content().split()) for line in stanza.xpath("./span")]
+        if lines:
+            stanza.clear(keep_tail=True)
+            stanza.tag = "p"
+            stanza.text = " / ".join(lines)
+    first = next(h for h in doc.xpath("//h2") if h.text_content().strip() == "INTRODUCTION")
+    sections = []
+    for el in [first, *first.itersiblings()]:
+        if "*** END OF THE PROJECT GUTENBERG" in el.text_content(): break
+        sections.append(el)
+    return xhtml_body(sections)
+
+
+def sacred_wood(raw):
+    from lxml import html
+    doc = html.fromstring(raw.encode(), parser=html.HTMLParser(encoding="utf-8"))
+    for page in doc.find_class("pageno"):
+        page.set("role", "doc-pagebreak")
+        page.set("title", page.text_content().strip())
+    for sup in doc.xpath("//a[starts-with(@href,'#f')]/sup"):
+        sup.text = sup.text.strip("[]")
+    first = doc.get_element_by_id("intro").getparent()
+    last = doc.find_class("footnote")[-1]
+    sections = []
+    for el in [first, *first.itersiblings()]:
+        sections.append(el)
+        if el is last: break
+    assert sections[-1] is last
+    return xhtml_body(sections)
+
+
 def burnet_early(raw):
     from lxml import html
     doc = html.fromstring(raw.encode(), parser=html.HTMLParser(encoding="utf-8"))
@@ -769,7 +846,7 @@ def berkeley_dialogues(raw):
     return '<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Three Dialogues</title></head><body>' + "".join(out) + "</body></html>"
 
 
-CONVERT = {"gilman-wallpaper": gilman_wallpaper, "burnet-early": burnet_early, "lucretius-nature": lucretius_nature, "augustine_confessions": augustine_confessions, "bergson_time": bergson_time, "berkeley_dialogues": berkeley_dialogues, "kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique, "aristotle_metaphysics": aristotle_metaphysics, "xenophon_memorabilia": xenophon_memorabilia}
+CONVERT = {"dawn_of_day": dawn_of_day, "harlem_shadows": harlem_shadows, "sacred_wood": sacred_wood, "gilman-wallpaper": gilman_wallpaper, "burnet-early": burnet_early, "lucretius-nature": lucretius_nature, "augustine_confessions": augustine_confessions, "bergson_time": bergson_time, "berkeley_dialogues": berkeley_dialogues, "kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique, "aristotle_metaphysics": aristotle_metaphysics, "xenophon_memorabilia": xenophon_memorabilia}
 
 def clone(url, dest):
     if not dest.exists():
