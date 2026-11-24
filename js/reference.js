@@ -424,6 +424,11 @@ function primerHTML(id, t) {
 }
 // Titles for steps whose book isn't in the library: the classics' own titles (tests/study_tools.py checks them against data/books/).
 const CLASSIC_TITLES = {
+  "classic-seneca-dialogues": "Dialogues",
+  "classic-aurelius-meditations": "Meditations",
+  "classic-machiavelli-prince": "The Prince",
+  "classic-james-pragmatism": "Pragmatism",
+  "classic-wilde-dorian-gray": "The Picture of Dorian Gray",
   "classic-lovecraft-cthulhu": "The Call of Cthulhu",
   "classic-burke-sublime": "A Philosophical Inquiry into the Origin of Our Ideas of the Sublime and Beautiful",
   "classic-schopenhauer-pessimism": "Studies in Pessimism",
@@ -457,6 +462,11 @@ const CLASSIC_TITLES = {
    ("the Ethics", "Meditations", "the Manifesto") counts only on its author's own card (own), since elsewhere it may name another
    book; "Republic" counts after "Plato's" or "the", or before a book number. Nothing is stored. */
 const CLASSIC_NAMES = {
+  "classic-seneca-dialogues": { by: [], full: ["Seneca’s Dialogues", "Seneca's Dialogues"] },
+  "classic-aurelius-meditations": { by: [], full: ["Marcus Aurelius’s Meditations", "Marcus Aurelius's Meditations"] },
+  "classic-machiavelli-prince": { by: [], full: ["The Prince"] },
+  "classic-james-pragmatism": { by: [], full: ["James’s Pragmatism", "James's Pragmatism"] },
+  "classic-wilde-dorian-gray": { by: [], full: ["The Picture of Dorian Gray"] },
   "classic-lovecraft-cthulhu": { by: [], full: ["The Call of Cthulhu"] },
   "classic-burke-sublime": { by: [], full: ["A Philosophical Inquiry into the Origin of Our Ideas of the Sublime and Beautiful", "Philosophical Enquiry into the Origin of Our Ideas of the Sublime and Beautiful"] },
   "classic-schopenhauer-pessimism": { by: [], full: ["Studies in Pessimism"] },

@@ -335,6 +335,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   scrolls near the screen's edges. Setting it down saves the shelf's order as each book's `rank` (another shelf also changes its status),
   with Undo. `shelfList`: unranked books (new, or moved onto the shelf by status) first, newest first, then ranked ones in order; a shelf
   never arranged is in order of use. `rank` is in `ACTIVITY`, so a restore compares records without it and keeps this device's order.
+- Seneca’s Dialogues (Aubrey Stewart), Marcus Aurelius’s Meditations (George Long), Machiavelli’s The Prince (W. K. Marriott), James’s Pragmatism and Wilde’s The Picture of Dorian Gray (expanded novel) use Standard Ebooks editions and covers.
 - Four shelf editions: Boethius (H. R. James), Shelley (1831 revision) and Dostoevsky (Constance Garnett) use Standard Ebooks. Berkeley’s three dialogues use the Project Gutenberg no. 4724 transcription. Edition details and primers are on each book page.
 - Augustine (Pusey, Gutenberg 3296) and Bergson (Pogson, Gutenberg 56852) use the HTML transcriptions. Butler’s Erewhon and Melville’s Short Fiction use the Standard Ebooks editions.
   Both copyright legs, checked 2026-11-24: Pusey died 1882 (translation 1838); Pogson died 1910 (Library of Congress heading
