@@ -62,12 +62,18 @@ function courseOverview() {
     <section><h2>Optional research track</h2><p>After the course, develop an annotated bibliography, referee report and research paper.</p>${LEARNING.slice(-4).map(l => `<button class="course-row" data-lesson="${l.id}">${esc(l.title)}</button>`).join("")}</section>
     <details><summary>Previous learning portfolio</summary><p>Revisit the earlier exercises and your saved responses.</p><button class="btn" id="openlearning">Open portfolio</button></details>`;
 }
+function courseTools(m) {
+  const terms = m.terms.map(id => GLOSSARY_BY_ID.get(id)).filter(Boolean);
+  const logic = m.id === "foundations" ? '<button class="btn" data-truth="0">Truth table</button> <button class="btn" data-argquiz="valid">Validity practice</button> <button class="btn" data-argquiz="fallacy">Fallacy practice</button>' : "";
+  if (!terms.length && !logic) return "";
+  return `<details><summary>Glossary and practice</summary>${terms.map(t => `<button class="btn" data-term="${esc(t.id)}">${esc(t.t)}</button>`).join(" ")} ${logic}</details>`;
+}
 function courseLesson(m, evidence) {
   const target = COURSE_BANK[m.id][evidence]?.target;
   return m.sections.map(([title,...ps],i) => `<section><h2>${esc(title)}</h2>${ps.map(p => {
     const at = target ? p.indexOf(target) : -1;
     return "<p>" + (at < 0 ? esc(p) : esc(p.slice(0,at)) + '<mark id="course-evidence" tabindex="-1">' + esc(target) + "</mark>" + esc(p.slice(at+target.length))) + "</p>";
-  }).join("")}<footer>Sources · ${m.refs[i].map(([name,url]) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(name)}</a>`).join(" · ")}</footer></section>`).join("") + courseButton("learn","Finish lesson and continue");
+  }).join("")}<footer>Sources · ${m.refs[i].map(([name,url]) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(name)}</a>`).join(" · ")}</footer></section>`).join("") + courseTools(m) + courseButton("learn","Finish lesson and continue");
 }
 function courseTest(m) {
   const a = courseAttempt(m);
@@ -113,7 +119,11 @@ async function courseAction(b) {
   if (act === "assignment" && !courseNext()) return go({screen:"course",assignment:true});
   if (v.assignment && !courseNext()) {
     const d = S.drafts.get(assignmentID), draft = d?.items.map(i => i.x).join("\n\n") || "";
-    if (act === "copy" && d) return copyText([assignmentPrompt,assignmentRubric,"Student submission",draft].join("\n\n"));
+    if (act === "copy" && d) {
+      const readings = COURSE.slice(1).map(m => m.title + " · " + m.citation + "\n" + m.sources.map(s => s[1]).join(" ")).join("\n");
+      const copied = await copyText([assignmentPrompt,assignmentRubric,"Course readings",readings,"Student submission",draft].join("\n\n"));
+      return toast(copied ? "Assignment and rubric copied for Claude." : "Clipboard unavailable. Select and copy your draft.");
+    }
     if (act === "grade" && d) return critiqueSheet(assignmentID);
     if (act === "write") return openSheet(`<h2>Ancient assignment</h2><p>${assignmentPrompt}</p><label>Your argument<textarea name="answer" rows="12">${esc(draft)}</textarea></label>`,async fd => {
       const x = String(fd.get("answer")).trim(); if (!x) return "Enter your argument before saving.";

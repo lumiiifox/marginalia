@@ -358,7 +358,7 @@ const COURSE = [
         "What survives of the poem",
         "Parmenides came from Elea, a Greek colony on the Tyrrhenian coast of southern Italy, and was active early in the fifth century BCE. Plato's dialogue Parmenides has him visit Athens with Zeno at about sixty-five and meet a very young Socrates, which would place his birth around 515. Speusippus reported that he gave Elea its laws, and a portrait head of the first century CE found there names him a natural philosopher and links him with the cult of Apollo the Healer. He wrote a single poem in hexameter verse, perhaps 800 lines long, of which about 160 survive in quotations; the title On Nature was probably added later. Sextus Empiricus preserves most of its opening, and Simplicius copied out the central argument (fragment 8) because the book had become rare.",
         "The proem describes a journey. Mares draw the narrator's chariot, guided by the daughters of the Sun, to the gates of the paths of Night and Day; Justice opens them, and a goddess welcomes him. She promises he will learn both “the unshaken heart of well-rounded truth” and the opinions of mortals, in which there is no true reliability.",
-        "She sets out the ways of inquiry (fragment 2). One is that it is and cannot not be; the other, that it is not and must not be, is a path from which no report comes, since what is not can be neither known nor pointed out. Fragment 6 scorns mortals who “wander two-headed”, taking being and not-being as the same and not the same. Fragment 7 warns against letting habit force one to rely on an aimless eye and an echoing ear, and tells the listener to judge by reason. Fragment 8 then lists the signs on the true road: what is is ungenerated and imperishable, whole, of a single kind, unmoved and complete. It cannot come to be from what is not, cannot be divided, and is held within limits, “like the bulk of a well-rounded sphere”, equal in every direction from the center.",
+        "She sets out the ways of inquiry (fragment 2). One is that it is and cannot not be; the other, that it is not and must not be, is a path from which no report comes, since what is not can be neither known nor pointed out. Fragment 6 scorns mortals who “wander two-headed”, taking being and not-being as the same and not the same. Fragment 7 warns against letting habit force one to rely on an aimless eye and an echoing ear, and tells the listener to judge by reason. Fragment 8 then lists the signs on the true road: what is is ungenerated and imperishable, whole, of a single kind, unmoved and complete. It cannot come to be from what is not, cannot be divided, and is held within limits, compared by the goddess to a sphere equally extended from its centre.",
         "The second part of the poem, the Doxa, gives the cosmology of mortals, built on two forms, light and night. It describes the heavens, sun, moon and Milky Way, says the moon shines with light borrowed from the sun, and, according to later reports, identifies the morning and evening star as one body; it also gave an account of human reproduction. How the two parts fit is the central puzzle. Readers have taken Parmenides as a strict monist for whom only one unchanging thing exists (Guthrie); as an analyst of what can be thought or said (Russell, Owen); as setting the conditions any fundamental entity must meet (Mourelatos, Curd); as describing one reality in its intelligible and its perceptible aspects, the dominant ancient view; or as distinguishing necessary being from the contingent world of the cosmology (John Palmer).",
         "His influence shaped the rest of Greek philosophy. Zeno's paradoxes defended him, and Melissus restated his monism. Empedocles, Anaxagoras and the atomists accepted that nothing comes into being from nothing and built pluralist physics to meet his demands. Plato portrayed him with reverence in the Parmenides and had the Eleatic Visitor of the Sophist test his teaching, and Aristotle discussed him among the first inquirers into being.",
         "Coming into being from sheer nonbeing would require treating nonbeing as a source. The poem also presents an ordered account of the world as mortals understand it."
@@ -708,7 +708,7 @@ const COURSE = [
       ],
       [
         "From particular examples to an object of knowledge",
-        "In the Phaedo Socrates asks Simmias, “Is there or is there not an absolute justice?” (Phaedo 65d), and Simmias agrees that there is, and an absolute beauty and good, none of which he has ever seen with his eyes. Jowett's “absolute” renders the Greek for “itself”: at 65d Burnet's text reads dikaion auto, “the just itself”. Equal sticks and stones “appear at one time equal, and at another time unequal” (Phaedo 74b), while the equal itself never appears unequal, so the sticks are “not the same with the idea of equality” (Phaedo 74c). All such equals “strive to attain absolute equality, but fall short of it” (Phaedo 75a). Socrates argues that we must have known the equal itself before we first perceived equal things, since we refer them to it, and that what we call learning is the recovery of that earlier knowledge through the senses: “may not this be rightly termed recollection?” (Phaedo 75e). The argument begins from Cebes' reminder of Socrates' “favorite doctrine” that knowledge is recollection (Phaedo 72e); the Meno sets out that doctrine at length.",
+        "In the Phaedo Socrates asks Simmias, “Is there or is there not an absolute justice?” (Phaedo 65d), and Simmias agrees that there is, and an absolute beauty and good, none of which he has ever seen with his eyes. Jowett's “absolute” renders the Greek for “itself”: at 65d Burnet's text reads dikaion auto, literally the just itself. Equal sticks and stones “appear at one time equal, and at another time unequal” (Phaedo 74b), while the equal itself never appears unequal, so the sticks are “not the same with the idea of equality” (Phaedo 74c). All such equals “strive to attain absolute equality, but fall short of it” (Phaedo 75a). Socrates argues that we must have known the equal itself before we first perceived equal things, since we refer them to it, and that what we call learning is the recovery of that earlier knowledge through the senses: “may not this be rightly termed recollection?” (Phaedo 75e). The argument begins from Cebes' reminder of Socrates' “favorite doctrine” that knowledge is recollection (Phaedo 72e); the Meno sets out that doctrine at length.",
         "Asked whether the essences are ever changed, Cebes answers, “They must be always the same” (Phaedo 78d), while the many beautiful men, horses and garments are “always in a state of change” (Phaedo 78e). These can be seen and touched, but “the unchanging things you can only perceive with the mind” (Phaedo 79a). Later, giving his own account of causes, Socrates holds that a beautiful thing is beautiful “only in as far as it partakes of absolute beauty” (Phaedo 100c), and that “by beauty all beautiful things become beautiful” (Phaedo 100d). Allan Silverman (Stanford Encyclopedia) reads the Phaedo's Forms as “beings that are what they are in virtue of themselves”, “immaterial, non-spatial and atemporal”, and offers “a relation between material particulars and Forms” as a first approximation of partaking.",
         "In Republic V the lovers of sights and sounds delight in fine colours and forms, but “their mind is incapable of seeing or loving absolute beauty” (Rep. 476b). Whoever takes beautiful things for beauty itself is dreaming: he is one “who puts the copy in the place of the real object” (Rep. 476c). The philosopher is awake, able “to distinguish the idea from the objects which participate in the idea” (Rep. 476c–d). Knowledge “is relative to being” (Rep. 477b), and opinion turns out to lie between knowledge and ignorance (Rep. 478d). Those who see many beautiful things but not beauty itself “may be said to have opinion but not knowledge” (Rep. 479e); those who see “the absolute and eternal and immutable” may be said to know (Rep. 479e). What this argument sets knowledge and opinion over is disputed: scholars disagree about whether knowledge and opinion must concern different objects.",
         "A particular beautiful thing can appear beautiful in one setting and ugly in another. A Form supplies a stable object of inquiry into what makes such judgments possible."
@@ -953,7 +953,7 @@ const COURSE = [
         "Nicomachean Ethics II.6 takes it as settled that virtue is a state of character (hexis), which Peters translates “habit or trained faculty”, and asks which state it is. The excellence of a thing makes it good and makes it do its work well, so human virtue is “the habit or trained faculty that makes a man good” (NE II.6).",
         "In anything continuous and divisible one can take more, less or an equal amount, either in the thing itself or relative to us. The mean in the thing is equidistant from both extremes and “one and the same for all”; the mean relative to us is “neither too much nor too little for us”, and differs from person to person (NE II.6). If ten pounds of food is too much and two too little, the trainer will not for that reason order six, which may be “too little for Milo, too much for the beginner” (NE II.6, 1106a36–b7). Richard Kraut writes that the mean must be determined in a way that “takes into account the particular circumstances of the individual”, and that finding it “is not a mechanical or thoughtless procedure”.",
         "Virtue of character concerns feelings and actions, which admit of excess, deficiency and the intermediate. To feel fear, confidence, appetite, anger or pity at the right times, on the right occasions, towards the right people, for the right end and in the right way is the intermediate and the best (NE II.6). There are many ways of going wrong and one way of going right, so virtue is hard: “easy to miss the mark and hard to hit” (NE II.6, 1106b28–33).",
-        "Aristotle's definition follows. Virtue “is a habit or trained faculty of choice” (NE II.6), lying in the mean relative to us and determined by reason, “the reason by which the prudent man would determine it” (NE II.6). The prudent man is Peters's word for the phronimos, the person of practical wisdom (see Phronesis). In its essence virtue is a mean; judged by what is best and right it is “the extreme of perfection” (NE II.6). Peters renders mesotēs as “moderation” and to meson as “the mean”, printing the Greek beside his words (NE II.6). Kraut stresses that the right amount can be large: Aristotle's treatment “endorses the idea that we should sometimes have strong feelings”.",
+        "Aristotle's definition follows. Virtue “is a habit or trained faculty of choice” (NE II.6), lying in the mean relative to us and determined by reason, “the reason by which the prudent man would determine it” (NE II.6). The prudent man is Peters's word for the phronimos, the person of practical wisdom. In its essence virtue is a mean; judged by what is best and right it is “the extreme of perfection” (NE II.6). Peters renders mesotēs as “moderation” and to meson as “the mean”, printing the Greek beside his words (NE II.6). Kraut stresses that the right amount can be large: Aristotle's treatment “endorses the idea that we should sometimes have strong feelings”.",
         "Some feelings and actions have no mean. Malevolence, shamelessness and envy, adultery, theft and murder have names that “imply badness”, and they are wrong however they are done (NE II.6).",
         "The appropriate response takes account of the danger and the agent’s circumstances. A numerical halfway point can be calculated from two extremes alone."
       ],
@@ -1038,7 +1038,7 @@ const COURSE = [
         "Most of his writing is lost. Book 10 of Diogenes Laertius's Lives preserves three letters, To Herodotus on physics, To Pythocles on celestial phenomena and To Menoeceus on ethics, together with the Principal Doctrines, a set of maxims; another collection, the Vatican Sayings, survives in a manuscript in the Vatican. His thirty-seven-book On Nature exists only in charred papyri from a villa at Herculaneum, whose library seems to have belonged to the Epicurean Philodemus. Lucretius's poem, Cicero's hostile dialogues and a huge inscription set up at Oenoanda by another Diogenes add much.",
         "Knowledge rests on criteria: sensations, preconceptions (general concepts formed from repeated perception) and feelings of pleasure and pain. Every sensation is true; error comes from the opinions we add. Claims about what cannot be seen are accepted when nothing observed counts against them. Nothing comes from nothing, and the universe is infinite: bodies made of indivisible atoms moving through void, in infinitely many worlds. Atoms have minimal parts though they cannot be split, and at times they swerve by a minimal amount without cause, which explains how collisions begin and, in Lucretius, makes free action possible. We perceive things through thin films that stream off their surfaces. The gods exist, blessed and immortal, and take no part in running the world.",
         "The soul is a body of fine atoms spread through the body, and it disperses at death. So death is nothing to us: while we exist death is absent, and when death comes we no longer exist. The goal of life is pleasure, understood as freedom from bodily pain and from mental disturbance (ataraxia). Epicurus distinguishes the pleasure of a settled state of well-being from the pleasure of a process such as eating when hungry, and he sorts desires into the natural and necessary, the natural but unnecessary, and the empty, which aim at wealth, fame or immortality and can never be satisfied. Prudence weighs pleasures against pains, and a simple life supplies what nature needs.",
-        "Justice is a compact neither to harm nor to be harmed, and it is nothing in itself apart from such agreements; the wise act justly because injustice brings fear of discovery and they want nothing that would tempt them. Friendship ranks among the greatest goods: it may begin in usefulness, but it comes to be valued for itself, and the wise person will die for a friend if need be. Epicurus advised staying out of politics where possible, a stance Plutarch later attacked in an essay on the Epicurean maxim “live unnoticed”. Opponents slandered him as a sensualist; Diogenes Laertius, and even hostile witnesses, describe a man of great kindness.",
+        "Justice is a compact neither to harm nor to be harmed, and it is nothing in itself apart from such agreements; the wise act justly because injustice brings fear of discovery and they want nothing that would tempt them. Friendship ranks among the greatest goods: it may begin in usefulness, but it comes to be valued for itself, and the wise person will die for a friend if need be. Epicurus advised staying out of politics where possible, a stance Plutarch later attacked in an essay about the Epicurean counsel to live unobtrusively. Opponents slandered him as a sensualist; Diogenes Laertius, and even hostile witnesses, describe a man of great kindness.",
         "The Garden in Athens provided a community for Epicurus’ teaching. Lucretius presents Epicurean arguments to readers in a later Latin poem."
       ],
       [
@@ -1304,7 +1304,7 @@ const COURSE = [
         "The text named after him, the Laozi or Daodejing, the classic of the way and its virtue, is now generally thought to have grown from collections of sayings circulating in the fourth century BCE and to have reached a fairly stable form by the mid-third century. Bamboo slips found at Guodian, in a tomb from around 300 BCE, contain the oldest known passages, and the silk manuscripts from Mawangdui, sealed in 168 BCE, place the part on virtue (de) before the part on the way (dao). The received text, in eighty-one short chapters, descends mainly from the editions of the commentators Wang Bi and Heshang Gong.",
         "The Daodejing opens by declaring that the dao that can be spoken of is not the constant dao. Dao is the nameless source of all things, which gives birth to them and nourishes them without claiming them. It is associated with nonbeing (wu), emptiness and the feminine, and beings receive their de, their virtue or potency, from it. The text values ziran, naturalness or being so of oneself, and wuwei, nonaction, which means acting without forcing, self-seeking or contrived effort.",
         "Its images praise the soft and yielding over the hard: water, which overcomes the strongest things by giving way; the infant; the valley; the uncarved block. Reversal is the movement of the dao, so that what is pushed to an extreme turns into its opposite. The text criticizes the Confucian promotion of benevolence, righteousness and learning as signs that the way has been lost, and describes a sage ruler who governs by nonaction, keeping the people's desires few and letting them flourish without interference.",
-        "The Daodejing has been read as cosmology, as metaphysics, as mysticism, as a guide to life and as political advice, and has inspired thousands of commentaries, the “dark learning” (xuanxue) of the third and fourth centuries, and religious Daoism, which worships Laozi as a deity. It has been translated more often than almost any other book.",
+        "The Daodejing has been read as cosmology, as metaphysics, as mysticism, as a guide to life and as political advice, and has inspired thousands of commentaries, the xuanxue commentarial tradition of the third and fourth centuries, and religious Daoism, which worships Laozi as a deity.",
         "Wuwei names a way of acting that avoids forcing affairs through intrusive effort. Abandoning a duty solely because it requires action treats all intervention as a failure."
       ],
       [
@@ -1771,10 +1771,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains genealogy in this discussion?",
+      "q": "Why does a family tree count as an explanation for Hesiod?",
       "options": [
         "Hesiod traces the ordering of the world through descent and divine succession.",
-        "A Milesian asks what underlies the different things that arise."
+        "A Milesian asks what underlies the different things that arise.",
+        "Both accounts rely on the same principle whenever they describe the sea."
       ],
       "e": "Hesiod traces the ordering of the world through descent and divine succession.",
       "target": "Hesiod traces the ordering of the world through descent and divine succession."
@@ -1791,10 +1792,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains material principle in this discussion?",
+      "q": "What would make water an explanatory beginning for Thales?",
       "options": [
         "A Milesian asks what underlies the different things that arise.",
-        "Hesiod traces the ordering of the world through descent and divine succession."
+        "Hesiod traces the ordering of the world through descent and divine succession.",
+        "Both accounts rely on the same principle whenever they describe the sea."
       ],
       "e": "A Milesian asks what underlies the different things that arise.",
       "target": "A Milesian asks what underlies the different things that arise."
@@ -1811,10 +1813,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains testimony in this discussion?",
+      "q": "What can a historian safely attribute on Aristotle’s authority?",
       "options": [
         "Aristotle attributes the water principle to Thales.",
-        "Aristotle suggests that moisture in nourishment may have prompted Thales’ choice."
+        "Aristotle suggests that moisture in nourishment may have prompted Thales’ choice.",
+        "Aristotle quotes Thales’ own surviving explanation for selecting water."
       ],
       "e": "Aristotle attributes the water principle to Thales.",
       "target": "Aristotle attributes the water principle to Thales."
@@ -1831,10 +1834,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains historical conjecture in this discussion?",
+      "q": "Why should an editor qualify the story about wet seeds?",
       "options": [
         "Aristotle suggests that moisture in nourishment may have prompted Thales’ choice.",
-        "Aristotle attributes the water principle to Thales."
+        "Aristotle attributes the water principle to Thales.",
+        "Aristotle quotes Thales’ own surviving explanation for selecting water."
       ],
       "e": "Aristotle suggests that moisture in nourishment may have prompted Thales’ choice.",
       "target": "Aristotle suggests that moisture in nourishment may have prompted Thales’ choice."
@@ -1851,10 +1855,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains a determinate element in this discussion?",
+      "q": "Why might a critic question whether water alone can explain fire?",
       "options": [
         "Water already has qualities that distinguish it from fire.",
-        "Anaximander’s apeiron supplies a source from which opposed qualities can emerge."
+        "Anaximander’s apeiron supplies a source from which opposed qualities can emerge.",
+        "Choosing a familiar element guarantees equal treatment of every opposite."
       ],
       "e": "Water already has qualities that distinguish it from fire.",
       "target": "Water already has qualities that distinguish it from fire."
@@ -1871,10 +1876,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains the boundless in this discussion?",
+      "q": "Why introduce an indefinite source in an account of opposites?",
       "options": [
         "Anaximander’s apeiron supplies a source from which opposed qualities can emerge.",
-        "Water already has qualities that distinguish it from fire."
+        "Water already has qualities that distinguish it from fire.",
+        "Choosing a familiar element guarantees equal treatment of every opposite."
       ],
       "e": "Anaximander’s apeiron supplies a source from which opposed qualities can emerge.",
       "target": "Anaximander’s apeiron supplies a source from which opposed qualities can emerge."
@@ -1891,10 +1897,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains rarefaction in this discussion?",
+      "q": "What claim would explain why a change toward fire accompanies thinning?",
       "options": [
         "In Anaximenes’ account air becomes fire as it grows thinner.",
-        "Air growing denser accounts for wind, cloud and ultimately stone."
+        "Air growing denser accounts for wind, cloud and ultimately stone.",
+        "The density of the underlying air stays constant as it takes different forms."
       ],
       "e": "In Anaximenes’ account air becomes fire as it grows thinner.",
       "target": "In Anaximenes’ account air becomes fire as it grows thinner."
@@ -1911,10 +1918,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains condensation in this discussion?",
+      "q": "What claim connects a change in density with the formation of stone?",
       "options": [
         "Air growing denser accounts for wind, cloud and ultimately stone.",
-        "In Anaximenes’ account air becomes fire as it grows thinner."
+        "In Anaximenes’ account air becomes fire as it grows thinner.",
+        "The density of the underlying air stays constant as it takes different forms."
       ],
       "e": "Air growing denser accounts for wind, cloud and ultimately stone.",
       "target": "Air growing denser accounts for wind, cloud and ultimately stone."
@@ -1931,10 +1939,11 @@ const COURSE_BANK = {
     },
     {
       "s": 5,
-      "q": "Which statement explains identifying a source in this discussion?",
+      "q": "What does the water hypothesis tell someone who asks about origins?",
       "options": [
         "Naming the principle identifies what diverse things come from.",
-        "Describing successive changes in density gives a proposed mechanism."
+        "Describing successive changes in density gives a proposed mechanism.",
+        "Identifying the initial material suffices to predict each intermediate stage."
       ],
       "e": "Naming the principle identifies what diverse things come from.",
       "target": "Naming the principle identifies what diverse things come from."
@@ -1951,10 +1960,11 @@ const COURSE_BANK = {
     },
     {
       "s": 5,
-      "q": "Which statement explains explaining a transition in this discussion?",
+      "q": "Why does Anaximenes’ density account answer an additional question?",
       "options": [
         "Describing successive changes in density gives a proposed mechanism.",
-        "Naming the principle identifies what diverse things come from."
+        "Naming the principle identifies what diverse things come from.",
+        "Identifying the initial material suffices to predict each intermediate stage."
       ],
       "e": "Describing successive changes in density gives a proposed mechanism.",
       "target": "Describing successive changes in density gives a proposed mechanism."
@@ -1973,10 +1983,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains material turnover in this discussion?",
+      "q": "What observation supports the claim that a river’s contents change?",
       "options": [
         "The waters entering a river differ from those flowing out.",
-        "The ordered passage of waters helps constitute one continuing river."
+        "The ordered passage of waters helps constitute one continuing river.",
+        "Numerical identity requires that each drop remain in the river."
       ],
       "e": "The waters entering a river differ from those flowing out.",
       "target": "The waters entering a river differ from those flowing out."
@@ -1993,10 +2004,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains continuity of pattern in this discussion?",
+      "q": "Why might stopping all flow undermine a river’s identity?",
       "options": [
         "The ordered passage of waters helps constitute one continuing river.",
-        "The waters entering a river differ from those flowing out."
+        "The waters entering a river differ from those flowing out.",
+        "Numerical identity requires that each drop remain in the river."
       ],
       "e": "The ordered passage of waters helps constitute one continuing river.",
       "target": "The ordered passage of waters helps constitute one continuing river."
@@ -2013,10 +2025,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains a fragment in this discussion?",
+      "q": "Why do historians look inside later authors’ books for Heraclitus’ words?",
       "options": [
         "Words attributed to Heraclitus survive embedded in later works.",
-        "A later author can summarize a view in the author’s own vocabulary."
+        "A later author can summarize a view in the author’s own vocabulary.",
+        "Agreement with the philosopher’s doctrine makes a later sentence a quotation."
       ],
       "e": "Words attributed to Heraclitus survive embedded in later works.",
       "target": "Words attributed to Heraclitus survive embedded in later works."
@@ -2033,10 +2046,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains a paraphrase in this discussion?",
+      "q": "What should readers expect when a historian summarizes a fragment?",
       "options": [
         "A later author can summarize a view in the author’s own vocabulary.",
-        "Words attributed to Heraclitus survive embedded in later works."
+        "Words attributed to Heraclitus survive embedded in later works.",
+        "Agreement with the philosopher’s doctrine makes a later sentence a quotation."
       ],
       "e": "A later author can summarize a view in the author’s own vocabulary.",
       "target": "A later author can summarize a view in the author’s own vocabulary."
@@ -2053,10 +2067,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains the way of what is in this discussion?",
+      "q": "Which claim makes inquiry possible on the goddess’s first route?",
       "options": [
         "The goddess invites inquiry along the route of what is.",
-        "Parmenides presents sheer nonbeing as an unavailable object of inquiry."
+        "Parmenides presents sheer nonbeing as an unavailable object of inquiry.",
+        "Both routes succeed if the thinker can imagine a sufficiently empty space."
       ],
       "e": "The goddess invites inquiry along the route of what is.",
       "target": "The goddess invites inquiry along the route of what is."
@@ -2073,10 +2088,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains the way of what is not in this discussion?",
+      "q": "Why does the goddess reject starting with sheer nonbeing?",
       "options": [
         "Parmenides presents sheer nonbeing as an unavailable object of inquiry.",
-        "The goddess invites inquiry along the route of what is."
+        "The goddess invites inquiry along the route of what is.",
+        "Both routes succeed if the thinker can imagine a sufficiently empty space."
       ],
       "e": "Parmenides presents sheer nonbeing as an unavailable object of inquiry.",
       "target": "Parmenides presents sheer nonbeing as an unavailable object of inquiry."
@@ -2093,10 +2109,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains a constraint on generation in this discussion?",
+      "q": "Why would Parmenides object to generation from absolute nothing?",
       "options": [
         "Coming into being from sheer nonbeing would require treating nonbeing as a source.",
-        "The poem also presents an ordered account of the world as mortals understand it."
+        "The poem also presents an ordered account of the world as mortals understand it.",
+        "A description of the heavens proves generation from sheer nothing."
       ],
       "e": "Coming into being from sheer nonbeing would require treating nonbeing as a source.",
       "target": "Coming into being from sheer nonbeing would require treating nonbeing as a source."
@@ -2113,10 +2130,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains a report of appearance in this discussion?",
+      "q": "How can accounts of the heavens figure in a poem that challenges becoming?",
       "options": [
         "The poem also presents an ordered account of the world as mortals understand it.",
-        "Coming into being from sheer nonbeing would require treating nonbeing as a source."
+        "Coming into being from sheer nonbeing would require treating nonbeing as a source.",
+        "A description of the heavens proves generation from sheer nothing."
       ],
       "e": "The poem also presents an ordered account of the world as mortals understand it.",
       "target": "The poem also presents an ordered account of the world as mortals understand it."
@@ -2133,10 +2151,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains heraclitean reconstruction in this discussion?",
+      "q": "How can fresh waters support the continued identity of a river?",
       "options": [
         "A continuing pattern may require changes in its constituents.",
-        "An explanation of becoming must say what it means for something to come to be."
+        "An explanation of becoming must say what it means for something to come to be.",
+        "A description of successive appearances settles what it is for something to begin."
       ],
       "e": "A continuing pattern may require changes in its constituents.",
       "target": "A continuing pattern may require changes in its constituents."
@@ -2153,10 +2172,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains parmenidean challenge in this discussion?",
+      "q": "Why might a critic press an account of change for its starting point?",
       "options": [
         "An explanation of becoming must say what it means for something to come to be.",
-        "A continuing pattern may require changes in its constituents."
+        "A continuing pattern may require changes in its constituents.",
+        "A description of successive appearances settles what it is for something to begin."
       ],
       "e": "An explanation of becoming must say what it means for something to come to be.",
       "target": "An explanation of becoming must say what it means for something to come to be."
@@ -2175,10 +2195,11 @@ const COURSE_BANK = {
     },
     {
       "s": 0,
-      "q": "Which statement explains a case in this discussion?",
+      "q": "Why can Euthyphro’s first reply illustrate his belief?",
       "options": [
         "Euthyphro offers his own prosecution as an instance of piety.",
-        "Socrates asks what makes every pious act pious."
+        "Socrates asks what makes every pious act pious.",
+        "The fairness of a prosecution can be decided by counting similar prosecutions."
       ],
       "e": "Euthyphro offers his own prosecution as an instance of piety.",
       "target": "Euthyphro offers his own prosecution as an instance of piety."
@@ -2195,10 +2216,11 @@ const COURSE_BANK = {
     },
     {
       "s": 0,
-      "q": "Which statement explains a definition in this discussion?",
+      "q": "Why does Socrates keep asking what all the acts share?",
       "options": [
         "Socrates asks what makes every pious act pious.",
-        "Euthyphro offers his own prosecution as an instance of piety."
+        "Euthyphro offers his own prosecution as an instance of piety.",
+        "The fairness of a prosecution can be decided by counting similar prosecutions."
       ],
       "e": "Socrates asks what makes every pious act pious.",
       "target": "Socrates asks what makes every pious act pious."
@@ -2215,10 +2237,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains a dramatic portrayal in this discussion?",
+      "q": "What warrants saying that Plato presents Socrates asking a particular question?",
       "options": [
         "Plato assigns words to a character in a composed dialogue.",
-        "A separate witness can support a historical inference when its evidence is independent."
+        "A separate witness can support a historical inference when its evidence is independent.",
+        "Several copies of the same dialogue count as separate eyewitnesses."
       ],
       "e": "Plato assigns words to a character in a composed dialogue.",
       "target": "Plato assigns words to a character in a composed dialogue."
@@ -2235,10 +2258,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains an independent historical witness in this discussion?",
+      "q": "How could a historian strengthen a claim about the historical Socrates?",
       "options": [
         "A separate witness can support a historical inference when its evidence is independent.",
-        "Plato assigns words to a character in a composed dialogue."
+        "Plato assigns words to a character in a composed dialogue.",
+        "Several copies of the same dialogue count as separate eyewitnesses."
       ],
       "e": "A separate witness can support a historical inference when its evidence is independent.",
       "target": "A separate witness can support a historical inference when its evidence is independent."
@@ -2255,10 +2279,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains a contradiction in this discussion?",
+      "q": "What does examination establish if two concessions conflict?",
       "options": [
         "Incompatible commitments show that the whole set cannot stand.",
-        "Rejecting a particular commitment requires a reason to retain the others."
+        "Rejecting a particular commitment requires a reason to retain the others.",
+        "Any contradiction proves that the first answer must be false."
       ],
       "e": "Incompatible commitments show that the whole set cannot stand.",
       "target": "Incompatible commitments show that the whole set cannot stand."
@@ -2275,10 +2300,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains a refutation of one particular premise in this discussion?",
+      "q": "Why would a critic hesitate before rejecting one specific concession?",
       "options": [
         "Rejecting a particular commitment requires a reason to retain the others.",
-        "Incompatible commitments show that the whole set cannot stand."
+        "Incompatible commitments show that the whole set cannot stand.",
+        "Any contradiction proves that the first answer must be false."
       ],
       "e": "Rejecting a particular commitment requires a reason to retain the others.",
       "target": "Rejecting a particular commitment requires a reason to retain the others."
@@ -2295,10 +2321,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains approval as a response in this discussion?",
+      "q": "Why might an act’s piety explain the gods’ agreement about it?",
       "options": [
         "Divine love can be explained by a prior feature of the act.",
-        "Defining piety by approval makes approval constitutive of piety."
+        "Defining piety by approval makes approval constitutive of piety.",
+        "Unanimity settles which direction the explanation runs."
       ],
       "e": "Divine love can be explained by a prior feature of the act.",
       "target": "Divine love can be explained by a prior feature of the act."
@@ -2315,10 +2342,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains approval as the standard in this discussion?",
+      "q": "What would have to hold if divine approval defined piety?",
       "options": [
         "Defining piety by approval makes approval constitutive of piety.",
-        "Divine love can be explained by a prior feature of the act."
+        "Divine love can be explained by a prior feature of the act.",
+        "Unanimity settles which direction the explanation runs."
       ],
       "e": "Defining piety by approval makes approval constitutive of piety.",
       "target": "Defining piety by approval makes approval constitutive of piety."
@@ -2335,10 +2363,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains an unresolved inquiry in this discussion?",
+      "q": "Why might the reader keep looking after Euthyphro leaves?",
       "options": [
         "A dialogue can expose defects in every answer so far offered.",
-        "Declaring a satisfactory answer impossible requires excluding further proposals."
+        "Declaring a satisfactory answer impossible requires excluding further proposals.",
+        "An unresolved ending establishes that piety has no content."
       ],
       "e": "A dialogue can expose defects in every answer so far offered.",
       "target": "A dialogue can expose defects in every answer so far offered."
@@ -2355,10 +2384,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains a claim of impossibility in this discussion?",
+      "q": "What stronger argument would rule out finding any definition?",
       "options": [
         "Declaring a satisfactory answer impossible requires excluding further proposals.",
-        "A dialogue can expose defects in every answer so far offered."
+        "A dialogue can expose defects in every answer so far offered.",
+        "An unresolved ending establishes that piety has no content."
       ],
       "e": "Declaring a satisfactory answer impossible requires excluding further proposals.",
       "target": "Declaring a satisfactory answer impossible requires excluding further proposals."
@@ -2377,10 +2407,11 @@ const COURSE_BANK = {
     },
     {
       "s": 0,
-      "q": "Which statement explains an instrumental good in this discussion?",
+      "q": "Why does Glaucon strip away reputation in his challenge?",
       "options": [
         "A reputation for justice can bring rewards from others.",
-        "Glaucon asks what justice itself contributes to the person who has it."
+        "Glaucon asks what justice itself contributes to the person who has it.",
+        "A reward counts as intrinsic whenever receiving it feels satisfying."
       ],
       "e": "A reputation for justice can bring rewards from others.",
       "target": "A reputation for justice can bring rewards from others."
@@ -2397,10 +2428,11 @@ const COURSE_BANK = {
     },
     {
       "s": 0,
-      "q": "Which statement explains a good valued in itself in this discussion?",
+      "q": "What benefit would survive even if justice brought public disgrace?",
       "options": [
         "Glaucon asks what justice itself contributes to the person who has it.",
-        "A reputation for justice can bring rewards from others."
+        "A reputation for justice can bring rewards from others.",
+        "A reward counts as intrinsic whenever receiving it feels satisfying."
       ],
       "e": "Glaucon asks what justice itself contributes to the person who has it.",
       "target": "Glaucon asks what justice itself contributes to the person who has it."
@@ -2417,10 +2449,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains the city in this discussion?",
+      "q": "Why describe a community before describing a just person?",
       "options": [
         "In the enlarged model, groups carry out different social functions.",
-        "In the individual, different sources of motivation can conflict."
+        "In the individual, different sources of motivation can conflict.",
+        "A division of labour in society by itself proves a division in each soul."
       ],
       "e": "In the enlarged model, groups carry out different social functions.",
       "target": "In the enlarged model, groups carry out different social functions."
@@ -2437,10 +2470,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains the soul in this discussion?",
+      "q": "What evidence connects the account with an individual’s motives?",
       "options": [
         "In the individual, different sources of motivation can conflict.",
-        "In the enlarged model, groups carry out different social functions."
+        "In the enlarged model, groups carry out different social functions.",
+        "A division of labour in society by itself proves a division in each soul."
       ],
       "e": "In the individual, different sources of motivation can conflict.",
       "target": "In the individual, different sources of motivation can conflict."
@@ -2457,10 +2491,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains appetite in this discussion?",
+      "q": "What does thirst contribute before the person judges the water dangerous?",
       "options": [
         "Thirst considered by itself draws the person toward a drink.",
-        "A judgment about the drink’s danger can oppose thirst."
+        "A judgment about the drink’s danger can oppose thirst.",
+        "Refusing a drink establishes that the person never felt thirst."
       ],
       "e": "Thirst considered by itself draws the person toward a drink.",
       "target": "Thirst considered by itself draws the person toward a drink."
@@ -2477,10 +2512,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains reason in this discussion?",
+      "q": "What explains withholding the drink on the basis of a warning?",
       "options": [
         "A judgment about the drink’s danger can oppose thirst.",
-        "Thirst considered by itself draws the person toward a drink."
+        "Thirst considered by itself draws the person toward a drink.",
+        "Refusing a drink establishes that the person never felt thirst."
       ],
       "e": "A judgment about the drink’s danger can oppose thirst.",
       "target": "A judgment about the drink’s danger can oppose thirst."
@@ -2497,10 +2533,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains opposition in the same respect in this discussion?",
+      "q": "Which conflict gives the partition argument its purchase?",
       "options": [
         "The partition argument needs simultaneous opposed tendencies directed at the same object in the relevant respect.",
-        "A sequence of different wishes is compatible with one changing motivation."
+        "A sequence of different wishes is compatible with one changing motivation.",
+        "Any alteration in preference requires two simultaneously active faculties."
       ],
       "e": "The partition argument needs simultaneous opposed tendencies directed at the same object in the relevant respect.",
       "target": "The partition argument needs simultaneous opposed tendencies directed at the same object in the relevant respect."
@@ -2517,10 +2554,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains a change of mind over time in this discussion?",
+      "q": "Why does a succession of different wants fail to establish divided motives?",
       "options": [
         "A sequence of different wishes is compatible with one changing motivation.",
-        "The partition argument needs simultaneous opposed tendencies directed at the same object in the relevant respect."
+        "The partition argument needs simultaneous opposed tendencies directed at the same object in the relevant respect.",
+        "Any alteration in preference requires two simultaneously active faculties."
       ],
       "e": "A sequence of different wishes is compatible with one changing motivation.",
       "target": "A sequence of different wishes is compatible with one changing motivation."
@@ -2537,10 +2575,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains inner order in this discussion?",
+      "q": "What state of the person is Plato trying to defend?",
       "options": [
         "Plato connects justice with a rightly ordered relation among the soul’s parts.",
-        "A person can obey a rule solely to preserve a good reputation."
+        "A person can obey a rule solely to preserve a good reputation.",
+        "The existence of a reward excludes an agent’s acting from justice."
       ],
       "e": "Plato connects justice with a rightly ordered relation among the soul’s parts.",
       "target": "Plato connects justice with a rightly ordered relation among the soul’s parts."
@@ -2557,10 +2596,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains an outwardly compliant act in this discussion?",
+      "q": "Why can an observer’s report of honest conduct leave the case unresolved?",
       "options": [
         "A person can obey a rule solely to preserve a good reputation.",
-        "Plato connects justice with a rightly ordered relation among the soul’s parts."
+        "Plato connects justice with a rightly ordered relation among the soul’s parts.",
+        "The existence of a reward excludes an agent’s acting from justice."
       ],
       "e": "A person can obey a rule solely to preserve a good reputation.",
       "target": "A person can obey a rule solely to preserve a good reputation."
@@ -2579,10 +2619,11 @@ const COURSE_BANK = {
     },
     {
       "s": 0,
-      "q": "Which statement explains familiarity in this discussion?",
+      "q": "Why might a prisoner take the sharpest shadow for the most real thing?",
       "options": [
         "Repeated exposure makes shadows readily recognizable to a prisoner.",
-        "Seeing what casts a shadow can explain why it appears as it does."
+        "Seeing what casts a shadow can explain why it appears as it does.",
+        "Accurate predictions alone identify what produces each appearance."
       ],
       "e": "Repeated exposure makes shadows readily recognizable to a prisoner.",
       "target": "Repeated exposure makes shadows readily recognizable to a prisoner."
@@ -2599,10 +2640,11 @@ const COURSE_BANK = {
     },
     {
       "s": 0,
-      "q": "Which statement explains understanding a cause in this discussion?",
+      "q": "What explanatory advantage does the freed prisoner gain by turning?",
       "options": [
         "Seeing what casts a shadow can explain why it appears as it does.",
-        "Repeated exposure makes shadows readily recognizable to a prisoner."
+        "Repeated exposure makes shadows readily recognizable to a prisoner.",
+        "Accurate predictions alone identify what produces each appearance."
       ],
       "e": "Seeing what casts a shadow can explain why it appears as it does.",
       "target": "Seeing what casts a shadow can explain why it appears as it does."
@@ -2619,10 +2661,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains a particular instance in this discussion?",
+      "q": "Why is a particular beautiful object an unstable standard?",
       "options": [
         "A particular beautiful thing can appear beautiful in one setting and ugly in another.",
-        "A Form supplies a stable object of inquiry into what makes such judgments possible."
+        "A Form supplies a stable object of inquiry into what makes such judgments possible.",
+        "Agreement among spectators ensures their example remains beautiful in every respect."
       ],
       "e": "A particular beautiful thing can appear beautiful in one setting and ugly in another.",
       "target": "A particular beautiful thing can appear beautiful in one setting and ugly in another."
@@ -2639,10 +2682,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains a Form in this discussion?",
+      "q": "What role does beauty itself play in Plato’s proposal?",
       "options": [
         "A Form supplies a stable object of inquiry into what makes such judgments possible.",
-        "A particular beautiful thing can appear beautiful in one setting and ugly in another."
+        "A particular beautiful thing can appear beautiful in one setting and ugly in another.",
+        "Agreement among spectators ensures their example remains beautiful in every respect."
       ],
       "e": "A Form supplies a stable object of inquiry into what makes such judgments possible.",
       "target": "A Form supplies a stable object of inquiry into what makes such judgments possible."
@@ -2659,10 +2703,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains an example in this discussion?",
+      "q": "Why can critics agree about a recording yet disagree about beauty?",
       "options": [
         "Showing a beautiful performance gives an instance that invites agreement.",
-        "Saying what makes performances beautiful proposes a basis for judging further instances."
+        "Saying what makes performances beautiful proposes a basis for judging further instances.",
+        "An additional favourite recording supplies a definition of beauty."
       ],
       "e": "Showing a beautiful performance gives an instance that invites agreement.",
       "target": "Showing a beautiful performance gives an instance that invites agreement."
@@ -2679,10 +2724,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains a criterion in this discussion?",
+      "q": "What would let a listener apply a judgment to a genuinely new case?",
       "options": [
         "Saying what makes performances beautiful proposes a basis for judging further instances.",
-        "Showing a beautiful performance gives an instance that invites agreement."
+        "Showing a beautiful performance gives an instance that invites agreement.",
+        "An additional favourite recording supplies a definition of beauty."
       ],
       "e": "Saying what makes performances beautiful proposes a basis for judging further instances.",
       "target": "Saying what makes performances beautiful proposes a basis for judging further instances."
@@ -2699,10 +2745,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains the sun analogy in this discussion?",
+      "q": "Why does Plato ask what enables the eye to see?",
       "options": [
         "The sun helps Plato explain the Good’s relation to knowledge through an analogy with sight.",
-        "The divided line distinguishes modes of cognition and their objects."
+        "The divided line distinguishes modes of cognition and their objects.",
+        "The diagrams show that every familiar object is already understood."
       ],
       "e": "The sun helps Plato explain the Good’s relation to knowledge through an analogy with sight.",
       "target": "The sun helps Plato explain the Good’s relation to knowledge through an analogy with sight."
@@ -2719,10 +2766,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains the divided line in this discussion?",
+      "q": "Why does the divided line distinguish mathematical thought from other ways of knowing?",
       "options": [
         "The divided line distinguishes modes of cognition and their objects.",
-        "The sun helps Plato explain the Good’s relation to knowledge through an analogy with sight."
+        "The sun helps Plato explain the Good’s relation to knowledge through an analogy with sight.",
+        "The diagrams show that every familiar object is already understood."
       ],
       "e": "The divided line distinguishes modes of cognition and their objects.",
       "target": "The divided line distinguishes modes of cognition and their objects."
@@ -2739,10 +2787,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains intellectual adjustment in this discussion?",
+      "q": "Why might a well-educated returner perform poorly at first?",
       "options": [
         "A returning prisoner needs time to see in the dark again.",
-        "The education of a guardian raises the question of service to fellow citizens."
+        "The education of a guardian raises the question of service to fellow citizens.",
+        "A person’s early difficulty in darkness removes every civic obligation."
       ],
       "e": "A returning prisoner needs time to see in the dark again.",
       "target": "A returning prisoner needs time to see in the dark again."
@@ -2759,10 +2808,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains a political obligation in this discussion?",
+      "q": "What does the city’s claim on the educated prisoner require explaining?",
       "options": [
         "The education of a guardian raises the question of service to fellow citizens.",
-        "A returning prisoner needs time to see in the dark again."
+        "A returning prisoner needs time to see in the dark again.",
+        "A person’s early difficulty in darkness removes every civic obligation."
       ],
       "e": "The education of a guardian raises the question of service to fellow citizens.",
       "target": "The education of a guardian raises the question of service to fellow citizens."
@@ -2781,10 +2831,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains material cause in this discussion?",
+      "q": "Why might identical statues receive different answers about their material?",
       "options": [
         "The bronze explains what the statue is made of.",
-        "The arrangement giving bronze the shape of this statue supplies a formal explanation."
+        "The arrangement giving bronze the shape of this statue supplies a formal explanation.",
+        "The artisan’s original intention fixes the identity of the metal."
       ],
       "e": "The bronze explains what the statue is made of.",
       "target": "The bronze explains what the statue is made of."
@@ -2801,10 +2852,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains formal cause in this discussion?",
+      "q": "What explains how the same bronze can constitute different figures?",
       "options": [
         "The arrangement giving bronze the shape of this statue supplies a formal explanation.",
-        "The bronze explains what the statue is made of."
+        "The bronze explains what the statue is made of.",
+        "The artisan’s original intention fixes the identity of the metal."
       ],
       "e": "The arrangement giving bronze the shape of this statue supplies a formal explanation.",
       "target": "The arrangement giving bronze the shape of this statue supplies a formal explanation."
@@ -2821,10 +2873,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains efficient cause in this discussion?",
+      "q": "What does naming the sculptor explain about this statue?",
       "options": [
         "The source of a change explains what brings the work about.",
-        "The end of an activity explains what it is undertaken for."
+        "The end of an activity explains what it is undertaken for.",
+        "Every cause in this example must be an event earlier than the statue."
       ],
       "e": "The source of a change explains what brings the work about.",
       "target": "The source of a change explains what brings the work about."
@@ -2841,10 +2894,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains final cause in this discussion?",
+      "q": "What does explaining the commission in terms of a victory add?",
       "options": [
         "The end of an activity explains what it is undertaken for.",
-        "The source of a change explains what brings the work about."
+        "The source of a change explains what brings the work about.",
+        "Every cause in this example must be an event earlier than the statue."
       ],
       "e": "The end of an activity explains what it is undertaken for.",
       "target": "The end of an activity explains what it is undertaken for."
@@ -2861,10 +2915,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains nature in this discussion?",
+      "q": "Why does Aristotle distinguish a growing oak from an assembled bed?",
       "options": [
         "A living thing has an internal principle of its characteristic growth.",
-        "An artifact’s organization as an artifact comes from the maker’s activity."
+        "An artifact’s organization as an artifact comes from the maker’s activity.",
+        "An artifact loses the natural properties of its material once shaped."
       ],
       "e": "A living thing has an internal principle of its characteristic growth.",
       "target": "A living thing has an internal principle of its characteristic growth."
@@ -2881,10 +2936,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains craft in this discussion?",
+      "q": "What accounts for timber having this particular arrangement as furniture?",
       "options": [
         "An artifact’s organization as an artifact comes from the maker’s activity.",
-        "A living thing has an internal principle of its characteristic growth."
+        "A living thing has an internal principle of its characteristic growth.",
+        "An artifact loses the natural properties of its material once shaped."
       ],
       "e": "An artifact’s organization as an artifact comes from the maker’s activity.",
       "target": "An artifact’s organization as an artifact comes from the maker’s activity."
@@ -2901,10 +2957,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains potentiality in this discussion?",
+      "q": "Why can Aristotle call the sleeping musician able to perform?",
       "options": [
         "A capacity is a real ability requiring suitable conditions for its exercise.",
-        "The exercise or realization of a capacity is an actuality."
+        "The exercise or realization of a capacity is an actuality.",
+        "A capacity exists only during the moments when it is exercised."
       ],
       "e": "A capacity is a real ability requiring suitable conditions for its exercise.",
       "target": "A capacity is a real ability requiring suitable conditions for its exercise."
@@ -2921,10 +2978,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains actuality in this discussion?",
+      "q": "What changes in the explanation once the musician actually plays?",
       "options": [
         "The exercise or realization of a capacity is an actuality.",
-        "A capacity is a real ability requiring suitable conditions for its exercise."
+        "A capacity is a real ability requiring suitable conditions for its exercise.",
+        "A capacity exists only during the moments when it is exercised."
       ],
       "e": "The exercise or realization of a capacity is an actuality.",
       "target": "The exercise or realization of a capacity is an actuality."
@@ -2941,10 +2999,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains a functional explanation in this discussion?",
+      "q": "Why would chewing figure in an explanation of a tooth’s shape?",
       "options": [
         "A part’s contribution to a living whole can explain its characteristic development.",
-        "A plan formed by a thinking agent explains deliberate production."
+        "A plan formed by a thinking agent explains deliberate production.",
+        "Every functional explanation requires evidence of a conscious decision."
       ],
       "e": "A part’s contribution to a living whole can explain its characteristic development.",
       "target": "A part’s contribution to a living whole can explain its characteristic development."
@@ -2961,10 +3020,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains a conscious intention in this discussion?",
+      "q": "Why is a craftsperson’s aim relevant to an artifact?",
       "options": [
         "A plan formed by a thinking agent explains deliberate production.",
-        "A part’s contribution to a living whole can explain its characteristic development."
+        "A part’s contribution to a living whole can explain its characteristic development.",
+        "Every functional explanation requires evidence of a conscious decision."
       ],
       "e": "A plan formed by a thinking agent explains deliberate production.",
       "target": "A plan formed by a thinking agent explains deliberate production."
@@ -2983,10 +3043,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains eudaimonia in this discussion?",
+      "q": "Why would Aristotle hesitate to judge a whole life from one good day?",
       "options": [
         "Aristotle assesses flourishing through activity across a life.",
-        "A pleasant mood can vary while the person’s settled conduct stays the same."
+        "A pleasant mood can vary while the person’s settled conduct stays the same.",
+        "The excellence of an entire life can be inferred from a single happy moment."
       ],
       "e": "Aristotle assesses flourishing through activity across a life.",
       "target": "Aristotle assesses flourishing through activity across a life."
@@ -3003,10 +3064,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains a passing feeling of satisfaction in this discussion?",
+      "q": "What can a report of feeling satisfied actually tell us?",
       "options": [
         "A pleasant mood can vary while the person’s settled conduct stays the same.",
-        "Aristotle assesses flourishing through activity across a life."
+        "Aristotle assesses flourishing through activity across a life.",
+        "The excellence of an entire life can be inferred from a single happy moment."
       ],
       "e": "A pleasant mood can vary while the person’s settled conduct stays the same.",
       "target": "A pleasant mood can vary while the person’s settled conduct stays the same."
@@ -3023,10 +3085,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains habituation in this discussion?",
+      "q": "Why does repeatedly sharing fairly matter to moral development?",
       "options": [
         "Repeated action shapes the dispositions from which later choices arise.",
-        "An instructor can state a principle before the learner has acquired the corresponding habit."
+        "An instructor can state a principle before the learner has acquired the corresponding habit.",
+        "Reciting the right rule is sufficient evidence of a stable virtue."
       ],
       "e": "Repeated action shapes the dispositions from which later choices arise.",
       "target": "Repeated action shapes the dispositions from which later choices arise."
@@ -3043,10 +3106,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains instruction in a rule in this discussion?",
+      "q": "What has an apprentice gained by learning the statement of a rule?",
       "options": [
         "An instructor can state a principle before the learner has acquired the corresponding habit.",
-        "Repeated action shapes the dispositions from which later choices arise."
+        "Repeated action shapes the dispositions from which later choices arise.",
+        "Reciting the right rule is sufficient evidence of a stable virtue."
       ],
       "e": "An instructor can state a principle before the learner has acquired the corresponding habit.",
       "target": "An instructor can state a principle before the learner has acquired the corresponding habit."
@@ -3063,10 +3127,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains acting justly in this instance in this discussion?",
+      "q": "What can one fair transaction show about an inexperienced agent?",
       "options": [
         "A person may perform an outwardly fair act under supervision.",
-        "Virtuous action in the full sense involves knowing choice and a stable disposition."
+        "Virtuous action in the full sense involves knowing choice and a stable disposition.",
+        "Doing the right thing once establishes a disposition even under coercion."
       ],
       "e": "A person may perform an outwardly fair act under supervision.",
       "target": "A person may perform an outwardly fair act under supervision."
@@ -3083,10 +3148,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains having a just disposition in this discussion?",
+      "q": "Why does Aristotle ask whether the agent knowingly chose the act?",
       "options": [
         "Virtuous action in the full sense involves knowing choice and a stable disposition.",
-        "A person may perform an outwardly fair act under supervision."
+        "A person may perform an outwardly fair act under supervision.",
+        "Doing the right thing once establishes a disposition even under coercion."
       ],
       "e": "Virtuous action in the full sense involves knowing choice and a stable disposition.",
       "target": "Virtuous action in the full sense involves knowing choice and a stable disposition."
@@ -3103,10 +3169,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains a mean relative to us in this discussion?",
+      "q": "Why might the appropriate response vary with the rescuer’s experience?",
       "options": [
         "The appropriate response takes account of the danger and the agent’s circumstances.",
-        "A numerical halfway point can be calculated from two extremes alone."
+        "A numerical halfway point can be calculated from two extremes alone.",
+        "The same quantity of fear is correct for all agents facing any danger."
       ],
       "e": "The appropriate response takes account of the danger and the agent’s circumstances.",
       "target": "The appropriate response takes account of the danger and the agent’s circumstances."
@@ -3123,10 +3190,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains an arithmetic midpoint in this discussion?",
+      "q": "What mistake arises from averaging the two largest available risks?",
       "options": [
         "A numerical halfway point can be calculated from two extremes alone.",
-        "The appropriate response takes account of the danger and the agent’s circumstances."
+        "The appropriate response takes account of the danger and the agent’s circumstances.",
+        "The same quantity of fear is correct for all agents facing any danger."
       ],
       "e": "A numerical halfway point can be calculated from two extremes alone.",
       "target": "A numerical halfway point can be calculated from two extremes alone."
@@ -3143,10 +3211,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains practical wisdom in this discussion?",
+      "q": "What kind of deliberation is needed when duties pull in different directions?",
       "options": [
         "Practical wisdom judges what is good to do in particular circumstances.",
-        "Technical skill enables a person to produce a result proficiently."
+        "Technical skill enables a person to produce a result proficiently.",
+        "Ability to produce a good tool by itself decides whether its use is just."
       ],
       "e": "Practical wisdom judges what is good to do in particular circumstances.",
       "target": "Practical wisdom judges what is good to do in particular circumstances."
@@ -3163,10 +3232,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains technical skill in this discussion?",
+      "q": "What does technical proficiency establish about a maker?",
       "options": [
         "Technical skill enables a person to produce a result proficiently.",
-        "Practical wisdom judges what is good to do in particular circumstances."
+        "Practical wisdom judges what is good to do in particular circumstances.",
+        "Ability to produce a good tool by itself decides whether its use is just."
       ],
       "e": "Technical skill enables a person to produce a result proficiently.",
       "target": "Technical skill enables a person to produce a result proficiently."
@@ -3185,10 +3255,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains a natural and necessary desire in this discussion?",
+      "q": "Why can Epicurus specify a limit to the desire for food?",
       "options": [
         "Food sufficient to relieve hunger meets a bodily need with a natural limit.",
-        "A craving for limitless prestige has no stable point of satisfaction."
+        "A craving for limitless prestige has no stable point of satisfaction.",
+        "Every desire that gives pleasure has a natural point of completion."
       ],
       "e": "Food sufficient to relieve hunger meets a bodily need with a natural limit.",
       "target": "Food sufficient to relieve hunger meets a bodily need with a natural limit."
@@ -3205,10 +3276,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains an empty desire in this discussion?",
+      "q": "Why might winning another honour leave the desire for prestige undiminished?",
       "options": [
         "A craving for limitless prestige has no stable point of satisfaction.",
-        "Food sufficient to relieve hunger meets a bodily need with a natural limit."
+        "Food sufficient to relieve hunger meets a bodily need with a natural limit.",
+        "Every desire that gives pleasure has a natural point of completion."
       ],
       "e": "A craving for limitless prestige has no stable point of satisfaction.",
       "target": "A craving for limitless prestige has no stable point of satisfaction."
@@ -3225,10 +3297,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains immediate pleasure in this discussion?",
+      "q": "Why might an Epicurean acknowledge the attraction of a choice they decline?",
       "options": [
         "A pleasant experience has an attraction in the moment.",
-        "Epicurean deliberation weighs the pains or anxieties that may follow a choice."
+        "Epicurean deliberation weighs the pains or anxieties that may follow a choice.",
+        "A pleasant option must always be chosen whenever it is available."
       ],
       "e": "A pleasant experience has an attraction in the moment.",
       "target": "A pleasant experience has an attraction in the moment."
@@ -3245,10 +3318,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains considered choice in this discussion?",
+      "q": "How can declining a pleasant experience accord with the pursuit of pleasure?",
       "options": [
         "Epicurean deliberation weighs the pains or anxieties that may follow a choice.",
-        "A pleasant experience has an attraction in the moment."
+        "A pleasant experience has an attraction in the moment.",
+        "A pleasant option must always be chosen whenever it is available."
       ],
       "e": "Epicurean deliberation weighs the pains or anxieties that may follow a choice.",
       "target": "Epicurean deliberation weighs the pains or anxieties that may follow a choice."
@@ -3265,10 +3339,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains fear while alive in this discussion?",
+      "q": "What distress can the argument about death address during a person’s life?",
       "options": [
         "A person can suffer now from the anticipation of dying.",
-        "On the Epicurean account death ends the sensation required to experience pain."
+        "On the Epicurean account death ends the sensation required to experience pain.",
+        "If being dead is painless, the process of dying must also be painless."
       ],
       "e": "A person can suffer now from the anticipation of dying.",
       "target": "A person can suffer now from the anticipation of dying."
@@ -3285,10 +3360,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains being dead in this discussion?",
+      "q": "Why does Lucretius ask who will feel the injury after death?",
       "options": [
         "On the Epicurean account death ends the sensation required to experience pain.",
-        "A person can suffer now from the anticipation of dying."
+        "A person can suffer now from the anticipation of dying.",
+        "If being dead is painless, the process of dying must also be painless."
       ],
       "e": "On the Epicurean account death ends the sensation required to experience pain.",
       "target": "On the Epicurean account death ends the sensation required to experience pain."
@@ -3305,10 +3381,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains the experiential premise in this discussion?",
+      "q": "Which premise lets an Epicurean infer that being dead cannot hurt its subject?",
       "options": [
         "The Epicurean argument links harm of the relevant kind to experience.",
-        "A critic may argue that losing a valuable future can harm someone without a painful experience."
+        "A critic may argue that losing a valuable future can harm someone without a painful experience.",
+        "A loss can matter only when someone later remembers experiencing it."
       ],
       "e": "The Epicurean argument links harm of the relevant kind to experience.",
       "target": "The Epicurean argument links harm of the relevant kind to experience."
@@ -3325,10 +3402,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains the deprivation objection in this discussion?",
+      "q": "What would challenge that premise while granting that the dead feel nothing?",
       "options": [
         "A critic may argue that losing a valuable future can harm someone without a painful experience.",
-        "The Epicurean argument links harm of the relevant kind to experience."
+        "The Epicurean argument links harm of the relevant kind to experience.",
+        "A loss can matter only when someone later remembers experiencing it."
       ],
       "e": "A critic may argue that losing a valuable future can harm someone without a painful experience.",
       "target": "A critic may argue that losing a valuable future can harm someone without a painful experience."
@@ -3345,10 +3423,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains epicurus’ school in this discussion?",
+      "q": "Why consider the Garden’s communal arrangements when interpreting Epicurus?",
       "options": [
         "The Garden in Athens provided a community for Epicurus’ teaching.",
-        "Lucretius presents Epicurean arguments to readers in a later Latin poem."
+        "Lucretius presents Epicurean arguments to readers in a later Latin poem.",
+        "The Latin poem is a transcript of Epicurus teaching in Athens."
       ],
       "e": "The Garden in Athens provided a community for Epicurus’ teaching.",
       "target": "The Garden in Athens provided a community for Epicurus’ teaching."
@@ -3365,10 +3444,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains lucretius’ exposition in this discussion?",
+      "q": "Why distinguish the shelf author from the founder of the school?",
       "options": [
         "Lucretius presents Epicurean arguments to readers in a later Latin poem.",
-        "The Garden in Athens provided a community for Epicurus’ teaching."
+        "The Garden in Athens provided a community for Epicurus’ teaching.",
+        "The Latin poem is a transcript of Epicurus teaching in Athens."
       ],
       "e": "Lucretius presents Epicurean arguments to readers in a later Latin poem.",
       "target": "Lucretius presents Epicurean arguments to readers in a later Latin poem."
@@ -3387,10 +3467,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains an impression in this discussion?",
+      "q": "Why might a Stoic pause after a remark seems offensive?",
       "options": [
         "Something can initially strike a person as insulting.",
-        "Endorsing the impression as a correct judgment is a further response."
+        "Endorsing the impression as a correct judgment is a further response.",
+        "The arrival of an unpleasant appearance proves a moral injury has occurred."
       ],
       "e": "Something can initially strike a person as insulting.",
       "target": "Something can initially strike a person as insulting."
@@ -3407,10 +3488,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains assent in this discussion?",
+      "q": "What step commits the listener to an evaluation of the insult?",
       "options": [
         "Endorsing the impression as a correct judgment is a further response.",
-        "Something can initially strike a person as insulting."
+        "Something can initially strike a person as insulting.",
+        "The arrival of an unpleasant appearance proves a moral injury has occurred."
       ],
       "e": "Endorsing the impression as a correct judgment is a further response.",
       "target": "Endorsing the impression as a correct judgment is a further response."
@@ -3427,10 +3509,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains the agent’s judgment in this discussion?",
+      "q": "Why does Epictetus direct attention to the agent’s use of impressions?",
       "options": [
         "How one judges and chooses belongs to the sphere Epictetus assigns to us.",
-        "Success in changing another person’s conduct depends on circumstances outside one’s direction."
+        "Success in changing another person’s conduct depends on circumstances outside one’s direction.",
+        "Good judgment guarantees the desired result when the advice is sound."
       ],
       "e": "How one judges and chooses belongs to the sphere Epictetus assigns to us.",
       "target": "How one judges and chooses belongs to the sphere Epictetus assigns to us."
@@ -3447,10 +3530,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains an external outcome in this discussion?",
+      "q": "Why can even excellent advice fail to reform a neighbour?",
       "options": [
         "Success in changing another person’s conduct depends on circumstances outside one’s direction.",
-        "How one judges and chooses belongs to the sphere Epictetus assigns to us."
+        "How one judges and chooses belongs to the sphere Epictetus assigns to us.",
+        "Good judgment guarantees the desired result when the advice is sound."
       ],
       "e": "Success in changing another person’s conduct depends on circumstances outside one’s direction.",
       "target": "Success in changing another person’s conduct depends on circumstances outside one’s direction."
@@ -3467,10 +3551,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains virtue in this discussion?",
+      "q": "What would make an unsuccessful rescue an excellent choice?",
       "options": [
         "The Stoics locate the human good in excellent rational agency.",
-        "Health can reasonably be selected while its possession alone leaves character unsettled."
+        "Health can reasonably be selected while its possession alone leaves character unsettled.",
+        "Whatever a rational person selects must itself make a life good."
       ],
       "e": "The Stoics locate the human good in excellent rational agency.",
       "target": "The Stoics locate the human good in excellent rational agency."
@@ -3487,10 +3572,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains a preferred indifferent in this discussion?",
+      "q": "Why can a Stoic reasonably seek medical care?",
       "options": [
         "Health can reasonably be selected while its possession alone leaves character unsettled.",
-        "The Stoics locate the human good in excellent rational agency."
+        "The Stoics locate the human good in excellent rational agency.",
+        "Whatever a rational person selects must itself make a life good."
       ],
       "e": "Health can reasonably be selected while its possession alone leaves character unsettled.",
       "target": "Health can reasonably be selected while its possession alone leaves character unsettled."
@@ -3507,10 +3593,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains cooperation in this discussion?",
+      "q": "Why would Marcus continue helping someone who insulted him?",
       "options": [
         "Shared rational and social life gives reasons to assist difficult people.",
-        "Treating applause as necessary for a good life makes the agent hostage to others’ judgments."
+        "Treating applause as necessary for a good life makes the agent hostage to others’ judgments.",
+        "Caring for another person requires surrendering judgment to that person."
       ],
       "e": "Shared rational and social life gives reasons to assist difficult people.",
       "target": "Shared rational and social life gives reasons to assist difficult people."
@@ -3527,10 +3614,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains dependence on approval in this discussion?",
+      "q": "Why would needing the insulter’s admiration jeopardize Stoic freedom?",
       "options": [
         "Treating applause as necessary for a good life makes the agent hostage to others’ judgments.",
-        "Shared rational and social life gives reasons to assist difficult people."
+        "Shared rational and social life gives reasons to assist difficult people.",
+        "Caring for another person requires surrendering judgment to that person."
       ],
       "e": "Treating applause as necessary for a good life makes the agent hostage to others’ judgments.",
       "target": "Treating applause as necessary for a good life makes the agent hostage to others’ judgments."
@@ -3547,10 +3635,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains a private reminder in this discussion?",
+      "q": "Why attend to the first-person exercises in Marcus’s book?",
       "options": [
         "Marcus addresses himself in the Meditations to rehearse a response.",
-        "Arrian records teaching associated with Epictetus in the Discourses."
+        "Arrian records teaching associated with Epictetus in the Discourses.",
+        "Every text connected with the school has the same speaker and audience."
       ],
       "e": "Marcus addresses himself in the Meditations to rehearse a response.",
       "target": "Marcus addresses himself in the Meditations to rehearse a response."
@@ -3567,10 +3656,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains a reported teaching exchange in this discussion?",
+      "q": "Why does Arrian matter when attributing words to Epictetus?",
       "options": [
         "Arrian records teaching associated with Epictetus in the Discourses.",
-        "Marcus addresses himself in the Meditations to rehearse a response."
+        "Marcus addresses himself in the Meditations to rehearse a response.",
+        "Every text connected with the school has the same speaker and audience."
       ],
       "e": "Arrian records teaching associated with Epictetus in the Discourses.",
       "target": "Arrian records teaching associated with Epictetus in the Discourses."
@@ -3589,10 +3679,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains ren in this discussion?",
+      "q": "Why would a Confucian ask whether an elder was treated humanely?",
       "options": [
         "Ren names humaneness in how one treats others.",
-        "Li includes the forms of ritual conduct through which regard can be expressed and learned."
+        "Li includes the forms of ritual conduct through which regard can be expressed and learned.",
+        "Knowing the formal sequence establishes by itself that the guest was cared for."
       ],
       "e": "Ren names humaneness in how one treats others.",
       "target": "Ren names humaneness in how one treats others."
@@ -3609,10 +3700,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains li in this discussion?",
+      "q": "Why do small conventional gestures figure in moral education?",
       "options": [
         "Li includes the forms of ritual conduct through which regard can be expressed and learned.",
-        "Ren names humaneness in how one treats others."
+        "Ren names humaneness in how one treats others.",
+        "Knowing the formal sequence establishes by itself that the guest was cared for."
       ],
       "e": "Li includes the forms of ritual conduct through which regard can be expressed and learned.",
       "target": "Li includes the forms of ritual conduct through which regard can be expressed and learned."
@@ -3629,10 +3721,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains a ritual’s form in this discussion?",
+      "q": "What can two observers agree on when they describe a ceremonial meal?",
       "options": [
         "A person can carry out the prescribed gestures during a shared meal.",
-        "The manner of attending to another person reveals whether concern informs the gesture."
+        "The manner of attending to another person reveals whether concern informs the gesture.",
+        "Any deviation from the usual order demonstrates a lack of regard."
       ],
       "e": "A person can carry out the prescribed gestures during a shared meal.",
       "target": "A person can carry out the prescribed gestures during a shared meal."
@@ -3649,10 +3742,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains the disposition expressed in this discussion?",
+      "q": "What additional question arises when a guest struggles to participate?",
       "options": [
         "The manner of attending to another person reveals whether concern informs the gesture.",
-        "A person can carry out the prescribed gestures during a shared meal."
+        "A person can carry out the prescribed gestures during a shared meal.",
+        "Any deviation from the usual order demonstrates a lack of regard."
       ],
       "e": "The manner of attending to another person reveals whether concern informs the gesture.",
       "target": "The manner of attending to another person reveals whether concern informs the gesture."
@@ -3669,10 +3763,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains wuwei in this discussion?",
+      "q": "How could a ruler practice wuwei while still governing?",
       "options": [
         "Wuwei names a way of acting that avoids forcing affairs through intrusive effort.",
-        "Abandoning a duty solely because it requires action treats all intervention as a failure."
+        "Abandoning a duty solely because it requires action treats all intervention as a failure.",
+        "The ruler’s actions count as restrained whenever subjects praise them."
       ],
       "e": "Wuwei names a way of acting that avoids forcing affairs through intrusive effort.",
       "target": "Wuwei names a way of acting that avoids forcing affairs through intrusive effort."
@@ -3689,10 +3784,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains withdrawal from every responsibility in this discussion?",
+      "q": "What mistaken inference treats restraint as permission to abandon a responsibility?",
       "options": [
         "Abandoning a duty solely because it requires action treats all intervention as a failure.",
-        "Wuwei names a way of acting that avoids forcing affairs through intrusive effort."
+        "Wuwei names a way of acting that avoids forcing affairs through intrusive effort.",
+        "The ruler’s actions count as restrained whenever subjects praise them."
       ],
       "e": "Abandoning a duty solely because it requires action treats all intervention as a failure.",
       "target": "Abandoning a duty solely because it requires action treats all intervention as a failure."
@@ -3709,10 +3805,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains reliance on praise in this discussion?",
+      "q": "Why would a ruler who seeks applause find the final scene disappointing?",
       "options": [
         "A ruler who needs acclaim depends on subjects publicly recognizing the ruler’s work.",
-        "Chapter seventeen pictures people attributing the accomplished work to themselves."
+        "Chapter seventeen pictures people attributing the accomplished work to themselves.",
+        "Subjects’ lack of praise proves they opposed the outcome."
       ],
       "e": "A ruler who needs acclaim depends on subjects publicly recognizing the ruler’s work.",
       "target": "A ruler who needs acclaim depends on subjects publicly recognizing the ruler’s work."
@@ -3729,10 +3826,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains unobtrusive government in this discussion?",
+      "q": "How can the people’s taking credit count as successful government?",
       "options": [
         "Chapter seventeen pictures people attributing the accomplished work to themselves.",
-        "A ruler who needs acclaim depends on subjects publicly recognizing the ruler’s work."
+        "A ruler who needs acclaim depends on subjects publicly recognizing the ruler’s work.",
+        "Subjects’ lack of praise proves they opposed the outcome."
       ],
       "e": "Chapter seventeen pictures people attributing the accomplished work to themselves.",
       "target": "Chapter seventeen pictures people attributing the accomplished work to themselves."
@@ -3749,10 +3847,11 @@ const COURSE_BANK = {
     },
     {
       "s": 0,
-      "q": "Which statement explains a shared practical question in this discussion?",
+      "q": "What makes a comparison between the two texts possible?",
       "options": [
         "Two texts can both ask how rulers shape the conduct of others.",
-        "Showing that two authors give the same answer requires comparing their reasons and aims."
+        "Showing that two authors give the same answer requires comparing their reasons and aims.",
+        "Two passages about governing have identical standards of success."
       ],
       "e": "Two texts can both ask how rulers shape the conduct of others.",
       "target": "Two texts can both ask how rulers shape the conduct of others."
@@ -3769,10 +3868,11 @@ const COURSE_BANK = {
     },
     {
       "s": 0,
-      "q": "Which statement explains a shared doctrine in this discussion?",
+      "q": "What further evidence would justify attributing the same theory to both?",
       "options": [
         "Showing that two authors give the same answer requires comparing their reasons and aims.",
-        "Two texts can both ask how rulers shape the conduct of others."
+        "Two texts can both ask how rulers shape the conduct of others.",
+        "Two passages about governing have identical standards of success."
       ],
       "e": "Showing that two authors give the same answer requires comparing their reasons and aims.",
       "target": "Showing that two authors give the same answer requires comparing their reasons and aims."
@@ -3791,10 +3891,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains dukkha in this discussion?",
+      "q": "Why begin the Buddhist account by identifying distress?",
       "options": [
         "Dukkha identifies suffering or unsatisfactoriness as the condition under investigation.",
-        "Craving figures in the explanation of how suffering arises."
+        "Craving figures in the explanation of how suffering arises.",
+        "Identifying a cause of suffering implies that every wish is harmful."
       ],
       "e": "Dukkha identifies suffering or unsatisfactoriness as the condition under investigation.",
       "target": "Dukkha identifies suffering or unsatisfactoriness as the condition under investigation."
@@ -3811,10 +3912,11 @@ const COURSE_BANK = {
     },
     {
       "s": 1,
-      "q": "Which statement explains craving in this discussion?",
+      "q": "What changes when the inquiry turns from a diagnosis to its origin?",
       "options": [
         "Craving figures in the explanation of how suffering arises.",
-        "Dukkha identifies suffering or unsatisfactoriness as the condition under investigation."
+        "Dukkha identifies suffering or unsatisfactoriness as the condition under investigation.",
+        "Identifying a cause of suffering implies that every wish is harmful."
       ],
       "e": "Craving figures in the explanation of how suffering arises.",
       "target": "Craving figures in the explanation of how suffering arises."
@@ -3831,10 +3933,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains feeling in this discussion?",
+      "q": "What does calling a sound painful pick out in the analysis of experience?",
       "options": [
         "Feeling concerns the pleasant, painful or neutral tone of an experience.",
-        "Perception involves recognizing or marking features of what is encountered."
+        "Perception involves recognizing or marking features of what is encountered.",
+        "Recognizing the bell by itself determines whether the sound is pleasant."
       ],
       "e": "Feeling concerns the pleasant, painful or neutral tone of an experience.",
       "target": "Feeling concerns the pleasant, painful or neutral tone of an experience."
@@ -3851,10 +3954,11 @@ const COURSE_BANK = {
     },
     {
       "s": 2,
-      "q": "Which statement explains perception in this discussion?",
+      "q": "What does identifying a familiar bell contribute to the same event?",
       "options": [
         "Perception involves recognizing or marking features of what is encountered.",
-        "Feeling concerns the pleasant, painful or neutral tone of an experience."
+        "Feeling concerns the pleasant, painful or neutral tone of an experience.",
+        "Recognizing the bell by itself determines whether the sound is pleasant."
       ],
       "e": "Perception involves recognizing or marking features of what is encountered.",
       "target": "Perception involves recognizing or marking features of what is encountered."
@@ -3871,10 +3975,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains influence in this discussion?",
+      "q": "Why is learning to regulate a bodily process compatible with the control argument?",
       "options": [
         "Practice can influence bodily and mental processes under favourable conditions.",
-        "The control argument asks whether an aggregate can be commanded to be exactly as one wishes."
+        "The control argument asks whether an aggregate can be commanded to be exactly as one wishes.",
+        "Occasional success at directing a feeling establishes unlimited command."
       ],
       "e": "Practice can influence bodily and mental processes under favourable conditions.",
       "target": "Practice can influence bodily and mental processes under favourable conditions."
@@ -3891,10 +3996,11 @@ const COURSE_BANK = {
     },
     {
       "s": 3,
-      "q": "Which statement explains sovereign control in this discussion?",
+      "q": "What kind of control does the discourse invite a listener to test?",
       "options": [
         "The control argument asks whether an aggregate can be commanded to be exactly as one wishes.",
-        "Practice can influence bodily and mental processes under favourable conditions."
+        "Practice can influence bodily and mental processes under favourable conditions.",
+        "Occasional success at directing a feeling establishes unlimited command."
       ],
       "e": "The control argument asks whether an aggregate can be commanded to be exactly as one wishes.",
       "target": "The control argument asks whether an aggregate can be commanded to be exactly as one wishes."
@@ -3911,10 +4017,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains the argument from change in this discussion?",
+      "q": "Why examine whether a pleasant experience lasts?",
       "options": [
         "What changes and is liable to distress offers an unstable basis for identification.",
-        "An aggregate can afflict a person despite the person’s desire to direct it."
+        "An aggregate can afflict a person despite the person’s desire to direct it.",
+        "Evidence of change by itself establishes that practice can have no effect."
       ],
       "e": "What changes and is liable to distress offers an unstable basis for identification.",
       "target": "What changes and is liable to distress offers an unstable basis for identification."
@@ -3931,10 +4038,11 @@ const COURSE_BANK = {
     },
     {
       "s": 4,
-      "q": "Which statement explains the argument from control in this discussion?",
+      "q": "Why ask if the body always obeys a wish to remain healthy?",
       "options": [
         "An aggregate can afflict a person despite the person’s desire to direct it.",
-        "What changes and is liable to distress offers an unstable basis for identification."
+        "What changes and is liable to distress offers an unstable basis for identification.",
+        "Evidence of change by itself establishes that practice can have no effect."
       ],
       "e": "An aggregate can afflict a person despite the person’s desire to direct it.",
       "target": "An aggregate can afflict a person despite the person’s desire to direct it."
@@ -3951,10 +4059,11 @@ const COURSE_BANK = {
     },
     {
       "s": 5,
-      "q": "Which statement explains causal continuity in this discussion?",
+      "q": "How could repeated practice shape tomorrow’s response?",
       "options": [
         "An earlier practice can shape a later response through causal connections.",
-        "A permanent subject would retain its identity independently of changes in the aggregates."
+        "A permanent subject would retain its identity independently of changes in the aggregates.",
+        "Remembering yesterday establishes that every component of experience persists unchanged."
       ],
       "e": "An earlier practice can shape a later response through causal connections.",
       "target": "An earlier practice can shape a later response through causal connections."
@@ -3971,10 +4080,11 @@ const COURSE_BANK = {
     },
     {
       "s": 5,
-      "q": "Which statement explains an unchanging owner in this discussion?",
+      "q": "What further assumption is at issue when a critic demands a permanent experiencer?",
       "options": [
         "A permanent subject would retain its identity independently of changes in the aggregates.",
-        "An earlier practice can shape a later response through causal connections."
+        "An earlier practice can shape a later response through causal connections.",
+        "Remembering yesterday establishes that every component of experience persists unchanged."
       ],
       "e": "A permanent subject would retain its identity independently of changes in the aggregates.",
       "target": "A permanent subject would retain its identity independently of changes in the aggregates."
