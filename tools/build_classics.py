@@ -112,6 +112,13 @@ BOOKS = [
          files=[f"books/book-{i:02d}.md" for i in range(1, 15)], verse_commit="8dc2dc1", verse_dir="en/", encoding="utf-8", convert="aristotle_metaphysics"),
          cover=dict(title="Metaphysics", size=44, art="stars"),
          text=dict(title="Metaphysics", author="Aristotle", edition="trans. W. D. Ross", orig="")),
+    # Hardie and Gaye's translation (Physica, The Works of Aristotle vol. II, Oxford: Clarendon Press, 1930; R. P. Hardie died 1942,
+    # R. K. Gaye 1909), as the Internet Classics Archive transcribes it (classics.mit.edu, physics.mb.txt), from the archive's own git
+    # repository at the commit that added it; the file is unchanged at the repository's head.
+    dict(id="classic-aristotle-physics", text_source=dict(repo="https://github.com/TheMITTech/classics", commit="494702c",
+         files=["Aristotle/physics.mb.txt"], encoding="utf-8", convert="aristotle_physics"),
+         cover=dict(title="Physics", size=44, art="stars"),
+         text=dict(title="Physics", author="Aristotle", edition="trans. R. P. Hardie and R. K. Gaye", orig="")),
     # Dakyns's translation (The Works of Xenophon, vol. III, part 1, Macmillan, 1897; H. G. Dakyns died 1911), as Project Gutenberg
     # transcribes it (ebook 1177), from its GITenberg repository.
     dict(id="classic-xenophon-memorabilia", text_source=dict(repo="https://github.com/GITenberg/The-Memorabilia_1177", file="1177.txt", convert="xenophon_memorabilia"),
@@ -545,6 +552,24 @@ def aristotle_metaphysics(raw, verse):
     assert book == 14, book
     return f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Metaphysics</title></head><body>{"".join(out)}</body></html>'
 
+def aristotle_physics(raw, verse=None):
+    """Hardie and Gaye's translation of the Physics, from the Internet Classics Archive's plain text ("BOOK II", "Part 3", paragraphs
+    between blank lines, lines wrapped): one XHTML document, a chapter per book ("Book II") and a heading per chapter ("Chapter 3"; the
+    archive's "Part"). The archive's header and copyright statement are dropped; its "--" is a dash."""
+    t = raw.replace("\r\n", "\n")
+    t = t[t.index("\nBOOK I\n") + 1:t.index("\nTHE END\n")]
+    out, books, chapters = [], 0, 0
+    for b in re.split(r"\n\s*\n", t):
+        n = " ".join(b.split())
+        if not n or re.fullmatch(r"-{20,}", n): continue
+        m = re.fullmatch(r"BOOK ([IVX]+)", n)
+        if m: books += 1; out.append(f"<h2>Book {m.group(1)}</h2>"); continue
+        m = re.fullmatch(r"Part (\d+)", n)
+        if m: chapters += 1; out.append(f"<h3>Chapter {m.group(1)}</h3>"); continue
+        out.append(f"<p>{esc(typo(n.replace('--', '—')))}</p>")
+    assert books == 8 and chapters == 71, (books, chapters)
+    return f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Physics</title></head><body>{"".join(out)}</body></html>'
+
 def xenophon_memorabilia(raw):
     """Dakyns's translation of the Memorabilia (1897), from a plain-text transcription: one XHTML document, a chapter per book
     ("Book IV") and a heading per chapter ("Chapter VI"; the transcription's bare Roman numeral). Dakyns prints no section numbers;
@@ -846,7 +871,7 @@ def berkeley_dialogues(raw):
     return '<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Three Dialogues</title></head><body>' + "".join(out) + "</body></html>"
 
 
-CONVERT = {"dawn_of_day": dawn_of_day, "harlem_shadows": harlem_shadows, "sacred_wood": sacred_wood, "gilman-wallpaper": gilman_wallpaper, "burnet-early": burnet_early, "lucretius-nature": lucretius_nature, "augustine_confessions": augustine_confessions, "bergson_time": bergson_time, "berkeley_dialogues": berkeley_dialogues, "kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique, "aristotle_metaphysics": aristotle_metaphysics, "xenophon_memorabilia": xenophon_memorabilia}
+CONVERT = {"dawn_of_day": dawn_of_day, "harlem_shadows": harlem_shadows, "sacred_wood": sacred_wood, "gilman-wallpaper": gilman_wallpaper, "burnet-early": burnet_early, "lucretius-nature": lucretius_nature, "augustine_confessions": augustine_confessions, "bergson_time": bergson_time, "berkeley_dialogues": berkeley_dialogues, "kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique, "aristotle_metaphysics": aristotle_metaphysics, "aristotle_physics": aristotle_physics, "xenophon_memorabilia": xenophon_memorabilia}
 
 def clone(url, dest):
     if not dest.exists():
@@ -923,10 +948,10 @@ async def main(only):
                 else:
                     names = []
                     ts = bk["text_source"]
-                    if ts.get("commit"):  # files at a pinned commit, and the verse lines marked ("> ") at another
+                    if ts.get("commit"):  # files at a pinned commit, and (Metaphysics) the verse lines marked ("> ") at another
                         show = lambda c, f: subprocess.run(["git", "-C", str(TEXTS / bk["id"]), "show", f"{c}:{f}"], capture_output=True, text=True, check=True).stdout
                         raw = "\n".join(show(ts["commit"], f) for f in ts["files"])
-                        names_v = subprocess.run(["git", "-C", str(TEXTS / bk["id"]), "ls-tree", "--name-only", ts["verse_commit"], ts["verse_dir"]], capture_output=True, text=True, check=True).stdout.split()
+                        names_v = subprocess.run(["git", "-C", str(TEXTS / bk["id"]), "ls-tree", "--name-only", ts["verse_commit"], ts["verse_dir"]], capture_output=True, text=True, check=True).stdout.split() if ts.get("verse_commit") else []
                         verse = [l[2:] for f in names_v if f.endswith(".md") for l in show(ts["verse_commit"], f).split("\n") if l.startswith("> ")]
                         files, endnotes = [CONVERT[ts["convert"]](raw, verse)], None
                     else:

@@ -442,7 +442,7 @@ const CLASSIC_TITLES = {
   "classic-shelley-frankenstein": "Frankenstein",
   "classic-berkeley-dialogues": "Three Dialogues Between Hylas and Philonous",
   "classic-boethius-consolation": "The Consolation of Philosophy",
-  "classic-plato-socrates": "Euthyphro, Apology, Crito, Phaedo", "classic-aristotle-ethics": "Nicomachean Ethics", "classic-aristotle-metaphysics": "Metaphysics", "classic-descartes-meditations": "Discourse on the Method and Meditations on First Philosophy",
+  "classic-plato-socrates": "Euthyphro, Apology, Crito, Phaedo", "classic-aristotle-ethics": "Nicomachean Ethics", "classic-aristotle-metaphysics": "Metaphysics", "classic-aristotle-physics": "Physics", "classic-descartes-meditations": "Discourse on the Method and Meditations on First Philosophy",
   "classic-hobbes-leviathan": "Leviathan", "classic-spinoza-ethics": "Ethics", "classic-hume-treatise": "A Treatise of Human Nature", "classic-hume-enquiry": "An Enquiry Concerning Human Understanding", "classic-rousseau-social-contract": "The Social Contract",
   "classic-kant-critique": "Critique of Pure Reason", "classic-kant-groundwork": "Fundamental Principles of the Metaphysic of Morals", "classic-wollstonecraft-vindication": "A Vindication of the Rights of Woman",
   "classic-marx-engels-manifesto": "The Communist Manifesto", "classic-nietzsche-beyond": "Beyond Good and Evil", "classic-nietzsche-genealogy": "The Genealogy of Morals", "classic-cooper-voice": "A Voice from the South", "classic-du-bois-souls": "The Souls of Black Folk",
@@ -477,6 +477,7 @@ const CLASSIC_NAMES = {
   "classic-xenophon-memorabilia": { by: [], full: ["Memorabilia"] },
   "classic-aristotle-ethics": { by: ["aristotle"], full: ["Nicomachean Ethics"] },
   "classic-aristotle-metaphysics": { by: ["aristotle"], full: [{ s: "Metaphysics", pre: ["Aristotle's", "Aristotle’s"] }, { s: "Metaphysics", post: /^ (\d|[IVX]+\b)/ }], own: ["Metaphysics"] },
+  "classic-aristotle-physics": { by: ["aristotle"], full: [{ s: "Physics", pre: ["Aristotle's", "Aristotle’s"] }, { s: "Physics", post: /^ (\d|[IVX]+\b)/ }], own: ["Physics"] },
   "classic-descartes-meditations": { by: ["descartes"], full: ["Discourse on the Method", "Discourse on Method", "Meditations on First Philosophy"], own: ["Meditations"] },
   "classic-hobbes-leviathan": { by: ["hobbes"], full: ["Leviathan"] },
   "classic-spinoza-ethics": { by: ["spinoza"], full: ["Spinoza's Ethics", { s: "Ethics", post: /^ \(1677\)/ }], own: ["Ethics"] },
@@ -543,6 +544,7 @@ const SRC_LOCS = {
   "classic-hume-enquiry": ["hume-enquiry", (tail) => [...tail.matchAll(/§(\d+)/g)].map((m) => [m.index, m.index + m[0].length, `${toRoman(+m[1])}|`])],
   "classic-aristotle-ethics": ["aristotle-ethics", (tail) => [...tail.matchAll(/\b(VIII|VII|VI|IV|IX|III|II|X|V|I)\.(\d+)(?:[–-]\d+)?/g)].map((m) => [m.index, m.index + m[0].length, `${m[1]}|${m[2]}`])],
   "classic-aristotle-metaphysics": ["aristotle-metaphysics", (tail) => [...tail.matchAll(/\b(XIV|XIII|XII|XI|IX|X|VIII|VII|VI|IV|V|III|II|I)\.(\d+)(?:[–-]\d+)?/g)].map((m) => [m.index, m.index + m[0].length, `${m[1]}|${m[2]}`])],
+  "classic-aristotle-physics": ["aristotle-physics", (tail) => [...tail.matchAll(/\b(VIII|VII|VI|IV|V|III|II|I)\.(\d+)(?:[–-]\d+)?/g)].map((m) => [m.index, m.index + m[0].length, `${m[1]}|${m[2]}`])],
   "classic-rousseau-social-contract": ["rousseau-social-contract", (tail) => [...tail.matchAll(/\b(IV|III|II|I)\.(\d+)(?:[–-]\d+)?/g)].map((m) => [m.index, m.index + m[0].length, `${m[1]}|${m[2]}`])],
   "classic-nietzsche-genealogy": ["nietzsche-genealogy", (tail) => { const m = tail.match(/\b(First|Second|Third) Essay, §§?(\d+)|\bPreface,? §(\d+)/); if (!m) return [];
     return [[m.index, m.index + m[0].length, m[3] ? `Preface|${m[3]}` : `${{ First: "I", Second: "II", Third: "III" }[m[1]]}|${m[2]}`]]; }],
@@ -1052,6 +1054,9 @@ const PASSAGE_STYLES = {
   // Aristotle, Metaphysics (Ross): book and chapter, "Met. V.2" (Book V is Delta; the book headings give both).
   "aristotle-metaphysics": { book: "classic-aristotle-metaphysics", item: /^Met\. (XIV|XIII|XII|XI|X|IX|VIII|VII|VI|V|IV|III|II|I)\.(\d+)$/,
     find: (B, [book, ch]) => headPath(B, [[2, (t) => t.startsWith(`Book ${book} (`)], [3, (t) => t === `Chapter ${ch}`]]) },
+  // Aristotle, Physics (Hardie and Gaye): book and chapter, "Phys. II.3".
+  "aristotle-physics": { book: "classic-aristotle-physics", item: /^Phys\. (VIII|VII|VI|V|IV|III|II|I)\.(\d+)$/,
+    find: (B, [book, ch]) => headPath(B, [[2, (t) => t === `Book ${book}`], [3, (t) => t === `Chapter ${ch}`]]) },
   // Rousseau, The Social Contract: book and chapter, "SC I.6".
   "rousseau-social-contract": { book: "classic-rousseau-social-contract", item: /^SC (I|II|III|IV)\.(\d+)$/,
     find: (B, [book, ch]) => headPath(B, [[2, (t) => t === `Book ${book}`], [3, (t) => t.startsWith(`${toRoman(+ch)}. `)]]) },
