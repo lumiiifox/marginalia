@@ -23,16 +23,9 @@ interpretation stays under review.
 
 ## What Marginalia is for
 
-**Mission (owner's decision, 2026-11-22):** Marginalia teaches philosophy to one reader, from foundations to advanced
-continental work, through close reading of primary texts, recall from memory, and written argument. Every claim in it traces
-to a scholarly source, and each stage of a reading route is checked before the next one opens.
+**Mission (owner’s decision, 2026-11-24).** Marginalia teaches philosophy from a first encounter with an argument to independent engagement with primary texts. The main course covers Ancient, Medieval, Renaissance, Early modern, 19th-century, and 20th-century and contemporary philosophy. Branches and traditions connect modules within those periods. The initial release covers the foundations and Ancient period pending owner review.
 
-Teaching leads; the reading and research environment (close reading, rigorous reference material, traceable conceptual
-relationships) serves it. It grows with the texts and questions its owner chooses to pursue (now: Aristotle → Spinoza →
-Deleuze → Land); it does not try to cover all of philosophy.
-
-- **The texts and the owner's writing teach.** A lesson is a passage read closely, recalled from memory and argued with in
-  writing. Reference articles, primers and glossary entries are what the owner consults while doing that work.
+- **Teaching comes first.** Each module opens with a substantial sourced lesson, followed by an optional shelf passage and a comprehension test. A score of 8/10 opens the next module. Writing belongs at the end of each period. The research portfolio is optional after the course.
 - **Order is part of the teaching.** Reading paths run foundations first, with prerequisites (Aristotle and Spinoza before
   Deleuze; basic logic before argument puzzles).
 - **Feedback comes from Claude, outside the app.** The app costs nothing to run and calls no paid API: it packages the owner's

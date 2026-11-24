@@ -118,8 +118,10 @@ const LEARNING = [
 
 const learningDraft = (lesson) => "learning-" + lesson.id;
 const learningAnswered = (lesson) => S.drafts.get(learningDraft(lesson))?.items.some((item) => item.t === "p" && item.x.trim());
-const nextLesson = () => LEARNING.find((lesson) => !learningAnswered(lesson));
-const learningCount = () => LEARNING.filter(learningAnswered).length;
+const researchLessons = LEARNING.filter(l => ["Research and criticism", "Independent specialization"].includes(l.stage));
+const portfolioLessons = LEARNING.filter(l => !researchLessons.includes(l));
+const nextLesson = () => portfolioLessons.find((lesson) => !learningAnswered(lesson));
+const learningCount = () => portfolioLessons.filter(learningAnswered).length;
 
 function learningView() {
   const current = nextLesson();
@@ -127,14 +129,14 @@ function learningView() {
   const lesson = LEARNING.find((l) => l.id === NAV.stack[NAV.stack.length - 1].lesson);
   const backBtn = '<button class="btn ghost backbtn" id="back">← Back</button>';
   if (!lesson) {
-    const groups = [...new Set(LEARNING.map((l) => l.stage))];
-    return backBtn + `<header class="gl-head"><div><h1>Learning</h1><p>Begin with an ordinary question. Over six phases, develop a research paper, answer criticism and teach its argument. Work at your own pace. Each phase ends with a written checkpoint.</p><div class="sub">${count} of ${LEARNING.length} responses saved</div></div></header>
+    const groups = [...new Set(portfolioLessons.map((l) => l.stage))];
+    return backBtn + `<header class="gl-head"><div><h1>Previous learning portfolio</h1><p>Revisit your earlier exercises, responses and feedback.</p><div class="sub">${count} of ${portfolioLessons.length} responses saved</div></div></header>
       ${current ? `<button class="btn primary" data-lesson="${current.id}">${count ? "Continue" : "Begin"} · ${esc(current.title)}</button>` : '<p>You have saved a response to every lesson. Reopen a lesson to revise its argument.</p>'}
-      <details class="group"><summary>Practices to carry through the course</summary><p>Logic: begin with premises and conclusions. Alongside Foundations, try truth tables and natural deduction in <a href="https://forallx.openlogicproject.org/" target="_blank" rel="noopener noreferrer">forall x: Calgary</a>. Set one exercise from each method beside a passage you read.</p><p>Reading journal: record the question, a numbered reconstruction, a passage reference, one objection and one uncertainty. Reconstruct the argument from memory the following week.</p><p>Languages and history: choose one key term from a primary source, compare two translations, and record what changes. Date the source and identify the debate it answered. For advanced work, ask a reader of the original language to check the passage.</p><p>Feedback: save comments from a reader with the response. The progress count records writing. Use the phase checkpoints and a knowledgeable reader to assess its quality.</p></details>
       ${groups.map((g) => `<section class="group"><h2>${groups.indexOf(g) + 1}. ${g}</h2><div class="gl-list">${LEARNING.filter((l) => l.stage === g).map((l) => `<button class="thinkrow" data-lesson="${l.id}"><b>${LEARNING.indexOf(l) + 1}. ${esc(l.title)}</b><span class="td">${l.gate ? "Phase checkpoint · " : ""}${learningAnswered(l) ? "Response saved" : l.readings.map((r) => esc(r[2].split(" · ")[0])).join(" and ") || "Work from your research"}${S.drafts.get(learningDraft(l))?.critiques?.length ? " · Feedback recorded" : ""}</span></button>`).join("")}</div></section>`).join("")}`;
   }
-  const id = learningDraft(lesson), draft = S.drafts.get(id), index = LEARNING.indexOf(lesson), next = LEARNING[index + 1];
-  return backBtn + `<header class="gl-head"><div><div class="sub">Lesson ${index + 1} of ${LEARNING.length} · ${lesson.stage}${lesson.gate ? " · Phase checkpoint" : ""}</div><h1>${lesson.title}</h1></div></header>
+  const track = researchLessons.includes(lesson) ? researchLessons : portfolioLessons;
+  const id = learningDraft(lesson), draft = S.drafts.get(id), index = track.indexOf(lesson), next = track[index + 1];
+  return backBtn + `<header class="gl-head"><div><div class="sub">${track === researchLessons ? "Optional research" : "Portfolio exercise"} ${index + 1} of ${track.length} · ${lesson.stage}${lesson.gate ? " · Phase checkpoint" : ""}</div><h1>${lesson.title}</h1></div></header>
     <section class="group"><p>${lesson.idea}</p>${lesson.readings.map(([slug, , label], i) => S.texts.has("classic-" + slug)
       ? `<button class="btn" data-learning-read="${i}">${esc(label)}</button>`
       : `<button class="btn" data-pathadd="classic-${slug}">Add reading · ${esc(label)}</button>`).join(" ")}
@@ -142,7 +144,7 @@ function learningView() {
     <section class="group"><h2>Your written exercise</h2><p>${lesson.task}</p><p class="hint">Make a first attempt, then check your evidence. Your response is saved in Drafts.</p>
     ${draft ? `<button class="btn primary" data-draft="${id}">Open your response</button> <button class="btn" id="learning-feedback">Record feedback</button>` : '<button class="btn primary" id="learning-answer">Write your response</button>'}</section>
     <details class="group"><summary>Check your reasoning</summary><p>${lesson.check}</p></details>
-    ${next ? `<button class="btn" data-lesson="${next.id}">Next · ${esc(next.title)}</button>` : '<button class="btn" id="openlearning">Course overview</button>'}`;
+    ${next ? `<button class="btn" data-lesson="${next.id}">Next · ${esc(next.title)}</button>` : '<button class="btn" id="opencourse">Course overview</button>'}`;
 }
 
 function activeLesson() {

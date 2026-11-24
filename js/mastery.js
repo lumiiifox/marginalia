@@ -197,5 +197,6 @@ function masteryView() {
     <div class="mmeter" role="img" aria-label="${M.pct}% collected"><i style="width:${M.pct}%"></i></div>
     <p class="hint">Only entries that passed a checked audit count, so everything here rests on sources. Open an entry to meet it, get it right in a puzzle to answer it, and use it in a note of your own. More arrive as audits land.</p>
     <p class="mlegend"><span><i class="on"></i> Met</span><span><i class="on"></i><i class="on"></i> Answered</span><span><i class="on"></i><i class="on"></i><i class="on"></i> Used in your notes</span></p>
+    <section class="group"><h2>Course questions</h2><p>${COURSE.reduce((n,m) => n + COURSE_BANK[m.id].filter((_,i) => courseHas(m,"q"+i)).length,0)} of ${COURSE.reduce((n,m) => n + COURSE_BANK[m.id].length,0)} answered correctly. Each question counts once across retakes.</p></section>
     ${explain}${kinds}`;
 }

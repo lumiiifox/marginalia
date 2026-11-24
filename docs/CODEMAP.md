@@ -26,7 +26,8 @@ can break that order: keep new code in the file of its area, and check with a te
 | `js/mastery.js` | mastery: the collection earned by reading checked material, its toasts and screen |
 | `js/daily.js` | Today's question on the home screen, the Daily questions screen, and your answers to them |
 | `js/discovery.js` | wishlist records and forms, sourced reading recommendations, and companion books |
-| `js/learning.js` | Study’s main philosophy course, passage anchors, self-checks and response portfolio. Each response is an ordinary draft keyed by the stable lesson id. |
+| `js/learning.js` | Optional research track and previous response portfolio. Each response is an ordinary draft keyed by the stable lesson id. |
+| `data/course.js`, `js/course.js` | Chronological lessons and question pools, exact passage anchors, test and period gates, and assignment export. |
 | `js/boot.js` | events for the whole app, the classics (`CLASSICS`) and starting up |
 
 Each entry below names its functions; `grep -n` over `js/` finds them.
