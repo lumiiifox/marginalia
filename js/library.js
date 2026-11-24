@@ -400,6 +400,9 @@ function trashView() {
       <div class="trashacts"><button class="btn" data-untrash="${esc(id)}">Restore</button><button class="btn ghost danger" data-purge="${esc(id)}">Delete now</button></div></div>`).join("")}</div>`
       : `<p class="empty"><b>Nothing here.</b> What you delete waits here for ${TRASH_DAYS} days before it goes.</p>`}`;
 }
+// A classic taken from a Project Gutenberg transcription carries the sentence its licence (1.E.1) asks to be shown wherever the text is
+// displayed, linked to the full licence. The bundled copies drop Gutenberg's header and footer, so the book's page shows it instead.
+const pgClassic = (id, t) => id.startsWith("classic-") && [t.publisher, t.source && t.source.name].some((v) => /Project Gutenberg/.test(v || ""));
 function textView() {
   const id = S.textId, t = S.texts.get(id), secs = t.sections || [];
   const all = notesFor(id);
@@ -418,6 +421,7 @@ function textView() {
           ${authorThinkers(t.author).map((p) => `<button class="src authlink" data-thinker="${esc(p.id)}">About ${esc(p.sn)}</button>`).join("")}
           ${pairOf(t) ? `<button class="src authlink" data-open="${esc(t.pair)}">Paired with “${esc(pairOf(t).title)}”</button>` : ""}
           ${t.source ? `<div class="srcline">From ${esc(t.source.name)}${t.source.pages ? `, ${esc(t.source.pages)} pages` : ""}${progressOf(t) > 0 ? `, ${progressOf(t)}% read` : ""}${t.readAt ? `, last read ${esc(fmtDate(t.readAt))}` : ""}</div>` : ""}
+          ${pgClassic(id, t) ? `<div class="srcline pgline">This eBook is for the use of anyone anywhere at no cost and with almost no restrictions whatsoever. You may copy it, give it away or re-use it under the terms of the <a href="https://www.gutenberg.org/policy/license" target="_blank" rel="noopener">Project Gutenberg License</a> online at www.gutenberg.org.</div>` : ""}
         </div>
       </div>
       <div class="actions">

@@ -337,6 +337,13 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   never arranged is in order of use. `rank` is in `ACTIVITY`, so a restore compares records without it and keeps this device's order.
 - Four shelf editions: Boethius (H. R. James), Shelley (1831 revision) and Dostoevsky (Constance Garnett) use Standard Ebooks. Berkeley’s three dialogues use the Project Gutenberg no. 4724 transcription. Edition details and primers are on each book page.
 - Augustine (Pusey, Gutenberg 3296) and Bergson (Pogson, Gutenberg 56852) use the HTML transcriptions. Butler’s Erewhon and Melville’s Short Fiction use the Standard Ebooks editions.
+  Both copyright legs, checked 2026-11-24: Pusey died 1882 (translation 1838); Pogson died 1910 (Library of Congress heading
+  "Pogson, Frank Lubecki, -1910", via the Online Books Page), and 56852 is the 1913 printing of his 1910 translation; Bergson died 1941,
+  Butler 1902 (Erewhon, revised text of 1901), Melville 1891.
+- Gutenberg licence line (`pgClassic`, js/library.js): a classic whose record names Project Gutenberg (publisher or source) shows, on
+  its page under "From …", the sentence the Project Gutenberg License (1.E.1) asks to appear wherever the text is displayed, linked to
+  the full licence. The bundled copies drop Gutenberg's header and footer; a classic whose record names no Gutenberg edition falls under
+  1.C (all references removed) and shows nothing. Tested in `tests/study_tools.py` (primers).
 - Antigone (Storr), Douglass’s Narrative, Dracula and Jekyll and Hyde use Standard Ebooks. Gilman (1952), Lucretius (785, Leonard) and Burnet (67097, 1908 edition) use the numbered Project Gutenberg transcriptions.
 - The Dawn of Day (Kennedy), The Sacred Wood and Harlem Shadows use Gutenberg transcriptions. Their primers use `srcs` for Oskar’s recordings of the individual selections.
 - Classics (`CLASSICS`, `addClassics`, at start): public-domain books that come with the app, each added to the library once, queued,

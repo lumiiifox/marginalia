@@ -62,7 +62,7 @@ Uses made-up records only. Checks that:
   20. questions to read with: every path step has three, folded on the path; Add to my questions makes a Question note on the book at
       the step's first chapter, once; a book's Where you left off shows a step's questions only while your place is inside its chapters.
   21. primers: every classic has one, with words to know that are in the glossary and a source; a classic's page shows it open until
-      you start reading or take a note, folded after; it links to the reading paths that use the book.
+      you start reading or take a note, folded after; it links to the reading paths that use the book. A classic from Project Gutenberg shows its licence sentence.
   22. sources: no glossary entry, thinker, branch, primer, disputation or reading path cites Wikipedia; every source link is https.
   23. a branch article's section sources (xs): each names a heading the article has, each source has a name, links are https;
       an article has them exactly when its audit record is in tests/audit, and every other article is marked Unchecked;
@@ -907,6 +907,11 @@ async def primers(browser):
     await page.evaluate("go({ screen: 'text', textId: 'classic-kant-critique' })"); await page.wait_for_timeout(200)
     miss = await page.evaluate("document.querySelector('.primer .primer-missing')?.textContent || ''")
     check("Not in this edition" in miss and "A 95–130" in miss and "A 348–405" in miss, f"the Critique's primer says which first-edition passages Meiklejohn lacks ({miss[:80]!r})")
+    pg = await page.evaluate("document.querySelector('.pgline a')?.href || ''")
+    check(pg == "", "a classic whose record names no Gutenberg edition shows no licence line")
+    await page.evaluate("go({ screen: 'text', textId: 'classic-augustine-confessions' })"); await page.wait_for_timeout(200)
+    pg = await page.evaluate("[document.querySelector('.pgline')?.textContent || '', document.querySelector('.pgline a')?.href || '']")
+    check("for the use of anyone anywhere" in pg[0] and pg[1] == "https://www.gutenberg.org/policy/license", f"a classic from Project Gutenberg shows its licence sentence with a link ({pg})")
     hume = await page.evaluate("(go({ screen: 'text', textId: 'classic-hume-enquiry' }), new Promise((r) => setTimeout(() => r(document.querySelectorAll('.primer .primer-missing').length), 200)))")
     check(hume == 0, "a primer without missing passages shows no such row")
     await page.evaluate("go({ screen: 'text', textId: 'classic-hume-enquiry' })"); await page.wait_for_timeout(200)
