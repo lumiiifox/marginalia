@@ -59,7 +59,7 @@ function courseOverview() {
       }).join("");
       return `<section><h2>${period}</h2><p>${all.length ? all.filter(coursePassed).length + " of " + all.length + " passed" : "Planned after the Ancient pilot review"}</p>${rows || (all.length ? "<p>No modules match this filter.</p>" : "")}${period === "Ancient" ? courseButton("assignment",courseNext() ? "🔒 Assignment · Pass every Ancient test" : "Open Ancient assignment",!!courseNext()) : ""}</section>`;
     }).join("")}
-    <section><h2>Optional research track</h2><p>After the course, develop an annotated bibliography, referee report and research paper.</p>${LEARNING.slice(-4).map(l => `<button class="course-row" data-lesson="${l.id}">${esc(l.title)}</button>`).join("")}</section>
+    <section><h2>Optional research track</h2><p>After the course, develop an annotated bibliography, referee report and research paper.</p>${researchLessons.map(l => `<button class="course-row" data-lesson="${l.id}">${esc(l.title)}</button>`).join("")}</section>
     <details><summary>Previous learning portfolio</summary><p>Revisit the earlier exercises and your saved responses.</p><button class="btn" id="openlearning">Open portfolio</button></details>`;
 }
 function courseTools(m) {
