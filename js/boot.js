@@ -108,6 +108,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "openlearning") return go({ screen: "learning" });
   if (b.dataset.lesson) return go({ screen: "learning", lesson: b.dataset.lesson });
   if (b.dataset.learningRead !== undefined) return readLearningPassage(Number(b.dataset.learningRead));
+  if (b.id === "learning-feedback" && activeLesson()) return critiqueSheet(learningDraft(activeLesson()));
   if (b.id === "learning-answer") return writeLearningResponse();
   if (b.id === "openmastery") return go({ screen: "mastery" });
   if (b.id === "openstudy") return go({ screen: "study" });

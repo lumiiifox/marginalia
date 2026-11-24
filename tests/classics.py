@@ -46,32 +46,6 @@ async def main():
         again = await page.evaluate("addClassics(true)")
         check(again == ["The Souls of Black Folk"], f"...and added the next time ({again})")
 
-        # The main course uses exact passages and saves written responses as normal drafts.
-        missing = await page.evaluate("""async () => {
-          const bad = [];
-          for (const l of LEARNING) for (const [slug, sec, label, phrase] of l.readings) {
-            const id = 'classic-' + slug, B = await loadContent(id), r = stepRange(B, [id + '-s' + sec]);
-            if (!r || B.slice(...r).filter(b => plain(b.x).includes(phrase)).length !== 1) bad.push(label);
-          } return bad;
-        }""")
-        check(not missing, f"all course readings identify one passage in the assigned section ({missing})")
-        await page.evaluate("go({screen:'study'})")
-        check(await page.locator('.studycards button').first.get_attribute('id') == 'openlearning', "Learning leads the Study screen")
-        await page.click('#openlearning')
-        await page.click('button.btn.primary[data-lesson]')
-        await page.click('[data-learning-read="0"]')
-        await page.wait_for_selector('#book .bp')
-        check(await page.evaluate("R.tid") == "classic-russell-problems", "the first lesson opens Russell in the reader")
-        await page.evaluate("back()")
-        await page.click('#learning-answer')
-        await page.fill('#learning-text', 'The reflection changes when the observer moves.')
-        await page.click('#sheetroot button[type=submit]')
-        await page.wait_for_selector('[data-draft="learning-appearance"]')
-        await page.reload(); await page.wait_for_function(READY)
-        await page.evaluate("go({screen:'learning'})")
-        check(await page.locator('button.btn.primary[data-lesson]').get_attribute('data-lesson') == 'definition',
-              "a saved response survives reload and the course resumes with the next exercise")
-
         # 2 all of them, queued, with text, chapters and cover
         recs = await page.evaluate("""(async () => { const out = {}; for (const id of CLASSICS) { const t = S.texts.get(id), c = await idbGet('content', id), cv = await idbGet('covers', id);
           out[id] = { title: t && t.title, status: t && t.status, has: t && t.hasContent, total: t && t.total, blocks: c && c.length, secs: (t && t.sections || []).length,
@@ -158,6 +132,41 @@ async def main():
           if (!VALID.texts(b.text) || !VALID.content(b.content) || Object.keys(b).sort().join() !== 'content,text') bad.push(id);
           const img = new Image(); img.src = 'data/books/' + id + '.jpg'; await img.decode(); if (img.naturalWidth !== 400 || img.naturalHeight !== 600) bad.push(id + ' cover'); } return bad; })()""")
         check(ok == [], f"the book files are what a backup may hold, and the covers are 400 x 600 ({ok})")
+        # The main course uses exact passages and saves written responses as normal drafts.
+        missing = await page.evaluate("""async () => {
+          const bad = [];
+          for (const l of LEARNING) for (const [slug, sec, label, phrase] of l.readings) {
+            const id = 'classic-' + slug, B = await loadContent(id), r = stepRange(B, [id + '-s' + sec]);
+            if (!r || B.slice(...r).filter(b => plain(b.x).includes(phrase)).length !== 1) bad.push(label);
+          } return bad;
+        }""")
+        check(not missing, f"all course readings identify one passage in the assigned section ({missing})")
+        await page.evaluate("go({screen:'study'})")
+        check(await page.locator('.studycards button').first.get_attribute('id') == 'openlearning', "Learning leads the Study screen")
+        await page.click('#openlearning')
+        await page.click('button.btn.primary[data-lesson]')
+        await page.click('[data-learning-read="0"]')
+        await page.wait_for_selector('#book .bp')
+        check(await page.evaluate("R.tid") == "classic-russell-problems", "the first lesson opens Russell in the reader")
+        await page.evaluate("back()")
+        await page.click('#learning-answer')
+        await page.fill('#learning-text', 'The reflection changes when the observer moves.')
+        await page.click('#sheetroot button[type=submit]')
+        await page.wait_for_selector('[data-draft="learning-appearance"]')
+        await page.wait_for_function("!NAV.overlay && !popWaiter")
+        await page.click('#learning-feedback')
+        await page.fill('#c-by', 'Reading partner')
+        await page.fill('#c-x', 'Explain which observation supports your inference.')
+        await page.click('#sheetroot button[type=submit]')
+        await page.wait_for_function("!NAV.overlay && !popWaiter")
+        await page.reload(); await page.wait_for_function(READY)
+        await page.evaluate("go({screen:'learning'})")
+        check(await page.locator('[data-lesson="appearance"]').inner_text() and
+              "Feedback recorded" in await page.locator('[data-lesson="appearance"]').inner_text(),
+              "the overview distinguishes saved work from recorded feedback")
+        check(await page.locator('button.btn.primary[data-lesson]').get_attribute('data-lesson') == 'definition',
+              "a saved response survives reload and the course resumes with the next exercise")
+
         await browser.close()
 
 server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "-d", str(ROOT)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
