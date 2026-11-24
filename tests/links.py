@@ -124,7 +124,7 @@ async def main():
           const label = { 'nietzsche-genealogy': (p) => p[1], 'aristotle-ethics': (p) => toRoman(+p[1]), 'rousseau-social-contract': (p) => toRoman(+p[1]) + '. ', 'hobbes-leviathan': (p) => p[0] + '. ',
             'hume-treatise': (p) => 'Section ' + toRoman(+p[2]) + ':', 'hume-enquiry': (p) => p[1] ? 'Part ' + toRoman(+p[1]) : p[0] + '. ', 'descartes-meditations': (p) => p[0] === 'Med' ? 'Meditation ' + p[1] + ':' : 'Part ' + p[1],
             'plato-republic': (p) => 'Book ' + p[0], 'plato-socrates': (p) => p[0], 'kant-groundwork': (p) => ({ Preface: 'Preface', I: 'First Section', II: 'Second Section', III: 'Third Section' })[p[0]],
-            'marx-engels-manifesto': (p) => p[0] + '. ', 'du-bois-souls': (p) => /^[IVX]+$/.test(p[0]) ? p[0] + '. ' : 'The ' + p[0], 'mill-liberty': (p) => p[0] + '. ', 'russell-problems': (p) => p[0] + '. ', 'aristotle-metaphysics': (p) => 'Chapter ' + p[1], 'nietzsche-beyond': (p) => p[0].replace('§', '') };
+            'marx-engels-manifesto': (p) => p[0] + '. ', 'du-bois-souls': (p) => /^[IVX]+$/.test(p[0]) ? p[0] + '. ' : 'The ' + p[0], 'mill-liberty': (p) => p[0] + '. ', 'russell-problems': (p) => p[0] + '. ', 'aristotle-metaphysics': (p) => 'Chapter ' + p[1], 'aristotle-physics': (p) => 'Chapter ' + p[1], 'nietzsche-beyond': (p) => p[0].replace('§', '') };
           const out = { n: {}, bad: [] }, books = {};
           for (const b of BRANCHES.filter((b) => b.xr)) {
             const d = document.createElement('div'); d.innerHTML = articleHTML(b, []);
@@ -268,6 +268,16 @@ async def main():
           const wrong = passageBlock(B, 'I|8|1097b22–1098a20', 'aristotle-ethics');
           return { n: Object.keys(NE_BEKKER).length, bad, wrong }; })()""")
         check(neb["n"] >= 15 and not neb["bad"] and neb["wrong"] == -1, f"every Bekker number listed for the Nicomachean Ethics opens its passage in Peters, and only in its own chapter ({neb})")
+        # the Physics: "(Phys. II.3)" opens Book II, chapter 3 (the four causes), a chapter the book lacks opens nothing, and the name
+        # "Physics" inside "Metaphysics" is no mention of the Physics
+        phys = await page.evaluate("""(async () => { const B = (await (await fetch('data/books/classic-aristotle-physics.json')).json()).content;
+          const d = document.createElement('div'); d.innerHTML = passageLinks('(Phys. II.3) and (Phys. VIII.10) and (Phys. II.99)', ['aristotle-physics']);
+          const at = [...d.querySelectorAll('[data-passage]')].map((a) => a.dataset.passageAt), i = passageBlock(B, 'II|3', 'aristotle-physics');
+          let j = i + 1; while (j < B.length && B[j].k !== 'h') j++; const span = B.slice(i, j).map((b) => plain(b.x || '')).join(' ');
+          return { at, head: plain(B[i].x), four: span.includes('fall into four familiar divisions'), bad: passageBlock(B, 'II|99', 'aristotle-physics'),
+                   meta: classicHits('Aristotle, Metaphysics V.2').map((h) => h.id), phys: classicHits('Aristotle, Physics II.3').map((h) => h.id) }; })()""")
+        check(phys["at"] == ["II|3", "VIII|10", "II|99"] and phys["head"] == "Chapter 3" and phys["four"] and phys["bad"] == -1 and phys["meta"] == ["classic-aristotle-metaphysics"] and phys["phys"] == ["classic-aristotle-physics"],
+              f"(Phys. II.3) opens the Physics at the four causes, a chapter it lacks opens nothing, and Metaphysics is never taken for the Physics ({phys})")
         # every A/B page listed for the Critique finds its passage in the bundled Meiklejohn (the first block holding its words)
         kab = await page.evaluate("""(async () => { const B = (await (await fetch('data/books/classic-kant-critique.json')).json()).content, bad = [];
           for (const [ref, [w]] of Object.entries(KANT_AB)) { const i = passageBlock(B, ref, 'kant-critique'); if (i < 0) bad.push(ref); }
