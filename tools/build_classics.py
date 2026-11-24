@@ -6,7 +6,7 @@
 Standard Ebooks editions are public domain in the US, and their editors' work is dedicated to the public domain (CC0). Only
 works that are also public domain in Canada go here: the author and any translator died in 1971 or earlier. The source
 repositories (github.com/standardebooks/...) and the League Spartan font for covers (SIL Open Font License) are cloned into
-tests/.cache, which git ignores. Needs git and Playwright with Chromium.
+tests/.cache, which git ignores. Needs git and Playwright with Chromium. The Gutenberg HTML converters use lxml.
 
 For each book: takes the XHTML of the work itself (no title page, imprint, colophon or uncopyright), keeps only the endnotes
 those files refer to and numbers them from 1, makes note references superscript numbers, dialogue tables "Speaker: words"
@@ -15,7 +15,7 @@ finalize, makeSections and guessLang in a browser, as importing an EPUB does. Th
 the app keeps covers; a book taken from a larger volume gets the volume's art with its own title, set as Standard Ebooks sets it.
 A work Standard Ebooks hasn't produced comes from a Project Gutenberg EPUB of a public-domain translation (`epub_source`: kept in
 tests/.cache/gutenberg, fetched from gutenberg.org when missing; its page numbers become page breaks and its footnotes endnotes),
-or from a plain-text transcription of one (`text`: a git
+or from a plain-text or HTML transcription of one (`text`: a git
 repository and file, with a converter here that drops the transcription's license header and footer, finds the headings,
 turns its starred footnotes into numbered ones and straight quotes and spaced hyphens into curly quotes and dashes), and
 gets a cover drawn here. After building, add a new book's id to CLASSICS in js/boot.js.
@@ -37,6 +37,18 @@ PORT = 8821
 # drop: CSS selectors for parts of those files left out (the Republic leaves out Jowett's book-length Introduction and Analysis,
 # and with it the heading that only told the dialogue from the introduction).
 BOOKS = [
+    dict(id="classic-augustine-confessions", text_source=dict(repo="https://github.com/GITenberg/The-Confessions-of-St.-Augustine_3296",
+         file="3296-h/3296-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="augustine_confessions"),
+         cover=dict(title="Confessions", size=40, art="stars"),
+         text=dict(title="Confessions", author="Augustine of Hippo", edition="trans. E. B. Pusey", publisher="Project Gutenberg")),
+    dict(id="classic-bergson-time", text_source=dict(repo="https://github.com/GITenberg/Time-and-Free-Will-An-Essay-on-the-Immediate-Data-of-Consciousness_56852",
+         file="56852-h/56852-h.htm", encoding="utf-8", source_name="Project Gutenberg", convert="bergson_time"),
+         cover=dict(title="Time and Free Will", size=40, art="stars"),
+         text=dict(title="Time and Free Will", author="Henri Bergson", edition="trans. F. L. Pogson, 1913 edition", publisher="Project Gutenberg", orig="1889")),
+    dict(id="classic-melville-short-fiction", repo="herman-melville_short-fiction", files=None,
+         text=dict(title="Short Fiction", author="Herman Melville", publisher="Standard Ebooks", year="2020")),
+    dict(id="classic-butler-erewhon", repo="samuel-butler_erewhon", files=None,
+         text=dict(title="Erewhon", author="Samuel Butler", publisher="Standard Ebooks", year="2020", orig="1872")),
     dict(id="classic-boethius-consolation", repo="boethius_the-consolation-of-philosophy_h-r-james", files=None,
          text=dict(title="The Consolation of Philosophy", author="Boethius", edition="trans. H. R. James (1897)", publisher="Standard Ebooks", year="2023", orig="")),
     dict(id="classic-berkeley-dialogues", text_source=dict(repo="https://github.com/GITenberg/Three-Dialogues-Between-Hylas-and-Philonous-in-Opposition-to-Sceptics-and-Atheists_4724", file="4724.txt", convert="berkeley_dialogues"),
@@ -615,6 +627,67 @@ def gutenberg_epub(folder):
     endnotes = f'<?xml version="1.0" encoding="utf-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Notes</title></head><body><section epub:type="endnotes"><h2>Notes</h2><ol>{ol}</ol></section></body></html>'
     return docs, endnotes
 
+def xhtml_body(elements):
+    from lxml import etree
+    body = "".join(etree.tostring(el, encoding="unicode", with_tail=False) for el in elements)
+    return '<html xmlns="http://www.w3.org/1999/xhtml"><head/><body>' + body + '</body></html>'
+
+
+def augustine_confessions(raw):
+    from lxml import html
+    doc = html.fromstring(raw.encode("utf-8"), parser=html.HTMLParser(encoding="utf-8"))
+    start = next(h for h in doc.xpath("//h2") if h.text_content().strip() == "BOOK I")
+    contents = []
+    for el in [start, *start.itersiblings()]:
+        if el.tag == "pre":
+            if "End of the Project Gutenberg" in el.text_content(): break
+            el.tag = "blockquote"
+            el.text = " / ".join(line.strip() for line in el.text_content().splitlines() if line.strip())
+        if el.tag == "h2": el.text = el.text.strip().replace("BOOK", "Book")
+        if el.tag == "h4": el.tag = "p"
+        contents.append(el)
+    assert sum(el.tag == "h2" for el in contents) == 13
+    return xhtml_body(contents)
+
+
+def bergson_time(raw):
+    from lxml import html
+    doc = html.fromstring(raw.encode("utf-8"), parser=html.HTMLParser(encoding="utf-8"))
+    for pn in doc.find_class("pagenum"):
+        pn.set("role", "doc-pagebreak")
+        pn.set("title", pn.text_content().strip("[]").split()[-1])
+    for ref in doc.find_class("fnanchor"):
+        ref.tag = "sup"
+        ref.text = ref.get("href").rsplit("_", 1)[-1]
+    for note in doc.find_class("footnote"):
+        label = note.find_class("label")[0]
+        label.text = label.getparent().get("href").rsplit("_", 1)[-1] + "."
+    for side in doc.find_class("sidenote"):
+        side.tag = "h3"
+    figures = ["A line from M branches at O toward X and Y.",
+               "A single curve runs from M through O and X to Y."]
+    for image, description in zip(doc.xpath("//div[@class='figleft']/img"), figures, strict=True):
+        image.tag = "p"
+        image.text = "[Diagram: " + description + "]"
+    epigraph = next(p for p in doc.xpath("//p") if "PLOTINUS" in p.text_content())
+    contents, in_contents = [], False
+    for el in [epigraph, *epigraph.itersiblings()]:
+        label = el.text_content().strip() if el.tag in ("h4", "h5") else ""
+        if label == "INDEX": break
+        if label == "CONTENTS": in_contents = True
+        if label == "CHAPTER I": in_contents = False
+        if in_contents: continue
+        if label:
+            chapter = re.fullmatch(r"CHAPTER ([IV]+)", label)
+            el.tag = "h2" if chapter or el.xpath(".//a[@id='CONCLUSION' or @id='TRANSLATORS_PREFACE' or @id='AUTHORS_PREFACE' or @id='BIBLIOGRAPHY']") else "h3"
+            # Keep any footnote attached to a chapter subtitle.
+            if el.text and el.text.strip(): el.text = title_case(el.text)
+            for a in el.xpath("./a[text()]"):
+                a.text = "Chapter " + chapter.group(1) if chapter else title_case(a.text)
+        contents.append(el)
+    return xhtml_body(contents)
+
+
 def berkeley_dialogues(raw):
     from html import escape
     start = raw.index("THE FIRST DIALOGUE")
@@ -629,7 +702,7 @@ def berkeley_dialogues(raw):
     return '<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Three Dialogues</title></head><body>' + "".join(out) + "</body></html>"
 
 
-CONVERT = {"berkeley_dialogues": berkeley_dialogues, "kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique, "aristotle_metaphysics": aristotle_metaphysics, "xenophon_memorabilia": xenophon_memorabilia}
+CONVERT = {"augustine_confessions": augustine_confessions, "bergson_time": bergson_time, "berkeley_dialogues": berkeley_dialogues, "kant_groundwork": kant_groundwork, "spinoza_ethics": spinoza_ethics, "kant_critique": kant_critique, "aristotle_metaphysics": aristotle_metaphysics, "xenophon_memorabilia": xenophon_memorabilia}
 
 def clone(url, dest):
     if not dest.exists():
@@ -716,7 +789,7 @@ async def main(only):
                 for s in r["sections"]:
                     if bk.get("partOf") and re.fullmatch(r"Part [IVX]+", s["label"]): s["label"] = f'{bk["partOf"]}, {s["label"]}'
                 rec = {**{k: v for k, v in bk["text"].items() if v}, "lang": r["lang"], "sections": r["sections"],
-                       "source": {"name": "Standard Ebooks", "kind": "EPUB", "pages": 0} if bk.get("repo") else {"name": "Project Gutenberg", "kind": "EPUB", "pages": 0} if bk.get("epub_source") else {"name": "a public-domain transcription", "kind": "Text", "pages": 0}}
+                       "source": {"name": "Standard Ebooks", "kind": "EPUB", "pages": 0} if bk.get("repo") else {"name": "Project Gutenberg", "kind": "EPUB", "pages": 0} if bk.get("epub_source") else {"name": bk["text_source"].get("source_name", "a public-domain transcription"), "kind": "Text", "pages": 0}}
                 (OUT / f"{bk['id']}.json").write_text(json.dumps({"text": rec, "content": r["blocks"]}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
                 await cover(browser, bk, OUT / f"{bk['id']}.jpg")
                 print(f"{bk['id']}: {len(r['blocks'])} blocks, {r['notes']} notes, {len(r['sections'])} chapters, {(OUT / (bk['id'] + '.json')).stat().st_size // 1024} KB")

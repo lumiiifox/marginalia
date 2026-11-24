@@ -424,6 +424,10 @@ function primerHTML(id, t) {
 }
 // Titles for steps whose book isn't in the library: the classics' own titles (tests/study_tools.py checks them against data/books/).
 const CLASSIC_TITLES = {
+  "classic-augustine-confessions": "Confessions",
+  "classic-bergson-time": "Time and Free Will",
+  "classic-melville-short-fiction": "Short Fiction",
+  "classic-butler-erewhon": "Erewhon",
   "classic-dostoevsky-underground": "Notes from Underground",
   "classic-shelley-frankenstein": "Frankenstein",
   "classic-berkeley-dialogues": "Three Dialogues Between Hylas and Philonous",
@@ -440,6 +444,10 @@ const CLASSIC_TITLES = {
    ("the Ethics", "Meditations", "the Manifesto") counts only on its author's own card (own), since elsewhere it may name another
    book; "Republic" counts after "Plato's" or "the", or before a book number. Nothing is stored. */
 const CLASSIC_NAMES = {
+  "classic-augustine-confessions": { by: ["augustine"], full: ["Augustine’s Confessions", "Augustine's Confessions"], own: ["Confessions"] },
+  "classic-bergson-time": { by: ["bergson"], full: ["Time and Free Will"] },
+  "classic-melville-short-fiction": { by: ["melville"], full: ["Bartleby, the Scrivener"], own: ["Short Fiction"] },
+  "classic-butler-erewhon": { by: [], full: ["Erewhon"] },
   "classic-dostoevsky-underground": { by: [], full: ["Notes from Underground"] },
   "classic-shelley-frankenstein": { by: [], full: ["Frankenstein"] },
   "classic-berkeley-dialogues": { by: ["berkeley"], full: ["Three Dialogues Between Hylas and Philonous"] },
