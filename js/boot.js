@@ -105,6 +105,10 @@ document.addEventListener("click", (e) => {
   if (b.id === "opendisputes") return go({ screen: "disputes" });
   if (b.dataset.dispute) return disputePanel(b.dataset.dispute);
   if (b.id === "openplates") return go({ screen: "plates" });
+  if (b.matches("#opencourse,[data-course-act],[data-course-module],[data-course-step],[data-course-answer]")) {
+    b.disabled = true;
+    return courseAction(b).catch(e => toast(failMsg(e))).finally(() => { if (b.isConnected) b.disabled = false; });
+  }
   if (b.id === "openlearning") return go({ screen: "learning" });
   if (b.dataset.lesson) return go({ screen: "learning", lesson: b.dataset.lesson });
   if (b.dataset.learningRead !== undefined) return readLearningPassage(Number(b.dataset.learningRead));
@@ -238,13 +242,13 @@ const CLASSICS = ["classic-sophocles-antigone", "classic-plato-socrates", "class
 let classicsBusy = false;
 // One classic from data/books/ into the library, queued, with its text and cover: the record, "here" if it already is, or null if
 // the file couldn't be had or isn't what the app accepts. Throws if storage fails.
-async function putClassic(id, now) {
+async function putClassic(id, now, withCover = true) {
   const r = await fetch(`data/books/${id}.json`); if (!r.ok) return null;
   const book = await r.json();
   if (!book || !VALID.texts(book.text) || !VALID.content(book.content)) return null;
   if (S.texts.has(id)) return "here";
   let cover = null;
-  try { const c = await fetch(`data/books/${id}.jpg`); if (c.ok && /^image\//.test(c.headers.get("content-type") || "")) cover = await c.blob(); } catch {}
+  if (withCover) try { const c = await fetch(`data/books/${id}.jpg`); if (c.ok && /^image\//.test(c.headers.get("content-type") || "")) cover = await c.blob(); } catch {}
   const rec = { ...book.text, status: "queued", hasContent: true, pos: 0, total: book.content.length, createdAt: now, updatedAt: now };
   await idbTx(cover ? ["content", "texts", "covers"] : ["content", "texts"], (st) => { st("content").put(book.content, id); st("texts").put(rec, id); if (cover) st("covers").put(cover, id); });
   S.texts.set(id, rec); if (cover) S.covers.set(id, cover);

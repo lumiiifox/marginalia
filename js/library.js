@@ -29,7 +29,7 @@ function render(keep) {
   if (reading) { refreshMarks(); return; }
   wakeOff();
   $("#selbar").hidden = true;
-  const views = { wishlist: wishlistView, recommendations: recommendationsView, text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, paths: pathsView, plates: platesView, mastery: masteryView, shelf: shelfView, study: studyView, learning: learningView, daily: dailyView, disputes: disputesView, concord: concordView, compares: comparesView, compare: compareView };
+  const views = { wishlist: wishlistView, recommendations: recommendationsView, text: textView, glossary: glossaryView, branches: branchesView, thinkers: thinkersView, reference: referenceView, tag: tagView, questions: questionsView, drafts: draftsView, draft: draftView, trash: trashView, paths: pathsView, plates: platesView, mastery: masteryView, shelf: shelfView, study: studyView, course: courseView, learning: learningView, daily: dailyView, disputes: disputesView, concord: concordView, compares: comparesView, compare: compareView };
   drawMain((views[S.screen] || libraryView)(), keep);
 }
 /* Draws the screen. With `keep`, the search box being typed in, everything around the box is replaced and the box itself stays the

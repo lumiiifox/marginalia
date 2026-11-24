@@ -378,7 +378,7 @@ async def main():
         study = await page.evaluate("[S.screen, ['#openmastery', '#openpaths', '#opendisputes', '#puzzles', '#quiz', '#openplates'].filter((x) => !document.querySelector('#main ' + x))]")
         check(study == ["study", []], f"Study lists mastery, reading paths, disputations, puzzles, Quiz yourself and bookplates ({study})")
         opens = []
-        for sel, want in (("#openlearning", "screen:learning"), ("#openmastery", "screen:mastery"), ("#openpaths", "screen:paths"), ("#opendisputes", "screen:disputes"), ("#openplates", "screen:plates"), ("#puzzles", "panel"), ("#quiz", "panel")):
+        for sel, want in (("#opencourse", "screen:course"), ("#openmastery", "screen:mastery"), ("#openpaths", "screen:paths"), ("#opendisputes", "screen:disputes"), ("#openplates", "screen:plates"), ("#puzzles", "panel"), ("#quiz", "panel")):
             await page.evaluate("go({ screen: 'study' })"); await page.wait_for_timeout(100)
             await page.click(f"#main {sel}"); await page.wait_for_timeout(250)
             got = await page.evaluate("NAV.overlay ? 'panel' : 'screen:' + S.screen")
