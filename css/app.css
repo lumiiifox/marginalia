@@ -1420,3 +1420,15 @@ button.src::after { content: ""; position: absolute; inset: -8px -2px; }
 .courselead.refcard { border-left: 4px solid var(--leather); }
 .courselead.refcard .rc-s { font-size: 15.5px; color: var(--ink); }
 .courselead.refcard .rc-s + .rc-s { color: var(--muted); }
+
+/* Private illustrated HTML openings in the reading font. The same rules draw the flip copy. */
+.book .opening { font-family: inherit; text-align: center; text-indent: 0; text-wrap: balance; }
+.book .opening-book-title { margin: .45em 0 .6em; font-size: 1.8em; font-weight: 700; line-height: 1.12; }
+.book .opening-subtitle { margin: 0 auto .85em; max-width: 22ch; font-size: 1.25em; line-height: 1.3; }
+.book .opening-author, .book .opening-translator, .book .opening-editor { margin: 0 auto 1em; font-size: 1.1em; line-height: 1.3; }
+.book .opening-art { display: block; width: auto; height: auto; max-width: min(61%,17rem); max-height: 38dvh; margin: 0 auto .85em; object-fit: contain; border-radius: .35em; }
+.book .opening-publication, .book .opening-copyright { margin: 0 auto .5em; max-width: 54ch; font-size: max(.65em,.875rem); line-height: 1.43; }
+.book .opening-rule { margin: .25em auto 1.05em; width: 82%; border: 0; border-top: 1px solid var(--rule); }
+#reader.paged-reader :is(#book,#flipbook) .opening-author { break-inside: avoid; }
+.opening-crop { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .5rem; }
+.opening-crop input { width: 100%; }

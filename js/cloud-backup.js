@@ -73,11 +73,12 @@ async function cloudWrite(c, path, text, branch, sha) {
   await cloudPrivate(c);
   if (!cloudSameConnection(c)) throw new UErr('Backup disconnected or changed before upload.');
   const result = await (await cloudRequest(c, `/contents/${path}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: path.includes('/objects/') ? 'Store Marginalia book asset' : 'Save Marginalia notes and session', content, branch, ...(sha ? { sha } : {}) }) })).json();
+    body: JSON.stringify({ message: 'Save Marginalia notes and session', content, branch, ...(sha ? { sha } : {}) }) })).json();
   if (!result.content?.sha || !result.commit?.sha) throw new UErr('GitHub did not confirm the backup.');
   return result;
 }
-// The bundled classics' hashes, worked out once per run of the app. A failed fetch leaves the local copy in the backup.
+// If a bundled hash cannot be checked, cloud uploads pause.
+const PRIVATE_BOOK_NOTICE = 'GitHub backup paused to keep imported books and custom artwork on this device. Use Save backup for a local copy.';
 const CLOUD_BUNDLED = new Map();
 async function cloudBundledHash(id, kind) {
   const key = kind + ':' + id;
@@ -116,34 +117,18 @@ async function cloudUploadLocked(includeReading) {
   if (!navigator.onLine) { cloudError = 'Offline; waiting to retry'; cloudDrawStatus(); return false; }
   cloudBusy = true; cloudError = ''; cloudDrawStatus();
   try {
+    const data = await backupData(true), assets = { content: {}, covers: {} }, reading = {};
+    await cloudDropBundled(data);
+    if (Object.keys(data.content).length || Object.keys(data.covers).length) throw new UErr(PRIVATE_BOOK_NOTICE);
     const repo = await cloudPrivate(c), branch = repo.default_branch, path = cloudPath(c);
     const meta = await cloudMeta(c, path, branch);
     // The write lease uses the metadata SHA: a concurrent manifest change rejects our write.
     const previous = meta ? JSON.parse(await cloudRead(c, path, branch)) : null;
     if (previous && (previous.app !== 'marginalia' || previous.version !== 7 || !isObj(previous.texts) || (previous.layout !== undefined && previous.layout !== 'split-1'))) throw new UErr('Remote backup format is unsupported. Nothing was replaced.');
-    const data = await backupData(), assets = { content: {}, covers: {} }, reading = {};
-    // A classic's text or cover leaves this device only when it differs from the bundled copy (edited in Edit, or an older build).
-    await cloudDropBundled(data);
     for (const [id, t] of Object.entries(data.texts)) {
-      if (t.hasContent && !CLASSICS.includes(id) && !Object.hasOwn(data.content, id)) throw new UErr('An imported book’s text is missing locally. The previous backup was kept.');
       const saved = previous?.layout === 'split-1' ? previous.reading?.[id] : previous?.texts?.[id];
       reading[id] = Object.fromEntries(CLOUD_READING.filter((k) => (includeReading ? t : saved || {})[k] !== undefined).map((k) => [k, (includeReading ? t : saved)[k]]));
       for (const k of CLOUD_READING) delete t[k];
-    }
-    // Content-addressed objects are immutable. Upload missing ones first; publish the manifest last.
-    for (const kind of ['content', 'covers']) for (const [id, value] of Object.entries(data[kind])) {
-      if (!Object.hasOwn(data.texts, id)) continue;
-      const text = JSON.stringify({ kind, value }), hash = await cloudHash(text), objectPath = cloudAssetPath(hash);
-      assets[kind][id] = hash;
-      // the last backup's manifest already names this object, and a manifest is written only after its objects: nothing to ask GitHub
-      if (previous?.assets?.[kind]?.[id] === hash) continue;
-      if (!await cloudMeta(c, objectPath, branch)) {
-        try { await cloudWrite(c, objectPath, text, branch); }
-        catch (e) {
-          // Another device may have created the same immutable object concurrently.
-          if (![409, 422].includes(e.cause) || await cloudRead(c, objectPath, branch) !== text) throw e;
-        }
-      }
     }
     delete data.content; delete data.covers;
     const manifest = { ...data, layout: 'split-1', assets, reading };
@@ -178,7 +163,7 @@ function cloudSetup() {
   const old = cloudConfig();
   openSheet(`<h2>Automatic private backups</h2>
     <p class="hint">Create a dedicated private GitHub repository with a README. Create a fine-grained personal access token restricted to that repository, with Contents: read and write. Paste it here, never in a chat or the app's source code.</p>
-    <p class="hint">Imported books’ full extracted text, including copyrighted works, and covers are uploaded once per content version to GitHub’s servers as unencrypted JSON. Notes, drafts, terms, paths and wishlist use a separate small file. A bundled classic’s text and cover are uploaded only once you change them (chapters, headings or corrections in Edit, or a new cover); unchanged ones are rebuilt from the app on restore. Their notes and book metadata are always backed up. Reading position is uploaded at session end. Original PDFs and Recently deleted are excluded, just as in Save backup. Files are readable by anyone you give access to that private repository; they are not encrypted by Marginalia.</p>
+    <p class="hint">GitHub backups pause when a snapshot contains an imported book, a custom cover, or edits to a bundled book. Save backup keeps that complete snapshot in a local file. For eligible libraries, the private repository receives study records, including any quotations you saved in notes, and reading progress. Original PDFs stay on the device. GitHub retains previous uploads in its history.</p>
     <p class="hint">Each device has its own file. GitHub's file history keeps older copies. To move work between devices, choose Review remote backup. Restoring always asks before changing your library.</p>
     <div class="field"><label for="cloud-repo">Private repository (owner/name)</label><input id="cloud-repo" autocomplete="off" autocapitalize="none" spellcheck="false" value="${esc(old?.repo || '')}" maxlength="180"></div>
     <div class="field"><label for="cloud-token">Fine-grained token</label><input id="cloud-token" type="password" autocomplete="off" maxlength="300"></div>
@@ -201,7 +186,7 @@ function cloudBackupPanel() {
   if (!c) return cloudSetup();
   openPanel(`<h2>Automatic backups</h2><p class="hint">Private repository: ${esc(c.repo)}. This device: ${esc(c.device.slice(0, 8))}.</p>
     <p class="hint">Last successful upload: ${c.last ? esc(new Date(c.last).toLocaleString()) : 'none'}. ${esc(cloudError)}</p>
-    <p class="hint">Checks every five minutes while open, on returning and reconnecting. Only changed notes/metadata and new book assets are uploaded; reading position is saved at session end; closed apps cannot run backups. Original PDFs and Recently deleted are excluded. Older copies remain in GitHub's file history.</p>
+    <p class="hint">Checks every five minutes while open, on returning and reconnecting. Libraries containing private book files use local backup. Eligible libraries upload changed study records; reading position is saved at session end; closed apps cannot run backups. Original PDFs and Recently deleted are excluded. Older copies remain in GitHub's file history.</p>
     <div class="menu"><button class="menuitem" id="cloud-now">Back up now</button><button class="menuitem" id="cloud-list">Review remote backup</button><button class="menuitem" id="cloud-setup">Change repository or token</button><button class="menuitem" id="cloud-disconnect">Disconnect this device</button></div>`, (b) => {
       if (b.id === 'cloud-now') cloudUpload(true).then((ok) => toast(ok ? 'Private backup saved.' : cloudError || 'A backup is already running.'));
       if (b.id === 'cloud-setup') cloudSetup();

@@ -242,17 +242,40 @@ async function saveFile(name, text, type) {
 const blobToDataURL = (b) => new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = () => rej(fr.error); fr.readAsDataURL(b); });
 // One readonly transaction captures all exported stores together, including edits from other tabs.
 const BACKUP_STORES = ["texts", "notes", "content", "covers", "terms", "drafts", "compares", "paths", "wishlist", "mastery", "daily"];
-async function backupData() {
+async function backupData(forCloud = false) {
   const records = idb ? await new Promise((resolve, reject) => {
     const tx = idb.transaction(BACKUP_STORES, "readonly"), out = {};
     tx.oncomplete = () => resolve(out);
     tx.onerror = tx.onabort = () => reject(tx.error || new Error("Backup snapshot failed."));
-    for (const name of BACKUP_STORES) {
-      out[name] = {};
-      const r = tx.objectStore(name).openCursor();
-      r.onsuccess = () => { const c = r.result; if (c) { Object.defineProperty(out[name], c.key, { value: c.value, enumerable: true, writable: true, configurable: true }); c.continue(); } };
+    function readRecords() {
+      for (const name of BACKUP_STORES) {
+        out[name] = {};
+        const r = tx.objectStore(name).openCursor();
+        r.onsuccess = () => { const c = r.result; if (c) { Object.defineProperty(out[name], c.key, { value: c.value, enumerable: true, writable: true, configurable: true }); c.continue(); } };
+      }
     }
+    if (forCloud) {
+      // Check keys first, in the snapshot transaction, before loading an imported library into memory.
+      const content = tx.objectStore("content").getAllKeys(), covers = tx.objectStore("covers").getAllKeys();
+      covers.onsuccess = () => {
+        if ([...content.result, ...covers.result].some(id => !CLASSICS.includes(id))) {
+          reject(new UErr(PRIVATE_BOOK_NOTICE)); return;
+        }
+        readRecords();
+      };
+    } else readRecords();
   }) : Object.fromEntries(BACKUP_STORES.map((name) => [name, Object.fromEntries(mapFor(name))]));
+  if (forCloud && (Object.keys(records.content).some(id => !CLASSICS.includes(id)) ||
+      Object.keys(records.covers).some(id => !CLASSICS.includes(id)) ||
+      Object.entries(records.texts).some(([id, t]) => t.openingRevision || (t.hasContent && !CLASSICS.includes(id))))) throw new UErr(PRIVATE_BOOK_NOTICE);
+  for (const [id, blocks] of Object.entries(records.content)) {
+    if (!blocks.some(b => b.openingArt)) continue;
+    records.content[id] = await Promise.all(blocks.map(async b => {
+      if (!b.openingArt) return b;
+      const { blob, alt, crop } = b.openingArt;
+      return { ...b, openingArt: { src: await blobToDataURL(blob), alt, ...(crop ? { crop } : {}) } };
+    }));
+  }
   for (const [key, blob] of Object.entries(records.covers)) records.covers[key] = await blobToDataURL(blob);
   return { app: "marginalia", version: 7, exportedAt: new Date().toISOString(), ...(PIN ? { pin: structuredClone(PIN) } : {}), ...records };
 }
@@ -309,6 +332,8 @@ const VALID = {
     && Array.isArray(v.rows) && v.rows.every((x) => isObj(x) && isS(x.id) && isS(x.q)) && (v.cells === undefined || (isObj(v.cells) && Object.values(v.cells).every((c) => isObj(c) && optStr(c.x) && optArr(c.notes, isS)))),
   terms: (v) => isObj(v) && ((isS(v.t) && isS(v.d)) || (isObj(v.map) && Object.values(v.map).every((a) => Array.isArray(a) && a.every(isS)))),
   content: (v) => Array.isArray(v) && v.every((b) => isObj(b) && isS(b.k) && optStr(b.x) && optStr(b.s) && optStr(b.st) && optInt(b.sth) && optInt(b.l)
+    && (b.openingRole === undefined || (b.k === "front" && OPENING_ROLES.has(b.openingRole)))
+    && (b.openingArt === undefined || (b.openingRole === "author" && localArtSource(b.openingArt?.src) && isS(b.openingArt.alt) && b.openingArt.alt.length <= 1000 && (b.openingArt.crop === undefined || validCrop(b.openingArt.crop))))
     && (b.stj === undefined || typeof b.stj === "boolean") && optNum(b.size) && optNum(b.space)),
   covers: (v) => typeof v === "string" && v.startsWith("data:image/"),
 };
@@ -478,7 +503,15 @@ async function applyRestore(plan, theirs) {
     else if (store === "notes" && r.cur) { const m = withThoughts(r.cur, r.v); if (m !== r.cur) ops.push([store, r.id, m, "merged"]); } // the backup's follow-ups join this device's note
     else if (store === "texts" && r.cur) { const m = withReading(r.cur, r.v); if (m !== r.cur) ops.push([store, r.id, m, "pos"]); } // a later reading position travels on its own
   }
-  for (const r of plan.content) if (take(r.st) || !S.content.has(r.id) && !(idb && (await idbGet("content", r.id)))) ops.push(["content", r.id, r.v]);
+  for (const r of plan.content) if (take(r.st) || !S.content.has(r.id) && !(idb && (await idbGet("content", r.id)))) {
+    const blocks = await Promise.all(r.v.map(async b => {
+      if (!b.openingArt) return b;
+      const art = await openingImage(b.openingArt.src);
+      if (!art) throw new UErr("The title artwork could not be restored.");
+      return { ...b, openingArt: { ...art, alt: b.openingArt.alt, ...(b.openingArt.crop ? { crop: b.openingArt.crop } : {}) } };
+    }));
+    ops.push(["content", r.id, blocks]);
+  }
   for (const r of plan.covers) if (take(r.st) || !S.covers.has(r.id)) { try { ops.push(["covers", r.id, await (await fetch(r.v)).blob()]); } catch {} }
   for (const [id, v] of plan.mastery) ops.push(["mastery", id, v, "merged"]);
   const pinBack = !!plan.pin && (!PIN || theirs);

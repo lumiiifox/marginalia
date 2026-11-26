@@ -180,6 +180,7 @@ function textSheet(id) {
       const prog = $("#f-prog"); if (prog) prog.textContent = "Saving the text…";
       Object.assign(data, { hasContent: true, source: { name: parsed.name, kind: parsed.kind, pages: parsed.pages }, pos: 0, total: parsed.blocks.length });
       const keep = !!(parsed.file && fd.get("keeppdf"));
+      if (parsed.blocks.some(b => b.openingRole)) data.openingRevision = gid();
       if (keep) data.pdfLabels = parsed.labels;
       if (!fd.get("lang")) data.lang = parsed.lang;
       await saveNewText(tid, data, parsed.blocks, cover.blob || null, keep ? parsed.file : null);
@@ -234,6 +235,7 @@ function fileSheet(tid) {
     const prog = $("#f-prog"); if (prog) prog.textContent = "Saving the text…";
     const cover = parsed.cover && !S.covers.has(tid) ? parsed.cover : null, keep = !!(parsed.file && fd.get("keeppdf"));
     const next = { ...cur, sections, hasContent: true, source: { name: parsed.name, kind: parsed.kind, pages: parsed.pages }, pos: 0, total: parsed.blocks.length, updatedAt: Date.now() };
+    if (parsed.blocks.some(b => b.openingRole)) next.openingRevision = gid(); else delete next.openingRevision;
     delete next.pdfLabels; if (keep) next.pdfLabels = parsed.labels;
     // the new text, its record and its PDF change together, so a replacement cut off halfway leaves the old version whole
     if (!idb && keep) throw new UErr("This browser isn't letting the app save, so the PDF can't be kept.");

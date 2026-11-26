@@ -464,6 +464,7 @@ function blockHTML(b, i, marks) {
   if (b.k === "pg") return `<div class="bpg" data-i="${i}">${b.x ? esc(loc(b.x)) : ""}</div>`;
   const m = marks && marks.get(i), role = roleOf(b);
   if (isHidden(b)) return `<div class="bhid" data-i="${i}"></div>`;
+  if (b.k === "front" && hasIllustratedEdition(S.texts.get(R.tid)) && OPENING_ROLES.has(b.openingRole) && (!b.st || b.st === "title")) return openingHTML(b, i, m);
   if (b.k === "front" && role !== "text") {
     const size = Math.max(0.78, Math.min(1.65, Number(b.size) || 1));
     // (the printed page's spacing, kept to a phone's scale: a title page's gaps would otherwise fill screens)
@@ -552,6 +553,7 @@ function marksByBlock(tid) {
 const sigOf = (l) => (l ? l.map(([id, p, f, t, first]) => { const n = S.notes.get(id) || {}; return [id, p, f, t, first ? 1 : 0, n.kind, n.gloss, n.conclusion, n.original, n.resolved ? 1 : 0, n.hl].join("\u0006"); }).sort().join("|") : "");
 
 function resetReader() {
+  clearOpeningImage();
   if (PDFV.doc) closePdf(); // the printed pages' PDF and its worker go with the book (on a phone they hold a lot of memory)
   if (R.tid && R.blocks) SESS.set(R.tid, { visiting: R.visiting, home: R.home, trail: [...R.trail], landed: R.landed, landedAt: R.landedAt });
   if (R.flip) { cancelAnimationFrame(R.flip.raf); R.flip = null; for (const el of [$("#flip"), $("#undershade")]) el.classList.remove("on"); }
