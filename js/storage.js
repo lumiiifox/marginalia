@@ -160,9 +160,12 @@ function failMsg(e) {
   return `Couldn't save (${(e && (e.name || e.message)) || "unknown error"}).`;
 }
 async function loadContent(tid) {
-  if (S.content.has(tid)) return S.content.get(tid);
-  if (!idb) return null;
-  const blocks = await idbGet("content", tid);
+  let blocks = S.content.get(tid);
+  if (!blocks && idb) blocks = await idbGet("content", tid);
+  // An earlier app can restore version-7 blocks while retaining the portable image field.
+  if (blocks && hasIllustratedEdition(S.texts.get(tid)) && blocks.some(b => b.openingArt?.src)) {
+    blocks = await decodeOpeningArt(blocks);
+  }
   if (blocks) S.content.set(tid, blocks);
   return blocks || null;
 }
@@ -271,7 +274,7 @@ async function backupData(forCloud = false) {
   for (const [id, blocks] of Object.entries(records.content)) {
     if (!blocks.some(b => b.openingArt)) continue;
     records.content[id] = await Promise.all(blocks.map(async b => {
-      if (!b.openingArt) return b;
+      if (!b.openingArt || localArtSource(b.openingArt.src)) return b;
       const { blob, alt, crop } = b.openingArt;
       return { ...b, openingArt: { src: await blobToDataURL(blob), alt, ...(crop ? { crop } : {}) } };
     }));
@@ -311,7 +314,7 @@ const VALID = {
   wishlist: (v) => validWish(v),
   daily: (v) => validDaily(v),
   paths: (v) => validCustomPath(v),
-  texts: (v) => isObj(v) && isS(v.title) && optStr(v.author) && optStr(v.edition) && optStr(v.lang) && optStr(v.next) && (v.rank === undefined || Number.isFinite(v.rank)) && optArr(v.pdfLabels, isS) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
+  texts: (v) => isObj(v) && isS(v.title) && (v.openingPlain === undefined || typeof v.openingPlain === "boolean") && optStr(v.author) && optStr(v.edition) && optStr(v.lang) && optStr(v.next) && (v.rank === undefined || Number.isFinite(v.rank)) && optArr(v.pdfLabels, isS) && optArr(v.sections, (x) => isObj(x) && isS(x.id) && isS(x.label))
     && optArr(v.bookmarks, (x) => isObj(x) && Number.isInteger(x.at)) && (v.summaries === undefined || isObj(v.summaries)) && (v.pos === undefined || Number.isInteger(v.pos))
     && (v.source === undefined || v.source === null || (isObj(v.source) && optStr(v.source.name) && optStr(v.source.kind) && optNum(v.source.pages)))
     && (v.pair === undefined || (typeof v.pair === "string" && v.pair.length > 0 && v.pair.length < 200))
@@ -333,6 +336,7 @@ const VALID = {
   terms: (v) => isObj(v) && ((isS(v.t) && isS(v.d)) || (isObj(v.map) && Object.values(v.map).every((a) => Array.isArray(a) && a.every(isS)))),
   content: (v) => Array.isArray(v) && v.every((b) => isObj(b) && isS(b.k) && optStr(b.x) && optStr(b.s) && optStr(b.st) && optInt(b.sth) && optInt(b.l)
     && (b.openingRole === undefined || (b.k === "front" && OPENING_ROLES.has(b.openingRole)))
+    && (b.openingKind === undefined || (b.openingRole && ["p","front","h1","h2","h3","h4","h5","h6"].includes(b.openingKind)))
     && (b.openingArt === undefined || (b.openingRole === "author" && localArtSource(b.openingArt?.src) && isS(b.openingArt.alt) && b.openingArt.alt.length <= 1000 && (b.openingArt.crop === undefined || validCrop(b.openingArt.crop))))
     && (b.stj === undefined || typeof b.stj === "boolean") && optNum(b.size) && optNum(b.space)),
   covers: (v) => typeof v === "string" && v.startsWith("data:image/"),
@@ -504,12 +508,7 @@ async function applyRestore(plan, theirs) {
     else if (store === "texts" && r.cur) { const m = withReading(r.cur, r.v); if (m !== r.cur) ops.push([store, r.id, m, "pos"]); } // a later reading position travels on its own
   }
   for (const r of plan.content) if (take(r.st) || !S.content.has(r.id) && !(idb && (await idbGet("content", r.id)))) {
-    const blocks = await Promise.all(r.v.map(async b => {
-      if (!b.openingArt) return b;
-      const art = await openingImage(b.openingArt.src);
-      if (!art) throw new UErr("The title artwork could not be restored.");
-      return { ...b, openingArt: { ...art, alt: b.openingArt.alt, ...(b.openingArt.crop ? { crop: b.openingArt.crop } : {}) } };
-    }));
+    const blocks = await decodeOpeningArt(r.v);
     ops.push(["content", r.id, blocks]);
   }
   for (const r of plan.covers) if (take(r.st) || !S.covers.has(r.id)) { try { ops.push(["covers", r.id, await (await fetch(r.v)).blob()]); } catch {} }

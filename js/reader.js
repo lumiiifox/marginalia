@@ -462,9 +462,17 @@ function marginHTML(marks, text) {
 // Block i as the reader draws it; marks is every block's highlights (marksByBlock).
 function blockHTML(b, i, marks) {
   if (b.k === "pg") return `<div class="bpg" data-i="${i}">${b.x ? esc(loc(b.x)) : ""}</div>`;
-  const m = marks && marks.get(i), role = roleOf(b);
+  const m = marks && marks.get(i);
   if (isHidden(b)) return `<div class="bhid" data-i="${i}"></div>`;
-  if (b.k === "front" && hasIllustratedEdition(S.texts.get(R.tid)) && OPENING_ROLES.has(b.openingRole) && (!b.st || b.st === "title")) return openingHTML(b, i, m);
+  if (b.k === "front" && b.openingRole && OPENING_ROLES.has(b.openingRole) && (!b.st || b.st === "title")) {
+    const t = S.texts.get(R.tid);
+    if (hasIllustratedEdition(t)) {
+      if (!t.openingPlain) return openingHTML(b, i, m);
+      const kind = b.openingKind || "p";
+      b = /^h[1-6]$/.test(kind) ? { ...b, k: "h", l: +kind[1] } : { ...b, k: kind };
+    }
+  }
+  const role = roleOf(b);
   if (b.k === "front" && role !== "text") {
     const size = Math.max(0.78, Math.min(1.65, Number(b.size) || 1));
     // (the printed page's spacing, kept to a phone's scale: a title page's gaps would otherwise fill screens)

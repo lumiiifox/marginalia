@@ -4,7 +4,7 @@ function finalize(blocks) {
   const out = [];
   for (const b of blocks) {
     const nb = { k: b.k, x: b.k === "pg" ? clean(b.x) : tidy(fixLig(b.x || "")) };
-    if (b.openingRole) { nb.openingRole = b.openingRole; if (b.openingArt) nb.openingArt = b.openingArt; }
+    if (b.openingRole) { nb.openingRole = b.openingRole; nb.openingKind = b.openingKind; if (b.openingArt) nb.openingArt = b.openingArt; }
     if (b.l) nb.l = b.l;
     if (b.s) nb.s = b.s;
     if (b.k === "front") { if (Number.isFinite(b.size)) nb.size = b.size; if (Number.isFinite(b.space)) nb.space = b.space; if (b.heading) nb.heading = true; }
@@ -15,7 +15,12 @@ function finalize(blocks) {
       while (rest.length) {
         let cut = rest.length > 40000 ? rest.lastIndexOf(" ", 40000) : rest.length;
         if (cut < 20000) cut = Math.min(40000, rest.length);
-        out.push({ k: first ? nb.k : nb.k === "p" ? "c" : nb.k, x: rest.slice(0, cut).trim() });
+        const piece = { k: first ? nb.k : nb.k === "p" ? "c" : nb.k, x: rest.slice(0, cut).trim() };
+        if (nb.openingRole) {
+          piece.openingRole = nb.openingRole; piece.openingKind = nb.openingKind;
+          if (first && nb.openingArt) piece.openingArt = nb.openingArt;
+        }
+        out.push(piece);
         rest = rest.slice(cut); first = false;
       }
       continue;

@@ -61,10 +61,26 @@ async function openingImage(src) {
   if (!localArtSource(src)) return null;
   try { return await checkedArtwork(artBlob(src)); } catch { return null; }
 }
+async function decodeOpeningArt(blocks) {
+  const result = blocks.slice();
+  for (const [i, b] of blocks.entries()) {
+    if (!b.openingArt || b.openingArt.blob instanceof Blob) continue;
+    const { src, crop, alt } = b.openingArt;
+    const art = await openingImage(src);
+    if (!art) throw new UErr("The title artwork could not be restored.");
+    result[i] = { ...b, openingArt: { ...art, alt, ...(crop ? { crop } : {}) } };
+  }
+  return result;
+}
 const cropEdges = ["left", "top", "right", "bottom"];
 function validCrop(c) {
   return Array.isArray(c) && c.length === 4 && c.every(v => Number.isInteger(v) && v >= 0 && v < 100)
     && c[0] + c[2] < 100 && c[1] + c[3] < 100;
+}
+// Remember the former presentation without copying its words, chapter ID or artwork.
+function originalOpeningKind(b) {
+  if (b.openingRole) return b.openingKind || "p";
+  return b.k === "h" ? "h" + (b.l || 2) : b.k;
 }
 async function markImportedOpening(section, blocks) {
   const parts = [];
@@ -80,6 +96,7 @@ async function markImportedOpening(section, blocks) {
   if (parts[0] !== "book-title" || parts.filter(r => r === "book-title").length !== 1 ||
       parts.filter(r => r === "author").length !== 1 || parts.some((r, i) => i && rank[r] < rank[parts[i - 1]])) return;
   for (const [i, role] of parts.entries()) {
+    blocks[i].openingKind = originalOpeningKind(blocks[i]);
     blocks[i].k = "front"; blocks[i].openingRole = role;
     delete blocks[i].l;
   }
@@ -127,15 +144,15 @@ async function attachOpening(id, parsed) {
     }
     const next = old.slice();
     front.forEach((b, i) => {
-      next[i] = { ...old[i], k: "front", openingRole: b.openingRole };
+      next[i] = { ...old[i], k: "front", openingKind: originalOpeningKind(old[i]), openingRole: b.openingRole };
       delete next[i].l;
       delete next[i].openingArt;
       if (b.openingArt) next[i].openingArt = b.openingArt;
     });
     return next;
-  });
+  }, true);
 }
-async function editOpening(id, edit) {
+async function editOpening(id, edit, showIllustrated = false) {
   let next, record, problem;
   await idbTx(["texts", "content"], store => {
     const t = store("texts").get(id), c = store("content").get(id);
@@ -146,11 +163,28 @@ async function editOpening(id, edit) {
       }
       try { next = edit(old, t.result); } catch (e) { problem = e; return; }
       record = { ...t.result, openingRevision: gid(), updatedAt: Date.now() };
+      if (showIllustrated) delete record.openingPlain;
       store("content").put(next, id); store("texts").put(record, id);
     };
   });
   if (problem) throw problem;
   S.content.set(id, next); S.texts.set(id, record); render();
+}
+async function setOpeningPlain(id, plain) {
+  let record;
+  await idbDo("texts", store => {
+    const request = store.get(id);
+    request.onsuccess = () => {
+      if (!hasIllustratedEdition(request.result) || !request.result.openingRevision) return;
+      record = { ...request.result, updatedAt: Date.now() };
+      if (plain) record.openingPlain = true;
+      else delete record.openingPlain;
+      store.put(record, id);
+    };
+  });
+  if (!record) throw new UErr("This illustrated title page is unavailable.");
+  S.texts.set(id, record);
+  go({ screen: "reader", textId: id, at: 0 });
 }
 function openingSheet(id) {
   openSheet('<h2>Apply illustrated title page</h2><p class="hint">Choose your illustrated HTML for this edition. Only the matching opening paragraphs are updated.</p><div class="field"><label for="opening-file">Book HTML</label><input id="opening-file" type="file" name="opening" required accept=".html,.htm,.xhtml"></div>', async fd => {
@@ -162,7 +196,7 @@ function openingSheet(id) {
 }
 
 async function artworkSheet(id) {
-  const t = S.texts.get(id), blocks = await idbGet("content", id);
+  const t = S.texts.get(id), blocks = await loadContent(id);
   const art = blocks?.find(b => b.openingRole === "author")?.openingArt;
   const fields = cropEdges.map((edge, i) => `<label>${edge[0].toUpperCase() + edge.slice(1)} (%)<input name="${edge}" type="number" min="0" max="99" value="${art?.crop?.[i] || 0}"></label>`).join("");
   openSheet(`<h2>Title-page artwork</h2><div class="field"><label for="art-file">Choose a local image</label><input type="file" id="art-file" name="image" accept="image/png,image/jpeg,image/webp"></div>

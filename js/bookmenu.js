@@ -110,6 +110,7 @@ function moreMenu() {
   openPanel(`<h2>${esc(t.title)}</h2>
     <div class="menu">
       <button class="menuitem" id="m-file">${t.hasContent ? "Replace the book's file" : "Load the book's file"}</button>
+      ${t.openingRevision && hasIllustratedEdition(t) ? `<button class="menuitem" id="m-opening-mode">${t.openingPlain ? "Restore illustrated title page" : "Use plain title page"}</button>` : ""}
       ${t.openingRevision && hasIllustratedEdition(t) ? '<button class="menuitem" id="m-art">Edit title-page artwork</button>' : ""}
       ${t.hasContent && hasIllustratedEdition(t) ? '<button class="menuitem" id="m-opening">Apply illustrated title page</button>' : ""}
       <button class="menuitem" id="m-edit">Edit details and cover</button>
@@ -123,6 +124,7 @@ function moreMenu() {
       <button class="menuitem danger" id="m-delete">Delete this text</button>
     </div>`, (b) => {
     if (b.id === "m-file") fileSheet(S.textId);
+    else if (b.id === "m-opening-mode") setOpeningPlain(S.textId, !t.openingPlain).catch(saveFailed);
     else if (b.id === "m-art") artworkSheet(S.textId).catch(saveFailed);
     else if (b.id === "m-opening") openingSheet(S.textId);
     else if (b.id === "m-edit") textSheet(S.textId);
