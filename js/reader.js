@@ -462,8 +462,17 @@ function marginHTML(marks, text) {
 // Block i as the reader draws it; marks is every block's highlights (marksByBlock).
 function blockHTML(b, i, marks) {
   if (b.k === "pg") return `<div class="bpg" data-i="${i}">${b.x ? esc(loc(b.x)) : ""}</div>`;
-  const m = marks && marks.get(i), role = roleOf(b);
+  const m = marks && marks.get(i);
   if (isHidden(b)) return `<div class="bhid" data-i="${i}"></div>`;
+  if (b.k === "front" && b.openingRole && OPENING_ROLES.has(b.openingRole) && (!b.st || b.st === "title")) {
+    const t = S.texts.get(R.tid);
+    if (hasIllustratedEdition(t)) {
+      if (!t.openingPlain) return openingHTML(b, i, m);
+      const kind = b.openingKind || "p";
+      b = /^h[1-6]$/.test(kind) ? { ...b, k: "h", l: +kind[1] } : { ...b, k: kind };
+    }
+  }
+  const role = roleOf(b);
   if (b.k === "front" && role !== "text") {
     const size = Math.max(0.78, Math.min(1.65, Number(b.size) || 1));
     // (the printed page's spacing, kept to a phone's scale: a title page's gaps would otherwise fill screens)
@@ -552,6 +561,7 @@ function marksByBlock(tid) {
 const sigOf = (l) => (l ? l.map(([id, p, f, t, first]) => { const n = S.notes.get(id) || {}; return [id, p, f, t, first ? 1 : 0, n.kind, n.gloss, n.conclusion, n.original, n.resolved ? 1 : 0, n.hl].join("\u0006"); }).sort().join("|") : "");
 
 function resetReader() {
+  clearOpeningImage();
   if (PDFV.doc) closePdf(); // the printed pages' PDF and its worker go with the book (on a phone they hold a lot of memory)
   if (R.tid && R.blocks) SESS.set(R.tid, { visiting: R.visiting, home: R.home, trail: [...R.trail], landed: R.landed, landedAt: R.landedAt });
   if (R.flip) { cancelAnimationFrame(R.flip.raf); R.flip = null; for (const el of [$("#flip"), $("#undershade")]) el.classList.remove("on"); }

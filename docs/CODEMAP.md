@@ -413,6 +413,7 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
   whether or not the book links terms by itself. Checked by `VALID.texts`; a restore keeps both copies' links (`withTermMarks`, in `withReading`).
 - How text is set (`inlineMarks`, `blockHTML`): a stanza that follows a stanza starts a line's space below it (verse is stored a stanza a
   block; not after a page's continuation, `.cont`); verse stored with " / " between its lines (`isVerse`, every part a line's length, `VERSE_LINE`) is drawn line by line (`VBR`: the slash hidden in `.vs`, then a `<br>`; `.verse` hangs a long line's run-over), so positions and quoted passages keep the slash; a short paragraph starting with a list's number or bullet hangs (`isListItem`, `.li`); a joiner before a close-set dash (`WJ` in `.rx`, skipped by `offsetIn`, `rangeFor` and `selectionText` like other drawn-only text) keeps a line from starting with it; a chapter title over 60 characters is `.long`, set smaller; a text in the geometric order (`leadIn`: "PROP. XIII.", "DEFINITION I.", "Proof.—", "Corollary II.—") sets a statement apart (`.stmt`: label in small capitals, statement in italics) and a proof's or note's label in italics (`.part`), wrapping the label as it stands; Justified pages narrow word spaces a little and fall back to ragged right, hyphenated, below about 40 characters a line (`.short-lines`). Tested by `tests/verse_lists.py`.
+- Illustrated opening pilot (`js/title-page.js`): explicitly marked HTML for the supported edition carries `openingRole` on existing front blocks and an optional local raster Blob on the author block. More → Apply illustrated title page verifies each opening paragraph and updates those blocks in one transaction. Book ID, indices, sections and saved place are preserved. Manual backups serialize the artwork; restore validates and decodes it before the write. Use plain title page and Restore illustrated title page toggle presentation on the book record, retaining its picture, paragraph indices and chapter IDs. The importer remembers each paragraph’s original kind for plain mode. Older pilot records without that field fall back to paragraphs. Edit title-page artwork replaces or removes the local picture, updates its credit, and stores a reversible percentage crop alongside the bitmap. Scroll and swipe share the renderer. Nothing from a private book is packaged with the site. Covered by tests/title_page.py.
 - Front matter in the reader: a book's contents are drawn as rows, title, dot leader and page, each opening its page (`tocEntries`, `tocRows`, `tocBefore`: page numbers rise through the contents, which settles numbers OCR split in two; `data-tocpage` → `blockForPage`); a title page's printed gaps are kept to at most 1em; page markers between front pages draw only a gap; a page marker at a paragraph's very start draws nothing. A page beginning between two paragraphs (`.bpg`) shows its number small at the right in a 12px strip, with no rule across the text. A table's rows (cells joined by " · ", as the HTML, EPUB and Markdown importers write them) are drawn as a grid when two to six short cells sit beside a block with as many (`tableCols`, `TSEP`, `.trow`, `.tc`, `.tsep`): columns line up, the separators stay in the page hidden, so offsets and quotations are the stored text's. Tested by `tests/verse_lists.py`. Tested by `tests/verse_lists.py`.
 - A paragraph running over a printed page (`groupHTML`, `paraHTML`'s `extra`) keeps its kind in Swipe pages: a list item's hang, verse,
   a proposition's lead-in, a quotation or note. Italics opened in one block and closed in the next are closed and reopened at the
@@ -456,22 +457,18 @@ Each entry below names its functions; `grep -n` over `js/` finds them.
 
 - Automatic private backups (`js/cloud-backup.js`): opt-in fine-grained GitHub token, scoped to a dedicated private repository,
   stored in `mg-cloud-backup` after explicit consent. All Pages projects on the same origin can read it; setup explains this and
-  the upload of imported copyrighted text as unencrypted JSON. Never include credentials in backup files or source code.
-  `split-1` manifests retain version-7 records plus `assets` and a frozen `reading` map. Notes, drafts, terms, paths, wishlist and
-  book metadata share one small device UUID manifest. Imported content and covers are immutable SHA-256-addressed JSON objects
-  under `marginalia-backups/objects/`, uploaded only when absent. A classic's content or cover is left out while its hash equals the bundled copy's (`cloudDropBundled`,
-  bundled hashes cached per run by `cloudBundledHash`); once edited in Edit, given a new cover, or older than a rebuilt classic, it
-  uploads as an ordinary object. Restore uses a classic's own object when the manifest names one, otherwise the bundled copy. Local manual backup is unchanged.
+  which study records leave the device. Each device writes one manifest with a reading map. The snapshot is checked before any GitHub
+  upload. Imported content, custom covers, illustrated openings and changes to bundled books pause backups. Only bundled content
+  and covers that match the distributed hashes can be omitted safely. Full manual backups remain available on the device.
   During reading, periodic note backups retain the previous session's position, readAt and days. Leaving the reader, switching books
   or hiding the app queues a session-end upload after local position writes. If hidden execution is suspended, the next opening
   retries the durable local state. Explicit Back up now includes current progress. Background checks never force unchanged commits.
-  Every write rechecks privacy and connection identity. Web Locks serialize tabs; manifests use SHA leases, and objects are uploaded
-  before their manifest. Restore validates object hashes and hydrates a normal backup before the existing review/confirmation.
+  Every write rechecks privacy and connection identity. Web Locks serialize tabs; manifests use SHA leases. Restore validates object hashes and hydrates a normal backup before the existing review/confirmation.
   Nothing is written locally by cloud preview. Legacy version-7 single-file snapshots still restore.
   The home-screen banner appears after three days without a successful upload or verified unchanged remote backup, including failed
   first setup. `last` records real uploads; `verifiedAt` records successful verification. Errors never advance either. Per-file 50 MiB
   is an application limit, not a claimed GitHub upload limit. Original PDFs and trash remain excluded. Smoke tests mock GitHub,
-  measure zero writes across twelve reading checks, and cover asset reuse, session throttling, failure recovery and split restore.
+  measure zero writes across twelve reading checks, and cover private-book upload prevention, session throttling, failure recovery and split restore.
 
 - Mastery (`js/mastery.js`, IndexedDB version 11, the `mastery` store): only audited material counts (`VERIFIED_TERMS` at the end of
   `data/glossary.js`, `VERIFIED_THINKERS` at the end of `data/thinkers.js`, every `CONNECTIONS` entry, every close-reading station).

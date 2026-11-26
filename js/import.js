@@ -4,6 +4,7 @@ function finalize(blocks) {
   const out = [];
   for (const b of blocks) {
     const nb = { k: b.k, x: b.k === "pg" ? clean(b.x) : tidy(fixLig(b.x || "")) };
+    if (b.openingRole) { nb.openingRole = b.openingRole; nb.openingKind = b.openingKind; if (b.openingArt) nb.openingArt = b.openingArt; }
     if (b.l) nb.l = b.l;
     if (b.s) nb.s = b.s;
     if (b.k === "front") { if (Number.isFinite(b.size)) nb.size = b.size; if (Number.isFinite(b.space)) nb.space = b.space; if (b.heading) nb.heading = true; }
@@ -14,7 +15,12 @@ function finalize(blocks) {
       while (rest.length) {
         let cut = rest.length > 40000 ? rest.lastIndexOf(" ", 40000) : rest.length;
         if (cut < 20000) cut = Math.min(40000, rest.length);
-        out.push({ k: first ? nb.k : nb.k === "p" ? "c" : nb.k, x: rest.slice(0, cut).trim() });
+        const piece = { k: first ? nb.k : nb.k === "p" ? "c" : nb.k, x: rest.slice(0, cut).trim() };
+        if (nb.openingRole) {
+          piece.openingRole = nb.openingRole; piece.openingKind = nb.openingKind;
+          if (first && nb.openingArt) piece.openingArt = nb.openingArt;
+        }
+        out.push(piece);
         rest = rest.slice(cut); first = false;
       }
       continue;
@@ -1105,11 +1111,13 @@ async function parseDOCX(buf, say) {
   const blocks = []; domToBlocks(doc.body, blocks);
   return { title: "", author: "", kind: "Word", blocks };
 }
-function parseHTML(src) {
+async function parseHTML(src) {
   const doc = new DOMParser().parseFromString(src, "text/html");
   const blocks = []; domToBlocks(doc.body, blocks);
   const meta = (n) => clean(doc.querySelector(`meta[name="${n}"]`)?.getAttribute("content") || "");
   const r = { title: clean(doc.title || ""), author: meta("author"), kind: "HTML", blocks };
+  const opening = doc.body.firstElementChild;
+  if (hasIllustratedEdition(r) && opening?.matches('section[data-marginalia="title-page"]')) await markImportedOpening(opening, blocks);
   if (meta("marginalia:edition")) r.edition = meta("marginalia:edition"); // a text from Wikisource carries its translator and year
   if (meta("marginalia:year")) r.year = meta("marginalia:year");
   if (meta("marginalia:lang")) r.lang = meta("marginalia:lang");
@@ -1238,7 +1246,7 @@ async function parseFile(file, say) {
   if (ext === "pdf") r = await parsePDF(await file.arrayBuffer(), say);
   else if (ext === "epub") r = await parseEPUB(await file.arrayBuffer(), say);
   else if (ext === "docx") r = await parseDOCX(await file.arrayBuffer(), say);
-  else if (ext === "html" || ext === "htm" || ext === "xhtml") r = parseHTML(await readText(file, true));
+  else if (ext === "html" || ext === "htm" || ext === "xhtml") r = await parseHTML(await readText(file, true));
   else if (ext === "md" || ext === "markdown") r = { ...parsePlain(await readText(file), true), kind: "Markdown" };
   else if (ext === "txt" || ext === "text" || (file.type || "").startsWith("text/")) r = { ...parsePlain(await readText(file), false), kind: "Text" };
   else throw new UErr("This file type isn't supported. Use PDF, EPUB, Word (.docx), .txt or .md.");

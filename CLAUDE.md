@@ -11,8 +11,8 @@ why. The owner sets direction and can overrule. The app is vibe coded on purpose
 separate from the owner learning to program, so explain changes in terms of what they do for reading, never as coding lessons.
 
 Roles (owner's decision, 2026-11-01):
-- **Claude** owns the codebase: implementation, testing, integration and final technical review. Only Claude changes code.
-- **ChatGPT** is a philosophical collaborator, kept off the codebase: it drafts entries, examines interpretations of Nietzsche,
+- **Claude** owns the codebase: implementation, testing, integration and final technical review.
+- **ChatGPT** may implement and test app changes with the owner’s authorization (2026-11-26). As a philosophical collaborator it drafts entries, examines interpretations of Nietzsche,
   Deleuze, Guattari and Land, finds conceptual inconsistencies and challenges questionable readings. Its drafts and objections reach
   the app through Claude, which checks them against sources like any other draft; a reading ChatGPT disputes is settled by the
   sources, and an open dispute is recorded in the audit, not papered over.
@@ -50,6 +50,8 @@ compare or substantiate philosophical ideas, or by rewarding doing so? If not, i
 `docs/BACKLOG.md`.
 
 ## How changes ship
+
+Keep private books, cover images, interior artwork and backups on the owner’s device. Use invented text and generated test images for importer and reader changes.
 
 - **Pull request** (branch + PR) for anything touching stored data: the IndexedDB schema or `idbOpen` upgrade
   code, the `STORES` list, the shape of records in any store, backup (`version` in the export), restore (`VALID`, `planRestore`,

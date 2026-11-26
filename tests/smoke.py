@@ -102,7 +102,7 @@ async def cloud_backups(browser):
       await put('notes', 'classic-note', {textId:'classic-spinoza-ethics', gloss:'My classic annotation', updatedAt:1});
     }""")
     await page.evaluate('cloudSetup()')
-    check('same origin' in await page.locator('.sheet').inner_text() and 'copyrighted' in await page.locator('.sheet').inner_text(), 'setup discloses shared-origin tokens and unencrypted copyrighted text uploads')
+    check('same origin' in await page.locator('.sheet').inner_text() and 'imported book' in await page.locator('.sheet').inner_text(), 'setup explains shared-origin tokens and local-only books')
     await page.fill('#cloud-repo',config['repo']); await page.fill('#cloud-token',config['token'])
     await page.click('button[type=submit]')
     check(await page.evaluate('cloudConfig() === null'), 'setup requires explicit consent')
@@ -111,10 +111,15 @@ async def cloud_backups(browser):
     check(await page.evaluate('cloudConfig() === null') and not state['writes'], 'public repository rejected before upload')
     await page.evaluate('closeOverlay()'); state['private'] = True
     await page.evaluate('(c) => cloudSave(c)',config)
-    check(await page.evaluate('cloudUpload()'), 'first split backup succeeds')
+    check(not await page.evaluate('cloudUpload()') and not state['writes'], 'a private book prevents every GitHub write')
+    await page.evaluate("""async () => {
+        await del('content','remote-book'); await del('covers','remote-book');
+        await put('texts','remote-book',{...S.texts.get('remote-book'),hasContent:false});
+    }""")
+    check(await page.evaluate('cloudUpload()'), 'a study-only snapshot succeeds')
     data = json.loads(state['files'][path]['raw'])
     check(data['layout']=='split-1' and 'content' not in data and 'covers' not in data, 'small manifest contains references instead of text and cover payloads')
-    check('classic-spinoza-ethics' not in data['assets']['content'] and 'classic-spinoza-ethics' not in data['assets']['covers'] and len(state['writes'])==3, 'bundled classic text and cover produce zero asset uploads')
+    check('classic-spinoza-ethics' not in data['assets']['content'] and 'classic-spinoza-ethics' not in data['assets']['covers'] and len(state['writes'])==1, 'bundled classic text and cover produce zero asset uploads')
     check('other-tab' in data['notes'] and data['notes']['remote-note']['gloss']=='Différence — 日本語', 'snapshot keeps Unicode and other-tab edits')
     check(config['token'] not in ''.join(raw for _,raw in state['writes']), 'credentials stay out of every uploaded file')
     count = len(state['writes']); state['object_gets'] = []
@@ -142,21 +147,16 @@ async def cloud_backups(browser):
     state['private']=True
     await page.evaluate('cloudUpload()')
     check(await page.locator('#cloud-warning-slot [role=alert]').count()==0 and len(state['writes'])==before, 'verified unchanged backup clears stale warning without a needless commit')
-    # A revised imported text creates a new immutable object; failed assets cannot publish a manifest.
-    old_manifest=state['files'][path]['raw']; state['fail_asset']=True
-    await page.evaluate("put('content','remote-book',[{k:'p',x:'Corrected imported text'}, {k:'p',x:'Last page'}])")
-    check(not await page.evaluate('cloudUpload()') and state['files'][path]['raw']==old_manifest, 'asset upload failure leaves the previous complete manifest intact')
-    state['fail_asset']=False; await page.evaluate('cloudUpload()')
-    check(state['writes'][-2][0].startswith('marginalia-backups/objects/') and state['writes'][-1][0]==path, 'changed imported text uploads a new object before publishing its reference')
-    # Marking a heading in a bundled classic (Edit) makes its text differ from the bundled copy: it uploads once, like an import.
-    before=len(state['writes'])
-    await page.evaluate("(async()=>{ const c=await idbGet('content','classic-spinoza-ethics'); c[7]={...c[7],st:'heading'}; await put('content','classic-spinoza-ethics',c); })()")
-    await page.evaluate('cloudUpload()')
-    data=json.loads(state['files'][path]['raw'])
-    check('classic-spinoza-ethics' in data['assets']['content'] and 'classic-spinoza-ethics' not in data['assets']['covers'] and len(state['writes'])==before+2,
-          'an edited classic uploads its text once; its unchanged cover stays out')
-    before=len(state['writes']); await page.evaluate('cloudUpload()')
-    check(len(state['writes'])==before, 'the edited classic is not uploaded again while unchanged')
+    before = len(state['writes'])
+    await page.evaluate("put('content','remote-book',[{k:'p',x:'Private test text'}])")
+    check(not await page.evaluate('cloudUpload()') and len(state['writes']) == before, 'even orphaned private content stops uploads')
+    await page.evaluate("del('content','remote-book')")
+    await page.evaluate("async () => { window.uneditedClassic = await idbGet('content','classic-spinoza-ethics'); const c = structuredClone(uneditedClassic); c[7].st='heading'; await put('content','classic-spinoza-ethics',c); }")
+    check(not await page.evaluate('cloudUpload()') and len(state['writes']) == before, 'a modified classic stops uploads')
+    await page.evaluate("put('content','classic-spinoza-ethics',uneditedClassic)")
+    await page.evaluate("async () => { window.bundledCover = await idbGet('covers','classic-spinoza-ethics'); await put('covers','classic-spinoza-ethics',new Blob(['custom test image'])); }")
+    check(not await page.evaluate('cloudUpload()') and len(state['writes']) == before, 'a custom classic cover stops uploads')
+    await page.evaluate("put('covers','classic-spinoza-ethics',bundledCover)")
     state['conflict']=True
     await page.evaluate("put('notes','other-tab',{...S.notes.get('other-tab'),gloss:'Conflict test',updatedAt:4})")
     last=await page.evaluate('cloudConfig().last')
@@ -167,12 +167,21 @@ async def cloud_backups(browser):
     other=await browser.new_context(bypass_csp=True, viewport={'width':1280,'height':900}); await other.route('**/*',route)
     laptop=await other.new_page(); await laptop.goto(URL); await laptop.wait_for_function(READY)
     await laptop.evaluate('(c)=>cloudSave({...c,device:"22222222-2222-4222-a222-222222222222"})',config)
+    # A legacy split backup with an invented book remains readable.
+    import hashlib
+    raw = json.dumps({'kind':'content','value':[{'k':'p','x':'Corrected imported text'}]})
+    digest = hashlib.sha256(raw.encode()).hexdigest()
+    data = json.loads(state['files'][path]['raw'])
+    data['assets']['content']['remote-book'] = digest
+    data['texts']['remote-book']['hasContent'] = True
+    state['files'][path]['raw'] = json.dumps(data)
+    state['files']['marginalia-backups/objects/'+digest+'.json'] = {'raw':raw,'sha':'legacy'}
     await laptop.evaluate('(name)=>cloudReview(cloudConfig(),name)',device+'.json')
     check(await laptop.evaluate('S.notes.size')==0, 'split restore review makes no local changes')
     await laptop.click('#rs-merge'); await laptop.wait_for_function("S.notes.has('remote-note')")
     check(await laptop.evaluate("S.notes.get('remote-note').gloss==='Updated note' && S.notes.has('classic-note') && S.texts.get('remote-book').pos===11"), 'confirmed restore recovers notes, classic annotations and session position')
     check(await laptop.evaluate("(async()=> (await idbGet('content','remote-book'))[0].x==='Corrected imported text' && (await idbGet('content','classic-spinoza-ethics')).length>100)()"), 'restore downloads hash-verified imported text and rebuilds bundled classics')
-    check(await laptop.evaluate("(async()=> (await idbGet('content','classic-spinoza-ethics'))[7].st==='heading' && !!(await idbGet('covers','classic-spinoza-ethics')))()"), 'restore brings back the edits to a classic, with its bundled cover')
+    check(await laptop.evaluate("(async()=> !!(await idbGet('covers','classic-spinoza-ethics')))()"), 'restore rebuilds the bundled classic cover')
     check(await laptop.evaluate("idbGet('notes', 'remote-note').then((n) => !!n)"), 'the restored note is in storage before the app is closed')
     await laptop.reload(); await laptop.wait_for_function(READY)
     check(await laptop.evaluate("S.notes.get('remote-note').followups[0].x==='Later'"), 'restored history survives reload')

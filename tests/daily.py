@@ -36,6 +36,8 @@ async def main():
             t.objectStore('texts').put({ title: 'Kept from before', status: 'reading' }, 'old');
             t.objectStore('notes').put({ textId: 'old', kind: 'gloss', gloss: 'An old note', createdAt: 1, updatedAt: 1 }, 'old-note');
             t.oncomplete = () => { d.close(); resolve(); }; t.onerror = () => reject(t.error); }; })""", OLD)
+        # Booting the library already records today's question. Give that first visit the fixture's date too.
+        await page.clock.set_fixed_time(datetime.datetime(2026, 11, 23, 14, tzinfo=datetime.timezone.utc))
         await page.evaluate("localStorage.setItem('mg-classics', '[]')")
         await page.goto(f"http://localhost:{PORT}/index.html"); await page.wait_for_function("S.mode === 'ready'")
         up = await page.evaluate("[idb.version === DB_VERSION, DB_VERSION, [...idb.objectStoreNames].includes('daily'), S.texts.get('old').title, S.notes.get('old-note').gloss]")

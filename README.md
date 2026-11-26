@@ -4,7 +4,7 @@ A personal app for learning philosophy: a reader, reading log and study tool tha
 
 ## Where things are stored
 
-Everything (book text, notes, reading positions) is stored in the browser's own storage on the device you use it on. Nothing leaves the device unless you turn on **Automatic backups**, which uploads a backup to a private GitHub repository of your own, using a token you paste in. Nothing from your library is ever committed to this repository. **Never commit books or PDFs here: the repository is public.** The one exception is `data/books/`: a few public-domain classics that come with the app and are added to the library the first time it opens with them.
+Everything (book text, notes, reading positions) is stored in the browser's own storage on the device you use it on. Nothing leaves the device unless you turn on **Automatic backups**, which can send study records to your private GitHub repository. GitHub backups pause when the local snapshot includes imported books, custom artwork, or modified bundled book files. Use Save backup for a complete local copy. Nothing from your library is ever committed to this repository. **Never commit books or PDFs here: the repository is public.** The one exception is `data/books/`: a few public-domain classics that come with the app and are added to the library the first time it opens with them.
 
 Use **Save backup** on the library screen now and then. The backup file is also how you move your library to another device (**Restore from backup**).
 
