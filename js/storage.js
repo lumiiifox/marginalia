@@ -163,7 +163,7 @@ async function loadContent(tid) {
   let blocks = S.content.get(tid);
   if (!blocks && idb) blocks = await idbGet("content", tid);
   // An earlier app can restore version-7 blocks while retaining the portable image field.
-  if (blocks && hasIllustratedEdition(S.texts.get(tid)) && blocks.some(b => b.openingArt?.src)) {
+  if (blocks && blocks.some(b => b.openingArt?.src)) {
     blocks = await decodeOpeningArt(blocks);
   }
   if (blocks) S.content.set(tid, blocks);
@@ -337,7 +337,7 @@ const VALID = {
   content: (v) => Array.isArray(v) && v.every((b) => isObj(b) && isS(b.k) && optStr(b.x) && optStr(b.s) && optStr(b.st) && optInt(b.sth) && optInt(b.l)
     && (b.openingRole === undefined || (b.k === "front" && OPENING_ROLES.has(b.openingRole)))
     && (b.openingKind === undefined || (b.openingRole && ["p","front","h1","h2","h3","h4","h5","h6"].includes(b.openingKind)))
-    && (b.openingArt === undefined || (b.openingRole === "author" && localArtSource(b.openingArt?.src) && isS(b.openingArt.alt) && b.openingArt.alt.length <= 1000 && (b.openingArt.crop === undefined || validCrop(b.openingArt.crop))))
+    && (b.openingArt === undefined || (isOpeningCredit(b.openingRole) && localArtSource(b.openingArt?.src) && isS(b.openingArt.alt) && b.openingArt.alt.length <= 1000 && (b.openingArt.crop === undefined || validCrop(b.openingArt.crop))))
     && (b.stj === undefined || typeof b.stj === "boolean") && optNum(b.size) && optNum(b.space)),
   covers: (v) => typeof v === "string" && v.startsWith("data:image/"),
 };
