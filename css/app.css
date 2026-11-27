@@ -1432,3 +1432,11 @@ button.src::after { content: ""; position: absolute; inset: -8px -2px; }
 #reader.paged-reader :is(#book,#flipbook) .opening-author { break-inside: avoid; }
 .opening-crop { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .5rem; }
 .opening-crop input { width: 100%; }
+
+/* The second illustrated edition uses a landscape plate and a short publisher line. */
+.book .opening-wide.opening-book-title { font-size: 2.65em; margin: .35em 0 .3em; }
+.book .opening-wide.opening-subtitle { font-size: 1.35em; max-width: 19ch; margin-bottom: .8em; }
+.book .opening-wide .opening-art { max-width: 96%; max-height: 40dvh; border-radius: .5em; margin-bottom: .65em; }
+.book .opening-wide.opening-author { font-size: 1.36em; margin-bottom: .65em; }
+.book .opening-wide .opening-rule { margin-bottom: .8em; }
+#reader.paged-reader :is(#book, #flipbook) .opening-wide + :not(.opening) { break-before: column; }

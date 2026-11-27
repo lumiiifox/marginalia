@@ -1,5 +1,9 @@
-// Illustrated openings are opt-in for this edition. The owner supplies all text and artwork locally.
-const hasIllustratedEdition = t => /^hyperpolitics(?:\s*:|$)/i.test(t?.title?.trim() || "") && norm(fold(t.author || "")) === "antonjager";
+// Only explicitly supported editions opt into the illustrated opening. All book material is supplied locally.
+function isPlantOpening(t) {
+  return /^zeros\s*\+\s*ones(?:\s*:|$)/i.test(t?.title?.trim() || "") && norm(fold(t.author || "")) === "sadieplant";
+}
+const hasIllustratedEdition = t => isPlantOpening(t) ||
+  (/^hyperpolitics(?:\s*:|$)/i.test(t?.title?.trim() || "") && norm(fold(t.author || "")) === "antonjager");
 const OPENING_ROLES = new Set(["book-title", "subtitle", "author", "translator", "editor", "publication", "copyright"]);
 const MAX_OPENING_URL = 2 * 1024 * 1024;
 function localArtSource(src) {
@@ -129,7 +133,7 @@ function openingHTML(b, i, marks) {
   const tag = role === "book-title" ? "h1" : "div";
   let html = inlineHTML(b.x, marks);
   if (detail && !html.includes('class="vs"')) html = html.replaceAll(" / ", VBR);
-  return `<${tag} class="opening opening-${role}" data-i="${i}">${before}${html}${marginHTML(marks, b.x)}</${tag}>`;
+  return `<${tag} class="opening opening-${role}${isPlantOpening(S.texts.get(R.tid)) ? " opening-wide" : ""}" data-i="${i}">${before}${html}${marginHTML(marks, b.x)}</${tag}>`;
 }
 // Read and write the current book in the same transaction. Only the matched front paragraphs change.
 async function attachOpening(id, parsed) {

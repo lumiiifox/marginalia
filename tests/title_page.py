@@ -60,6 +60,9 @@ with sync_playwright() as pw:
     assert page.evaluate("parsed.sections.length === 3 && parsed.pages === 3 && parsed.blocks[2].openingArt.blob instanceof Blob")
     assert page.evaluate(f"async src => !(await ({parse})(src)).blocks.some(b=>b.openingRole)", html.replace("<title>Hyperpolitics", "<title>Other"))
     assert page.evaluate(f"async src => !(await ({parse})(src)).blocks.some(b=>b.openingArt)", html.replace(raster, "https://unused.invalid/picture"))
+    second = html.replace("<title>Hyperpolitics", "<title>Zeros + Ones").replace('content="Anton Jäger"', 'content="Sadie Plant"')
+    assert page.evaluate(f"async src => (await ({parse})(src)).blocks[2].openingArt.blob instanceof Blob", second)
+    assert page.evaluate(f"async src => !(await ({parse})(src)).blocks.some(b=>b.openingRole)", second.replace('content="Sadie Plant"', 'content="Different author"'))
     assert all("unused.invalid" not in url for url in requests)
     assert page.evaluate(f"async src => (await ({parse})(src)).blocks[0].openingRole === 'book-title'", html.replace('<p data-role="subtitle">An invented subtitle for a narrow screen</p>', '').replace(f'<img alt="Test rectangle" src="{raster}">', ''))
     assert page.evaluate(f"""async src => {{
