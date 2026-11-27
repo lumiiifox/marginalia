@@ -33,9 +33,9 @@ def wait_ready(page):
 
 
 ready = "typeof S !== 'undefined' && S.mode === 'ready' && !!idb"
-with sync_playwright() as pw:
+def check_edition(pw, title, author):
     browser = pw.chromium.launch()
-    ctx = browser.new_context(viewport={"width": 360, "height": 740})
+    ctx = browser.new_context(reduced_motion="reduce", viewport={"width": 360, "height": 740})
     page = ctx.new_page()
     requests = []
     page.on("request", lambda r: requests.append(r.url))
@@ -47,7 +47,7 @@ with sync_playwright() as pw:
       return c.toDataURL('image/png');
     }""")
     # Only the two identifying metadata fields name the pilot. All displayed text is invented.
-    html = f"""<title>Hyperpolitics</title><meta name="author" content="Anton Jäger">
+    html = f"""<title>{title}</title><meta name="author" content="{author}">
     <section data-marginalia="title-page"><header><h1 data-role="book-title">Test Opening</h1>
     <p data-role="subtitle">An invented subtitle for a narrow screen</p></header>
     <figure data-role="title-artwork"><img alt="Test rectangle" src="{raster}"></figure>
@@ -58,7 +58,16 @@ with sync_playwright() as pw:
     parse = "s => parseFile(new File([s],'test.html',{type:'text/html'}),()=>{})"
     page.evaluate(f"async src => {{ window.parsed = await ({parse})(src); }}", html)
     assert page.evaluate("parsed.sections.length === 3 && parsed.pages === 3 && parsed.blocks[2].openingArt.blob instanceof Blob")
-    assert page.evaluate(f"async src => !(await ({parse})(src)).blocks.some(b=>b.openingRole)", html.replace("<title>Hyperpolitics", "<title>Other"))
+    assert page.evaluate(f"async src => !(await ({parse})(src)).blocks.some(b=>b.openingRole)", html.replace('data-marginalia="title-page"', ''))
+    for credits in [['editor'], ['translator'], ['author','author','translator','editor']]:
+        replacement = ''.join(f'<p data-role="{role}">Synthetic contributor {i}</p>' for i, role in enumerate(credits))
+        source = html.replace('<p data-role="author">Test Author</p>', replacement)
+        assert page.evaluate(f"""async ([src,roles]) => {{
+          const p = await ({parse})(src);
+          const c = p.blocks.filter(b=>isOpeningCredit(b.openingRole));
+          return JSON.stringify(c.map(b=>b.openingRole))===JSON.stringify(roles)
+            && c[0].openingArt.blob instanceof Blob && c.slice(1).every(b=>!b.openingArt);
+        }}""", [source,credits])
     assert page.evaluate(f"async src => !(await ({parse})(src)).blocks.some(b=>b.openingArt)", html.replace(raster, "https://unused.invalid/picture"))
     assert all("unused.invalid" not in url for url in requests)
     assert page.evaluate(f"async src => (await ({parse})(src)).blocks[0].openingRole === 'book-title'", html.replace('<p data-role="subtitle">An invented subtitle for a narrow screen</p>', '').replace(f'<img alt="Test rectangle" src="{raster}">', ''))
@@ -104,6 +113,15 @@ with sync_playwright() as pw:
       try { await attachOpening('test-edition',bad); return false; }
       catch { const after = await backupData(); return JSON.stringify(before.content) === JSON.stringify(after.content)
         && JSON.stringify(before.texts) === JSON.stringify(after.texts); }
+    }""")
+    assert page.evaluate("""async () => {
+      const before = await backupData();
+      for (const other of [{...parsed,title:'Another edition'}, {...parsed,author:'Another credit'}]) {
+        try { await attachOpening('test-edition',other); return false; } catch (e) { if (!(e instanceof UErr)) throw e; }
+      }
+      const after = await backupData();
+      return JSON.stringify(before.content) === JSON.stringify(after.content)
+        && JSON.stringify(before.texts) === JSON.stringify(after.texts);
     }""")
     switch_layout(page, "Use plain title page")
     page.wait_for_selector("#book p.bp[data-i='0']")
@@ -197,6 +215,10 @@ with sync_playwright() as pw:
             font:getComputedStyle(credits).fontFamily};
         }""")
         assert not geometry["issues"] and geometry["center"] < 2 and geometry["reachesEnd"] and geometry["pages"] > 1 and geometry["font"] == font, geometry
+    fresh.close()
     browser.close()
+with sync_playwright() as pw:
+    check_edition(pw, "Hyperpolitics", "Anton Jäger")
+    check_edition(pw, "Zeros + Ones", "Sadie Plant")
 server.shutdown()
 print("all passed")

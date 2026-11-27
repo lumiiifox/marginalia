@@ -1117,7 +1117,7 @@ async function parseHTML(src) {
   const meta = (n) => clean(doc.querySelector(`meta[name="${n}"]`)?.getAttribute("content") || "");
   const r = { title: clean(doc.title || ""), author: meta("author"), kind: "HTML", blocks };
   const opening = doc.body.firstElementChild;
-  if (hasIllustratedEdition(r) && opening?.matches('section[data-marginalia="title-page"]')) await markImportedOpening(opening, blocks);
+  if (opening?.matches('section[data-marginalia="title-page"]')) await markImportedOpening(opening, blocks);
   if (meta("marginalia:edition")) r.edition = meta("marginalia:edition"); // a text from Wikisource carries its translator and year
   if (meta("marginalia:year")) r.year = meta("marginalia:year");
   if (meta("marginalia:lang")) r.lang = meta("marginalia:lang");

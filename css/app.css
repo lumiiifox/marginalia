@@ -1429,6 +1429,6 @@ button.src::after { content: ""; position: absolute; inset: -8px -2px; }
 .book .opening-art { display: block; width: auto; height: auto; max-width: min(61%,17rem); max-height: 38dvh; margin: 0 auto .85em; object-fit: contain; border-radius: .35em; }
 .book .opening-publication, .book .opening-copyright { margin: 0 auto .5em; max-width: 54ch; font-size: max(.65em,.875rem); line-height: 1.43; }
 .book .opening-rule { margin: .25em auto 1.05em; width: 82%; border: 0; border-top: 1px solid var(--rule); }
-#reader.paged-reader :is(#book,#flipbook) .opening-author { break-inside: avoid; }
+#reader.paged-reader :is(#book,#flipbook) :is(.opening-author,.opening-editor,.opening-translator) { break-inside: avoid; }
 .opening-crop { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .5rem; }
 .opening-crop input { width: 100%; }

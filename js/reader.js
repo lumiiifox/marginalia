@@ -466,11 +466,11 @@ function blockHTML(b, i, marks) {
   if (isHidden(b)) return `<div class="bhid" data-i="${i}"></div>`;
   if (b.k === "front" && b.openingRole && OPENING_ROLES.has(b.openingRole) && (!b.st || b.st === "title")) {
     const t = S.texts.get(R.tid);
-    if (hasIllustratedEdition(t)) {
-      if (!t.openingPlain) return openingHTML(b, i, m);
-      const kind = b.openingKind || "p";
-      b = /^h[1-6]$/.test(kind) ? { ...b, k: "h", l: +kind[1] } : { ...b, k: kind };
-    }
+    if (!t?.openingPlain) return openingHTML(b, {
+      index: i, previousRole: R.blocks[i - 1]?.openingRole, marks: m, imageURL: readerOpeningImage
+    });
+    const kind = b.openingKind || "p";
+    b = /^h[1-6]$/.test(kind) ? { ...b, k: "h", l: +kind[1] } : { ...b, k: kind };
   }
   const role = roleOf(b);
   if (b.k === "front" && role !== "text") {
